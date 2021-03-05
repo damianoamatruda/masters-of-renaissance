@@ -160,3 +160,17 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+### VisualStudioCode ###
+.vscode/
+*.code-workspace
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# Java Extensions
+.classpath
+.project
+.settings/
