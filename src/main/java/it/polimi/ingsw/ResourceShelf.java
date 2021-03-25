@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 /**
  * This class represents a container of resources of a specific type in limited quantity.
  */
-public class TypeShelf extends Shelf {
+public class ResourceShelf extends Shelf {
     /** The specific type of resources the shelf can contain. */
     private ResourceType resType;
 
@@ -13,7 +13,7 @@ public class TypeShelf extends Shelf {
      * @param size      the maximum quantity of resources in the the shelf
      * @param resType   the specific type of resources in the shelf
      */
-    public TypeShelf(int size, ResourceType resType) {
+    public ResourceShelf(int size, ResourceType resType) {
         super(size);
         this.resType = resType;
     }

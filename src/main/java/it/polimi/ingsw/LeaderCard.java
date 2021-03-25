@@ -54,7 +54,7 @@ public abstract class LeaderCard extends Card {
   /**
    * @return  the shelf pertaining to the leader.
    */
-  public TypeShelf getDepot() { return null; }
+  public ResourceShelf getDepot() { return null; }
 
   /**
    * Applies the leader card's discount.
