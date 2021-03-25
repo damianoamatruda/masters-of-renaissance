@@ -84,7 +84,7 @@ public class Player {
 
     /** Getter of the number of basic shelves of which the warehouse is composed
      * @return the number of basic shelves (leader depots excluded) */
-    public static int getWarehouseShelvesCount(){
+    public static int getShelvesCount(){
         return WAREHOUSE_SHELVES_COUNT;
     }
 
@@ -113,7 +113,6 @@ public class Player {
      */
     public void discardLeader(int index){
         leaders.remove(index);
-        //for(int i = 1; i < game.getPlayersCount(); i++){
         for(Player p : game.getPlayers()){
             if(!p.equals(this))
                 p.incrementFaithPoints();
@@ -124,13 +123,10 @@ public class Player {
      * Advances the faith marker by one on the board's faith track.
      * Then proceeds to call a checker for Vatican report tiles "onIncrement"
      */
-    private void incrementFaithPoints() {
+    public void incrementFaithPoints() {
         faithPoints += 1;
-//        if(faithPoints % 3 == 0) victoryPoints += 1 + faithPoints/6;
         game.onIncrement(faithPoints);
     }
-
-    //
 
     /**
      * Retrieves the required shelf in order to perform further actions on it
