@@ -12,7 +12,7 @@ public abstract class GameDecorator /*implements IGame*/ extends Game{
     /** Constructor to be called by the subclasses in order to assign the wrappee
      * @param game the game (wrappee) to be extended
      */
-    protected GameDecorator(Game game){
+    public GameDecorator(Game game){
         this.wrappee = game;
     }
 }

@@ -45,7 +45,19 @@ public class /*Base*/Game /*implements IGame*/{
     /** All the cards that are still not bought by any player */
     private List<List<Stack<DevelopmentCard>>> devGrid;
 
-    //
+    /** Default constructor of Game (Will not be used by the controller to create Game) */
+    protected Game(){}
+
+    /** Constructor of Game instances
+     * @param players the list of players who joined
+     * @param devGrid the development card "shop", from which new cards can be bought
+     * @param market the game resource market
+     */
+    public Game(List<Player> players, List<List<Stack<DevelopmentCard>>> devGrid, Market market){
+        this.players=players;
+        this.devGrid=devGrid;
+        this.market=market;
+    }
 
     /**
      * Getter of the maximum number of players that can connect to a game
