@@ -1,9 +1,6 @@
 package it.polimi.ingsw;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /** Base game class containing the general components of the "game box",
  * as well as some attributes shared by all players that can be easily accessed from the outside
@@ -57,6 +54,12 @@ public class /*Base*/Game /*implements IGame*/{
         this.players=players;
         this.devGrid=devGrid;
         this.market=market;
+        vaticanSections = new HashMap<Integer, Integer[]>(){{
+          put(8, new Integer[]{5, 2});
+          put(16, new Integer[]{12, 3});
+          put(24, new Integer[]{19, 4});
+        }};
+
     }
 
     /**

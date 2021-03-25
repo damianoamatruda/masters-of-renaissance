@@ -10,7 +10,7 @@ public class ActionTokenBlackMoveOneShuffle implements ActionToken{
      */
     @Override
     public void trigger(SoloGame game) {
-        game.incrementBlackCross();
+        game.incrementBlackPoints();
         game.shuffleActionTokens();
     }
 }

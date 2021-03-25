@@ -1,27 +1,27 @@
 package it.polimi.ingsw;
 
 import java.util.Collections;
-import java.util.Stack;
+import java.util.List;
 
 /**
  * This class represents the Solo version of the game, and contains all the extra functionality
  */
 public class SoloGame extends GameDecorator{
     /** The stack of action tokens to be activated at the end of the player's turn */
-    private Stack<ActionToken> actionTokens;
+    private List<ActionToken> actionTokens;
 
     /** The "marker" of Lorenzo il Magnifico on the faith track */
-    private int blackCrossPoints;
+    private int blackPoints;
 
     /**
      * Initializes the solo game with the following parameters.
      * @param game          the wrappee to be extended with solo functionality
      * @param actionTokens  the stack of tokens, of which the top token is activated after each turn
      */
-    public SoloGame(Game game, Stack<ActionToken> actionTokens){
+    public SoloGame(Game game, List<ActionToken> actionTokens){
         super(game);
         this.actionTokens = actionTokens;
-        blackCrossPoints = 0;
+        blackPoints = 0;
     }
 
     /**
@@ -35,9 +35,9 @@ public class SoloGame extends GameDecorator{
     /**
      * Advances Lorenzo's marker on the faith track by one, then checks for Vatican Report
      */
-    public void incrementBlackCross(){
-        blackCrossPoints += 1;
-        wrappee.onIncrement(blackCrossPoints);
+    public void incrementBlackPoints(){
+        blackPoints += 1;
+        wrappee.onIncrement(blackPoints);
     }
 
     /**
@@ -61,11 +61,15 @@ public class SoloGame extends GameDecorator{
     /**
      * Retrieves and activates the top token of the Lorenzo's stack
      */
-    private void takeActionToken(){}
+    private void takeActionToken(){
+        ActionToken token = actionTokens.get(0);
+        token.trigger(this);
+        actionTokens.add(token);
+    }
 
     /** Returns Lorenzo's faith marker position
      * @return  number of tile reached by Lorenzo */
-    public int getBlackCrossPoints(){
-        return blackCrossPoints;
+    public int getBlackPoints(){
+        return blackPoints;
     }
 }

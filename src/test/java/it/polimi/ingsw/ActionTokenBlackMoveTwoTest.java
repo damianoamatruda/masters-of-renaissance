@@ -6,6 +6,9 @@ import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test of the functionalities of the class "ActionTokenBlackMoveTwo"
+ */
 class ActionTokenBlackMoveTwoTest {
 
     @Test
@@ -14,6 +17,6 @@ class ActionTokenBlackMoveTwoTest {
         SoloGame game = new SoloGame(new Game(null,null,null), null);
         token.trigger(game);
 
-        assertEquals(game.getBlackCrossPoints(),2);
+        assertEquals(game.getBlackPoints(),2);
     }
 }

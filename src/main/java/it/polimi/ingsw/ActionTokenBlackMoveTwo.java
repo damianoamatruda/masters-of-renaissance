@@ -10,7 +10,7 @@ public class ActionTokenBlackMoveTwo implements ActionToken{
      */
     @Override
     public void trigger(SoloGame game) {
-        game.incrementBlackCross();
-        game.incrementBlackCross();
+        game.incrementBlackPoints();
+        game.incrementBlackPoints();
     }
 }
