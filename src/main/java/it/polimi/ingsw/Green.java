@@ -3,7 +3,6 @@ package it.polimi.ingsw;
 /**
  * One of the possible colors a development card can have
  */
-
 public class Green implements DevCardColor{
     /**
      * @return a name that will be represented as the green color by the view

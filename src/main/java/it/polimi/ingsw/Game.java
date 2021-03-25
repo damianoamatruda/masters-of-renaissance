@@ -6,33 +6,42 @@ import java.util.Map;
 import java.util.Stack;
 
 /** Base game class containing the general components of the "game box",
- * as well as some attributes shared by all players that can be easily accessed from the outside */
-
+ * as well as some attributes shared by all players that can be easily accessed from the outside
+ */
 public class /*Base*/Game /*implements IGame*/{
     /** Maximum number of players that can connect to the same game instance */
     private static final int MAX_PLAYERS_COUNT=4;
+
     /** Number of distinct rows of separate decks that represent different development card levels */
     private static final int DEV_GRID_LEVELS_COUNT=3;
+
     /** Number of distinct columns of separate decks that represent different development card colors */
     private static final int DEV_GRID_COLORS_COUNT=4;
+
     /** Number of "Vatican Sections" that can be entered throughout the game */
     private static final int VATICAN_SECTIONS_COUNT=3;
 
     /** Reference to the collection from which all the player's data can be accessed */
     private List<Player> players;
+
     /** Variable that maps the Vatican report tile to the corresponding state of activation
      * Boolean value represents whether or not the Vatican report is already over */
     private Map<Integer,Boolean> activatedVaticanSections;
+
     /** Maps the number of tile to the bonus progressive victory points earned */
     private Map<Integer,Integer> yellowTiles;
+
     /** Maps the tile of a Vatican report to two values:
      * 1) The first tile of the same Vatican Section, which needs to be reached in order to earn bonus points;
      * 2) The corresponding amount of bonus points that will be rewarded to the players after the Report is over */
     private Map<Integer,Integer[]> vaticanSections;
+
     /** Progressive number of the current turn */
     private int turns;
+
     /** Reference to the "Market Board", from which resources can be "bought" */
     private Market market;
+
     /** All the cards that are still not bought by any player */
     private List<List<Stack<DevelopmentCard>>> devGrid;
 
@@ -121,9 +130,9 @@ public class /*Base*/Game /*implements IGame*/{
 
     /**
      * A player buys a card of a given color and level
-     * @param player the player that wants to buy a card
-     * @param color the color of the card to be bought
-     * @param level the level of the card to be bought
+     * @param player    the player that wants to buy a card
+     * @param color     the color of the card to be bought
+     * @param level     the level of the card to be bought
      */
     public void takeDevCard(Player player, DevCardColor color, int level) {
 
@@ -139,7 +148,7 @@ public class /*Base*/Game /*implements IGame*/{
 
     /**
      * Method called after a faith marker has been moved ahead, checks for available Vatican reports
-     * @param trackPoints the faith marker (points) of whoever just moved ahead
+     * @param trackPoints   the faith marker (points) of whoever just moved ahead
      */
     public void onIncrement(int trackPoints) {
         Integer[] currentSection = vaticanSections.get(trackPoints);

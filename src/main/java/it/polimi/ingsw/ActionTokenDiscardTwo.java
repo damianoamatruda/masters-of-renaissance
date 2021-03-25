@@ -13,6 +13,7 @@ public class ActionTokenDiscardTwo implements ActionToken{
     public ActionTokenDiscardTwo(DevCardColor color){
         discardedColor = color;
     }
+
     /**
      * Triggers the effect of this token:
      * disables the first two available cards of a given color, starting from the lowest level

@@ -3,7 +3,6 @@ package it.polimi.ingsw;
 /**
  * Implements one of the possible effects which a token can trigger
  */
-
 public class ActionTokenBlackMoveTwo implements ActionToken{
     /**
      * Triggers the effect of this token: move Black cross ahead by two
