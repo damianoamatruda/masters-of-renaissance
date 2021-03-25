@@ -11,7 +11,7 @@ public class DevCardRequirement implements LeaderCardRequirement {
   /**
    * Class constructor.
    * 
-   * @param devCard the development cards that form the requirement.
+   * @param devCards the development cards that form the requirement.
    */
   public DevCardRequirement(Map<DevelopmentCard, Integer> devCards) { this.devCards = devCards; }
 
