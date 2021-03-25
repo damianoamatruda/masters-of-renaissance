@@ -141,7 +141,7 @@ public class /*Base*/Game /*implements IGame*/{
     /**
      * Proceeds to sum the remaining points and decide a winner after the game is over
      * @return true if game is over
-     * */
+     */
     public boolean hasEnded() {
         return false;
     }

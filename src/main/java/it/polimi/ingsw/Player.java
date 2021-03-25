@@ -216,7 +216,7 @@ public class Player {
 
     /** Declares the winner, by setting the winner flag
      * @param winner    true if player is to be declared as winner
-     * */
+     */
     public void setWinner(boolean winner) {
         this.winner = winner;
     }
@@ -224,7 +224,7 @@ public class Player {
     /** Decides whether a given leader card can still be discarded
      * @param index number of the leader card to be checked
      * @return      true if the leader card can be discarded during the current turn
-     * */
+     */
     private boolean canDiscardLeader(int index){
         return !getLeader(index).isActivated();
     }
@@ -233,7 +233,7 @@ public class Player {
      * @param index     the number of slot to be checked
      * @param devCard   the development card that the user wishes to buy
      * @return          true if the current top card of the slot is of the previous level, thus the action can be done
-     * */
+     */
     private boolean canAddToDevSlot(int index, DevelopmentCard devCard){
         return getDevSlot(index).peek().getLevel() < 3;
     }
@@ -262,6 +262,6 @@ public class Player {
      * @param card1 the first chosen card
      * @param card2 the second chosen card
      * @return      the list of the 2 cards to be kept
-     * */
+     */
     public List<LeaderCard> chooseCards(LeaderCard card1, LeaderCard card2){return null;}
 }

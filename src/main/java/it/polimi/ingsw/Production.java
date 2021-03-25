@@ -17,7 +17,7 @@ public class Production {
      *
      * @param input     the map of the resources to be given as input of the production
      * @param output    the map of the resources to be taken as output of the production
-     * */
+     */
     public Production(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output) {
         this.input = input;
         this.output = output;
