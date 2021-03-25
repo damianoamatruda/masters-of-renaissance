@@ -209,7 +209,7 @@ public class Player {
      * @return true if the leader card can be discarded during the current turn
      * */
     private boolean canDiscardLeader(int index){
-        return !getLeader(index).isActivated();
+        return !getLeader(index).isActive();
     }
 
     /** Decides whether an available development card can be deposited on top of a given production slot
