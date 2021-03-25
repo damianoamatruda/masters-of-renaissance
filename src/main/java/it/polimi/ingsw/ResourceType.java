@@ -25,7 +25,8 @@ public abstract class ResourceType {
   /**
    * Routine for consuming the resource. Its effect is adding the resource to the player.
    * 
-   * @param player  the player the resource goes to.
+   * @param player    the player the resource goes to.
+   * @param strongbox the storage in which the reource is deposited, if applicable.
    */
-  public abstract void onTaken(Player player);
+  public abstract void onTaken(Player player, Strongbox strongbox);
 }
