@@ -42,7 +42,7 @@ public class Shelf extends Strongbox {
      * @return  the type of the resources
      */
     public ResourceType getResource() {
-        return new ResourceType();
+        return null;
     }
 
     /**

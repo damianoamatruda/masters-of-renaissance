@@ -44,7 +44,7 @@ public class Market {
      */
     public Market() {
         gridResources = new ArrayList<>();
-        slideResource = new ResourceType();
+        slideResource = null;
     }
 
     /**
