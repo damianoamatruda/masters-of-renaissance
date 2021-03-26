@@ -10,7 +10,7 @@ public abstract class ResourceType {
   /**
    * Class constructor.
    */
-  private ResourceType() { }
+  protected ResourceType() { }
 
   /**
    * @return the single instance of this class.
