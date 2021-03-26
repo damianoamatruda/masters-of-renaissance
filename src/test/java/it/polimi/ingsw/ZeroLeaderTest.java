@@ -3,8 +3,7 @@ package it.polimi.ingsw;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for LeaderCard
+ * Test of properties of ZeroLeader
  */
-public abstract class LeaderCardTest {
-  
+public class ZeroLeaderTest {
 }

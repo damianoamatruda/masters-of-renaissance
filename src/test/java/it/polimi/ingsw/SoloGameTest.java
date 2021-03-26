@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
-
     /** Tests if black has been incremented properly and if getter of blackPoints returns the correct value */
     @Test
     public void blackPointsGetterTest(){
