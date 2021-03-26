@@ -1,20 +1,15 @@
 package it.polimi.ingsw.devcardcolors;
 
-import it.polimi.ingsw.devcardcolors.Purple;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test of properties of Color Purple
+ * Test of properties of color Purple
  */
-
 class PurpleTest {
-    /**
-     * Check for returned name with assertEquals
-     */
+    /** Check name. */
     @Test
     public void testName() {
-        assertEquals("Purple",new Purple().getName());
+        assertEquals("Purple", new Purple().getName());
     }
 }
