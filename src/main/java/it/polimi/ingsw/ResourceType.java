@@ -13,9 +13,14 @@ public abstract class ResourceType {
   protected ResourceType() { }
 
   /**
-   * @return the single instance of this class.
    */
-  public static ResourceType getInstance() { return null; }
+  // /**
+  //  * @return the single instance of this class.
+  //  */
+  // commented because it can't be overridden (it's static) and
+  // because it doesn't make sense to get an instance of an abstract class
+  // (-> would return null)
+  // public static ResourceType getInstance() { return null; }
 
   /**
    * @return  the name of the resource associated with the class.
