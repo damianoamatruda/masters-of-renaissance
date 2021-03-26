@@ -19,7 +19,7 @@ public class DepotLeader extends LeaderCard {
      */
     public DepotLeader(int shelfSize, ResourceType resource, LeaderCardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
-        this.shelf = new ResourceShelf(shelfSize, resource);
+        this.shelf = new ResourceShelf(resource, shelfSize);
     }
 
     @Override

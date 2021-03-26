@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class Strongbox {
     /** The map of the contained resources. */
-    private final Map<ResourceType, Integer> resources;
+    final Map<ResourceType, Integer> resources;
 
     /**
      * Initializes the strongbox.
@@ -26,27 +26,29 @@ public class Strongbox {
      * @return          the quantity of the resources
      */
     public int getResourceQuantity(ResourceType resType) {
-        return 0;
+        return resources.getOrDefault(resType, 0);
     }
 
     /**
-     * Adds a resource of the given type.
+     * Adds a resource of the given type
      *
      * @param resType       the resource to add
      * @throws Exception    if it is not possible
      */
     public void addResource(ResourceType resType) throws Exception {
-
+        resources.compute(resType, (r, q) -> (q == null) ? 1 : q + 1);
     }
 
     /**
-     * Removes a resource of the given type.
+     * Removes a resource of the given type
      *
      * @param resType       the resource to remove
      * @throws Exception    if it is not possible
      */
     public void removeResource(ResourceType resType) throws Exception {
-
+        if (!resources.containsKey(resType))
+            throw new Exception();
+        resources.computeIfPresent(resType, (r, q) -> (q == 1) ? null : q - 1);
     }
 
     /**
@@ -56,15 +58,15 @@ public class Strongbox {
      * @throws Exception    if it is not possible
      */
     public void addStrongbox(Strongbox strongbox) throws Exception {
-
+        strongbox.resources.forEach((r, q) -> resources.merge(r, q, Integer::sum));
     }
 
     /**
-     * Returns if the strongbox is empty.
+     * Returns whether the strongbox is empty.
      *
-     * @return true if the strongbox contains no resources, false otherwise
+     * @return  true if the strongbox contains no resources, false otherwise
      */
     public boolean isEmpty() {
-        return false;
+        return resources.isEmpty();
     }
 }
