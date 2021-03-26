@@ -57,12 +57,12 @@ public class Shelf extends Strongbox {
     }
 
     @Override
-    public void addResource(ResourceType resType) {
+    public void addResource(ResourceType resType) throws Exception {
         super.addResource(resType);
     }
 
     @Override
-    public void removeResource(ResourceType resType) {
+    public void removeResource(ResourceType resType) throws Exception {
         super.removeResource(resType);
     }
 }

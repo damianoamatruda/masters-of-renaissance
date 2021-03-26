@@ -20,12 +20,8 @@ public class ResourceShelf extends Shelf {
         this.resType = resType;
     }
 
-    /**
-     * Adds a resource of the given type to the shelf.
-     *
-     * @param resType   the type of the resource to add
-     */
-    public void addResource(ResourceType resType) {
+    @Override
+    public void addResource(ResourceType resType) throws Exception {
 
     }
 }

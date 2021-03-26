@@ -40,5 +40,5 @@ public abstract class ResourceType {
      * @param player    the player the resource goes to.
      * @param strongbox the storage in which the reource is deposited, if applicable.
      */
-    public abstract void onTaken(Player player, Strongbox strongbox);
+    public abstract void onTaken(Player player, Strongbox strongbox) throws Exception;
 }

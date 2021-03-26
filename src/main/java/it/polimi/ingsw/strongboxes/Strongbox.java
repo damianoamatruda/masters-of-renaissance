@@ -32,27 +32,30 @@ public class Strongbox {
     /**
      * Adds a resource of the given type.
      *
-     * @param resType   the resource to add
+     * @param resType       the resource to add
+     * @throws Exception    if it is not possible
      */
-    public void addResource(ResourceType resType) {
+    public void addResource(ResourceType resType) throws Exception {
 
     }
 
     /**
      * Removes a resource of the given type.
      *
-     * @param resType   the resource to remove
+     * @param resType       the resource to remove
+     * @throws Exception    if it is not possible
      */
-    public void removeResource(ResourceType resType) {
+    public void removeResource(ResourceType resType) throws Exception {
 
     }
 
     /**
      * Adds the content of a strongbox.
      *
-     * @param strongbox the strongbox from which to get the resources to add
+     * @param strongbox     the strongbox from which to get the resources to add
+     * @throws Exception    if it is not possible
      */
-    public void addStrongbox(Strongbox strongbox) {
+    public void addStrongbox(Strongbox strongbox) throws Exception {
 
     }
 

@@ -26,7 +26,7 @@ public class Stone extends ResourceType {
     public String getName() { return "stone"; }
 
     @Override
-    public void onTaken(Player player, Strongbox strongbox) {
+    public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(Stone.getInstance());
     }
 }

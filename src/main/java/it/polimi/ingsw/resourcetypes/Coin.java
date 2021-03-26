@@ -26,7 +26,7 @@ public class Coin extends ResourceType {
     public String getName() { return "coin"; }
 
     @Override
-    public void onTaken(Player player, Strongbox strongbox) {
+    public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(Coin.getInstance());
     }
 }

@@ -26,7 +26,7 @@ public class Servant extends ResourceType {
     public String getName() { return "servant"; }
 
     @Override
-    public void onTaken(Player player, Strongbox strongbox) {
+    public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(Servant.getInstance());
     }
 }
