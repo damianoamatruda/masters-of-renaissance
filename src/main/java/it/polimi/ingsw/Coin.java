@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.strongboxes.Strongbox;
+
 public class Coin extends ResourceType {
   /**
    * Single instance of the class

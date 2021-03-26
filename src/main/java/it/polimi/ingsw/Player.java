@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.strongboxes.Shelf;
+import it.polimi.ingsw.strongboxes.Strongbox;
+
 import java.util.List;
 import java.util.Stack;
 

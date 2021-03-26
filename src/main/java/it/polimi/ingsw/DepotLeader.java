@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.strongboxes.ResourceShelf;
+
 public class DepotLeader extends LeaderCard {
   /**
    * The card's shelf. The resources that can be stored are only of one type, bound at creation.

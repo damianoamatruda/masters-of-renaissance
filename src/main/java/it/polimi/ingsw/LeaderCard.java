@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.strongboxes.ResourceShelf;
+
 import java.util.Map;
 
 public abstract class LeaderCard extends Card {

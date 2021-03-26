@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.strongboxes.Strongbox;
+
 import java.util.Map;
 
 /**

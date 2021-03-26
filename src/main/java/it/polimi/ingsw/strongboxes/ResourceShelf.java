@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.strongboxes;
+
+import it.polimi.ingsw.ResourceType;
 
 /**
  * This class represents a container of resources of a specific type in limited quantity.
