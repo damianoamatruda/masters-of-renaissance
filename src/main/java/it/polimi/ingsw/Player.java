@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.strongboxes.Shelf;
 import it.polimi.ingsw.strongboxes.Strongbox;
+import it.polimi.ingsw.strongboxes.Warehouse;
 
 import java.util.List;
 import java.util.Stack;
@@ -30,7 +31,7 @@ public class Player {
     private List<LeaderCard> leaders;
 
     /** The player's warehouse, standard container of buyable resources */
-    private List<Shelf> warehouse;
+    private Warehouse warehouse;
 
     /** The player's strongbox, where all the production output goes */
     private Strongbox strongbox;
@@ -85,12 +86,6 @@ public class Player {
         return MAX_FAITH_POINTS_COUNT;
     }
 
-    /** Getter of the number of basic shelves of which the warehouse is composed
-     * @return the number of basic shelves (leader depots excluded) */
-    public static int getShelvesCount(){
-        return WAREHOUSE_SHELVES_COUNT;
-    }
-
     /** Getter of the player's visible nickname
      * @return the player's nickname */
     public String getNickname(){
@@ -129,15 +124,6 @@ public class Player {
     public void incrementFaithPoints() {
         faithPoints += 1;
         game.onIncrement(faithPoints);
-    }
-
-    /**
-     * Retrieves the required shelf in order to perform further actions on it
-     * @param index the number of shelf to be retrieved
-     * @return      the required shelf
-     */
-    public Shelf getShelf(int index){
-        return warehouse.get(index);
     }
 
     /**
