@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.actiontokens.ActionToken;
+
 import java.util.Collections;
 import java.util.List;
 
