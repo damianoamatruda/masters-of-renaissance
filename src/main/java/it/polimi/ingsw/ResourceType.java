@@ -13,7 +13,10 @@ public abstract class ResourceType {
   protected ResourceType() { }
 
   /**
+   * @return  whether the resource can be replaced with another resource.
    */
+  public abstract boolean isBlank();
+
   // /**
   //  * @return the single instance of this class.
   //  */
@@ -27,11 +30,6 @@ public abstract class ResourceType {
    *          For UI purposes only.
    */
   public abstract String getName();
-
-  /**
-   * @return  whether the resource can be replaced with another resource.
-   */
-  public boolean isBlank() { return false; }
 
   /**
    * Routine for consuming the resource. Its effect is adding the resource to the player.
