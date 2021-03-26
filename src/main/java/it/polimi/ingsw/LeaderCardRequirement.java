@@ -8,16 +8,16 @@ import it.polimi.ingsw.resourcetypes.ResourceType;
  * <li>Development cards of a certain color/level
  * <li>Resources of a specified kind
  * </ul>
- * 
+ *
  * @see DevelopmentCard
  * @see LeaderCard
  * @see ResourceType
  */
 public interface LeaderCardRequirement {
-  /**
-   * Checks whether the player satisfies the requirements.
-   * 
-   * @param player  the player to be checked for ownership of the required objects.
-   */
-  public void checkRequirements(Player player);
+    /**
+     * Checks whether the player satisfies the requirements.
+     *
+     * @param player  the player to be checked for ownership of the required objects.
+     */
+    public void checkRequirements(Player player);
 }
