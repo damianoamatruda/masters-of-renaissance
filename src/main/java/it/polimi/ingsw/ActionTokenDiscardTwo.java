@@ -1,4 +1,7 @@
 package it.polimi.ingsw;
+
+import it.polimi.ingsw.devcardcolors.DevCardColor;
+
 /**
  * Implements one of the possible effects which a token can trigger
  */

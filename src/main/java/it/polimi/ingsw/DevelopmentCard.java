@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.devcardcolors.DevCardColor;
+
 import java.util.Map;
 
 public class DevelopmentCard extends Card {

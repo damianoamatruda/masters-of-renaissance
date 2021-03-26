@@ -1,13 +1,11 @@
 package it.polimi.ingsw;
 
-import org.junit.jupiter.api.DisplayName;
+import it.polimi.ingsw.devcardcolors.Blue;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test of the functionalities of the class "ActionTokenDiscardTwo"

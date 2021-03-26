@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.devcardcolors.DevCardColor;
+
 import java.util.*;
 
 /** Base game class containing the general components of the "game box",
