@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 import java.util.Map;
 
 public abstract class LeaderCard extends Card {
-  private final ResourceType boundResource;
+  private final ResourceType resource;
   private final LeaderCardRequirement requirement;
   /**
    * The card's status. If active, the ability can be triggered.
@@ -13,14 +13,15 @@ public abstract class LeaderCard extends Card {
   /**
    * Class constructor.
    * 
-   * @param boundResource the resource tied to the card. It binds the card's effect to the specified resource type.
+   * @param resource      the resource bound to the card.
+   *                      The card's ability is restricted to acting on this resource type only.
    * @param requirement   the requirement to be satisfied for card activation.
    * @param victoryPoints the victory points associated with the card.
    */
-  public LeaderCard(ResourceType boundResource, LeaderCardRequirement requirement, int victoryPoints) {
+  public LeaderCard(ResourceType resource, LeaderCardRequirement requirement, int victoryPoints) {
     super(victoryPoints);
     this.requirement = requirement;
-    this.boundResource = boundResource;
+    this.resource = resource;
   }
 
   /** 
@@ -40,7 +41,7 @@ public abstract class LeaderCard extends Card {
   /**
    * @return  the resource tied to the card. It binds the card's ability to a specific resource type.
    */
-  public ResourceType getBoundResource() { return boundResource; }
+  public ResourceType getResource() { return resource; }
   /**
    * Executes the discarding routine for leader cards.
    * 
