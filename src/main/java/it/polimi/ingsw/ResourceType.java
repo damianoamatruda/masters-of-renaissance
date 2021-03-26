@@ -1,6 +1,12 @@
 package it.polimi.ingsw;
 
 public abstract class ResourceType {
+  // /**
+  //  * Single instance of the class
+  //  */
+  // commented as it creates conflicts when using subclasses
+  // protected static ResourceType resource;
+  
   /**
    * Class constructor.
    */
