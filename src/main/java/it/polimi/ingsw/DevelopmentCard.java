@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.DevCardColor;
+import it.polimi.ingsw.resourcetypes.ResourceType;
 
 import java.util.Map;
 

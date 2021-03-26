@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.resourcetypes.ResourceType;
+
 public class ProductionLeader extends LeaderCard {
   /**
    * The production associated with the card.

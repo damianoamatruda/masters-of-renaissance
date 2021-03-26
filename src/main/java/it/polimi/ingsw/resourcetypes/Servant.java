@@ -1,5 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.resourcetypes;
 
+import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
 public class Servant extends ResourceType {

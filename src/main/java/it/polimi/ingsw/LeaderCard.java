@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.strongboxes.ResourceShelf;
 
 import java.util.Map;

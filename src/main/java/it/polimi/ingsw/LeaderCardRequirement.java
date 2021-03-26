@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.resourcetypes.ResourceType;
+
 /**
  * Leader cards can be activated only if the player owns enough of either:
  * <ul>

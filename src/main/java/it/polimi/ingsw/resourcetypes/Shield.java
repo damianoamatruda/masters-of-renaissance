@@ -1,31 +1,32 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.resourcetypes;
 
+import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
-public class Stone extends ResourceType {
+public class Shield extends ResourceType {
   /**
    * Single instance of the class
    */
   private static ResourceType resource;
 
-  private Stone() { }
+  private Shield() { }
 
   @Override
   public boolean isBlank() { return false; }
-  
+
   /**
    * @return  the single instance of this class.
    */
   public static ResourceType getInstance() {
-    if (resource == null) resource = new Stone();
+    if (resource == null) resource = new Shield();
     return resource;
   }
 
   @Override
-  public String getName() { return "stone"; }
+  public String getName() { return "shield"; }
 
   @Override
   public void onTaken(Player player, Strongbox strongbox) {
-    strongbox.addResource(Stone.getInstance());
+    strongbox.addResource(Shield.getInstance());
   }
 }

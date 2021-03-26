@@ -1,6 +1,6 @@
 package it.polimi.ingsw.strongboxes;
 
-import it.polimi.ingsw.ResourceType;
+import it.polimi.ingsw.resourcetypes.ResourceType;
 
 import java.util.HashMap;
 import java.util.Map;

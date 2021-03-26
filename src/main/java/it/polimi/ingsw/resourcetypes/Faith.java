@@ -1,31 +1,32 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.resourcetypes;
 
+import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
-public class Zero extends ResourceType {
+public class Faith extends ResourceType {
   /**
    * Single instance of the class
    */
   private static ResourceType resource;
 
-  private Zero() { }
+  private Faith() { }
 
   @Override
-  public boolean isBlank() { return true; }
+  public boolean isBlank() { return false; }
 
   /**
    * @return  the single instance of this class.
    */
   public static ResourceType getInstance() {
-    if (resource == null) resource = new Zero();
+    if (resource == null) resource = new Faith();
     return resource;
   }
 
   @Override
-  public String getName() { return "zero"; }
+  public String getName() { return "faith"; }
 
   @Override
   public void onTaken(Player player, Strongbox strongbox) {
-    //TODO implement
+    player.incrementFaithPoints();
   }
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.resourcetypes.ResourceType;
+
 import java.util.Map;
 
 public class DiscountLeader extends LeaderCard {
