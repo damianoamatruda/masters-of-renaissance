@@ -100,19 +100,4 @@ public class Market {
                               Map<ResourceType, Map<Shelf, Integer>> shelves) {
 
     }
-
-    /**
-     * Checks if it is possible to take resources with the given parameters.
-     *
-     * @param player    the player on which to trigger the action of the resource, if applicable
-     * @param isRow     true if a row is selected, false if a column is selected
-     * @param index     index of the selected row or column
-     * @param zeros     a map of the chosen resources to take, if choices are applicable
-     * @param shelves   a map of the shelves where to add the taken resources, if possible
-     * @return          true if possible, false otherwise
-     */
-    private boolean canTakeResources(Player player, boolean isRow, int index, Map<ResourceType, Integer> zeros,
-                                     Map<ResourceType, Map<Shelf, Integer>> shelves) {
-        return false;
-    }
 }

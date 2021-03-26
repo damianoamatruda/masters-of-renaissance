@@ -63,35 +63,4 @@ public class Shelf extends Strongbox {
     public void removeResource(ResourceType resType) {
         super.removeResource(resType);
     }
-
-    /**
-     * Checks if it is possible to swap the content of two shelves.
-     *
-     * @param s1    the first shelf
-     * @param s2    the second shelf
-     * @return      true if possible, false otherwise
-     */
-    private static boolean canSwap(Shelf s1, Shelf s2) {
-        return false;
-    }
-
-    /**
-     * Checks if it is possible to add a resource of the given type in the shelf.
-     *
-     * @param resType   the type of the resource to add
-     * @return          true if possible, false otherwise
-     */
-    private boolean canAddResource(ResourceType resType) {
-        return false;
-    }
-
-    /**
-     * Checks if it is possible to remove a resource of the given type from the shelf.
-     *
-     * @param resType   the type of the resource to remove
-     * @return          true if possible, false otherwise
-     */
-    private boolean canRemoveResource(ResourceType resType) {
-        return false;
-    }
 }

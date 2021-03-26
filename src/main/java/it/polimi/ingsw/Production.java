@@ -63,18 +63,4 @@ public class Production {
     public boolean isEmpty() {
         return false;
     }
-
-    /**
-     * Checks if the production can be activated with the given parameters.
-     *
-     * @param inputBlanks       the map of the resources to be given as replacement of blanks in input
-     * @param outputBlanks      the map of the resources to be taken as replacement of blanks in output
-     * @param inputStrongboxes  the map of the strongboxes to use for each resource to be given as input
-     * @param outputStrongbox   the strongbox to use for all the resources to be taken as output
-     * @return                  the outcome
-     */
-    private boolean canActivate(Map<ResourceType, Integer> inputBlanks, Map<ResourceType, Integer> outputBlanks,
-                                Map<ResourceType, Map<Strongbox, Integer>> inputStrongboxes, Strongbox outputStrongbox) {
-        return false;
-    }
 }

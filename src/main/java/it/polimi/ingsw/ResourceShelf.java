@@ -26,14 +26,4 @@ public class ResourceShelf extends Shelf {
     public void addResource(ResourceType resType) {
 
     }
-
-    /**
-     * Checks if it is possible to add a resource of the given type to the shelf.
-     *
-     * @param resType   the type of the resource to add
-     * @return          true if possible, otherwise false
-     */
-    private boolean canAddResource(ResourceType resType) {
-        return false;
-    }
 }
