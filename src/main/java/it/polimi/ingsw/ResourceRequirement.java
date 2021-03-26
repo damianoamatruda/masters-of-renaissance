@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class ResourceRequirement implements LeaderCardRequirement {
     /**
-     * The the resources required to activate the leader card.
+     * The resources required to activate the leader card.
      */
     private final Map<ResourceType, Integer> resources;
 

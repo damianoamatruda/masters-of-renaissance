@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for Warehouse and WarehouseShelf classes.
  */
 public class WarehouseTest {
+    /**
+     * Test the size of the shelves.
+     */
     @Test
     public void testShelvesSize() {
         Warehouse w = new Warehouse(3);
@@ -18,6 +21,9 @@ public class WarehouseTest {
             assertEquals(i+1, w.getShelves().get(i).getSize());
     }
 
+    /**
+     * Test the content of the shelves.
+     */
     @Test
     public void testShelvesContent() {
         Warehouse w = new Warehouse(3);

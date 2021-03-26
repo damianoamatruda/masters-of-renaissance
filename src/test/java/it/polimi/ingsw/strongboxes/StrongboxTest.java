@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for Strongbox class.
  */
 public class StrongboxTest {
+    /**
+     * Test the quantity of resource of a type.
+     */
     @Test
     public void testQuantity1() {
         Strongbox s = new Strongbox();
@@ -18,6 +21,9 @@ public class StrongboxTest {
         assertEquals(0, s.getResourceQuantity(c));
     }
 
+    /**
+     * Test the quantity of resources of a type.
+     */
     @Test
     public void testQuantity2() {
         Strongbox s = new Strongbox();
@@ -38,6 +44,9 @@ public class StrongboxTest {
         assertEquals(0, s.getResourceQuantity(c));
     }
 
+    /**
+     * Test by adding a resource multiple times and getting it.
+     */
     @Test
     public void testAddGet() {
         Strongbox s = new Strongbox();

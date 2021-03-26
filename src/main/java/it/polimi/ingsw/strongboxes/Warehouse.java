@@ -14,6 +14,8 @@ public class Warehouse {
 
     /**
      * Initializes the warehouse by constructing the shelves of growing size.
+     *
+     * @param shelvesCount  the number of shelves in the warehouse
      */
     public Warehouse(int shelvesCount) {
         shelves = new ArrayList<>();

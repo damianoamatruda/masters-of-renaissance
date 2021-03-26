@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for ResourceShelf class.
  */
 public class ResourceShelfTest {
+    /**
+     * Test the quantity of resources of a type.
+     */
     @Test
     public void testQuantity1() {
         ResourceType c = Coin.getInstance();
@@ -21,6 +24,9 @@ public class ResourceShelfTest {
         assertEquals(0, s.getQuantity());
     }
 
+    /**
+     * Test the quantity of resources of a type.
+     */
     @Test
     public void testQuantity2() {
         ResourceType c = Coin.getInstance();
@@ -44,6 +50,9 @@ public class ResourceShelfTest {
         assertEquals(0, s.getQuantity());
     }
 
+    /**
+     * Test by adding a resource multiple times and getting it.
+     */
     @Test
     public void testAddGet() {
         Shelf s = new Shelf(3);

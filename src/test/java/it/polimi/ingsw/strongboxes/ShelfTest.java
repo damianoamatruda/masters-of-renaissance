@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for Shelf class.
  */
 public class ShelfTest {
+    /**
+     * Test the quantity of a resource in a shelf.
+     */
     @Test
     public void testQuantity1() {
         Shelf s = new Shelf(3);
@@ -20,6 +23,9 @@ public class ShelfTest {
         assertEquals(0, s.getQuantity());
     }
 
+    /**
+     * Test the quantity of a resource in a shelf.
+     */
     @Test
     public void testQuantity2() {
         Shelf s = new Shelf(3);
@@ -42,6 +48,9 @@ public class ShelfTest {
         assertEquals(0, s.getQuantity());
     }
 
+    /**
+     * Test by adding a resource multiple times and getting it.
+     */
     @Test
     public void testAddGet() {
         Shelf s = new Shelf(3);

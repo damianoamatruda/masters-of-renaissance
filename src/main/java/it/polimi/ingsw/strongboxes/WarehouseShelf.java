@@ -14,6 +14,9 @@ public class WarehouseShelf extends Shelf {
 
     /**
      * Initializes the shelf by specifying the warehouse containing it.
+     *
+     * @param warehouse the warehouse containing the shelf
+     * @param size      the maximum number of resources in the shelf
      */
     public WarehouseShelf(Warehouse warehouse, int size) {
         super(size);
