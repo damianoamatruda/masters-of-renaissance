@@ -32,4 +32,7 @@ public class Faith extends ResourceType {
     public void onTaken(Player player, Strongbox strongbox) {
         player.incrementFaithPoints();
     }
+
+    @Override
+    public void onGiven(Player player, Strongbox strongbox) throws Exception { }
 }

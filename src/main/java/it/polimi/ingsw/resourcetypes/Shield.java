@@ -32,4 +32,9 @@ public class Shield extends ResourceType {
     public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(Shield.getInstance());
     }
+
+    @Override
+    public void onGiven(Player player, Strongbox strongbox) throws Exception {
+        strongbox.removeResource(Shield.getInstance());
+    }
 }

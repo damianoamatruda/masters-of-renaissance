@@ -32,4 +32,9 @@ public class Stone extends ResourceType {
     public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(Stone.getInstance());
     }
+
+    @Override
+    public void onGiven(Player player, Strongbox strongbox) throws Exception {
+        strongbox.removeResource(Stone.getInstance());
+    }
 }

@@ -32,4 +32,9 @@ public class Servant extends ResourceType {
     public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(Servant.getInstance());
     }
+
+    @Override
+    public void onGiven(Player player, Strongbox strongbox) throws Exception {
+        strongbox.removeResource(Servant.getInstance());
+    }
 }
