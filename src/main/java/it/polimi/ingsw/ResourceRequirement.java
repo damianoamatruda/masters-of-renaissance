@@ -11,10 +11,10 @@ import java.util.Map;
  * if the <code>Player</code> that owns it also owns the specified amount of <code>Resource</code>s.
  *
  * @see LeaderCard
- * @see LeaderCardRequirement
+ * @see CardRequirement
  * @see Player
  */
-public class ResourceRequirement implements LeaderCardRequirement {
+public class ResourceRequirement implements CardRequirement {
     /**
      * The resources required to activate the leader card.
      */

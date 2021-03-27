@@ -13,7 +13,7 @@ public class ZeroLeader extends LeaderCard {
      * @param requirement   the requirement to be satisfied for card activation.
      * @param victoryPoints the victory points associated with the card.
      */
-    public ZeroLeader(ResourceType resource, LeaderCardRequirement requirement, int victoryPoints) {
+    public ZeroLeader(ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
     }
 

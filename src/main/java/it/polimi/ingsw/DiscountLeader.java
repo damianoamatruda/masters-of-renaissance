@@ -19,7 +19,7 @@ public class DiscountLeader extends LeaderCard {
      * @param requirement   the requirement to be satisfied in order to enable the card.
      * @param victoryPoints the amount of victory points associated with the card.
      */
-    public DiscountLeader(int discount, ResourceType resource, LeaderCardRequirement requirement, int victoryPoints) {
+    public DiscountLeader(int discount, ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
         this.discount = discount;
     }

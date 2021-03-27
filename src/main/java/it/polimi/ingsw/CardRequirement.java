@@ -13,7 +13,7 @@ import it.polimi.ingsw.resourcetypes.ResourceType;
  * @see LeaderCard
  * @see ResourceType
  */
-public interface LeaderCardRequirement {
+public interface CardRequirement {
     /**
      * Checks whether the player satisfies the requirements.
      *

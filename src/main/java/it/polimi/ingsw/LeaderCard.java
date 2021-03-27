@@ -7,7 +7,7 @@ import java.util.Map;
 
 public abstract class LeaderCard extends Card {
     private final ResourceType resource;
-    private final LeaderCardRequirement requirement;
+    private final CardRequirement requirement;
     /**
      * The card's status. If active, the ability can be triggered.
      */
@@ -21,7 +21,7 @@ public abstract class LeaderCard extends Card {
      * @param requirement   the requirement to be satisfied for card activation.
      * @param victoryPoints the victory points associated with the card.
      */
-    public LeaderCard(ResourceType resource, LeaderCardRequirement requirement, int victoryPoints) {
+    public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(victoryPoints);
         this.requirement = requirement;
         this.resource = resource;

@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import java.util.Map;
 
-public class DevCardRequirement implements LeaderCardRequirement {
+public class DevCardRequirement implements CardRequirement {
     /**
      * The development cards required to activate the leader card.
      */

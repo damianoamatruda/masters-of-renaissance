@@ -17,7 +17,7 @@ public class DepotLeader extends LeaderCard {
      * @param requirement   the requirement to be satisfied to activate the card.
      * @param victoryPoints the victory points associated with the card.
      */
-    public DepotLeader(int shelfSize, ResourceType resource, LeaderCardRequirement requirement, int victoryPoints) {
+    public DepotLeader(int shelfSize, ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
         this.shelf = new ResourceShelf(resource, shelfSize);
     }
