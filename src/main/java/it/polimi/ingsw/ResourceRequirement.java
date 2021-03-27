@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.resourcetypes.ResourceType;
+import it.polimi.ingsw.strongboxes.Strongbox;
 
 import java.util.Map;
 
@@ -36,5 +37,14 @@ public class ResourceRequirement implements CardRequirement {
     public void checkRequirements(Player player) {
         // TODO Auto-generated method stub
 
+    }
+
+    /**
+     * Gives the resources that form the requirement. Each resource is taken from a given strongbox.
+     *
+     * @param strongboxes   a map of the strongboxes where to take the given resources, if possible
+     */
+    public void giveResources(Map<ResourceType, Map<Strongbox, Integer>> strongboxes) {
+        // TODO Implement
     }
 }
