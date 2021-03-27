@@ -1,13 +1,10 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.DevCardColor;
-import it.polimi.ingsw.resourcetypes.ResourceType;
-
-import java.util.Map;
 
 public class DevelopmentCard extends Card {
     private final DevCardColor color;
-    private final Map<ResourceType, Integer> cost;
+    private final ResourceRequirement cost;
     private final int level;
     private final Production production;
 
@@ -20,7 +17,7 @@ public class DevelopmentCard extends Card {
      * @param production    the production associated with the card.
      * @param victoryPoints the victory points associated with the card.
      */
-    public DevelopmentCard(DevCardColor color, int level, Map<ResourceType, Integer> cost, Production production, int victoryPoints) {
+    public DevelopmentCard(DevCardColor color, int level, ResourceRequirement cost, Production production, int victoryPoints) {
         super(victoryPoints);
         this.color = color;
         this.cost = cost;
@@ -36,7 +33,7 @@ public class DevelopmentCard extends Card {
     /**
      * @return  the card's cost.
      */
-    public Map<ResourceType, Integer> getCost() { return cost; }
+    public ResourceRequirement getCost() { return cost; }
 
     /**
      * @return  the card's level.
