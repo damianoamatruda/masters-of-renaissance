@@ -12,7 +12,7 @@ public class App {
      * @param args  the arguments
      */
     public static void main(String[] args) {
-        Game game = new Game(null,null,null);
+        Game game = new Game(null,null);
         game = new SoloGame(game, new ArrayList<>());
         game = new SoloGame(game, new ArrayList<>());
     }

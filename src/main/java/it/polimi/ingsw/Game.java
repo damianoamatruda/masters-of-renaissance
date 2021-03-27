@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.DevCardColor;
+import it.polimi.ingsw.resourcetypes.*;
 
 import java.util.*;
 
@@ -71,12 +72,18 @@ public class /*Base*/Game /*implements IGame*/{
     /** Constructor of Game instances
      * @param players the list of players who joined
      * @param devGrid the development card "shop", from which new cards can be bought
-     * @param market the game resource market
      */
-    public Game(List<Player> players, List<List<Stack<DevelopmentCard>>> devGrid, Market market){
+    public Game(List<Player> players, List<List<Stack<DevelopmentCard>>> devGrid){
         this.players=players;
         this.devGrid=devGrid;
-        this.market=market;
+        this.market=new Market(new HashMap<ResourceType, Integer>(){{
+            put(Coin.getInstance(), MARKET_COIN_COUNT);
+            put(Faith.getInstance(), MARKET_FAITH_COUNT);
+            put(Servant.getInstance(), MARKET_SERVANT_COUNT);
+            put(Shield.getInstance(), MARKET_SHIELD_COUNT);
+            put(Stone.getInstance(), MARKET_STONE_COUNT);
+            put(Zero.getInstance(), MARKET_ZERO_COUNT);
+        }}, MARKET_COLS_COUNT);
         vaticanSections = new HashMap<Integer, Integer[]>(){{
           put(8, new Integer[]{5, 2});
           put(16, new Integer[]{12, 3});

@@ -20,8 +20,11 @@ public class Market {
 
     /**
      * Initializes the market by placing the resources randomly in the grid and in the slide.
+     *
+     * @param resources map of the resources to put inside the market
+     * @param colsCount number of columns in the grid
      */
-    public Market() {
+    public Market(Map<ResourceType, Integer> resources, int colsCount) {
         // TODO: Implement
         gridResources = new ArrayList<>();
         slideResource = null;
