@@ -12,30 +12,6 @@ import java.util.Map;
  * It consists of a grid of resources together with a slide containing a single resource.
  */
 public class Market {
-    /** The number of rows in the grid. */
-    private static final int ROWS_COUNT = 3;
-
-    /** The number of columns in the grid. */
-    private static final int COLS_COUNT = 4;
-
-    /** The number of blue resources. */
-    private static final int BLUE_RES_COUNT = 2;
-
-    /** The number of green resources. */
-    private static final int GREEN_RES_COUNT = 2;
-
-    /** The number of purple resources. */
-    private static final int PURPLE_RES_COUNT = 2;
-
-    /** The number of red resources. */
-    private static final int RED_RES_COUNT = 1;
-
-    /** The number of white resources. */
-    private static final int WHITE_RES_COUNT = 4;
-
-    /** The number of yellow resources. */
-    private static final int YELLOW_RES_COUNT = 2;
-
     /** The resources in the grid. */
     private final List<List<ResourceType>> gridResources;
 
@@ -57,7 +33,7 @@ public class Market {
      * @return  the number of rows
      */
     public static int getRowsCount() {
-        return ROWS_COUNT;
+        return 0;
     }
 
     /**
@@ -66,7 +42,7 @@ public class Market {
      * @return  the number of columns
      */
     public static int getColsCount() {
-        return COLS_COUNT;
+        return 0;
     }
 
     /**

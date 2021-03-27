@@ -20,6 +20,27 @@ public class /*Base*/Game /*implements IGame*/{
     /** Number of "Vatican Sections" that can be entered throughout the game */
     private static final int VATICAN_SECTIONS_COUNT=3;
 
+    /** Number of columns in the market grid. */
+    private static final int MARKET_COLS_COUNT = 4;
+
+    /** Number of coin resources in the market. */
+    private static final int MARKET_COIN_COUNT = 2;
+
+    /** Number of faith resources in the market. */
+    private static final int MARKET_FAITH_COUNT = 1;
+
+    /** Number of servant resources in the market. */
+    private static final int MARKET_SERVANT_COUNT = 2;
+
+    /** Number of shield resources in the market. */
+    private static final int MARKET_SHIELD_COUNT = 2;
+
+    /** Number of stone resources in the market. */
+    private static final int MARKET_STONE_COUNT = 2;
+
+    /** Number of zero resources in the market. */
+    private static final int MARKET_ZERO_COUNT = 4;
+
     /** Reference to the collection from which all the player's data can be accessed */
     private List<Player> players;
 
