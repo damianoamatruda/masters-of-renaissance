@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.Shelf;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
 import java.util.HashMap;
@@ -81,11 +80,11 @@ public class Production {
         Map<ResourceType, Integer> nonStorableOutput = new HashMap<>(replacedOutput);
         nonStorableOutput.keySet().stream().filter(ResourceType::isStorable).forEach(replacedOutput::remove);
 
-        transferStorable(false, player, inputStrongboxes);
-        transferStorable(true, player, outputStrongboxes);
+        transferStorable(true, player, inputStrongboxes);
+        transferStorable(false, player, outputStrongboxes);
 
-        transferNonStorable(false, player, nonStorableOutput);
         transferNonStorable(true, player, nonStorableOutput);
+        transferNonStorable(false, player, nonStorableOutput);
     }
 
     /**
@@ -111,7 +110,7 @@ public class Production {
     /**
      * Transfers storable resources to or from strongboxes in a transaction.
      *
-     * @param take          true if transfered from a strongbox, otherwise false
+     * @param take          true if transferred from a strongbox, otherwise false
      * @param player        the player on which to trigger the action of the resource, if applicable
      * @param strongboxes   the map of the strongboxes to use for all the resources
      * @throws Exception    if it is not possible
@@ -145,7 +144,7 @@ public class Production {
     /**
      * Transfers non-storable resources to or from a player.
      *
-     * @param take          true if transfered from a strongbox, otherwise false
+     * @param take          true if transferred from a strongbox, otherwise false
      * @param player        the player on which to trigger the action of the resource, if applicable
      * @param resources     the map of the resources
      * @throws Exception    if it is not possible

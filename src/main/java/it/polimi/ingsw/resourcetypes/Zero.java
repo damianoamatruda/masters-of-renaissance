@@ -29,8 +29,8 @@ public class Zero extends ResourceType {
     public String getName() { return "zero"; }
 
     @Override
-    public void onTaken(Player player, Strongbox strongbox) throws Exception { }
+    public void onGiven(Player player, Strongbox strongbox) throws Exception { }
 
     @Override
-    public void onGiven(Player player, Strongbox strongbox) throws Exception { }
+    public void onTaken(Player player, Strongbox strongbox) throws Exception { }
 }

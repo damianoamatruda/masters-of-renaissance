@@ -29,12 +29,12 @@ public class Coin extends ResourceType {
     public String getName() { return "coin"; }
 
     @Override
-    public void onTaken(Player player, Strongbox strongbox) throws Exception {
+    public void onGiven(Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(Coin.getInstance());
     }
 
     @Override
-    public void onGiven(Player player, Strongbox strongbox) throws Exception {
+    public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.removeResource(Coin.getInstance());
     }
 }

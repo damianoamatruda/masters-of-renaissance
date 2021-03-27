@@ -40,20 +40,20 @@ public abstract class ResourceType {
     public abstract String getName();
 
     /**
-     * Routine for producing the resource. Its effect is adding the resource to the player.
+     * Routine for giving the resource to the player.
      *
      * @param player        the player the resource goes to.
      * @param strongbox     the storage in which the resource is deposited, if applicable.
      * @throws Exception    if it is not possible
      */
-    public abstract void onTaken(Player player, Strongbox strongbox) throws Exception;
+    public abstract void onGiven(Player player, Strongbox strongbox) throws Exception;
 
     /**
-     * Routine for consuming the resource. Its effect is removing the resource from the player.
+     * Routine for taking the resource from the player.
      *
      * @param player        the player the resource is taken from.
      * @param strongbox     the storage from which the resource is removed, if applicable.
      * @throws Exception    if it is not possible
      */
-    public abstract void onGiven(Player player, Strongbox strongbox) throws Exception;
+    public abstract void onTaken(Player player, Strongbox strongbox) throws Exception;
 }

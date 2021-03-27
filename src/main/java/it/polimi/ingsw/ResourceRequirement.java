@@ -41,12 +41,13 @@ public class ResourceRequirement implements CardRequirement {
     }
 
     /**
-     * Gives the resources that form the requirement. Each resource is taken from a given strongbox.
+     * Takes the resources that form the requirement from the player. Each storable resource is taken from a given
+     * strongbox.
      *
-     * @param strongboxes   a map of the strongboxes where to take the given resources, if possible
+     * @param strongboxes   a map of the strongboxes where to take the storable resources
      * @throws Exception    if it is not possible
      */
-    public void giveResources(Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+    public void take(Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         (new Production(resources, new HashMap<>()))
                 .activate(player, new HashMap<>(), new HashMap<>(), strongboxes, new HashMap<>());
     }
