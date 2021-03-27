@@ -14,6 +14,9 @@ public class Zero extends ResourceType {
     @Override
     public boolean isBlank() { return true; }
 
+    @Override
+    public boolean isStorable() { return false; }
+
     /**
      * @return  the single instance of this class.
      */

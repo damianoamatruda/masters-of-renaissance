@@ -20,6 +20,11 @@ public abstract class ResourceType {
      */
     public abstract boolean isBlank();
 
+    /**
+     * @return  whether the resource can be stored in a strongbox.
+     */
+    public abstract boolean isStorable();
+
     // /**
     //  * @return the single instance of this class.
     //  */
