@@ -48,6 +48,7 @@ public class SoloGame extends GameDecorator{
      */
     @Override
     public boolean hasEnded(){
+        // TODO: Implement
         return false;
     }
 
@@ -57,7 +58,7 @@ public class SoloGame extends GameDecorator{
      */
     @Override
     public void onTurnEnd() {
-
+        // TODO: Implement
     }
 
     /**

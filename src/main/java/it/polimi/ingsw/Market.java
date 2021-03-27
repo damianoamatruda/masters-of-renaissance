@@ -46,6 +46,7 @@ public class Market {
      * Initializes the market by placing the resources randomly in the grid and in the slide.
      */
     public Market() {
+        // TODO: Implement
         gridResources = new ArrayList<>();
         slideResource = null;
     }
@@ -101,6 +102,6 @@ public class Market {
      */
     public void takeResources(Player player, boolean isRow, int index, Map<ResourceType, Integer> zeros,
                               Map<ResourceType, Map<Shelf, Integer>> shelves) {
-
+        // TODO: Implement
     }
 }

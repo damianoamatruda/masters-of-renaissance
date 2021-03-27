@@ -27,7 +27,7 @@ public class DiscountLeader extends LeaderCard {
 
     @Override
     public Map<ResourceType, Integer> getDevCardCost(Map<ResourceType, Integer> resources) {
-        //TODO implement
+        // TODO: Implement
         return null;
     }
 }

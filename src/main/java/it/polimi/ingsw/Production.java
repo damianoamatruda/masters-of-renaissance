@@ -55,7 +55,7 @@ public class Production {
      */
     public void activate(Map<ResourceType, Integer> inputBlanks, Map<ResourceType, Integer> outputBlanks,
                          Map<ResourceType, Map<Strongbox, Integer>> inputStrongboxes, Strongbox outputStrongbox) {
-
+        // TODO: Implement
     }
 
     /**

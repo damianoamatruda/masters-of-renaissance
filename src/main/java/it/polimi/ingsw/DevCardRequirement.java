@@ -22,8 +22,7 @@ public class DevCardRequirement implements CardRequirement {
      */
     @Override
     public void checkRequirements(Player player) {
-        // TODO Auto-generated method stub
-
+        // TODO: Implement
     }
 
 }

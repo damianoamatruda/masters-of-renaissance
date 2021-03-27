@@ -49,6 +49,6 @@ public class DevelopmentCard extends Card {
      * @param player the player taking the card.
      */
     public void onTaken(Player player) {
-        //TODO implement
+        // TODO: Implement
     }
 }

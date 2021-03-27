@@ -18,7 +18,9 @@ public class ZeroLeader extends LeaderCard {
         super(resource, requirement, victoryPoints);
     }
 
-    //TODO implement
     @Override
-    public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> resources, Map<ResourceType, Integer> zeros) { return resources; }
+    public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> resources, Map<ResourceType, Integer> zeros) {
+        // TODO: Implement
+        return resources;
+    }
 }

@@ -36,8 +36,7 @@ public class ResourceRequirement implements CardRequirement {
      */
     @Override
     public void checkRequirements(Player player) {
-        // TODO Auto-generated method stub
-
+        // TODO: Implement
     }
 
     /**

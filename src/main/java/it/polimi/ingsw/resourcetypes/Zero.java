@@ -27,6 +27,6 @@ public class Zero extends ResourceType {
 
     @Override
     public void onTaken(Player player, Strongbox strongbox) {
-        //TODO implement
+        // TODO: Implement
     }
 }

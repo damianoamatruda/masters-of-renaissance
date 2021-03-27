@@ -118,6 +118,7 @@ public class /*Base*/Game /*implements IGame*/{
      * @return the next player that has to play a turn
      */
     public Player nextPlayer() {
+        // TODO: Implement
         return null;
     }
 
@@ -142,6 +143,7 @@ public class /*Base*/Game /*implements IGame*/{
      * @return the top card of each deck
      */
     public List<List<DevelopmentCard>> peekDevCards() {
+        // TODO: Implement
         return null;
     }
 
@@ -152,7 +154,7 @@ public class /*Base*/Game /*implements IGame*/{
      * @param level     the level of the card to be bought
      */
     public void takeDevCard(Player player, DevCardColor color, int level) {
-
+        // TODO: Implement
     }
 
     /**
@@ -160,6 +162,7 @@ public class /*Base*/Game /*implements IGame*/{
      * @return true if game is over
      */
     public boolean hasEnded() {
+        // TODO: Implement
         return false;
     }
 
@@ -181,21 +184,27 @@ public class /*Base*/Game /*implements IGame*/{
      * Action performed after a player ends the turn
      */
     public void onTurnEnd() {
-
+        // TODO: Implement
     }
 
     /**
      * Proceeds to calculate the remaining points and chooses a winner
      */
-    private void setWinnerPlayer(){ }
+    private void setWinnerPlayer(){
+        // TODO: Implement
+    }
 
     /**
      * Sums the points based on the number of resources left at the end of the game
      */
-    private void sumResourcesVictoryPoints(){}
+    private void sumResourcesVictoryPoints(){
+        // TODO: Implement
+    }
 
     /**
      * Sums the points earned based on the last yellow tile that has been reached
      */
-    private void sumPointsFromYellowTiles(){}
+    private void sumPointsFromYellowTiles(){
+        // TODO: Implement
+    }
 }
