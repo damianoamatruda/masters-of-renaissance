@@ -172,7 +172,7 @@ public class Player {
      * @param points    the quantity to be added to the score
      */
     public void incrementVictoryPoints(int points) {
-        this.victoryPoints += victoryPoints;
+        this.victoryPoints += points;
     }
 
     /**
