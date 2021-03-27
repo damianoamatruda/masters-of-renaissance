@@ -1,5 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.leadercards;
 
+import it.polimi.ingsw.CardRequirement;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.strongboxes.ResourceShelf;
 

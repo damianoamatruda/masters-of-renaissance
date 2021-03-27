@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.leadercards.LeaderCard;
+
 /**
  * Card is the abstract class for all card-like entities
  * that share the victory points attribute.
