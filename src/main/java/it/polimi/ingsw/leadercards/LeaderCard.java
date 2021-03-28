@@ -52,7 +52,11 @@ public abstract class LeaderCard extends Card {
      *                      The card's requirements will be checked on them.
      * @throws Exception    if the player does not meet the card's requirements.
      */
-    public void activate() { isActive = true; }
+    public void activate(Player player) throws Exception {
+        requirement.checkRequirements(player);
+
+        isActive = true;
+    }
 
     /**
      * @return  the resource tied to the card. It binds the card's ability to a specific resource type.
