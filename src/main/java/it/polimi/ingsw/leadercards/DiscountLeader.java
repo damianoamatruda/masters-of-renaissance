@@ -29,8 +29,11 @@ public class DiscountLeader extends LeaderCard {
     }
 
     @Override
-    public Map<ResourceType, Integer> getDevCardCost(Map<ResourceType, Integer> resources) {
-        // TODO: Implement
-        return null;
+    public Map<ResourceType, Integer> getDevCardCost(Map<ResourceType, Integer> cost) {
+        Map<ResourceType, Integer> discountedCost = Map.copyOf(cost);
+        
+        discountedCost.computeIfPresent(this.getResource(), (res, oldCost) -> oldCost - discount);
+
+        return discountedCost;
     }
 }
