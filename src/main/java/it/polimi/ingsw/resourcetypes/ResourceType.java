@@ -3,6 +3,9 @@ package it.polimi.ingsw.resourcetypes;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
+/**
+ * Generic resource archetype.
+ */
 public abstract class ResourceType {
     // /**
     //  * Single instance of the class

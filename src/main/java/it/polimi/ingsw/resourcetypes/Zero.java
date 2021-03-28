@@ -3,6 +3,9 @@ package it.polimi.ingsw.resourcetypes;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
+/**
+ * Resource that can be substituted with another resource.
+ */
 public class Zero extends ResourceType {
     /**
      * Single instance of the class

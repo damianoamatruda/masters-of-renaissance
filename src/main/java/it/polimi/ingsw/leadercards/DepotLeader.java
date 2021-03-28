@@ -4,6 +4,10 @@ import it.polimi.ingsw.CardRequirement;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.strongboxes.ResourceShelf;
 
+/**
+ * LeaderCard with the ability of storing resources,
+ * which will be considered as part of the player's warehouse.
+ */
 public class DepotLeader extends LeaderCard {
     /**
      * The card's shelf. The resources that can be stored are only of one type, bound at creation.

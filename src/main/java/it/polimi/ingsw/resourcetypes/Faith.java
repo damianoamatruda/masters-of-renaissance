@@ -3,6 +3,9 @@ package it.polimi.ingsw.resourcetypes;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
+/**
+ * Resource representing a faith point.
+ */
 public class Faith extends ResourceType {
     /**
      * Single instance of the class

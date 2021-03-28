@@ -2,6 +2,10 @@ package it.polimi.ingsw;
 
 import java.util.Map;
 
+/**
+ * Requirement for leader card activation.
+ * Specifies what kind of development cards the player must have to be able to activate a leader.
+ */
 public class DevCardRequirement implements CardRequirement {
     /**
      * The development cards required to activate the leader card.

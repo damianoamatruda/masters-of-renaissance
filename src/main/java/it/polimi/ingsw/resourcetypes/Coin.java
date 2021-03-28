@@ -3,6 +3,9 @@ package it.polimi.ingsw.resourcetypes;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
+/**
+ * Resource representing a coin.
+ */
 public class Coin extends ResourceType {
     /**
      * Single instance of the class

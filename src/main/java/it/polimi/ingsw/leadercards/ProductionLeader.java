@@ -4,6 +4,9 @@ import it.polimi.ingsw.CardRequirement;
 import it.polimi.ingsw.Production;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 
+/**
+ * Leader card with the ability to produce resources.
+ */
 public class ProductionLeader extends LeaderCard {
     /**
      * The production associated with the card.

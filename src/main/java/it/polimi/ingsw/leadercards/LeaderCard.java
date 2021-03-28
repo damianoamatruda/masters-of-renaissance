@@ -9,6 +9,11 @@ import it.polimi.ingsw.strongboxes.ResourceShelf;
 
 import java.util.Map;
 
+/**
+ * Card with a special ability. Can only be activated or discarded during a game.
+ * When active, its ability can be used.
+ * Activation requires the player to own either certain resources or development cards.
+ */
 public abstract class LeaderCard extends Card {
     private final ResourceType resource;
     private final CardRequirement requirement;
