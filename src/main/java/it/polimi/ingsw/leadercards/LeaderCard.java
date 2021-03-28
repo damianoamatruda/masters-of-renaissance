@@ -61,7 +61,7 @@ public abstract class LeaderCard extends Card {
      *                All routine effects are applied on this player.
      */
     public void onDiscarded(Player player) {
-        //TODO implement
+        player.incrementFaithPoints();
     }
 
     /**
