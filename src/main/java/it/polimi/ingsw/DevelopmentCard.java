@@ -1,6 +1,10 @@
 package it.polimi.ingsw;
 
+import java.util.Map;
+
 import it.polimi.ingsw.devcardcolors.DevCardColor;
+import it.polimi.ingsw.resourcetypes.ResourceType;
+import it.polimi.ingsw.strongboxes.Strongbox;
 
 /**
  * Development cards allow the player to produce resources.
@@ -60,7 +64,9 @@ public class DevelopmentCard extends Card {
      * @param strongboxes   selection map specifying where to take the resources from.
      * @throws Exception    if the player does not own the required resources.
      */
-    public void onTaken(Player player) {
-        // TODO: Implement
+    public void onTaken(Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+        cost.checkRequirements(player);
+
+        cost.take(player, strongboxes);
     }
 }
