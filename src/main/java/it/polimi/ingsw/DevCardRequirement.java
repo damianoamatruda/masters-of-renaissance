@@ -19,11 +19,6 @@ public class DevCardRequirement implements CardRequirement {
      */
     public DevCardRequirement(Map<DevelopmentCard, Integer> devCards) { this.devCards = devCards; }
 
-    /**
-     * Checks whether the player owns the development cards necessary to activate the leader card.
-     *
-     * @param player  the player to be checked for development card ownership.
-     */
     @Override
     public void checkRequirements(Player player) {
         // TODO: Implement

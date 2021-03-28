@@ -30,11 +30,6 @@ public class ResourceRequirement implements CardRequirement {
      */
     public ResourceRequirement(Map<ResourceType, Integer> resources) { this.resources = resources; }
 
-    /**
-     * Checks whether the player owns the resources necessary to activate the leader card.
-     *
-     * @param player  the player to be checked for resource ownership.
-     */
     @Override
     public void checkRequirements(Player player) {
         // TODO: Implement

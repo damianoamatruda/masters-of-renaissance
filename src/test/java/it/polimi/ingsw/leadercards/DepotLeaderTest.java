@@ -3,7 +3,7 @@ package it.polimi.ingsw.leadercards;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test of properties of DepotLeader
+ * Test for the DepotLeader class.
  */
 public class DepotLeaderTest {
     // TODO: Implement

@@ -2,6 +2,14 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.DevCardColor;
 
+/**
+ * Development cards allow the player to produce resources.
+ * They can be bought in exchange for resources and their level/color can
+ * make up part of a leader card's activation requirements.
+ * 
+ * @see DevCardRequirement
+ * @see Production
+ */
 public class DevelopmentCard extends Card {
     private final DevCardColor color;
     private final ResourceRequirement cost;
@@ -46,7 +54,11 @@ public class DevelopmentCard extends Card {
     public Production getProduction() { return production; }
 
     /**
-     * @param player the player taking the card.
+     * Gives the card to the specified player, paying the necessary resources.
+     * 
+     * @param player        the player to assign the card to and to take the resources from.
+     * @param strongboxes   selection map specifying where to take the resources from.
+     * @throws Exception    if the player does not own the required resources.
      */
     public void onTaken(Player player) {
         // TODO: Implement

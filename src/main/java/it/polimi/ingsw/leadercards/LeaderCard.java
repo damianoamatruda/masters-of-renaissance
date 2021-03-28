@@ -47,6 +47,10 @@ public abstract class LeaderCard extends Card {
 
     /**
      * Activates the card, enabling its effects.
+     * 
+     * @param player        the player activating the card.
+     *                      The card's requirements will be checked on them.
+     * @throws Exception    if the player does not meet the card's requirements.
      */
     public void activate() { isActive = true; }
 
@@ -54,6 +58,7 @@ public abstract class LeaderCard extends Card {
      * @return  the resource tied to the card. It binds the card's ability to a specific resource type.
      */
     public ResourceType getResource() { return resource; }
+    
     /**
      * Executes the discarding routine for leader cards.
      *
