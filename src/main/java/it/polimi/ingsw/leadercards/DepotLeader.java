@@ -28,5 +28,5 @@ public class DepotLeader extends LeaderCard {
     }
 
     @Override
-    public ResourceShelf getDepot() { return shelf; } //TODO should be a copy?
+    public ResourceShelf getDepot() { return shelf; }
 }

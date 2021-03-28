@@ -28,5 +28,5 @@ public class ProductionLeader extends LeaderCard {
     }
 
     @Override
-    public Production getProduction() { return production; } //TODO should be a copy?
+    public Production getProduction() { return production; }
 }

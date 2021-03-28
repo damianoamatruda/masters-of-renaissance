@@ -13,7 +13,7 @@ public abstract class Card {
     /**
      * The amount of points the card gives to its owner.
      */
-    private final int victoryPoints; //TODO should be protected?
+    private final int victoryPoints;
 
     /**
      * Class constructor.
