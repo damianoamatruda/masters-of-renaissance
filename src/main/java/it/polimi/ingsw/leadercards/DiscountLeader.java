@@ -3,6 +3,7 @@ package it.polimi.ingsw.leadercards;
 import it.polimi.ingsw.CardRequirement;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,9 +31,11 @@ public class DiscountLeader extends LeaderCard {
 
     @Override
     public Map<ResourceType, Integer> getDevCardCost(Map<ResourceType, Integer> cost) {
-        Map<ResourceType, Integer> discountedCost = Map.copyOf(cost);
+        if (cost == null) return null;
         
-        discountedCost.computeIfPresent(this.getResource(), (res, oldCost) -> oldCost - discount);
+        Map<ResourceType, Integer> discountedCost = new HashMap<>(cost);
+        
+        discountedCost.computeIfPresent(this.getResource(), (r, oldCost) -> oldCost - discount);
 
         return discountedCost;
     }
