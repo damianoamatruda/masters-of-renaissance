@@ -49,7 +49,9 @@ public abstract class ResourceType {
      * @param strongbox     the storage in which the resource is deposited, if applicable.
      * @throws Exception    if it is not possible
      */
-    public abstract void onGiven(Player player, Strongbox strongbox) throws Exception;
+    public void onGiven(Player player, Strongbox strongbox) throws Exception {
+        strongbox.addResource(this);
+    }
 
     /**
      * Routine for taking the resource from the player.
@@ -58,5 +60,7 @@ public abstract class ResourceType {
      * @param strongbox     the storage from which the resource is removed, if applicable.
      * @throws Exception    if it is not possible
      */
-    public abstract void onTaken(Player player, Strongbox strongbox) throws Exception;
+    public void onTaken(Player player, Strongbox strongbox) throws Exception {
+        strongbox.removeResource(this);
+    }
 }

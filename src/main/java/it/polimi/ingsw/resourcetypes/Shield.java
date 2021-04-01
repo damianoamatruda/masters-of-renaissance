@@ -31,13 +31,4 @@ public class Shield extends ResourceType {
     @Override
     public String getName() { return "shield"; }
 
-    @Override
-    public void onGiven(Player player, Strongbox strongbox) throws Exception {
-        strongbox.addResource(Shield.getInstance());
-    }
-
-    @Override
-    public void onTaken(Player player, Strongbox strongbox) throws Exception {
-        strongbox.removeResource(Shield.getInstance());
-    }
 }
