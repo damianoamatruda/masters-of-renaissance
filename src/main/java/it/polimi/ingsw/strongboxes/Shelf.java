@@ -65,11 +65,7 @@ public class Shelf extends Strongbox {
         return resType;
     }
 
-    /**
-     * Returns the quantity of the resources in the shelf.
-     *
-     * @return  the quantity of the resources
-     */
+    @Override
     public int getQuantity() {
         return super.getResourceQuantity(resType);
     }

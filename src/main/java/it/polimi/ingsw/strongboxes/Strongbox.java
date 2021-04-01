@@ -69,4 +69,14 @@ public class Strongbox {
     public boolean isEmpty() {
         return resources.isEmpty();
     }
+
+    /**
+     * Returns the quantity of the resources contained.
+     *
+     * @return  the quantity of the resources
+     */
+    public int getQuantity(){
+        return resources.values().stream()
+                .reduce(0, (a,b)->a+b);
+    }
 }

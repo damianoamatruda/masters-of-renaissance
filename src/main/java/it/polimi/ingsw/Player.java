@@ -242,4 +242,17 @@ public class Player {
     public Production getBaseProduction(){
         return baseProduction;
     }
+
+    /**
+     * Obtains how many resources the player has
+     * @return the total number of resources the player has available
+     */
+    public int getNumOfResources(){
+        int quantity = 0;
+        quantity += strongbox.getQuantity();
+        quantity += warehouse.getShelves().stream()
+                .mapToInt(shelf -> shelf.getQuantity())
+                .sum();
+        return quantity;
+    }
 }

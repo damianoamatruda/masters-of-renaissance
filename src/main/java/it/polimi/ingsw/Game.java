@@ -4,6 +4,7 @@ import it.polimi.ingsw.devcardcolors.DevCardColor;
 import it.polimi.ingsw.resourcetypes.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /** Base game class containing the general components of the "game box",
  * as well as some attributes shared by all players that can be easily accessed from the outside
@@ -85,9 +86,9 @@ public class /*Base*/Game /*implements IGame*/{
             put(Zero.getInstance(), MARKET_ZERO_COUNT);
         }}, MARKET_COLS_COUNT);
         vaticanSections = new HashMap<Integer, Integer[]>(){{
-          put(8, new Integer[]{5, 2});
-          put(16, new Integer[]{12, 3});
-          put(24, new Integer[]{19, 4});
+            put(8, new Integer[]{5, 2});
+            put(16, new Integer[]{12, 3});
+            put(24, new Integer[]{19, 4});
         }};
 
     }
@@ -146,8 +147,13 @@ public class /*Base*/Game /*implements IGame*/{
      * @return the next player that has to play a turn
      */
     public Player nextPlayer() {
-        // TODO: Implement
-        return null;
+        Player temp = players.get(0);
+        do {
+            players.remove(0);
+            players.add(temp);
+            temp = players.get(0);
+        }while(!temp.isActive());
+        return temp;
     }
 
     /**
@@ -171,8 +177,14 @@ public class /*Base*/Game /*implements IGame*/{
      * @return the top card of each deck
      */
     public List<List<DevelopmentCard>> peekDevCards() {
-        // TODO: Implement
-        return null;
+        List<List<DevelopmentCard>> top = new ArrayList<>();
+        for(int i = 0; i < devGrid.size(); i++){
+            top.add(devGrid.get(i)
+                    .stream()
+                    .map(deck -> deck.peek())
+                    .collect(Collectors.toList()));
+        }
+        return top;
     }
 
     /**
@@ -219,20 +231,38 @@ public class /*Base*/Game /*implements IGame*/{
      * Proceeds to calculate the remaining points and chooses a winner
      */
     private void setWinnerPlayer(){
-        // TODO: Implement
+        int maxPts = players.stream()
+                .mapToInt(Player::getVictoryPoints)
+                .max()
+                .getAsInt();
+
+        List<Player> winners = players.stream()
+                .filter(p -> p.getVictoryPoints() == maxPts)
+                .collect(Collectors.toList());
+
+        for(Player p : winners)
+            p.setWinner(true);
     }
 
     /**
      * Sums the points based on the number of resources left at the end of the game
      */
     private void sumResourcesVictoryPoints(){
-        // TODO: Implement
+        for(Player p : players){
+            p.incrementVictoryPoints(p.getNumOfResources()/5);
+        }
     }
 
     /**
      * Sums the points earned based on the last yellow tile that has been reached
      */
     private void sumPointsFromYellowTiles(){
-        // TODO: Implement
+        int lastYellowTileReached;
+        for(Player p : players){
+            lastYellowTileReached = yellowTiles.keySet().stream()
+                    .filter(n -> n <= p.getFaithPoints())
+                    .reduce(0, (a, b) -> Integer.max(a, b));
+            p.incrementVictoryPoints(yellowTiles.get(lastYellowTileReached));
+        }
     }
 }
