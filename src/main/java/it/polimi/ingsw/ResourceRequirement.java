@@ -39,6 +39,7 @@ public class ResourceRequirement implements CardRequirement {
      * Takes the resources that form the requirement from the player. Each storable resource is taken from a given
      * strongbox.
      *
+     * @param player        the player the resources are taken from
      * @param strongboxes   a map of the strongboxes where to take the storable resources
      * @throws Exception    if it is not possible
      */

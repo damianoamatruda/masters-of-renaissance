@@ -15,5 +15,7 @@ public class App {
         Game game = new Game(null,null);
         game = new SoloGame(game, new ArrayList<>());
         game = new SoloGame(game, new ArrayList<>());
+
+        System.out.println("Hello, world!");
     }
 }
