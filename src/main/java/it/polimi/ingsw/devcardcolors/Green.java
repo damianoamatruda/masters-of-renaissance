@@ -4,10 +4,6 @@ package it.polimi.ingsw.devcardcolors;
  * One of the possible colors a development card can have
  */
 public class Green extends DevCardColor {
-    /**
-     * Single instance of the class
-     */
-    private static DevCardColor color;
 
     /**
      * @return a name that will be represented as the green color by the view

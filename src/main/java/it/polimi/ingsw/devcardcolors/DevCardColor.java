@@ -5,6 +5,10 @@ package it.polimi.ingsw.devcardcolors;
  */
 public abstract class DevCardColor {
     /**
+     * Single instance of the class
+     */
+    protected static DevCardColor color;
+    /**
      * Class constructor.
      */
     protected DevCardColor() { }
