@@ -5,6 +5,7 @@ import it.polimi.ingsw.strongboxes.Strongbox;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A class representing a production of resources.
@@ -77,18 +78,15 @@ public class Production {
         if (!checkStrongboxes(replacedOutput, outputStrongboxes))
             throw new Exception();
 
-        Map<ResourceType, Integer> nonStorableOutput = new HashMap<>(replacedOutput);
-        nonStorableOutput.keySet().stream().filter(ResourceType::isStorable).forEach(replacedOutput::remove);
-
         transferStorable(true, player, inputStrongboxes);
         transferStorable(false, player, outputStrongboxes);
 
-        transferNonStorable(true, player, nonStorableOutput);
-        transferNonStorable(false, player, nonStorableOutput);
+        transferNonStorable(true, player, filterNonStorable(replacedInput));
+        transferNonStorable(false, player, filterNonStorable(replacedOutput));
     }
 
     /**
-     * Replaces the blanks in a given map.
+     * Replaces the blank resources in a given map.
      *
      * @param mapWithBlanks full map including blanks
      * @param blanksRep     map of replacement of blanks
@@ -101,10 +99,23 @@ public class Production {
             throw new Exception();
         if (!checkBlanksRepCount(mapWithBlanks, blanksRep))
             throw new Exception();
-        Map<ResourceType, Integer> mapWithoutBlanks = new HashMap<>(mapWithBlanks);
-        mapWithoutBlanks.keySet().stream().filter(ResourceType::isBlank).forEach(mapWithoutBlanks::remove);
+        Map<ResourceType, Integer> mapWithoutBlanks = mapWithBlanks.entrySet().stream()
+                .filter(e -> !e.getKey().isBlank())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         blanksRep.forEach((r, q) -> mapWithoutBlanks.merge(r, q, Integer::sum));
         return mapWithoutBlanks;
+    }
+
+    /**
+     * Filters the non-storable resources in a given map.
+     *
+     * @param map   full map of resources
+     * @return      map with only non storable resources
+     */
+    private static Map<ResourceType, Integer> filterNonStorable(Map<ResourceType, Integer> map) {
+        return map.entrySet().stream()
+                .filter(e -> !e.getKey().isStorable())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
