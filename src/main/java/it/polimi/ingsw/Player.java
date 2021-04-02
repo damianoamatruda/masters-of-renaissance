@@ -133,6 +133,14 @@ public class Player {
     }
 
     /**
+     * Requires access to the Warehouse of the player
+     * @return the player's Warehouse
+     */
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    /**
      * Requires access to the Strongbox of the player
      * @return the player's Strongbox
      */
