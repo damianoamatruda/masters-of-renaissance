@@ -86,7 +86,7 @@ public class /*Base*/Game /*implements IGame*/{
                         new Player(this, nickname, new ArrayList<>(),nicknames.indexOf(nickname) == 0))
                 .collect(Collectors.toList());
         this.devGrid=new HashMap<>(); // TODO: Implement creation of the dev grid
-        this.market=new Market(new HashMap<>() {{
+        this.market=new Market(new HashMap<>(){{
             put(Coin.getInstance(), MARKET_COIN_COUNT);
             put(Faith.getInstance(), MARKET_FAITH_COUNT);
             put(Servant.getInstance(), MARKET_SERVANT_COUNT);

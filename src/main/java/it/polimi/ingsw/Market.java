@@ -110,7 +110,7 @@ public class Market {
             throw new RuntimeException();
 
         Map<ResourceType, Integer> output = IntStream
-                .range(0, isRow ? getRowsCount() : getColsCount())
+                .range(0, isRow ? getColsCount() : getRowsCount())
                 .mapToObj(i -> isRow ? grid.get(index).get(i) : grid.get(i).get(index))
                 .collect(Collectors.toMap(resType -> resType, resType -> 1, Integer::sum));
 

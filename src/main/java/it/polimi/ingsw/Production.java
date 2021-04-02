@@ -102,7 +102,7 @@ public class Production {
                                                             Map<ResourceType, Integer> blanksRep) throws Exception {
         if (!checkBlanksRepBlank(blanksRep))
             throw new Exception();
-        if (!checkBlanksRepCount(mapWithBlanks, blanksRep))
+        if (!blanksRep.isEmpty() && !checkBlanksRepCount(mapWithBlanks, blanksRep))
             throw new Exception();
         Map<ResourceType, Integer> mapWithoutBlanks = mapWithBlanks.entrySet().stream()
                 .filter(e -> !e.getKey().isBlank())
