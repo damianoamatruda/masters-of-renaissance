@@ -1,11 +1,13 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.devcardcolors.DevCardColor;
+import it.polimi.ingsw.devcardcolors.*;
 import it.polimi.ingsw.leadercards.LeaderCard;
 import it.polimi.ingsw.resourcetypes.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Map.entry;
 
 /** Base game class containing the general components of the "game box",
  * as well as some attributes shared by all players that can be easily accessed from the outside
@@ -81,9 +83,11 @@ public class /*Base*/Game /*implements IGame*/{
         if (nicknames.size() > MAX_PLAYERS_COUNT)
             throw new RuntimeException();
         // TODO: Implement assignment of the 4 initial leader cards
+        List<LeaderCard> devCards = getLeaderCards();
+        List<DevelopmentCard> leaderCards = getDevCards();
         this.players=nicknames.stream()
-                .map(nickname ->
-                        new Player(this, nickname, new ArrayList<>(),nicknames.indexOf(nickname) == 0))
+                .map(nickname -> new Player(this, nickname, new ArrayList<>(),
+                        nicknames.indexOf(nickname) == 0))
                 .collect(Collectors.toList());
         this.devGrid=new HashMap<>(); // TODO: Implement creation of the dev grid
         this.market=new Market(new HashMap<>(){{
@@ -299,5 +303,696 @@ public class /*Base*/Game /*implements IGame*/{
                     .reduce(0, (a, b) -> Integer.max(a, b));
             p.incrementVictoryPoints(yellowTiles.get(lastYellowTileReached));
         }
+    }
+
+    /**
+     * Returns the list of all possible develompent cards.
+     * @return  list of development cards
+     */
+    private static List<DevelopmentCard> getDevCards() {
+        return new ArrayList<>(Arrays.asList(
+                /* 1 */
+                new DevelopmentCard(
+                        Green.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        1),
+                /* 2 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        1),
+                /* 3 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        1),
+                /* 4 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        1),
+                /* 5 */
+                new DevelopmentCard(
+                        Green.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 1),
+                                entry(Servant.getInstance(), 1),
+                                entry(Stone.getInstance(), 1))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                false),
+                        2),
+                /* 6 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 1),
+                                entry(Servant.getInstance(), 1),
+                                entry(Coin.getInstance(), 1))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                false),
+                        2),
+                /* 7 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 1),
+                                entry(Servant.getInstance(), 1),
+                                entry(Stone.getInstance(), 1))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                false),
+                        2),
+                /* 8 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 1),
+                                entry(Stone.getInstance(), 1),
+                                entry(Coin.getInstance(), 1))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                false),
+                        2),
+                /* 9 */
+                new DevelopmentCard(
+                        Green.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Shield.getInstance(), 1),
+                                        entry(Stone.getInstance(), 1)),
+                                false),
+                        3),
+                /* 10 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1),
+                                        entry(Shield.getInstance(), 1),
+                                        entry(Stone.getInstance(), 1)),
+                                false),
+                        3),
+                /* 11 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1),
+                                        entry(Stone.getInstance(), 1)),
+                                false),
+                        3),
+                /* 12 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1),
+                                        entry(Stone.getInstance(), 1)),
+                                false),
+                        3),
+                /* 13 */
+                new DevelopmentCard(
+                        Green.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 2),
+                                entry(Coin.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        4),
+                /* 14 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 2),
+                                entry(Stone.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        4),
+                /* 15 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 2),
+                                entry(Servant.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1),
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        4),
+                /* 16 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 1,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 2),
+                                entry(Shield.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        4),
+                /* 17 */
+                new DevelopmentCard(
+                        Green.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        5),
+                /* 18 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        5),
+                /* 19 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        5),
+                /* 20 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        5),
+                /* 21 */
+                new DevelopmentCard(
+                        Green.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 3),
+                                entry(Servant.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 3)),
+                                false),
+                        6),
+                /* 22 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 3),
+                                entry(Coin.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 3)),
+                                false),
+                        6),
+                /* 23 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 3),
+                                entry(Stone.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 3)),
+                                false),
+                        6),
+                /* 24 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 3),
+                                entry(Shield.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1),
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 3)),
+                                false),
+                        6),
+                /* 25 */
+                new DevelopmentCard(
+                        Green.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 5))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 2),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        7),
+                /* 26 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 5))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        7),
+                /* 27 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 5))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 2),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        7),
+                /* 28 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 5))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 2),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        7),
+                /* 29 */
+                new DevelopmentCard(
+                        Green.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 3),
+                                entry(Coin.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        8),
+                /* 30 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 3),
+                                entry(Shield.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        8),
+                /* 31 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 3),
+                                entry(Stone.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        8),
+                /* 32 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 2,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 3),
+                                entry(Servant.getInstance(), 3))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        8),
+                /* 33 */
+                new DevelopmentCard(
+                        Green.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 6))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 3),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        9),
+                /* 34 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 6))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 3),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        9),
+                /* 35 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 6))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 3),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        9),
+                /* 36 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 6))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 2)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 3),
+                                        entry(Faith.getInstance(), 2)),
+                                false),
+                        9),
+                /* 37 */
+                new DevelopmentCard(
+                        Green.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 5),
+                                entry(Servant.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 2),
+                                        entry(Stone.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        10),
+                /* 38 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 5),
+                                entry(Coin.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1),
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2),
+                                        entry(Servant.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        10),
+                /* 39 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 5),
+                                entry(Stone.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 2),
+                                        entry(Stone.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        10),
+                /* 40 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 5),
+                                entry(Servant.getInstance(), 2))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1),
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 2),
+                                        entry(Shield.getInstance(), 2),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        10),
+                /* 41 */
+                new DevelopmentCard(
+                        Green.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 7))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Faith.getInstance(), 3)),
+                                false),
+                        11),
+                /* 42 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 7))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1),
+                                        entry(Faith.getInstance(), 3)),
+                                false),
+                        11),
+                /* 43 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 7))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1),
+                                        entry(Faith.getInstance(), 3)),
+                                false),
+                        11),
+                /* 44 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 7))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1),
+                                        entry(Faith.getInstance(), 3)),
+                                false),
+                        11),
+                /* 45 */
+                new DevelopmentCard(
+                        Green.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Shield.getInstance(), 4),
+                                entry(Coin.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 3),
+                                        entry(Shield.getInstance(), 1)),
+                                false),
+                        12),
+                /* 46 */
+                new DevelopmentCard(
+                        Purple.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Servant.getInstance(), 4),
+                                entry(Shield.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 3),
+                                        entry(Servant.getInstance(), 1)),
+                                false),
+                        12),
+                /* 47 */
+                new DevelopmentCard(
+                        Blue.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Coin.getInstance(), 4),
+                                entry(Stone.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1),
+                                        entry(Shield.getInstance(), 3)),
+                                false),
+                        12),
+                /* 48 */
+                new DevelopmentCard(
+                        Yellow.getInstance(), 3,
+                        new ResourceRequirement(Map.ofEntries(
+                                entry(Stone.getInstance(), 4),
+                                entry(Servant.getInstance(), 4))),
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1),
+                                        entry(Servant.getInstance(), 3)),
+                                false),
+                        12)
+        ));
+    }
+
+    /**
+     * Returns the list of all possible leader cards.
+     * @return  list of leader cards
+     */
+    private static List<LeaderCard> getLeaderCards() {
+        // TODO: Implement
+        return new ArrayList<>(Arrays.asList(
+                /* 49 */
+                /* 50 */
+                /* 51 */
+                /* 52 */
+                /* 53 */
+                /* 54 */
+                /* 55 */
+                /* 56 */
+                /* 57 */
+                /* 58 */
+                /* 59 */
+                /* 60 */
+                /* 61 */
+                /* 62 */
+                /* 63 */
+                /* 64 */
+        ));
     }
 }
