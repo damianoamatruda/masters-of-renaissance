@@ -264,6 +264,8 @@ public class /*Base*/Game /*implements IGame*/{
      * Proceeds to calculate the remaining points and chooses a winner
      */
     private void setWinnerPlayer(){
+        sumPointsFromYellowTiles();
+        sumResourcesVictoryPoints();
         int maxPts = players.stream()
                 .mapToInt(Player::getVictoryPoints)
                 .max()

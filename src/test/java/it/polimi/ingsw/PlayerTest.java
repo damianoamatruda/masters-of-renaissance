@@ -9,4 +9,24 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class PlayerTest {
     // TODO: Implement
+    @Test
+    void getNumOfResourcesTest(){
+
+    }
+    @Test
+    void addToDevSlotTest(){
+
+    }
+    @Test
+    void incrementFaithPointsTest(){
+
+    }
+    @Test
+    void discardLeaderTest(){
+
+    }
+    @Test
+    void noRepExposureTest(){
+
+    }
 }

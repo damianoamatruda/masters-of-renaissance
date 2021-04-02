@@ -126,7 +126,8 @@ public class Player {
      * Action performed when the player discards a leader card. The player receives one faith point
      * @param index the index of the card to be discarded
      */
-    public void discardLeader(int index){
+    public void discardLeader(int index) throws Exception {
+        if(getLeader(index).isActive()) throw new Exception();
         leaders.remove(index);
         for(Player p : game.getPlayers()){
             if(!p.equals(this))
@@ -231,13 +232,13 @@ public class Player {
         this.winner = winner;
     }
 
-    /** Decides whether a given leader card can still be discarded
-     * @param index number of the leader card to be checked
-     * @return      true if the leader card can be discarded during the current turn
-     */
-    private boolean canDiscardLeader(int index){
-        return !getLeader(index).isActive();
-    }
+//    /** Decides whether a given leader card can still be discarded
+//     * @param index number of the leader card to be checked
+//     * @return      true if the leader card can be discarded during the current turn
+//     */
+//    private boolean canDiscardLeader(int index){
+//        return !getLeader(index).isActive();
+//    }
 
 //    /** Decides whether an available development card can be deposited on top of a given production slot
 //     * @param index     the number of slot to be checked
@@ -249,7 +250,7 @@ public class Player {
 //    }
 
     /**
-     * Places a new card on top of a given production slot
+     * Places a new card on top of a given production slot and consume required resources
      * @param index         the destination production slot
      * @param devCard       the development card that has just been bought
      * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
@@ -258,6 +259,8 @@ public class Player {
     public boolean addToDevSlot(int index, DevelopmentCard devCard) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if(slot.peek().getLevel()!=devCard.getLevel()-1) throw new Exception();
+
+        // TODO: consume resources
         slot.push(devCard);
 
         return devSlots.stream()
