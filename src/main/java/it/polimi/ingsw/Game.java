@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.DevCardColor;
+import it.polimi.ingsw.leadercards.LeaderCard;
 import it.polimi.ingsw.resourcetypes.*;
 
 import java.util.*;
@@ -71,13 +72,18 @@ public class /*Base*/Game /*implements IGame*/{
     protected Game(){}
 
     /** Constructor of Game instances
-     * @param players the list of players who joined
-     * @param devGrid the development card "shop", from which new cards can be bought
+     * @param nicknames the list of nicknames of players who joined
      */
-    public Game(List<Player> players, List<List<Stack<DevelopmentCard>>> devGrid){
-        this.players=players;
-        this.devGrid=devGrid;
-        this.market=new Market(new HashMap<ResourceType, Integer>(){{
+    public Game(List<String> nicknames){
+        if (nicknames.size() > MAX_PLAYERS_COUNT)
+            throw new RuntimeException();
+        // TODO: Implement assignment of the 4 initial leader cards
+        this.players=nicknames.stream()
+                .map(nickname ->
+                        new Player(this, nickname, new ArrayList<>(),nicknames.indexOf(nickname) == 0))
+                .collect(Collectors.toList());
+        this.devGrid=new ArrayList<>(); // TODO: Implement creation of the dev grid
+        this.market=new Market(new HashMap<>() {{
             put(Coin.getInstance(), MARKET_COIN_COUNT);
             put(Faith.getInstance(), MARKET_FAITH_COUNT);
             put(Servant.getInstance(), MARKET_SERVANT_COUNT);
@@ -90,7 +96,6 @@ public class /*Base*/Game /*implements IGame*/{
             put(16, new Integer[]{12, 3});
             put(24, new Integer[]{19, 4});
         }};
-
     }
 
     /**
