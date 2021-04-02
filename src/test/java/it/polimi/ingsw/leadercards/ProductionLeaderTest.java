@@ -20,7 +20,7 @@ public class ProductionLeaderTest {
 
     @Test
     void production() {
-        Production p = new Production(null, null);
+        Production p = new Production(null, null, false);
         ProductionLeader leader = new ProductionLeader(p, null, null, 0);
 
         assertEquals(p, leader.getProduction());

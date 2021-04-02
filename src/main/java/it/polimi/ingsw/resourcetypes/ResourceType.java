@@ -63,4 +63,16 @@ public abstract class ResourceType {
     public void onTaken(Player player, Strongbox strongbox) throws Exception {
         strongbox.removeResource(this);
     }
+
+    /**
+     * Routine for discarding the resource.
+     *
+     * @param player        the player discarding the resource
+     * @throws Exception    if it is not possible
+     */
+    public void onDiscard(Player player) throws Exception {
+        player.getGame().getPlayers().stream()
+                .filter(p -> p != player)
+                .forEach(Player::incrementFaithPoints);
+    }
 }

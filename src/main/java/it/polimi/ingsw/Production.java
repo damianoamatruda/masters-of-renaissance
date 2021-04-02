@@ -17,15 +17,20 @@ public class Production {
     /** The map of the resources, including blanks, to be taken as output. */
     private final Map<ResourceType, Integer> output;
 
+    /** True if the output can be discarded, otherwise false. */
+    private final boolean discardableOutput;
+
     /**
      * Initializes the production specifying its input and its output.
      *
-     * @param input     the map of the resources to be given as input of the production
-     * @param output    the map of the resources to be taken as output of the production
+     * @param input             the map of the resources to be given as input of the production
+     * @param output            the map of the resources to be taken as output of the production
+     * @param discardableOutput true if the output can be discarded, otherwise false
      */
-    public Production(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output) {
+    public Production(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output, boolean discardableOutput) {
         this.input = input;
         this.output = output;
+        this.discardableOutput = discardableOutput;
     }
 
     /**
@@ -126,8 +131,8 @@ public class Production {
      * @param strongboxes   the map of the strongboxes to use for all the resources
      * @throws Exception    if it is not possible
      */
-    private static void transferStorable(boolean take, Player player,
-                                         Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+    private void transferStorable(boolean take, Player player,
+                                          Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         Map<Strongbox, Map<ResourceType, Integer>> history = new HashMap<>();
         for (Map.Entry<Strongbox, Map<ResourceType, Integer>> sEntry : strongboxes.entrySet()) {
             Strongbox strongbox = sEntry.getKey();
@@ -142,8 +147,12 @@ public class Production {
                         else
                             resType.onGiven(player, strongbox);
                     } catch (Exception e) {
-                        transferStorable(!take, player, history);
-                        throw new Exception();
+                        if (discardableOutput)
+                            resType.onDiscard(player);
+                        else {
+                            transferStorable(!take, player, history);
+                            throw new Exception();
+                        }
                     }
                     history.computeIfAbsent(strongbox, s -> new HashMap<>())
                             .compute(resType, (r, q) -> (q == null) ? 1 : q + 1);
@@ -160,7 +169,7 @@ public class Production {
      * @param resources     the map of the resources
      * @throws Exception    if it is not possible
      */
-    private static void transferNonStorable(boolean take, Player player,
+    private void transferNonStorable(boolean take, Player player,
                                             Map<ResourceType, Integer> resources) throws Exception {
         for (Map.Entry<ResourceType, Integer> entry : resources.entrySet()) {
             ResourceType r = entry.getKey();

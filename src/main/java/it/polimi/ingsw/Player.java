@@ -86,6 +86,12 @@ public class Player {
         return MAX_FAITH_POINTS_COUNT;
     }
 
+    /** Getter of the player's game
+     * @return the player's game */
+    public Game getGame(){
+        return game;
+    }
+
     /** Getter of the player's visible nickname
      * @return the player's nickname */
     public String getNickname(){
