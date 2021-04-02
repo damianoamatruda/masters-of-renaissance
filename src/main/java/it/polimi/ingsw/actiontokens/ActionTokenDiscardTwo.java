@@ -25,6 +25,6 @@ public class ActionTokenDiscardTwo implements ActionToken{
      */
     @Override
     public void trigger(SoloGame game) {
-        // TODO: Implement
+        game.discardDevCards(discardedColor, 2);
     }
 }

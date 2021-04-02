@@ -21,6 +21,9 @@ public class Player {
     /** Number of basic shelves inside of the player's warehouse */
     private static final int WAREHOUSE_SHELVES_COUNT=3;
 
+    /** Number of development cards the player can have, before triggering the end of the game */
+    private static final int MAX_OBTAINABLE_DEV_CARDS=7;
+
     /** The current game instance in which the player is playing */
     private Game game;
 
@@ -86,6 +89,12 @@ public class Player {
      * @return the last reachable tile */
     public static int getMaxFaithPointsCount(){
         return MAX_FAITH_POINTS_COUNT;
+    }
+
+    /** Getter of the number of cards after which the end of the game is triggered
+     * @return number of cards after which the end of the game is triggered */
+    public static int getMaxObtainableDevCards() {
+        return MAX_OBTAINABLE_DEV_CARDS;
     }
 
     /** Getter of the player's game
@@ -230,25 +239,30 @@ public class Player {
         return !getLeader(index).isActive();
     }
 
-    /** Decides whether an available development card can be deposited on top of a given production slot
-     * @param index     the number of slot to be checked
-     * @param devCard   the development card that the user wishes to buy
-     * @return          true if the current top card of the slot is of the previous level, thus the action can be done
-     */
-    private boolean canAddToDevSlot(int index, DevelopmentCard devCard){
-        return getDevSlot(index).peek().getLevel() < 3;
-    }
+//    /** Decides whether an available development card can be deposited on top of a given production slot
+//     * @param index     the number of slot to be checked
+//     * @param devCard   the development card that the user wishes to buy
+//     * @return          true if the current top card of the slot is of the previous level, thus the action can be done
+//     */
+//    private boolean canAddToDevSlot(int index, DevelopmentCard devCard){
+//        return getDevSlot(index).peek().getLevel() < 3;
+//    }
 
     /**
      * Places a new card on top of a given production slot
      * @param index         the destination production slot
      * @param devCard       the development card that has just been bought
      * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
+     * @return              true if Player has reached number of development cards required to end the game
      */
-    public void addToDevSlot(int index, DevelopmentCard devCard) throws Exception {
+    public boolean addToDevSlot(int index, DevelopmentCard devCard) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if(slot.peek().getLevel()!=devCard.getLevel()-1) throw new Exception();
         slot.push(devCard);
+
+        return devSlots.stream()
+                .mapToInt(stack -> stack.size())
+                .sum() == MAX_OBTAINABLE_DEV_CARDS;
     }
 
     /**

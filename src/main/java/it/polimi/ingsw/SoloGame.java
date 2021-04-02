@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.actiontokens.ActionToken;
+import it.polimi.ingsw.devcardcolors.DevCardColor;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,9 @@ public class SoloGame extends GameDecorator{
     /** The "marker" of Lorenzo il Magnifico on the faith track */
     private int blackPoints;
 
+    /** Flag that determines whether Lorenzo has won the game */
+    private boolean blackWinner;
+
     /**
      * Initializes the solo game with the following parameters.
      * @param game          the wrappee to be extended with solo functionality
@@ -24,6 +28,7 @@ public class SoloGame extends GameDecorator{
         super(game);
         this.actionTokens = actionTokens;
         blackPoints = 0;
+        blackWinner = false;
     }
 
     /**
@@ -48,8 +53,11 @@ public class SoloGame extends GameDecorator{
      */
     @Override
     public boolean hasEnded(){
-        // TODO: Implement
-        return false;
+        if(blackPoints == Player.getMaxFaithPointsCount() || devGrid.size() < getDevGridColorsCount()){
+            setBlackWinner();
+            return true;
+        }
+        else return super.hasEnded();
     }
 
     /**
@@ -57,22 +65,55 @@ public class SoloGame extends GameDecorator{
      * This is Lorenzo's turn: a token will be activated
      */
     @Override
-    public void onTurnEnd() {
-        // TODO: Implement
-    }
-
-    /**
-     * Retrieves and activates the top token of the Lorenzo's stack
-     */
-    private void takeActionToken(){
+    public Player onTurnEnd() {
         ActionToken token = actionTokens.get(0);
         token.trigger(this);
         actionTokens.add(token);
+
+        return super.onTurnEnd();
     }
+
+//    /**
+//     * Retrieves and activates the top token of the Lorenzo's stack
+//     */
+//    private void takeActionToken(){
+//        ActionToken token = actionTokens.get(0);
+//        token.trigger(this);
+//        actionTokens.add(token);
+//    }
 
     /** Returns Lorenzo's faith marker position
      * @return  number of tile reached by Lorenzo */
     public int getBlackPoints(){
         return blackPoints;
     }
+
+    /**
+     * Says whether Lorenzo has won the game or not
+     * @return  true if Lorenzo is winner of the game
+     */
+    public boolean isBlackWinner() {
+        return blackWinner;
+    }
+
+    /**
+     *  Declares Lorenzo as winner
+     */
+    public void setBlackWinner() {
+        this.blackWinner = true;
+    }
+
+    /**
+     * Removes development cards, so that nobody else can purchase them
+     *
+     * @param color     the color to be discarded
+     * @param quantity  the number of cards to be discarded
+     */
+    public void discardDevCards(DevCardColor color, int quantity){
+        int level = 1;
+        while(quantity > 0 && level <= 3) {
+            DevelopmentCard card = devGrid.get(color).get(level).pop();
+        }
+    }
+
 }

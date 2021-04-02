@@ -62,11 +62,14 @@ public class /*Base*/Game /*implements IGame*/{
     /** Progressive number of the current turn */
     private int turns;
 
+    /** Flag that indicates the Game is about to end */
+    private boolean lastTurn;
+
     /** Reference to the "Market Board", from which resources can be "bought" */
     private Market market;
 
     /** All the cards that are still not bought by any player */
-    private List<List<Stack<DevelopmentCard>>> devGrid;
+    protected Map<DevCardColor, List<Stack<DevelopmentCard>>> devGrid;
 
     /** Default constructor of Game (Will not be used by the controller to create Game) */
     protected Game(){}
@@ -82,7 +85,7 @@ public class /*Base*/Game /*implements IGame*/{
                 .map(nickname ->
                         new Player(this, nickname, new ArrayList<>(),nicknames.indexOf(nickname) == 0))
                 .collect(Collectors.toList());
-        this.devGrid=new ArrayList<>(); // TODO: Implement creation of the dev grid
+        this.devGrid=new HashMap<>(); // TODO: Implement creation of the dev grid
         this.market=new Market(new HashMap<>() {{
             put(Coin.getInstance(), MARKET_COIN_COUNT);
             put(Faith.getInstance(), MARKET_FAITH_COUNT);
@@ -146,20 +149,20 @@ public class /*Base*/Game /*implements IGame*/{
         return new ArrayList<>(players);
     }
 
-    /**
-     * Appends the current player as last of the list, and gets the next (active) player from the head
-     * If next player is inactive, the operation is repeated until an active player is found
-     * @return the next player that has to play a turn
-     */
-    public Player nextPlayer() {
-        Player temp = players.get(0);
-        do {
-            players.remove(0);
-            players.add(temp);
-            temp = players.get(0);
-        }while(!temp.isActive());
-        return temp;
-    }
+//    /**
+//     * Appends the current player as last of the list, and gets the next (active) player from the head
+//     * If next player is inactive, the operation is repeated until an active player is found
+//     * @return the next player that has to play a turn
+//     */
+//    public Player nextPlayer() {
+//        Player temp = players.get(0);
+//        do {
+//            players.remove(0);
+//            players.add(temp);
+//            temp = players.get(0);
+//        }while(!temp.isActive());
+//        return temp;
+//    }
 
     /**
      * Getter of the current number of turn
@@ -183,8 +186,9 @@ public class /*Base*/Game /*implements IGame*/{
      */
     public List<List<DevelopmentCard>> peekDevCards() {
         List<List<DevelopmentCard>> top = new ArrayList<>();
-        for(int i = 0; i < devGrid.size(); i++){
-            top.add(devGrid.get(i)
+        for(DevCardColor color : devGrid.keySet()){
+        //for(int i = 0; i < devGrid.size(); i++){
+            top.add(devGrid.get(color)
                     .stream()
                     .map(deck -> deck.peek())
                     .collect(Collectors.toList()));
@@ -197,9 +201,21 @@ public class /*Base*/Game /*implements IGame*/{
      * @param player    the player that wants to buy a card
      * @param color     the color of the card to be bought
      * @param level     the level of the card to be bought
+     * @throws Exception           Bought card cannot fit in chosen player slot
+     * @throws EmptyStackException No cards available with given color and level
      */
-    public void takeDevCard(Player player, DevCardColor color, int level) {
-        // TODO: Implement
+    public void takeDevCard(Player player, DevCardColor color, int level, int position)
+            throws Exception, EmptyStackException {
+
+        DevelopmentCard card = devGrid.get(color).get(level).pop();
+        try {
+            boolean maxCardsReached = player.addToDevSlot(position, card);
+            if(maxCardsReached) lastTurn = true;
+        }
+        catch (Exception e){
+            devGrid.get(color).get(level).push(card);
+            throw new Exception();
+        }
     }
 
     /**
@@ -207,7 +223,10 @@ public class /*Base*/Game /*implements IGame*/{
      * @return true if game is over
      */
     public boolean hasEnded() {
-        // TODO: Implement
+        if(lastTurn){
+            setWinnerPlayer();
+            return true;
+        }
         return false;
     }
 
@@ -222,14 +241,23 @@ public class /*Base*/Game /*implements IGame*/{
             if(p.getFaithPoints()>currentSection[0])
                 p.incrementVictoryPoints(currentSection[0]);
         if(trackPoints == Player.getMaxFaithPointsCount())
-            setWinnerPlayer();
+            lastTurn = true;
     }
 
     /**
-     * Action performed after a player ends the turn
+     * Action performed after a player ends the turn.
+     * This method appends the current player as last of the list, and gets the next (active) player from the head
+     * If next player is inactive, the operation is repeated until an active player is found
+     * @return the next player that has to play a turn
      */
-    public void onTurnEnd() {
-        // TODO: Implement
+    public Player onTurnEnd() {
+        Player temp = players.get(0);
+        do {
+            players.remove(0);
+            players.add(temp);
+            temp = players.get(0);
+        }while(!temp.isActive());
+        return temp;
     }
 
     /**
