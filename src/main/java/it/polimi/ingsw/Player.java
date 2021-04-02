@@ -67,6 +67,8 @@ public class Player {
         this.game=game;
         this.nickname=nickname;
         this.leaders=leaders;
+        this.warehouse = new Warehouse(WAREHOUSE_SHELVES_COUNT);
+        this.strongbox = new Strongbox();
         this.inkwell=inkwell;
         faithPoints=0;
         victoryPoints=0;
