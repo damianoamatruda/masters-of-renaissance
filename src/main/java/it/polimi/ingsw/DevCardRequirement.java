@@ -79,7 +79,7 @@ public class DevCardRequirement implements CardRequirement {
             if (!(o instanceof DevCardRequirementEntry)) return false;
     
             return  ((DevCardRequirementEntry)o).color == this.color &&
-                    ((DevCardRequirementEntry)o).level == this.level;
+                    (((DevCardRequirementEntry)o).level == 0 || this.level == 0 || ((DevCardRequirementEntry)o).level == this.level);
         }
     }
 }
