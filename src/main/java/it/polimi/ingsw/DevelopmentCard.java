@@ -4,6 +4,7 @@ import java.util.Map;
 
 import it.polimi.ingsw.devcardcolors.DevCardColor;
 import it.polimi.ingsw.resourcetypes.ResourceType;
+import it.polimi.ingsw.strongboxes.Shelf;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
 /**

@@ -235,10 +235,12 @@ public class /*Base*/Game /*implements IGame*/{
 
     /**
      * A player buys a card of a given color and level
-     * @param game      the game the player is playing in
-     * @param player    the player that wants to buy a card
-     * @param color     the color of the card to be bought
-     * @param level     the level of the card to be bought
+     * @param game                 the game the player is playing in
+     * @param player               the player that wants to buy a card
+     * @param color                the color of the card to be bought
+     * @param level                the level of the card to be bought
+     * @param position             the position of the dev slot where to put the development card
+     * @param strongboxes          a map of the strongboxes where to take the storable resources
      * @throws Exception           Bought card cannot fit in chosen player slot
      * @throws Exception           error while player was depositing the card
      * @throws EmptyStackException No cards available with given color and level

@@ -18,6 +18,9 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for Market class.
  */
 public class MarketTest {
+    /**
+     * First test that checks that the right number of rows and columns in the market grid is gotten.
+     */
     @Test
     public void checkColsRows1() {
         Market market = new Market(new HashMap<>(){{
@@ -33,6 +36,9 @@ public class MarketTest {
         assertEquals(3, market.getRowsCount()); /* 12 / 4 */
     }
 
+    /**
+     * Second test that checks that the right number of rows and columns in the market grid is gotten.
+     */
     @Test
     public void checkColsRows2() {
         Market market = new Market(new HashMap<>() {{
@@ -46,6 +52,9 @@ public class MarketTest {
         assertEquals(2, market.getRowsCount()); /* 6 / 3 */
     }
 
+    /**
+     * Checks that a row of the market grid remains the same after a complete shift.
+     */
     @Test
     public void checkShiftRow() {
         Market market = new Market(new HashMap<>() {{

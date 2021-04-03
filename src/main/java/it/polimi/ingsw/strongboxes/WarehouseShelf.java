@@ -25,6 +25,8 @@ public class WarehouseShelf extends Shelf {
 
     /**
      * Copy constructor. Makes a deep copy of a WarehouseShelf.
+     *
+     * @param warehouseShelf    the WarehouseShelf to copy
      */
     public WarehouseShelf(WarehouseShelf warehouseShelf) {
         super(warehouseShelf);

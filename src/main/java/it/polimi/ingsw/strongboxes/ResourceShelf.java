@@ -22,6 +22,8 @@ public class ResourceShelf extends Shelf {
 
     /**
      * Copy constructor. Makes a deep copy of a ResourceShelf.
+     *
+     * @param resourceShelf the ResourceShelf to copy
      */
     public ResourceShelf(ResourceShelf resourceShelf) {
         super(resourceShelf);

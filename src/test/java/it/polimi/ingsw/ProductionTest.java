@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for Production class.
  */
 public class ProductionTest {
-    /*
+    /**
      * Tests a general production without blanks.
      */
     @Test
@@ -57,7 +57,7 @@ public class ProductionTest {
         assertEquals(3, player.getStrongbox().getResourceQuantity(Servant.getInstance()));
     }
 
-    /*
+    /**
      * Tests a general production with blanks in input.
      */
     @Test
@@ -109,7 +109,7 @@ public class ProductionTest {
         assertEquals(3, player.getStrongbox().getResourceQuantity(Servant.getInstance()));
     }
 
-    /*
+    /**
      * Tests a general production with blanks in output.
      */
     @Test

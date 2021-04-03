@@ -27,6 +27,8 @@ public class Shelf extends Strongbox {
 
     /**
      * Copy constructor. Makes a deep copy of a Shelf.
+     *
+     * @param shelf the Shelf to copy
      */
     public Shelf(Shelf shelf) {
         super(shelf);

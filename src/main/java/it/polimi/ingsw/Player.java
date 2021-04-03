@@ -80,10 +80,12 @@ public class Player {
 
     /**
      * Copy constructor. Makes a deep copy of a Player.
+     *
+     * @param player the Player to copy
      */
     public Player(Player player){
         nickname=player.nickname;
-        leaders=new ArrayList<>(player.leaders);
+        leaders=new ArrayList<>(player.leaders); /* Shallow copy */
         warehouse = new Warehouse(player.warehouse);
         strongbox = new Strongbox(player.strongbox);
         inkwell=player.inkwell;
@@ -91,7 +93,7 @@ public class Player {
         victoryPoints=player.victoryPoints;
         active=player.active;
         winner=player.winner;
-        devSlots=player.devSlots; //TODO: Also deep copy needed
+        devSlots=player.devSlots; /* Shallow copy */
     }
 
     /** Getter of the number of production slots available
@@ -147,6 +149,8 @@ public class Player {
     /**
      * Advances the faith marker by one on the board's faith track.
      * Then proceeds to call a checker for Vatican report tiles "onIncrement"
+     *
+     * @param game  the game the player is playing in
      */
     public void incrementFaithPoints(Game game) {
         faithPoints += 1;
@@ -263,6 +267,7 @@ public class Player {
      * @param game          the game the player is playing in
      * @param index         the destination production slot
      * @param devCard       the development card that has just been bought
+     * @param strongboxes   a map of the strongboxes where to take the storable resources
      * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
      * @throws Exception    error during the actual payment
      * @return              true if Player has reached number of development cards required to end the game

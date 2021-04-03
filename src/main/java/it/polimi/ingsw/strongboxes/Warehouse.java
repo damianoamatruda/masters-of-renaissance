@@ -25,6 +25,8 @@ public class Warehouse {
 
     /**
      * Copy constructor. Makes a deep copy of a Warehouse.
+     *
+     * @param warehouse the Warehouse to copy
      */
     public Warehouse(Warehouse warehouse) {
         shelves = new ArrayList<>();

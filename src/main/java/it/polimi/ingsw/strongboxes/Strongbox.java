@@ -21,12 +21,14 @@ public class Strongbox {
 
     /**
      * Copy constructor. Makes a deep copy of a Strongbox.
+     *
+     * @param strongbox the Strongbox to copy
      */
     public Strongbox(Strongbox strongbox) {
         resources = new HashMap<>(strongbox.resources);
     }
 
-    /*
+    /**
      * Overridable copy method.
      *
      * @return  a deep copy of itself
