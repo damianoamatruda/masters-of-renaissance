@@ -2,10 +2,13 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.leadercards.LeaderCard;
 import it.polimi.ingsw.resourcetypes.ResourceType;
+import it.polimi.ingsw.strongboxes.Shelf;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A concrete requirement for leader card activation.
@@ -31,8 +34,18 @@ public class ResourceRequirement implements CardRequirement {
     public ResourceRequirement(Map<ResourceType, Integer> resources) { this.resources = resources; }
 
     @Override
-    public void checkRequirements(Player player) {
-        // TODO: Implement
+    public void checkRequirements(Player player) throws Exception {
+        List<Shelf> shelves = player.getWarehouse().getShelves().stream().map(e -> (Shelf)e).collect(Collectors.toList());
+
+        for (int i = 0; i < player.getLeadersCount(); i++)
+            shelves.add(player.getLeader(i).getDepot());
+
+        for (ResourceType r : resources.keySet()) {
+            int playerAmount = player.getStrongbox().getResourceQuantity(r);
+            playerAmount += shelves.stream().filter(e -> e.getResType() == r).mapToInt(s -> s.getResourceQuantity(r)).sum();
+            
+            if (resources.get(r) - playerAmount > 0) throw new Exception();
+        }
     }
 
     /**
