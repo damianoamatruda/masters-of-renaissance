@@ -3,10 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.resourcetypes.Coin;
 import it.polimi.ingsw.resourcetypes.Servant;
 import it.polimi.ingsw.resourcetypes.Shield;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -76,6 +73,7 @@ public class PlayerTest {
      * @param marker faith points before the tested operation
      */
     @ParameterizedTest
+    @Disabled
     @ValueSource(ints = {0, 7, 16, 23})
     void discardLeaderTest(int marker){
         for (int i = 0; i < marker; i++)

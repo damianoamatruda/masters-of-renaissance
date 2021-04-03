@@ -90,11 +90,16 @@ public class /*Base*/Game /*implements IGame*/{
         List<DevelopmentCard> leaderCards = getDevCards();
 
         this.players=nicknames.stream()
-                .map(nickname -> new Player(this, nickname,
-                        Stream.of(new DiscountLeader(2, Coin.getInstance(),  null, 0),
-                                new DepotLeader(2, Coin.getInstance(),  null, 0)).collect(Collectors.toList()),
+                .map(nickname -> new Player(this, nickname, new ArrayList<>(),
                         nicknames.indexOf(nickname) == 0))
                 .collect(Collectors.toList());
+
+//        this.players=nicknames.stream()
+//                .map(nickname -> new Player(this, nickname,
+//                        Stream.of(new DiscountLeader(2, Coin.getInstance(),  null, 0),
+//                                new DepotLeader(2, Coin.getInstance(),  null, 0)).collect(Collectors.toList()),
+//                        nicknames.indexOf(nickname) == 0))
+//                .collect(Collectors.toList());
 
         this.devGrid=new HashMap<>(); // TODO: Implement creation of the dev grid
         this.market=new Market(new HashMap<>(){{
