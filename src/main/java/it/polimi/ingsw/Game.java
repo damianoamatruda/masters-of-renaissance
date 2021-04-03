@@ -103,6 +103,21 @@ public class /*Base*/Game /*implements IGame*/{
             put(16, new Integer[]{12, 3});
             put(24, new Integer[]{19, 4});
         }};
+        activatedVaticanSections = new HashMap<>(){{
+            put(8, false);
+            put(16, false);
+            put(24, false);
+        }};
+        yellowTiles = new HashMap<>(){{
+            put(3, 1);
+            put(6, 2);
+            put(9, 4);
+            put(12, 6);
+            put(15, 9);
+            put(18, 12);
+            put(21, 16);
+            put(24, 20);
+        }};
     }
 
     /**
@@ -231,6 +246,7 @@ public class /*Base*/Game /*implements IGame*/{
             setWinnerPlayer();
             return true;
         }
+        turns++;
         return false;
     }
 
@@ -242,8 +258,11 @@ public class /*Base*/Game /*implements IGame*/{
         Integer[] currentSection = vaticanSections.get(trackPoints);
         if(currentSection == null || activatedVaticanSections.get(trackPoints)) return;
         for(Player p : players)
-            if(p.getFaithPoints()>currentSection[0])
-                p.incrementVictoryPoints(currentSection[0]);
+            if(p.getFaithPoints()>=currentSection[0])
+                p.incrementVictoryPoints(currentSection[1]);
+
+        activatedVaticanSections.put(trackPoints,true);
+
         if(trackPoints == Player.getMaxFaithPointsCount())
             lastTurn = true;
     }
