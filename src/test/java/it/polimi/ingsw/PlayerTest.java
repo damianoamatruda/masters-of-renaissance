@@ -73,7 +73,7 @@ public class PlayerTest {
      * @param marker faith points before the tested operation
      */
     @ParameterizedTest
-    @Disabled
+    @Disabled("Leader cards distribution is yet to be implemented")
     @ValueSource(ints = {0, 7, 16, 23})
     void discardLeaderTest(int marker){
         for (int i = 0; i < marker; i++)

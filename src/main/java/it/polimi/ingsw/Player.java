@@ -4,6 +4,7 @@ import it.polimi.ingsw.leadercards.LeaderCard;
 import it.polimi.ingsw.strongboxes.Strongbox;
 import it.polimi.ingsw.strongboxes.Warehouse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -77,6 +78,7 @@ public class Player {
         victoryPoints=0;
         active=true;
         winner=false;
+        devSlots = new ArrayList<>();
     }
 
     /**
@@ -93,6 +95,7 @@ public class Player {
         victoryPoints=player.victoryPoints;
         active=player.active;
         winner=player.winner;
+        devSlots=player.devSlots;
     }
 
     /*
@@ -282,9 +285,11 @@ public class Player {
      */
     public boolean addToDevSlot(int index, DevelopmentCard devCard) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
-        if(slot.peek().getLevel()!=devCard.getLevel()-1) throw new Exception();
+        if(slot.peek().getLevel() != devCard.getLevel()-1) throw new Exception();
 
-        // TODO: consume resources
+        // TODO: consume resources -> what should I give as 2nd parameter of take()?
+        //devCard.getCost().take(this, )
+
         slot.push(devCard);
 
         return devSlots.stream()
@@ -311,5 +316,22 @@ public class Player {
                 .mapToInt(shelf -> shelf.getQuantity())
                 .sum();
         return quantity;
+    }
+
+    /**
+     * Sums points earned from all development cards collected and from activated leader cards
+     */
+    public void sumCardsVictoryPoints(){
+        int toSum = devSlots.stream()
+                .mapToInt(slot -> slot.stream()
+                        .mapToInt(card -> card.getVictoryPoints())
+                        .sum())
+                .sum();
+
+        toSum += leaders.stream()
+                .mapToInt(card -> card.getVictoryPoints())
+                .sum();
+
+        this.victoryPoints += toSum;
     }
 }
