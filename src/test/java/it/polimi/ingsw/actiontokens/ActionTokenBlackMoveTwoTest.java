@@ -5,6 +5,7 @@ import it.polimi.ingsw.SoloGame;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +17,7 @@ class ActionTokenBlackMoveTwoTest {
     @Test
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo();
-        SoloGame game = new SoloGame(new Game(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0), null);
+        SoloGame game = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, null);
         token.trigger(game);
 
         assertEquals(game.getBlackPoints(),2);

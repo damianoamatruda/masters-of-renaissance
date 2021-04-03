@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 //import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +20,7 @@ public class GameTest {
      */
     @BeforeAll
     public void setup(){
-        game = new Game(List.of("Alessandro","Damiano","Marco"), new ArrayList<>(), new ArrayList<>(), 0);
+        game = new Game(List.of("Alessandro","Damiano","Marco"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0);
     }
 
     /**

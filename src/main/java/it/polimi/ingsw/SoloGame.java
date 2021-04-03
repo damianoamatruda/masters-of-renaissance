@@ -2,14 +2,17 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.actiontokens.ActionToken;
 import it.polimi.ingsw.devcardcolors.DevCardColor;
+import it.polimi.ingsw.leadercards.LeaderCard;
+import it.polimi.ingsw.resourcetypes.ResourceType;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents the Solo version of the game, and contains all the extra functionality
  */
-public class SoloGame extends GameDecorator{
+public class SoloGame extends Game /*extends GameDecorator*/{
     /** The stack of action tokens to be activated at the end of the player's turn */
     private List<ActionToken> actionTokens;
 
@@ -24,8 +27,16 @@ public class SoloGame extends GameDecorator{
      * @param game          the wrappee to be extended with solo functionality
      * @param actionTokens  the stack of tokens, of which the top token is activated after each turn
      */
-    public SoloGame(Game game, List<ActionToken> actionTokens){
-        super(game);
+    public SoloGame(List<String> nicknames,
+                    List<LeaderCard> leaderCards,
+                    int playerLeadersCount,
+                    List<DevelopmentCard> devCards,
+                    int devGridLevelsCount,
+                    int devGridColorsCount,
+                    Map<ResourceType, Integer> marketResources,
+                    int marketColsCount,
+                    List<ActionToken> actionTokens){
+        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount, marketResources, marketColsCount);
         this.actionTokens = actionTokens;
         blackPoints = 0;
         blackWinner = false;
@@ -44,7 +55,7 @@ public class SoloGame extends GameDecorator{
      */
     public void incrementBlackPoints(){
         blackPoints += 1;
-        wrappee.onIncrement(blackPoints);
+        super.onIncrement(blackPoints);
     }
 
     /**

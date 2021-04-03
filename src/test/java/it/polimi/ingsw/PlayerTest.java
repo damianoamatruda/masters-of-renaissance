@@ -28,7 +28,7 @@ public class PlayerTest {
      */
     @BeforeAll
     void setup(){
-        game = game = new Game(List.of("Alessandro","Damiano","Marco"), new ArrayList<>(), new ArrayList<>(), 0);
+        game = game = new Game(List.of("Alessandro","Damiano","Marco"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0);
         player = game.getPlayers().get(0);
     }
 

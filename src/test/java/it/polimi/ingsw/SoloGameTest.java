@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.params.ParameterizedTest;
 //import org.junit.jupiter.params.provider.ValueSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ public class SoloGameTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame(new Game(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0), stack);
+        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, stack);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 

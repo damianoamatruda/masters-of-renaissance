@@ -20,7 +20,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
-        SoloGame solo = new SoloGame(new Game(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0), stack);
+        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, stack);
 
 
         token.trigger(solo);
@@ -35,7 +35,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame(new Game(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0), stack);
+        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, stack);
         List stack2 = new ArrayList(stack);
         stack2.remove(0);
 
