@@ -20,6 +20,19 @@ public class ResourceShelf extends Shelf {
         this.boundedResType = boundedResType;
     }
 
+    /**
+     * Copy constructor. Makes a deep copy of a ResourceShelf.
+     */
+    public ResourceShelf(ResourceShelf resourceShelf) {
+        super(resourceShelf);
+        boundedResType = resourceShelf.boundedResType;
+    }
+
+    @Override
+    public Strongbox copy() {
+        return new ResourceShelf(this);
+    }
+
     @Override
     public void addResource(ResourceType resType) throws Exception {
         if (!resType.equals(this.boundedResType))

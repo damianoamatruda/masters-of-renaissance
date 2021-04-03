@@ -23,6 +23,19 @@ public class WarehouseShelf extends Shelf {
         this.warehouse = warehouse;
     }
 
+    /**
+     * Copy constructor. Makes a deep copy of a WarehouseShelf.
+     */
+    public WarehouseShelf(WarehouseShelf warehouseShelf) {
+        super(warehouseShelf);
+        warehouse = warehouseShelf.warehouse;
+    }
+
+    @Override
+    public Strongbox copy() {
+        return new WarehouseShelf(this);
+    }
+
     @Override
     public void addResource(ResourceType resType) throws Exception {
         if (warehouse.getShelves().stream()

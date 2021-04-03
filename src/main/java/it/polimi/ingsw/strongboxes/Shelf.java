@@ -2,6 +2,8 @@ package it.polimi.ingsw.strongboxes;
 
 import it.polimi.ingsw.resourcetypes.ResourceType;
 
+import java.util.HashMap;
+
 /**
  * This class represents a container of resources of the same type in limited quantity.
  */
@@ -21,6 +23,20 @@ public class Shelf extends Strongbox {
         super();
         this.size = size;
         this.resType = null;
+    }
+
+    /**
+     * Copy constructor. Makes a deep copy of a Shelf.
+     */
+    public Shelf(Shelf shelf) {
+        super(shelf);
+        size = shelf.size;
+        resType = shelf.resType;
+    }
+
+    @Override
+    public Strongbox copy() {
+        return new Shelf(this);
     }
 
     /**
