@@ -79,6 +79,31 @@ public class Player {
         winner=false;
     }
 
+    /**
+     * Copy constructor. Makes a deep copy of a Player.
+     */
+    public Player(Player player){
+        game=player.game;
+        nickname=player.nickname;
+        leaders=player.leaders;
+        warehouse = player.warehouse;
+        strongbox = player.strongbox;
+        inkwell=player.inkwell;
+        faithPoints=player.faithPoints;
+        victoryPoints=player.victoryPoints;
+        active=player.active;
+        winner=player.winner;
+    }
+
+    /*
+     * Overridable copy method.
+     *
+     * @return  a deep copy of itself
+     */
+    public Player copy() {
+        return new Player(this);
+    }
+
     /** Getter of the number of production slots available
      * @return the number of slots */
     public static int getDevSlotsCount(){
