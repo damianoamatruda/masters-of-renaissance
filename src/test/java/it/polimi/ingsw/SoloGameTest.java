@@ -27,6 +27,23 @@ public class SoloGameTest {
         assertEquals(2,solo.getBlackPoints());
     }
 
+    /**
+     * Test for hasEnded method
+     */
+    @Test
+    void hasEnded(){}
+
+    /**
+     * Test for onTurnEnd method
+     */
+    @Test
+    void onTurnEnd(){}
+
+    /**
+     * Test for discardDevCards method
+     */
+    @Test
+    void discardDevCards(){}
 }
 
 
