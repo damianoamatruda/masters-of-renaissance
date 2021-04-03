@@ -1,12 +1,11 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.leadercards.LeaderCard;
+import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.strongboxes.Strongbox;
 import it.polimi.ingsw.strongboxes.Warehouse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Class dedicated to the storage of the player's data and available operations
@@ -281,14 +280,15 @@ public class Player {
      * @param index         the destination production slot
      * @param devCard       the development card that has just been bought
      * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
+     * @throws Exception    error during the actual payment
      * @return              true if Player has reached number of development cards required to end the game
      */
-    public boolean addToDevSlot(int index, DevelopmentCard devCard) throws Exception {
+    public boolean addToDevSlot(int index, DevelopmentCard devCard,
+                                Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if(slot.peek().getLevel() != devCard.getLevel()-1) throw new Exception();
 
-        // TODO: consume resources -> what should I give as 2nd parameter of take()?
-        //devCard.getCost().take(this, )
+        devCard.getCost().take(this, strongboxes);
 
         slot.push(devCard);
 

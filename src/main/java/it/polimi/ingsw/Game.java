@@ -5,6 +5,7 @@ import it.polimi.ingsw.leadercards.DepotLeader;
 import it.polimi.ingsw.leadercards.DiscountLeader;
 import it.polimi.ingsw.leadercards.LeaderCard;
 import it.polimi.ingsw.resourcetypes.*;
+import it.polimi.ingsw.strongboxes.Strongbox;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -226,14 +227,16 @@ public class /*Base*/Game /*implements IGame*/{
      * @param color     the color of the card to be bought
      * @param level     the level of the card to be bought
      * @throws Exception           Bought card cannot fit in chosen player slot
+     * @throws Exception           error while player was depositing the card
      * @throws EmptyStackException No cards available with given color and level
      */
-    public void takeDevCard(Player player, DevCardColor color, int level, int position)
+    public void takeDevCard(Player player, DevCardColor color, int level, int position,
+                            Map<Strongbox, Map<ResourceType, Integer>> strongboxes)
             throws Exception, EmptyStackException {
 
         DevelopmentCard card = devGrid.get(color).get(level).pop();
         try {
-            boolean maxCardsReached = player.addToDevSlot(position, card);
+            boolean maxCardsReached = player.addToDevSlot(position, card, strongboxes);
             if(maxCardsReached) lastTurn = true;
         }
         catch (Exception e){
