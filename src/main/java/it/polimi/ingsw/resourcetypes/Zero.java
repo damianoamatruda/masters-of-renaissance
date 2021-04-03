@@ -1,10 +1,11 @@
 package it.polimi.ingsw.resourcetypes;
 
+import it.polimi.ingsw.Game;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
 /**
- * Resource that can be substituted with another resource.
+ * Resource that can be substituted with another resource
  */
 public class Zero extends ResourceType {
     /**
@@ -21,7 +22,7 @@ public class Zero extends ResourceType {
     public boolean isStorable() { return false; }
 
     /**
-     * @return  the single instance of this class.
+     * @return  the single instance of this class
      */
     public static ResourceType getInstance() {
         if (resource == null) resource = new Zero();
@@ -32,8 +33,8 @@ public class Zero extends ResourceType {
     public String getName() { return "zero"; }
 
     @Override
-    public void onGiven(Player player, Strongbox strongbox) throws Exception { }
+    public void onGiven(Game game, Player player, Strongbox strongbox) throws Exception { }
 
     @Override
-    public void onTaken(Player player, Strongbox strongbox) throws Exception { }
+    public void onTaken(Game game, Player player, Strongbox strongbox) throws Exception { }
 }

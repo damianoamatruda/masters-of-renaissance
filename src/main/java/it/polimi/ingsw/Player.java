@@ -24,9 +24,6 @@ public class Player {
     /** Number of development cards the player can have, before triggering the end of the game */
     private static final int MAX_OBTAINABLE_DEV_CARDS=7;
 
-    /** The current game instance in which the player is playing */
-    private Game game;
-
     /** The player's nickname */
     private String nickname;
 
@@ -61,13 +58,11 @@ public class Player {
     private boolean winner;
 
     /** Initializes player's attributes
-     * @param game      the game to which the player is connected
      * @param nickname  the player's nickname to be seen by all the players
      * @param leaders   the 4 initially assigned leader cards
      * @param inkwell   received only by the first player
      */
-    public Player(Game game, String nickname, List<LeaderCard> leaders, boolean inkwell){
-        this.game=game;
+    public Player(String nickname, List<LeaderCard> leaders, boolean inkwell){
         this.nickname=nickname;
         this.leaders=leaders;
         this.warehouse = new Warehouse(WAREHOUSE_SHELVES_COUNT);
@@ -84,11 +79,10 @@ public class Player {
      * Copy constructor. Makes a deep copy of a Player.
      */
     public Player(Player player){
-        game=player.game;
         nickname=player.nickname;
-        leaders=player.leaders;
-        warehouse = player.warehouse;
-        strongbox = player.strongbox;
+        leaders=new ArrayList(player.leaders);
+        warehouse = player.warehouse; // TODO: Make a deep copy of the Warehouse
+        strongbox = new Strongbox(player.strongbox);
         inkwell=player.inkwell;
         faithPoints=player.faithPoints;
         victoryPoints=player.victoryPoints;
@@ -124,12 +118,6 @@ public class Player {
         return MAX_OBTAINABLE_DEV_CARDS;
     }
 
-    /** Getter of the player's game
-     * @return the player's game */
-    public Game getGame(){
-        return game;
-    }
-
     /** Getter of the player's visible nickname
      * @return the player's nickname */
     public String getNickname(){
@@ -151,13 +139,14 @@ public class Player {
 
     /**
      * Action performed when the player discards a leader card. The player receives one faith point
+     * @param game the game the player is playing in
      * @param index the index of the card to be discarded
      * @throws Exception leader is already active
      */
-    public void discardLeader(int index) throws Exception {
+    public void discardLeader(Game game, int index) throws Exception {
         LeaderCard toBeDiscarded = getLeader(index);
         if(toBeDiscarded.isActive()) throw new Exception();
-        toBeDiscarded.onDiscarded(this);
+        toBeDiscarded.onDiscarded(game, this);
         leaders.remove(index);
     }
 
@@ -165,7 +154,7 @@ public class Player {
      * Advances the faith marker by one on the board's faith track.
      * Then proceeds to call a checker for Vatican report tiles "onIncrement"
      */
-    public void incrementFaithPoints() {
+    public void incrementFaithPoints(Game game) {
         faithPoints += 1;
         game.onIncrement(faithPoints);
     }
@@ -277,18 +266,19 @@ public class Player {
 
     /**
      * Places a new card on top of a given production slot and consume required resources
+     * @param game          the game the player is playing in
      * @param index         the destination production slot
      * @param devCard       the development card that has just been bought
      * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
      * @throws Exception    error during the actual payment
      * @return              true if Player has reached number of development cards required to end the game
      */
-    public boolean addToDevSlot(int index, DevelopmentCard devCard,
+    public boolean addToDevSlot(Game game, int index, DevelopmentCard devCard,
                                 Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if(slot.peek().getLevel() != devCard.getLevel()-1) throw new Exception();
 
-        devCard.getCost().take(this, strongboxes);
+        devCard.getCost().take(game, this, strongboxes);
 
         slot.push(devCard);
 

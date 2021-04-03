@@ -1,5 +1,6 @@
 package it.polimi.ingsw.resourcetypes;
 
+import it.polimi.ingsw.Game;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
@@ -28,14 +29,6 @@ public abstract class ResourceType {
      */
     public abstract boolean isStorable();
 
-    // /**
-    //  * @return the single instance of this class.
-    //  */
-    // commented because it can't be overridden (it's static) and
-    // because it doesn't make sense to get an instance of an abstract class
-    // (-> would return null)
-    // public static ResourceType getInstance() { return null; }
-
     /**
      * @return  the name of the resource associated with the class.
      *          For UI purposes only.
@@ -45,34 +38,38 @@ public abstract class ResourceType {
     /**
      * Routine for giving the resource to the player.
      *
-     * @param player        the player the resource goes to.
-     * @param strongbox     the storage in which the resource is deposited, if applicable.
+     * @param game          the game the player is playing in
+     * @param player        the player the resource goes to
+     * @param strongbox     the storage in which the resource is deposited, if applicable
      * @throws Exception    if it is not possible
      */
-    public void onGiven(Player player, Strongbox strongbox) throws Exception {
+    public void onGiven(Game game, Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(this);
     }
 
     /**
      * Routine for taking the resource from the player.
      *
-     * @param player        the player the resource is taken from.
-     * @param strongbox     the storage from which the resource is removed, if applicable.
+     * @param game          the game the player is playing in
+     * @param player        the player the resource is taken from
+     * @param strongbox     the storage from which the resource is removed, if applicable
      * @throws Exception    if it is not possible
      */
-    public void onTaken(Player player, Strongbox strongbox) throws Exception {
+    public void onTaken(Game game, Player player, Strongbox strongbox) throws Exception {
         strongbox.removeResource(this);
     }
 
     /**
      * Routine for discarding the resource.
      *
+     * @param game          the game the player is playing in
      * @param player        the player discarding the resource
+     * @param strongbox     the storage from which the resource is discarded
      * @throws Exception    if it is not possible
      */
-    public void onDiscard(Player player) throws Exception {
-        player.getGame().getPlayers().stream()
-                .filter(p -> p != player)
-                .forEach(Player::incrementFaithPoints);
+    public void onDiscard(Game game, Player player, Strongbox strongbox) throws Exception {
+        game.getPlayers().stream()
+                .filter(p -> !p.equals(player))
+                .forEach(p -> p.incrementFaithPoints(game));
     }
 }

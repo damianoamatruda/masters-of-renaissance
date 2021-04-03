@@ -36,10 +36,10 @@ public class PlayerTest {
     void getNumOfResourcesTestStrongboxOnly(){
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().onGiven(player, player.getStrongbox());
+                Coin.getInstance().onGiven(game, player, player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().onGiven(player, player.getStrongbox());
-            Shield.getInstance().onGiven(player, player.getStrongbox());
+                Servant.getInstance().onGiven(game, player, player.getStrongbox());
+            Shield.getInstance().onGiven(game, player, player.getStrongbox());
             assertEquals(12, player.getNumOfResources());
         }
         catch (Exception e){
@@ -64,7 +64,7 @@ public class PlayerTest {
     @ValueSource(ints = {0, 7, 16, 23})
     void incrementFaithPointsTest(int marker){
         for (int i = 0; i < marker+1; i++)
-            player.incrementFaithPoints();
+            player.incrementFaithPoints(game);
         assertEquals(marker+1, player.getFaithPoints());
     }
 
@@ -77,9 +77,9 @@ public class PlayerTest {
     @ValueSource(ints = {0, 7, 16, 23})
     void discardLeaderTest(int marker){
         for (int i = 0; i < marker; i++)
-            player.incrementFaithPoints();
+            player.incrementFaithPoints(game);
         try {
-            player.discardLeader(0);
+            player.discardLeader(game, 0);
             assertEquals(marker+1, player.getFaithPoints());
         }
         catch (Exception e){

@@ -97,6 +97,7 @@ public class Market {
      * After taking the resources, the chosen row or column is shifted one place from respectively the right or bottom,
      * the resource in the slide takes the uncovered place in the grid and the leftover resource goes into the slide.
      *
+     * @param game          the game the player is playing in
      * @param player        the player on which to trigger the action of the resource, if applicable
      * @param isRow         true if a row is selected, false if a column is selected
      * @param index         index of the selected row or column
@@ -104,7 +105,7 @@ public class Market {
      * @param shelves       a map of the shelves where to add the taken resources, if possible
      * @throws Exception    if it is not possible
      */
-    public void takeResources(Player player, boolean isRow, int index, Map<ResourceType, Integer> zerosRep,
+    public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> zerosRep,
                               Map<Shelf, Map<ResourceType, Integer>> shelves) throws Exception {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
             throw new RuntimeException();
@@ -115,7 +116,7 @@ public class Market {
                 .collect(Collectors.toMap(resType -> resType, resType -> 1, Integer::sum));
 
         (new Production(new HashMap<>(), output, true))
-                .activate(player, new HashMap<>(), zerosRep, new HashMap<>(), new HashMap<>(shelves));
+                .activate(game, player, new HashMap<>(), zerosRep, new HashMap<>(), new HashMap<>(shelves));
 
         shift(isRow, index);
     }

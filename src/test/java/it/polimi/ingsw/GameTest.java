@@ -47,7 +47,7 @@ public class GameTest {
      */
     @Test
     void firstadvanceNoPts() {
-        game.getPlayers().get(0).incrementFaithPoints();
+        game.getPlayers().get(0).incrementFaithPoints(game);
         assertEquals(0, game.getPlayers().get(0).getVictoryPoints());
     }
 
@@ -68,9 +68,9 @@ public class GameTest {
         @BeforeEach
         public void advancePlayers(){
             for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints();
+                game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(1).incrementFaithPoints();
+                game.getPlayers().get(1).incrementFaithPoints(game);
         }
 
         /**
@@ -114,12 +114,12 @@ public class GameTest {
         @BeforeEach
         public void advancePlayers(){
             for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints();
+                game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints();
+                game.getPlayers().get(2).incrementFaithPoints(game);
 
             for (int i = 0; i < 16; i++)
-                game.getPlayers().get(1).incrementFaithPoints();
+                game.getPlayers().get(1).incrementFaithPoints(game);
         }
         /**
          * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded)
@@ -162,19 +162,19 @@ public class GameTest {
         @BeforeEach
         public void advancePlayers(){
             for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints();
+                game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints();
+                game.getPlayers().get(2).incrementFaithPoints(game);
 
             for (int i = 0; i < 16; i++)
-                game.getPlayers().get(1).incrementFaithPoints();
+                game.getPlayers().get(1).incrementFaithPoints(game);
 
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints();
+                game.getPlayers().get(2).incrementFaithPoints(game);
             for (int i = 0; i < 4; i++)
-                game.getPlayers().get(1).incrementFaithPoints();
+                game.getPlayers().get(1).incrementFaithPoints(game);
             for (int i = 0; i < 19; i++)
-                game.getPlayers().get(0).incrementFaithPoints();
+                game.getPlayers().get(0).incrementFaithPoints(game);
         }
 
         /**

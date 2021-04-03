@@ -91,8 +91,7 @@ public class /*Base*/Game /*implements IGame*/{
         List<DevelopmentCard> leaderCards = getDevCards();
 
         this.players=nicknames.stream()
-                .map(nickname -> new Player(this, nickname, new ArrayList<>(),
-                        nicknames.indexOf(nickname) == 0))
+                .map(nickname -> new Player(nickname, new ArrayList<>(), nicknames.indexOf(nickname) == 0))
                 .collect(Collectors.toList());
 
         this.devGrid=new HashMap<>(); // TODO: Implement creation of the dev grid
@@ -223,6 +222,7 @@ public class /*Base*/Game /*implements IGame*/{
 
     /**
      * A player buys a card of a given color and level
+     * @param game      the game the player is playing in
      * @param player    the player that wants to buy a card
      * @param color     the color of the card to be bought
      * @param level     the level of the card to be bought
@@ -230,13 +230,13 @@ public class /*Base*/Game /*implements IGame*/{
      * @throws Exception           error while player was depositing the card
      * @throws EmptyStackException No cards available with given color and level
      */
-    public void takeDevCard(Player player, DevCardColor color, int level, int position,
+    public void takeDevCard(Game game, Player player, DevCardColor color, int level, int position,
                             Map<Strongbox, Map<ResourceType, Integer>> strongboxes)
             throws Exception, EmptyStackException {
 
         DevelopmentCard card = devGrid.get(color).get(level).pop();
         try {
-            boolean maxCardsReached = player.addToDevSlot(position, card, strongboxes);
+            boolean maxCardsReached = player.addToDevSlot(game, position, card, strongboxes);
             if(maxCardsReached) lastTurn = true;
         }
         catch (Exception e){

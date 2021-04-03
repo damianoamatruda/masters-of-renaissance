@@ -89,7 +89,7 @@ public class MarketTest {
                         }}));
 
                 try {
-                    market.takeResources(player, true, index, new HashMap<>(), outputShelves);
+                    market.takeResources(game, player, true, index, new HashMap<>(), outputShelves);
                 } catch (Exception e) {
                     fail();
                 }

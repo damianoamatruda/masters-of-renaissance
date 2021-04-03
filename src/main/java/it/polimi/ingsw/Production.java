@@ -64,6 +64,7 @@ public class Production {
      * Activates the production. Replaces the blanks in input and in output, if applicable, with the given resources,
      * removes the input resources from the given strongboxes and adds the output resources in the given strongbox.
      *
+     * @param game              the game the player is playing in
      * @param player            the player on which to trigger the action of the resource, if applicable
      * @param inputBlanksRep    the map of the resources to be given as replacement for blanks in input
      * @param outputBlanksRep   the map of the resources to be taken as replacement for blanks in output
@@ -71,7 +72,7 @@ public class Production {
      * @param outputStrongboxes the map of the strongboxes to use for all the resources to be taken as output
      * @throws Exception        if it is not possible
      */
-    public void activate(Player player,
+    public void activate(Game game, Player player,
                          Map<ResourceType, Integer> inputBlanksRep, Map<ResourceType, Integer> outputBlanksRep,
                          Map<Strongbox, Map<ResourceType, Integer>> inputStrongboxes,
                          Map<Strongbox, Map<ResourceType, Integer>> outputStrongboxes) throws Exception {
@@ -83,11 +84,11 @@ public class Production {
         if (!checkStrongboxes(replacedOutput, outputStrongboxes))
             throw new Exception();
 
-        transferStorable(true, player, inputStrongboxes);
-        transferStorable(false, player, outputStrongboxes);
+        transferStorable(true, game, player, inputStrongboxes);
+        transferStorable(false, game, player, outputStrongboxes);
 
-        transferNonStorable(true, player, filterNonStorable(replacedInput));
-        transferNonStorable(false, player, filterNonStorable(replacedOutput));
+        transferNonStorable(true, game, player, filterNonStorable(replacedInput));
+        transferNonStorable(false, game, player, filterNonStorable(replacedOutput));
     }
 
     /**
@@ -131,8 +132,8 @@ public class Production {
      * @param strongboxes   the map of the strongboxes to use for all the resources
      * @throws Exception    if it is not possible
      */
-    private void transferStorable(boolean take, Player player,
-                                          Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+    private void transferStorable(boolean take, Game game, Player player,
+                                  Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         Map<Strongbox, Map<ResourceType, Integer>> history = new HashMap<>();
         for (Map.Entry<Strongbox, Map<ResourceType, Integer>> sEntry : strongboxes.entrySet()) {
             Strongbox strongbox = sEntry.getKey();
@@ -143,14 +144,14 @@ public class Production {
                 for (int i = 0; i < quantity; i++) {
                     try {
                         if (take)
-                            resType.onTaken(player, strongbox);
+                            resType.onTaken(game, player, strongbox);
                         else
-                            resType.onGiven(player, strongbox);
+                            resType.onGiven(game, player, strongbox);
                     } catch (Exception e) {
                         if (discardableOutput)
-                            resType.onDiscard(player);
+                            resType.onDiscard(game, player, strongbox);
                         else {
-                            transferStorable(!take, player, history);
+                            transferStorable(!take, game, player, history);
                             throw new Exception();
                         }
                     }
@@ -169,16 +170,16 @@ public class Production {
      * @param resources     the map of the resources
      * @throws Exception    if it is not possible
      */
-    private void transferNonStorable(boolean take, Player player,
-                                            Map<ResourceType, Integer> resources) throws Exception {
+    private void transferNonStorable(boolean take, Game game, Player player,
+                                     Map<ResourceType, Integer> resources) throws Exception {
         for (Map.Entry<ResourceType, Integer> entry : resources.entrySet()) {
             ResourceType r = entry.getKey();
             int q = entry.getValue();
             for (int i = 0; i < q; i++)
                 if (take)
-                    r.onTaken(player, new Strongbox());
+                    r.onTaken(game, player, new Strongbox());
                 else
-                    r.onGiven(player, new Strongbox());
+                    r.onGiven(game, player, new Strongbox());
         }
     }
 
@@ -200,7 +201,7 @@ public class Production {
      * @return              true if valid, otherwise false
      */
     private static boolean checkBlanksRepCount(Map<ResourceType, Integer> mapWithBlanks,
-                                          Map<ResourceType, Integer> blanksRep) {
+                                               Map<ResourceType, Integer> blanksRep) {
         int blanksCount = mapWithBlanks.entrySet().stream()
                 .filter(e -> e.getKey().isBlank()).map(Map.Entry::getValue).reduce(0, Integer::sum);
         int blanksRepCount = blanksRep.values().stream().reduce(0, Integer::sum);

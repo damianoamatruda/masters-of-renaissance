@@ -21,7 +21,7 @@ public class Servant extends ResourceType {
     public boolean isStorable() { return true; }
 
     /**
-     * @return  the single instance of this class.
+     * @return  the single instance of this class
      */
     public static ResourceType getInstance() {
         if (resource == null) resource = new Servant();

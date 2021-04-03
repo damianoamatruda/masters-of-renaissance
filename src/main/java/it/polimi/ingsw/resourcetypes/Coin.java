@@ -21,7 +21,7 @@ public class Coin extends ResourceType {
     public boolean isStorable() { return true; }
 
     /**
-     * @return  the single instance of this class.
+     * @return  the single instance of this class
      */
     public static ResourceType getInstance() {
         if (resource == null) resource = new Coin();
@@ -30,5 +30,4 @@ public class Coin extends ResourceType {
 
     @Override
     public String getName() { return "coin"; }
-
 }

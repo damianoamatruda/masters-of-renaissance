@@ -1,9 +1,6 @@
 package it.polimi.ingsw.leadercards;
 
-import it.polimi.ingsw.Card;
-import it.polimi.ingsw.CardRequirement;
-import it.polimi.ingsw.Player;
-import it.polimi.ingsw.Production;
+import it.polimi.ingsw.*;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.strongboxes.ResourceShelf;
 
@@ -67,11 +64,12 @@ public abstract class LeaderCard extends Card {
     /**
      * Executes the discarding routine for leader cards.
      *
+     * @param game    the game the player is playing in
      * @param player  the player that discards the card.
      *                All routine effects are applied on this player.
      */
-    public void onDiscarded(Player player) {
-        player.incrementFaithPoints();
+    public void onDiscarded(Game game, Player player) {
+        player.incrementFaithPoints(game);
     }
 
     /**

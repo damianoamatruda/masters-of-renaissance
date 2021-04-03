@@ -59,14 +59,15 @@ public class DevelopmentCard extends Card {
 
     /**
      * Gives the card to the specified player, paying the necessary resources.
-     * 
+     *
+     * @param game          the game the player is playing in
      * @param player        the player to assign the card to and to take the resources from.
      * @param strongboxes   selection map specifying where to take the resources from.
      * @throws Exception    if the player does not own the required resources.
      */
-    public void onTaken(Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+    public void onTaken(Game game, Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         cost.checkRequirements(player);
 
-        cost.take(player, strongboxes);
+        cost.take(game, player, strongboxes);
     }
 }

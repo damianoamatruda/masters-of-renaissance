@@ -40,7 +40,7 @@ public class ProductionTest {
         }
 
         try {
-            production.activate(player, new HashMap<>(), new HashMap<>(), new HashMap<>() {{
+            production.activate(game, player, new HashMap<>(), new HashMap<>(), new HashMap<>() {{
                 put(player.getStrongbox(), new HashMap<>() {{
                     put(Coin.getInstance(), 2);
                 }});
@@ -87,7 +87,7 @@ public class ProductionTest {
         }
 
         try {
-            production.activate(player, new HashMap<>(){{
+            production.activate(game, player, new HashMap<>(){{
                 put(Coin.getInstance(), 1);
                 put(Shield.getInstance(), 2);
             }}, new HashMap<>(), new HashMap<>() {{
@@ -137,7 +137,7 @@ public class ProductionTest {
         }
 
         try {
-            production.activate(player, new HashMap<>(), new HashMap<>(){{
+            production.activate(game, player, new HashMap<>(), new HashMap<>(){{
                 put(Servant.getInstance(), 2);
                 put(Shield.getInstance(), 1);
             }}, new HashMap<>() {{
