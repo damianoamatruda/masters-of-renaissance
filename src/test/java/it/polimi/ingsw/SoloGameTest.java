@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SoloGameTest {
     /** Tests if black has been incremented properly and if getter of blackPoints returns the correct value */
     @Test
-    public void blackPointsGetterTest(){
+    void blackPointsGetterTest(){
         List<ActionToken> stack = new ArrayList<>();
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
@@ -26,4 +26,8 @@ public class SoloGameTest {
 
         assertEquals(2,solo.getBlackPoints());
     }
+
 }
+
+
+

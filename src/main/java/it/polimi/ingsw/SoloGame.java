@@ -73,14 +73,6 @@ public class SoloGame extends GameDecorator{
         return super.onTurnEnd();
     }
 
-//    /**
-//     * Retrieves and activates the top token of the Lorenzo's stack
-//     */
-//    private void takeActionToken(){
-//        ActionToken token = actionTokens.get(0);
-//        token.trigger(this);
-//        actionTokens.add(token);
-//    }
 
     /** Returns Lorenzo's faith marker position
      * @return  number of tile reached by Lorenzo */

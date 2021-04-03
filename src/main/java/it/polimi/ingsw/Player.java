@@ -72,7 +72,10 @@ public class Player {
         victoryPoints=0;
         active=true;
         winner=false;
-        devSlots = new ArrayList<>();
+        devSlots = new ArrayList<>(){{
+            for(int i = 0; i < 3; i++)
+                add(new Stack<>());
+        }};
     }
 
     /**
@@ -88,7 +91,7 @@ public class Player {
         victoryPoints=player.victoryPoints;
         active=player.active;
         winner=player.winner;
-        devSlots=player.devSlots;
+        devSlots=player.devSlots; //TODO: Also deep copy needed
     }
 
     /*
@@ -276,7 +279,7 @@ public class Player {
     public boolean addToDevSlot(Game game, int index, DevelopmentCard devCard,
                                 Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
-        if(slot.peek().getLevel() != devCard.getLevel()-1) throw new Exception();
+        if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new Exception();
 
         devCard.getCost().take(game, this, strongboxes);
 

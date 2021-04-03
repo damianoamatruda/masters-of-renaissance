@@ -230,7 +230,7 @@ public class /*Base*/Game /*implements IGame*/{
      * @throws Exception           error while player was depositing the card
      * @throws EmptyStackException No cards available with given color and level
      */
-    public void takeDevCard(Game game, Player player, DevCardColor color, int level, int position,
+    public void buyDevCard(Game game, Player player, DevCardColor color, int level, int position,
                             Map<Strongbox, Map<ResourceType, Integer>> strongboxes)
             throws Exception, EmptyStackException {
 

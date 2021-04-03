@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /** Test of base game operations */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameTest {
-    // TODO: Implement
 
     Game game;
 
@@ -33,10 +32,17 @@ public class GameTest {
                   () -> assertEquals(true, game.getPlayers().get(0).hasInkwell()));
     }
 
+    /**
+     * Basic test on peek of what cards can be purchased during the current turn
+     */
     @Test
     void peekCardsTest(){
 
     }
+
+    /**
+     * Basic test on development card purchase
+     */
     @Test
     void buyCardTest(){
 
@@ -341,10 +347,10 @@ public class GameTest {
         }
 
     }
-    @Test
-    void hasEndedTest(){
 
-    }
+    /**
+     * Tests the lack of rep exposure
+     */
     @Test
     void noRepExposureTest(){
 
