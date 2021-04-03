@@ -15,6 +15,7 @@ public class WarehouseTest {
     @Test
     public void testShelvesSize() {
         Warehouse w = new Warehouse(3);
+
         assertNotNull(w.getShelves());
         assertEquals(w.getShelvesCount(), w.getShelves().size());
         for (int i = 0; i < w.getShelvesCount(); i++)

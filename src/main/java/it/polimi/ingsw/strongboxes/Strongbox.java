@@ -30,6 +30,15 @@ public class Strongbox {
     }
 
     /**
+     * Returns the quantity of the resources contained.
+     *
+     * @return  the quantity of the resources
+     */
+    public int getQuantity() {
+        return resources.values().stream().reduce(0, Integer::sum);
+    }
+
+    /**
      * Adds a resource of the given type
      *
      * @param resType       the resource to add
@@ -68,15 +77,5 @@ public class Strongbox {
      */
     public boolean isEmpty() {
         return resources.isEmpty();
-    }
-
-    /**
-     * Returns the quantity of the resources contained.
-     *
-     * @return  the quantity of the resources
-     */
-    public int getQuantity(){
-        return resources.values().stream()
-                .reduce(0, (a,b)->a+b);
     }
 }

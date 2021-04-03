@@ -22,6 +22,7 @@ public class ResourceShelfTest {
         assertNull(s.getResType());
         assertEquals(c, s.getBoundedResType());
         assertEquals(0, s.getQuantity());
+        assertEquals(s.getResourceQuantity(s.getBoundedResType()), s.getQuantity());
     }
 
     /**
@@ -48,6 +49,7 @@ public class ResourceShelfTest {
         assertNull(s.getResType());
         assertEquals(c, s.getBoundedResType());
         assertEquals(0, s.getQuantity());
+        assertEquals(s.getResourceQuantity(s.getBoundedResType()), s.getQuantity());
     }
 
     /**
@@ -55,8 +57,8 @@ public class ResourceShelfTest {
      */
     @Test
     public void testAddGet() {
-        Shelf s = new Shelf(3);
         ResourceType c = Coin.getInstance();
+        ResourceShelf s = new ResourceShelf(c, 3);
 
         try {
             s.addResource(c);
@@ -69,6 +71,8 @@ public class ResourceShelfTest {
         assertFalse(s.isEmpty());
         assertTrue(s.isFull());
         assertEquals(c, s.getResType());
+        assertEquals(c, s.getBoundedResType());
         assertEquals(3, s.getQuantity());
+        assertEquals(s.getResourceQuantity(s.getBoundedResType()), s.getQuantity());
     }
 }

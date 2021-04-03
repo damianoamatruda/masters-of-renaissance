@@ -66,11 +66,6 @@ public class Shelf extends Strongbox {
     }
 
     @Override
-    public int getQuantity() {
-        return super.getResourceQuantity(resType);
-    }
-
-    @Override
     public void addResource(ResourceType resType) throws Exception {
         if (this.resType != null && !resType.equals(this.resType))
             throw new Exception();

@@ -19,6 +19,7 @@ public class StrongboxTest {
 
         assertTrue(s.isEmpty());
         assertEquals(0, s.getResourceQuantity(c));
+        assertEquals(0, s.getQuantity());
     }
 
     /**
@@ -42,6 +43,7 @@ public class StrongboxTest {
 
         assertTrue(s.isEmpty());
         assertEquals(0, s.getResourceQuantity(c));
+        assertEquals(0, s.getQuantity());
     }
 
     /**
@@ -62,5 +64,6 @@ public class StrongboxTest {
 
         assertFalse(s.isEmpty());
         assertEquals(3, s.getResourceQuantity(c));
+        assertEquals(3, s.getQuantity());
     }
 }

@@ -15,7 +15,6 @@ public class ShelfTest {
     @Test
     public void testQuantity1() {
         Shelf s = new Shelf(3);
-        ResourceType c = Coin.getInstance();
 
         assertTrue(s.isEmpty());
         assertFalse(s.isFull());
@@ -68,5 +67,6 @@ public class ShelfTest {
         assertTrue(s.isFull());
         assertEquals(c, s.getResType());
         assertEquals(3, s.getQuantity());
+        assertEquals(s.getResourceQuantity(s.getResType()), s.getQuantity());
     }
 }
