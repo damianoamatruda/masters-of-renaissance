@@ -83,8 +83,8 @@ public class Player {
      */
     public Player(Player player){
         nickname=player.nickname;
-        leaders=new ArrayList(player.leaders);
-        warehouse = player.warehouse; // TODO: Make a deep copy of the Warehouse
+        leaders=new ArrayList<>(player.leaders);
+        warehouse = new Warehouse(player.warehouse);
         strongbox = new Strongbox(player.strongbox);
         inkwell=player.inkwell;
         faithPoints=player.faithPoints;
@@ -92,15 +92,6 @@ public class Player {
         active=player.active;
         winner=player.winner;
         devSlots=player.devSlots; //TODO: Also deep copy needed
-    }
-
-    /*
-     * Overridable copy method.
-     *
-     * @return  a deep copy of itself
-     */
-    public Player copy() {
-        return new Player(this);
     }
 
     /** Getter of the number of production slots available

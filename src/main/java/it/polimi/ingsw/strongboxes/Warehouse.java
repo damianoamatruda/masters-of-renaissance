@@ -24,6 +24,15 @@ public class Warehouse {
     }
 
     /**
+     * Copy constructor. Makes a deep copy of a Warehouse.
+     */
+    public Warehouse(Warehouse warehouse) {
+        shelves = new ArrayList<>();
+        for (WarehouseShelf warehouseShelf : warehouse.shelves)
+            shelves.add(new WarehouseShelf(warehouseShelf));
+    }
+
+    /**
      * Returns the number of shelves inside the warehouse
      *
      * @return  the number of shelves
