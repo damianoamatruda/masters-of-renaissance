@@ -26,7 +26,7 @@ public class ProductionTest {
 
         Game game = new Game(new ArrayList<>(){{
             add("player");
-        }});
+        }}, new ArrayList<>(), new ArrayList<>(), 0);
         Player player = game.getPlayers().get(0);
         try {
             player.getStrongbox().addResource(Coin.getInstance());
@@ -71,7 +71,7 @@ public class ProductionTest {
 
         Game game = new Game(new ArrayList<>(){{
             add("player");
-        }});
+        }}, new ArrayList<>(), new ArrayList<>(), 0);
         Player player = game.getPlayers().get(0);
         try {
             player.getStrongbox().addResource(Coin.getInstance());
@@ -123,7 +123,7 @@ public class ProductionTest {
 
         Game game = new Game(new ArrayList<>(){{
             add("player");
-        }});
+        }}, new ArrayList<>(), new ArrayList<>(), 0);
         Player player = game.getPlayers().get(0);
         try {
             player.getStrongbox().addResource(Coin.getInstance());

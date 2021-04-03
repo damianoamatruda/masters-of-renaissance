@@ -20,7 +20,7 @@ public class SoloGameTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame(new Game(new ArrayList<>()), stack);
+        SoloGame solo = new SoloGame(new Game(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0), stack);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 

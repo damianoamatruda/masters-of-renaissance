@@ -2,8 +2,6 @@ package it.polimi.ingsw.actiontokens;
 
 import it.polimi.ingsw.Game;
 import it.polimi.ingsw.SoloGame;
-import it.polimi.ingsw.actiontokens.ActionToken;
-import it.polimi.ingsw.actiontokens.ActionTokenBlackMoveOneShuffle;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +20,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
-        SoloGame solo = new SoloGame(new Game(new ArrayList<>()), stack);
+        SoloGame solo = new SoloGame(new Game(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0), stack);
 
 
         token.trigger(solo);
@@ -37,7 +35,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame(new Game(new ArrayList<>()), stack);
+        SoloGame solo = new SoloGame(new Game(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0), stack);
         List stack2 = new ArrayList(stack);
         stack2.remove(0);
 

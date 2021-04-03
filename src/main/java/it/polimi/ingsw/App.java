@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -13,11 +13,7 @@ public class App {
      * @param args  the arguments
      */
     public static void main(String[] args) {
-        Game game = new Game(new ArrayList<String>(){{
-            add("Player1");
-            add("Player2");
-            add("Player3");
-        }});
+        Game game = new Game(List.of("Player1", "Player2", "Player3"), Game.getLeaderCards(), Game.getDevCards(), 4);
         //game = new SoloGame(game, new ArrayList<>());
 
         System.out.println("Players: " + game.getPlayers().stream()

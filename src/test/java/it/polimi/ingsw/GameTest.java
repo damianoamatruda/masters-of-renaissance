@@ -19,7 +19,7 @@ public class GameTest {
      */
     @BeforeAll
     public void setup(){
-        game = new Game(List.of("Alessandro","Damiano","Marco"));
+        game = new Game(List.of("Alessandro","Damiano","Marco"), new ArrayList<>(), new ArrayList<>(), 0);
     }
 
     /**

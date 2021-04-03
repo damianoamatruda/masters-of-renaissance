@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 //import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class PlayerTest {
      */
     @BeforeAll
     void setup(){
-        game = game = new Game(List.of("Alessandro","Damiano","Marco"));
+        game = game = new Game(List.of("Alessandro","Damiano","Marco"), new ArrayList<>(), new ArrayList<>(), 0);
         player = game.getPlayers().get(0);
     }
 

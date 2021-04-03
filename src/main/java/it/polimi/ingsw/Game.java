@@ -7,7 +7,6 @@ import it.polimi.ingsw.strongboxes.Strongbox;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Map.entry;
 
@@ -79,20 +78,33 @@ public class /*Base*/Game /*implements IGame*/{
     protected Game(){}
 
     /** Constructor of Game instances
-     * @param nicknames the list of nicknames of players who joined
+     * @param nicknames             the list of nicknames of players who joined
+     * @param leaderCards           the list of all the leader cards in the game
+     * @param devCards              the list of all the development cards in the game
+     * @param playerLeadersCount    number of distinct leader cards given to each player at the beginning of the game
      */
-    public Game(List<String> nicknames){
+    public Game(List<String> nicknames, List<LeaderCard> leaderCards, List<DevelopmentCard> devCards, int playerLeadersCount){
         if (nicknames.size() > MAX_PLAYERS_COUNT)
             throw new RuntimeException();
-        // TODO: Implement assignment of the 4 initial leader cards
-        List<LeaderCard> devCards = getLeaderCards();
-        List<DevelopmentCard> leaderCards = getDevCards();
+        if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
+            throw new RuntimeException();
+        if (playerLeadersCount > 0 && nicknames.size() > leaderCards.size() / playerLeadersCount)
+            throw new RuntimeException();
 
-        this.players=nicknames.stream()
-                .map(nickname -> new Player(nickname, new ArrayList<>(), nicknames.indexOf(nickname) == 0))
-                .collect(Collectors.toList());
+        /* Create the players and assign their initial random leader cards */
+        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
+        Collections.shuffle(shuffledLeaderCards);
+        this.players = new ArrayList<>();
+        for (int i = 0; i < nicknames.size(); i++) {
+            this.players.add(new Player(
+                    nicknames.get(i),
+                    shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
+                    i == 0));
+        }
 
-        this.devGrid=new HashMap<>(); // TODO: Implement creation of the dev grid
+        // TODO: Implement creation of the dev grid
+        this.devGrid=new HashMap<>();
+
         this.market=new Market(new HashMap<>(){{
             put(Coin.getInstance(), MARKET_COIN_COUNT);
             put(Faith.getInstance(), MARKET_FAITH_COUNT);
@@ -101,16 +113,19 @@ public class /*Base*/Game /*implements IGame*/{
             put(Stone.getInstance(), MARKET_STONE_COUNT);
             put(Zero.getInstance(), MARKET_ZERO_COUNT);
         }}, MARKET_COLS_COUNT);
+
         vaticanSections = new HashMap<Integer, Integer[]>(){{
             put(8, new Integer[]{5, 2});
             put(16, new Integer[]{12, 3});
             put(24, new Integer[]{19, 4});
         }};
+
         activatedVaticanSections = new HashMap<>(){{
             put(8, false);
             put(16, false);
             put(24, false);
         }};
+
         yellowTiles = new HashMap<>(){{
             put(3, 1);
             put(6, 2);
@@ -337,8 +352,8 @@ public class /*Base*/Game /*implements IGame*/{
      * Returns the list of all possible develompent cards.
      * @return  list of development cards
      */
-    private static List<DevelopmentCard> getDevCards() {
-        return new ArrayList<>(Arrays.asList(
+    public static List<DevelopmentCard> getDevCards() {
+        return List.of(
                 /* 1 */
                 new DevelopmentCard(
                         Green.getInstance(), 1,
@@ -995,16 +1010,15 @@ public class /*Base*/Game /*implements IGame*/{
                                         entry(Servant.getInstance(), 3)),
                                 false),
                         12)
-        ));
+        );
     }
 
     /**
      * Returns the list of all possible leader cards.
      * @return  list of leader cards
      */
-    private static List<LeaderCard> getLeaderCards() {
-        // TODO: Implement
-        return new ArrayList<>(Arrays.asList(
+    public static List<LeaderCard> getLeaderCards() {
+        return List.of(
                 /* 49 */
                 new DiscountLeader(1, Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
                         entry(Map.ofEntries(
@@ -1141,6 +1155,6 @@ public class /*Base*/Game /*implements IGame*/{
                                 entry(Green.getInstance(), 2)
                         ), 1)
                 )), 4)
-        ));
+        );
     }
 }

@@ -74,8 +74,8 @@ public class Player {
         winner=false;
         devSlots = new ArrayList<>();
 
-        for (int i = 0; i < Player.DEV_SLOTS_COUNT; i++)
-            devSlots.add(new Stack<DevelopmentCard>());
+        for (int i = 0; i < DEV_SLOTS_COUNT; i++)
+            devSlots.add(new Stack<>());
     }
 
     /**

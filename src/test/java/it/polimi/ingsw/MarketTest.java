@@ -62,7 +62,7 @@ public class MarketTest {
 
         Game game = new Game(new ArrayList(){{
             add("player");
-        }});
+        }}, new ArrayList<>(), new ArrayList<>(), 0);
         Player player = game.getPlayers().get(0);
         Map<ResourceType, Shelf> shelves = new HashMap<>(){{
             put(Coin.getInstance(), new Shelf(12));
