@@ -33,7 +33,7 @@ public class LeaderCardTest {
     void activateWithRequirements() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
         
-        Player p = new Player("", List.of(leader), false);
+        Player p = new Player("", List.of(leader), false, 0, 0, 0);
         try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
         assertDoesNotThrow(() -> leader.activate(p));
@@ -44,7 +44,7 @@ public class LeaderCardTest {
     void activateWrongResources() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
         
-        Player p = new Player("", List.of(leader), false);
+        Player p = new Player("", List.of(leader), false, 0, 0, 0);
         try { p.getStrongbox().addResource(Shield.getInstance()); } catch (Exception e) { }
 
         assertThrows(Exception.class, () -> leader.activate(p));

@@ -36,7 +36,7 @@ public class SoloGame extends Game /*extends GameDecorator*/{
                     Map<ResourceType, Integer> marketResources,
                     int marketColsCount,
                     List<ActionToken> actionTokens){
-        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount, marketResources, marketColsCount);
+        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount, marketResources, marketColsCount, 0, 0, 0, 0);
         this.actionTokens = actionTokens;
         blackPoints = 0;
         blackWinner = false;
@@ -64,7 +64,7 @@ public class SoloGame extends Game /*extends GameDecorator*/{
      */
     @Override
     public boolean hasEnded(){
-        if(blackPoints == Player.getMaxFaithPointsCount() || devGrid.size() < getDevGridColorsCount()){
+        if(blackPoints == maxFaithPointsCount || devGrid.size() < getDevGridColorsCount()){
             setBlackWinner();
             return true;
         }

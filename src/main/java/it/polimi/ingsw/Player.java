@@ -12,17 +12,8 @@ import java.util.*;
  */
 
 public class Player {
-    /** Number of possible production slots that can be occupied by development cards */
-    private static final int DEV_SLOTS_COUNT=3;
-
-    /** Number of the last reachable faith track tile */
-    private static final int MAX_FAITH_POINTS_COUNT=24;
-
-    /** Number of basic shelves inside of the player's warehouse */
-    private static final int WAREHOUSE_SHELVES_COUNT=3;
-
     /** Number of development cards the player can have, before triggering the end of the game */
-    private static final int MAX_OBTAINABLE_DEV_CARDS=7;
+    private final int maxObtainableDevCards;
 
     /** The player's nickname */
     private String nickname;
@@ -58,14 +49,22 @@ public class Player {
     private boolean winner;
 
     /** Initializes player's attributes
-     * @param nickname  the player's nickname to be seen by all the players
-     * @param leaders   the 4 initially assigned leader cards
-     * @param inkwell   received only by the first player
+     * @param nickname              the player's nickname to be seen by all the players
+     * @param leaders               the 4 initially assigned leader cards
+     * @param inkwell               received only by the first player
+     * @param warehouseShelvesCount number of basic shelves inside of the player's warehouse
+     * @param devSlotsCount         number of possible production slots that can be occupied by development cards
+     * @param maxObtainableDevCards number of development cards the player can have, before triggering the end of the game
      */
-    public Player(String nickname, List<LeaderCard> leaders, boolean inkwell){
+    public Player(String nickname,
+                  List<LeaderCard> leaders,
+                  boolean inkwell,
+                  int warehouseShelvesCount,
+                  int devSlotsCount,
+                  int maxObtainableDevCards){
         this.nickname=nickname;
         this.leaders=leaders;
-        this.warehouse = new Warehouse(WAREHOUSE_SHELVES_COUNT);
+        this.warehouse = new Warehouse(warehouseShelvesCount);
         this.strongbox = new Strongbox();
         this.inkwell=inkwell;
         faithPoints=0;
@@ -74,8 +73,10 @@ public class Player {
         winner=false;
         devSlots = new ArrayList<>();
 
-        for (int i = 0; i < DEV_SLOTS_COUNT; i++)
+        for (int i = 0; i < devSlotsCount; i++)
             devSlots.add(new Stack<>());
+
+        this.maxObtainableDevCards = maxObtainableDevCards;
     }
 
     /**
@@ -93,25 +94,14 @@ public class Player {
         victoryPoints=player.victoryPoints;
         active=player.active;
         winner=player.winner;
-        devSlots=player.devSlots; /* Shallow copy */
+        devSlots=new ArrayList<>(player.devSlots); /* Shallow copy */
+        maxObtainableDevCards=player.maxObtainableDevCards;
     }
 
     /** Getter of the number of production slots available
      * @return the number of slots */
-    public static int getDevSlotsCount(){
-        return DEV_SLOTS_COUNT;
-    }
-
-    /** Getter of the number of the last reachable tile
-     * @return the last reachable tile */
-    public static int getMaxFaithPointsCount(){
-        return MAX_FAITH_POINTS_COUNT;
-    }
-
-    /** Getter of the number of cards after which the end of the game is triggered
-     * @return number of cards after which the end of the game is triggered */
-    public static int getMaxObtainableDevCards() {
-        return MAX_OBTAINABLE_DEV_CARDS;
+    public int getDevSlotsCount(){
+        return devSlots.size();
     }
 
     /** Getter of the player's visible nickname
@@ -283,7 +273,7 @@ public class Player {
 
         return devSlots.stream()
                 .mapToInt(stack -> stack.size())
-                .sum() == MAX_OBTAINABLE_DEV_CARDS;
+                .sum() == maxObtainableDevCards;
     }
 
     /**

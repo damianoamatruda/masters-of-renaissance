@@ -16,7 +16,7 @@ import it.polimi.ingsw.resourcetypes.*;
 public class ResourceRequirementTest {
     @Test
     void checkReqsWrongRes() {
-        Player p = new Player("", List.of(), false);
+        Player p = new Player("", List.of(), false, 0, 0, 0);
         try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
         ResourceRequirement req = new ResourceRequirement(Map.of(Shield.getInstance(), 1));
@@ -26,7 +26,7 @@ public class ResourceRequirementTest {
 
     @Test
     void checkRequirements() {
-        Player p = new Player("", List.of(), false);
+        Player p = new Player("", List.of(), false, 0, 0, 0);
         try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
         ResourceRequirement req = new ResourceRequirement(Map.of(Coin.getInstance(), 1));

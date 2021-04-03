@@ -22,16 +22,16 @@ public class /*Base*/Game /*implements IGame*/{
     protected Map<DevCardColor, List<Stack<DevelopmentCard>>> devGrid;
 
     /** Number of distinct rows of separate decks that represent different development card levels */
-    private final int devGridLevelsCount;
+    protected final int devGridLevelsCount;
 
     /** Number of distinct columns of separate decks that represent different development card colors */
-    private final int devGridColorsCount;
+    protected final int devGridColorsCount;
 
     /** Reference to the "Market Board", from which resources can be "bought" */
-    private final Market market;
+    protected final Market market;
 
     /** Reference to the collection from which all the player's data can be accessed */
-    private List<Player> players;
+    protected List<Player> players;
 
     /** Variable that maps the Vatican report tile to the corresponding state of activation
      * Boolean value represents whether or not the Vatican report is already over */
@@ -45,24 +45,31 @@ public class /*Base*/Game /*implements IGame*/{
      * 2) The corresponding amount of bonus points that will be rewarded to the players after the Report is over */
     private final Map<Integer, Integer[]> vaticanSections;
 
+    /** Number of the last reachable faith track tile by a player */
+    protected final int maxFaithPointsCount;
+
     /** Progressive number of the current turn */
-    private int turns = 1;
+    protected int turns = 1;
 
     /** Flag that indicates the Game is about to end */
-    private boolean lastTurn;
+    protected boolean lastTurn;
 
     // /** Default constructor of Game (Will not be used by the controller to create Game) */
     // protected Game(){}
 
     /** Constructor of Game instances
-     * @param nicknames             the list of nicknames of players who joined
-     * @param leaderCards           the list of all the leader cards in the game
-     * @param playerLeadersCount    number of distinct leader cards given to each player at the beginning of the game
-     * @param devCards              the list of all the development cards in the game
-     * @param devGridLevelsCount    number of distinct rows of separate decks that represent different development card levels
-     * @param devGridColorsCount    number of distinct columns of separate decks that represent different development card colors
-     * @param marketResources       map of the resources to put inside the market
-     * @param marketColsCount       number of columns in the market grid
+     * @param nicknames                     the list of nicknames of players who joined
+     * @param leaderCards                   the list of all the leader cards in the game
+     * @param playerLeadersCount            number of distinct leader cards given to each player at the beginning of the game
+     * @param devCards                      the list of all the development cards in the game
+     * @param devGridLevelsCount            number of distinct rows of separate decks that represent different development card levels
+     * @param devGridColorsCount            number of distinct columns of separate decks that represent different development card colors
+     * @param marketResources               map of the resources to put inside the market
+     * @param marketColsCount               number of columns in the market grid
+     * @param maxFaithPointsCount           number of the last reachable faith track tile by a player
+     * @param playerWarehouseShelvesCount   number of basic shelves inside of each player's warehouse
+     * @param playerDevSlotsCount           number of possible player's production slots that can be occupied by development cards
+     * @param playerMaxObtainableDevCards   number of development cards each player can have, before triggering the end of the game
      */
     public Game(List<String> nicknames,
                 List<LeaderCard> leaderCards,
@@ -71,7 +78,11 @@ public class /*Base*/Game /*implements IGame*/{
                 int devGridLevelsCount,
                 int devGridColorsCount,
                 Map<ResourceType, Integer> marketResources,
-                int marketColsCount) {
+                int marketColsCount,
+                int maxFaithPointsCount,
+                int playerWarehouseShelvesCount,
+                int playerDevSlotsCount,
+                int playerMaxObtainableDevCards) {
         if (nicknames.size() > MAX_PLAYERS_COUNT)
             throw new RuntimeException();
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
@@ -87,7 +98,7 @@ public class /*Base*/Game /*implements IGame*/{
             this.players.add(new Player(
                     nicknames.get(i),
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
-                    i == 0));
+                    i == 0, playerWarehouseShelvesCount, playerDevSlotsCount, playerMaxObtainableDevCards));
 
         // TODO: Implement creation of the dev grid
         this.devGrid=new HashMap<>();
@@ -121,6 +132,8 @@ public class /*Base*/Game /*implements IGame*/{
             put(21, 16);
             put(24, 20);
         }};
+
+        this.maxFaithPointsCount = maxFaithPointsCount;
     }
 
     /**
@@ -248,7 +261,7 @@ public class /*Base*/Game /*implements IGame*/{
 
         activatedVaticanSections.put(trackPoints,true);
 
-        if(trackPoints == Player.getMaxFaithPointsCount())
+        if(trackPoints == maxFaithPointsCount)
             lastTurn = true;
     }
 
