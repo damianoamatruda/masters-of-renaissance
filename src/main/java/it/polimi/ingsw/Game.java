@@ -1,9 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.*;
-import it.polimi.ingsw.leadercards.DepotLeader;
-import it.polimi.ingsw.leadercards.DiscountLeader;
-import it.polimi.ingsw.leadercards.LeaderCard;
+import it.polimi.ingsw.leadercards.*;
 import it.polimi.ingsw.resourcetypes.*;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
@@ -1008,21 +1006,141 @@ public class /*Base*/Game /*implements IGame*/{
         // TODO: Implement
         return new ArrayList<>(Arrays.asList(
                 /* 49 */
+                new DiscountLeader(1, Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Yellow.getInstance(), 0),
+                                entry(Green.getInstance(), 0)
+                        ), 1)
+                )), 2),
                 /* 50 */
+                new DiscountLeader(1, Shield.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Blue.getInstance(), 0),
+                                entry(Purple.getInstance(), 0)
+                        ), 1)
+                )), 2),
                 /* 51 */
+                new DiscountLeader(1, Stone.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Green.getInstance(), 0),
+                                entry(Blue.getInstance(), 0)
+                        ), 1)
+                )), 2),
                 /* 52 */
+                new DiscountLeader(1, Coin.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Yellow.getInstance(), 0),
+                                entry(Purple.getInstance(), 0)
+                        ), 1)
+                )), 2),
                 /* 53 */
+                new DepotLeader(2, Stone.getInstance(), new ResourceRequirement(Map.ofEntries(
+                        entry(Coin.getInstance(), 5)
+                )), 3),
                 /* 54 */
+                new DepotLeader(2, Servant.getInstance(), new ResourceRequirement(Map.ofEntries(
+                        entry(Stone.getInstance(), 5)
+                )), 3),
                 /* 55 */
+                new DepotLeader(2, Shield.getInstance(), new ResourceRequirement(Map.ofEntries(
+                        entry(Servant.getInstance(), 5)
+                )), 3),
                 /* 56 */
+                new DepotLeader(2, Coin.getInstance(), new ResourceRequirement(Map.ofEntries(
+                        entry(Shield.getInstance(), 5)
+                )), 3),
                 /* 57 */
+                new ZeroLeader(Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Yellow.getInstance(), 0)
+                        ), 2),
+                        entry(Map.ofEntries(
+                                entry(Blue.getInstance(), 0)
+                        ), 1)
+                )), 5),
                 /* 58 */
+                new ZeroLeader(Shield.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Green.getInstance(), 0)
+                        ), 2),
+                        entry(Map.ofEntries(
+                                entry(Purple.getInstance(), 0)
+                        ), 1)
+                )), 5),
                 /* 59 */
+                new ZeroLeader(Stone.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Blue.getInstance(), 0)
+                        ), 2),
+                        entry(Map.ofEntries(
+                                entry(Yellow.getInstance(), 0)
+                        ), 1)
+                )), 5),
                 /* 60 */
+                new ZeroLeader(Coin.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Purple.getInstance(), 0)
+                        ), 2),
+                        entry(Map.ofEntries(
+                                entry(Green.getInstance(), 0)
+                        ), 1)
+                )), 5),
                 /* 61 */
+                new ProductionLeader(
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Zero.getInstance(), 1),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Yellow.getInstance(), 2)
+                        ), 1)
+                )), 4),
                 /* 62 */
+                new ProductionLeader(
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Zero.getInstance(), 1),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Blue.getInstance(), 2)
+                        ), 1)
+                )), 4),
                 /* 63 */
+                new ProductionLeader(
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Zero.getInstance(), 1),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Purple.getInstance(), 2)
+                        ), 1)
+                )), 4),
                 /* 64 */
+                new ProductionLeader(
+                        new Production(
+                                Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)),
+                                Map.ofEntries(
+                                        entry(Zero.getInstance(), 1),
+                                        entry(Faith.getInstance(), 1)),
+                                false),
+                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
+                        entry(Map.ofEntries(
+                                entry(Green.getInstance(), 2)
+                        ), 1)
+                )), 4)
         ));
     }
 }
