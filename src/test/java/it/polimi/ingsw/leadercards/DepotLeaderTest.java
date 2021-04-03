@@ -12,16 +12,6 @@ import it.polimi.ingsw.resourcetypes.Coin;
  */
 public class DepotLeaderTest {
     /**
-     * Creation of a DepotLeader with its binding resource set to null.
-     */
-    @Test
-    void getNullResourceDepot() {
-        DepotLeader leader = new DepotLeader(1, null, null, 0);
-
-        assertNotNull(leader.getDepot());
-    }
-
-    /**
      * Creation of a DepotLeader with a zero-sized depot.
      */
     @Test

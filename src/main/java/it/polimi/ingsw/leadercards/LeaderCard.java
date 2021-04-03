@@ -32,6 +32,7 @@ public abstract class LeaderCard extends Card {
      */
     public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(victoryPoints);
+        assert resource != null && !resource.isBlank();
         this.requirement = requirement;
         this.resource = resource;
     }
@@ -97,11 +98,11 @@ public abstract class LeaderCard extends Card {
      * Processes <code>Zero</code> resources. If the leader is a ZeroLeader,
      * they are replaced by the <code>ResourceType</code> of the leader card.
      *
-     * @param resources the resources to be processed.
+     * @param toProcess the resources to be processed.
      * @param zeros     the resources to substitute to the zeros.
      *                  If there's resources of different type from the leader's, they will be ignored.
      *                  If the leader's resource has a non-zero value, the leader is activated.
      * @return          the resources transformed as per the leader's ability.
      */
-    public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> resources, Map<ResourceType, Integer> zeros) { return resources; }
+    public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> toProcess, Map<ResourceType, Integer> zeros) { return toProcess; }
 }

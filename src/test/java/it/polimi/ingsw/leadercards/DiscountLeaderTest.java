@@ -29,28 +29,26 @@ public class DiscountLeaderTest {
         ogNonemptyCost.put(Coin.getInstance(), 1);
 
         List<Map<ResourceType, Integer>> ogCosts = Arrays.asList(null, ogZeroCost, ogNonemptyCost); // cost maps to discount
-        List<ResourceType> resources = Arrays.asList(null, Coin.getInstance()); // resources to test
         List<Integer> discounts = Arrays.asList(-1, 0, 1);                      // discount amounts
 
         // build every possible combination of the above
-        resources.forEach(res ->
-            discounts.forEach(discount ->
-                ogCosts.forEach(cost ->
-                    arguments.add(Arguments.of(res, discount, cost)))));
+        discounts.forEach(discount ->
+            ogCosts.forEach(cost ->
+                arguments.add(Arguments.of(discount, cost))));
 
         return arguments.stream();
     }
 
     @ParameterizedTest
     @MethodSource("provideParameters")
-    void getDevCardCost(ResourceType resource, int discount, Map<ResourceType, Integer> ogCost) {
-        DiscountLeader leader = new DiscountLeader(discount, resource, null, 0);
+    void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {
+        DiscountLeader leader = new DiscountLeader(discount, Coin.getInstance(), null, 0);
         
         Map<ResourceType, Integer> postCost = leader.getDevCardCost(ogCost);
 
-        if (ogCost != null)
-            ogCost.forEach((r, c) -> assertEquals(r != resource ? c : (c == null ? null : c - discount), postCost.get(r)));
-        else
+        if (ogCost == null)
             assertNull(leader.getDevCardCost(ogCost));
+        else
+            ogCost.forEach((r, c) -> assertEquals(r != Coin.getInstance() ? c : (c == null ? null : c - discount), postCost.get(r)));
     }
 }
