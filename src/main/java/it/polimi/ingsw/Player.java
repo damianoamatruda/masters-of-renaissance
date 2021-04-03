@@ -150,14 +150,13 @@ public class Player {
     /**
      * Action performed when the player discards a leader card. The player receives one faith point
      * @param index the index of the card to be discarded
+     * @throws Exception leader is already active
      */
     public void discardLeader(int index) throws Exception {
-        if(getLeader(index).isActive()) throw new Exception();
+        LeaderCard toBeDiscarded = getLeader(index);
+        if(toBeDiscarded.isActive()) throw new Exception();
+        toBeDiscarded.onDiscarded(this);
         leaders.remove(index);
-        for(Player p : game.getPlayers()){
-            if(!p.equals(this))
-                p.incrementFaithPoints();
-        }
     }
 
     /**

@@ -1,11 +1,14 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.*;
+import it.polimi.ingsw.leadercards.DepotLeader;
+import it.polimi.ingsw.leadercards.DiscountLeader;
 import it.polimi.ingsw.leadercards.LeaderCard;
 import it.polimi.ingsw.resourcetypes.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Map.entry;
 
@@ -85,10 +88,14 @@ public class /*Base*/Game /*implements IGame*/{
         // TODO: Implement assignment of the 4 initial leader cards
         List<LeaderCard> devCards = getLeaderCards();
         List<DevelopmentCard> leaderCards = getDevCards();
+
         this.players=nicknames.stream()
-                .map(nickname -> new Player(this, nickname, new ArrayList<>(),
+                .map(nickname -> new Player(this, nickname,
+                        Stream.of(new DiscountLeader(2, Coin.getInstance(),  null, 0),
+                                new DepotLeader(2, Coin.getInstance(),  null, 0)).collect(Collectors.toList()),
                         nicknames.indexOf(nickname) == 0))
                 .collect(Collectors.toList());
+
         this.devGrid=new HashMap<>(); // TODO: Implement creation of the dev grid
         this.market=new Market(new HashMap<>(){{
             put(Coin.getInstance(), MARKET_COIN_COUNT);
@@ -289,6 +296,7 @@ public class /*Base*/Game /*implements IGame*/{
     private void setWinnerPlayer(){
         sumPointsFromYellowTiles();
         sumResourcesVictoryPoints();
+        sumCardsVictoryPoints();
         int maxPts = players.stream()
                 .mapToInt(Player::getVictoryPoints)
                 .max()
@@ -322,6 +330,10 @@ public class /*Base*/Game /*implements IGame*/{
                     .reduce(0, (a, b) -> Integer.max(a, b));
             p.incrementVictoryPoints(yellowTiles.get(lastYellowTileReached));
         }
+    }
+
+    private void sumCardsVictoryPoints(){
+        //TODO: implementation
     }
 
     /**
