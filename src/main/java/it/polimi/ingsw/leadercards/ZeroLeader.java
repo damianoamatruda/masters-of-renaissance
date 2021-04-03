@@ -4,6 +4,7 @@ import it.polimi.ingsw.CardRequirement;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.resourcetypes.Zero;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,20 +25,26 @@ public class ZeroLeader extends LeaderCard {
     }
 
     @Override
-    public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> resources, Map<ResourceType, Integer> zeros) {
-        Map<ResourceType, Integer> resCopy = Map.copyOf(resources);
+    public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> toProcess, Map<ResourceType, Integer> zeros) {
+        if (toProcess == null) return null;
         
-        // if zeros contains this card's resource -> card has to be activated (leader was chosen by player)
-        if (zeros.containsKey(this.getResource())) {
-            // take amount of resources of this type to be substituted from zeros map
-            // and add them to the output resources
-            resCopy.compute(this.getResource(), (res, amount) -> amount + zeros.get(res));
+        Map<ResourceType, Integer> resCopy = new HashMap<>(toProcess);
+        
+        // if toProcess doesn't have zeros to convert, do nothing
+        // if zeros contains this card's resource -> card can be activated (leader was chosen by player)
+        if (toProcess.containsKey(Zero.getInstance()) && zeros.containsKey(this.getResource())) {
+            int convertibleAmount = toProcess.get(Zero.getInstance()),
+                chosenAmount = zeros.get(this.getResource()),
+                amountToConvert = Math.min(convertibleAmount, chosenAmount); // can't convert more than the lowest of the two
+
+            // add converted resources
+            resCopy.compute(this.getResource(), (res, amount) -> amount == null ? amountToConvert : amount + amountToConvert);
             
-            // subtract amount of substituted resources from zero key
-            resCopy.computeIfPresent(Zero.getInstance(), (res, amount) -> amount - zeros.get(res));
-            
-            // delete entry so it can't be re-processed when called in cascade with other leaders
-            zeros.remove(this.getResource());
+            // remove converted resources, deleting key if none left
+            // if there's some left, zeros can be used in successive conversions
+            // else it shouldn't be possible to do so, for that would transform more resources than it is allowed
+            resCopy.compute(Zero.getInstance(), (res, amount) -> amount - amountToConvert == 0 ? null : amount - amountToConvert);
+            zeros.compute(this.getResource(), (res, amount) -> amount - amountToConvert == 0 ? null : amount - amountToConvert);
         }
         
         return resCopy;
