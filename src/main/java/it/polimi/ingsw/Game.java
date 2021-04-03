@@ -62,7 +62,7 @@ public class /*Base*/Game /*implements IGame*/{
     private Map<Integer,Integer[]> vaticanSections;
 
     /** Progressive number of the current turn */
-    private int turns;
+    private int turns = 1;
 
     /** Flag that indicates the Game is about to end */
     private boolean lastTurn;
