@@ -72,10 +72,10 @@ public class Player {
         victoryPoints=0;
         active=true;
         winner=false;
-        devSlots = new ArrayList<>(){{
-            for(int i = 0; i < 3; i++)
-                add(new Stack<>());
-        }};
+        devSlots = new ArrayList<>();
+
+        for (int i = 0; i < Player.DEV_SLOTS_COUNT; i++)
+            devSlots.add(new Stack<DevelopmentCard>());
     }
 
     /**
