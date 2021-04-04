@@ -66,7 +66,7 @@ public class DevelopmentCard extends Card {
      * @param strongboxes   selection map specifying where to take the resources from.
      * @throws Exception    if the player does not own the required resources.
      */
-    public void onTaken(Game game, Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+    public void takeFromPlayer(Game game, Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
         cost.checkRequirements(player);
 
         cost.take(game, player, strongboxes);

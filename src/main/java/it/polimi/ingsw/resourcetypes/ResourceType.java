@@ -43,7 +43,7 @@ public abstract class ResourceType {
      * @param strongbox     the storage in which the resource is deposited, if applicable
      * @throws Exception    if it is not possible
      */
-    public void onGiven(Game game, Player player, Strongbox strongbox) throws Exception {
+    public void giveToPlayer(Game game, Player player, Strongbox strongbox) throws Exception {
         strongbox.addResource(this);
     }
 
@@ -55,7 +55,7 @@ public abstract class ResourceType {
      * @param strongbox     the storage from which the resource is removed, if applicable
      * @throws Exception    if it is not possible
      */
-    public void onTaken(Game game, Player player, Strongbox strongbox) throws Exception {
+    public void takeFromPlayer(Game game, Player player, Strongbox strongbox) throws Exception {
         strongbox.removeResource(this);
     }
 
@@ -67,7 +67,7 @@ public abstract class ResourceType {
      * @param strongbox     the storage from which the resource is discarded
      * @throws Exception    if it is not possible
      */
-    public void onDiscard(Game game, Player player, Strongbox strongbox) throws Exception {
+    public void discard(Game game, Player player, Strongbox strongbox) throws Exception {
         game.getPlayers().stream()
                 .filter(p -> !p.equals(player))
                 .forEach(p -> p.incrementFaithPoints(game));

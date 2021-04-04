@@ -39,10 +39,10 @@ public class PlayerTest {
     void getNumOfResourcesTestStrongboxOnly(){
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().onGiven(game, player, player.getStrongbox());
+                Coin.getInstance().giveToPlayer(game, player, player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().onGiven(game, player, player.getStrongbox());
-            Shield.getInstance().onGiven(game, player, player.getStrongbox());
+                Servant.getInstance().giveToPlayer(game, player, player.getStrongbox());
+            Shield.getInstance().giveToPlayer(game, player, player.getStrongbox());
             assertEquals(12, player.getNumOfResources());
         }
         catch (Exception e){
@@ -57,13 +57,13 @@ public class PlayerTest {
     void getNumOfResourcesTestAnyStorage(){
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().onGiven(game, player, player.getStrongbox());
+                Coin.getInstance().giveToPlayer(game, player, player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().onGiven(game, player, player.getStrongbox());
+                Servant.getInstance().giveToPlayer(game, player, player.getStrongbox());
             for(int i = 0; i < 2; i++)
-                Stone.getInstance().onGiven(game, player, player.getWarehouse().getShelves().get(1));
+                Stone.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(1));
 
-            Shield.getInstance().onGiven(game, player, player.getWarehouse().getShelves().get(0));
+            Shield.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(0));
             assertEquals(14, player.getNumOfResources());
         }
         catch (Exception e){
@@ -93,13 +93,13 @@ public class PlayerTest {
             }};
             try {
                 for (int i = 0; i < 4; i++)
-                    Coin.getInstance().onGiven(game, player, player.getStrongbox());
+                    Coin.getInstance().giveToPlayer(game, player, player.getStrongbox());
                 for (int i = 0; i < 7; i++)
-                    Servant.getInstance().onGiven(game, player, player.getStrongbox());
+                    Servant.getInstance().giveToPlayer(game, player, player.getStrongbox());
                 for (int i = 0; i < 2; i++)
-                    Stone.getInstance().onGiven(game, player, player.getWarehouse().getShelves().get(1));
+                    Stone.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(1));
 
-                Shield.getInstance().onGiven(game, player, player.getWarehouse().getShelves().get(0));
+                Shield.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(0));
 
                 player.addToDevSlot(game, 1, new DevelopmentCard(Blue.getInstance(), 1,
                                 new ResourceRequirement(

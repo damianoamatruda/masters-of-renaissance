@@ -144,12 +144,12 @@ public class Production {
                 for (int i = 0; i < quantity; i++) {
                     try {
                         if (take)
-                            resType.onTaken(game, player, strongbox);
+                            resType.takeFromPlayer(game, player, strongbox);
                         else
-                            resType.onGiven(game, player, strongbox);
+                            resType.giveToPlayer(game, player, strongbox);
                     } catch (Exception e) {
                         if (discardableOutput)
-                            resType.onDiscard(game, player, strongbox);
+                            resType.discard(game, player, strongbox);
                         else {
                             transferStorable(!take, game, player, history);
                             throw new Exception();
@@ -177,9 +177,9 @@ public class Production {
             int q = entry.getValue();
             for (int i = 0; i < q; i++)
                 if (take)
-                    r.onTaken(game, player, new Strongbox());
+                    r.takeFromPlayer(game, player, new Strongbox());
                 else
-                    r.onGiven(game, player, new Strongbox());
+                    r.giveToPlayer(game, player, new Strongbox());
         }
     }
 

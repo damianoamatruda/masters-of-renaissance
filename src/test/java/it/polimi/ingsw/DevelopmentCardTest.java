@@ -15,7 +15,7 @@ import it.polimi.ingsw.resourcetypes.*;
  */
 public class DevelopmentCardTest {
     @Test
-    void onTaken() {
+    void takeFromPlayer() {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
 
@@ -24,11 +24,11 @@ public class DevelopmentCardTest {
         try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
 
-        assertDoesNotThrow(() -> card.onTaken(g, p, Map.of(p.getStrongbox(), Map.of(Coin.getInstance(), 1))));
+        assertDoesNotThrow(() -> card.takeFromPlayer(g, p, Map.of(p.getStrongbox(), Map.of(Coin.getInstance(), 1))));
     }
 
     @Test
-    void onTakenNotEnoughRes() {
+    void takeFromPlayerNotEnoughRes() {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
         
@@ -36,6 +36,6 @@ public class DevelopmentCardTest {
         Player p = g.getPlayers().get(0);
         try { p.getStrongbox().addResource(Shield.getInstance()); } catch (Exception e) { }
 
-        assertThrows(Exception.class, () -> card.onTaken(g, p, Map.of(p.getStrongbox(), Map.of(Coin.getInstance(), 1))));
+        assertThrows(Exception.class, () -> card.takeFromPlayer(g, p, Map.of(p.getStrongbox(), Map.of(Coin.getInstance(), 1))));
     }
 }
