@@ -3,8 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -74,6 +74,8 @@ public class Production {
      * Activates the production. Replaces the blanks in input and in output, if applicable, with the given resources,
      * removes the input resources from the given strongboxes and adds the output resources in the given strongbox.
      *
+     * All resources have to be transferred in a single transaction.
+     *
      * @param game              the game the player is playing in
      * @param player            the player on which to trigger the action of the resource, if applicable
      * @param inputBlanksRep    the map of the resources to be given as replacement for blanks in input
@@ -83,43 +85,101 @@ public class Production {
      * @throws Exception        if it is not possible
      */
     public void activate(Game game, Player player,
-                         Map<ResourceType, Integer> inputBlanksRep, Map<ResourceType, Integer> outputBlanksRep,
+                         Map<ResourceType, Integer> inputBlanksRep,
+                         Map<ResourceType, Integer> outputBlanksRep,
                          Map<Strongbox, Map<ResourceType, Integer>> inputStrongboxes,
                          Map<Strongbox, Map<ResourceType, Integer>> outputStrongboxes) throws Exception {
         Map<ResourceType, Integer> replacedInput = replaceBlanks(input, inputBlanksRep);
+        Map<ResourceType, Integer> replacedOutput = replaceBlanks(output, outputBlanksRep);
+
         if (!checkStrongboxes(replacedInput, inputStrongboxes))
             throw new Exception();
-
-        Map<ResourceType, Integer> replacedOutput = replaceBlanks(output, outputBlanksRep);
         if (!checkStrongboxes(replacedOutput, outputStrongboxes))
             throw new Exception();
 
-        transferStorable(true, game, player, inputStrongboxes);
-        transferStorable(false, game, player, outputStrongboxes);
+        if (!discardableOutput) {
+            /* Get set of all strongboxes, both in input and in output */
+            Set<Strongbox> allStrongboxes = new HashSet<>();
+            allStrongboxes.addAll(inputStrongboxes.keySet());
+            allStrongboxes.addAll(outputStrongboxes.keySet());
 
-        transferNonStorable(true, game, player, filterNonStorable(replacedInput));
-        transferNonStorable(false, game, player, filterNonStorable(replacedOutput));
+            /* Make map of clones of all strongboxes */
+            Map<Strongbox, Strongbox> clonedStrongboxes = allStrongboxes.stream()
+                    .collect(Collectors.toMap(Function.identity(), Strongbox::copy));
+
+            /* Try to remove all input storable resources from cloned strongboxes;
+               if exception is thrown, the production is not possible */
+            for (Strongbox strongbox : inputStrongboxes.keySet())
+                for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
+                    for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
+                        try {
+                            resType.takeFromPlayer(game, player, clonedStrongboxes.get(strongbox));
+                        } catch (Exception e) {
+                            throw new Exception();
+                        }
+
+            /* Try to add all output storable resources into cloned strongboxes (already changed);
+               if exception is thrown, the production is not possible */
+            for (Strongbox strongbox : outputStrongboxes.keySet())
+                for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
+                    for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
+                        try {
+                            resType.giveToPlayer(game, player, clonedStrongboxes.get(strongbox));
+                        } catch (Exception e) {
+                            throw new Exception();
+                        }
+        }
+
+        /* Take all input storable resources from real strongboxes */
+        for (Strongbox strongbox : inputStrongboxes.keySet())
+            for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
+                for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
+                    try {
+                        resType.takeFromPlayer(game, player, strongbox);
+                    } catch (Exception e) {
+                        if (discardableOutput)
+                            resType.discard(game, player, strongbox);
+                        else
+                            throw new RuntimeException();
+                    }
+
+        /* Give all output storable resources from _real_ strongboxes */
+        for (Strongbox strongbox : outputStrongboxes.keySet())
+            for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
+                for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
+                    try {
+                        resType.giveToPlayer(game, player, strongbox);
+                    } catch (Exception e) {
+                        if (discardableOutput)
+                            resType.discard(game, player, strongbox);
+                        else
+                            throw new RuntimeException();
+                    }
+
+        Map<ResourceType, Integer> nonStorableReplacedInput = filterNonStorable(replacedInput);
+        Map<ResourceType, Integer> nonStorableReplacedOutput = filterNonStorable(replacedOutput);
+
+        /* Take all input non-storable resources from player */
+        for (ResourceType resType : nonStorableReplacedInput.keySet())
+            for (int i = 0; i < nonStorableReplacedInput.get(resType); i++)
+                resType.takeFromPlayer(game, player, new Strongbox());
+
+        /* Give all output non-storable resources to player */
+        for (ResourceType resType : nonStorableReplacedOutput.keySet())
+            for (int i = 0; i < nonStorableReplacedOutput.get(resType); i++)
+                resType.giveToPlayer(game, player, new Strongbox());
     }
 
     /**
-     * Replaces the blank resources in a given map.
+     * Filters the storable resources in a given map.
      *
-     * @param mapWithBlanks full map including blanks
-     * @param blanksRep     map of replacement of blanks
-     * @return              map with replaced blanks
-     * @throws Exception    if it is not possible
+     * @param map   full map of resources
+     * @return      map with only storable resources
      */
-    private static Map<ResourceType, Integer> replaceBlanks(Map<ResourceType, Integer> mapWithBlanks,
-                                                            Map<ResourceType, Integer> blanksRep) throws Exception {
-        if (!checkBlanksRepBlank(blanksRep))
-            throw new Exception();
-        if (!blanksRep.isEmpty() && !checkBlanksRepCount(mapWithBlanks, blanksRep))
-            throw new Exception();
-        Map<ResourceType, Integer> mapWithoutBlanks = mapWithBlanks.entrySet().stream()
-                .filter(e -> !e.getKey().isBlank())
+    private static Map<ResourceType, Integer> filterStorable(Map<ResourceType, Integer> map) {
+        return map.entrySet().stream()
+                .filter(e -> e.getKey().isStorable())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        blanksRep.forEach((r, q) -> mapWithoutBlanks.merge(r, q, Integer::sum));
-        return mapWithoutBlanks;
     }
 
     /**
@@ -135,93 +195,42 @@ public class Production {
     }
 
     /**
-     * Transfers storable resources to or from strongboxes in a transaction.
-     *
-     * @param take          true if transferred from a strongbox, otherwise false
-     * @param player        the player on which to trigger the action of the resource, if applicable
-     * @param strongboxes   the map of the strongboxes to use for all the resources
-     * @throws Exception    if it is not possible
-     */
-    private void transferStorable(boolean take, Game game, Player player,
-                                  Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
-        Map<Strongbox, Map<ResourceType, Integer>> history = new HashMap<>();
-        for (Map.Entry<Strongbox, Map<ResourceType, Integer>> sEntry : strongboxes.entrySet()) {
-            Strongbox strongbox = sEntry.getKey();
-            Map<ResourceType, Integer> map = sEntry.getValue();
-            for (Map.Entry<ResourceType, Integer> rEntry : map.entrySet()) {
-                ResourceType resType = rEntry.getKey();
-                int quantity = rEntry.getValue();
-                for (int i = 0; i < quantity; i++) {
-                    try {
-                        if (take)
-                            resType.takeFromPlayer(game, player, strongbox);
-                        else
-                            resType.giveToPlayer(game, player, strongbox);
-                    } catch (Exception e) {
-                        if (discardableOutput)
-                            resType.discard(game, player, strongbox);
-                        else {
-                            transferStorable(!take, game, player, history);
-                            throw new Exception();
-                        }
-                    }
-                    history.computeIfAbsent(strongbox, s -> new HashMap<>())
-                            .compute(resType, (r, q) -> (q == null) ? 1 : q + 1);
-                }
-            }
-        }
-    }
-
-    /**
-     * Transfers non-storable resources to or from a player.
-     *
-     * @param take          true if transferred from a strongbox, otherwise false
-     * @param player        the player on which to trigger the action of the resource, if applicable
-     * @param resources     the map of the resources
-     * @throws Exception    if it is not possible
-     */
-    private void transferNonStorable(boolean take, Game game, Player player,
-                                     Map<ResourceType, Integer> resources) throws Exception {
-        for (Map.Entry<ResourceType, Integer> entry : resources.entrySet()) {
-            ResourceType r = entry.getKey();
-            int q = entry.getValue();
-            for (int i = 0; i < q; i++)
-                if (take)
-                    r.takeFromPlayer(game, player, new Strongbox());
-                else
-                    r.giveToPlayer(game, player, new Strongbox());
-        }
-    }
-
-    /**
-     * Checks that <code>blanksRep</code> does not contain blanks
-     *
-     * @param blanksRep     map of replacement of blanks
-     * @return              true if valid, otherwise false
-     */
-    private static boolean checkBlanksRepBlank(Map<ResourceType, Integer> blanksRep) {
-        return blanksRep.keySet().stream().noneMatch(ResourceType::isBlank);
-    }
-
-    /**
-     * Checks that <code>blanksRep</code> has the same number of resources as blanks in <code>mapWithBlanks</code>
+     * Replaces the blank resources in a given map.
      *
      * @param mapWithBlanks full map including blanks
      * @param blanksRep     map of replacement of blanks
-     * @return              true if valid, otherwise false
+     * @return              map with replaced blanks
+     * @throws Exception    if it is not possible
      */
-    private static boolean checkBlanksRepCount(Map<ResourceType, Integer> mapWithBlanks,
-                                               Map<ResourceType, Integer> blanksRep) {
-        int blanksCount = mapWithBlanks.entrySet().stream()
-                .filter(e -> e.getKey().isBlank()).map(Map.Entry::getValue).reduce(0, Integer::sum);
-        int blanksRepCount = blanksRep.values().stream().reduce(0, Integer::sum);
-        return blanksRepCount == blanksCount;
+    private static Map<ResourceType, Integer> replaceBlanks(Map<ResourceType, Integer> mapWithBlanks,
+                                                            Map<ResourceType, Integer> blanksRep) throws Exception {
+        /* Check that blanksRep does not contain blanks */
+        if (blanksRep.keySet().stream().anyMatch(ResourceType::isBlank))
+            throw new Exception();
+
+        /* Check that mapWithBlanks has the same number of resources as blanks in blanksRep */
+        if (!blanksRep.isEmpty()) {
+            int blanksCount = mapWithBlanks.entrySet().stream()
+                    .filter(e -> e.getKey().isBlank()).map(Map.Entry::getValue).reduce(0, Integer::sum);
+            int blanksRepCount = blanksRep.values().stream().reduce(0, Integer::sum);
+            if (blanksRepCount != blanksCount)
+                throw new Exception();
+        }
+
+        /* Add all resources from mapWithBlanks that are not blanks */
+        Map<ResourceType, Integer> replacedBlanks = mapWithBlanks.entrySet().stream()
+                .filter(e -> !e.getKey().isBlank())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        /* Add all replacements resources from blanksRep */
+        blanksRep.forEach((r, q) -> replacedBlanks.merge(r, q, Integer::sum));
+
+        return replacedBlanks;
     }
 
     /**
-     * Checks that <code>strongboxes</code> are given for respectively all resources in <code>mapWithoutBlanks</code>
-     *
-     * Note: Strongboxes cannot contain non-storable resources
+     * Checks that <code>strongboxes</code> are given for respectively all non-storable resources in
+     * <code>mapWithoutBlanks</code>
      *
      * @param mapWithoutBlanks  full map with blanks already replaces
      * @param strongboxes       the map of the strongboxes to use for all the resources
@@ -229,21 +238,25 @@ public class Production {
      */
     private static boolean checkStrongboxes(Map<ResourceType, Integer> mapWithoutBlanks,
                                             Map<Strongbox, Map<ResourceType, Integer>> strongboxes) {
-        for (Map.Entry<ResourceType, Integer> inputEntry : mapWithoutBlanks.entrySet()) {
-            ResourceType inputResource = inputEntry.getKey();
-            int inputQuantity = inputResource.isStorable() ? inputEntry.getValue() : 0;
+        mapWithoutBlanks = filterStorable(mapWithoutBlanks);
 
-            int strongboxesQuantity = 0;
-            for (Map<ResourceType, Integer> inputStrongboxValue: strongboxes.values()) {
-                for (Map.Entry<ResourceType, Integer> inputStrongboxEntry : inputStrongboxValue.entrySet()) {
-                    if (inputStrongboxEntry.getKey() == inputResource)
-                        strongboxesQuantity += inputStrongboxEntry.getValue();
-                }
-            }
+        /* Check that mapWithoutBlanks and strongboxes contain the same number of storable resources */
+        int mapWithoutBlanksResourcesCount = mapWithoutBlanks.values().stream().reduce(0, Integer::sum);
+        int strongboxesResourcesCount = strongboxes.values().stream()
+                .map(m -> m.values().stream().reduce(0, Integer::sum))
+                .reduce(0, Integer::sum);
+        if (strongboxesResourcesCount != mapWithoutBlanksResourcesCount)
+            return false;
 
-            if (strongboxesQuantity != inputQuantity)
+        /* Check that the amount of each storable resource type in mapWithoutBlanks is the same as in strongboxes */
+        for (ResourceType resType : mapWithoutBlanks.keySet()) {
+            int strongboxesResourceCount = 0;
+            for (Strongbox strongbox : strongboxes.keySet())
+                strongboxesResourceCount += strongboxes.get(strongbox).getOrDefault(resType, 0);
+            if (strongboxesResourceCount != mapWithoutBlanks.get(resType))
                 return false;
         }
+
         return true;
     }
 }
