@@ -7,6 +7,7 @@ import it.polimi.ingsw.devcardcolors.Yellow;
 import it.polimi.ingsw.leadercards.*;
 import it.polimi.ingsw.resourcetypes.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,17 +23,19 @@ public class OriginalGame extends Game {
 
     OriginalGame(List<String> nicknames) {
         super(nicknames,
-              getLeaderCards(),
-              4,
-              getDevCards(),
-              3,
-              4,
-              getMarketResources(),
-              4,
-              24,
-              3,
-              3,
-              7);
+                getLeaderCards(),
+                4,
+                getDevCards(),
+                3,
+                4,
+                getMarketResources(),
+                4,
+                24,
+                3,
+                3,
+                7,
+                getVaticanSections(),
+                getYellowTiles());
     }
 
     /**
@@ -860,4 +863,26 @@ public class OriginalGame extends Game {
                 entry(Zero.getInstance(), 4)
         );
     }
+
+    public static Map<Integer, Integer[]> getVaticanSections(){
+        return Map.ofEntries(
+                entry(8, new Integer[]{5, 2}),
+                entry(16, new Integer[]{12, 3}),
+                entry(24, new Integer[]{19, 4})
+        );
+    }
+
+    public static Map<Integer, Integer> getYellowTiles(){
+        return Map.ofEntries(
+                entry(3, 1),
+                entry(6, 2),
+                entry(9, 4),
+                entry(12,6),
+                entry(15,9),
+                entry(18,12),
+                entry(21,16),
+                entry(24,20)
+        );
+    }
+
 }

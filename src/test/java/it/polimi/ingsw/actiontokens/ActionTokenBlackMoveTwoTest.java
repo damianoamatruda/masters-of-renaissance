@@ -1,6 +1,7 @@
 package it.polimi.ingsw.actiontokens;
 
 import it.polimi.ingsw.Game;
+import it.polimi.ingsw.OriginalGame;
 import it.polimi.ingsw.SoloGame;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class ActionTokenBlackMoveTwoTest {
     @Test
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo();
-        SoloGame game = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, null);
+        SoloGame game = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, null, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
         token.trigger(game);
 
         assertEquals(game.getBlackPoints(),2);

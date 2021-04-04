@@ -21,7 +21,7 @@ public class SoloGameTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, stack);
+        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, stack, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 

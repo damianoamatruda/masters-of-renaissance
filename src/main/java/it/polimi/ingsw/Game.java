@@ -71,6 +71,8 @@ public class Game {
      * @param playerWarehouseShelvesCount   number of basic shelves inside of each player's warehouse
      * @param playerDevSlotsCount           number of possible player's production slots that can be occupied by development cards
      * @param playerMaxObtainableDevCards   number of development cards each player can have, before triggering the end of the game
+     * @param vaticanSections               map of the vatican sections
+     * @param yellowTiles                   map of the faith tiles which will give bonus points at the end
      */
     public Game(List<String> nicknames,
                 List<LeaderCard> leaderCards,
@@ -83,7 +85,9 @@ public class Game {
                 int maxFaithPointsCount,
                 int playerWarehouseShelvesCount,
                 int playerDevSlotsCount,
-                int playerMaxObtainableDevCards) {
+                int playerMaxObtainableDevCards,
+                Map<Integer, Integer[]> vaticanSections,
+                Map<Integer, Integer> yellowTiles) {
         if (nicknames.size() > MAX_PLAYERS_COUNT)
             throw new RuntimeException();
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
@@ -105,9 +109,7 @@ public class Game {
         this.devGridLevelsCount = devGridLevelsCount;
         this.devGridColorsCount = devGridColorsCount;
 
-        if (devCards.isEmpty() || devGridColorsCount == 0)
-            this.devGrid = null;
-        else {
+        if (!devCards.isEmpty() && devGridColorsCount != 0){
             for (DevelopmentCard card : devCards) {
                 if (!devGrid.keySet().contains(card.getColor()))
                     devGrid.put(card.getColor(), new ArrayList<>() {{
@@ -132,27 +134,12 @@ public class Game {
         else
             this.market=new Market(marketResources, marketColsCount);
 
-        vaticanSections = new HashMap<>(){{ //TODO
-            put(8, new Integer[]{5, 2});
-            put(16, new Integer[]{12, 3});
-            put(24, new Integer[]{19, 4});
-        }};
+        this.vaticanSections = vaticanSections;
+        this.yellowTiles = yellowTiles;
 
-        activatedVaticanSections = new HashMap<>(){{    //TODO
-            put(8, false);
-            put(16, false);
-            put(24, false);
-        }};
-
-        yellowTiles = new HashMap<>(){{ //TODO
-            put(3, 1);
-            put(6, 2);
-            put(9, 4);
-            put(12, 6);
-            put(15, 9);
-            put(18, 12);
-            put(21, 16);
-            put(24, 20);
+        activatedVaticanSections = new HashMap<>(){{
+            for (int i : vaticanSections.keySet())
+                put(i, false);
         }};
 
         this.maxFaithPointsCount = maxFaithPointsCount;

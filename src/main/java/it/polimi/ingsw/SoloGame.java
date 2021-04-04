@@ -23,9 +23,24 @@ public class SoloGame extends Game /*extends GameDecorator*/{
     private boolean blackWinner;
 
     /**
-     * Initializes the solo game with the following parameters.
+     *
      * @param game          the wrappee to be extended with solo functionality
-     * @param actionTokens  the stack of tokens, of which the top token is activated after each turn
+     * @param actionTokens
+     */
+    /**
+     * Initializes the solo game with the following parameters.
+     *
+     * @param nicknames                     the list of nicknames of players who joined
+     * @param leaderCards                   the list of all the leader cards in the game
+     * @param playerLeadersCount            number of distinct leader cards given to each player at the beginning of the game
+     * @param devCards                      the list of all the development cards in the game
+     * @param devGridLevelsCount            number of distinct rows of separate decks that represent different development card levels
+     * @param devGridColorsCount            number of distinct columns of separate decks that represent different development card colors
+     * @param marketResources               map of the resources to put inside the market
+     * @param marketColsCount               number of columns in the market grid
+     * @param actionTokens                  the stack of tokens, of which the top token is activated after each turn
+     * @param vaticanSections               map of the vatican sections
+     * @param yellowTiles                   map of the faith tiles which will give bonus points at the end
      */
     public SoloGame(List<String> nicknames,
                     List<LeaderCard> leaderCards,
@@ -35,8 +50,12 @@ public class SoloGame extends Game /*extends GameDecorator*/{
                     int devGridColorsCount,
                     Map<ResourceType, Integer> marketResources,
                     int marketColsCount,
-                    List<ActionToken> actionTokens){
-        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount, marketResources, marketColsCount, 0, 0, 0, 0);
+                    List<ActionToken> actionTokens,
+                    Map<Integer, Integer[]> vaticanSections,
+                    Map<Integer, Integer> yellowTiles
+    ){
+        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount, marketResources, marketColsCount, 0, 0, 0, 0,
+                vaticanSections, yellowTiles);
         this.actionTokens = actionTokens;
         blackPoints = 0;
         blackWinner = false;

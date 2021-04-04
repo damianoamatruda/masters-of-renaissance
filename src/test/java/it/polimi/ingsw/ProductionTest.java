@@ -26,7 +26,7 @@ public class ProductionTest {
 
         Game game = new Game(new ArrayList<>(){{
             add("player");
-        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0);
+        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
         Player player = game.getPlayers().get(0);
         try {
             player.getStrongbox().addResource(Coin.getInstance());
@@ -71,7 +71,7 @@ public class ProductionTest {
 
         Game game = new Game(new ArrayList<>(){{
             add("player");
-        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0);
+        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
         Player player = game.getPlayers().get(0);
         try {
             player.getStrongbox().addResource(Coin.getInstance());
@@ -123,7 +123,7 @@ public class ProductionTest {
 
         Game game = new Game(new ArrayList<>(){{
             add("player");
-        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0);
+        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
         Player player = game.getPlayers().get(0);
         try {
             player.getStrongbox().addResource(Coin.getInstance());

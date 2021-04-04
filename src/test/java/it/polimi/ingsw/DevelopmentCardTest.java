@@ -19,7 +19,7 @@ public class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
 
-        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0);
+        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
         Player p = g.getPlayers().get(0);
         try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
@@ -32,7 +32,7 @@ public class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
         
-        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0);
+        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
         Player p = g.getPlayers().get(0);
         try { p.getStrongbox().addResource(Shield.getInstance()); } catch (Exception e) { }
 
