@@ -334,4 +334,16 @@ public class Game {
             p.incrementVictoryPoints(yellowTiles.get(lastYellowTileReached));
         }
     }
+
+    public Map<Integer, Boolean> getActivatedVaticanSections() {
+        return activatedVaticanSections;
+    }
+
+    public Map<Integer, Integer[]> getVaticanSections() {
+        return vaticanSections;
+    }
+
+    public Map<Integer, Integer> getYellowTiles() {
+        return yellowTiles;
+    }
 }

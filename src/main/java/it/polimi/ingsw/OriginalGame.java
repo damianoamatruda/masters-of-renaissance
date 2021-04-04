@@ -34,8 +34,8 @@ public class OriginalGame extends Game {
                 3,
                 3,
                 7,
-                getVaticanSections(),
-                getYellowTiles());
+                generateVaticanSections(),
+                generateYellowTiles());
     }
 
     /**
@@ -869,7 +869,7 @@ public class OriginalGame extends Game {
      *
      * @return  map of the vatican sections
      */
-    public static Map<Integer, Integer[]> getVaticanSections(){
+    public static Map<Integer, Integer[]> generateVaticanSections(){
         return Map.ofEntries(
                 entry(8, new Integer[]{5, 2}),
                 entry(16, new Integer[]{12, 3}),
@@ -882,7 +882,7 @@ public class OriginalGame extends Game {
      *
      * @return  map of the yellow tiles
      */
-    public static Map<Integer, Integer> getYellowTiles(){
+    public static Map<Integer, Integer> generateYellowTiles(){
         return Map.ofEntries(
                 entry(3, 1),
                 entry(6, 2),

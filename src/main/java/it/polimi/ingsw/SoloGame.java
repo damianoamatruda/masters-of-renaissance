@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * This class represents the Solo version of the game, and contains all the extra functionality
  */
-public class SoloGame extends Game /*extends GameDecorator*/{
+public class SoloGame extends Game {
     /** The stack of action tokens to be activated at the end of the player's turn */
     private List<ActionToken> actionTokens;
 
@@ -38,10 +38,15 @@ public class SoloGame extends Game /*extends GameDecorator*/{
      * @param devGridColorsCount            number of distinct columns of separate decks that represent different development card colors
      * @param marketResources               map of the resources to put inside the market
      * @param marketColsCount               number of columns in the market grid
+     * @param maxFaithPointsCount           number of the last reachable faith track tile by a player
+     * @param playerWarehouseShelvesCount   number of basic shelves inside of each player's warehouse
+     * @param playerDevSlotsCount           number of possible player's production slots that can be occupied by development cards
+     * @param playerMaxObtainableDevCards   number of development cards each player can have, before triggering the end of the game
      * @param actionTokens                  the stack of tokens, of which the top token is activated after each turn
      * @param vaticanSections               map of the vatican sections
      * @param yellowTiles                   map of the faith tiles which will give bonus points at the end
      */
+
     public SoloGame(List<String> nicknames,
                     List<LeaderCard> leaderCards,
                     int playerLeadersCount,
@@ -50,11 +55,17 @@ public class SoloGame extends Game /*extends GameDecorator*/{
                     int devGridColorsCount,
                     Map<ResourceType, Integer> marketResources,
                     int marketColsCount,
+                    int maxFaithPointsCount,
+                    int playerWarehouseShelvesCount,
+                    int playerDevSlotsCount,
+                    int playerMaxObtainableDevCards,
                     List<ActionToken> actionTokens,
                     Map<Integer, Integer[]> vaticanSections,
                     Map<Integer, Integer> yellowTiles
     ){
-        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount, marketResources, marketColsCount, 0, 0, 0, 0,
+        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount,
+                marketResources, marketColsCount, maxFaithPointsCount, playerWarehouseShelvesCount,
+                playerDevSlotsCount, playerMaxObtainableDevCards,
                 vaticanSections, yellowTiles);
         this.actionTokens = actionTokens;
         blackPoints = 0;

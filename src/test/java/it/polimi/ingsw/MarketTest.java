@@ -71,7 +71,7 @@ public class MarketTest {
 
         Game game = new Game(new ArrayList(){{
             add("player");
-        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.getVaticanSections(), OriginalGame.getYellowTiles());
+        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
         Player player = game.getPlayers().get(0);
         Map<ResourceType, Shelf> shelves = new HashMap<>(){{
             put(Coin.getInstance(), new Shelf(12));
