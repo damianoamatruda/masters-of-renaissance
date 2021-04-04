@@ -39,7 +39,7 @@ public class OriginalGame extends Game {
     }
 
     /**
-     * Returns the list of all possible develompent cards.
+     * Returns the list of all possible development cards.
      * @return  list of development cards
      */
     public static List<DevelopmentCard> getDevCards() {
@@ -864,6 +864,11 @@ public class OriginalGame extends Game {
         );
     }
 
+    /**
+     * Returns a map of the vatican sections
+     *
+     * @return  map of the vatican sections
+     */
     public static Map<Integer, Integer[]> getVaticanSections(){
         return Map.ofEntries(
                 entry(8, new Integer[]{5, 2}),
@@ -872,6 +877,11 @@ public class OriginalGame extends Game {
         );
     }
 
+    /**
+     * Returns a map of the yellow tiles
+     *
+     * @return  map of the yellow tiles
+     */
     public static Map<Integer, Integer> getYellowTiles(){
         return Map.ofEntries(
                 entry(3, 1),

@@ -105,6 +105,7 @@ public class Game {
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
                     i == 0, playerWarehouseShelvesCount, playerDevSlotsCount, playerMaxObtainableDevCards));
 
+        /* Generate development grid */
         this.devGrid=new HashMap<>();
         this.devGridLevelsCount = devGridLevelsCount;
         this.devGridColorsCount = devGridColorsCount;
@@ -134,6 +135,7 @@ public class Game {
         else
             this.market=new Market(marketResources, marketColsCount);
 
+        /* Generate vatican sections and yellow tiles */
         this.vaticanSections = vaticanSections;
         this.yellowTiles = yellowTiles;
 
