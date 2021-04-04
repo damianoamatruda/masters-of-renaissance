@@ -45,16 +45,16 @@ public class GameTest {
 
     /**
      * Checks correct instantiation of devGrid with original rules
-     * @param i level of the cards to test
+     * @param level level of the cards to test
      */
     @ParameterizedTest
     @ValueSource(ints = {1,2,3})
-    @Disabled("Only works with cards set from the original game")
-    void devGridTest(int i){
-        assertAll(() -> assertEquals(4, game.devGrid.get(Blue.getInstance()).get(i).size()),
-                () -> assertEquals(4, game.devGrid.get(Green.getInstance()).get(i).size()),
-                () -> assertEquals(4, game.devGrid.get(Purple.getInstance()).get(i).size()),
-                () -> assertEquals(4, game.devGrid.get(Yellow.getInstance()).get(i).size()));
+    @Disabled("Only works with card set from the original game")
+    void devGridTest(int level){
+        assertAll(() -> assertEquals(4, game.devGrid.get(Blue.getInstance()).get(level).size()),
+                () -> assertEquals(4, game.devGrid.get(Green.getInstance()).get(level).size()),
+                () -> assertEquals(4, game.devGrid.get(Purple.getInstance()).get(level).size()),
+                () -> assertEquals(4, game.devGrid.get(Yellow.getInstance()).get(level).size()));
     }
 
     /**
@@ -346,10 +346,11 @@ public class GameTest {
         void onTurnEndWithTwoInactivePlayers() {
             game.getPlayers().get(0).setActive(false);
             game.getPlayers().get(1).setActive(false);
-            Player nowPlaying = game.onTurnEnd();
+            Player nowPlaying;
             nowPlaying = game.onTurnEnd();
             nowPlaying = game.onTurnEnd();
-            assertEquals("Marco", game.getPlayers().get(0).getNickname());
+            nowPlaying = game.onTurnEnd();
+            assertEquals("Marco", nowPlaying.getNickname());
         }
 
         /**

@@ -23,11 +23,6 @@ public class SoloGame extends Game {
     private boolean blackWinner;
 
     /**
-     *
-     * @param game          the wrappee to be extended with solo functionality
-     * @param actionTokens
-     */
-    /**
      * Initializes the solo game with the following parameters.
      *
      * @param nicknames                     the list of nicknames of players who joined

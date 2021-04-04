@@ -2,6 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.actiontokens.ActionToken;
 import it.polimi.ingsw.actiontokens.ActionTokenBlackMoveOneShuffle;
+import it.polimi.ingsw.actiontokens.ActionTokenBlackMoveTwo;
+import it.polimi.ingsw.leadercards.DepotLeader;
+import it.polimi.ingsw.resourcetypes.Coin;
 import org.junit.jupiter.api.*;
 //import org.junit.jupiter.params.ParameterizedTest;
 //import org.junit.jupiter.params.provider.ValueSource;
@@ -15,6 +18,25 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
+    SoloGame game;
+    Player player;
+
+    /**
+     * The setup: instantiation of game and the single player
+     */
+    @BeforeEach
+    void setup(){
+        game = new SoloGame(List.of("Alessandro"), new ArrayList<>(){{
+            add(new DepotLeader(2, Coin.getInstance(),null,0));
+            add(new DepotLeader(2, Coin.getInstance(),null,0));
+        }}, 2, new ArrayList<>(),
+                3, 4, new HashMap<>(), 0,24,
+                3,3,7, null,
+                OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+
+        player = game.getPlayers().get(0);
+
+    }
     /** Tests if black has been incremented properly and if getter of blackPoints returns the correct value */
     @Test
     void blackPointsGetterTest(){
@@ -91,13 +113,35 @@ public class SoloGameTest {
      * Test for onTurnEnd method
      */
     @Test
-    void onTurnEnd(){}
+    void onTurnEnd(){
+        Game game = new SoloGame(List.of("Alessandro"), new ArrayList<>(), 0, new ArrayList<>(),
+                3, 4, new HashMap<>(), 0,24,
+                3,3,7, new ArrayList<>(){{
+                    for(int i = 0; i < 4; i++)
+                        add(new ActionTokenBlackMoveTwo());
+        }},
+                OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+
+        Player player = game.getPlayers().get(0);
+
+        assertEquals(player, game.onTurnEnd());
+
+    }
 
     /**
      * Test for discardDevCards method
      */
     @Test
-    void discardDevCards(){}
+    void discardDevCards(){
+        try {
+            player.discardLeader(game, 0);
+            player.discardLeader(game, 0);
+            assertEquals(2,player.getFaithPoints());
+        }
+        catch (Exception e){
+            fail("Exception has been thrown");
+        }
+    }
 }
 
 
