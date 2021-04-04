@@ -136,15 +136,14 @@ public class PlayerTest {
         void addToDevSlotWarehouseShelfStones(){
             assertEquals(0, player.getWarehouse().getShelves().get(0).getResourceQuantity(Stone.getInstance()));
         }
-        // /**
-        //  * Check value of card obtained
-        //  */
-        // TODO: Fix
-        // @Test
-        // void checkCardPointsValue(){
-        //     player.sumCardsVictoryPoints();
-        //     assertEquals(2, player.getVictoryPoints());
-        // }
+         /**
+          * Check value of card obtained
+          */
+         @Test
+         void checkCardPointsValue(){
+             DevelopmentCard card = player.getDevSlot(1).peek();
+             assertEquals(2, card.getVictoryPoints());
+         }
     }
 
     /**

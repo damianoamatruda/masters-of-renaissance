@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /** Base game class containing the general components of the "game box",
  * as well as some attributes shared by all players that can be easily accessed from the outside
  */
-public class /*Base*/Game /*implements IGame*/{
+public class Game {
     /** Maximum number of players that can connect to the same game instance */
     private static final int MAX_PLAYERS_COUNT=4;
 
@@ -199,7 +199,6 @@ public class /*Base*/Game /*implements IGame*/{
     public List<List<DevelopmentCard>> peekDevCards() {
         List<List<DevelopmentCard>> top = new ArrayList<>();
         for(DevCardColor color : devGrid.keySet()){
-        //for(int i = 0; i < devGrid.size(); i++){
             top.add(devGrid.get(color)
                     .stream()
                     .map(deck -> deck.peek())

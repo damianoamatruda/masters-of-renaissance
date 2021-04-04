@@ -308,6 +308,7 @@ public class Player {
                 .sum();
 
         toSum += leaders.stream()
+                .filter(card -> card.isActive())
                 .mapToInt(card -> card.getVictoryPoints())
                 .sum();
 

@@ -259,35 +259,32 @@ public class GameTest {
                 assertTrue(game.hasEnded());
             }
 
-            // /**
-            //  * Checks the total score achieved by Player 1
-            //  */
-            // TODO: Fix
-            // @Test
-            // void ptsAlessandroAfterCalcs(){
-            //     assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
-            // }
-            // /**
-            //  * Checks the total score achieved by Player 2
-            //  */
-            // TODO: Fix
-            // @Test
-            // void ptsDamianoAfterCalcs(){
-            //     assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
-            // }
-            // /**
-            //  * Checks the total score achieved by Player 3
-            //  */
-            // TODO: Fix
-            // @Test
-            // void ptsMarcoAfterCalcs(){
-            //     assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
-            // }
+             /**
+              * Checks the total score achieved by Player 1
+              */
+             @RepeatedTest(value = 10)
+             void ptsAlessandroAfterCalcs(){
+                 assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
+             }
+             /**
+              * Checks the total score achieved by Player 2
+              */
+             @RepeatedTest(value = 10)
+             void ptsDamianoAfterCalcs(){
+                 assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
+             }
+             /**
+              * Checks the total score achieved by Player 3
+              */
+             @RepeatedTest(value = 10)
+             void ptsMarcoAfterCalcs(){
+                 assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
+             }
 
             /**
              * Ensures that the player with the highest points is the winner
              */
-            @Test
+            @RepeatedTest(value = 10)
             void isAlessandroWinner() {
                 assertTrue(game.getPlayers().get(0).isWinner());
             }
@@ -295,7 +292,7 @@ public class GameTest {
             /**
              * Ensures that any player without the highest points is not the winner
              */
-            @Test
+            @RepeatedTest(value = 10)
             void isDamianoNotWinner() {
                 assertFalse(game.getPlayers().get(1).isWinner());
             }
