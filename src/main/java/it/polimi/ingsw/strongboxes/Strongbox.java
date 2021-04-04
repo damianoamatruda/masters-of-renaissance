@@ -57,17 +57,19 @@ public class Strongbox {
     }
 
     /**
-     * Adds a resource of the given type
+     * Adds a storable resource of the given type
      *
      * @param resType       the resource to add
      * @throws Exception    if it is not possible
      */
     public void addResource(ResourceType resType) throws Exception {
+        if (!resType.isStorable())
+            throw new Exception();
         resources.compute(resType, (r, q) -> (q == null) ? 1 : q + 1);
     }
 
     /**
-     * Removes a resource of the given type
+     * Removes a storable resource of the given type
      *
      * @param resType       the resource to remove
      * @throws Exception    if it is not possible

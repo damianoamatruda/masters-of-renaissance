@@ -52,8 +52,7 @@ public abstract class ResourceType {
      * @throws Exception    if it is not possible
      */
     public void addIntoStrongbox(Strongbox strongbox) throws Exception {
-        if (isStorable())
-            strongbox.addResource(this);
+        strongbox.addResource(this);
     }
 
     /**
@@ -63,8 +62,7 @@ public abstract class ResourceType {
      * @throws Exception    if it is not possible
      */
     public void removeFromStrongbox(Strongbox strongbox) throws Exception {
-        if (isStorable())
-            strongbox.removeResource(this);
+        strongbox.removeResource(this);
     }
 
     /**
