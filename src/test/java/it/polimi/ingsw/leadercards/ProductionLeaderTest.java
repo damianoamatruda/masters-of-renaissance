@@ -21,7 +21,7 @@ public class ProductionLeaderTest {
 
     @Test
     void production() {
-        Production p = new Production(null, null, false);
+        Production p = new Production(null, null);
         ProductionLeader leader = new ProductionLeader(p, Coin.getInstance(), null, 0);
 
         assertEquals(p, leader.getProduction());

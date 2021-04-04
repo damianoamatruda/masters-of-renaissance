@@ -34,6 +34,16 @@ public class Production {
     }
 
     /**
+     * Initializes the production (with non-discardable output) specifying its input and its output.
+     *
+     * @param input     the map of the resources to be given as input of the production
+     * @param output    the map of the resources to be taken as output of the production
+     */
+    public Production(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output) {
+        this(input, output, false);
+    }
+
+    /**
      * Returns the map of the resources to be given as input of the production.
      *
      * @return  the map of the resources to be given as input

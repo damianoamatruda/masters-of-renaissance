@@ -60,7 +60,7 @@ public class ResourceRequirement implements CardRequirement {
      * @throws Exception    if it is not possible
      */
     public void take(Game game, Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
-        (new Production(resources, new HashMap<>(), false))
+        (new Production(resources, new HashMap<>()))
                 .activate(game, player, new HashMap<>(), new HashMap<>(), strongboxes, new HashMap<>());
     }
 }
