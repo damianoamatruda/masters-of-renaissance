@@ -79,25 +79,6 @@ public class Player {
         this.maxObtainableDevCards = maxObtainableDevCards;
     }
 
-    /**
-     * Copy constructor. Makes a deep copy of a Player.
-     *
-     * @param player the Player to copy
-     */
-    public Player(Player player){
-        nickname=player.nickname;
-        leaders=new ArrayList<>(player.leaders); /* Shallow copy */
-        warehouse = new Warehouse(player.warehouse);
-        strongbox = new Strongbox(player.strongbox);
-        inkwell=player.inkwell;
-        faithPoints=player.faithPoints;
-        victoryPoints=player.victoryPoints;
-        active=player.active;
-        winner=player.winner;
-        devSlots=new ArrayList<>(player.devSlots); /* Shallow copy */
-        maxObtainableDevCards=player.maxObtainableDevCards;
-    }
-
     /** Getter of the number of production slots available
      * @return the number of slots */
     public int getDevSlotsCount(){
