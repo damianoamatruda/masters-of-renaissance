@@ -1,6 +1,16 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.devcardcolors.Blue;
+import it.polimi.ingsw.devcardcolors.Green;
+import it.polimi.ingsw.devcardcolors.Purple;
+import it.polimi.ingsw.devcardcolors.Yellow;
+import it.polimi.ingsw.resourcetypes.Coin;
+import it.polimi.ingsw.resourcetypes.Servant;
+import it.polimi.ingsw.resourcetypes.Shield;
+import it.polimi.ingsw.resourcetypes.Stone;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 //import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 
 import java.util.ArrayList;
@@ -31,6 +41,20 @@ public class GameTest {
     void instantiationTest(){
         assertAll(() -> assertEquals(game.getTurns(),1),
                   () -> assertEquals(true, game.getPlayers().get(0).hasInkwell()));
+    }
+
+    /**
+     * Checks correct instantiation of devGrid with original rules
+     * @param i level of the cards to test
+     */
+    @ParameterizedTest
+    @ValueSource(ints = {1,2,3})
+    @Disabled("Only works with cards set from the original game")
+    void devGridTest(int i){
+        assertAll(() -> assertEquals(4, game.devGrid.get(Blue.getInstance()).get(i).size()),
+                () -> assertEquals(4, game.devGrid.get(Green.getInstance()).get(i).size()),
+                () -> assertEquals(4, game.devGrid.get(Purple.getInstance()).get(i).size()),
+                () -> assertEquals(4, game.devGrid.get(Yellow.getInstance()).get(i).size()));
     }
 
     /**

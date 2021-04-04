@@ -5,6 +5,7 @@ import it.polimi.ingsw.leadercards.*;
 import it.polimi.ingsw.resourcetypes.*;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
+import java.security.cert.CollectionCertStoreParameters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -100,29 +101,50 @@ public class Game {
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
                     i == 0, playerWarehouseShelvesCount, playerDevSlotsCount, playerMaxObtainableDevCards));
 
-        // TODO: Implement creation of the dev grid
         this.devGrid=new HashMap<>();
         this.devGridLevelsCount = devGridLevelsCount;
         this.devGridColorsCount = devGridColorsCount;
+
+        if (devCards.isEmpty() || devGridColorsCount == 0)
+            this.devGrid = null;
+        else {
+            for (DevelopmentCard card : devCards) {
+                if (!devGrid.keySet().contains(card.getColor()))
+                    devGrid.put(card.getColor(), new ArrayList<>() {{
+                        add(0,null);
+                        for (int i = 1; i <= devGridLevelsCount; i++)
+                            add(i, new Stack<>());
+                    }});
+
+                List<Stack<DevelopmentCard>> column = devGrid.get(card.getColor());
+                Stack<DevelopmentCard> deck = column.get(card.getLevel());
+                deck.push(card);
+            }
+            for (DevCardColor column : devGrid.keySet()) {
+                for (int cardLevel = 1; cardLevel <= devGridLevelsCount; cardLevel++)
+                    Collections.shuffle(devGrid.get(column).get(cardLevel));
+            }
+        }
+
 
         if (marketResources.isEmpty() || marketColsCount == 0)
             this.market = null;
         else
             this.market=new Market(marketResources, marketColsCount);
 
-        vaticanSections = new HashMap<>(){{
+        vaticanSections = new HashMap<>(){{ //TODO
             put(8, new Integer[]{5, 2});
             put(16, new Integer[]{12, 3});
             put(24, new Integer[]{19, 4});
         }};
 
-        activatedVaticanSections = new HashMap<>(){{
+        activatedVaticanSections = new HashMap<>(){{    //TODO
             put(8, false);
             put(16, false);
             put(24, false);
         }};
 
-        yellowTiles = new HashMap<>(){{
+        yellowTiles = new HashMap<>(){{ //TODO
             put(3, 1);
             put(6, 2);
             put(9, 4);
