@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 //import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +38,10 @@ public class PlayerTest {
     void getNumOfResourcesTestStrongboxOnly(){
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().giveToPlayer(game, player, player.getStrongbox());
+                Coin.getInstance().addIntoStrongbox(player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().giveToPlayer(game, player, player.getStrongbox());
-            Shield.getInstance().giveToPlayer(game, player, player.getStrongbox());
+                Servant.getInstance().addIntoStrongbox(player.getStrongbox());
+            Shield.getInstance().addIntoStrongbox(player.getStrongbox());
             assertEquals(12, player.getNumOfResources());
         }
         catch (Exception e){
@@ -57,13 +56,13 @@ public class PlayerTest {
     void getNumOfResourcesTestAnyStorage(){
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().giveToPlayer(game, player, player.getStrongbox());
+                Coin.getInstance().addIntoStrongbox(player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().giveToPlayer(game, player, player.getStrongbox());
+                Servant.getInstance().addIntoStrongbox(player.getStrongbox());
             for(int i = 0; i < 2; i++)
-                Stone.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(1));
+                Stone.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(1));
 
-            Shield.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(0));
+            Shield.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(0));
             assertEquals(14, player.getNumOfResources());
         }
         catch (Exception e){
@@ -93,13 +92,13 @@ public class PlayerTest {
             }};
             try {
                 for (int i = 0; i < 4; i++)
-                    Coin.getInstance().giveToPlayer(game, player, player.getStrongbox());
+                    Coin.getInstance().addIntoStrongbox(player.getStrongbox());
                 for (int i = 0; i < 7; i++)
-                    Servant.getInstance().giveToPlayer(game, player, player.getStrongbox());
+                    Servant.getInstance().addIntoStrongbox(player.getStrongbox());
                 for (int i = 0; i < 2; i++)
-                    Stone.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(1));
+                    Stone.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(1));
 
-                Shield.getInstance().giveToPlayer(game, player, player.getWarehouse().getShelves().get(0));
+                Shield.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(0));
 
                 player.addToDevSlot(game, 1, new DevelopmentCard(Blue.getInstance(), 1,
                                 new ResourceRequirement(

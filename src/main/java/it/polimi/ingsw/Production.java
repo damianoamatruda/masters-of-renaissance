@@ -113,7 +113,7 @@ public class Production {
                 for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
                     for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
                         try {
-                            resType.takeFromPlayer(game, player, clonedStrongboxes.get(strongbox));
+                            resType.removeFromStrongbox(clonedStrongboxes.get(strongbox));
                         } catch (Exception e) {
                             throw new Exception();
                         }
@@ -124,7 +124,7 @@ public class Production {
                 for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
                     for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
                         try {
-                            resType.giveToPlayer(game, player, clonedStrongboxes.get(strongbox));
+                            resType.addIntoStrongbox(clonedStrongboxes.get(strongbox));
                         } catch (Exception e) {
                             throw new Exception();
                         }
@@ -135,7 +135,7 @@ public class Production {
             for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
                 for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
                     try {
-                        resType.takeFromPlayer(game, player, strongbox);
+                        resType.removeFromStrongbox(strongbox);
                     } catch (Exception e) {
                         if (discardableOutput)
                             resType.discard(game, player, strongbox);
@@ -148,7 +148,7 @@ public class Production {
             for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
                 for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
                     try {
-                        resType.giveToPlayer(game, player, strongbox);
+                        resType.addIntoStrongbox(strongbox);
                     } catch (Exception e) {
                         if (discardableOutput)
                             resType.discard(game, player, strongbox);
@@ -162,12 +162,12 @@ public class Production {
         /* Take all input non-storable resources from player */
         for (ResourceType resType : nonStorableReplacedInput.keySet())
             for (int i = 0; i < nonStorableReplacedInput.get(resType); i++)
-                resType.takeFromPlayer(game, player, new Strongbox());
+                resType.takeFromPlayer(game, player);
 
         /* Give all output non-storable resources to player */
         for (ResourceType resType : nonStorableReplacedOutput.keySet())
             for (int i = 0; i < nonStorableReplacedOutput.get(resType); i++)
-                resType.giveToPlayer(game, player, new Strongbox());
+                resType.giveToPlayer(game, player);
     }
 
     /**

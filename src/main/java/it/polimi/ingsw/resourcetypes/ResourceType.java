@@ -8,12 +8,6 @@ import it.polimi.ingsw.strongboxes.Strongbox;
  * Generic resource archetype.
  */
 public abstract class ResourceType {
-    // /**
-    //  * Single instance of the class
-    //  */
-    // commented as it creates conflicts when using subclasses
-    // protected static ResourceType resource;
-
     /**
      * Class constructor.
      */
@@ -36,27 +30,41 @@ public abstract class ResourceType {
     public abstract String getName();
 
     /**
-     * Routine for giving the resource to the player.
+     * Routine for giving the resource to the player. It should be always possible.
      *
      * @param game          the game the player is playing in
      * @param player        the player the resource goes to
-     * @param strongbox     the storage in which the resource is deposited, if applicable
-     * @throws Exception    if it is not possible
      */
-    public void giveToPlayer(Game game, Player player, Strongbox strongbox) throws Exception {
-        strongbox.addResource(this);
-    }
+    public void giveToPlayer(Game game, Player player) { }
 
     /**
-     * Routine for taking the resource from the player.
+     * Routine for taking the resource from the player. It should be always possible.
      *
      * @param game          the game the player is playing in
      * @param player        the player the resource is taken from
+     */
+    public void takeFromPlayer(Game game, Player player) { }
+
+    /**
+     * Routine for adding the resource into a strongbox.
+     *
+     * @param strongbox     the storage in which the resource is deposited, if applicable
+     * @throws Exception    if it is not possible
+     */
+    public void addIntoStrongbox(Strongbox strongbox) throws Exception {
+        if (isStorable())
+            strongbox.addResource(this);
+    }
+
+    /**
+     * Routine for removing the resource from a strongbox.
+     *
      * @param strongbox     the storage from which the resource is removed, if applicable
      * @throws Exception    if it is not possible
      */
-    public void takeFromPlayer(Game game, Player player, Strongbox strongbox) throws Exception {
-        strongbox.removeResource(this);
+    public void removeFromStrongbox(Strongbox strongbox) throws Exception {
+        if (isStorable())
+            strongbox.removeResource(this);
     }
 
     /**
@@ -64,7 +72,7 @@ public abstract class ResourceType {
      *
      * @param game          the game the player is playing in
      * @param player        the player discarding the resource
-     * @param strongbox     the storage from which the resource is discarded
+     * @param strongbox     the storage no longer taking the resource
      * @throws Exception    if it is not possible
      */
     public void discard(Game game, Player player, Strongbox strongbox) throws Exception {

@@ -33,10 +33,7 @@ public class Faith extends ResourceType {
     public String getName() { return "faith"; }
 
     @Override
-    public void giveToPlayer(Game game, Player player, Strongbox strongbox) {
+    public void giveToPlayer(Game game, Player player) {
         player.incrementFaithPoints(game);
     }
-
-    @Override
-    public void takeFromPlayer(Game game, Player player, Strongbox strongbox) throws Exception { }
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.resourcetypes;
 
-import it.polimi.ingsw.Game;
-import it.polimi.ingsw.Player;
 import it.polimi.ingsw.strongboxes.Strongbox;
 
 /**
@@ -31,10 +29,4 @@ public class Zero extends ResourceType {
 
     @Override
     public String getName() { return "zero"; }
-
-    @Override
-    public void giveToPlayer(Game game, Player player, Strongbox strongbox) throws Exception { }
-
-    @Override
-    public void takeFromPlayer(Game game, Player player, Strongbox strongbox) throws Exception { }
 }
