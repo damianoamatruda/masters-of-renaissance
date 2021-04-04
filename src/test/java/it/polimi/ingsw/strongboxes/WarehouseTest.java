@@ -29,14 +29,14 @@ public class WarehouseTest {
     public void testShelvesContent() {
         Warehouse w = new Warehouse(3);
         ResourceType c = Coin.getInstance();
-        ResourceType f = Faith.getInstance();
+        ResourceType s = Servant.getInstance();
 
         try {
             w.getShelves().get(1).addResource(c);
 
-            w.getShelves().get(2).addResource(f);
-            w.getShelves().get(2).addResource(f);
-            w.getShelves().get(2).addResource(f);
+            w.getShelves().get(2).addResource(s);
+            w.getShelves().get(2).addResource(s);
+            w.getShelves().get(2).addResource(s);
         } catch (Exception e) {
             fail();
         }
@@ -56,7 +56,7 @@ public class WarehouseTest {
         assertEquals(c, w.getShelves().get(1).getResType());
         assertEquals(1, w.getShelves().get(1).getQuantity());
 
-        assertEquals(f, w.getShelves().get(2).getResType());
+        assertEquals(s, w.getShelves().get(2).getResType());
         assertEquals(3, w.getShelves().get(2).getQuantity());
     }
 }
