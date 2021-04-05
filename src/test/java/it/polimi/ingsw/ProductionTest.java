@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -18,37 +20,25 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithoutBlanks() {
-        Production production = new Production(new HashMap<>(){{
-            put(Coin.getInstance(), 2);
-        }}, new HashMap<>(){{
-            put(Servant.getInstance(), 3);
-        }}, false);
+        Production production = new Production(
+                Map.of(Coin.getInstance(), 2),
+                Map.of(Servant.getInstance(), 3),
+                false);
 
-        Game game = new Game(new ArrayList<>(){{
-            add("player");
-        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap<>(), new HashMap<>());
         Player player = game.getPlayers().get(0);
+
         try {
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
+            for (int i = 0; i < 6; i++)
+                player.getStrongbox().addResource(Coin.getInstance());
         } catch (Exception e) {
             fail();
         }
 
         try {
-            production.activate(game, player, new HashMap<>(), new HashMap<>(), new HashMap<>() {{
-                put(player.getStrongbox(), new HashMap<>() {{
-                    put(Coin.getInstance(), 2);
-                }});
-            }}, new HashMap<>() {{
-                put(player.getStrongbox(), new HashMap<>() {{
-                    put(Servant.getInstance(), 3);
-                }});
-            }});
+            production.activate(game, player, Map.of(), Map.of(),
+                    Map.of(player.getStrongbox(), Map.of(Coin.getInstance(), 2)),
+                    Map.of(player.getStrongbox(), Map.of(Servant.getInstance(), 3)));
         } catch (Exception e) {
             fail();
         }
@@ -62,44 +52,33 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithBlanksInInput() {
-        Production production = new Production(new HashMap<>(){{
-            put(Coin.getInstance(), 2);
-            put(Zero.getInstance(), 3);
-        }}, new HashMap<>(){{
-            put(Servant.getInstance(), 3);
-        }}, false);
+        Production production = new Production(
+                Map.of(Coin.getInstance(), 2,
+                        Zero.getInstance(), 3),
+                Map.of(Servant.getInstance(), 3),
+                false);
 
-        Game game = new Game(new ArrayList<>(){{
-            add("player");
-        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap<>(), new HashMap<>());
         Player player = game.getPlayers().get(0);
         try {
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Shield.getInstance());
-            player.getStrongbox().addResource(Shield.getInstance());
+            for (int i = 0; i < 6; i++)
+                player.getStrongbox().addResource(Coin.getInstance());
+            for (int i = 0; i < 2; i++)
+                player.getStrongbox().addResource(Shield.getInstance());
         } catch (Exception e) {
             fail();
         }
 
         try {
-            production.activate(game, player, new HashMap<>(){{
-                put(Coin.getInstance(), 1);
-                put(Shield.getInstance(), 2);
-            }}, new HashMap<>(), new HashMap<>() {{
-                put(player.getStrongbox(), new HashMap<>() {{
-                    put(Coin.getInstance(), 3); /* 2 + 1 replaced blank */
-                    put(Shield.getInstance(), 2); /* 0 + 2 replaced blanks */
-                }});
-            }}, new HashMap<>() {{
-                put(player.getStrongbox(), new HashMap<>() {{
-                    put(Servant.getInstance(), 3);
-                }});
-            }});
+            production.activate(game, player,
+                    Map.of(Coin.getInstance(), 1,
+                            Shield.getInstance(), 2),
+                    Map.of(),
+                    Map.of(player.getStrongbox(), Map.of(
+                            Coin.getInstance(), 3,      /* 2 + 1 replaced blank */
+                            Shield.getInstance(), 2)),  /* 0 + 2 replaced blanks */
+                    Map.of(player.getStrongbox(), Map.of(
+                            Servant.getInstance(), 3)));
         } catch (Exception e) {
             fail();
         }
@@ -114,42 +93,31 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithBlanksInOutput() {
-        Production production = new Production(new HashMap<>(){{
-            put(Coin.getInstance(), 2);
-        }}, new HashMap<>(){{
-            put(Servant.getInstance(), 3);
-            put(Zero.getInstance(), 3);
-        }}, false);
+        Production production = new Production(
+                Map.of(Coin.getInstance(), 2),
+                Map.of(Servant.getInstance(), 3,
+                        Zero.getInstance(), 3),
+                false);
 
-        Game game = new Game(new ArrayList<>(){{
-            add("player");
-        }}, new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap(), new HashMap<>());
         Player player = game.getPlayers().get(0);
         try {
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
-            player.getStrongbox().addResource(Coin.getInstance());
+            for (int i = 0; i < 6; i++)
+                player.getStrongbox().addResource(Coin.getInstance());
         } catch (Exception e) {
             fail();
         }
 
         try {
-            production.activate(game, player, new HashMap<>(), new HashMap<>(){{
-                put(Servant.getInstance(), 2);
-                put(Shield.getInstance(), 1);
-            }}, new HashMap<>() {{
-                put(player.getStrongbox(), new HashMap<>() {{
-                    put(Coin.getInstance(), 2);
-                }});
-            }}, new HashMap<>() {{
-                put(player.getStrongbox(), new HashMap<>() {{
-                    put(Servant.getInstance(), 5); /* 3 + 2 */
-                    put(Shield.getInstance(), 1); /* 0 + 1 */
-                }});
-            }});
+            production.activate(game, player,
+                    Map.of(),
+                    Map.of(Servant.getInstance(), 2,
+                            Shield.getInstance(), 1),
+                    Map.of(player.getStrongbox(), Map.of(
+                            Coin.getInstance(), 2 )),
+                    Map.of(player.getStrongbox(), Map.of(
+                            Servant.getInstance(), 5,   /* 3 + 2 replaced blanks */
+                            Shield.getInstance(), 1))); /* 0 + 1 replaced blanks */
         } catch (Exception e) {
             fail();
         }
