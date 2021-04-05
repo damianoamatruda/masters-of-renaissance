@@ -163,7 +163,7 @@ public class Production {
                         resType.removeFromStrongbox(strongbox);
                     } catch (Exception e) {
                         if (discardableOutput)
-                            resType.discard(game, player, strongbox);
+                            resType.discard(game, player);
                         else
                             throw new RuntimeException();
                     }
@@ -177,7 +177,7 @@ public class Production {
                         resType.addIntoStrongbox(strongbox);
                     } catch (Exception e) {
                         if (discardableOutput)
-                            resType.discard(game, player, strongbox);
+                            resType.discard(game, player);
                         else
                             throw new RuntimeException();
                     }
