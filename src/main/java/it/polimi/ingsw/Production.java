@@ -44,12 +44,27 @@ public class Production {
     }
 
     /**
+     * Initializes a production made of multiple contemporary productions.
+     *
+     * @param productions   the list of the productions to sum
+     */
+    public Production(List<Production> productions) {
+        this.input = new HashMap<>();
+        this.output = new HashMap<>();
+        for (Production production : productions) {
+            production.input.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
+            production.output.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
+        }
+        this.discardableOutput = productions.stream().allMatch(production -> production.discardableOutput);
+    }
+
+    /**
      * Returns the map of the resources to be given as input of the production.
      *
      * @return  the map of the resources to be given as input
      */
     public Map<ResourceType, Integer> getInput() {
-        return input;
+        return new HashMap<>(input);
     }
 
     /**
@@ -58,7 +73,16 @@ public class Production {
      * @return  the map of the resources to be taken as output
      */
     public Map<ResourceType, Integer> getOutput() {
-        return output;
+        return new HashMap<>(output);
+    }
+
+    /**
+     * Returns whether the production has discardable output.
+     *
+     * @return  true if has discardable output, false otherwise
+     */
+    public boolean hasDiscardableOutput() {
+        return discardableOutput;
     }
 
     /**
@@ -107,8 +131,8 @@ public class Production {
             Map<Strongbox, Strongbox> clonedStrongboxes = allStrongboxes.stream()
                     .collect(Collectors.toMap(Function.identity(), Strongbox::copy));
 
-            /* Try to remove all input storable resources from cloned strongboxes;
-               if exception is thrown, the production is not possible */
+            /* Try removing all input storable resources from cloned strongboxes;
+               if exception is thrown, the production is not possible (only cloned strongboxes are touched) */
             for (Strongbox strongbox : inputStrongboxes.keySet())
                 for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
                     for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
@@ -118,8 +142,8 @@ public class Production {
                             throw new Exception();
                         }
 
-            /* Try to add all output storable resources into cloned strongboxes (already changed);
-               if exception is thrown, the production is not possible */
+            /* Try adding all output storable resources into cloned strongboxes (with input removed);
+               if exception is thrown, the production is not possible (only cloned strongboxes are touched) */
             for (Strongbox strongbox : outputStrongboxes.keySet())
                 for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
                     for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
@@ -130,7 +154,8 @@ public class Production {
                         }
         }
 
-        /* Take all input storable resources from real strongboxes */
+        /* Remove all input storable resources from real strongboxes;
+           this should be possible, as it worked with cloned strongboxes */
         for (Strongbox strongbox : inputStrongboxes.keySet())
             for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
                 for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
@@ -143,7 +168,8 @@ public class Production {
                             throw new RuntimeException();
                     }
 
-        /* Give all output storable resources from _real_ strongboxes */
+        /* Add all output storable resources into real strongboxes;
+           this should be possible, as it worked with cloned strongboxes */
         for (Strongbox strongbox : outputStrongboxes.keySet())
             for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
                 for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
@@ -159,12 +185,12 @@ public class Production {
         Map<ResourceType, Integer> nonStorableReplacedInput = filterNonStorable(replacedInput);
         Map<ResourceType, Integer> nonStorableReplacedOutput = filterNonStorable(replacedOutput);
 
-        /* Take all input non-storable resources from player */
+        /* Take all input non-storable resources from player; this is always possible */
         for (ResourceType resType : nonStorableReplacedInput.keySet())
             for (int i = 0; i < nonStorableReplacedInput.get(resType); i++)
                 resType.takeFromPlayer(game, player);
 
-        /* Give all output non-storable resources to player */
+        /* Give all output non-storable resources to player; this is always possible */
         for (ResourceType resType : nonStorableReplacedOutput.keySet())
             for (int i = 0; i < nonStorableReplacedOutput.get(resType); i++)
                 resType.giveToPlayer(game, player);
