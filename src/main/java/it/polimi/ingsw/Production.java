@@ -8,13 +8,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * A class representing a production of resources.
+ * This class represents a production, that is a transaction of transfers of resources from and to strongboxes and a
+ * player.
  */
 public class Production {
-    /** The map of the resources, including blanks, to be given as input. */
+    /** The map of the input resources, including blanks. */
     private final Map<ResourceType, Integer> input;
 
-    /** The map of the resources, including blanks, to be taken as output. */
+    /** The map of the output resources, including blanks. */
     private final Map<ResourceType, Integer> output;
 
     /** True if the output can be discarded, otherwise false. */
@@ -34,7 +35,7 @@ public class Production {
     }
 
     /**
-     * Initializes the production (with non-discardable output) specifying its input and its output.
+     * Initializes a production with non-discardable output specifying its input and its output.
      *
      * @param input     the map of the resources to be given as input of the production
      * @param output    the map of the resources to be taken as output of the production
@@ -59,18 +60,18 @@ public class Production {
     }
 
     /**
-     * Returns the map of the resources to be given as input of the production.
+     * Returns the map of the input resources of the production.
      *
-     * @return  the map of the resources to be given as input
+     * @return  the map of the input resources
      */
     public Map<ResourceType, Integer> getInput() {
         return new HashMap<>(input);
     }
 
     /**
-     * Returns the map of the resources to be taken as output of the production.
+     * Returns the map of the output resources of the production.
      *
-     * @return  the map of the resources to be taken as output
+     * @return  the map of the output resources
      */
     public Map<ResourceType, Integer> getOutput() {
         return new HashMap<>(output);
@@ -79,7 +80,7 @@ public class Production {
     /**
      * Returns whether the production has discardable output.
      *
-     * @return  true if has discardable output, false otherwise
+     * @return  true if the output can be discarded, otherwise false
      */
     public boolean hasDiscardableOutput() {
         return discardableOutput;
@@ -95,18 +96,20 @@ public class Production {
     }
 
     /**
-     * Activates the production. Replaces the blanks in input and in output, if applicable, with the given resources,
-     * removes the input resources from the given strongboxes and adds the output resources in the given strongbox.
+     * Activates the production. Replaces the blanks in input and in output with the given resources, removes the input
+     * storable resources from given strongboxes, adds the output storable resources into given strongboxes, takes the
+     * non-storable input resources from the player and gives the non-storable output resources to the player.
      *
-     * All resources have to be transferred in a single transaction.
+     * This is a transaction: if the transfer is unsuccessful, a checked exception is thrown and the states of the
+     * player and the strongboxes remain unchanged.
      *
      * @param game              the game the player is playing in
-     * @param player            the player on which to trigger the action of the resource, if applicable
-     * @param inputBlanksRep    the map of the resources to be given as replacement for blanks in input
-     * @param outputBlanksRep   the map of the resources to be taken as replacement for blanks in output
-     * @param inputStrongboxes  the map of the strongboxes to use for all the resources to be given as input
-     * @param outputStrongboxes the map of the strongboxes to use for all the resources to be taken as output
-     * @throws Exception        if it is not possible
+     * @param player            the player on which to trigger the actions of the non-storable resources
+     * @param inputBlanksRep    the map of the resources chosen as replacement for blanks in input
+     * @param outputBlanksRep   the map of the resources chosen as replacement for blanks in output
+     * @param inputStrongboxes  the map of the strongboxes from which to remove the input storable resources
+     * @param outputStrongboxes the map of the strongboxes into which to add the output storable resources
+     * @throws Exception        if the transaction failed
      */
     public void activate(Game game, Player player,
                          Map<ResourceType, Integer> inputBlanksRep,
@@ -121,38 +124,38 @@ public class Production {
         if (!checkStrongboxes(replacedOutput, outputStrongboxes))
             throw new Exception();
 
-        if (!discardableOutput) {
-            /* Get set of all strongboxes, in input and in output */
-            Set<Strongbox> allStrongboxes = new HashSet<>();
-            allStrongboxes.addAll(inputStrongboxes.keySet());
-            allStrongboxes.addAll(outputStrongboxes.keySet());
+        /* Get set of all strongboxes, in input and in output */
+        Set<Strongbox> allStrongboxes = new HashSet<>();
+        allStrongboxes.addAll(inputStrongboxes.keySet());
+        allStrongboxes.addAll(outputStrongboxes.keySet());
 
-            /* Make map of clones of all strongboxes */
-            Map<Strongbox, Strongbox> clonedStrongboxes = allStrongboxes.stream()
-                    .collect(Collectors.toMap(Function.identity(), Strongbox::copy));
+        /* Make map of clones of all strongboxes */
+        Map<Strongbox, Strongbox> clonedStrongboxes = allStrongboxes.stream()
+                .collect(Collectors.toMap(Function.identity(), Strongbox::copy));
 
-            /* Try removing all input storable resources from cloned strongboxes;
-               if exception is thrown, the production is not possible (only cloned strongboxes are touched) */
-            for (Strongbox strongbox : inputStrongboxes.keySet())
-                for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
-                    for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
-                        try {
-                            resType.removeFromStrongbox(clonedStrongboxes.get(strongbox));
-                        } catch (Exception e) {
+        /* Try removing all input storable resources from cloned strongboxes;
+           if an exception is thrown, the transfer is not possible */
+        for (Strongbox strongbox : inputStrongboxes.keySet())
+            for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
+                for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
+                    try {
+                        resType.removeFromStrongbox(clonedStrongboxes.get(strongbox));
+                    } catch (Exception e) {
+                        if (!discardableOutput)
                             throw new Exception();
-                        }
+                    }
 
-            /* Try adding all output storable resources into cloned strongboxes (with input removed);
-               if exception is thrown, the production is not possible (only cloned strongboxes are touched) */
-            for (Strongbox strongbox : outputStrongboxes.keySet())
-                for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
-                    for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
-                        try {
-                            resType.addIntoStrongbox(clonedStrongboxes.get(strongbox));
-                        } catch (Exception e) {
+        /* Try adding all output storable resources into cloned strongboxes (with input removed);
+           if an exception is thrown, the transfer is not possible */
+        for (Strongbox strongbox : outputStrongboxes.keySet())
+            for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
+                for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
+                    try {
+                        resType.addIntoStrongbox(clonedStrongboxes.get(strongbox));
+                    } catch (Exception e) {
+                        if (!discardableOutput)
                             throw new Exception();
-                        }
-        }
+                    }
 
         /* Remove all input storable resources from real strongboxes;
            this should be possible, as it worked with cloned strongboxes */
@@ -202,11 +205,11 @@ public class Production {
     }
 
     /**
-     * Replaces the blank resources in a given map.
+     * Replaces the blank resources in a given map of resources.
      *
-     * @param mapWithBlanks full map including blanks
-     * @param blanksRep     map of replacement of blanks
-     * @return              map with replaced blanks
+     * @param mapWithBlanks the map of resources including blanks
+     * @param blanksRep     the map of replacement resources of blanks
+     * @return              the map of resources with replaced blanks
      * @throws Exception    if it is not possible
      */
     private static Map<ResourceType, Integer> replaceBlanks(Map<ResourceType, Integer> mapWithBlanks,
@@ -215,7 +218,7 @@ public class Production {
         if (blanksRep.keySet().stream().anyMatch(ResourceType::isBlank))
             throw new Exception();
 
-        /* Check that mapWithBlanks has the same number of resources as blanks in blanksRep */
+        /* Check that blanksRep has the same number of resources as blanks in mapWithBlanks */
         if (!blanksRep.isEmpty()) {
             int blanksCount = mapWithBlanks.entrySet().stream()
                     .filter(e -> e.getKey().isBlank()).map(Map.Entry::getValue).reduce(0, Integer::sum);
@@ -229,7 +232,7 @@ public class Production {
                 .filter(e -> !e.getKey().isBlank())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        /* Add all replacements resources from blanksRep */
+        /* Add all replacement resources from blanksRep */
         blanksRep.forEach((r, q) -> replacedBlanks.merge(r, q, Integer::sum));
 
         return replacedBlanks;
@@ -238,9 +241,9 @@ public class Production {
     /**
      * Checks that strongboxes are given for respectively all non-storable resources in a given map.
      *
-     * @param mapWithoutBlanks  full map with blanks already replaced
+     * @param mapWithoutBlanks  the map of resources without blanks
      * @param strongboxes       the map of the strongboxes to use for all the resources
-     * @return                  true if valid, otherwise false
+     * @return                  true if the resources and the quantities match, otherwise false
      */
     private static boolean checkStrongboxes(Map<ResourceType, Integer> mapWithoutBlanks,
                                             Map<Strongbox, Map<ResourceType, Integer>> strongboxes) {
