@@ -4,11 +4,15 @@ package it.polimi.ingsw.resourcetypes;
  * Resource representing a servant.
  */
 public class Servant extends ResourceType {
-    /**
-     * Single instance of the class
-     */
-    private static ResourceType resource;
+    /** The name of the resource type. */
+    private static final String NAME = "Servant";
 
+    /** The single instance of the class. */
+    private static ResourceType instance;
+
+    /**
+     * Class constructor.
+     */
     private Servant() { }
 
     @Override
@@ -18,14 +22,16 @@ public class Servant extends ResourceType {
     public boolean isStorable() { return true; }
 
     /**
-     * @return  the single instance of this class
+     * @return  the single instance of the class
      */
     public static ResourceType getInstance() {
-        if (resource == null) resource = new Servant();
-        return resource;
+        if (instance == null) instance = new Servant();
+        return instance;
     }
 
     @Override
-    public String getName() { return "servant"; }
+    public String getName() { return NAME; }
 
+    @Override
+    public String toString() { return NAME; }
 }

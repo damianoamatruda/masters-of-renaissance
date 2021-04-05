@@ -4,11 +4,15 @@ package it.polimi.ingsw.resourcetypes;
  * Resource representing a stone.
  */
 public class Stone extends ResourceType {
-    /**
-     * Single instance of the class
-     */
-    private static ResourceType resource;
+    /** The name of the resource type. */
+    private static final String NAME = "Stone";
 
+    /** The single instance of the class. */
+    private static ResourceType instance;
+
+    /**
+     * Class constructor.
+     */
     private Stone() { }
 
     @Override
@@ -18,13 +22,16 @@ public class Stone extends ResourceType {
     public boolean isStorable() { return true; }
 
     /**
-     * @return  the single instance of this class
+     * @return  the single instance of the class
      */
     public static ResourceType getInstance() {
-        if (resource == null) resource = new Stone();
-        return resource;
+        if (instance == null) instance = new Stone();
+        return instance;
     }
 
     @Override
-    public String getName() { return "stone"; }
+    public String getName() { return NAME; }
+
+    @Override
+    public String toString() { return NAME; }
 }

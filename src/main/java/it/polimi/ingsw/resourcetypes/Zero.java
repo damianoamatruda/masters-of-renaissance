@@ -6,11 +6,15 @@ import it.polimi.ingsw.strongboxes.Strongbox;
  * Resource that can be substituted with another resource
  */
 public class Zero extends ResourceType {
-    /**
-     * Single instance of the class
-     */
-    private static ResourceType resource;
+    /** The name of the resource type. */
+    private static final String NAME = "Zero";
 
+    /** The single instance of the class. */
+    private static ResourceType instance;
+
+    /**
+     * Class constructor.
+     */
     private Zero() { }
 
     @Override
@@ -20,13 +24,16 @@ public class Zero extends ResourceType {
     public boolean isStorable() { return false; }
 
     /**
-     * @return  the single instance of this class
+     * @return  the single instance of the class
      */
     public static ResourceType getInstance() {
-        if (resource == null) resource = new Zero();
-        return resource;
+        if (instance == null) instance = new Zero();
+        return instance;
     }
 
     @Override
-    public String getName() { return "zero"; }
+    public String getName() { return NAME; }
+
+    @Override
+    public String toString() { return NAME; }
 }

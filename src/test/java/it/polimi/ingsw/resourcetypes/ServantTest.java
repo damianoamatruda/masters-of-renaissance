@@ -10,6 +10,6 @@ public class ServantTest {
     /** Check name. */
     @Test
     public void getName() {
-        assertEquals("servant", Servant.getInstance().getName());
+        assertEquals("Servant", Servant.getInstance().getName());
     }
 }

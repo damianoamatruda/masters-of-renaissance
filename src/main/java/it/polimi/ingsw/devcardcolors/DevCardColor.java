@@ -5,12 +5,7 @@ package it.polimi.ingsw.devcardcolors;
  */
 public abstract class DevCardColor {
     /**
-     * Class constructor.
-     */
-    protected DevCardColor() { }
-
-    /**
-     * @return a name that will be displayed by the view, based on the concrete color
+     * @return  a name that will be displayed by the view, based on the concrete color
      */
     abstract String getName();
 }

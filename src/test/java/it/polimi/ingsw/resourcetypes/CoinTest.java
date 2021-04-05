@@ -10,6 +10,6 @@ public class CoinTest {
     /** Check name. */
     @Test
     public void getName() {
-        assertEquals("coin", Coin.getInstance().getName());
+        assertEquals("Coin", Coin.getInstance().getName());
     }
 }

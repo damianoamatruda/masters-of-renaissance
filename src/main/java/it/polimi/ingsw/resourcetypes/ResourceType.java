@@ -9,11 +9,6 @@ import it.polimi.ingsw.strongboxes.Strongbox;
  */
 public abstract class ResourceType {
     /**
-     * Class constructor.
-     */
-    protected ResourceType() { }
-
-    /**
      * @return  whether the resource can be replaced with another resource.
      */
     public abstract boolean isBlank();
@@ -24,8 +19,7 @@ public abstract class ResourceType {
     public abstract boolean isStorable();
 
     /**
-     * @return  the name of the resource associated with the class.
-     *          For UI purposes only.
+     * @return  the name of the resource associated with the class, for UI purposes only
      */
     public abstract String getName();
 

@@ -10,6 +10,6 @@ public class FaithTest {
     /** Check name. */
     @Test
     public void getName() {
-        assertEquals("faith", Faith.getInstance().getName());
+        assertEquals("Faith", Faith.getInstance().getName());
     }
 }

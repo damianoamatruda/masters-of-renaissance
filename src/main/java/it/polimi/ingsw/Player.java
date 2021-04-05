@@ -295,4 +295,9 @@ public class Player {
 
         this.victoryPoints += toSum;
     }
+
+    @Override
+    public String toString() {
+        return nickname;
+    }
 }

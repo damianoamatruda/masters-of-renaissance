@@ -8,10 +8,11 @@ import it.polimi.ingsw.strongboxes.Strongbox;
  * Resource representing a faith point.
  */
 public class Faith extends ResourceType {
-    /**
-     * Single instance of the class
-     */
-    private static ResourceType resource;
+    /** The name of the resource type. */
+    private static final String NAME = "Faith";
+
+    /** The single instance of the class. */
+    private static ResourceType instance;
 
     private Faith() { }
 
@@ -22,18 +23,21 @@ public class Faith extends ResourceType {
     public boolean isStorable() { return false; }
 
     /**
-     * @return  the single instance of this class
+     * @return  the single instance of the class
      */
     public static ResourceType getInstance() {
-        if (resource == null) resource = new Faith();
-        return resource;
+        if (instance == null) instance = new Faith();
+        return instance;
     }
 
     @Override
-    public String getName() { return "faith"; }
+    public String getName() { return NAME; }
 
     @Override
     public void giveToPlayer(Game game, Player player) {
         player.incrementFaithPoints(game);
     }
+
+    @Override
+    public String toString() { return NAME; }
 }

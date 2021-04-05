@@ -10,6 +10,6 @@ public class ShieldTest {
     /** Check name. */
     @Test
     public void getName() {
-        assertEquals("shield", Shield.getInstance().getName());
+        assertEquals("Shield", Shield.getInstance().getName());
     }
 }
