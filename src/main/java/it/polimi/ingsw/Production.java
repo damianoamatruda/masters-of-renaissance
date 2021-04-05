@@ -122,7 +122,7 @@ public class Production {
             throw new Exception();
 
         if (!discardableOutput) {
-            /* Get set of all strongboxes, both in input and in output */
+            /* Get set of all strongboxes, in input and in output */
             Set<Strongbox> allStrongboxes = new HashSet<>();
             allStrongboxes.addAll(inputStrongboxes.keySet());
             allStrongboxes.addAll(outputStrongboxes.keySet());
@@ -182,8 +182,13 @@ public class Production {
                             throw new RuntimeException();
                     }
 
-        Map<ResourceType, Integer> nonStorableReplacedInput = filterNonStorable(replacedInput);
-        Map<ResourceType, Integer> nonStorableReplacedOutput = filterNonStorable(replacedOutput);
+        /* Filter the non-storable resources */
+        Map<ResourceType, Integer> nonStorableReplacedInput = replacedInput.entrySet().stream()
+                .filter(e -> !e.getKey().isStorable())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<ResourceType, Integer> nonStorableReplacedOutput = replacedOutput.entrySet().stream()
+                .filter(e -> !e.getKey().isStorable())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         /* Take all input non-storable resources from player; this is always possible */
         for (ResourceType resType : nonStorableReplacedInput.keySet())
@@ -194,30 +199,6 @@ public class Production {
         for (ResourceType resType : nonStorableReplacedOutput.keySet())
             for (int i = 0; i < nonStorableReplacedOutput.get(resType); i++)
                 resType.giveToPlayer(game, player);
-    }
-
-    /**
-     * Filters the storable resources in a given map.
-     *
-     * @param map   full map of resources
-     * @return      map with only storable resources
-     */
-    private static Map<ResourceType, Integer> filterStorable(Map<ResourceType, Integer> map) {
-        return map.entrySet().stream()
-                .filter(e -> e.getKey().isStorable())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    /**
-     * Filters the non-storable resources in a given map.
-     *
-     * @param map   full map of resources
-     * @return      map with only non storable resources
-     */
-    private static Map<ResourceType, Integer> filterNonStorable(Map<ResourceType, Integer> map) {
-        return map.entrySet().stream()
-                .filter(e -> !e.getKey().isStorable())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
@@ -255,16 +236,18 @@ public class Production {
     }
 
     /**
-     * Checks that <code>strongboxes</code> are given for respectively all non-storable resources in
-     * <code>mapWithoutBlanks</code>
+     * Checks that strongboxes are given for respectively all non-storable resources in a given map.
      *
-     * @param mapWithoutBlanks  full map with blanks already replaces
+     * @param mapWithoutBlanks  full map with blanks already replaced
      * @param strongboxes       the map of the strongboxes to use for all the resources
      * @return                  true if valid, otherwise false
      */
     private static boolean checkStrongboxes(Map<ResourceType, Integer> mapWithoutBlanks,
                                             Map<Strongbox, Map<ResourceType, Integer>> strongboxes) {
-        mapWithoutBlanks = filterStorable(mapWithoutBlanks);
+        /* Filter the storable resources */
+        mapWithoutBlanks = mapWithoutBlanks.entrySet().stream()
+                .filter(e -> e.getKey().isStorable())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));;
 
         /* Check that mapWithoutBlanks and strongboxes contain the same number of storable resources */
         int mapWithoutBlanksResourcesCount = mapWithoutBlanks.values().stream().reduce(0, Integer::sum);
