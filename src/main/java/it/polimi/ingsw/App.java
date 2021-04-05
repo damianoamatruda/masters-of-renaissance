@@ -23,7 +23,7 @@ public class App {
      * @param args  the arguments
      */
     public static void main(String[] args) {
-        Game game = new OriginalGame(List.of("Player1", "Player2", "Player3"));
+        Game game = new OriginalGame(List.of("PlayerA", "PlayerB", "PlayerC"));
 
         System.out.println("Players: " + game.getPlayers().stream()
                 .map(Player::getNickname).collect(Collectors.joining(", ")));

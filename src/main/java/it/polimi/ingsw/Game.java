@@ -95,13 +95,21 @@ public class Game {
         if (playerLeadersCount > 0 && nicknames.size() > leaderCards.size() / playerLeadersCount)
             throw new RuntimeException();
 
+        /* Choose a random 1st player */
+        List<String> shiftedNicknames = new ArrayList<>(nicknames);
+        if (!shiftedNicknames.isEmpty()) {
+            int randomIndex = (new Random()).nextInt(shiftedNicknames.size());
+            for (int i = 0; i < randomIndex; i++)
+                shiftedNicknames.add(shiftedNicknames.remove(0));
+        }
+
         /* Create the players and assign their initial random leader cards */
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
         this.players = new ArrayList<>();
-        for (int i = 0; i < nicknames.size(); i++)
+        for (int i = 0; i < shiftedNicknames.size(); i++)
             this.players.add(new Player(
-                    nicknames.get(i),
+                    shiftedNicknames.get(i),
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
                     i == 0, playerWarehouseShelvesCount, playerDevSlotsCount, playerMaxObtainableDevCards));
 
