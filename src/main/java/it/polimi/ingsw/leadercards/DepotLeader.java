@@ -2,7 +2,7 @@ package it.polimi.ingsw.leadercards;
 
 import it.polimi.ingsw.CardRequirement;
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.ResourceShelf;
+import it.polimi.ingsw.resourcecontainers.ResourceShelf;
 
 /**
  * LeaderCard with the ability of storing resources,

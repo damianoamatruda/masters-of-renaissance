@@ -1,4 +1,4 @@
-package it.polimi.ingsw.strongboxes;
+package it.polimi.ingsw.resourcecontainers;
 
 import it.polimi.ingsw.resourcetypes.*;
 import org.junit.jupiter.api.Test;

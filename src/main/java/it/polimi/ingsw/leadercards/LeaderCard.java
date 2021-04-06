@@ -2,7 +2,7 @@ package it.polimi.ingsw.leadercards;
 
 import it.polimi.ingsw.*;
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.ResourceShelf;
+import it.polimi.ingsw.resourcecontainers.ResourceShelf;
 
 import java.util.Map;
 

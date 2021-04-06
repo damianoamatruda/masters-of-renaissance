@@ -1,7 +1,5 @@
 package it.polimi.ingsw.resourcetypes;
 
-import it.polimi.ingsw.strongboxes.Strongbox;
-
 /**
  * Resource that can be substituted with another resource
  */

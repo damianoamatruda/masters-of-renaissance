@@ -1,4 +1,4 @@
-package it.polimi.ingsw.strongboxes;
+package it.polimi.ingsw.resourcecontainers;
 
 import it.polimi.ingsw.resourcetypes.ResourceType;
 
@@ -31,7 +31,7 @@ public class ResourceShelf extends Shelf {
     }
 
     @Override
-    public Strongbox copy() {
+    public ResourceContainer copy() {
         return new ResourceShelf(this);
     }
 

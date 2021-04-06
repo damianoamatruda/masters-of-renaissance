@@ -1,4 +1,4 @@
-package it.polimi.ingsw.strongboxes;
+package it.polimi.ingsw.resourcecontainers;
 
 import java.util.ArrayList;
 import java.util.List;

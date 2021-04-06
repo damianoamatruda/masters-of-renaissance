@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.Shelf;
+import it.polimi.ingsw.resourcecontainers.Shelf;
 
 import java.util.*;
 import java.util.stream.Collectors;

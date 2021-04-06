@@ -1,4 +1,4 @@
-package it.polimi.ingsw.strongboxes;
+package it.polimi.ingsw.resourcecontainers;
 
 import it.polimi.ingsw.resourcetypes.*;
 import org.junit.jupiter.api.Test;
@@ -6,20 +6,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit test for Strongbox class.
+ * Unit test for ResourceShelf class.
  */
-public class StrongboxTest {
+public class ResourceShelfTest {
     /**
-     * Test the quantity of resource of a type.
+     * Test the quantity of resources of a type.
      */
     @Test
     public void testQuantity1() {
-        Strongbox s = new Strongbox();
         ResourceType c = Coin.getInstance();
+        ResourceShelf s = new ResourceShelf(c, 3);
 
         assertTrue(s.isEmpty());
-        assertEquals(0, s.getResourceQuantity(c));
+        assertFalse(s.isFull());
+        assertNull(s.getResType());
+        assertEquals(c, s.getBoundedResType());
         assertEquals(0, s.getQuantity());
+        assertEquals(s.getResourceQuantity(s.getBoundedResType()), s.getQuantity());
     }
 
     /**
@@ -27,8 +30,8 @@ public class StrongboxTest {
      */
     @Test
     public void testQuantity2() {
-        Strongbox s = new Strongbox();
         ResourceType c = Coin.getInstance();
+        ResourceShelf s = new ResourceShelf(c, 3);
 
         try {
             s.addResource(c);
@@ -42,8 +45,11 @@ public class StrongboxTest {
         }
 
         assertTrue(s.isEmpty());
-        assertEquals(0, s.getResourceQuantity(c));
+        assertFalse(s.isFull());
+        assertNull(s.getResType());
+        assertEquals(c, s.getBoundedResType());
         assertEquals(0, s.getQuantity());
+        assertEquals(s.getResourceQuantity(s.getBoundedResType()), s.getQuantity());
     }
 
     /**
@@ -51,8 +57,8 @@ public class StrongboxTest {
      */
     @Test
     public void testAddGet() {
-        Strongbox s = new Strongbox();
         ResourceType c = Coin.getInstance();
+        ResourceShelf s = new ResourceShelf(c, 3);
 
         try {
             s.addResource(c);
@@ -63,7 +69,10 @@ public class StrongboxTest {
         }
 
         assertFalse(s.isEmpty());
-        assertEquals(3, s.getResourceQuantity(c));
+        assertTrue(s.isFull());
+        assertEquals(c, s.getResType());
+        assertEquals(c, s.getBoundedResType());
         assertEquals(3, s.getQuantity());
+        assertEquals(s.getResourceQuantity(s.getBoundedResType()), s.getQuantity());
     }
 }

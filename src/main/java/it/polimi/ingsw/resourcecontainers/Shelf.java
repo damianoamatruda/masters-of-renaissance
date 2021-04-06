@@ -1,18 +1,21 @@
-package it.polimi.ingsw.strongboxes;
+package it.polimi.ingsw.resourcecontainers;
 
 import it.polimi.ingsw.resourcetypes.ResourceType;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * This class represents a container of resources of the same type in limited quantity.
  */
-public class Shelf extends Strongbox {
+public class Shelf implements ResourceContainer {
     /** The maximum quantity of resources in the shelf. */
     private final int size;
 
     /** The type of the resources in the shelf. */
     private ResourceType resType;
+
+    /* The quantity of the resources in the shelf. */
+    private int quantity;
 
     /**
      * Initializes the shelf specifying the size.
@@ -23,6 +26,7 @@ public class Shelf extends Strongbox {
         super();
         this.size = size;
         this.resType = null;
+        this.quantity = 0;
     }
 
     /**
@@ -31,13 +35,13 @@ public class Shelf extends Strongbox {
      * @param shelf the Shelf to copy
      */
     public Shelf(Shelf shelf) {
-        super(shelf);
         size = shelf.size;
         resType = shelf.resType;
+        quantity = shelf.quantity;
     }
 
     @Override
-    public Strongbox copy() {
+    public ResourceContainer copy() {
         return new Shelf(this);
     }
 
@@ -84,29 +88,55 @@ public class Shelf extends Strongbox {
     }
 
     @Override
+    public Set<ResourceType> getResourceTypes() {
+        return resType != null ? Set.of(resType) : Set.of();
+    }
+
+    @Override
+    public int getQuantity() {
+        return quantity;
+    }
+
+    @Override
+    public int getResourceQuantity(ResourceType resType) {
+        return resType.equals(this.resType) ? quantity : 0;
+    }
+
+    @Override
     public void addResource(ResourceType resType) throws Exception {
         if (this.resType != null && !resType.equals(this.resType))
             throw new Exception();
         if (isFull())
             throw new Exception();
         this.resType = resType;
-        super.addResource(resType);
+        this.quantity++;
     }
 
     @Override
     public void removeResource(ResourceType resType) throws Exception {
-        super.removeResource(resType);
+        if (this.resType != null && !resType.equals(this.resType))
+            throw new Exception();
+        if (quantity == 0)
+            throw new Exception();
+        this.quantity--;
         if (isEmpty())
             this.resType = null;
     }
 
     @Override
-    public void addStrongbox(Strongbox strongbox) throws Exception {
-        if (strongbox.resources.keySet().stream().anyMatch(r -> !r.equals(resType)))
+    public void addAll(ResourceContainer resourceContainer) throws Exception {
+        if (resourceContainer.getResourceTypes().size() > 1)
             throw new Exception();
-        if (size - resources.get(resType) < strongbox.getResourceQuantity(resType))
+        if (resType != null && resourceContainer.getResourceTypes().stream().anyMatch(r -> !r.equals(resType)))
             throw new Exception();
-        super.addStrongbox(strongbox);
+        if (resourceContainer.getResourceQuantity(resType) > size - quantity)
+            throw new Exception();
+        quantity += resourceContainer.getResourceQuantity(resType);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return quantity == 0;
     }
 
     /**
@@ -115,6 +145,6 @@ public class Shelf extends Strongbox {
      * @return  true if full, otherwise false
      */
     public boolean isFull() {
-        return getQuantity() == size;
+        return quantity == size;
     }
 }

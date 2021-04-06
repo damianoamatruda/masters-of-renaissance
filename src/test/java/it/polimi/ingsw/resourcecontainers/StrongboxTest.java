@@ -1,4 +1,4 @@
-package it.polimi.ingsw.strongboxes;
+package it.polimi.ingsw.resourcecontainers;
 
 import it.polimi.ingsw.resourcetypes.*;
 import org.junit.jupiter.api.Test;
@@ -6,28 +6,28 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit test for Shelf class.
+ * Unit test for Strongbox class.
  */
-public class ShelfTest {
+public class StrongboxTest {
     /**
-     * Test the quantity of a resource in a shelf.
+     * Test the quantity of resource of a type.
      */
     @Test
     public void testQuantity1() {
-        Shelf s = new Shelf(3);
+        Strongbox s = new Strongbox();
+        ResourceType c = Coin.getInstance();
 
         assertTrue(s.isEmpty());
-        assertFalse(s.isFull());
-        assertNull(s.getResType());
+        assertEquals(0, s.getResourceQuantity(c));
         assertEquals(0, s.getQuantity());
     }
 
     /**
-     * Test the quantity of a resource in a shelf.
+     * Test the quantity of resources of a type.
      */
     @Test
     public void testQuantity2() {
-        Shelf s = new Shelf(3);
+        Strongbox s = new Strongbox();
         ResourceType c = Coin.getInstance();
 
         try {
@@ -42,8 +42,7 @@ public class ShelfTest {
         }
 
         assertTrue(s.isEmpty());
-        assertFalse(s.isFull());
-        assertNull(s.getResType());
+        assertEquals(0, s.getResourceQuantity(c));
         assertEquals(0, s.getQuantity());
     }
 
@@ -52,7 +51,7 @@ public class ShelfTest {
      */
     @Test
     public void testAddGet() {
-        Shelf s = new Shelf(3);
+        Strongbox s = new Strongbox();
         ResourceType c = Coin.getInstance();
 
         try {
@@ -64,9 +63,7 @@ public class ShelfTest {
         }
 
         assertFalse(s.isEmpty());
-        assertTrue(s.isFull());
-        assertEquals(c, s.getResType());
+        assertEquals(3, s.getResourceQuantity(c));
         assertEquals(3, s.getQuantity());
-        assertEquals(s.getResourceQuantity(s.getResType()), s.getQuantity());
     }
 }

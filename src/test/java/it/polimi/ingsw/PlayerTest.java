@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.devcardcolors.Blue;
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.resourcetypes.*;
-import it.polimi.ingsw.strongboxes.Strongbox;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -38,10 +38,10 @@ public class PlayerTest {
     void getNumOfResourcesTestStrongboxOnly(){
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().addIntoStrongbox(player.getStrongbox());
+                Coin.getInstance().addIntoContainer(player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().addIntoStrongbox(player.getStrongbox());
-            Shield.getInstance().addIntoStrongbox(player.getStrongbox());
+                Servant.getInstance().addIntoContainer(player.getStrongbox());
+            Shield.getInstance().addIntoContainer(player.getStrongbox());
             assertEquals(12, player.getNumOfResources());
         }
         catch (Exception e){
@@ -56,13 +56,13 @@ public class PlayerTest {
     void getNumOfResourcesTestAnyStorage(){
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().addIntoStrongbox(player.getStrongbox());
+                Coin.getInstance().addIntoContainer(player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().addIntoStrongbox(player.getStrongbox());
+                Servant.getInstance().addIntoContainer(player.getStrongbox());
             for(int i = 0; i < 2; i++)
-                Stone.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(1));
+                Stone.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(1));
 
-            Shield.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(0));
+            Shield.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(0));
             assertEquals(14, player.getNumOfResources());
         }
         catch (Exception e){
@@ -82,7 +82,7 @@ public class PlayerTest {
          */
         @BeforeEach
         void prepareResources(){
-            Map<Strongbox, Map<ResourceType, Integer>> strongboxes = new HashMap<>() {{
+            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
                 put(player.getStrongbox(), new HashMap<>() {{
                     put(Coin.getInstance(), 3);
                 }});
@@ -92,13 +92,13 @@ public class PlayerTest {
             }};
             try {
                 for (int i = 0; i < 4; i++)
-                    Coin.getInstance().addIntoStrongbox(player.getStrongbox());
+                    Coin.getInstance().addIntoContainer(player.getStrongbox());
                 for (int i = 0; i < 7; i++)
-                    Servant.getInstance().addIntoStrongbox(player.getStrongbox());
+                    Servant.getInstance().addIntoContainer(player.getStrongbox());
                 for (int i = 0; i < 2; i++)
-                    Stone.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(1));
+                    Stone.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(1));
 
-                Shield.getInstance().addIntoStrongbox(player.getWarehouse().getShelves().get(0));
+                Shield.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(0));
 
                 player.addToDevSlot(game, 1, new DevelopmentCard(Blue.getInstance(), 1,
                                 new ResourceRequirement(
@@ -106,7 +106,7 @@ public class PlayerTest {
                                             put(Coin.getInstance(), 3);
                                             put(Stone.getInstance(), 2);
                                         }}), null, 2),
-                        strongboxes);
+                        resContainers);
 
             } catch (Exception e) {
                 e.printStackTrace();

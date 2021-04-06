@@ -1,15 +1,15 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.Strongbox;
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * This class represents a production, that is a transaction of transfers of resources from and to strongboxes and a
- * player.
+ * This class represents a production, that is a transaction of transfers of resources from and to resource containers
+ * and a player.
  */
 public class Production {
     /** The map of the input resources, including blanks. */
@@ -97,73 +97,74 @@ public class Production {
 
     /**
      * Activates the production. Replaces the blanks in input and in output with the given resources, removes the input
-     * storable resources from given strongboxes, adds the output storable resources into given strongboxes, takes the
-     * non-storable input resources from the player and gives the non-storable output resources to the player.
+     * storable resources from given resource containers, adds the output storable resources into given resource
+     * containers, takes the non-storable input resources from the player and gives the non-storable output resources to
+     * the player.
      *
      * This is a transaction: if the transfer is unsuccessful, a checked exception is thrown and the states of the
-     * player and the strongboxes remain unchanged.
+     * player and the resource containers remain unchanged.
      *
      * @param game              the game the player is playing in
      * @param player            the player on which to trigger the actions of the non-storable resources
      * @param inputBlanksRep    the map of the resources chosen as replacement for blanks in input
      * @param outputBlanksRep   the map of the resources chosen as replacement for blanks in output
-     * @param inputStrongboxes  the map of the strongboxes from which to remove the input storable resources
-     * @param outputStrongboxes the map of the strongboxes into which to add the output storable resources
+     * @param inputContainers  the map of the resource containers from which to remove the input storable resources
+     * @param outputContainers the map of the resource containers into which to add the output storable resources
      * @throws Exception        if the transaction failed
      */
     public void activate(Game game, Player player,
                          Map<ResourceType, Integer> inputBlanksRep,
                          Map<ResourceType, Integer> outputBlanksRep,
-                         Map<Strongbox, Map<ResourceType, Integer>> inputStrongboxes,
-                         Map<Strongbox, Map<ResourceType, Integer>> outputStrongboxes) throws Exception {
+                         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
+                         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws Exception {
         Map<ResourceType, Integer> replacedInput = replaceBlanks(input, inputBlanksRep);
         Map<ResourceType, Integer> replacedOutput = replaceBlanks(output, outputBlanksRep);
 
-        if (!checkStrongboxes(replacedInput, inputStrongboxes))
+        if (!checkContainers(replacedInput, inputContainers))
             throw new Exception();
-        if (!checkStrongboxes(replacedOutput, outputStrongboxes))
+        if (!checkContainers(replacedOutput, outputContainers))
             throw new Exception();
 
-        /* Get set of all strongboxes, in input and in output */
-        Set<Strongbox> allStrongboxes = new HashSet<>();
-        allStrongboxes.addAll(inputStrongboxes.keySet());
-        allStrongboxes.addAll(outputStrongboxes.keySet());
+        /* Get set of all resource containers, in input and in output */
+        Set<ResourceContainer> allContainers = new HashSet<>();
+        allContainers.addAll(inputContainers.keySet());
+        allContainers.addAll(outputContainers.keySet());
 
-        /* Make map of clones of all strongboxes */
-        Map<Strongbox, Strongbox> clonedStrongboxes = allStrongboxes.stream()
-                .collect(Collectors.toMap(Function.identity(), Strongbox::copy));
+        /* Make map of clones of all resource containers */
+        Map<ResourceContainer, ResourceContainer> clonedContainers = allContainers.stream()
+                .collect(Collectors.toMap(Function.identity(), ResourceContainer::copy));
 
-        /* Try removing all input storable resources from cloned strongboxes;
+        /* Try removing all input storable resources from cloned resource containers;
            if an exception is thrown, the transfer is not possible */
-        for (Strongbox strongbox : inputStrongboxes.keySet())
-            for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
-                for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
+        for (ResourceContainer resContainer : inputContainers.keySet())
+            for (ResourceType resType : inputContainers.get(resContainer).keySet())
+                for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.removeFromStrongbox(clonedStrongboxes.get(strongbox));
+                        resType.removeFromContainer(clonedContainers.get(resContainer));
                     } catch (Exception e) {
                         if (!discardableOutput)
                             throw new Exception();
                     }
 
-        /* Try adding all output storable resources into cloned strongboxes (with input removed);
+        /* Try adding all output storable resources into cloned resource containers (with input removed);
            if an exception is thrown, the transfer is not possible */
-        for (Strongbox strongbox : outputStrongboxes.keySet())
-            for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
-                for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
+        for (ResourceContainer resContainer : outputContainers.keySet())
+            for (ResourceType resType : outputContainers.get(resContainer).keySet())
+                for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.addIntoStrongbox(clonedStrongboxes.get(strongbox));
+                        resType.addIntoContainer(clonedContainers.get(resContainer));
                     } catch (Exception e) {
                         if (!discardableOutput)
                             throw new Exception();
                     }
 
-        /* Remove all input storable resources from real strongboxes;
-           this should be possible, as it worked with cloned strongboxes */
-        for (Strongbox strongbox : inputStrongboxes.keySet())
-            for (ResourceType resType : inputStrongboxes.get(strongbox).keySet())
-                for (int i = 0; i < inputStrongboxes.get(strongbox).get(resType); i++)
+        /* Remove all input storable resources from real resource containers;
+           this should be possible, as it worked with cloned resource containers */
+        for (ResourceContainer resContainer : inputContainers.keySet())
+            for (ResourceType resType : inputContainers.get(resContainer).keySet())
+                for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.removeFromStrongbox(strongbox);
+                        resType.removeFromContainer(resContainer);
                     } catch (Exception e) {
                         if (discardableOutput)
                             resType.discard(game, player);
@@ -171,13 +172,13 @@ public class Production {
                             throw new RuntimeException();
                     }
 
-        /* Add all output storable resources into real strongboxes;
-           this should be possible, as it worked with cloned strongboxes */
-        for (Strongbox strongbox : outputStrongboxes.keySet())
-            for (ResourceType resType : outputStrongboxes.get(strongbox).keySet())
-                for (int i = 0; i < outputStrongboxes.get(strongbox).get(resType); i++)
+        /* Add all output storable resources into real resource containers;
+           this should be possible, as it worked with cloned resource containers */
+        for (ResourceContainer resContainer : outputContainers.keySet())
+            for (ResourceType resType : outputContainers.get(resContainer).keySet())
+                for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.addIntoStrongbox(strongbox);
+                        resType.addIntoContainer(resContainer);
                     } catch (Exception e) {
                         if (discardableOutput)
                             resType.discard(game, player);
@@ -239,33 +240,33 @@ public class Production {
     }
 
     /**
-     * Checks that strongboxes are given for respectively all non-storable resources in a given map.
+     * Checks that resource containers are given for respectively all non-storable resources in a given map.
      *
      * @param mapWithoutBlanks  the map of resources without blanks
-     * @param strongboxes       the map of the strongboxes to use for all the resources
+     * @param resContainers     the map of the resource containers to use for all the resources
      * @return                  true if the resources and the quantities match, otherwise false
      */
-    private static boolean checkStrongboxes(Map<ResourceType, Integer> mapWithoutBlanks,
-                                            Map<Strongbox, Map<ResourceType, Integer>> strongboxes) {
+    private static boolean checkContainers(Map<ResourceType, Integer> mapWithoutBlanks,
+                                           Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) {
         /* Filter the storable resources */
         mapWithoutBlanks = mapWithoutBlanks.entrySet().stream()
                 .filter(e -> e.getKey().isStorable())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));;
 
-        /* Check that mapWithoutBlanks and strongboxes contain the same number of storable resources */
+        /* Check that mapWithoutBlanks and resContainers contain the same number of storable resources */
         int mapWithoutBlanksResourcesCount = mapWithoutBlanks.values().stream().reduce(0, Integer::sum);
-        int strongboxesResourcesCount = strongboxes.values().stream()
+        int containersResourcesCount = resContainers.values().stream()
                 .map(m -> m.values().stream().reduce(0, Integer::sum))
                 .reduce(0, Integer::sum);
-        if (strongboxesResourcesCount != mapWithoutBlanksResourcesCount)
+        if (containersResourcesCount != mapWithoutBlanksResourcesCount)
             return false;
 
-        /* Check that the amount of each storable resource type in mapWithoutBlanks is the same as in strongboxes */
+        /* Check that the amount of each storable resource type in mapWithoutBlanks is the same as in resContainers */
         for (ResourceType resType : mapWithoutBlanks.keySet()) {
-            int strongboxesResourceCount = 0;
-            for (Strongbox strongbox : strongboxes.keySet())
-                strongboxesResourceCount += strongboxes.get(strongbox).getOrDefault(resType, 0);
-            if (strongboxesResourceCount != mapWithoutBlanks.get(resType))
+            int containersResourceCount = 0;
+            for (ResourceContainer resContainer : resContainers.keySet())
+                containersResourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
+            if (containersResourceCount != mapWithoutBlanks.get(resType))
                 return false;
         }
 

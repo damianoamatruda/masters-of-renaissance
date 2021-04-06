@@ -3,9 +3,8 @@ package it.polimi.ingsw;
 import java.util.Map;
 
 import it.polimi.ingsw.devcardcolors.DevCardColor;
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.Shelf;
-import it.polimi.ingsw.strongboxes.Strongbox;
 
 /**
  * Development cards allow the player to produce resources.
@@ -63,12 +62,12 @@ public class DevelopmentCard extends Card {
      *
      * @param game          the game the player is playing in
      * @param player        the player to assign the card to and to take the resources from.
-     * @param strongboxes   selection map specifying where to take the resources from.
+     * @param resContainers selection map specifying where to take the resources from.
      * @throws Exception    if the player does not own the required resources.
      */
-    public void takeFromPlayer(Game game, Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
         cost.checkRequirements(player);
 
-        cost.take(game, player, strongboxes);
+        cost.take(game, player, resContainers);
     }
 }

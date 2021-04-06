@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.leadercards.LeaderCard;
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.Shelf;
-import it.polimi.ingsw.strongboxes.Strongbox;
+import it.polimi.ingsw.resourcecontainers.Shelf;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,15 +52,15 @@ public class ResourceRequirement implements CardRequirement {
 
     /**
      * Takes the resources that form the requirement from the player. Each storable resource is taken from a given
-     * strongbox.
+     * resource container.
      *
      * @param game          the game the player is playing in
      * @param player        the player the resources are taken from
-     * @param strongboxes   a map of the strongboxes where to take the storable resources
+     * @param resContainers a map of the resource containers where to take the storable resources
      * @throws Exception    if it is not possible
      */
-    public void take(Game game, Player player, Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+    public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
         (new Production(resources, new HashMap<>()))
-                .activate(game, player, new HashMap<>(), new HashMap<>(), strongboxes, new HashMap<>());
+                .activate(game, player, new HashMap<>(), new HashMap<>(), resContainers, new HashMap<>());
     }
 }

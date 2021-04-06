@@ -2,7 +2,7 @@ package it.polimi.ingsw.resourcetypes;
 
 import it.polimi.ingsw.Game;
 import it.polimi.ingsw.Player;
-import it.polimi.ingsw.strongboxes.Strongbox;
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 
 /**
  * Generic resource archetype.
@@ -14,7 +14,7 @@ public abstract class ResourceType {
     public abstract boolean isBlank();
 
     /**
-     * @return  whether the resource can be stored in a strongbox.
+     * @return  whether the resource can be stored in a resource container.
      */
     public abstract boolean isStorable();
 
@@ -52,22 +52,22 @@ public abstract class ResourceType {
     }
 
     /**
-     * Routine for adding the resource into a strongbox.
+     * Routine for adding the resource into a resource container.
      *
-     * @param strongbox     the storage in which the resource is deposited, if applicable
+     * @param resContainer     the storage in which the resource is deposited, if applicable
      * @throws Exception    if it is not possible
      */
-    public void addIntoStrongbox(Strongbox strongbox) throws Exception {
-        strongbox.addResource(this);
+    public void addIntoContainer(ResourceContainer resContainer) throws Exception {
+        resContainer.addResource(this);
     }
 
     /**
-     * Routine for removing the resource from a strongbox.
+     * Routine for removing the resource from a resource container.
      *
-     * @param strongbox     the storage from which the resource is removed, if applicable
+     * @param resContainer     the storage from which the resource is removed, if applicable
      * @throws Exception    if it is not possible
      */
-    public void removeFromStrongbox(Strongbox strongbox) throws Exception {
-        strongbox.removeResource(this);
+    public void removeFromContainer(ResourceContainer resContainer) throws Exception {
+        resContainer.removeResource(this);
     }
 }

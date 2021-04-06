@@ -1,9 +1,10 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.leadercards.LeaderCard;
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.resourcetypes.ResourceType;
-import it.polimi.ingsw.strongboxes.Strongbox;
-import it.polimi.ingsw.strongboxes.Warehouse;
+import it.polimi.ingsw.resourcecontainers.Strongbox;
+import it.polimi.ingsw.resourcecontainers.Warehouse;
 
 import java.util.*;
 
@@ -238,17 +239,17 @@ public class Player {
      * @param game          the game the player is playing in
      * @param index         the destination production slot
      * @param devCard       the development card that has just been bought
-     * @param strongboxes   a map of the strongboxes where to take the storable resources
+     * @param resContainers a map of the resource containers where to take the storable resources
      * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
      * @throws Exception    error during the actual payment
      * @return              true if Player has reached number of development cards required to end the game
      */
     public boolean addToDevSlot(Game game, int index, DevelopmentCard devCard,
-                                Map<Strongbox, Map<ResourceType, Integer>> strongboxes) throws Exception {
+                                Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new Exception();
 
-        devCard.getCost().take(game, this, strongboxes);
+        devCard.getCost().take(game, this, resContainers);
 
         slot.push(devCard);
 

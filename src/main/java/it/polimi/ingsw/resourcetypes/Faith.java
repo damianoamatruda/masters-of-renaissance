@@ -2,7 +2,6 @@ package it.polimi.ingsw.resourcetypes;
 
 import it.polimi.ingsw.Game;
 import it.polimi.ingsw.Player;
-import it.polimi.ingsw.strongboxes.Strongbox;
 
 /**
  * Resource representing a faith point.
