@@ -54,7 +54,7 @@ public abstract class ResourceType {
     /**
      * Routine for adding the resource into a resource container.
      *
-     * @param resContainer     the storage in which the resource is deposited, if applicable
+     * @param resContainer  the storage in which the resource is deposited, if applicable
      * @throws Exception    if it is not possible
      */
     public void addIntoContainer(ResourceContainer resContainer) throws Exception {
@@ -64,7 +64,7 @@ public abstract class ResourceType {
     /**
      * Routine for removing the resource from a resource container.
      *
-     * @param resContainer     the storage from which the resource is removed, if applicable
+     * @param resContainer  the storage from which the resource is removed, if applicable
      * @throws Exception    if it is not possible
      */
     public void removeFromContainer(ResourceContainer resContainer) throws Exception {

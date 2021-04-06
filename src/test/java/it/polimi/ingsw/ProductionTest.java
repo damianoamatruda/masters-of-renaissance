@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.resourcetypes.*;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithoutBlanks() {
-        Production production = new Production(
+        Production<ResourceContainer, ResourceContainer> production = new Production<>(
                 Map.of(Coin.getInstance(), 2),
                 Map.of(Servant.getInstance(), 3),
                 false);
@@ -52,7 +53,7 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithBlanksInInput() {
-        Production production = new Production(
+        Production<ResourceContainer, ResourceContainer> production = new Production<>(
                 Map.of(Coin.getInstance(), 2,
                         Zero.getInstance(), 3),
                 Map.of(Servant.getInstance(), 3),
@@ -93,7 +94,7 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithBlanksInOutput() {
-        Production production = new Production(
+        Production<ResourceContainer, ResourceContainer> production = new Production<>(
                 Map.of(Coin.getInstance(), 2),
                 Map.of(Servant.getInstance(), 3,
                         Zero.getInstance(), 3),

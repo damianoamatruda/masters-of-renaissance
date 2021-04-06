@@ -1,6 +1,8 @@
 package it.polimi.ingsw.leadercards;
 
 import it.polimi.ingsw.*;
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.resourcecontainers.Strongbox;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.resourcecontainers.ResourceShelf;
 
@@ -90,7 +92,7 @@ public class LeaderCard extends Card {
      *
      * @return the Production object of the leader card.
      */
-    public Production getProduction() { return null; }
+    public Production<ResourceContainer, Strongbox> getProduction() { return null; }
 
     /**
      * Processes <code>Zero</code> resources. If the leader is a ZeroLeader,

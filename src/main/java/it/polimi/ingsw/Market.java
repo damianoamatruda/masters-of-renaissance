@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.resourcetypes.ResourceType;
 import it.polimi.ingsw.resourcecontainers.Shelf;
 
@@ -106,7 +107,7 @@ public class Market {
      * @throws Exception    if it is not possible
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> zerosRep,
-                              Map<Shelf, Map<ResourceType, Integer>> shelves) throws Exception {
+                              Map<? extends Shelf, Map<ResourceType, Integer>> shelves) throws Exception {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
             throw new RuntimeException();
 
@@ -115,8 +116,8 @@ public class Market {
                 .mapToObj(i -> isRow ? grid.get(index).get(i) : grid.get(i).get(index))
                 .collect(Collectors.toMap(resType -> resType, resType -> 1, Integer::sum));
 
-        (new Production(new HashMap<>(), output, true))
-                .activate(game, player, new HashMap<>(), zerosRep, new HashMap<>(), new HashMap<>(shelves));
+        new Production<ResourceContainer, Shelf>(new HashMap<>(), output, true)
+                .activate(game, player, new HashMap<>(), zerosRep, new HashMap<>(), shelves);
 
         shift(isRow, index);
     }

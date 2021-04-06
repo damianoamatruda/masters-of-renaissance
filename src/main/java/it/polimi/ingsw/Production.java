@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * This class represents a production, that is a transaction of transfers of resources from and to resource containers
  * and a player.
  */
-public class Production {
+public class Production<T1 extends ResourceContainer, T2 extends ResourceContainer> {
     /** The map of the input resources, including blanks. */
     private final Map<ResourceType, Integer> input;
 
@@ -49,10 +49,10 @@ public class Production {
      *
      * @param productions   the list of the productions to sum
      */
-    public Production(List<Production> productions) {
+    public Production(List<Production<? extends T1, ? extends T2>> productions) {
         this.input = new HashMap<>();
         this.output = new HashMap<>();
-        for (Production production : productions) {
+        for (Production<? extends T1, ? extends T2> production : productions) {
             production.input.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
             production.output.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
         }
@@ -108,15 +108,15 @@ public class Production {
      * @param player            the player on which to trigger the actions of the non-storable resources
      * @param inputBlanksRep    the map of the resources chosen as replacement for blanks in input
      * @param outputBlanksRep   the map of the resources chosen as replacement for blanks in output
-     * @param inputContainers  the map of the resource containers from which to remove the input storable resources
-     * @param outputContainers the map of the resource containers into which to add the output storable resources
+     * @param inputContainers   the map of the resource containers from which to remove the input storable resources
+     * @param outputContainers  the map of the resource containers into which to add the output storable resources
      * @throws Exception        if the transaction failed
      */
     public void activate(Game game, Player player,
                          Map<ResourceType, Integer> inputBlanksRep,
                          Map<ResourceType, Integer> outputBlanksRep,
-                         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws Exception {
+                         Map<? extends T1, Map<ResourceType, Integer>> inputContainers,
+                         Map<? extends T2, Map<ResourceType, Integer>> outputContainers) throws Exception {
         Map<ResourceType, Integer> replacedInput = replaceBlanks(input, inputBlanksRep);
         Map<ResourceType, Integer> replacedOutput = replaceBlanks(output, outputBlanksRep);
 
@@ -136,7 +136,7 @@ public class Production {
 
         /* Try removing all input storable resources from cloned resource containers;
            if an exception is thrown, the transfer is not possible */
-        for (ResourceContainer resContainer : inputContainers.keySet())
+        for (T1 resContainer : inputContainers.keySet())
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -148,7 +148,7 @@ public class Production {
 
         /* Try adding all output storable resources into cloned resource containers (with input removed);
            if an exception is thrown, the transfer is not possible */
-        for (ResourceContainer resContainer : outputContainers.keySet())
+        for (T2 resContainer : outputContainers.keySet())
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -160,7 +160,7 @@ public class Production {
 
         /* Remove all input storable resources from real resource containers;
            this should be possible, as it worked with cloned resource containers */
-        for (ResourceContainer resContainer : inputContainers.keySet())
+        for (T1 resContainer : inputContainers.keySet())
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -174,7 +174,7 @@ public class Production {
 
         /* Add all output storable resources into real resource containers;
            this should be possible, as it worked with cloned resource containers */
-        for (ResourceContainer resContainer : outputContainers.keySet())
+        for (T2 resContainer : outputContainers.keySet())
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -247,11 +247,11 @@ public class Production {
      * @return                  true if the resources and the quantities match, otherwise false
      */
     private static boolean checkContainers(Map<ResourceType, Integer> mapWithoutBlanks,
-                                           Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) {
+                                           Map<? extends ResourceContainer, Map<ResourceType, Integer>> resContainers) {
         /* Filter the storable resources */
         mapWithoutBlanks = mapWithoutBlanks.entrySet().stream()
                 .filter(e -> e.getKey().isStorable())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));;
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         /* Check that mapWithoutBlanks and resContainers contain the same number of storable resources */
         int mapWithoutBlanksResourcesCount = mapWithoutBlanks.values().stream().reduce(0, Integer::sum);
