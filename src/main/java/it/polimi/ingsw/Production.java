@@ -142,8 +142,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
                     try {
                         resType.removeFromContainer(clonedContainers.get(resContainer));
                     } catch (Exception e) {
-                        if (!discardableOutput)
-                            throw new Exception();
+                        throw new Exception();
                     }
 
         /* Try adding all output storable resources into cloned resource containers (with input removed);
@@ -166,10 +165,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
                     try {
                         resType.removeFromContainer(resContainer);
                     } catch (Exception e) {
-                        if (discardableOutput)
-                            resType.discard(game, player);
-                        else
-                            throw new RuntimeException();
+                        throw new RuntimeException();
                     }
 
         /* Add all output storable resources into real resource containers;
