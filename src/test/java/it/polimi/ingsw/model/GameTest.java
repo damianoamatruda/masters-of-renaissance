@@ -16,14 +16,16 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Test of base game operations */
+/**
+ * Test of base game operations.
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameTest {
 
     Game game;
 
     /**
-     * First instantiation of Game with 3 players
+     * First instantiation of Game with 3 players.
      */
     @BeforeAll
     public void setup(){
@@ -31,7 +33,8 @@ public class GameTest {
     }
 
     /**
-     * Checks some basic instantiation effects, more specifically if player 1 has inkwell and if initial turn number is 1
+     * Checks some basic instantiation effects, more specifically if player 1 has inkwell and if initial turn number is
+     * 1.
      */
     @Test
     @DisplayName("Game should already be instantiated")
@@ -41,7 +44,8 @@ public class GameTest {
     }
 
     /**
-     * Checks correct instantiation of devGrid with original rules
+     * Checks correct instantiation of devGrid with original rules.
+     *
      * @param level level of the cards to test
      */
     @ParameterizedTest
@@ -55,23 +59,25 @@ public class GameTest {
     }
 
     /**
-     * Basic test on peek of what cards can be purchased during the current turn
+     * Basic test on peek of what cards can be purchased during the current turn.
      */
+    @Disabled("Not yet implemented.") // TODO
     @Test
     void peekCardsTest(){
 
     }
 
     /**
-     * Basic test on development card purchase
+     * Basic test on development card purchase.
      */
+    @Disabled("Not yet implemented.") // TODO
     @Test
     void buyCardTest(){
 
     }
 
     /**
-     * Checks that first advance does not give any points
+     * Checks that first advance does not give any points.
      */
     @Test
     void firstadvanceNoPts() {
@@ -80,7 +86,7 @@ public class GameTest {
     }
 
     /**
-     * Nested class for first Vatican Report related tests
+     * Nested class for first Vatican Report related tests.
      */
     @Nested
     @DisplayName("First Vatican Report Tests")
@@ -89,9 +95,11 @@ public class GameTest {
         /**
          * Simulates a possible scenario after triggering 1st Vatican Report.
          * Current tiles reached by the 3 markers:
-         * Player 1: 5;
-         * Player 2: 8;
-         * Player 3: 0;
+         * <ol>
+         *     <li>Player 1: 5;</li>
+         *     <li>Player 2: 8;</li>
+         *     <li>Player 3: 0.</li>
+         * </ol>
          */
         @BeforeEach
         public void advancePlayers(){
@@ -102,31 +110,32 @@ public class GameTest {
         }
 
         /**
-         * Ensures that Player 1 has received the 1st set of Vatican favor points
+         * Ensures that Player 1 has received the 1st set of Vatican favor points.
          */
         @Test
         void firstVaticanReportPtsObtained() {
             assertEquals(2, game.getPlayers().get(0).getVictoryPoints());
         }
+
         /**
-         * Ensures that Player 3 has not received the 1st set of Vatican favor points
+         * Ensures that Player 3 has not received the 1st set of Vatican favor points.
          */
         @Test
         void firstVaticanReportPtsNotObtained() {
             assertEquals(0, game.getPlayers().get(2).getVictoryPoints());
         }
+
         /**
-         * Ensures that the Game has not ended yet
+         * Ensures that the Game has not ended yet.
          */
         @Test
         void hasTheGameEnded(){
             assertFalse(game.hasEnded());
         }
-
     }
 
     /**
-     * Nested class for second Vatican Report related tests
+     * Nested class for second Vatican Report related tests.
      */
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -135,9 +144,11 @@ public class GameTest {
         /**
          * Simulates a possible scenario after triggering 2nd Vatican Report.
          * Current tiles reached by the 3 markers:
-         * Player 1: 5;
-         * Player 2: 16;
-         * Player 3: 8;
+         * <ol>
+         *     <li>Player 1: 5;</li>
+         *     <li>Player 2: 16;</li>
+         *     <li>Player 3: 8.</li>
+         * </ol>
          */
         @BeforeEach
         public void advancePlayers(){
@@ -150,21 +161,23 @@ public class GameTest {
                 game.getPlayers().get(1).incrementFaithPoints(game);
         }
         /**
-         * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded)
+         * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded).
          */
         @Test
         void secondVaticanReportPtsAlessandro() {
             assertEquals(2, game.getPlayers().get(0).getVictoryPoints());
         }
+
         /**
-         * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points excluded)
+         * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points excluded).
          */
         @Test
         void secondVaticanReportPtsDamiano() {
             assertEquals(3, game.getPlayers().get(1).getVictoryPoints());
         }
+
         /**
-         * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points excluded)
+         * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points excluded).
          */
         @Test
         void secondVaticanReportPtsMarco() {
@@ -174,7 +187,7 @@ public class GameTest {
     }
 
     /**
-     * Nested class for last Vatican Report and late game related tests
+     * Nested class for last Vatican Report and late game related tests.
      */
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -183,9 +196,11 @@ public class GameTest {
         /**
          * Simulates a possible scenario after triggering 1st Vatican Report.
          * Current tiles reached by the 3 markers:
-         * Player 1: 24;
-         * Player 2: 20;
-         * Player 3: 16;
+         * <ol>
+         *     <li>Player 1: 24;</li>
+         *     <li>Player 2: 20;</li>
+         *     <li>Player 3: 16.</li>
+         * </ol>
          */
         @BeforeEach
         public void advancePlayers(){
@@ -206,7 +221,8 @@ public class GameTest {
         }
 
         /**
-         * Ensures that the previously executed methods in advancePlayers() have not had any side effects on the order of the players
+         * Ensures that the previously executed methods in advancePlayers() have not had any side effects on the order
+         * of the players.
          */
         @Test
         @Disabled("Random 1st player is yet to be handled") // TODO
@@ -216,7 +232,8 @@ public class GameTest {
                     ()->assertEquals(game.getPlayers().get(2).getNickname(),"Marco"));
         }
         /**
-         * Ensures that the previously executed methods in advancePlayers() have not had any side effects on the number of resources stored
+         * Ensures that the previously executed methods in advancePlayers() have not had any side effects on the number
+         * of resources stored.
          */
         @Test
         void doPlayersHaveStorableResources(){
@@ -226,14 +243,14 @@ public class GameTest {
         }
 
         /**
-         * Nested class for 3rd Vatican section tests before calling hasEnded()
+         * Nested class for 3rd Vatican section tests before calling hasEnded().
          */
         @Nested
         @TestInstance(TestInstance.Lifecycle.PER_CLASS)
         @DisplayName("Last Vatican Report tests before deciding winner")
         class LateGameBeforeWinnerCalcs {
             /**
-             * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points excluded)
+             * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points excluded).
              */
             @Test
             void lastVaticanReportPtsObtained() {
@@ -241,7 +258,7 @@ public class GameTest {
             }
 
             /**
-             * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded)
+             * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded).
              */
             @Test
             void lastVaticanReportPtsObtainedLead() {
@@ -249,7 +266,7 @@ public class GameTest {
             }
 
             /**
-             * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points excluded)
+             * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points excluded).
              */
             @Test
             void lastVaticanReportPtsNotObtained() {
@@ -258,15 +275,14 @@ public class GameTest {
         }
 
         /**
-         * Nested class for 3rd Vatican section tests after calling hasEnded()
+         * Nested class for 3rd Vatican section tests after calling hasEnded().
          */
         @Nested
         @TestInstance(TestInstance.Lifecycle.PER_CLASS)
         @DisplayName("Last Vatican Report tests after deciding winner")
         class LateGameAfterWinnerCalcs {
-
             /**
-             * Closes the Game (and does the last calcs to determine winner) before the following tests
+             * Closes the Game (and does the last calcs to determine winner) before the following tests.
              */
             @BeforeEach
             void endGame(){
@@ -274,37 +290,39 @@ public class GameTest {
             }
 
             /**
-             * Ensures the Game has actually ended
+             * Ensures the Game has actually ended.
              */
             @Test
             void hasTheGameEnded() {
                 assertTrue(game.hasEnded());
             }
 
-             /**
-              * Checks the total score achieved by Player 1
-              */
-             @RepeatedTest(value = 10)
-             void ptsAlessandroAfterCalcs(){
-                 assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
-             }
-             /**
-              * Checks the total score achieved by Player 2
-              */
-             @RepeatedTest(value = 10)
-             void ptsDamianoAfterCalcs(){
-                 assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
-             }
-             /**
-              * Checks the total score achieved by Player 3
-              */
-             @RepeatedTest(value = 10)
-             void ptsMarcoAfterCalcs(){
-                 assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
-             }
+            /**
+            * Checks the total score achieved by Player 1.
+            */
+            @RepeatedTest(value = 10)
+            void ptsAlessandroAfterCalcs(){
+             assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
+            }
 
             /**
-             * Ensures that the player with the highest points is the winner
+            * Checks the total score achieved by Player 2.
+            */
+            @RepeatedTest(value = 10)
+            void ptsDamianoAfterCalcs(){
+             assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
+            }
+
+            /**
+            * Checks the total score achieved by Player 3.
+            */
+            @RepeatedTest(value = 10)
+            void ptsMarcoAfterCalcs(){
+             assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
+            }
+
+            /**
+             * Ensures that the player with the highest points is the winner.
              */
             @RepeatedTest(value = 10)
             void isAlessandroWinner() {
@@ -312,7 +330,7 @@ public class GameTest {
             }
 
             /**
-             * Ensures that any player without the highest points is not the winner
+             * Ensures that any player without the highest points is not the winner.
              */
             @RepeatedTest(value = 10)
             void isDamianoNotWinner() {
@@ -322,14 +340,13 @@ public class GameTest {
     }
 
     /**
-     * Nested class for tests regarding current player switches
+     * Nested class for tests regarding current player switches.
      */
     @Nested
     @DisplayName("Player turn switch tests")
     class PlayerSwitchTest {
-
         /**
-         * Checks the functioning of player switch with one (out of three) inactive player
+         * Checks the functioning of player switch with one (out of three) inactive player.
          */
         @Test
         @Disabled("Random 1st player is yet to be handled") // TODO
@@ -339,7 +356,7 @@ public class GameTest {
         }
 
         /**
-         * Checks the functioning of player switch with two (out of three) inactive players
+         * Checks the functioning of player switch with two (out of three) inactive players.
          */
         @Test
         @Disabled("Random 1st player is yet to be handled") // TODO
@@ -354,7 +371,7 @@ public class GameTest {
         }
 
         /**
-         * Checks the Game behavior if current player disconnects before ending their own turn
+         * Checks the Game behavior if current player disconnects before ending their own turn.
          */
         @Test
         @Disabled("Yet to be handled when current player disconnects")
@@ -364,7 +381,7 @@ public class GameTest {
         }
 
         /**
-         * Checks the Game behavior if all players disconnect
+         * Checks the Game behavior if all players disconnect.
          */
         @Test
         @Disabled("Yet to be handled")
@@ -375,15 +392,16 @@ public class GameTest {
     }
 
     /**
-     * Tests the lack of rep exposure
+     * Tests the lack of rep exposure.
      */
+    @Disabled("Not yet implemented.") // TODO
     @Test
     void noRepExposureTest(){
 
     }
 
     /**
-     * Restores Game to initial conditions, so that every single test is not influenced by other tests
+     * Restores Game to initial conditions, so that every single test is not influenced by other tests.
      */
     @AfterEach
     void restore(){

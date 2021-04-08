@@ -32,8 +32,10 @@ public class WarehouseTest {
         ResourceType s = Servant.getInstance();
 
         try {
+            /* Shelf 1 */
             w.getShelves().get(1).addResource(c);
 
+            /* Shelf 2 */
             w.getShelves().get(2).addResource(s);
             w.getShelves().get(2).addResource(s);
             w.getShelves().get(2).addResource(s);

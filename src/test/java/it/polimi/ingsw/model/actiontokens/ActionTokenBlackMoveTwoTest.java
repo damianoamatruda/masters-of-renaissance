@@ -10,10 +10,10 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test of the functionalities of the class "ActionTokenBlackMoveTwo"
+ * Test of the functionalities of the class "ActionTokenBlackMoveTwo".
  */
 class ActionTokenBlackMoveTwoTest {
-
+    // TODO: Add Javadoc
     @Test
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo();

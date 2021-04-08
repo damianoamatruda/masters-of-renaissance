@@ -13,14 +13,16 @@ import it.polimi.ingsw.model.ResourceRequirement;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 /**
- * Test of the functionalities of the class 'LeaderCard'
+ * Test of the functionalities of the class 'LeaderCard'.
  */
 public class LeaderCardTest {
+    // TODO: Add Javadoc
     @Test
     void nullResourceCreation() {
         assertThrows(AssertionError.class, () -> new LeaderCard(null, null, 0));
     }
 
+    // TODO: Add Javadoc
     @Test
     void activateNoRequirements() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), null, 0);
@@ -29,6 +31,7 @@ public class LeaderCardTest {
         assertTrue(leader.isActive());
     }
 
+    // TODO: Add Javadoc
     @Test
     void activateWithRequirements() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
@@ -40,6 +43,7 @@ public class LeaderCardTest {
         assertTrue(leader.isActive());
     }
 
+    // TODO: Add Javadoc
     @Test
     void activateWrongResources() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
@@ -51,6 +55,7 @@ public class LeaderCardTest {
         assertTrue(!leader.isActive());
     }
 
+    // TODO: Add Javadoc
     @Test
     void getResource() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
@@ -58,6 +63,7 @@ public class LeaderCardTest {
         assertEquals(Coin.getInstance(), leader.getResource());
     }
 
+    // TODO: Add Javadoc
     @Test
     void getDepot() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
@@ -65,6 +71,7 @@ public class LeaderCardTest {
         assertNull(leader.getDepot());
     }
 
+    // TODO: Add Javadoc
     @Test
     void getDevCardCost() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
@@ -74,6 +81,7 @@ public class LeaderCardTest {
         assertTrue(cost.equals(leader.getDevCardCost(new HashMap<>(cost))));
     }
 
+    // TODO: Add Javadoc
     @Test
     void getProduction() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
@@ -81,6 +89,7 @@ public class LeaderCardTest {
         assertNull(leader.getProduction());
     }
 
+    // TODO: Add Javadoc
     @Test
     void processZeros() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);

@@ -8,56 +8,59 @@ import it.polimi.ingsw.model.resourcetypes.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/** Base game class containing the general components of the "game box",
- * as well as some attributes shared by all players that can be easily accessed from the outside
+/**
+ * Base game class containing the general components of the "game box", as well as some attributes shared by all players
+ * that can be easily accessed from the outside.
  */
 public class Game {
-    /** Maximum number of players that can connect to the same game instance */
+    /** Maximum number of players that can connect to the same game instance. */
     private static final int MAX_PLAYERS_COUNT=4;
 
-    /** Number of "Vatican Sections" that can be entered throughout the game */
+    /** Number of "Vatican Sections" that can be entered throughout the game. */
     private static final int VATICAN_SECTIONS_COUNT=3;
 
-    /** All the cards that are still not bought by any player */
+    /** All the cards that are still not bought by any player. */
     protected Map<DevCardColor, List<Stack<DevelopmentCard>>> devGrid;
 
-    /** Number of distinct rows of separate decks that represent different development card levels */
+    /** Number of distinct rows of separate decks that represent different development card levels. */
     protected final int devGridLevelsCount;
 
-    /** Number of distinct columns of separate decks that represent different development card colors */
+    /** Number of distinct columns of separate decks that represent different development card colors. */
     protected final int devGridColorsCount;
 
-    /** Reference to the "Market Board", from which resources can be "bought" */
+    /** Reference to the "Market Board", from which resources can be "bought". */
     protected final Market market;
 
-    /** Reference to the collection from which all the player's data can be accessed */
+    /** Reference to the collection from which all the player's data can be accessed. */
     protected List<Player> players;
 
-    /** Variable that maps the Vatican report tile to the corresponding state of activation
-     * Boolean value represents whether or not the Vatican report is already over */
+    /** Maps the Vatican report tile to the corresponding state of activation. Boolean value represents
+     * whether or not the Vatican report is already over. */
     private Map<Integer,Boolean> activatedVaticanSections;
 
-    /** Maps the number of tile to the bonus progressive victory points earned */
+    /** Maps the number of tile to the bonus progressive victory points earned. */
     private final Map<Integer, Integer> yellowTiles;
 
     /** Maps the tile of a Vatican report to two values:
-     * 1) The first tile of the same Vatican Section, which needs to be reached in order to earn bonus points;
-     * 2) The corresponding amount of bonus points that will be rewarded to the players after the Report is over */
+     * <ol>
+     *     <li>The first tile of the same Vatican Section, which needs to be reached in order to earn bonus points;</li>
+     *     <li>The corresponding amount of bonus points that will be rewarded to the players after the Report is over.</li>
+     * </ol>
+     */
     private final Map<Integer, Integer[]> vaticanSections;
 
-    /** Number of the last reachable faith track tile by a player */
+    /** Number of the last reachable faith track tile by a player. */
     protected final int maxFaithPointsCount;
 
-    /** Progressive number of the current turn */
+    /** Progressive number of the current turn. */
     protected int turns = 1;
 
-    /** Flag that indicates the Game is about to end */
+    /** Flag that indicates the Game is about to end. */
     protected boolean lastTurn;
 
-    // /** Default constructor of Game (Will not be used by the controller to create Game) */
-    // protected Game(){}
-
-    /** Constructor of Game instances
+    /**
+     * Constructor of Game instances
+     *
      * @param nicknames                     the list of nicknames of players who joined
      * @param leaderCards                   the list of all the leader cards in the game
      * @param playerLeadersCount            number of distinct leader cards given to each player at the beginning of the game
@@ -155,7 +158,8 @@ public class Game {
     }
 
     /**
-     * Getter of the maximum number of players that can connect to a game
+     * Getter of the maximum number of players that can connect to a game.
+     *
      * @return the maximum number of players
      */
     public static int getMaxPlayersCount() {
@@ -163,7 +167,8 @@ public class Game {
     }
 
     /**
-     * Getter of the number of rows containing cards of different levels (from 1 to the max level)
+     * Getter of the number of rows containing cards of different levels (from 1 to the max level).
+     *
      * @return the maximum level of a card (= the number of rows)
      */
     public int getDevGridLevelsCount() {
@@ -171,7 +176,8 @@ public class Game {
     }
 
     /**
-     * Getter of the number of different colors a card can have (= columns of the set of buyable cards)
+     * Getter of the number of different colors a card can have (= columns of the set of buyable cards).
+     *
      * @return the number of different card colors
      */
     public int getDevGridColorsCount() {
@@ -179,40 +185,45 @@ public class Game {
     }
 
     /**
-     * Getter of the count of different Vatican sections in the faith path
-     * @return the count of different Vatican Sections
+     * Getter of the count of different Vatican sections in the faith path.
+     *
+     * @return  the count of different Vatican Sections
      */
     public static int getVaticanSectionsCount() {
         return VATICAN_SECTIONS_COUNT;
     }
 
     /**
-     * Getter of all the players who joined the game at the beginning
-     * @return the list of players (including who disconnected after)
+     * Getter of all the players who joined the game at the beginning.
+     *
+     * @return  the list of players (including who disconnected after)
      */
     public List<Player> getPlayers() {
         return new ArrayList<>(players);
     }
 
     /**
-     * Getter of the current number of turn
-     * @return the current turn number
+     * Getter of the current number of turn.
+     *
+     * @return  the current turn number
      */
     public int getTurns() {
         return turns;
     }
 
     /**
-     * Getter of the game market
-     * @return the market
+     * Getter of the game market.
+     *
+     * @return  the market
      */
     public Market getMarket() {
         return market;
     }
 
     /**
-     * Retrieves the top card of each deck (the cards that can be bought during this turn)
-     * @return the top card of each deck
+     * Retrieves the top card of each deck (the cards that can be bought during this turn).
+     *
+     * @return  the top card of each deck
      */
     public List<List<DevelopmentCard>> peekDevCards() {
         List<List<DevelopmentCard>> top = new ArrayList<>();
@@ -226,7 +237,8 @@ public class Game {
     }
 
     /**
-     * A player buys a card of a given color and level
+     * A player buys a card of a given color and level.
+     *
      * @param game                 the game the player is playing in
      * @param player               the player that wants to buy a card
      * @param color                the color of the card to be bought
@@ -253,8 +265,9 @@ public class Game {
     }
 
     /**
-     * Proceeds to sum the remaining points and decide a winner after the game is over
-     * @return true if game is over
+     * Proceeds to sum the remaining points and decide a winner after the game is over.
+     *
+     * @return  <code>true</code> if the game is over; <code>false</code> otherwise.
      */
     public boolean hasEnded() {
         if(lastTurn){
@@ -266,7 +279,8 @@ public class Game {
     }
 
     /**
-     * Method called after a faith marker has been moved ahead, checks for available Vatican reports
+     * Method called after a faith marker has been moved ahead, checks for available Vatican reports.
+     *
      * @param trackPoints   the faith marker (points) of whoever just moved ahead
      */
     public void onIncrement(int trackPoints) {
@@ -283,10 +297,12 @@ public class Game {
     }
 
     /**
-     * Action performed after a player ends the turn.
-     * This method appends the current player as last of the list, and gets the next (active) player from the head
-     * If next player is inactive, the operation is repeated until an active player is found
-     * @return the next player that has to play a turn
+     * Action performed after a player ends the turn. This method appends the current player as last of the list, and
+     * gets the next (active) player from the head.
+     * <p>
+     * If next player is inactive, the operation is repeated until an active player is found.
+     *
+     * @return  the next player that has to play a turn
      */
     public Player onTurnEnd() {
         Player temp = players.get(0);
@@ -299,7 +315,7 @@ public class Game {
     }
 
     /**
-     * Proceeds to calculate the remaining points and chooses a winner
+     * Proceeds to calculate the remaining points and chooses a winner.
      */
     private void setWinnerPlayer(){
         sumPointsFromYellowTiles();
@@ -321,7 +337,7 @@ public class Game {
     }
 
     /**
-     * Sums the points based on the number of resources left at the end of the game
+     * Sums the points based on the number of resources left at the end of the game.
      */
     private void sumResourcesVictoryPoints(){
         for(Player p : players){
@@ -330,7 +346,7 @@ public class Game {
     }
 
     /**
-     * Sums the points earned based on the last yellow tile that has been reached
+     * Sums the points earned based on the last yellow tile that has been reached.
      */
     private void sumPointsFromYellowTiles(){
         int lastYellowTileReached;
@@ -342,14 +358,29 @@ public class Game {
         }
     }
 
+    /**
+     * Getter of the variable that maps the Vatican report tile to the corresponding state of activation.
+     *
+     * @return  the activated Vatican sections
+     */
     public Map<Integer, Boolean> getActivatedVaticanSections() {
         return activatedVaticanSections;
     }
 
+    /**
+     * Getter of the tiles of Vatican reports.
+     *
+     * @return  the Vatican sections
+     */
     public Map<Integer, Integer[]> getVaticanSections() {
         return vaticanSections;
     }
 
+    /**
+     * Getter of the variable that maps the number of tile to the bonus progressive victory points earned.
+     *
+     * @return  the yellow titles
+     */
     public Map<Integer, Integer> getYellowTiles() {
         return yellowTiles;
     }

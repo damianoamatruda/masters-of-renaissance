@@ -18,7 +18,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     /** The map of the output resources, including blanks. */
     private final Map<ResourceType, Integer> output;
 
-    /** True if the output can be discarded, otherwise false. */
+    /** <code>true</code> if the output can be discarded; <code>false</code> otherwise. */
     private final boolean discardableOutput;
 
     /**
@@ -26,7 +26,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
      *
      * @param input             the map of the resources to be given as input of the production
      * @param output            the map of the resources to be taken as output of the production
-     * @param discardableOutput true if the output can be discarded, otherwise false
+     * @param discardableOutput <code>true</code> if the output can be discarded; <code>false</code> otherwise.
      */
     public Production(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output, boolean discardableOutput) {
         this.input = input;
@@ -80,7 +80,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     /**
      * Returns whether the production has discardable output.
      *
-     * @return  true if the output can be discarded, otherwise false
+     * @return  <code>true</code> if the output can be discarded; <code>false</code> otherwise.
      */
     public boolean hasDiscardableOutput() {
         return discardableOutput;
@@ -89,7 +89,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     /**
      * Returns whether the production is empty.
      *
-     * @return  true if the production has empty input and empty output, otherwise false
+     * @return  <code>true</code> if the production has empty input and empty output; <code>false</code> otherwise.
      */
     public boolean isEmpty() {
         return input.isEmpty() && output.isEmpty();
@@ -240,7 +240,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
      *
      * @param mapWithoutBlanks  the map of resources without blanks
      * @param resContainers     the map of the resource containers to use for all the resources
-     * @return                  true if the resources and the quantities match, otherwise false
+     * @return                  <code>true</code> if the resources and the quantities match; <code>false</code> otherwise.
      */
     private static boolean checkContainers(Map<ResourceType, Integer> mapWithoutBlanks,
                                            Map<? extends ResourceContainer, Map<ResourceType, Integer>> resContainers) {

@@ -10,9 +10,7 @@ import java.util.Map;
  * Leader card with the ability to give a discount when buying a development card.
  */
 public class DiscountLeader extends LeaderCard {
-    /**
-     * The amount of the leader's resource to be subtracted from the development card's cost.
-     */
+    /** The amount of the leader's resource to be subtracted from the development card's cost. */
     private final int discount;
 
     /**

@@ -12,14 +12,13 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 /**
- * Test of properties of DiscountLeader
+ * Test of properties of DiscountLeader.
  */
 public class DiscountLeaderTest {
     /**
      * Factory method for parameters combination.
      * 
-     * @return  stream of arguments.
-     *          The arguments are combinations of parameters.
+     * @return  stream of arguments. The arguments are combinations of parameters.
      */
     private static Stream<Arguments> provideParameters() {
         List<Arguments> arguments = new ArrayList<>();                  // arguments for each test call
@@ -40,6 +39,7 @@ public class DiscountLeaderTest {
         return arguments.stream();
     }
 
+    // TODO: Add Javadoc
     @ParameterizedTest
     @MethodSource("provideParameters")
     void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {

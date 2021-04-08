@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test of properties of resource type Servant
+ * Test of properties of resource type Servant.
  */
 public class ServantTest {
-    /** Check name. */
+    /**
+     * Checks name.
+     */
     @Test
     public void getName() {
         assertEquals("Servant", Servant.getInstance().getName());

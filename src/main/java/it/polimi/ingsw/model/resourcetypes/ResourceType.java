@@ -9,22 +9,28 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
  */
 public abstract class ResourceType {
     /**
+     * Returns whether the resource type is blank.
+     *
      * @return  whether the resource can be replaced with another resource.
      */
     public abstract boolean isBlank();
 
     /**
+     * Returns whether the resource type is storable.
+     *
      * @return  whether the resource can be stored in a resource container.
      */
     public abstract boolean isStorable();
 
     /**
+     * Returns the name of the resource type.
+     *
      * @return  the name of the resource associated with the class, for UI purposes only
      */
     public abstract String getName();
 
     /**
-     * Routine for giving the resource to the player. It should be always possible.
+     * Routine for giving a resource of this type to the player. This should be always possible.
      *
      * @param game          the game the player is playing in
      * @param player        the player the resource goes to
@@ -32,7 +38,7 @@ public abstract class ResourceType {
     public void giveToPlayer(Game game, Player player) { }
 
     /**
-     * Routine for taking the resource from the player. It should be always possible.
+     * Routine for taking a resource of this type from the player. This should be always possible.
      *
      * @param game          the game the player is playing in
      * @param player        the player the resource is taken from
@@ -40,7 +46,7 @@ public abstract class ResourceType {
     public void takeFromPlayer(Game game, Player player) { }
 
     /**
-     * Routine for discarding the resource. It should be always possible.
+     * Routine for discarding a resource of this type. This should be always possible.
      *
      * @param game      the game the player is playing in
      * @param player    the player discarding the resource
@@ -52,7 +58,7 @@ public abstract class ResourceType {
     }
 
     /**
-     * Routine for adding the resource into a resource container.
+     * Routine for adding a resource of this type into a resource container.
      *
      * @param resContainer  the storage in which the resource is deposited, if applicable
      * @throws Exception    if it is not possible
@@ -62,7 +68,7 @@ public abstract class ResourceType {
     }
 
     /**
-     * Routine for removing the resource from a resource container.
+     * Routine for removing a resource of this type from a resource container.
      *
      * @param resContainer  the storage from which the resource is removed, if applicable
      * @throws Exception    if it is not possible

@@ -5,13 +5,11 @@ import java.util.*;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 
 /**
- * Requirement for leader card activation.
- * Specifies what kind of development cards the player must have to be able to activate a leader.
+ * Requirement for leader card activation. Specifies what kind of development cards the player must have to be able to
+ * activate a leader.
  */
 public class DevCardRequirement implements CardRequirement {
-    /**
-     * The development cards required to activate the leader card.
-     */
+    /** The development cards required to activate the leader card. */
     private final List<DevCardRequirementEntry> entryList;
 
     /**
@@ -23,6 +21,7 @@ public class DevCardRequirement implements CardRequirement {
         entryList = buildRequirements(requirements);
     }
 
+    // TODO: Add Javadoc
     private List<DevCardRequirementEntry> buildRequirements(Map<Map<DevCardColor, Integer>, Integer> reqs) {
         List<DevCardRequirementEntry> entries = new ArrayList<>();
 
@@ -60,18 +59,22 @@ public class DevCardRequirement implements CardRequirement {
         if (reqCopy.stream().filter(entry -> entry.amount > 0).count() > 0) throw new Exception();
     }
 
+    // TODO: Add Javadoc
     private class DevCardRequirementEntry {
         public final DevCardColor color;
         public final int level;
         public int amount = 0;
-    
+
+        // TODO: Add Javadoc
         DevCardRequirementEntry(DevCardColor color, int level) {
             this.color = color; this.level = level;
         }
+        // TODO: Add Javadoc
         DevCardRequirementEntry(DevCardColor color, int level, int amount) {
             this.color = color; this.level = level; this.amount = amount; 
         }
-        
+
+        // TODO: Add Javadoc
         public DevCardRequirementEntry setAmount(int newAmount) { amount = newAmount; return this; }
     
         @Override

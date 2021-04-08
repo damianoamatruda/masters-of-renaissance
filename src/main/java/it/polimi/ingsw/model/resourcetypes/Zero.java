@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.resourcetypes;
 
 /**
- * Resource that can be substituted with another resource
+ * Resource that can be substituted with another resource.
  */
 public class Zero extends ResourceType {
     /** The name of the resource type. */

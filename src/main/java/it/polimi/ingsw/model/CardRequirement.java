@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
 /**
  * Leader cards can be activated only if the player owns enough of either:
  * <ul>
- * <li>Development cards of a certain color/level
- * <li>Resources of a specified kind
+ *     <li>Development cards of a certain color/level
+ *     <li>Resources of a specified kind
  * </ul>
  *
  * @see DevelopmentCard

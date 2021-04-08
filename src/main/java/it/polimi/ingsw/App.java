@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * App class.
+ * The main class of the project.
  */
 public class App {
     /**
-     * Main.
+     * Entry point of the main program.
      *
-     * @param args  the arguments
+     * @param args  the command line arguments
      */
     public static void main(String[] args) {
         Game game = new OriginalGame(List.of("PlayerA", "PlayerB", "PlayerC"));

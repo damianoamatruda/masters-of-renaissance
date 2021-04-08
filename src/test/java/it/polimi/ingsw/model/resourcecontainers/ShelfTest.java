@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class ShelfTest {
     /**
-     * Test the quantity of a resource in a shelf.
+     * Tests the quantity of a resource in a shelf.
      */
     @Test
     public void testQuantity1() {
@@ -23,7 +23,7 @@ public class ShelfTest {
     }
 
     /**
-     * Test the quantity of a resource in a shelf.
+     * Tests the quantity of a resource in a shelf.
      */
     @Test
     public void testQuantity2() {
@@ -31,12 +31,10 @@ public class ShelfTest {
         ResourceType c = Coin.getInstance();
 
         try {
-            s.addResource(c);
-            s.addResource(c);
-            s.addResource(c);
-            s.removeResource(c);
-            s.removeResource(c);
-            s.removeResource(c);
+            for (int i = 0; i < 3; i++)
+                s.addResource(c);
+            for (int i = 0; i < 3; i++)
+                s.removeResource(c);
         } catch (Exception e) {
             fail();
         }
@@ -56,9 +54,8 @@ public class ShelfTest {
         ResourceType c = Coin.getInstance();
 
         try {
-            s.addResource(c);
-            s.addResource(c);
-            s.addResource(c);
+            for (int i = 0; i < 3; i++)
+                s.addResource(c);
         } catch (Exception e) {
             fail();
         }

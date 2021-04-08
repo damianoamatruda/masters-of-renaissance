@@ -13,9 +13,10 @@ import org.junit.jupiter.api.Test;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 /**
- * Test class for ResourceRequirement
+ * Test class for ResourceRequirement.
  */
 public class ResourceRequirementTest {
+    // TODO: Add Javadoc
     @Test
     void checkReqsWrongRes() {
         Player p = new Player("", List.of(), false, 0, 0, 0);
@@ -26,6 +27,7 @@ public class ResourceRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
+    // TODO: Add Javadoc
     @Test
     void checkRequirements() {
         Player p = new Player("", List.of(), false, 0, 0, 0);

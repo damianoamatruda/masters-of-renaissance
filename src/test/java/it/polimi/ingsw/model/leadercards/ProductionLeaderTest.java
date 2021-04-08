@@ -12,9 +12,10 @@ import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.resourcetypes.Coin;
 
 /**
- * Test of properties of ProductionLeader
+ * Test of properties of ProductionLeader.
  */
 public class ProductionLeaderTest {
+    // TODO: Add Javadoc
     @Test
     void nullProduction() {
         ProductionLeader leader = new ProductionLeader(null, Coin.getInstance(), null, 0);
@@ -25,6 +26,7 @@ public class ProductionLeaderTest {
         assertNull(leader.getProduction());
     }
 
+    // TODO: Add Javadoc
     @Test
     void production() {
         Production prod = new Production(null, null);

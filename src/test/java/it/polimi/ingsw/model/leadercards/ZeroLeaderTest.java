@@ -10,9 +10,10 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 /**
- * Test of properties of ZeroLeader
+ * Test of properties of ZeroLeader.
  */
 public class ZeroLeaderTest {
+    // TODO: Add Javadoc
     @Test
     void nullMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
@@ -23,6 +24,7 @@ public class ZeroLeaderTest {
         assertNull(leader.processZeros(null, null));
     }
 
+    // TODO: Add Javadoc
     @Test
     void emptyMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
@@ -54,6 +56,7 @@ public class ZeroLeaderTest {
         assertTrue(zeros.equals(Map.of(Coin.getInstance(), 1)));                // same results, processing changes nothing
     }
 
+    // TODO: Add Javadoc
     @Test
     void normalUse() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);

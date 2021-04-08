@@ -9,9 +9,9 @@ import java.util.Set;
  */
 public interface ResourceContainer {
     /**
-     * Overridable copy method.
+     * Copy method.
      *
-     * @return  a resource container that is a deep copy of itself
+     * @return  a deep copy of the resource container
      */
     ResourceContainer copy();
 
@@ -38,7 +38,7 @@ public interface ResourceContainer {
     int getResourceQuantity(ResourceType resType);
 
     /**
-     * Adds a storable resource of the given type
+     * Adds a storable resource of the given type.
      *
      * @param resType       the resource to add
      * @throws Exception    if it is not possible
@@ -46,7 +46,7 @@ public interface ResourceContainer {
     void addResource(ResourceType resType) throws Exception;
 
     /**
-     * Removes a storable resource of the given type
+     * Removes a storable resource of the given type.
      *
      * @param resType       the resource to remove
      * @throws Exception    if it is not possible

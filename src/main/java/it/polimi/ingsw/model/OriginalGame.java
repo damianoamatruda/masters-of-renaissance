@@ -16,10 +16,11 @@ import static java.util.Map.entry;
  * This class represents a game with the original parameters.
  */
 public class OriginalGame extends Game {
-    /** Constructor of OriginalGame instances
+    /**
+     * Constructor of OriginalGame instances.
+     *
      * @param nicknames the list of nicknames of players who joined
      */
-
     public OriginalGame(List<String> nicknames) {
         super(nicknames,
                 getLeaderCards(),
@@ -39,6 +40,7 @@ public class OriginalGame extends Game {
 
     /**
      * Returns the list of all possible development cards.
+     *
      * @return  list of development cards
      */
     public static List<DevelopmentCard> getDevCards() {
@@ -656,6 +658,7 @@ public class OriginalGame extends Game {
 
     /**
      * Returns the list of all possible leader cards.
+     *
      * @return  list of leader cards
      */
     public static List<LeaderCard> getLeaderCards() {
@@ -796,7 +799,7 @@ public class OriginalGame extends Game {
     }
 
     /**
-     * Returns a map of the resources inside the market
+     * Returns a map of the resources inside the market.
      *
      * @return  map of the resources to put inside the market
      */
@@ -812,7 +815,7 @@ public class OriginalGame extends Game {
     }
 
     /**
-     * Returns a map of the vatican sections
+     * Returns a map of the vatican sections.
      *
      * @return  map of the vatican sections
      */
@@ -825,7 +828,7 @@ public class OriginalGame extends Game {
     }
 
     /**
-     * Returns a map of the yellow tiles
+     * Returns a map of the yellow tiles.
      *
      * @return  map of the yellow tiles
      */

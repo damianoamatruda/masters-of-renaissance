@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.devcardcolors;
 
 /**
- * One of the possible colors a development card can have
+ * One of the possible colors a development card can have.
  */
 public class Yellow extends DevCardColor {
     /** The name of the color. */

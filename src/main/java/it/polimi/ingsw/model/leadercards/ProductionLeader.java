@@ -18,11 +18,11 @@ public class ProductionLeader extends LeaderCard {
     /**
      * Class constructor.
      *
-     * @param production    the production of the card.
-     * @param resource      the resource binding the card's ability effect.
-     *                      It is the resource the player needs to pay in order to receive the production's output.
-     * @param requirement   the requirement to be satisfied in order to enable the card.
-     * @param victoryPoints the amount of victory points associated with the card.
+     * @param production    the production of the card
+     * @param resource      the resource binding the card's ability effect. It is the resource the player needs to pay
+     *                      in order to receive the production's output.
+     * @param requirement   the requirement to be satisfied in order to enable the card
+     * @param victoryPoints the amount of victory points associated with the card
      */
     public ProductionLeader(Production<ResourceContainer, Strongbox> production, ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);

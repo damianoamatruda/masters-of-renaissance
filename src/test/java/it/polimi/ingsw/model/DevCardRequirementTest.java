@@ -14,9 +14,10 @@ import org.junit.jupiter.api.Test;
 import it.polimi.ingsw.model.devcardcolors.*;
 
 /**
- * Test class for DevCardRequirement
+ * Test class for DevCardRequirement.
  */
 public class DevCardRequirementTest {
+    // TODO: Add Javadoc
     @Test
     void checkReqsWrongColor() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);
@@ -29,6 +30,7 @@ public class DevCardRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
+    // TODO: Add Javadoc
     @Test
     void checkReqsWrongLevel() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);
@@ -41,6 +43,7 @@ public class DevCardRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
+    // TODO: Add Javadoc
     @Test
     void checkReqsWrongAmount() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);
@@ -53,6 +56,7 @@ public class DevCardRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
+    // TODO: Add Javadoc
     @Test
     void checkRequirements() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);

@@ -16,7 +16,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test of Player operations
+ * Test of Player operations.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PlayerTest {
@@ -24,7 +24,7 @@ public class PlayerTest {
     Player player;
 
     /**
-     * Sets up initial conditions by initializing Game and Player
+     * Sets up initial conditions by initializing Game and Player.
      */
     @BeforeAll
     void setup(){
@@ -33,7 +33,7 @@ public class PlayerTest {
     }
 
     /**
-     * Checks that all resources in a strongbox are counted correctly
+     * Checks that all resources in a strongbox are counted correctly.
      */
     @Test
     void getNumOfResourcesTestStrongboxOnly(){
@@ -51,7 +51,7 @@ public class PlayerTest {
     }
 
     /**
-     * Checks that stored resources are counted correctly
+     * Checks that stored resources are counted correctly.
      */
     @Test
     void getNumOfResourcesTestAnyStorage(){
@@ -73,13 +73,13 @@ public class PlayerTest {
     }
 
     /**
-     * Generic test nested class for card deposit in normal conditions (no last turn)
+     * Generic test nested class for card deposit in normal conditions (no last turn).
      */
     @Nested
     @DisplayName("Add development card to a slot")
     class AddToDevSlotTest{
         /**
-         * Prepare stored resources and resources to pay
+         * Prepares stored resources and resources to pay.
          */
         @BeforeEach
         void prepareResources(){
@@ -116,28 +116,28 @@ public class PlayerTest {
         }
 
         /**
-         * Check amount of coins left
+         * Checks amount of coins left.
          */
         @Test
         void addToDevSlotStrongboxCoins() {
             assertEquals(1, player.getStrongbox().getResourceQuantity(Coin.getInstance()));
         }
         /**
-         * Check amount of servants left
+         * Checks amount of servants left.
          */
         @Test
         void addToDevSlotStrongboxServants(){
             assertEquals(7, player.getStrongbox().getResourceQuantity(Servant.getInstance()));
         }
         /**
-         * Check amount of stones left
+         * Checks amount of stones left.
          */
         @Test
         void addToDevSlotWarehouseShelfStones(){
             assertEquals(0, player.getWarehouse().getShelves().get(0).getResourceQuantity(Stone.getInstance()));
         }
          /**
-          * Check value of card obtained
+          * Checks value of card obtained.
           */
          @Test
          void checkCardPointsValue(){
@@ -147,8 +147,9 @@ public class PlayerTest {
     }
 
     /**
-     * Checks that incrementFaithPoints() always increments only by one
-     * @param marker faith points before the tested operation
+     * Checks that incrementFaithPoints() always increments only by one.
+     *
+     * @param marker    faith points before the tested operation
      */
     @ParameterizedTest
     @ValueSource(ints = {0, 7, 16, 23})
@@ -159,8 +160,9 @@ public class PlayerTest {
     }
 
     /**
-     * Checks that discarding an inactive leader card always advances current player faith marker by one
-     * @param marker faith points before the tested operation
+     * Checks that discarding an inactive leader card always advances current player faith marker by one.
+     *
+     * @param marker    faith points before the tested operation
      */
     @ParameterizedTest
     @ValueSource(ints = {0, 7, 16, 23})
@@ -177,14 +179,15 @@ public class PlayerTest {
     }
 
     /**
-     * Tests the lack of rep exposure
+     * Tests the lack of rep exposure.
      */
+    @Disabled("Not yet implemented.") // TODO
     @Test
     void noRepExposureTest(){
 
     }
     /**
-     * Restores state to initial conditions, so that every single test is not influenced by other tests
+     * Restores state to initial conditions, so that every single test is not influenced by other tests.
      */
     @AfterEach
     void restore(){

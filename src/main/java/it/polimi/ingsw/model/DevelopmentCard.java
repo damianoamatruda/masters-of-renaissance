@@ -7,9 +7,8 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 /**
- * Development cards allow the player to produce resources.
- * They can be bought in exchange for resources and their level/color can
- * make up part of a leader card's activation requirements.
+ * Development cards allow the player to produce resources. They can be bought in exchange for resources and their
+ * level/color can make up part of a leader card's activation requirements.
  * 
  * @see DevCardRequirement
  * @see Production
@@ -23,11 +22,11 @@ public class DevelopmentCard extends Card {
     /**
      * Class constructor.
      *
-     * @param color         the color of the card.
-     * @param level         the level of the card.
-     * @param cost          the resources needed to buy the card.
-     * @param production    the production associated with the card.
-     * @param victoryPoints the victory points associated with the card.
+     * @param color         the color of the card
+     * @param level         the level of the card
+     * @param cost          the resources needed to buy the card
+     * @param production    the production associated with the card
+     * @param victoryPoints the victory points associated with the card
      */
     public DevelopmentCard(DevCardColor color, int level, ResourceRequirement cost, Production production, int victoryPoints) {
         super(victoryPoints);
@@ -38,22 +37,22 @@ public class DevelopmentCard extends Card {
     }
 
     /**
-     * @return  the card's color.
+     * @return  the card's color
      */
     public DevCardColor getColor() { return color; }
 
     /**
-     * @return  the card's cost.
+     * @return  the card's cost
      */
     public ResourceRequirement getCost() { return cost; }
 
     /**
-     * @return  the card's level.
+     * @return  the card's level
      */
     public int getLevel() { return level; }
 
     /**
-     * @return  the card's production.
+     * @return  the card's production
      */
     public Production getProduction() { return production; }
 
@@ -61,9 +60,9 @@ public class DevelopmentCard extends Card {
      * Gives the card to the specified player, paying the necessary resources.
      *
      * @param game          the game the player is playing in
-     * @param player        the player to assign the card to and to take the resources from.
-     * @param resContainers selection map specifying where to take the resources from.
-     * @throws Exception    if the player does not own the required resources.
+     * @param player        the player to assign the card to and to take the resources from
+     * @param resContainers selection map specifying where to take the resources from
+     * @throws Exception    if the player does not own the required resources
      */
     public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
         cost.checkRequirements(player);

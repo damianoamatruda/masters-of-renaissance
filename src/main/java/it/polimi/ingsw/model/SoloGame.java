@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class represents the Solo version of the game, and contains all the extra functionality
+ * This class represents the Solo version of the game, and contains all the extra functionality.
  */
 public class SoloGame extends Game {
-    /** The stack of action tokens to be activated at the end of the player's turn */
+    /** The stack of action tokens to be activated at the end of the player's turn. */
     private List<ActionToken> actionTokens;
 
-    /** The "marker" of Lorenzo il Magnifico on the faith track */
+    /** The "marker" of Lorenzo il Magnifico on the faith track. */
     private int blackPoints;
 
-    /** Flag that determines whether Lorenzo has won the game */
+    /** Flag that determines whether Lorenzo has won the game. */
     private boolean blackWinner;
 
     /**
@@ -41,7 +41,6 @@ public class SoloGame extends Game {
      * @param vaticanSections               map of the vatican sections
      * @param yellowTiles                   map of the faith tiles which will give bonus points at the end
      */
-
     public SoloGame(List<String> nicknames,
                     List<LeaderCard> leaderCards,
                     int playerLeadersCount,
@@ -68,15 +67,14 @@ public class SoloGame extends Game {
     }
 
     /**
-     * This action is triggered by certain type(s) of token.
-     * Shuffles and resets the stack
+     * This action is triggered by certain type(s) of token. Shuffles and resets the stack.
      */
     public void shuffleActionTokens(){
         Collections.shuffle(actionTokens);
     }
 
     /**
-     * Advances Lorenzo's marker on the faith track by one, then checks for Vatican Report
+     * Advances Lorenzo's marker on the faith track by one, then checks for Vatican Report.
      */
     public void incrementBlackPoints(){
         blackPoints += 1;
@@ -84,8 +82,9 @@ public class SoloGame extends Game {
     }
 
     /**
-     * Proceeds to sum the remaining points and decide a winner after the game is over
-     * @return  true if game is over
+     * Proceeds to sum the remaining points and decide a winner after the game is over.
+     *
+     * @return  <code>true</code> if the game is over; <code>false</code> otherwise.
      */
     @Override
     public boolean hasEnded(){
@@ -98,6 +97,7 @@ public class SoloGame extends Game {
 
     /**
      * Triggered after the player concludes a turn.
+     *
      * This is Lorenzo's turn: a token will be activated
      */
     @Override
@@ -110,29 +110,33 @@ public class SoloGame extends Game {
     }
 
 
-    /** Returns Lorenzo's faith marker position
-     * @return  number of tile reached by Lorenzo */
+    /**
+     * Returns Lorenzo's faith marker position.
+     *
+     * @return  number of tile reached by Lorenzo
+     */
     public int getBlackPoints(){
         return blackPoints;
     }
 
     /**
-     * Says whether Lorenzo has won the game or not
-     * @return  true if Lorenzo is winner of the game
+     * Says whether Lorenzo has won the game or not.
+     *
+     * @return  <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
      */
     public boolean isBlackWinner() {
         return blackWinner;
     }
 
     /**
-     *  Declares Lorenzo as winner
+     * Declares Lorenzo as winner.
      */
     public void setBlackWinner() {
         this.blackWinner = true;
     }
 
     /**
-     * Removes development cards, so that nobody else can purchase them
+     * Removes development cards, so that nobody else can purchase them.
      *
      * @param color     the color to be discarded
      * @param quantity  the number of cards to be discarded
@@ -143,5 +147,4 @@ public class SoloGame extends Game {
             DevelopmentCard card = devGrid.get(color).get(level).pop();
         }
     }
-
 }

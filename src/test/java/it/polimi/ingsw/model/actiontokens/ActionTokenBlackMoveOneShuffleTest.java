@@ -10,10 +10,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test of the functionalities of the class "ActionTokenBlackMoveOneShuffle"
+ * Test of the functionalities of the class "ActionTokenBlackMoveOneShuffle".
  */
 class ActionTokenBlackMoveOneShuffleTest {
-
+    // TODO: Add Javadoc
     @Test
     @DisplayName("Move one and shuffle")
     void testBlackAdvancement() {
@@ -28,6 +28,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         assertEquals(1, solo.getBlackPoints());
     }
 
+    // TODO: Add Javadoc
     @Test
     void testShuffle(){
         List<ActionToken> stack = new ArrayList<>();

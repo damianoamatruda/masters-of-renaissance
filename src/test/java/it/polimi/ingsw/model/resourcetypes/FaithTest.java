@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test of properties of resource type Faith
+ * Test of properties of resource type Faith.
  */
 public class FaithTest {
-    /** Check name. */
+    /**
+     * Checks name.
+     */
     @Test
     public void getName() {
         assertEquals("Faith", Faith.getInstance().getName());

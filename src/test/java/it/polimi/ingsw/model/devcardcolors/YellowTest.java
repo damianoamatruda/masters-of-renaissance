@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test of properties of color Yellow
+ * Test of properties of color Yellow.
  */
 public class YellowTest {
-    /** Check name. */
+    /**
+     * Checks name.
+     */
     @Test
     public void getName(){
         assertEquals("Yellow", new Yellow().getName());

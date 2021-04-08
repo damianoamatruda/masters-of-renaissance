@@ -26,7 +26,7 @@ public class SoloGameTest {
     Player player;
 
     /**
-     * The setup: instantiation of game and the single player
+     * The setup: instantiation of game and the single player.
      */
     @BeforeEach
     void setup(){
@@ -41,7 +41,9 @@ public class SoloGameTest {
         player = game.getPlayers().get(0);
 
     }
-    /** Tests if black has been incremented properly and if getter of blackPoints returns the correct value */
+    /*
+     * Tests if black has been incremented properly and if getter of blackPoints returns the correct value.
+     */
     @Test
     void blackPointsGetterTest(){
         List<ActionToken> stack = new ArrayList<>();
@@ -57,7 +59,7 @@ public class SoloGameTest {
     }
 
     /**
-     * Faith track related tests
+     * Faith track related tests.
      */
     @Nested
     class FaithTrackTest{
@@ -85,7 +87,7 @@ public class SoloGameTest {
         }
 
         /**
-         * Ensures the player has earned the first Pope's favor
+         * Ensures the player has earned the first Pope's favor.
          */
         @Test
         void FirstSoloReport(){
@@ -97,7 +99,7 @@ public class SoloGameTest {
         }
 
         /**
-         * Ensures that if Lorenzo arrives first the player has lost
+         * Ensures that if Lorenzo arrives first the player has lost.
          */
         @Test
         void losingGame(){
@@ -114,7 +116,7 @@ public class SoloGameTest {
     }
 
     /**
-     * Test for onTurnEnd method
+     * Test for onTurnEnd method.
      */
     @Test
     void onTurnEnd(){
@@ -133,7 +135,7 @@ public class SoloGameTest {
     }
 
     /**
-     * Test for discardDevCards method
+     * Test for discardDevCards method.
      */
     @Test
     void discardDevCards(){

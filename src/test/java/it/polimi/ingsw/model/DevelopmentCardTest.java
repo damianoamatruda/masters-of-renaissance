@@ -12,9 +12,10 @@ import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 /**
- * Test class for DevelopmentCard
+ * Test class for DevelopmentCard.
  */
 public class DevelopmentCardTest {
+    // TODO: Add Javadoc
     @Test
     void takeFromPlayer() {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
@@ -28,6 +29,7 @@ public class DevelopmentCardTest {
         assertDoesNotThrow(() -> card.takeFromPlayer(g, p, Map.of(p.getStrongbox(), Map.of(Coin.getInstance(), 1))));
     }
 
+    // TODO: Add Javadoc
     @Test
     void takeFromPlayerNotEnoughRes() {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,

@@ -95,17 +95,16 @@ public class LeaderCard extends Card {
     public Production<ResourceContainer, Strongbox> getProduction() { return null; }
 
     /**
-     * Processes <code>Zero</code> resources. If the leader is a ZeroLeader,
-     * they are replaced by the <code>ResourceType</code> of the leader card.
+     * Processes <code>Zero</code> resources. If the leader is a ZeroLeader, they are replaced by the
+     * <code>ResourceType</code> of the leader card.
      *
-     * @param toProcess the resources to be processed.
-     * @param zeros     the resources to substitute to the zeros.
-     *                  If the leader's resource has a non-zero value, the leader is activated, and
-     *                  the entry relative to the leader's resource (if present) will be removed.
-     *                  This is to ensure proper re-utilization of the current map
-     *                  in cascading calls to the method on multiple leaders.
-     *                  If there's resources of different type from the leader's, they will be ignored.
-     * @return          the resources transformed as per the leader's ability.
+     * @param toProcess the resources to be processed
+     * @param zeros     the resources to substitute to the zeros. If the leader's resource has a non-zero value, the
+     *                  leader is activated, and the entry relative to the leader's resource (if present) will be
+     *                  removed. This is to ensure proper re-utilization of the current map in cascading calls to the
+     *                  method on multiple leaders. If there's resources of different type from the leader's, they will
+     *                  be ignored.
+     * @return          the resources transformed as per the leader's ability
      */
     public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> toProcess, Map<ResourceType, Integer> zeros) { return toProcess; }
 }

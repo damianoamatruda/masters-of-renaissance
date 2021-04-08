@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * Test of the functionalities of the class "ActionTokenDiscardTwo"
+ * Test of the functionalities of the class "ActionTokenDiscardTwo".
  */
 class ActionTokenDiscardTwoTest {
-
+    // TODO: Add Javadoc
     @Test
     void trigger() {
         ActionToken token = new ActionTokenDiscardTwo(new Blue());

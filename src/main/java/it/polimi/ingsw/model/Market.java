@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * This class represents a special container of resources that can be taken from the player.
- * It consists of a grid of resources together with a slide containing a single resource.
+ * This class represents a special container of resources that can be taken from the player. It consists of a grid of
+ * resources together with a slide containing a single resource.
  */
 public class Market {
     /** The resources in the grid. */
@@ -94,7 +94,7 @@ public class Market {
     /**
      * Takes a chosen row or column of resources from the grid. Each resource is added in a given shelf, if possible,
      * and triggers an action on the player, if applicable.
-     *
+     * <p>
      * After taking the resources, the chosen row or column is shifted one place from respectively the right or bottom,
      * the resource in the slide takes the uncovered place in the grid and the leftover resource goes into the slide.
      *
@@ -123,11 +123,10 @@ public class Market {
     }
 
     /**
-     * Shifts a row or column one place from respectively the right or bottom.
+     * Shifts a row or column one place from respectively the right or bottom. The resource in the slide takes the
+     * uncovered place in the grid and the leftover resource goes into the slide.
      *
-     * The resource in the slide takes the uncovered place in the grid and the leftover resource goes into the slide.
-     *
-     * @param isRow true if a row is to shift, false if a column is to shift
+     * @param isRow <code>true</code> if a row is to shift; <code>false</code> if a column is to shift.
      * @param index index of the row or column to shift
      */
     private void shift(boolean isRow, int index) {
