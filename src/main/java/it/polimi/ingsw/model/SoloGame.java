@@ -68,14 +68,14 @@ public class SoloGame extends Game {
     /**
      * This action is triggered by certain type(s) of token. Shuffles and resets the stack.
      */
-    public void shuffleActionTokens(){
+    public void shuffleActionTokens() {
         Collections.shuffle(actionTokens);
     }
 
     /**
      * Advances Lorenzo's marker on the faith track by one, then checks for Vatican Report.
      */
-    public void incrementBlackPoints(){
+    public void incrementBlackPoints() {
         blackPoints += 1;
         super.onIncrement(blackPoints);
     }
@@ -86,8 +86,9 @@ public class SoloGame extends Game {
      * @return  <code>true</code> if the game is over; <code>false</code> otherwise.
      */
     @Override
-    public boolean hasEnded(){
-        if(blackPoints == maxFaithPointsCount || devGrid.size() < getDevGridColorsCount()){
+    public boolean hasEnded() {
+        // TODO: Don't access protected attributes
+        if(blackPoints == maxFaithPointsCount || devCardGrid.grid.size() < devCardGrid.getColorsCount()){
             setBlackWinner();
             return true;
         }
@@ -114,7 +115,7 @@ public class SoloGame extends Game {
      *
      * @return  number of tile reached by Lorenzo
      */
-    public int getBlackPoints(){
+    public int getBlackPoints() {
         return blackPoints;
     }
 
@@ -132,18 +133,5 @@ public class SoloGame extends Game {
      */
     public void setBlackWinner() {
         this.blackWinner = true;
-    }
-
-    /**
-     * Removes development cards, so that nobody else can purchase them.
-     *
-     * @param color     the color to be discarded
-     * @param quantity  the number of cards to be discarded
-     */
-    public void discardDevCards(DevCardColor color, int quantity){
-        int level = 1;
-        while(quantity > 0 && level <= 3) {
-            DevelopmentCard card = devGrid.get(color).get(level).pop();
-        }
     }
 }

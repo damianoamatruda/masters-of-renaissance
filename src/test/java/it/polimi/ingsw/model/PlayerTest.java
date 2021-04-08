@@ -27,7 +27,7 @@ public class PlayerTest {
      * Sets up initial conditions by initializing Game and Player.
      */
     @BeforeAll
-    void setup(){
+    void setup() {
         game = game = new GameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         player = game.getPlayers().get(0);
     }
@@ -36,7 +36,7 @@ public class PlayerTest {
      * Checks that all resources in a strongbox are counted correctly.
      */
     @Test
-    void getNumOfResourcesTestStrongboxOnly(){
+    void getNumOfResourcesTestStrongboxOnly() {
         try {
             for(int i = 0; i < 4; i++)
                 Coin.getInstance().addIntoContainer(player.getStrongbox());
@@ -54,7 +54,7 @@ public class PlayerTest {
      * Checks that stored resources are counted correctly.
      */
     @Test
-    void getNumOfResourcesTestAnyStorage(){
+    void getNumOfResourcesTestAnyStorage() {
         try {
             for(int i = 0; i < 4; i++)
                 Coin.getInstance().addIntoContainer(player.getStrongbox());
@@ -82,7 +82,7 @@ public class PlayerTest {
          * Prepares stored resources and resources to pay.
          */
         @BeforeEach
-        void prepareResources(){
+        void prepareResources() {
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
                 put(player.getStrongbox(), new HashMap<>() {{
                     put(Coin.getInstance(), 3);
@@ -103,7 +103,7 @@ public class PlayerTest {
 
                 player.addToDevSlot(game, 1, new DevelopmentCard(Blue.getInstance(), 1,
                                 new ResourceRequirement(
-                                        new HashMap<>(){{
+                                        new HashMap<>() {{
                                             put(Coin.getInstance(), 3);
                                             put(Stone.getInstance(), 2);
                                         }}), null, 2),
@@ -126,21 +126,21 @@ public class PlayerTest {
          * Checks amount of servants left.
          */
         @Test
-        void addToDevSlotStrongboxServants(){
+        void addToDevSlotStrongboxServants() {
             assertEquals(7, player.getStrongbox().getResourceQuantity(Servant.getInstance()));
         }
         /**
          * Checks amount of stones left.
          */
         @Test
-        void addToDevSlotWarehouseShelfStones(){
+        void addToDevSlotWarehouseShelfStones() {
             assertEquals(0, player.getWarehouse().getShelves().get(0).getResourceQuantity(Stone.getInstance()));
         }
          /**
           * Checks value of card obtained.
           */
          @Test
-         void checkCardPointsValue(){
+         void checkCardPointsValue() {
              DevelopmentCard card = player.getDevSlot(1).peek();
              assertEquals(2, card.getVictoryPoints());
          }
@@ -183,14 +183,14 @@ public class PlayerTest {
      */
     @Disabled("Not yet implemented.") // TODO
     @Test
-    void noRepExposureTest(){
+    void noRepExposureTest() {
 
     }
     /**
      * Restores state to initial conditions, so that every single test is not influenced by other tests.
      */
     @AfterEach
-    void restore(){
+    void restore() {
         setup();
     }
 }

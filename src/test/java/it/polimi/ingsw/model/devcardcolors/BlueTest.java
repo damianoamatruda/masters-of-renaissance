@@ -11,7 +11,7 @@ public class BlueTest {
      * Checks name.
      */
     @Test
-    public void getName(){
+    public void getName() {
         assertEquals("Blue", new Blue().getName());
     }
 }

@@ -26,8 +26,8 @@ public class SoloGameTest {
      * The setup: instantiation of game and the single player.
      */
     @BeforeEach
-    void setup(){
-        game = new SoloGame("Alessandro", new ArrayList<>(){{
+    void setup() {
+        game = new SoloGame("Alessandro", new ArrayList<>() {{
             add(new DepotLeader(2, Coin.getInstance(),null,0));
             add(new DepotLeader(2, Coin.getInstance(),null,0));
         }}, 2, new ArrayList<>(),
@@ -42,7 +42,7 @@ public class SoloGameTest {
      * Tests if black has been incremented properly and if getter of blackPoints returns the correct value.
      */
     @Test
-    void blackPointsGetterTest(){
+    void blackPointsGetterTest() {
         List<ActionToken> stack = new ArrayList<>();
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
@@ -69,7 +69,7 @@ public class SoloGameTest {
          * Lorenzo: first vatican report tile
          */
         @BeforeEach
-        void setup(){
+        void setup() {
             game = new SoloGame("Alessandro", new ArrayList<>(), 0, new ArrayList<>(),
                     3, 4, new HashMap<>(), 0,24,
                     3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null
@@ -87,7 +87,7 @@ public class SoloGameTest {
          * Ensures the player has earned the first Pope's favor.
          */
         @Test
-        void FirstSoloReport(){
+        void FirstSoloReport() {
             assumeTrue(Collections.min(game.getVaticanSections().keySet()) - game.getVaticanSections().get(Collections.min(game.getVaticanSections().keySet()))[0] >= 1);
 
             int result = game.getVaticanSections().get(game.getBlackPoints())[1];
@@ -99,7 +99,7 @@ public class SoloGameTest {
          * Ensures that if Lorenzo arrives first the player has lost.
          */
         @Test
-        void losingGame(){
+        void losingGame() {
             assumeTrue(Collections.min(game.getVaticanSections().keySet()) - game.getVaticanSections().get(Collections.min(game.getVaticanSections().keySet()))[0] >= 1);
 
             for(int i = 0; i < Collections.max(game.getVaticanSections().keySet()) - Collections.min(game.getVaticanSections().keySet()); i++)
@@ -116,10 +116,10 @@ public class SoloGameTest {
      * Test for onTurnEnd method.
      */
     @Test
-    void onTurnEnd(){
+    void onTurnEnd() {
         Game game = new SoloGame("Alessandro", new ArrayList<>(), 0, new ArrayList<>(),
                 3, 4, new HashMap<>(), 0,24,
-                3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), new ArrayList<>(){{
+                3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), new ArrayList<>() {{
                     for(int i = 0; i < 4; i++)
                         add(new ActionTokenBlackMoveTwo());
         }}
@@ -135,7 +135,7 @@ public class SoloGameTest {
      * Test for discardDevCards method.
      */
     @Test
-    void discardDevCards(){
+    void discardDevCards() {
         try {
             player.discardLeader(game, 0);
             player.discardLeader(game, 0);

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.devcardcolors.*;
 import it.polimi.ingsw.model.leadercards.*;
-import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 import java.util.*;
@@ -13,27 +11,21 @@ import java.util.stream.Collectors;
  * that can be easily accessed from the outside.
  */
 public class Game {
-    /** All the cards that are still not bought by any player. */
-    protected Map<DevCardColor, List<Stack<DevelopmentCard>>> devGrid;
-
-    /** Number of distinct rows of separate decks that represent different development card levels. */
-    protected final int devGridLevelsCount;
-
-    /** Number of distinct columns of separate decks that represent different development card colors. */
-    protected final int devGridColorsCount;
+    /** Reference to the "Development Card Grid", from which development cards can be "bought". */
+    protected final DevCardGrid devCardGrid;
 
     /** Reference to the "Market Board", from which resources can be "bought". */
     protected final Market market;
 
     /** Reference to the collection from which all the player's data can be accessed. */
-    protected List<Player> players;
+    protected final List<Player> players;
 
     /** Maps the Vatican report tile to the corresponding state of activation. Boolean value represents
      * whether or not the Vatican report is already over. */
-    private Map<Integer,Boolean> activatedVaticanSections;
+    protected final Map<Integer,Boolean> activatedVaticanSections;
 
     /** Maps the number of tile to the bonus progressive victory points earned. */
-    private final Map<Integer, Integer> yellowTiles;
+    protected final Map<Integer, Integer> yellowTiles;
 
     /** Maps the tile of a Vatican report to two values:
      * <ol>
@@ -41,7 +33,7 @@ public class Game {
      *     <li>The corresponding amount of bonus points that will be rewarded to the players after the Report is over.</li>
      * </ol>
      */
-    private final Map<Integer, Integer[]> vaticanSections;
+    protected final Map<Integer, Integer[]> vaticanSections;
 
     /** Number of the last reachable faith track tile by a player. */
     protected final int maxFaithPointsCount;
@@ -110,30 +102,7 @@ public class Game {
                     playerDevSlotsCount,
                     playerMaxObtainableDevCards));
 
-        /* Generate development grid */
-        this.devGrid=new HashMap<>();
-        this.devGridLevelsCount = devGridLevelsCount;
-        this.devGridColorsCount = devGridColorsCount;
-
-        if (!devCards.isEmpty() && devGridColorsCount != 0){
-            for (DevelopmentCard card : devCards) {
-                if (!devGrid.keySet().contains(card.getColor()))
-                    devGrid.put(card.getColor(), new ArrayList<>() {{
-                        add(0,null);
-                        for (int i = 1; i <= devGridLevelsCount; i++)
-                            add(i, new Stack<>());
-                    }});
-
-                List<Stack<DevelopmentCard>> column = devGrid.get(card.getColor());
-                Stack<DevelopmentCard> deck = column.get(card.getLevel());
-                deck.push(card);
-            }
-            for (DevCardColor column : devGrid.keySet()) {
-                for (int cardLevel = 1; cardLevel <= devGridLevelsCount; cardLevel++)
-                    Collections.shuffle(devGrid.get(column).get(cardLevel));
-            }
-        }
-
+        this.devCardGrid = new DevCardGrid(devCards, devGridLevelsCount, devGridColorsCount);
 
         if (marketResources.isEmpty() || marketColsCount == 0)
             this.market = null;
@@ -144,30 +113,12 @@ public class Game {
         this.vaticanSections = vaticanSections;
         this.yellowTiles = yellowTiles;
 
-        activatedVaticanSections = new HashMap<>(){{
+        activatedVaticanSections = new HashMap<>() {{
             for (int i : vaticanSections.keySet())
                 put(i, false);
         }};
 
         this.maxFaithPointsCount = maxFaithPointsCount;
-    }
-
-    /**
-     * Getter of the number of rows containing cards of different levels (from 1 to the max level).
-     *
-     * @return the maximum level of a card (= the number of rows)
-     */
-    public int getDevGridLevelsCount() {
-        return devGridLevelsCount;
-    }
-
-    /**
-     * Getter of the number of different colors a card can have (= columns of the set of buyable cards).
-     *
-     * @return the number of different card colors
-     */
-    public int getDevGridColorsCount() {
-        return devGridColorsCount;
     }
 
     /**
@@ -198,56 +149,21 @@ public class Game {
     }
 
     /**
+     * Getter of the game development card grid.
+     *
+     * @return  the development card grid
+     */
+    public DevCardGrid getDevCardGrid() {
+        return devCardGrid;
+    }
+
+    /**
      * Getter of the game market.
      *
      * @return  the market
      */
     public Market getMarket() {
         return market;
-    }
-
-    /**
-     * Retrieves the top card of each deck (the cards that can be bought during this turn).
-     *
-     * @return  the top card of each deck
-     */
-    public List<List<DevelopmentCard>> peekDevCards() {
-        List<List<DevelopmentCard>> top = new ArrayList<>();
-        for(DevCardColor color : devGrid.keySet()){
-            top.add(devGrid.get(color)
-                    .stream()
-                    .map(deck -> deck.peek())
-                    .collect(Collectors.toList()));
-        }
-        return top;
-    }
-
-    /**
-     * A player buys a card of a given color and level.
-     *
-     * @param game                 the game the player is playing in
-     * @param player               the player that wants to buy a card
-     * @param color                the color of the card to be bought
-     * @param level                the level of the card to be bought
-     * @param position             the position of the dev slot where to put the development card
-     * @param resContainers        a map of the resource containers where to take the storable resources
-     * @throws Exception           Bought card cannot fit in chosen player slot
-     * @throws Exception           error while player was depositing the card
-     * @throws EmptyStackException No cards available with given color and level
-     */
-    public void buyDevCard(Game game, Player player, DevCardColor color, int level, int position,
-                           Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
-            throws Exception, EmptyStackException {
-
-        DevelopmentCard card = devGrid.get(color).get(level).pop();
-        try {
-            boolean maxCardsReached = player.addToDevSlot(game, position, card, resContainers);
-            if(maxCardsReached) lastTurn = true;
-        }
-        catch (Exception e){
-            devGrid.get(color).get(level).push(card);
-            throw new Exception();
-        }
     }
 
     /**
@@ -283,6 +199,18 @@ public class Game {
     }
 
     /**
+     * Method called after a card has been bought, checks if the maximum number of buyable cards has been reached.
+     *
+     * @param player            the player that bought the development card
+     * @param maxCardsReached   <code>true</code> if the maximum number of buyable cards has been reached;
+     *                          <code>false</code> otherwise.
+     */
+    public void onAddToDevSlot(Player player, boolean maxCardsReached) {
+        // TODO: Re-implement this check
+        if (maxCardsReached) lastTurn = true;
+    }
+
+    /**
      * Action performed after a player ends the turn. This method appends the current player as last of the list, and
      * gets the next (active) player from the head.
      * <p>
@@ -303,7 +231,7 @@ public class Game {
     /**
      * Proceeds to calculate the remaining points and chooses a winner.
      */
-    private void setWinnerPlayer(){
+    private void setWinnerPlayer() {
         sumPointsFromYellowTiles();
         sumResourcesVictoryPoints();
         for(Player p : players)
@@ -325,7 +253,7 @@ public class Game {
     /**
      * Sums the points based on the number of resources left at the end of the game.
      */
-    private void sumResourcesVictoryPoints(){
+    private void sumResourcesVictoryPoints() {
         for(Player p : players){
             p.incrementVictoryPoints(p.getNumOfResources()/5);
         }
@@ -334,7 +262,7 @@ public class Game {
     /**
      * Sums the points earned based on the last yellow tile that has been reached.
      */
-    private void sumPointsFromYellowTiles(){
+    private void sumPointsFromYellowTiles() {
         int lastYellowTileReached;
         for(Player p : players){
             lastYellowTileReached = yellowTiles.keySet().stream()

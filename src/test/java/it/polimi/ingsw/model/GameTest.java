@@ -26,7 +26,7 @@ public class GameTest {
      * First instantiation of Game with 3 players.
      */
     @BeforeAll
-    public void setup(){
+    public void setup() {
         game = new GameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
     }
 
@@ -36,7 +36,7 @@ public class GameTest {
      */
     @Test
     @DisplayName("Game should already be instantiated")
-    void instantiationTest(){
+    void instantiationTest() {
         assertAll(() -> assertEquals(game.getTurns(),1),
                   () -> assertEquals(true, game.getPlayers().get(0).hasInkwell()));
     }
@@ -46,14 +46,16 @@ public class GameTest {
      *
      * @param level level of the cards to test
      */
+    // TODO: Make new class 'DevCardGridTest' with tests like this
+    // TODO: Don't access protected attributes
     @ParameterizedTest
     @ValueSource(ints = {1,2,3})
     @Disabled("Only works with card set from the original game")
     void devGridTest(int level){
-        assertAll(() -> assertEquals(4, game.devGrid.get(Blue.getInstance()).get(level).size()),
-                () -> assertEquals(4, game.devGrid.get(Green.getInstance()).get(level).size()),
-                () -> assertEquals(4, game.devGrid.get(Purple.getInstance()).get(level).size()),
-                () -> assertEquals(4, game.devGrid.get(Yellow.getInstance()).get(level).size()));
+        assertAll(() -> assertEquals(4, game.devCardGrid.grid.get(Blue.getInstance()).get(level).size()),
+                () -> assertEquals(4, game.devCardGrid.grid.get(Green.getInstance()).get(level).size()),
+                () -> assertEquals(4, game.devCardGrid.grid.get(Purple.getInstance()).get(level).size()),
+                () -> assertEquals(4, game.devCardGrid.grid.get(Yellow.getInstance()).get(level).size()));
     }
 
     /**
@@ -61,7 +63,7 @@ public class GameTest {
      */
     @Disabled("Not yet implemented.") // TODO
     @Test
-    void peekCardsTest(){
+    void peekCardsTest() {
 
     }
 
@@ -70,7 +72,7 @@ public class GameTest {
      */
     @Disabled("Not yet implemented.") // TODO
     @Test
-    void buyCardTest(){
+    void buyCardTest() {
 
     }
 
@@ -100,7 +102,7 @@ public class GameTest {
          * </ol>
          */
         @BeforeEach
-        public void advancePlayers(){
+        public void advancePlayers() {
             for (int i = 0; i < 5; i++)
                 game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
@@ -127,7 +129,7 @@ public class GameTest {
          * Ensures that the Game has not ended yet.
          */
         @Test
-        void hasTheGameEnded(){
+        void hasTheGameEnded() {
             assertFalse(game.hasEnded());
         }
     }
@@ -149,7 +151,7 @@ public class GameTest {
          * </ol>
          */
         @BeforeEach
-        public void advancePlayers(){
+        public void advancePlayers() {
             for (int i = 0; i < 5; i++)
                 game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
@@ -201,7 +203,7 @@ public class GameTest {
          * </ol>
          */
         @BeforeEach
-        public void advancePlayers(){
+        public void advancePlayers() {
             for (int i = 0; i < 5; i++)
                 game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
@@ -224,7 +226,7 @@ public class GameTest {
          */
         @Test
         @Disabled("Random 1st player is yet to be handled") // TODO
-        void arePlayersStillInSameOrder(){
+        void arePlayersStillInSameOrder() {
             assertAll(()->assertEquals(game.getPlayers().get(0).getNickname(),"Alessandro"),
                     ()->assertEquals(game.getPlayers().get(1).getNickname(),"Damiano"),
                     ()->assertEquals(game.getPlayers().get(2).getNickname(),"Marco"));
@@ -234,7 +236,7 @@ public class GameTest {
          * of resources stored.
          */
         @Test
-        void doPlayersHaveStorableResources(){
+        void doPlayersHaveStorableResources() {
             assertAll(()->assertEquals(game.getPlayers().get(0).getNumOfResources(),0),
                     ()->assertEquals(game.getPlayers().get(1).getNumOfResources(),0),
                     ()->assertEquals(game.getPlayers().get(2).getNumOfResources(),0));
@@ -283,7 +285,7 @@ public class GameTest {
              * Closes the Game (and does the last calcs to determine winner) before the following tests.
              */
             @BeforeEach
-            void endGame(){
+            void endGame() {
                 game.hasEnded();
             }
 
@@ -299,7 +301,7 @@ public class GameTest {
             * Checks the total score achieved by Player 1.
             */
             @RepeatedTest(value = 10)
-            void ptsAlessandroAfterCalcs(){
+            void ptsAlessandroAfterCalcs() {
              assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
             }
 
@@ -307,7 +309,7 @@ public class GameTest {
             * Checks the total score achieved by Player 2.
             */
             @RepeatedTest(value = 10)
-            void ptsDamianoAfterCalcs(){
+            void ptsDamianoAfterCalcs() {
              assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
             }
 
@@ -315,7 +317,7 @@ public class GameTest {
             * Checks the total score achieved by Player 3.
             */
             @RepeatedTest(value = 10)
-            void ptsMarcoAfterCalcs(){
+            void ptsMarcoAfterCalcs() {
              assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
             }
 
@@ -394,7 +396,7 @@ public class GameTest {
      */
     @Disabled("Not yet implemented.") // TODO
     @Test
-    void noRepExposureTest(){
+    void noRepExposureTest() {
 
     }
 
@@ -402,7 +404,7 @@ public class GameTest {
      * Restores Game to initial conditions, so that every single test is not influenced by other tests.
      */
     @AfterEach
-    void restore(){
+    void restore() {
         setup();
     }
 }

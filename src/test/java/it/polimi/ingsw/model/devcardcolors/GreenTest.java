@@ -11,7 +11,7 @@ public class GreenTest {
      * Checks name.
      */
     @Test
-    public void getName(){
+    public void getName() {
         assertEquals("Green", new Green().getName());
     }
 }

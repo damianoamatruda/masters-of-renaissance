@@ -30,7 +30,7 @@ class ActionTokenBlackMoveOneShuffleTest {
 
     // TODO: Add Javadoc
     @Test
-    void testShuffle(){
+    void testShuffle() {
         List<ActionToken> stack = new ArrayList<>();
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());

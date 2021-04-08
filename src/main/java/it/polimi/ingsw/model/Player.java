@@ -86,7 +86,7 @@ public class Player {
      *
      * @return  the number of slots
      */
-    public int getDevSlotsCount(){
+    public int getDevSlotsCount() {
         return devSlots.size();
     }
 
@@ -95,7 +95,7 @@ public class Player {
      *
      * @return  the player's nickname
      */
-    public String getNickname(){
+    public String getNickname() {
         return nickname;
     }
 
@@ -104,7 +104,7 @@ public class Player {
      *
      * @return  the left amount of leader cards that are accessible to the player
      */
-    public int getLeadersCount(){
+    public int getLeadersCount() {
         return leaders.size();
     }
 
@@ -175,7 +175,7 @@ public class Player {
      *
      * @return  <code>true</code> if this player starts first; <code>false</code> otherwise.
      */
-    public boolean hasInkwell(){
+    public boolean hasInkwell() {
         return inkwell;
     }
 
@@ -272,7 +272,7 @@ public class Player {
      *
      * @return  the required base production recipe
      */
-    public Production getBaseProduction(){
+    public Production getBaseProduction() {
         return baseProduction;
     }
 
@@ -281,7 +281,7 @@ public class Player {
      *
      * @return  the total number of resources the player has available
      */
-    public int getNumOfResources(){
+    public int getNumOfResources() {
         int quantity = 0;
         quantity += strongbox.getQuantity();
         quantity += warehouse.getShelves().stream()
@@ -293,7 +293,7 @@ public class Player {
     /**
      * Sums points earned from all development cards collected and from activated leader cards.
      */
-    public void sumCardsVictoryPoints(){
+    public void sumCardsVictoryPoints() {
         int toSum = devSlots.stream()
                 .mapToInt(slot -> slot.stream()
                         .mapToInt(card -> card.getVictoryPoints())

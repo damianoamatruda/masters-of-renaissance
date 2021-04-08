@@ -19,12 +19,12 @@ public class Purple extends DevCardColor {
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return NAME;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return NAME;
     }
 }
