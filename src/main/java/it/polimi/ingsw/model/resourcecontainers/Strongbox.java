@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class Strongbox implements ResourceContainer {
     /** The map of the contained resources. */
-    final Map<ResourceType, Integer> resources;
+    private final Map<ResourceType, Integer> resources;
 
     /**
      * Initializes the strongbox.

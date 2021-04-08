@@ -23,7 +23,6 @@ public class Shelf implements ResourceContainer {
      * @param size  the maximum quantity of resources in the shelf
      */
     public Shelf(int size) {
-        super();
         this.size = size;
         this.resType = null;
         this.quantity = 0;

@@ -13,9 +13,6 @@ import java.util.stream.Collectors;
  * that can be easily accessed from the outside.
  */
 public class Game {
-    /** Maximum number of players that can connect to the same game instance. */
-    private static final int MAX_PLAYERS_COUNT=4;
-
     /** All the cards that are still not bought by any player. */
     protected Map<DevCardColor, List<Stack<DevelopmentCard>>> devGrid;
 
@@ -87,8 +84,6 @@ public class Game {
                 int playerMaxObtainableDevCards,
                 Map<Integer, Integer[]> vaticanSections,
                 Map<Integer, Integer> yellowTiles) {
-        if (nicknames.size() > MAX_PLAYERS_COUNT)
-            throw new RuntimeException();
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
             throw new RuntimeException();
         if (playerLeadersCount > 0 && nicknames.size() > leaderCards.size() / playerLeadersCount)
@@ -155,15 +150,6 @@ public class Game {
         }};
 
         this.maxFaithPointsCount = maxFaithPointsCount;
-    }
-
-    /**
-     * Getter of the maximum number of players that can connect to a game.
-     *
-     * @return the maximum number of players
-     */
-    public static int getMaxPlayersCount() {
-        return MAX_PLAYERS_COUNT;
     }
 
     /**

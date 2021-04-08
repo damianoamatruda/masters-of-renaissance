@@ -18,6 +18,9 @@ import static java.util.Map.entry;
  * This class builds games with the original parameters.
  */
 public class GameFactory {
+    /** Maximum number of players that can connect to the same game instance. */
+    private static final int MAX_PLAYERS_COUNT = 4;
+
     /**
      * Builder of an original multiplayer game.
      *
@@ -25,20 +28,23 @@ public class GameFactory {
      * @return          the multiplayer game
      */
     public static Game buildMultiGame(List<String> nicknames) {
+        if (nicknames.size() > MAX_PLAYERS_COUNT)
+            throw new RuntimeException();
+
         return new Game(nicknames,
-                        getLeaderCards(),
-                        4,
-                        generateDevCards(),
-                        3,
-                        4,
-                        getMarketResources(),
-                        4,
-                        24,
-                        3,
-                        3,
-                        7,
-                        generateVaticanSections(),
-                        generateYellowTiles());
+                getLeaderCards(),
+                4,
+                generateDevCards(),
+                3,
+                4,
+                getMarketResources(),
+                4,
+                24,
+                3,
+                3,
+                7,
+                generateVaticanSections(),
+                generateYellowTiles());
     }
 
     /**
@@ -63,6 +69,15 @@ public class GameFactory {
                 generateVaticanSections(),
                 generateYellowTiles(),
                 generateActionTokens());
+    }
+
+    /**
+     * Getter of the maximum number of players that can connect to a game.
+     *
+     * @return the maximum number of players
+     */
+    public static int getMaxPlayersCount() {
+        return MAX_PLAYERS_COUNT;
     }
 
     /**

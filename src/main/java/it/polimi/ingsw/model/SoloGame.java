@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class SoloGame extends Game {
     /** The stack of action tokens to be activated at the end of the player's turn. */
-    private List<ActionToken> actionTokens;
+    private final List<ActionToken> actionTokens;
 
     /** The "marker" of Lorenzo il Magnifico on the faith track. */
     private int blackPoints;
@@ -24,7 +24,8 @@ public class SoloGame extends Game {
 
     /**
      * Initializes the solo game with the following parameters.
-     * @param nickname                     the list of nicknames of players who joined
+     *
+     * @param nickname                      the list of nicknames of players who joined
      * @param leaderCards                   the list of all the leader cards in the game
      * @param playerLeadersCount            number of distinct leader cards given to each player at the beginning of the game
      * @param devCards                      the list of all the development cards in the game

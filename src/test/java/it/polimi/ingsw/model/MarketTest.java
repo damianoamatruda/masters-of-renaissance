@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Market;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.resourcetypes.*;
 import it.polimi.ingsw.model.resourcecontainers.Shelf;
 import org.junit.jupiter.api.Test;
