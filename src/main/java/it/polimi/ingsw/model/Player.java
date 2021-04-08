@@ -16,22 +16,22 @@ public class Player {
     private final int maxObtainableDevCards;
 
     /** The player's nickname. */
-    private String nickname;
+    private final String nickname;
 
     /** The hand of leader cards available to the player. */
-    private List<LeaderCard> leaders;
+    private final List<LeaderCard> leaders;
 
     /** The player's warehouse, standard container of buyable resources. */
-    private Warehouse warehouse;
+    private final Warehouse warehouse;
 
     /** The player's strongbox, where all the production output goes. */
-    private Strongbox strongbox;
+    private final Strongbox strongbox;
 
     /** The collection of cards in each production slot. */
-    private List<Stack<DevelopmentCard>> devSlots;
+    private final List<Stack<DevelopmentCard>> devSlots;
 
     /** The base production "recipe". */
-    private Production baseProduction;
+    private final Production<ResourceContainer, ResourceContainer> baseProduction;
 
     /** Visible to the view, this indicates whether the player starts first each turn. */
     private boolean inkwell;
@@ -68,6 +68,7 @@ public class Player {
         this.leaders=leaders;
         this.warehouse = new Warehouse(warehouseShelvesCount);
         this.strongbox = new Strongbox();
+        this.baseProduction = new Production<>(Map.of(), 2, Map.of(), 1);
         this.inkwell=inkwell;
         faithPoints=0;
         victoryPoints=0;
@@ -272,7 +273,7 @@ public class Player {
      *
      * @return  the required base production recipe
      */
-    public Production getBaseProduction() {
+    public Production<ResourceContainer, ResourceContainer> getBaseProduction() {
         return baseProduction;
     }
 
