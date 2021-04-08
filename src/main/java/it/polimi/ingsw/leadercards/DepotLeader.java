@@ -28,5 +28,5 @@ public class DepotLeader extends LeaderCard {
     }
 
     @Override
-    public ResourceShelf getDepot() { return shelf; }
+    public ResourceShelf getDepot() { if (isActive()) return shelf; else return super.getDepot(); }
 }

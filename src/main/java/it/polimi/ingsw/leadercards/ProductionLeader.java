@@ -30,5 +30,8 @@ public class ProductionLeader extends LeaderCard {
     }
 
     @Override
-    public Production<ResourceContainer, Strongbox> getProduction() { return production; }
+    public Production<ResourceContainer, Strongbox> getProduction() {
+        if (isActive()) return production;
+        else return super.getProduction();
+    }
 }

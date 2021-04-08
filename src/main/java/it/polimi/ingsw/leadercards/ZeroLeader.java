@@ -27,6 +27,8 @@ public class ZeroLeader extends LeaderCard {
     @Override
     public Map<ResourceType, Integer> processZeros(Map<ResourceType, Integer> toProcess, Map<ResourceType, Integer> zeros) {
         if (toProcess == null) return null;
+
+        if (!isActive()) return super.processZeros(toProcess, zeros);
         
         Map<ResourceType, Integer> resCopy = new HashMap<>(toProcess);
         

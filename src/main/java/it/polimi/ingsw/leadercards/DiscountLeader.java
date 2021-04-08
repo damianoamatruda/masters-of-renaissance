@@ -32,6 +32,8 @@ public class DiscountLeader extends LeaderCard {
     @Override
     public Map<ResourceType, Integer> getDevCardCost(Map<ResourceType, Integer> cost) {
         if (cost == null) return null;
+
+        if (!isActive()) return super.getDevCardCost(cost);
         
         Map<ResourceType, Integer> discountedCost = new HashMap<>(cost);
         

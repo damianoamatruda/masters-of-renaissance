@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
+
+import it.polimi.ingsw.Player;
 import it.polimi.ingsw.resourcetypes.*;
 
 /**
@@ -14,6 +16,9 @@ public class ZeroLeaderTest {
     @Test
     void nullMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
+        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+
+        try { leader.activate(p); } catch (Exception e) { }
 
         assertNull(leader.processZeros(null, null));
     }
@@ -21,6 +26,9 @@ public class ZeroLeaderTest {
     @Test
     void emptyMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
+        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+
+        try { leader.activate(p); } catch (Exception e) { }
 
         assertTrue(new HashMap<>().equals(leader.processZeros(new HashMap<>(), new HashMap<>())));
     }
@@ -31,6 +39,9 @@ public class ZeroLeaderTest {
     @Test
     void otherResourceInput() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
+        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+
+        try { leader.activate(p); } catch (Exception e) { }
 
         Map<ResourceType, Integer>  toProcess = Map.of(Coin.getInstance(), 1),  // nothing to convert (no Zero res)
                                     zeros = Map.of(Zero.getInstance(), 1);      // and choice != this leader (different bound res)
@@ -46,6 +57,9 @@ public class ZeroLeaderTest {
     @Test
     void normalUse() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
+        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+
+        try { leader.activate(p); } catch (Exception e) { }
         
         Map<ResourceType, Integer>  toProcess = Map.of(Zero.getInstance(), 1),
                                     zeros = new HashMap<>(Map.of(Coin.getInstance(), 1));

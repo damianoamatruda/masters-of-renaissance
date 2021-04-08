@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
+import it.polimi.ingsw.Player;
 import it.polimi.ingsw.resourcetypes.*;
 
 /**
@@ -43,6 +44,9 @@ public class DiscountLeaderTest {
     @MethodSource("provideParameters")
     void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {
         DiscountLeader leader = new DiscountLeader(discount, Coin.getInstance(), null, 0);
+        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+
+        try { leader.activate(p); } catch (Exception e) { }
         
         Map<ResourceType, Integer> postCost = leader.getDevCardCost(ogCost);
 
