@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.leadercards;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import it.polimi.ingsw.model.Player;
@@ -20,7 +18,7 @@ public class DepotLeaderTest {
     @Test
     void getZeroSizeDepot() {
         DepotLeader leader = new DepotLeader(0, Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -33,7 +31,7 @@ public class DepotLeaderTest {
     @Test
     void getDepot() {
         DepotLeader leader = new DepotLeader(1, Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 

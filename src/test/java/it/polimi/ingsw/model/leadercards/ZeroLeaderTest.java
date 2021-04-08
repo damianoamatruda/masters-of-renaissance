@@ -17,7 +17,7 @@ public class ZeroLeaderTest {
     @Test
     void nullMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -28,7 +28,7 @@ public class ZeroLeaderTest {
     @Test
     void emptyMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -41,7 +41,7 @@ public class ZeroLeaderTest {
     @Test
     void otherResourceInput() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -60,7 +60,7 @@ public class ZeroLeaderTest {
     @Test
     void normalUse() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
         

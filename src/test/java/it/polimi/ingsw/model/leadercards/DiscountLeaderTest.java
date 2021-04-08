@@ -44,7 +44,7 @@ public class DiscountLeaderTest {
     @MethodSource("provideParameters")
     void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {
         DiscountLeader leader = new DiscountLeader(discount, Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
         

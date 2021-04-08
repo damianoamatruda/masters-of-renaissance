@@ -93,14 +93,16 @@ public class Game {
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
         this.players = new ArrayList<>();
-        for (int i = 0; i < shiftedNicknames.size(); i++)
-            this.players.add(new Player(
+        for (int i = 0; i < shiftedNicknames.size(); i++) {
+            Player player = new Player(
                     shiftedNicknames.get(i),
-                    shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
                     i == 0,
                     playerWarehouseShelvesCount,
                     playerDevSlotsCount,
-                    playerMaxObtainableDevCards));
+                    playerMaxObtainableDevCards);
+            player.addLeaders(shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)));
+            this.players.add(player);
+        }
 
         this.devCardGrid = new DevCardGrid(devCards, devGridLevelsCount, devGridColorsCount);
 

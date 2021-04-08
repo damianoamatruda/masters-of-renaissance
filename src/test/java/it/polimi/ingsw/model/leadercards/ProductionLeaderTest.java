@@ -3,8 +3,6 @@ package it.polimi.ingsw.model.leadercards;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.List;
-
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import org.junit.jupiter.api.Test;
@@ -21,7 +19,7 @@ public class ProductionLeaderTest {
     @Test
     void nullProduction() {
         ProductionLeader leader = new ProductionLeader(null, Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -33,7 +31,7 @@ public class ProductionLeaderTest {
     void production() {
         Production<ResourceContainer, Strongbox> prod = new Production<>(null, 0, null, 0);
         ProductionLeader leader = new ProductionLeader(prod, Coin.getInstance(), null, 0);
-        Player p = new Player("", List.of(leader), false, 3, 3, 9);
+        Player p = new Player("", false, 3, 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 

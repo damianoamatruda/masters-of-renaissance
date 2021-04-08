@@ -52,20 +52,15 @@ public class Player {
      * Initializes player's attributes.
      *
      * @param nickname              the player's nickname to be seen by all the players
-     * @param leaders               the 4 initially assigned leader cards
      * @param inkwell               received only by the first player
      * @param warehouseShelvesCount number of basic shelves inside of the player's warehouse
      * @param devSlotsCount         number of possible production slots that can be occupied by development cards
      * @param maxObtainableDevCards number of development cards the player can have, before triggering the end of the game
      */
-    public Player(String nickname,
-                  List<LeaderCard> leaders,
-                  boolean inkwell,
-                  int warehouseShelvesCount,
-                  int devSlotsCount,
-                  int maxObtainableDevCards){
+    public Player(String nickname, boolean inkwell, int warehouseShelvesCount, int devSlotsCount,
+                  int maxObtainableDevCards) {
         this.nickname = nickname;
-        this.leaders = leaders;
+        this.leaders = new ArrayList<>();
         this.warehouse = new Warehouse(warehouseShelvesCount);
         this.strongbox = new Strongbox();
         this.baseProduction = new Production<>(Map.of(), 2, Map.of(), 1);
@@ -107,6 +102,24 @@ public class Player {
      */
     public List<LeaderCard> getLeaders() {
         return Collections.unmodifiableList(leaders);
+    }
+
+    /**
+     * Adds leaders to the hand of the player
+     *
+     * @param leaders   the list of leader cards to add
+     */
+    public void addLeaders(List<LeaderCard> leaders) {
+        this.leaders.addAll(leaders);
+    }
+
+    /**
+     * Removes a leader from the hand of the player
+     *
+     * @param index   the index of the leader card to remove
+     */
+    public void removeLeader(int index) {
+        leaders.remove(index);
     }
 
     /**
