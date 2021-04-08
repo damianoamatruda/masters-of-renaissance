@@ -16,9 +16,6 @@ public class Game {
     /** Maximum number of players that can connect to the same game instance. */
     private static final int MAX_PLAYERS_COUNT=4;
 
-    /** Number of "Vatican Sections" that can be entered throughout the game. */
-    private static final int VATICAN_SECTIONS_COUNT=3;
-
     /** All the cards that are still not bought by any player. */
     protected Map<DevCardColor, List<Stack<DevelopmentCard>>> devGrid;
 
@@ -192,8 +189,8 @@ public class Game {
      *
      * @return  the count of different Vatican Sections
      */
-    public static int getVaticanSectionsCount() {
-        return VATICAN_SECTIONS_COUNT;
+    public int getVaticanSectionsCount() {
+        return vaticanSections.size();
     }
 
     /**
