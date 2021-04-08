@@ -113,7 +113,10 @@ public class Game {
             this.players.add(new Player(
                     shiftedNicknames.get(i),
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
-                    i == 0, playerWarehouseShelvesCount, playerDevSlotsCount, playerMaxObtainableDevCards));
+                    i == 0,
+                    playerWarehouseShelvesCount,
+                    playerDevSlotsCount,
+                    playerMaxObtainableDevCards));
 
         /* Generate development grid */
         this.devGrid=new HashMap<>();

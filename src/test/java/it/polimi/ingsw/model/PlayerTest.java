@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.*;
@@ -28,7 +27,7 @@ public class PlayerTest {
      */
     @BeforeAll
     void setup(){
-        game = game = new OriginalGame(List.of("Alessandro","Damiano","Marco"));
+        game = game = GameFactory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         player = game.getPlayers().get(0);
     }
 

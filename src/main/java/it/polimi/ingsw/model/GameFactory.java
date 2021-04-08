@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
 import it.polimi.ingsw.model.devcardcolors.Purple;
@@ -15,14 +16,38 @@ import static java.util.Map.entry;
 /**
  * This class represents a game with the original parameters.
  */
-public class OriginalGame extends Game {
+public class GameFactory {
     /**
-     * Constructor of OriginalGame instances.
+     * Constructor of an original multiplayer game.
      *
      * @param nicknames the list of nicknames of players who joined
+     * @return          the multiplayer game
      */
-    public OriginalGame(List<String> nicknames) {
-        super(nicknames,
+    public static Game buildMultiGame(List<String> nicknames) {
+        return new Game(nicknames,
+                        getLeaderCards(),
+                        4,
+                        getDevCards(),
+                        3,
+                        4,
+                        getMarketResources(),
+                        4,
+                        24,
+                        3,
+                        3,
+                        7,
+                        generateVaticanSections(),
+                        generateYellowTiles());
+    }
+
+    /**
+     * Constructor of an original single-player game.
+     *
+     * @param nicknames the list of nicknames of players who joined
+     * @return          the single-player game
+     */
+    public static SoloGame buildSoloGame(String nickname) {
+        return new SoloGame(nickname,
                 getLeaderCards(),
                 4,
                 getDevCards(),
@@ -35,7 +60,8 @@ public class OriginalGame extends Game {
                 3,
                 7,
                 generateVaticanSections(),
-                generateYellowTiles());
+                generateYellowTiles(),
+                generateActionTokens());
     }
 
     /**
@@ -819,7 +845,7 @@ public class OriginalGame extends Game {
      *
      * @return  map of the vatican sections
      */
-    public static Map<Integer, Integer[]> generateVaticanSections(){
+    public static Map<Integer, Integer[]> generateVaticanSections() {
         return Map.ofEntries(
                 entry(8, new Integer[]{5, 2}),
                 entry(16, new Integer[]{12, 3}),
@@ -832,7 +858,7 @@ public class OriginalGame extends Game {
      *
      * @return  map of the yellow tiles
      */
-    public static Map<Integer, Integer> generateYellowTiles(){
+    public static Map<Integer, Integer> generateYellowTiles() {
         return Map.ofEntries(
                 entry(3, 1),
                 entry(6, 2),
@@ -845,4 +871,8 @@ public class OriginalGame extends Game {
         );
     }
 
+    public static List<ActionToken> generateActionTokens() {
+        // TODO: Implement
+        return List.of();
+    }
 }

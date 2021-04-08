@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.OriginalGame;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.SoloGame;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
@@ -30,13 +26,13 @@ public class SoloGameTest {
      */
     @BeforeEach
     void setup(){
-        game = new SoloGame(List.of("Alessandro"), new ArrayList<>(){{
+        game = new SoloGame("Alessandro", new ArrayList<>(){{
             add(new DepotLeader(2, Coin.getInstance(),null,0));
             add(new DepotLeader(2, Coin.getInstance(),null,0));
         }}, 2, new ArrayList<>(),
                 3, 4, new HashMap<>(), 0,24,
-                3,3,7, null,
-                OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+                3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), null
+        );
 
         player = game.getPlayers().get(0);
 
@@ -51,7 +47,7 @@ public class SoloGameTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,0,0,0,0, stack, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,0,0,0,0, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), stack);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 
@@ -73,10 +69,10 @@ public class SoloGameTest {
          */
         @BeforeEach
         void setup(){
-            game = new SoloGame(List.of("Alessandro"), new ArrayList<>(), 0, new ArrayList<>(),
+            game = new SoloGame("Alessandro", new ArrayList<>(), 0, new ArrayList<>(),
                     3, 4, new HashMap<>(), 0,24,
-                    3,3,7, null,
-                    OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+                    3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), null
+            );
 
             player = game.getPlayers().get(0);
 
@@ -120,13 +116,13 @@ public class SoloGameTest {
      */
     @Test
     void onTurnEnd(){
-        Game game = new SoloGame(List.of("Alessandro"), new ArrayList<>(), 0, new ArrayList<>(),
+        Game game = new SoloGame("Alessandro", new ArrayList<>(), 0, new ArrayList<>(),
                 3, 4, new HashMap<>(), 0,24,
-                3,3,7, new ArrayList<>(){{
+                3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), new ArrayList<>(){{
                     for(int i = 0; i < 4; i++)
                         add(new ActionTokenBlackMoveTwo());
-        }},
-                OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        }}
+        );
 
         Player player = game.getPlayers().get(0);
 

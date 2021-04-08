@@ -24,8 +24,7 @@ public class SoloGame extends Game {
 
     /**
      * Initializes the solo game with the following parameters.
-     *
-     * @param nicknames                     the list of nicknames of players who joined
+     * @param nickname                     the list of nicknames of players who joined
      * @param leaderCards                   the list of all the leader cards in the game
      * @param playerLeadersCount            number of distinct leader cards given to each player at the beginning of the game
      * @param devCards                      the list of all the development cards in the game
@@ -37,11 +36,11 @@ public class SoloGame extends Game {
      * @param playerWarehouseShelvesCount   number of basic shelves inside of each player's warehouse
      * @param playerDevSlotsCount           number of possible player's production slots that can be occupied by development cards
      * @param playerMaxObtainableDevCards   number of development cards each player can have, before triggering the end of the game
-     * @param actionTokens                  the stack of tokens, of which the top token is activated after each turn
      * @param vaticanSections               map of the vatican sections
      * @param yellowTiles                   map of the faith tiles which will give bonus points at the end
+     * @param actionTokens                  the stack of tokens, of which the top token is activated after each turn
      */
-    public SoloGame(List<String> nicknames,
+    public SoloGame(String nickname,
                     List<LeaderCard> leaderCards,
                     int playerLeadersCount,
                     List<DevelopmentCard> devCards,
@@ -53,11 +52,10 @@ public class SoloGame extends Game {
                     int playerWarehouseShelvesCount,
                     int playerDevSlotsCount,
                     int playerMaxObtainableDevCards,
-                    List<ActionToken> actionTokens,
-                    Map<Integer, Integer[]> vaticanSections,
-                    Map<Integer, Integer> yellowTiles
+                    Map<Integer, Integer[]> vaticanSections, Map<Integer, Integer> yellowTiles,
+                    List<ActionToken> actionTokens
     ){
-        super(nicknames, leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount,
+        super(List.of(nickname), leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount,
                 marketResources, marketColsCount, maxFaithPointsCount, playerWarehouseShelvesCount,
                 playerDevSlotsCount, playerMaxObtainableDevCards,
                 vaticanSections, yellowTiles);

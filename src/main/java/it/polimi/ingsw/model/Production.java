@@ -100,7 +100,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
      * storable resources from given resource containers, adds the output storable resources into given resource
      * containers, takes the non-storable input resources from the player and gives the non-storable output resources to
      * the player.
-     *
+     * <p>
      * This is a transaction: if the transfer is unsuccessful, a checked exception is thrown and the states of the
      * player and the resource containers remain unchanged.
      *

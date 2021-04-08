@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
 
-import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.Test;
 
 import it.polimi.ingsw.model.devcardcolors.Blue;
@@ -21,7 +20,7 @@ public class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
 
-        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles());
         Player p = g.getPlayers().get(0);
         try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
@@ -35,7 +34,7 @@ public class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
         
-        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles());
         Player p = g.getPlayers().get(0);
         try { p.getStrongbox().addResource(Shield.getInstance()); } catch (Exception e) { }
 

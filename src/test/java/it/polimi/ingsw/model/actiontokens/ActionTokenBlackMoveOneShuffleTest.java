@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.actiontokens;
 
-import it.polimi.ingsw.model.OriginalGame;
+import it.polimi.ingsw.model.GameFactory;
 import it.polimi.ingsw.model.SoloGame;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
-        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, stack, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), stack);
 
 
         token.trigger(solo);
@@ -36,7 +36,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame(new ArrayList<>(), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, stack, OriginalGame.generateVaticanSections(), OriginalGame.generateYellowTiles());
+        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), stack);
         List stack2 = new ArrayList(stack);
         stack2.remove(0);
 
