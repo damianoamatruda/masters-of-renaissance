@@ -17,7 +17,7 @@ class ActionTokenBlackMoveTwoTest {
     @Test
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo();
-        SoloGame game = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), null);
+        SoloGame game = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null);
         token.trigger(game);
 
         assertEquals(game.getBlackPoints(),2);

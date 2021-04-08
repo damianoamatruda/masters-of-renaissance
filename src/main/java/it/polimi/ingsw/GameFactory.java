@@ -19,7 +19,7 @@ import static java.util.Map.entry;
  */
 public class GameFactory {
     /** Maximum number of players that can connect to the same game instance. */
-    private static final int MAX_PLAYERS_COUNT = 4;
+    private final int maxPlayersCount = 4;
 
     /**
      * Builder of an original multiplayer game.
@@ -27,8 +27,8 @@ public class GameFactory {
      * @param nicknames the list of nicknames of players who joined
      * @return          the multiplayer game
      */
-    public static Game buildMultiGame(List<String> nicknames) {
-        if (nicknames.size() > MAX_PLAYERS_COUNT)
+    public Game buildMultiGame(List<String> nicknames) {
+        if (nicknames.size() > maxPlayersCount)
             throw new RuntimeException();
 
         return new Game(nicknames,
@@ -53,7 +53,7 @@ public class GameFactory {
      * @param nickname  the nickname of the only player
      * @return          the single-player game
      */
-    public static SoloGame buildSoloGame(String nickname) {
+    public SoloGame buildSoloGame(String nickname) {
         return new SoloGame(nickname,
                 getLeaderCards(),
                 4,
@@ -76,8 +76,8 @@ public class GameFactory {
      *
      * @return the maximum number of players
      */
-    public static int getMaxPlayersCount() {
-        return MAX_PLAYERS_COUNT;
+    public int getMaxPlayersCount() {
+        return maxPlayersCount;
     }
 
     /**
@@ -85,7 +85,7 @@ public class GameFactory {
      *
      * @return  list of development cards
      */
-    public static List<DevelopmentCard> generateDevCards() {
+    public List<DevelopmentCard> generateDevCards() {
         return List.of(
                 /* 1 */
                 new DevelopmentCard(
@@ -703,7 +703,7 @@ public class GameFactory {
      *
      * @return  list of leader cards
      */
-    public static List<LeaderCard> getLeaderCards() {
+    public List<LeaderCard> getLeaderCards() {
         return List.of(
                 /* 49 */
                 new DiscountLeader(1, Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
@@ -849,7 +849,7 @@ public class GameFactory {
      *
      * @return  map of the resources to put inside the market
      */
-    private static Map<ResourceType, Integer> getMarketResources() {
+    private Map<ResourceType, Integer> getMarketResources() {
         return Map.ofEntries(
                 entry(Coin.getInstance(), 2),
                 entry(Faith.getInstance(), 1),
@@ -865,7 +865,7 @@ public class GameFactory {
      *
      * @return  map of the vatican sections
      */
-    public static Map<Integer, Integer[]> generateVaticanSections() {
+    public Map<Integer, Integer[]> generateVaticanSections() {
         return Map.ofEntries(
                 entry(8, new Integer[]{5, 2}),
                 entry(16, new Integer[]{12, 3}),
@@ -878,7 +878,7 @@ public class GameFactory {
      *
      * @return  map of the yellow tiles
      */
-    public static Map<Integer, Integer> generateYellowTiles() {
+    public Map<Integer, Integer> generateYellowTiles() {
         return Map.ofEntries(
                 entry(3, 1),
                 entry(6, 2),
@@ -893,10 +893,10 @@ public class GameFactory {
 
     /*
      * Returns a list of the action tokens.
-     * 
+     *
      * @return  list of action tokens
      */
-    public static List<ActionToken> generateActionTokens() {
+    public List<ActionToken> generateActionTokens() {
         // TODO: Implement
         return List.of();
     }

@@ -20,7 +20,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
-        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), stack);
+        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
 
 
         token.trigger(solo);
@@ -36,7 +36,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), stack);
+        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
         List stack2 = new ArrayList(stack);
         stack2.remove(0);
 

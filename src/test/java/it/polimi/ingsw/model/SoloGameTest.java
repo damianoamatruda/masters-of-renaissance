@@ -32,7 +32,7 @@ public class SoloGameTest {
             add(new DepotLeader(2, Coin.getInstance(),null,0));
         }}, 2, new ArrayList<>(),
                 3, 4, new HashMap<>(), 0,24,
-                3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), null
+                3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null
         );
 
         player = game.getPlayers().get(0);
@@ -48,7 +48,7 @@ public class SoloGameTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,0,0,0,0, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), stack);
+        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,0,0,0,0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 
@@ -72,7 +72,7 @@ public class SoloGameTest {
         void setup(){
             game = new SoloGame("Alessandro", new ArrayList<>(), 0, new ArrayList<>(),
                     3, 4, new HashMap<>(), 0,24,
-                    3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), null
+                    3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null
             );
 
             player = game.getPlayers().get(0);
@@ -119,7 +119,7 @@ public class SoloGameTest {
     void onTurnEnd(){
         Game game = new SoloGame("Alessandro", new ArrayList<>(), 0, new ArrayList<>(),
                 3, 4, new HashMap<>(), 0,24,
-                3,3,7, GameFactory.generateVaticanSections(), GameFactory.generateYellowTiles(), new ArrayList<>(){{
+                3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), new ArrayList<>(){{
                     for(int i = 0; i < 4; i++)
                         add(new ActionTokenBlackMoveTwo());
         }}

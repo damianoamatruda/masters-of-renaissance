@@ -16,7 +16,8 @@ public class App {
      * @param args  the command line arguments
      */
     public static void main(String[] args) {
-        Game game = GameFactory.buildMultiGame(List.of("PlayerA", "PlayerB", "PlayerC"));
+        GameFactory gameFactory = new GameFactory();
+        Game game = gameFactory.buildMultiGame(List.of("PlayerA", "PlayerB", "PlayerC"));
 
         System.out.println("Players: " + game.getPlayers().stream()
                 .map(Player::getNickname).collect(Collectors.joining(", ")));

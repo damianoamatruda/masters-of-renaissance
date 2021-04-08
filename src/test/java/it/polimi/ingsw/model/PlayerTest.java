@@ -28,7 +28,7 @@ public class PlayerTest {
      */
     @BeforeAll
     void setup(){
-        game = game = GameFactory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        game = game = new GameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         player = game.getPlayers().get(0);
     }
 

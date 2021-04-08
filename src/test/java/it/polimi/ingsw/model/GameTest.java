@@ -27,7 +27,7 @@ public class GameTest {
      */
     @BeforeAll
     public void setup(){
-        game = GameFactory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        game = new GameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
     }
 
     /**
