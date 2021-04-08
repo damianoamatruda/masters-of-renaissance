@@ -12,36 +12,49 @@ import java.util.stream.Collectors;
  * and a player.
  */
 public class Production<T1 extends ResourceContainer, T2 extends ResourceContainer> {
-    /** The map of the input resources, including blanks. */
+    /** The map of the input resources. */
     private final Map<ResourceType, Integer> input;
 
-    /** The map of the output resources, including blanks. */
+    /** The number of the input blanks. */
+    private final int inputBlanks;
+
+    /** The map of the output resources. */
     private final Map<ResourceType, Integer> output;
+
+    /** The number of the output blanks. */
+    private final int outputBlanks;
 
     /** <code>true</code> if the output can be discarded; <code>false</code> otherwise. */
     private final boolean discardableOutput;
 
     /**
      * Initializes the production specifying its input and its output.
-     *
-     * @param input             the map of the resources to be given as input of the production
+     *  @param input            the map of the resources to be given as input of the production
+     * @param inputBlanks       the number of the input blanks
      * @param output            the map of the resources to be taken as output of the production
+     * @param outputBlanks      the number of the output blanks
      * @param discardableOutput <code>true</code> if the output can be discarded; <code>false</code> otherwise.
      */
-    public Production(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output, boolean discardableOutput) {
+    public Production(Map<ResourceType, Integer> input, int inputBlanks,
+                      Map<ResourceType, Integer> output, int outputBlanks,
+                      boolean discardableOutput) {
         this.input = input;
+        this.inputBlanks = inputBlanks;
         this.output = output;
+        this.outputBlanks = outputBlanks;
         this.discardableOutput = discardableOutput;
     }
 
     /**
      * Initializes a production with non-discardable output specifying its input and its output.
-     *
-     * @param input     the map of the resources to be given as input of the production
-     * @param output    the map of the resources to be taken as output of the production
+     * @param input         the map of the resources to be given as input of the production
+     * @param inputBlanks   the number of the input blanks
+     * @param output        the map of the resources to be taken as output of the production
+     * @param outputBlanks  the number of the input blanks
      */
-    public Production(Map<ResourceType, Integer> input, Map<ResourceType, Integer> output) {
-        this(input, output, false);
+    public Production(Map<ResourceType, Integer> input, int inputBlanks,
+                      Map<ResourceType, Integer> output, int outputBlanks) {
+        this(input, inputBlanks, output, outputBlanks, false);
     }
 
     /**
@@ -51,11 +64,17 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
      */
     public Production(List<Production<? extends T1, ? extends T2>> productions) {
         this.input = new HashMap<>();
+        int inputBlanks = 0;
         this.output = new HashMap<>();
+        int outputBlanks = 0;
         for (Production<? extends T1, ? extends T2> production : productions) {
             production.input.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
+            inputBlanks += production.inputBlanks;
             production.output.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
+            outputBlanks += production.outputBlanks;
         }
+        this.inputBlanks = inputBlanks;
+        this.outputBlanks = outputBlanks;
         this.discardableOutput = productions.stream().allMatch(production -> production.discardableOutput);
     }
 
@@ -69,12 +88,30 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     }
 
     /**
+     * Returns the number of the input blanks of the production.
+     *
+     * @return  the number of the input blanks
+     */
+    public int getInputBlanks() {
+        return inputBlanks;
+    }
+
+    /**
      * Returns the map of the output resources of the production.
      *
      * @return  the map of the output resources
      */
     public Map<ResourceType, Integer> getOutput() {
         return new HashMap<>(output);
+    }
+
+    /**
+     * Returns the number of the output blanks of the production.
+     *
+     * @return  the number of the output blanks
+     */
+    public int getOutputBlanks() {
+        return outputBlanks;
     }
 
     /**
@@ -117,8 +154,8 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
                          Map<ResourceType, Integer> outputBlanksRep,
                          Map<? extends T1, Map<ResourceType, Integer>> inputContainers,
                          Map<? extends T2, Map<ResourceType, Integer>> outputContainers) throws Exception {
-        Map<ResourceType, Integer> replacedInput = replaceBlanks(input, inputBlanksRep);
-        Map<ResourceType, Integer> replacedOutput = replaceBlanks(output, outputBlanksRep);
+        Map<ResourceType, Integer> replacedInput = addReplacedBlanks(input, inputBlanks, inputBlanksRep);
+        Map<ResourceType, Integer> replacedOutput = addReplacedBlanks(output, outputBlanks, outputBlanksRep);
 
         if (!checkContainers(replacedInput, inputContainers))
             throw new Exception();
@@ -202,37 +239,24 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     }
 
     /**
-     * Replaces the blank resources in a given map of resources.
+     * Builds a resource map with replaced blanks.
      *
-     * @param mapWithBlanks the map of resources including blanks
+     * @param resourceMap   the map of resources
+     * @param blanks        the number of the blanks to add
      * @param blanksRep     the map of replacement resources of blanks
-     * @return              the map of resources with replaced blanks
+     * @return              a map of resources including replaced blanks
      * @throws Exception    if it is not possible
      */
-    private static Map<ResourceType, Integer> replaceBlanks(Map<ResourceType, Integer> mapWithBlanks,
-                                                            Map<ResourceType, Integer> blanksRep) throws Exception {
-        /* Check that blanksRep does not contain blanks */
-        if (blanksRep.keySet().stream().anyMatch(ResourceType::isBlank))
+    private static Map<ResourceType, Integer> addReplacedBlanks(Map<ResourceType, Integer> resourceMap, int blanks,
+                                                                Map<ResourceType, Integer> blanksRep) throws Exception {
+        /* Check that the map of replacement resources has the same number of resources as blanks */
+        if (!blanksRep.isEmpty() && blanksRep.values().stream().reduce(0, Integer::sum) != blanks)
             throw new Exception();
 
-        /* Check that blanksRep has the same number of resources as blanks in mapWithBlanks */
-        if (!blanksRep.isEmpty()) {
-            int blanksCount = mapWithBlanks.entrySet().stream()
-                    .filter(e -> e.getKey().isBlank()).map(Map.Entry::getValue).reduce(0, Integer::sum);
-            int blanksRepCount = blanksRep.values().stream().reduce(0, Integer::sum);
-            if (blanksRepCount != blanksCount)
-                throw new Exception();
-        }
+        Map<ResourceType, Integer> mapWithReplacedBlanks = new HashMap<>(resourceMap);
+        blanksRep.forEach((r, q) -> mapWithReplacedBlanks.merge(r, q, Integer::sum));
 
-        /* Add all resources from mapWithBlanks that are not blanks */
-        Map<ResourceType, Integer> replacedBlanks = mapWithBlanks.entrySet().stream()
-                .filter(e -> !e.getKey().isBlank())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        /* Add all replacement resources from blanksRep */
-        blanksRep.forEach((r, q) -> replacedBlanks.merge(r, q, Integer::sum));
-
-        return replacedBlanks;
+        return mapWithReplacedBlanks;
     }
 
     /**

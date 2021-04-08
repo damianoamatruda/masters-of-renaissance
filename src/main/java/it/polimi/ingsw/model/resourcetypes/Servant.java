@@ -16,9 +16,6 @@ public class Servant extends ResourceType {
     private Servant() { }
 
     @Override
-    public boolean isBlank() { return false; }
-
-    @Override
     public boolean isStorable() { return true; }
 
     /**

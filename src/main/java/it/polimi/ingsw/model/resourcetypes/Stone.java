@@ -16,9 +16,6 @@ public class Stone extends ResourceType {
     private Stone() { }
 
     @Override
-    public boolean isBlank() { return false; }
-
-    @Override
     public boolean isStorable() { return true; }
 
     /**

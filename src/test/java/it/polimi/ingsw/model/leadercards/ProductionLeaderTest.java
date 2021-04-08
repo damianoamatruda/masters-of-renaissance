@@ -31,7 +31,7 @@ public class ProductionLeaderTest {
     // TODO: Add Javadoc
     @Test
     void production() {
-        Production<ResourceContainer, Strongbox> prod = new Production<>(null, null);
+        Production<ResourceContainer, Strongbox> prod = new Production<>(null, 0, null, 0);
         ProductionLeader leader = new ProductionLeader(prod, Coin.getInstance(), null, 0);
         Player p = new Player("", List.of(leader), false, 3, 3, 9);
 

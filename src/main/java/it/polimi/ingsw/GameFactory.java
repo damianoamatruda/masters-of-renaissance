@@ -80,8 +80,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)), 0),
                         1),
                 /* 2 */
                 new DevelopmentCard(
@@ -91,8 +91,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)), 0),
                         1),
                 /* 3 */
                 new DevelopmentCard(
@@ -102,8 +102,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)), 0),
                         1),
                 /* 4 */
                 new DevelopmentCard(
@@ -113,8 +113,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 1)), 0),
                         1),
                 /* 5 */
                 new DevelopmentCard(
@@ -126,8 +126,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Servant.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Servant.getInstance(), 1)), 0),
                         2),
                 /* 6 */
                 new DevelopmentCard(
@@ -139,8 +139,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Shield.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Shield.getInstance(), 1)), 0),
                         2),
                 /* 7 */
                 new DevelopmentCard(
@@ -152,8 +152,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Stone.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Stone.getInstance(), 1)), 0),
                         2),
                 /* 8 */
                 new DevelopmentCard(
@@ -165,8 +165,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Coin.getInstance(), 1))),
+                                0, Map.ofEntries(
+                                        entry(Coin.getInstance(), 1)), 0),
                         2),
                 /* 9 */
                 new DevelopmentCard(
@@ -176,10 +176,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Shield.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1))),
+                                        entry(Stone.getInstance(), 1)), 0),
                         3),
                 /* 10 */
                 new DevelopmentCard(
@@ -189,10 +189,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Servant.getInstance(), 1),
                                         entry(Shield.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1))),
+                                        entry(Stone.getInstance(), 1)), 0),
                         3),
                 /* 11 */
                 new DevelopmentCard(
@@ -202,10 +202,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1))),
+                                        entry(Stone.getInstance(), 1)), 0),
                         3),
                 /* 12 */
                 new DevelopmentCard(
@@ -215,10 +215,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1))),
+                                        entry(Stone.getInstance(), 1)), 0),
                         3),
                 /* 13 */
                 new DevelopmentCard(
@@ -230,9 +230,9 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         4),
                 /* 14 */
                 new DevelopmentCard(
@@ -244,9 +244,9 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         4),
                 /* 15 */
                 new DevelopmentCard(
@@ -258,9 +258,9 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1),
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         4),
                 /* 16 */
                 new DevelopmentCard(
@@ -272,9 +272,9 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         4),
                 /* 17 */
                 new DevelopmentCard(
@@ -284,8 +284,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 2))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)), 0),
                         5),
                 /* 18 */
                 new DevelopmentCard(
@@ -295,8 +295,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 2))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)), 0),
                         5),
                 /* 19 */
                 new DevelopmentCard(
@@ -306,8 +306,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 2))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)), 0),
                         5),
                 /* 20 */
                 new DevelopmentCard(
@@ -317,8 +317,8 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Faith.getInstance(), 2))),
+                                0, Map.ofEntries(
+                                        entry(Faith.getInstance(), 2)), 0),
                         5),
                 /* 21 */
                 new DevelopmentCard(
@@ -330,8 +330,8 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Stone.getInstance(), 3))),
+                                0, Map.ofEntries(
+                                        entry(Stone.getInstance(), 3)), 0),
                         6),
                 /* 22 */
                 new DevelopmentCard(
@@ -343,8 +343,8 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Shield.getInstance(), 3))),
+                                0, Map.ofEntries(
+                                        entry(Shield.getInstance(), 3)), 0),
                         6),
                 /* 23 */
                 new DevelopmentCard(
@@ -356,8 +356,8 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Servant.getInstance(), 3))),
+                                0, Map.ofEntries(
+                                        entry(Servant.getInstance(), 3)), 0),
                         6),
                 /* 24 */
                 new DevelopmentCard(
@@ -369,8 +369,8 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
-                                        entry(Coin.getInstance(), 3))),
+                                0, Map.ofEntries(
+                                        entry(Coin.getInstance(), 3)), 0),
                         6),
                 /* 25 */
                 new DevelopmentCard(
@@ -380,9 +380,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         7),
                 /* 26 */
                 new DevelopmentCard(
@@ -392,9 +392,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         7),
                 /* 27 */
                 new DevelopmentCard(
@@ -404,9 +404,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         7),
                 /* 28 */
                 new DevelopmentCard(
@@ -416,9 +416,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         7),
                 /* 29 */
                 new DevelopmentCard(
@@ -429,9 +429,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         8),
                 /* 30 */
                 new DevelopmentCard(
@@ -442,9 +442,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         8),
                 /* 31 */
                 new DevelopmentCard(
@@ -455,9 +455,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         8),
                 /* 32 */
                 new DevelopmentCard(
@@ -468,9 +468,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         8),
                 /* 33 */
                 new DevelopmentCard(
@@ -480,9 +480,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Stone.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         9),
                 /* 34 */
                 new DevelopmentCard(
@@ -492,9 +492,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         9),
                 /* 35 */
                 new DevelopmentCard(
@@ -504,9 +504,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Shield.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         9),
                 /* 36 */
                 new DevelopmentCard(
@@ -516,9 +516,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Servant.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2))),
+                                        entry(Faith.getInstance(), 2)), 0),
                         9),
                 /* 37 */
                 new DevelopmentCard(
@@ -530,10 +530,10 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Shield.getInstance(), 2),
                                         entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         10),
                 /* 38 */
                 new DevelopmentCard(
@@ -545,10 +545,10 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 2),
                                         entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         10),
                 /* 39 */
                 new DevelopmentCard(
@@ -560,10 +560,10 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Servant.getInstance(), 2),
                                         entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         10),
                 /* 40 */
                 new DevelopmentCard(
@@ -575,10 +575,10 @@ public class GameFactory {
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 2),
                                         entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)), 0),
                         10),
                 /* 41 */
                 new DevelopmentCard(
@@ -588,9 +588,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3))),
+                                        entry(Faith.getInstance(), 3)), 0),
                         11),
                 /* 42 */
                 new DevelopmentCard(
@@ -600,9 +600,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3))),
+                                        entry(Faith.getInstance(), 3)), 0),
                         11),
                 /* 43 */
                 new DevelopmentCard(
@@ -612,9 +612,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Shield.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3))),
+                                        entry(Faith.getInstance(), 3)), 0),
                         11),
                 /* 44 */
                 new DevelopmentCard(
@@ -624,9 +624,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Servant.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3))),
+                                        entry(Faith.getInstance(), 3)), 0),
                         11),
                 /* 45 */
                 new DevelopmentCard(
@@ -637,9 +637,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 3),
-                                        entry(Shield.getInstance(), 1))),
+                                        entry(Shield.getInstance(), 1)), 0),
                         12),
                 /* 46 */
                 new DevelopmentCard(
@@ -650,9 +650,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Stone.getInstance(), 3),
-                                        entry(Servant.getInstance(), 1))),
+                                        entry(Servant.getInstance(), 1)), 0),
                         12),
                 /* 47 */
                 new DevelopmentCard(
@@ -663,9 +663,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
-                                        entry(Shield.getInstance(), 3))),
+                                        entry(Shield.getInstance(), 3)), 0),
                         12),
                 /* 48 */
                 new DevelopmentCard(
@@ -676,9 +676,9 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
-                                Map.ofEntries(
+                                0, Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
-                                        entry(Servant.getInstance(), 3))),
+                                        entry(Servant.getInstance(), 3)), 0),
                         12)
         );
     }
@@ -775,9 +775,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
+                                0,
                                 Map.ofEntries(
-                                        entry(Zero.getInstance(), 1),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)),
+                                1),
                         Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
                         entry(Map.ofEntries(
                                 entry(Yellow.getInstance(), 2)
@@ -788,9 +789,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
+                                0,
                                 Map.ofEntries(
-                                        entry(Zero.getInstance(), 1),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)),
+                                1),
                         Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
                         entry(Map.ofEntries(
                                 entry(Blue.getInstance(), 2)
@@ -801,9 +803,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
+                                0,
                                 Map.ofEntries(
-                                        entry(Zero.getInstance(), 1),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)),
+                                1),
                         Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
                         entry(Map.ofEntries(
                                 entry(Purple.getInstance(), 2)
@@ -814,9 +817,10 @@ public class GameFactory {
                         new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
+                                0,
                                 Map.ofEntries(
-                                        entry(Zero.getInstance(), 1),
-                                        entry(Faith.getInstance(), 1))),
+                                        entry(Faith.getInstance(), 1)),
+                                1),
                         Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
                         entry(Map.ofEntries(
                                 entry(Green.getInstance(), 2)
@@ -874,7 +878,7 @@ public class GameFactory {
 
     /*
      * Returns a list of the action tokens.
-     *
+     * 
      * @return  list of action tokens
      */
     public static List<ActionToken> generateActionTokens() {

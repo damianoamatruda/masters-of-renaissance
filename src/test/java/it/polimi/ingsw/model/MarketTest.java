@@ -89,7 +89,8 @@ public class MarketTest {
                 Map<ResourceType, Integer> output = new HashMap<>();
                 for (int i = 0; i < market.getColsCount(); i++) {
                     ResourceType resType = market.getGrid().get(rowIndex).get(i);
-                    if (!resType.isBlank() && resType.isStorable())
+                    // TODO: Add method 'isMarketBlank' to ResourceType
+                    if (!resType.getName().equals("Zero") && resType.isStorable())
                         output.merge(resType, 1, Integer::sum);
                 }
 

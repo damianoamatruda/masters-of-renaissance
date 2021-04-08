@@ -16,9 +16,6 @@ public class Faith extends ResourceType {
     private Faith() { }
 
     @Override
-    public boolean isBlank() { return false; }
-
-    @Override
     public boolean isStorable() { return false; }
 
     /**

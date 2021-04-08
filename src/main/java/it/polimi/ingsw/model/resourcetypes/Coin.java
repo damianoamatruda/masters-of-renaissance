@@ -16,9 +16,6 @@ public class Coin extends ResourceType {
     private Coin() { }
 
     @Override
-    public boolean isBlank() { return false; }
-
-    @Override
     public boolean isStorable() { return true; }
 
     /**

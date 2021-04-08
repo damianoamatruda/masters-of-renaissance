@@ -16,9 +16,6 @@ public class Shield extends ResourceType {
     private Shield() { }
 
     @Override
-    public boolean isBlank() { return false; }
-
-    @Override
     public boolean isStorable() { return true; }
 
     /**

@@ -116,7 +116,7 @@ public class Market {
                 .mapToObj(i -> isRow ? grid.get(index).get(i) : grid.get(i).get(index))
                 .collect(Collectors.toMap(resType -> resType, resType -> 1, Integer::sum));
 
-        new Production<ResourceContainer, Shelf>(new HashMap<>(), output, true)
+        new Production<ResourceContainer, Shelf>(new HashMap<>(), 0, output, 0, true)
                 .activate(game, player, new HashMap<>(), zerosRep, new HashMap<>(), shelves);
 
         shift(isRow, index);

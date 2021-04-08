@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.*;
 import org.junit.jupiter.api.Test;
@@ -26,7 +23,9 @@ public class ProductionTest {
     public void generalProductionWithoutBlanks() {
         Production<ResourceContainer, ResourceContainer> production = new Production<>(
                 Map.of(Coin.getInstance(), 2),
+                0,
                 Map.of(Servant.getInstance(), 3),
+                0,
                 false);
 
         Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap<>(), new HashMap<>());
@@ -57,9 +56,10 @@ public class ProductionTest {
     @Test
     public void generalProductionWithBlanksInInput() {
         Production<ResourceContainer, ResourceContainer> production = new Production<>(
-                Map.of(Coin.getInstance(), 2,
-                        Zero.getInstance(), 3),
+                Map.of(Coin.getInstance(), 2),
+                3,
                 Map.of(Servant.getInstance(), 3),
+                0,
                 false);
 
         Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap<>(), new HashMap<>());
@@ -99,8 +99,9 @@ public class ProductionTest {
     public void generalProductionWithBlanksInOutput() {
         Production<ResourceContainer, ResourceContainer> production = new Production<>(
                 Map.of(Coin.getInstance(), 2),
-                Map.of(Servant.getInstance(), 3,
-                        Zero.getInstance(), 3),
+                0,
+                Map.of(Servant.getInstance(), 3),
+                3,
                 false);
 
         Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap(), new HashMap<>());

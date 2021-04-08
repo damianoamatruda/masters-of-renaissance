@@ -31,7 +31,7 @@ public class LeaderCard extends Card {
      */
     public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(victoryPoints);
-        assert resource != null && !resource.isBlank();
+        assert resource != null;
         this.requirement = requirement;
         this.resource = resource;
     }

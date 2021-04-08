@@ -9,13 +9,6 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
  */
 public abstract class ResourceType {
     /**
-     * Returns whether the resource type is blank.
-     *
-     * @return  whether the resource can be replaced with another resource.
-     */
-    public abstract boolean isBlank();
-
-    /**
      * Returns whether the resource type is storable.
      *
      * @return  whether the resource can be stored in a resource container.
