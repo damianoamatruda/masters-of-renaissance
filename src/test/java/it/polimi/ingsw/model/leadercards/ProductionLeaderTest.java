@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
+import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import org.junit.jupiter.api.Test;
 
 import it.polimi.ingsw.model.Player;
@@ -29,7 +31,7 @@ public class ProductionLeaderTest {
     // TODO: Add Javadoc
     @Test
     void production() {
-        Production prod = new Production(null, null);
+        Production<ResourceContainer, Strongbox> prod = new Production<>(null, null);
         ProductionLeader leader = new ProductionLeader(prod, Coin.getInstance(), null, 0);
         Player p = new Player("", List.of(leader), false, 3, 3, 9);
 

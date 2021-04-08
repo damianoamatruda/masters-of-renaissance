@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
 
+import it.polimi.ingsw.GameFactory;
 import org.junit.jupiter.api.Test;
 
 import it.polimi.ingsw.model.devcardcolors.Blue;

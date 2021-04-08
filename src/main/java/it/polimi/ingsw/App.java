@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameFactory;
 import it.polimi.ingsw.model.Player;
 
 import java.util.List;

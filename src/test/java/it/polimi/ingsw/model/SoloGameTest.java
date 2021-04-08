@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.GameFactory;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;

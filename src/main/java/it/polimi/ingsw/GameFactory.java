@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
@@ -14,11 +15,11 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 /**
- * This class represents a game with the original parameters.
+ * This class builds games with the original parameters.
  */
 public class GameFactory {
     /**
-     * Constructor of an original multiplayer game.
+     * Builder of an original multiplayer game.
      *
      * @param nicknames the list of nicknames of players who joined
      * @return          the multiplayer game
@@ -27,7 +28,7 @@ public class GameFactory {
         return new Game(nicknames,
                         getLeaderCards(),
                         4,
-                        getDevCards(),
+                        generateDevCards(),
                         3,
                         4,
                         getMarketResources(),
@@ -41,16 +42,16 @@ public class GameFactory {
     }
 
     /**
-     * Constructor of an original single-player game.
+     * Builder of an original single-player game.
      *
-     * @param nicknames the list of nicknames of players who joined
+     * @param nickname  the nickname of the only player
      * @return          the single-player game
      */
     public static SoloGame buildSoloGame(String nickname) {
         return new SoloGame(nickname,
                 getLeaderCards(),
                 4,
-                getDevCards(),
+                generateDevCards(),
                 3,
                 4,
                 getMarketResources(),
@@ -65,18 +66,18 @@ public class GameFactory {
     }
 
     /**
-     * Returns the list of all possible development cards.
+     * Returns a list of all possible development cards.
      *
      * @return  list of development cards
      */
-    public static List<DevelopmentCard> getDevCards() {
+    public static List<DevelopmentCard> generateDevCards() {
         return List.of(
                 /* 1 */
                 new DevelopmentCard(
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 Map.ofEntries(
@@ -87,7 +88,7 @@ public class GameFactory {
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -98,7 +99,7 @@ public class GameFactory {
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 Map.ofEntries(
@@ -109,7 +110,7 @@ public class GameFactory {
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 Map.ofEntries(
@@ -122,7 +123,7 @@ public class GameFactory {
                                 entry(Shield.getInstance(), 1),
                                 entry(Servant.getInstance(), 1),
                                 entry(Stone.getInstance(), 1))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -135,7 +136,7 @@ public class GameFactory {
                                 entry(Shield.getInstance(), 1),
                                 entry(Servant.getInstance(), 1),
                                 entry(Coin.getInstance(), 1))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 Map.ofEntries(
@@ -148,7 +149,7 @@ public class GameFactory {
                                 entry(Coin.getInstance(), 1),
                                 entry(Servant.getInstance(), 1),
                                 entry(Stone.getInstance(), 1))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 Map.ofEntries(
@@ -161,7 +162,7 @@ public class GameFactory {
                                 entry(Shield.getInstance(), 1),
                                 entry(Stone.getInstance(), 1),
                                 entry(Coin.getInstance(), 1))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 Map.ofEntries(
@@ -172,7 +173,7 @@ public class GameFactory {
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
                                 Map.ofEntries(
@@ -185,7 +186,7 @@ public class GameFactory {
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
                                 Map.ofEntries(
@@ -198,7 +199,7 @@ public class GameFactory {
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 2)),
                                 Map.ofEntries(
@@ -211,7 +212,7 @@ public class GameFactory {
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
                                 Map.ofEntries(
@@ -225,7 +226,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 2),
                                 entry(Coin.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -239,7 +240,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 2),
                                 entry(Stone.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -253,7 +254,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 2),
                                 entry(Servant.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1),
                                         entry(Stone.getInstance(), 1)),
@@ -267,7 +268,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 2),
                                 entry(Shield.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -280,7 +281,7 @@ public class GameFactory {
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -291,7 +292,7 @@ public class GameFactory {
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 Map.ofEntries(
@@ -302,7 +303,7 @@ public class GameFactory {
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 Map.ofEntries(
@@ -313,7 +314,7 @@ public class GameFactory {
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 Map.ofEntries(
@@ -325,7 +326,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 3),
                                 entry(Servant.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -338,7 +339,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 3),
                                 entry(Coin.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -351,7 +352,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 3),
                                 entry(Stone.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Stone.getInstance(), 1)),
@@ -364,7 +365,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 3),
                                 entry(Shield.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -376,7 +377,7 @@ public class GameFactory {
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 5))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
                                 Map.ofEntries(
@@ -388,7 +389,7 @@ public class GameFactory {
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 5))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -400,7 +401,7 @@ public class GameFactory {
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 5))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
                                 Map.ofEntries(
@@ -412,7 +413,7 @@ public class GameFactory {
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 5))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
                                 Map.ofEntries(
@@ -425,7 +426,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 3),
                                 entry(Coin.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 Map.ofEntries(
@@ -438,7 +439,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 3),
                                 entry(Shield.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -451,7 +452,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 3),
                                 entry(Stone.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 Map.ofEntries(
@@ -464,7 +465,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 3),
                                 entry(Servant.getInstance(), 3))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 Map.ofEntries(
@@ -476,7 +477,7 @@ public class GameFactory {
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 6))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
                                 Map.ofEntries(
@@ -488,7 +489,7 @@ public class GameFactory {
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 6))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 2)),
                                 Map.ofEntries(
@@ -500,7 +501,7 @@ public class GameFactory {
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 6))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
                                 Map.ofEntries(
@@ -512,7 +513,7 @@ public class GameFactory {
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 6))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
                                 Map.ofEntries(
@@ -525,7 +526,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 5),
                                 entry(Servant.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -540,7 +541,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 5),
                                 entry(Coin.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -555,7 +556,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 5),
                                 entry(Stone.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -570,7 +571,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 5),
                                 entry(Servant.getInstance(), 2))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -584,7 +585,7 @@ public class GameFactory {
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 7))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 Map.ofEntries(
@@ -596,7 +597,7 @@ public class GameFactory {
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 7))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 Map.ofEntries(
@@ -608,7 +609,7 @@ public class GameFactory {
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 7))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -620,7 +621,7 @@ public class GameFactory {
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 7))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 Map.ofEntries(
@@ -633,7 +634,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 4),
                                 entry(Coin.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -646,7 +647,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 4),
                                 entry(Shield.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 Map.ofEntries(
@@ -659,7 +660,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 4),
                                 entry(Stone.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 Map.ofEntries(
@@ -672,7 +673,7 @@ public class GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 4),
                                 entry(Servant.getInstance(), 4))),
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 Map.ofEntries(
@@ -683,7 +684,7 @@ public class GameFactory {
     }
 
     /**
-     * Returns the list of all possible leader cards.
+     * Returns a list of all possible leader cards.
      *
      * @return  list of leader cards
      */
@@ -771,7 +772,7 @@ public class GameFactory {
                 )), 5),
                 /* 61 */
                 new ProductionLeader(
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 Map.ofEntries(
@@ -784,7 +785,7 @@ public class GameFactory {
                 )), 4),
                 /* 62 */
                 new ProductionLeader(
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 Map.ofEntries(
@@ -797,7 +798,7 @@ public class GameFactory {
                 )), 4),
                 /* 63 */
                 new ProductionLeader(
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 Map.ofEntries(
@@ -810,7 +811,7 @@ public class GameFactory {
                 )), 4),
                 /* 64 */
                 new ProductionLeader(
-                        new Production(
+                        new Production<>(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 Map.ofEntries(
@@ -871,6 +872,11 @@ public class GameFactory {
         );
     }
 
+    /*
+     * Returns a list of the action tokens.
+     *
+     * @return  list of action tokens
+     */
     public static List<ActionToken> generateActionTokens() {
         // TODO: Implement
         return List.of();

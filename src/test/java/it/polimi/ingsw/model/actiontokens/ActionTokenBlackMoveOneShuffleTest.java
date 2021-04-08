@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.actiontokens;
 
-import it.polimi.ingsw.model.GameFactory;
+import it.polimi.ingsw.GameFactory;
 import it.polimi.ingsw.model.SoloGame;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
