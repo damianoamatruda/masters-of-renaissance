@@ -35,9 +35,9 @@ public class ResourceRequirement implements CardRequirement {
     public void checkRequirements(Player player) throws Exception {
         List<Shelf> shelves = player.getWarehouse().getShelves().stream().map(e -> (Shelf)e).collect(Collectors.toList());
 
-        for (int i = 0; i < player.getLeadersCount(); i++) {
-            if (player.getLeader(i).getDepot() != null)
-                shelves.add(player.getLeader(i).getDepot());
+        for (int i = 0; i < player.getLeaders().size(); i++) {
+            if (player.getLeaders().get(i).getDepot() != null)
+                shelves.add(player.getLeaders().get(i).getDepot());
         }
 
         for (ResourceType r : resources.keySet()) {

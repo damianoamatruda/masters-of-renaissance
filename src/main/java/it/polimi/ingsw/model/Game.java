@@ -255,7 +255,7 @@ public class Game {
      */
     private void sumResourcesVictoryPoints() {
         for(Player p : players){
-            p.incrementVictoryPoints(p.getNumOfResources()/5);
+            p.incrementVictoryPoints(p.getResourcesCount()/5);
         }
     }
 

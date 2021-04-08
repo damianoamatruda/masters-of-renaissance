@@ -237,9 +237,9 @@ public class GameTest {
          */
         @Test
         void doPlayersHaveStorableResources() {
-            assertAll(()->assertEquals(game.getPlayers().get(0).getNumOfResources(),0),
-                    ()->assertEquals(game.getPlayers().get(1).getNumOfResources(),0),
-                    ()->assertEquals(game.getPlayers().get(2).getNumOfResources(),0));
+            assertAll(()->assertEquals(game.getPlayers().get(0).getResourcesCount(),0),
+                    ()->assertEquals(game.getPlayers().get(1).getResourcesCount(),0),
+                    ()->assertEquals(game.getPlayers().get(2).getResourcesCount(),0));
         }
 
         /**

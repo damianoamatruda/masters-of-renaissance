@@ -43,7 +43,7 @@ public class PlayerTest {
             for(int i = 0; i < 7; i++)
                 Servant.getInstance().addIntoContainer(player.getStrongbox());
             Shield.getInstance().addIntoContainer(player.getStrongbox());
-            assertEquals(12, player.getNumOfResources());
+            assertEquals(12, player.getResourcesCount());
         }
         catch (Exception e){
             fail("Exception has been thrown");
@@ -64,7 +64,7 @@ public class PlayerTest {
                 Stone.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(1));
 
             Shield.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(0));
-            assertEquals(14, player.getNumOfResources());
+            assertEquals(14, player.getResourcesCount());
         }
         catch (Exception e){
             fail("Exception has been thrown");

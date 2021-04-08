@@ -12,9 +12,6 @@ import java.util.*;
  * Class dedicated to the storage of the player's data and available operations.
  */
 public class Player {
-    /** Number of development cards the player can have, before triggering the end of the game. */
-    private final int maxObtainableDevCards;
-
     /** The player's nickname. */
     private final String nickname;
 
@@ -48,6 +45,9 @@ public class Player {
     /** The flag to be set when a winner has been decided. */
     private boolean winner;
 
+    /** Number of development cards the player can have, before triggering the end of the game. */
+    private final int maxObtainableDevCards;
+
     /**
      * Initializes player's attributes.
      *
@@ -64,20 +64,20 @@ public class Player {
                   int warehouseShelvesCount,
                   int devSlotsCount,
                   int maxObtainableDevCards){
-        this.nickname=nickname;
-        this.leaders=leaders;
+        this.nickname = nickname;
+        this.leaders = leaders;
         this.warehouse = new Warehouse(warehouseShelvesCount);
         this.strongbox = new Strongbox();
         this.baseProduction = new Production<>(Map.of(), 2, Map.of(), 1);
-        this.inkwell=inkwell;
-        faithPoints=0;
-        victoryPoints=0;
-        active=true;
-        winner=false;
-        devSlots = new ArrayList<>();
+        this.inkwell = inkwell;
+        this.faithPoints = 0;
+        this.victoryPoints = 0;
+        this.active = true;
+        this.winner = false;
 
+        this.devSlots = new ArrayList<>();
         for (int i = 0; i < devSlotsCount; i++)
-            devSlots.add(new Stack<>());
+            this.devSlots.add(new Stack<>());
 
         this.maxObtainableDevCards = maxObtainableDevCards;
     }
@@ -101,21 +101,12 @@ public class Player {
     }
 
     /**
-     * Getter of the remaining amount of leader cards that are, or can be, activated.
+     * Getter of the hand of leader cards available to the player
      *
-     * @return  the left amount of leader cards that are accessible to the player
+     * @return  the list of leader cards
      */
-    public int getLeadersCount() {
-        return leaders.size();
-    }
-
-    /** Getter of the leader card at the corresponding index.
-     *
-     * @param index the index that points the card to be retrieved
-     * @return      the required leader card
-     */
-    public LeaderCard getLeader(int index){
-        return leaders.get(index);
+    public List<LeaderCard> getLeaders() {
+        return Collections.unmodifiableList(leaders);
     }
 
     /**
@@ -126,7 +117,7 @@ public class Player {
      * @throws Exception    leader is already active
      */
     public void discardLeader(Game game, int index) throws Exception {
-        LeaderCard toBeDiscarded = getLeader(index);
+        LeaderCard toBeDiscarded = leaders.get(index);
         if(toBeDiscarded.isActive()) throw new Exception();
         toBeDiscarded.onDiscarded(game, this);
         leaders.remove(index);
@@ -282,7 +273,7 @@ public class Player {
      *
      * @return  the total number of resources the player has available
      */
-    public int getNumOfResources() {
+    public int getResourcesCount() {
         int quantity = 0;
         quantity += strongbox.getQuantity();
         quantity += warehouse.getShelves().stream()
