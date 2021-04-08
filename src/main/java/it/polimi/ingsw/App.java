@@ -1,17 +1,11 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.devcardcolors.Blue;
-import it.polimi.ingsw.devcardcolors.Green;
-import it.polimi.ingsw.devcardcolors.Purple;
-import it.polimi.ingsw.devcardcolors.Yellow;
-import it.polimi.ingsw.leadercards.*;
-import it.polimi.ingsw.resourcetypes.*;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.OriginalGame;
+import it.polimi.ingsw.model.Player;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.Map.entry;
 
 /**
  * App class.
