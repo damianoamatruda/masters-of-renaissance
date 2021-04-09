@@ -7,8 +7,12 @@ import it.polimi.ingsw.model.devcardcolors.Green;
 import it.polimi.ingsw.model.devcardcolors.Purple;
 import it.polimi.ingsw.model.devcardcolors.Yellow;
 import it.polimi.ingsw.model.leadercards.*;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +25,9 @@ public class GameFactory {
     /** Maximum number of players that can connect to the same game instance. */
     private final int maxPlayersCount = 4;
 
+    /** Number of distinct leader cards given to each player at the beginning of the game. */
+    private final int playerLeadersCount = 4;
+
     /**
      * Builder of an original multiplayer game.
      *
@@ -31,18 +38,36 @@ public class GameFactory {
         if (nicknames.size() > maxPlayersCount)
             throw new RuntimeException();
 
-        return new Game(nicknames,
-                getLeaderCards(),
-                4,
-                generateDevCards(),
-                3,
-                4,
-                getMarketResources(),
-                4,
+        /* Shuffle the leader cards */
+        List<LeaderCard> leaderCards = new ArrayList<>(generateLeaderCards());
+        Collections.shuffle(leaderCards);
+        if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
+            throw new RuntimeException();
+
+        /* Shuffle the nicknames */
+        List<String> shuffledNicknames = new ArrayList<>(nicknames);
+        Collections.shuffle(shuffledNicknames);
+        if (playerLeadersCount > 0 && shuffledNicknames.size() > leaderCards.size() / playerLeadersCount)
+            throw new RuntimeException();
+
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < shuffledNicknames.size(); i++) {
+            Player player = new Player(
+                    shuffledNicknames.get(i),
+                    i == 0,
+                    leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
+                    new Warehouse(3),
+                    new Strongbox(),
+                    new Production<>(Map.of(), 2, Map.of(), 1), 3,
+                    7);
+            players.add(player);
+        }
+
+        return new Game(
+                players,
+                new DevCardGrid(generateDevCards(), 3, 4),
+                new Market(generateMarketResources(), 4),
                 24,
-                3,
-                3,
-                7,
                 generateVaticanSections(),
                 generateYellowTiles());
     }
@@ -54,18 +79,24 @@ public class GameFactory {
      * @return          the single-player game
      */
     public SoloGame buildSoloGame(String nickname) {
-        return new SoloGame(nickname,
-                getLeaderCards(),
-                4,
-                generateDevCards(),
-                3,
-                4,
-                getMarketResources(),
-                4,
+        /* Shuffle the leader cards */
+        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(generateLeaderCards());
+        Collections.shuffle(shuffledLeaderCards);
+
+        Player player = new Player(
+                nickname,
+                true,
+                shuffledLeaderCards.subList(0, playerLeadersCount),
+                new Warehouse(3),
+                new Strongbox(),
+                new Production<>(Map.of(), 2, Map.of(), 1), 3,
+                7);
+
+        return new SoloGame(
+                player,
+                new DevCardGrid(generateDevCards(), 3, 4),
+                new Market(generateMarketResources(), 4),
                 24,
-                3,
-                3,
-                7,
                 generateVaticanSections(),
                 generateYellowTiles(),
                 generateActionTokens());
@@ -703,7 +734,7 @@ public class GameFactory {
      *
      * @return  list of leader cards
      */
-    public List<LeaderCard> getLeaderCards() {
+    public List<LeaderCard> generateLeaderCards() {
         return List.of(
                 /* 49 */
                 new DiscountLeader(1, Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
@@ -849,7 +880,7 @@ public class GameFactory {
      *
      * @return  map of the resources to put inside the market
      */
-    private Map<ResourceType, Integer> getMarketResources() {
+    private Map<ResourceType, Integer> generateMarketResources() {
         return Map.ofEntries(
                 entry(Coin.getInstance(), 2),
                 entry(Faith.getInstance(), 1),

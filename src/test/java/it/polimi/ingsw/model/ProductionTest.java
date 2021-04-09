@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
 import org.junit.jupiter.api.Test;
 
@@ -28,8 +30,8 @@ public class ProductionTest {
                 0,
                 false);
 
-        Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap<>(), new HashMap<>());
-        Player player = game.getPlayers().get(0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, 0, new HashMap<>(), new HashMap<>());
 
         try {
             for (int i = 0; i < 6; i++)
@@ -62,8 +64,9 @@ public class ProductionTest {
                 0,
                 false);
 
-        Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap<>(), new HashMap<>());
-        Player player = game.getPlayers().get(0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, 0, new HashMap<>(), new HashMap<>());
+
         try {
             for (int i = 0; i < 6; i++)
                 player.getStrongbox().addResource(Coin.getInstance());
@@ -104,8 +107,9 @@ public class ProductionTest {
                 3,
                 false);
 
-        Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap(), new HashMap<>());
-        Player player = game.getPlayers().get(0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, 0, new HashMap<>(), new HashMap<>());
+
         try {
             for (int i = 0; i < 6; i++)
                 player.getStrongbox().addResource(Coin.getInstance());

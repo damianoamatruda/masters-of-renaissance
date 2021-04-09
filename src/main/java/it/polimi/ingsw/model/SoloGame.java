@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
-import it.polimi.ingsw.model.leadercards.LeaderCard;
-import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,42 +21,18 @@ public class SoloGame extends Game {
 
     /**
      * Initializes the solo game with the following parameters.
-     *
-     * @param nickname                      the list of nicknames of players who joined
-     * @param leaderCards                   the list of all the leader cards in the game
-     * @param playerLeadersCount            number of distinct leader cards given to each player at the beginning of the game
-     * @param devCards                      the list of all the development cards in the game
-     * @param devGridLevelsCount            number of distinct rows of separate decks that represent different development card levels
-     * @param devGridColorsCount            number of distinct columns of separate decks that represent different development card colors
-     * @param marketResources               map of the resources to put inside the market
-     * @param marketColsCount               number of columns in the market grid
+     * @param player                      the nickname of the player who joined
+     * @param devCardGrid                   the development card grid
+     * @param market                        the resource market
      * @param maxFaithPointsCount           number of the last reachable faith track tile by a player
-     * @param playerWarehouseShelvesCount   number of basic shelves inside of each player's warehouse
-     * @param playerDevSlotsCount           number of possible player's production slots that can be occupied by development cards
-     * @param playerMaxObtainableDevCards   number of development cards each player can have, before triggering the end of the game
      * @param vaticanSections               map of the vatican sections
      * @param yellowTiles                   map of the faith tiles which will give bonus points at the end
      * @param actionTokens                  the stack of tokens, of which the top token is activated after each turn
      */
-    public SoloGame(String nickname,
-                    List<LeaderCard> leaderCards,
-                    int playerLeadersCount,
-                    List<DevelopmentCard> devCards,
-                    int devGridLevelsCount,
-                    int devGridColorsCount,
-                    Map<ResourceType, Integer> marketResources,
-                    int marketColsCount,
-                    int maxFaithPointsCount,
-                    int playerWarehouseShelvesCount,
-                    int playerDevSlotsCount,
-                    int playerMaxObtainableDevCards,
+    public SoloGame(Player player, DevCardGrid devCardGrid, Market market, int maxFaithPointsCount,
                     Map<Integer, Integer[]> vaticanSections, Map<Integer, Integer> yellowTiles,
-                    List<ActionToken> actionTokens
-    ){
-        super(List.of(nickname), leaderCards, playerLeadersCount, devCards, devGridLevelsCount, devGridColorsCount,
-                marketResources, marketColsCount, maxFaithPointsCount, playerWarehouseShelvesCount,
-                playerDevSlotsCount, playerMaxObtainableDevCards,
-                vaticanSections, yellowTiles);
+                    List<ActionToken> actionTokens) {
+        super(List.of(player), devCardGrid, market, maxFaithPointsCount, vaticanSections, yellowTiles);
         this.actionTokens = actionTokens;
         blackPoints = 0;
         blackWinner = false;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -20,7 +21,7 @@ public class DevCardRequirementTest {
     void checkReqsWrongColor() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
         DevCardRequirement req = new DevCardRequirement(Map.of(Map.of(Blue.getInstance(), 1), 1));
@@ -33,7 +34,7 @@ public class DevCardRequirementTest {
     void checkReqsWrongLevel() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
         DevCardRequirement req = new DevCardRequirement(Map.of(Map.of(Green.getInstance(), 2), 1));
@@ -46,7 +47,7 @@ public class DevCardRequirementTest {
     void checkReqsWrongAmount() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
         DevCardRequirement req = new DevCardRequirement(Map.of(Map.of(Green.getInstance(), 1), 2));
@@ -59,7 +60,7 @@ public class DevCardRequirementTest {
     void checkRequirements() {
         DevelopmentCard devCard = new DevelopmentCard(Green.getInstance(), 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 1, 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 3, 0);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
         DevCardRequirement req = new DevCardRequirement(Map.of(Map.of(Green.getInstance(), 1), 1));

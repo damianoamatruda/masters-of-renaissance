@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
 
-import it.polimi.ingsw.GameFactory;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.Test;
 
 import it.polimi.ingsw.model.devcardcolors.Blue;
@@ -21,12 +22,11 @@ public class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
 
-        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles());
-        Player p = g.getPlayers().get(0);
-        try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
+        Player player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, 0, new HashMap<>(), new HashMap<>());
+        try { player.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
-
-        assertDoesNotThrow(() -> card.takeFromPlayer(g, p, Map.of(p.getStrongbox(), Map.of(Coin.getInstance(), 1))));
+        assertDoesNotThrow(() -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(Coin.getInstance(), 1))));
     }
 
     // TODO: Add Javadoc
@@ -34,11 +34,11 @@ public class DevelopmentCardTest {
     void takeFromPlayerNotEnoughRes() {
         DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
             new ResourceRequirement(Map.of(Coin.getInstance(), 1)), null, 0);
-        
-        Game g = new Game(List.of(""), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles());
-        Player p = g.getPlayers().get(0);
-        try { p.getStrongbox().addResource(Shield.getInstance()); } catch (Exception e) { }
 
-        assertThrows(Exception.class, () -> card.takeFromPlayer(g, p, Map.of(p.getStrongbox(), Map.of(Coin.getInstance(), 1))));
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, 0, new HashMap<>(), new HashMap<>());
+        try { player.getStrongbox().addResource(Shield.getInstance()); } catch (Exception e) { }
+
+        assertThrows(Exception.class, () -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(Coin.getInstance(), 1))));
     }
 }

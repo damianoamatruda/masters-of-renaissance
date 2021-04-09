@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
 import it.polimi.ingsw.model.resourcecontainers.Shelf;
 import org.junit.jupiter.api.Test;
@@ -68,8 +70,8 @@ public class MarketTest {
         //assertEquals(4, market.getColsCount());
         //assertEquals(3, market.getRowsCount()); /* 12 / 4 */
 
-        Game game = new Game(List.of("player"), new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0, 0, 0, 0, 0, new HashMap<>(), new HashMap<>());
-        Player player = game.getPlayers().get(0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, 0, new HashMap<>(), new HashMap<>());
 
         Map<ResourceType, Shelf> shelves = Map.of(
                 Coin.getInstance(), new Shelf(12),

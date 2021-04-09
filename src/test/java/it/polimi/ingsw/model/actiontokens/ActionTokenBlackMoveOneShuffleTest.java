@@ -1,7 +1,12 @@
 package it.polimi.ingsw.model.actiontokens;
 
 import it.polimi.ingsw.GameFactory;
+import it.polimi.ingsw.model.DevCardGrid;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.SoloGame;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +25,8 @@ class ActionTokenBlackMoveOneShuffleTest {
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
-        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
-
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, 0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
 
         token.trigger(solo);
 
@@ -36,7 +41,8 @@ class ActionTokenBlackMoveOneShuffleTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        SoloGame solo = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, 0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
         List stack2 = new ArrayList(stack);
         stack2.remove(0);
 

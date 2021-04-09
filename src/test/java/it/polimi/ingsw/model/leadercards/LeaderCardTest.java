@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.leadercards;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +38,8 @@ public class LeaderCardTest {
     @Test
     void activateWithRequirements() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
-        
-        Player p = new Player("", false, new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
         try { p.getStrongbox().addResource(Coin.getInstance()); } catch (Exception e) { }
 
         assertDoesNotThrow(() -> leader.activate(p));
@@ -49,8 +50,8 @@ public class LeaderCardTest {
     @Test
     void activateWrongResources() {
         LeaderCard leader = new LeaderCard(Coin.getInstance(), new ResourceRequirement(Map.of(Coin.getInstance(), 1)), 0);
-        
-        Player p = new Player("", false, new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
         try { p.getStrongbox().addResource(Shield.getInstance()); } catch (Exception e) { }
 
         assertThrows(Exception.class, () -> leader.activate(p));

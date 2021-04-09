@@ -1,10 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.leadercards.*;
-import it.polimi.ingsw.model.resourcecontainers.Strongbox;
-import it.polimi.ingsw.model.resourcecontainers.Warehouse;
-import it.polimi.ingsw.model.resourcetypes.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,81 +42,26 @@ public class Game {
     protected boolean lastTurn;
 
     /**
-     * Constructor of Game instances
+     * Constructor of Game instances.
      *
-     * @param nicknames                     the list of nicknames of players who joined
-     * @param leaderCards                   the list of all the leader cards in the game
-     * @param playerLeadersCount            number of distinct leader cards given to each player at the beginning of the game
-     * @param devCards                      the list of all the development cards in the game
-     * @param devGridLevelsCount            number of distinct rows of separate decks that represent different development card levels
-     * @param devGridColorsCount            number of distinct columns of separate decks that represent different development card colors
-     * @param marketResources               map of the resources to put inside the market
-     * @param marketColsCount               number of columns in the market grid
-     * @param maxFaithPointsCount           number of the last reachable faith track tile by a player
-     * @param playerWarehouseShelvesCount   number of basic shelves inside of each player's warehouse
-     * @param playerDevSlotsCount           number of possible player's production slots that can be occupied by development cards
-     * @param playerMaxObtainableDevCards   number of development cards each player can have, before triggering the end of the game
-     * @param vaticanSections               map of the vatican sections
-     * @param yellowTiles                   map of the faith tiles which will give bonus points at the end
+     * @param players               the list of nicknames of players who joined
+     * @param devCardGrid           the development card grid
+     * @param market                the resource market
+     * @param maxFaithPointsCount   number of the last reachable faith track tile by a player
+     * @param vaticanSections       map of the vatican sections
+     * @param yellowTiles           map of the faith tiles which will give bonus points at the end
      */
-    public Game(List<String> nicknames,
-                List<LeaderCard> leaderCards,
-                int playerLeadersCount,
-                List<DevelopmentCard> devCards,
-                int devGridLevelsCount,
-                int devGridColorsCount,
-                Map<ResourceType, Integer> marketResources,
-                int marketColsCount,
-                int maxFaithPointsCount,
-                int playerWarehouseShelvesCount,
-                int playerDevSlotsCount,
-                int playerMaxObtainableDevCards,
-                Map<Integer, Integer[]> vaticanSections,
-                Map<Integer, Integer> yellowTiles) {
-        if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
-            throw new RuntimeException();
-        if (playerLeadersCount > 0 && nicknames.size() > leaderCards.size() / playerLeadersCount)
-            throw new RuntimeException();
-
-        /* Choose a random 1st player */
-        List<String> shiftedNicknames = new ArrayList<>(nicknames);
-        if (!shiftedNicknames.isEmpty()) {
-            int randomIndex = (new Random()).nextInt(shiftedNicknames.size());
-            for (int i = 0; i < randomIndex; i++)
-                shiftedNicknames.add(shiftedNicknames.remove(0));
-        }
-
-        /* Create the players and assign their initial random leader cards */
-        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
-        Collections.shuffle(shuffledLeaderCards);
-        this.players = new ArrayList<>();
-        for (int i = 0; i < shiftedNicknames.size(); i++) {
-            Player player = new Player(
-                    shiftedNicknames.get(i),
-                    i == 0,
-                    new Warehouse(playerWarehouseShelvesCount),
-                    new Strongbox(), new Production<>(Map.of(), 2, Map.of(), 1), playerDevSlotsCount,
-                    playerMaxObtainableDevCards);
-            player.addLeaders(shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)));
-            this.players.add(player);
-        }
-
-        this.devCardGrid = new DevCardGrid(devCards, devGridLevelsCount, devGridColorsCount);
-
-        if (marketResources.isEmpty() || marketColsCount == 0)
-            this.market = null;
-        else
-            this.market=new Market(marketResources, marketColsCount);
-
-        /* Generate vatican sections and yellow tiles */
+    public Game(List<Player> players, DevCardGrid devCardGrid, Market market, int maxFaithPointsCount,
+                Map<Integer, Integer[]> vaticanSections, Map<Integer, Integer> yellowTiles) {
+        this.players = players;
+        this.devCardGrid = devCardGrid;
+        this.market = market;
         this.vaticanSections = vaticanSections;
         this.yellowTiles = yellowTiles;
-
-        activatedVaticanSections = new HashMap<>() {{
+        this.activatedVaticanSections = new HashMap<>() {{
             for (int i : vaticanSections.keySet())
                 put(i, false);
         }};
-
         this.maxFaithPointsCount = maxFaithPointsCount;
     }
 

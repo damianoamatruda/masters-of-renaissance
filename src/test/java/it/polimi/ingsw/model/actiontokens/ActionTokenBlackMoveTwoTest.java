@@ -1,11 +1,16 @@
 package it.polimi.ingsw.model.actiontokens;
 
 import it.polimi.ingsw.GameFactory;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.SoloGame;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +22,7 @@ class ActionTokenBlackMoveTwoTest {
     @Test
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo();
-        SoloGame game = new SoloGame("player", new ArrayList<>(), 0, new ArrayList<>(), 0, 0, new HashMap<>(), 0,24,3,3,7, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null);
+        SoloGame game = new GameFactory().buildSoloGame("");
         token.trigger(game);
 
         assertEquals(game.getBlackPoints(),2);

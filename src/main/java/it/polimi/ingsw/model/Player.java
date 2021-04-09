@@ -15,6 +15,9 @@ public class Player {
     /** The player's nickname. */
     private final String nickname;
 
+    /** Visible to the view, this indicates whether the player starts first each turn. */
+    private boolean inkwell;
+
     /** The hand of leader cards available to the player. */
     private final List<LeaderCard> leaders;
 
@@ -29,9 +32,6 @@ public class Player {
 
     /** The base production "recipe". */
     private final Production<ResourceContainer, ResourceContainer> baseProduction;
-
-    /** Visible to the view, this indicates whether the player starts first each turn. */
-    private boolean inkwell;
 
     /** The player's faith track marker. */
     private int faithPoints;
@@ -50,23 +50,25 @@ public class Player {
 
     /**
      * Initializes player's attributes.
-     *  @param nickname             the player's nickname to be seen by all the players
+     *
+     * @param nickname              the player's nickname to be seen by all the players
      * @param inkwell               received only by the first player
+     * @param leaders               the leader cards in the player's hand
      * @param warehouse             the player's warehouse
      * @param strongbox             the player's strongbox
      * @param baseProduction        the player's base production
      * @param devSlotsCount         number of possible production slots that can be occupied by development cards
      * @param maxObtainableDevCards number of development cards the player can have, before triggering the end of the game
      */
-    public Player(String nickname, boolean inkwell, Warehouse warehouse, Strongbox strongbox,
+    public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
                   Production<ResourceContainer, ResourceContainer> baseProduction, int devSlotsCount,
                   int maxObtainableDevCards) {
         this.nickname = nickname;
-        this.leaders = new ArrayList<>();
+        this.inkwell = inkwell;
+        this.leaders = leaders;
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.baseProduction = baseProduction;
-        this.inkwell = inkwell;
         this.faithPoints = 0;
         this.victoryPoints = 0;
         this.active = true;
@@ -104,15 +106,6 @@ public class Player {
      */
     public List<LeaderCard> getLeaders() {
         return Collections.unmodifiableList(leaders);
-    }
-
-    /**
-     * Adds leaders to the hand of the player
-     *
-     * @param leaders   the list of leader cards to add
-     */
-    public void addLeaders(List<LeaderCard> leaders) {
-        this.leaders.addAll(leaders);
     }
 
     /**
