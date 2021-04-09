@@ -132,9 +132,10 @@ public class Game {
     /**
      * Method called after a faith marker has been moved ahead, checks for available Vatican reports.
      *
-     * @param trackPoints   the faith marker (points) of whoever just moved ahead
+     * @param player        the player who has just moved ahead
+     * @param trackPoints   the faith marker (points) of whoever has just moved ahead
      */
-    public void onIncrement(int trackPoints) {
+    public void onIncrement(Player player, int trackPoints) {
         Integer[] currentSection = vaticanSections.get(trackPoints);
         if(currentSection == null || activatedVaticanSections.get(trackPoints)) return;
         for(Player p : players)
@@ -150,10 +151,11 @@ public class Game {
     /**
      * Method called after a card has been bought, checks if the maximum number of buyable cards has been reached.
      *
-     * @param player    the player that bought the development card
+     * @param player            the player that bought the development card
+     * @param obtainedDevCards  the number of all development cards obtained by the player
      */
-    public void onAddToDevSlot(Player player) {
-        if (player.getDevSlots().stream().mapToInt(stack -> stack.size()).sum() == maxObtainableDevCards)
+    public void onAddToDevSlot(Player player, int obtainedDevCards) {
+        if (obtainedDevCards == maxObtainableDevCards)
             lastTurn = true;
     }
 

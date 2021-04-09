@@ -123,7 +123,7 @@ public class Player {
      */
     public void incrementFaithPoints(Game game) {
         faithPoints += 1;
-        game.onIncrement(faithPoints);
+        game.onIncrement(this, faithPoints);
     }
 
     /**
@@ -244,7 +244,7 @@ public class Player {
 
         slot.push(devCard);
 
-        game.onAddToDevSlot(this);
+        game.onAddToDevSlot(this, this.devSlots.stream().mapToInt(stack -> stack.size()).sum());
     }
 
     /**
