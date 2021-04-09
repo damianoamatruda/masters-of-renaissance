@@ -141,7 +141,7 @@ public class PlayerTest {
           */
          @Test
          void checkCardPointsValue() {
-             DevelopmentCard card = player.getDevSlot(1).peek();
+             DevelopmentCard card = player.getDevSlots().get(1).peek();
              assertEquals(2, card.getVictoryPoints());
          }
     }

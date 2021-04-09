@@ -28,12 +28,14 @@ public class Game {
      * <ol>
      *     <li>The first tile of the same Vatican Section, which needs to be reached in order to earn bonus points;</li>
      *     <li>The corresponding amount of bonus points that will be rewarded to the players after the Report is over.</li>
-     * </ol>
-     */
+     * </ol> */
     protected final Map<Integer, Integer[]> vaticanSections;
 
     /** Number of the last reachable faith track tile by a player. */
     protected final int maxFaithPointsCount;
+
+    /** Number of development cards a player can have, before triggering the end of the game. */
+    private final int maxObtainableDevCards;
 
     /** Progressive number of the current turn. */
     protected int turns = 1;
@@ -47,12 +49,14 @@ public class Game {
      * @param players               the list of nicknames of players who joined
      * @param devCardGrid           the development card grid
      * @param market                the resource market
-     * @param maxFaithPointsCount   number of the last reachable faith track tile by a player
-     * @param vaticanSections       map of the vatican sections
-     * @param yellowTiles           map of the faith tiles which will give bonus points at the end
+     * @param vaticanSections       the map of the vatican sections
+     * @param yellowTiles           the map of the faith tiles which will give bonus points at the end
+     * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
+     * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the game
      */
-    public Game(List<Player> players, DevCardGrid devCardGrid, Market market, int maxFaithPointsCount,
-                Map<Integer, Integer[]> vaticanSections, Map<Integer, Integer> yellowTiles) {
+    public Game(List<Player> players, DevCardGrid devCardGrid, Market market,
+                Map<Integer, Integer[]> vaticanSections, Map<Integer, Integer> yellowTiles,
+                int maxFaithPointsCount, int maxObtainableDevCards) {
         this.players = players;
         this.devCardGrid = devCardGrid;
         this.market = market;
@@ -63,6 +67,7 @@ public class Game {
                 put(i, false);
         }};
         this.maxFaithPointsCount = maxFaithPointsCount;
+        this.maxObtainableDevCards = maxObtainableDevCards;
     }
 
     /**
@@ -145,13 +150,11 @@ public class Game {
     /**
      * Method called after a card has been bought, checks if the maximum number of buyable cards has been reached.
      *
-     * @param player            the player that bought the development card
-     * @param maxCardsReached   <code>true</code> if the maximum number of buyable cards has been reached;
-     *                          <code>false</code> otherwise.
+     * @param player    the player that bought the development card
      */
-    public void onAddToDevSlot(Player player, boolean maxCardsReached) {
-        // TODO: Re-implement this check
-        if (maxCardsReached) lastTurn = true;
+    public void onAddToDevSlot(Player player) {
+        if (player.getDevSlots().stream().mapToInt(stack -> stack.size()).sum() == maxObtainableDevCards)
+            lastTurn = true;
     }
 
     /**

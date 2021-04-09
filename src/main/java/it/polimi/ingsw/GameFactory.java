@@ -58,8 +58,8 @@ public class GameFactory {
                     leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
                     new Warehouse(3),
                     new Strongbox(),
-                    new Production<>(Map.of(), 2, Map.of(), 1), 3,
-                    7);
+                    new Production<>(Map.of(), 2, Map.of(), 1), 3
+            );
             players.add(player);
         }
 
@@ -67,9 +67,9 @@ public class GameFactory {
                 players,
                 new DevCardGrid(generateDevCards(), 3, 4),
                 new Market(generateMarketResources(), 4),
-                24,
-                generateVaticanSections(),
-                generateYellowTiles());
+                generateVaticanSections(), generateYellowTiles(), 24,
+                7
+        );
     }
 
     /**
@@ -89,17 +89,15 @@ public class GameFactory {
                 shuffledLeaderCards.subList(0, playerLeadersCount),
                 new Warehouse(3),
                 new Strongbox(),
-                new Production<>(Map.of(), 2, Map.of(), 1), 3,
-                7);
+                new Production<>(Map.of(), 2, Map.of(), 1), 3
+        );
 
         return new SoloGame(
                 player,
                 new DevCardGrid(generateDevCards(), 3, 4),
                 new Market(generateMarketResources(), 4),
-                24,
-                generateVaticanSections(),
-                generateYellowTiles(),
-                generateActionTokens());
+                generateVaticanSections(), generateYellowTiles(), generateActionTokens(), 24,
+                7);
     }
 
     /**

@@ -105,8 +105,7 @@ public class DevCardGrid {
 
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
-            boolean maxCardsReached = player.addToDevSlot(game, position, card, resContainers);
-            game.onAddToDevSlot(player, maxCardsReached);
+            player.addToDevSlot(game, position, card, resContainers);
         }
         catch (Exception e){
             grid.get(color).get(level).push(card);

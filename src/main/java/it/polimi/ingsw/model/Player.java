@@ -45,49 +45,33 @@ public class Player {
     /** The flag to be set when a winner has been decided. */
     private boolean winner;
 
-    /** Number of development cards the player can have, before triggering the end of the game. */
-    private final int maxObtainableDevCards;
-
     /**
      * Initializes player's attributes.
-     *
-     * @param nickname              the player's nickname to be seen by all the players
-     * @param inkwell               received only by the first player
-     * @param leaders               the leader cards in the player's hand
-     * @param warehouse             the player's warehouse
-     * @param strongbox             the player's strongbox
-     * @param baseProduction        the player's base production
-     * @param devSlotsCount         number of possible production slots that can be occupied by development cards
-     * @param maxObtainableDevCards number of development cards the player can have, before triggering the end of the game
+     * @param nickname          the player's nickname to be seen by all the players
+     * @param inkwell           received only by the first player
+     * @param leaders           the leader cards in the player's hand
+     * @param warehouse         the player's warehouse
+     * @param strongbox         the player's strongbox
+     * @param baseProduction    the player's base production
+     * @param devSlotsCount     number of possible production slots that can be occupied by development cards
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  Production<ResourceContainer, ResourceContainer> baseProduction, int devSlotsCount,
-                  int maxObtainableDevCards) {
+                  Production<ResourceContainer, ResourceContainer> baseProduction, int devSlotsCount) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = leaders;
         this.warehouse = warehouse;
         this.strongbox = strongbox;
-        this.baseProduction = baseProduction;
-        this.faithPoints = 0;
-        this.victoryPoints = 0;
-        this.active = true;
-        this.winner = false;
 
         this.devSlots = new ArrayList<>();
         for (int i = 0; i < devSlotsCount; i++)
             this.devSlots.add(new Stack<>());
 
-        this.maxObtainableDevCards = maxObtainableDevCards;
-    }
-
-    /**
-     * Getter of the number of production slots available.
-     *
-     * @return  the number of slots
-     */
-    public int getDevSlotsCount() {
-        return devSlots.size();
+        this.baseProduction = baseProduction;
+        this.faithPoints = 0;
+        this.victoryPoints = 0;
+        this.active = true;
+        this.winner = false;
     }
 
     /**
@@ -161,13 +145,12 @@ public class Player {
     }
 
     /**
-     * Retrieves the stack of cards bought and stored in a given slot.
+     * Retrieves the stacks of cards bought and stored in the slots.
      *
-     * @param index the number of slot to be accessed
-     * @return      the cards located in the required slot
+     * @return      the player's development slots
      */
-    public Stack<DevelopmentCard> getDevSlot(int index){
-        return devSlots.get(index);
+    public List<Stack<DevelopmentCard>> getDevSlots() {
+        return Collections.unmodifiableList(devSlots);
     }
 
     /**
@@ -251,9 +234,8 @@ public class Player {
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
      * @throws Exception    error during the actual payment
-     * @return              true if Player has reached number of development cards required to end the game
      */
-    public boolean addToDevSlot(Game game, int index, DevelopmentCard devCard,
+    public void addToDevSlot(Game game, int index, DevelopmentCard devCard,
                                 Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new Exception();
@@ -262,9 +244,7 @@ public class Player {
 
         slot.push(devCard);
 
-        return devSlots.stream()
-                .mapToInt(stack -> stack.size())
-                .sum() == maxObtainableDevCards;
+        game.onAddToDevSlot(this);
     }
 
     /**

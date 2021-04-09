@@ -29,8 +29,8 @@ public class SoloGameTest {
         player = new Player("Alessandro", true, List.of(
                 new DepotLeader(2, Coin.getInstance(),null,0),
                 new DepotLeader(2, Coin.getInstance(),null,0)
-        ), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 3, 7);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, 0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null);
+        ), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 3);
+        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null, 0, 0);
 
     }
     /*
@@ -44,8 +44,8 @@ public class SoloGameTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null,  0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack);
+        Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack, 0, 0);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 
@@ -68,8 +68,8 @@ public class SoloGameTest {
         @BeforeEach
         void setup() {
             player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                    new Production<>(Map.of(), 0, Map.of(), 0), 3, 7);
-            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, 0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null);
+                    new Production<>(Map.of(), 0, Map.of(), 0), 3);
+            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), null, 0, 0);
 
             for(int i = 0; i < Collections.min(game.getVaticanSections().keySet())-1; i++)
                 player.incrementFaithPoints(game);
@@ -114,11 +114,11 @@ public class SoloGameTest {
     @Test
     void onTurnEnd() {
         player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                new Production<>(Map.of(), 0, Map.of(), 0), 3, 7);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, 0, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), new ArrayList<>() {{
+                new Production<>(Map.of(), 0, Map.of(), 0), 3);
+        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), new ArrayList<>() {{
             for(int i = 0; i < 4; i++)
                 add(new ActionTokenBlackMoveTwo());
-        }});
+        }}, 0, 0);
 
         assertEquals(player, game.onTurnEnd());
 

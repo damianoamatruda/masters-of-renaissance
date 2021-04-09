@@ -34,8 +34,8 @@ public class DevCardRequirement implements CardRequirement {
     public void checkRequirements(Player player) throws Exception {
         List<DevelopmentCard> playerCards = new ArrayList<>();
 
-        for (int i = 0; i < player.getDevSlotsCount(); i++)
-            playerCards.addAll(player.getDevSlot(i));
+        for (int i = 0; i < player.getDevSlots().size(); i++)
+            playerCards.addAll(player.getDevSlots().get(i));
         
         List<DevCardRequirementEntry>   playerState = new ArrayList<>(),
                                         reqCopy = new ArrayList<>(entryList);

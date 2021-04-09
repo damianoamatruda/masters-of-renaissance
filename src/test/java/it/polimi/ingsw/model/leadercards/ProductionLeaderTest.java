@@ -23,7 +23,7 @@ public class ProductionLeaderTest {
     @Test
     void nullProduction() {
         ProductionLeader leader = new ProductionLeader(null, Coin.getInstance(), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -35,7 +35,7 @@ public class ProductionLeaderTest {
     void production() {
         Production<ResourceContainer, Strongbox> prod = new Production<>(null, 0, null, 0);
         ProductionLeader leader = new ProductionLeader(prod, Coin.getInstance(), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0, 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
 
         try { leader.activate(p); } catch (Exception e) { }
 
