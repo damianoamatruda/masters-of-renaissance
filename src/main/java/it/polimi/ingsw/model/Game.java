@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.leadercards.*;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 import java.util.*;
@@ -97,8 +99,8 @@ public class Game {
             Player player = new Player(
                     shiftedNicknames.get(i),
                     i == 0,
-                    playerWarehouseShelvesCount,
-                    playerDevSlotsCount,
+                    new Warehouse(playerWarehouseShelvesCount),
+                    new Strongbox(), new Production<>(Map.of(), 2, Map.of(), 1), playerDevSlotsCount,
                     playerMaxObtainableDevCards);
             player.addLeaders(shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)));
             this.players.add(player);

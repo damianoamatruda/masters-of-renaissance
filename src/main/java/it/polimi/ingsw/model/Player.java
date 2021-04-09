@@ -50,20 +50,22 @@ public class Player {
 
     /**
      * Initializes player's attributes.
-     *
-     * @param nickname              the player's nickname to be seen by all the players
+     *  @param nickname             the player's nickname to be seen by all the players
      * @param inkwell               received only by the first player
-     * @param warehouseShelvesCount number of basic shelves inside of the player's warehouse
+     * @param warehouse             the player's warehouse
+     * @param strongbox             the player's strongbox
+     * @param baseProduction        the player's base production
      * @param devSlotsCount         number of possible production slots that can be occupied by development cards
      * @param maxObtainableDevCards number of development cards the player can have, before triggering the end of the game
      */
-    public Player(String nickname, boolean inkwell, int warehouseShelvesCount, int devSlotsCount,
+    public Player(String nickname, boolean inkwell, Warehouse warehouse, Strongbox strongbox,
+                  Production<ResourceContainer, ResourceContainer> baseProduction, int devSlotsCount,
                   int maxObtainableDevCards) {
         this.nickname = nickname;
         this.leaders = new ArrayList<>();
-        this.warehouse = new Warehouse(warehouseShelvesCount);
-        this.strongbox = new Strongbox();
-        this.baseProduction = new Production<>(Map.of(), 2, Map.of(), 1);
+        this.warehouse = warehouse;
+        this.strongbox = strongbox;
+        this.baseProduction = baseProduction;
         this.inkwell = inkwell;
         this.faithPoints = 0;
         this.victoryPoints = 0;

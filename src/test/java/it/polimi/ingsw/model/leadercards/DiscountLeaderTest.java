@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 import java.util.stream.Stream;
 
+import it.polimi.ingsw.model.Production;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
@@ -44,7 +47,7 @@ public class DiscountLeaderTest {
     @MethodSource("provideParameters")
     void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {
         DiscountLeader leader = new DiscountLeader(discount, Coin.getInstance(), null, 0);
-        Player p = new Player("", false, 3, 3, 9);
+        Player p = new Player("", false, new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0),3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
         

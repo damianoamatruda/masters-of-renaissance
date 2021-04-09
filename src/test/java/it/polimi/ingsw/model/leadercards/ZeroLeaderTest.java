@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
+import it.polimi.ingsw.model.Production;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.Test;
 
 import it.polimi.ingsw.model.Player;
@@ -17,7 +20,7 @@ public class ZeroLeaderTest {
     @Test
     void nullMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", false, 3, 3, 9);
+        Player p = new Player("", false, new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0),3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -28,7 +31,7 @@ public class ZeroLeaderTest {
     @Test
     void emptyMaps() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", false, 3, 3, 9);
+        Player p = new Player("", false, new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -41,7 +44,7 @@ public class ZeroLeaderTest {
     @Test
     void otherResourceInput() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", false, 3, 3, 9);
+        Player p = new Player("", false, new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0),3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -60,7 +63,7 @@ public class ZeroLeaderTest {
     @Test
     void normalUse() {
         ZeroLeader leader = new ZeroLeader(Coin.getInstance(), null, 0);
-        Player p = new Player("", false, 3, 3, 9);
+        Player p = new Player("", false, new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0),3, 9);
 
         try { leader.activate(p); } catch (Exception e) { }
         
