@@ -3,6 +3,9 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.GameFactory;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
+import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
+import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
+import it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
 import it.polimi.ingsw.model.devcardcolors.Purple;
@@ -445,7 +448,7 @@ public class JavaGameFactory implements GameFactory {
                                 entry(Servant.getInstance(), 5))),
                         new Production<>(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(Stone.getInstance(), 2)),
                                 0, Map.ofEntries(
                                         entry(Coin.getInstance(), 2),
                                         entry(Faith.getInstance(), 2)), 0),
@@ -930,13 +933,20 @@ public class JavaGameFactory implements GameFactory {
         );
     }
 
-    /*
+    /**
      * Returns a list of the action tokens.
      *
      * @return  list of action tokens
      */
     public List<ActionToken> generateActionTokens() {
-        // TODO: Implement
-        return List.of();
+        return List.of(
+                new ActionTokenBlackMoveOneShuffle(),
+                new ActionTokenBlackMoveTwo(),
+                new ActionTokenBlackMoveTwo(),
+                new ActionTokenDiscardTwo(Blue.getInstance()),
+                new ActionTokenDiscardTwo(Green.getInstance()),
+                new ActionTokenDiscardTwo(Purple.getInstance()),
+                new ActionTokenDiscardTwo(Yellow.getInstance())
+        );
     }
 }
