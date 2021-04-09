@@ -1,7 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cardrequirements;
 
 import java.util.*;
 
+import it.polimi.ingsw.model.DevelopmentCard;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 
 /**

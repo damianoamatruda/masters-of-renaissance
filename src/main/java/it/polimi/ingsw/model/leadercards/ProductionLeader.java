@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model.leadercards;
 
-import it.polimi.ingsw.model.CardRequirement;
+import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.Production;
-import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 /**

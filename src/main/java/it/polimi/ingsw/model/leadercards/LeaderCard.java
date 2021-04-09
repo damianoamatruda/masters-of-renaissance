@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.leadercards;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.ResourceShelf;
 import java.util.Map;

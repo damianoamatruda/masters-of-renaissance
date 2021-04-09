@@ -2,9 +2,10 @@ package it.polimi.ingsw.model;
 
 import java.util.Map;
 
+import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
+import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 /**

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cardrequirements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import it.polimi.ingsw.model.DevelopmentCard;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Production;
+import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
+import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.Test;

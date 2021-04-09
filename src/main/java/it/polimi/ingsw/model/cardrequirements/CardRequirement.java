@@ -1,5 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cardrequirements;
 
+import it.polimi.ingsw.model.DevelopmentCard;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 

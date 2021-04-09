@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
 import it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo;
+import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
+import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
 import it.polimi.ingsw.model.devcardcolors.Purple;

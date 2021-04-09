@@ -12,7 +12,7 @@ import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.Test;
 
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.ResourceRequirement;
+import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 /**

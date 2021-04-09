@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.leadercards;
 
-import it.polimi.ingsw.model.CardRequirement;
+import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.HashMap;
