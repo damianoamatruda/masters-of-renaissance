@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.GameFactory;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
@@ -21,7 +22,7 @@ import static java.util.Map.entry;
 /**
  * This class builds games with the original parameters.
  */
-public class GameFactory {
+public class JavaGameFactory implements GameFactory {
     /** Maximum number of players that can connect to the same game instance. */
     private final int maxPlayersCount = 4;
 
@@ -107,6 +108,15 @@ public class GameFactory {
      */
     public int getMaxPlayersCount() {
         return maxPlayersCount;
+    }
+
+    /**
+     * Getter of the number of distinct leader cards given to each player at the beginning of the game.
+     *
+     * @return the number of leader cards
+     */
+    public int getPlayerLeadersCount() {
+        return playerLeadersCount;
     }
 
     /**

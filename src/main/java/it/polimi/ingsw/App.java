@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameFactory;
 import it.polimi.ingsw.model.Player;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class App {
      * @param args  the command line arguments
      */
     public static void main(String[] args) {
-        GameFactory gameFactory = new GameFactory();
+        GameFactory gameFactory = new JavaGameFactory();
         Game game = gameFactory.buildMultiGame(List.of("PlayerA", "PlayerB", "PlayerC"));
 
         System.out.println("Players: " + game.getPlayers().stream()

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.actiontokens;
 
-import it.polimi.ingsw.GameFactory;
+import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.model.DevCardGrid;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Production;
@@ -26,7 +26,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack, 0, 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), stack, 0, 0);
 
         token.trigger(solo);
 
@@ -42,7 +42,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new GameFactory().generateVaticanSections(), new GameFactory().generateYellowTiles(), stack, 0, 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), stack, 0, 0);
         List stack2 = new ArrayList(stack);
         stack2.remove(0);
 

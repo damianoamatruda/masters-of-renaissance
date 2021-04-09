@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.GameFactory;
+import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
 import it.polimi.ingsw.model.devcardcolors.Purple;
@@ -27,7 +27,7 @@ public class GameTest {
      */
     @BeforeAll
     public void setup() {
-        game = new GameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
     }
 
     /**
