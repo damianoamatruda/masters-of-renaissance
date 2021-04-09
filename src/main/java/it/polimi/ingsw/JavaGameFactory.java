@@ -2,6 +2,9 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
+import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
+import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
+import it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
 import it.polimi.ingsw.model.devcardcolors.Purple;
@@ -915,7 +918,14 @@ public class JavaGameFactory implements GameFactory {
      * @return  list of action tokens
      */
     public List<ActionToken> generateActionTokens() {
-        // TODO: Implement
-        return List.of();
+        return List.of(
+                new ActionTokenBlackMoveTwo(),
+                new ActionTokenBlackMoveTwo(),
+                new ActionTokenBlackMoveOneShuffle(),
+                new ActionTokenDiscardTwo(Blue.getInstance()),
+                new ActionTokenDiscardTwo(Green.getInstance()),
+                new ActionTokenDiscardTwo(Purple.getInstance()),
+                new ActionTokenDiscardTwo(Yellow.getInstance())
+        );
     }
 }
