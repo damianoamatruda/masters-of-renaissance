@@ -9,11 +9,11 @@ class DevCardRequirementEntry {
     public int amount = 0;
 
     // TODO: Add Javadoc
-    DevCardRequirementEntry(DevCardColor color, int level) {
+    public DevCardRequirementEntry(DevCardColor color, int level) {
         this.color = color; this.level = level;
     }
     // TODO: Add Javadoc
-    DevCardRequirementEntry(DevCardColor color, int level, int amount) {
+    public DevCardRequirementEntry(DevCardColor color, int level, int amount) {
         this.color = color; this.level = level; this.amount = amount; 
     }
 

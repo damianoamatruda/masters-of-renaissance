@@ -17,17 +17,8 @@ public class DevCardRequirement implements CardRequirement {
      *
      * @param requirements the development cards that form the requirement.
      */
-    public DevCardRequirement(Map<Map<DevCardColor, Integer>, Integer> requirements) {
-        entryList = buildRequirements(requirements);
-    }
-
-    // TODO: Add Javadoc
-    private List<DevCardRequirementEntry> buildRequirements(Map<Map<DevCardColor, Integer>, Integer> reqs) {
-        List<DevCardRequirementEntry> entries = new ArrayList<>();
-
-        reqs.forEach((map, amount) -> map.forEach((color, level) -> entries.add(new DevCardRequirementEntry(color, level, amount))));
-        
-        return entries;
+    public DevCardRequirement(List<DevCardRequirementEntry> requirements) {
+        entryList = requirements;
     }
 
     @Override
