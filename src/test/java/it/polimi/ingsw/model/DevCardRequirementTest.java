@@ -25,7 +25,7 @@ public class DevCardRequirementTest {
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
-        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirementEntry(Blue.getInstance(), 1, 1)));
+        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirement.Entry(Blue.getInstance(), 1, 1)));
 
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
@@ -38,7 +38,7 @@ public class DevCardRequirementTest {
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
-        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirementEntry(Green.getInstance(), 2, 1)));
+        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirement.Entry(Green.getInstance(), 2, 1)));
 
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
@@ -51,7 +51,7 @@ public class DevCardRequirementTest {
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
-        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirementEntry(Green.getInstance(), 1, 2)));
+        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirement.Entry(Green.getInstance(), 1, 2)));
 
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
@@ -64,7 +64,7 @@ public class DevCardRequirementTest {
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
         try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
 
-        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirementEntry(Green.getInstance(), 1, 1)));
+        DevCardRequirement req = new DevCardRequirement(List.of(new DevCardRequirement.Entry(Green.getInstance(), 1, 1)));
 
         assertDoesNotThrow(() -> req.checkRequirements(p));
     }
