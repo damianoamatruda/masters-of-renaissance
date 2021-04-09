@@ -29,7 +29,7 @@ public class SoloGameTest {
         player = new Player("Alessandro", true, List.of(
                 new DepotLeader(2, Coin.getInstance(),null,0),
                 new DepotLeader(2, Coin.getInstance(),null,0)
-        ), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 3);
+        ), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
         game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), null, 0, 0);
 
     }
@@ -44,7 +44,7 @@ public class SoloGameTest {
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
         stack.add(new ActionTokenBlackMoveOneShuffle());
-        Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), stack, 0, 0);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
@@ -68,7 +68,7 @@ public class SoloGameTest {
         @BeforeEach
         void setup() {
             player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                    new Production<>(Map.of(), 0, Map.of(), 0), 3);
+                    new Production(Map.of(), 0, Map.of(), 0), 3);
             game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), null, 0, 0);
 
             for(int i = 0; i < Collections.min(game.getVaticanSections().keySet())-1; i++)
@@ -114,7 +114,7 @@ public class SoloGameTest {
     @Test
     void onTurnEnd() {
         player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                new Production<>(Map.of(), 0, Map.of(), 0), 3);
+                new Production(Map.of(), 0, Map.of(), 0), 3);
         game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), new ArrayList<>() {{
             for(int i = 0; i < 4; i++)
                 add(new ActionTokenBlackMoveTwo());

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
@@ -23,14 +22,14 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithoutBlanks() {
-        Production<ResourceContainer, ResourceContainer> production = new Production<>(
+        Production production = new Production(
                 Map.of(Coin.getInstance(), 2),
                 0,
                 Map.of(Servant.getInstance(), 3),
                 0,
                 false);
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new HashMap<>(), new HashMap<>(), 0, 0);
 
         try {
@@ -57,14 +56,14 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithBlanksInInput() {
-        Production<ResourceContainer, ResourceContainer> production = new Production<>(
+        Production production = new Production(
                 Map.of(Coin.getInstance(), 2),
                 3,
                 Map.of(Servant.getInstance(), 3),
                 0,
                 false);
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new HashMap<>(), new HashMap<>(), 0, 0);
 
         try {
@@ -100,14 +99,14 @@ public class ProductionTest {
      */
     @Test
     public void generalProductionWithBlanksInOutput() {
-        Production<ResourceContainer, ResourceContainer> production = new Production<>(
+        Production production = new Production(
                 Map.of(Coin.getInstance(), 2),
                 0,
                 Map.of(Servant.getInstance(), 3),
                 3,
                 false);
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new HashMap<>(), new HashMap<>(), 0, 0);
 
         try {

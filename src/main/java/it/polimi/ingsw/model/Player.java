@@ -31,7 +31,7 @@ public class Player {
     private final List<Stack<DevelopmentCard>> devSlots;
 
     /** The base production "recipe". */
-    private final Production<ResourceContainer, ResourceContainer> baseProduction;
+    private final Production baseProduction;
 
     /** The player's faith track marker. */
     private int faithPoints;
@@ -56,7 +56,7 @@ public class Player {
      * @param devSlotsCount     number of possible production slots that can be occupied by development cards
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  Production<ResourceContainer, ResourceContainer> baseProduction, int devSlotsCount) {
+                  Production baseProduction, int devSlotsCount) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = leaders;
@@ -252,7 +252,7 @@ public class Player {
      *
      * @return  the required base production recipe
      */
-    public Production<ResourceContainer, ResourceContainer> getBaseProduction() {
+    public Production getBaseProduction() {
         return baseProduction;
     }
 

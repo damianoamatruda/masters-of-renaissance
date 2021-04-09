@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
@@ -70,7 +71,7 @@ public class MarketTest {
         //assertEquals(4, market.getColsCount());
         //assertEquals(3, market.getRowsCount()); /* 12 / 4 */
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new HashMap<>(), new HashMap<>(), 0, 0);
 
         Map<ResourceType, Shelf> shelves = Map.of(
@@ -93,7 +94,7 @@ public class MarketTest {
                         output.merge(resType, 1, Integer::sum);
                 }
 
-                Map<Shelf, Map<ResourceType, Integer>> outputShelves = output.entrySet().stream()
+                Map<ResourceContainer, Map<ResourceType, Integer>> outputShelves = output.entrySet().stream()
                         .collect(Collectors.toMap(e -> shelves.get(e.getKey()), e -> new HashMap<>(Map.of(e.getKey(), e.getValue()))));
 
                 try {

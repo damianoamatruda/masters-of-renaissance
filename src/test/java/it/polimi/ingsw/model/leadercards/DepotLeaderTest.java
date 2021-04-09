@@ -24,7 +24,7 @@ public class DepotLeaderTest {
     @Test
     void getZeroSizeDepot() {
         DepotLeader leader = new DepotLeader(0, Coin.getInstance(), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -37,7 +37,7 @@ public class DepotLeaderTest {
     @Test
     void getDepot() {
         DepotLeader leader = new DepotLeader(1, Coin.getInstance(), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
 
         try { leader.activate(p); } catch (Exception e) { }
 

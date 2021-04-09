@@ -107,7 +107,7 @@ public class Market {
      * @throws Exception    if it is not possible
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> zerosRep,
-                              Map<? extends Shelf, Map<ResourceType, Integer>> shelves) throws Exception {
+                              Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws Exception {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
             throw new RuntimeException();
 
@@ -116,7 +116,7 @@ public class Market {
                 .mapToObj(i -> isRow ? grid.get(index).get(i) : grid.get(i).get(index))
                 .collect(Collectors.toMap(resType -> resType, resType -> 1, Integer::sum));
 
-        new Production<ResourceContainer, Shelf>(new HashMap<>(), 0, output, 0, true)
+        new Production(new HashMap<>(), 0, output, 0, true)
                 .activate(game, player, new HashMap<>(), zerosRep, new HashMap<>(), shelves);
 
         shift(isRow, index);

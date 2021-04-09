@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * This class represents a production, that is a transaction of transfers of resources from and to resource containers
  * and a player.
  */
-public class Production<T1 extends ResourceContainer, T2 extends ResourceContainer> {
+public class Production {
     /** The map of the input resources. */
     private final Map<ResourceType, Integer> input;
 
@@ -62,12 +62,12 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
      *
      * @param productions   the list of the productions to sum
      */
-    public Production(List<Production<? extends T1, ? extends T2>> productions) {
+    public Production(List<Production> productions) {
         this.input = new HashMap<>();
         int inputBlanks = 0;
         this.output = new HashMap<>();
         int outputBlanks = 0;
-        for (Production<? extends T1, ? extends T2> production : productions) {
+        for (Production production : productions) {
             production.input.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
             inputBlanks += production.inputBlanks;
             production.output.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
@@ -152,8 +152,8 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     public void activate(Game game, Player player,
                          Map<ResourceType, Integer> inputBlanksRep,
                          Map<ResourceType, Integer> outputBlanksRep,
-                         Map<? extends T1, Map<ResourceType, Integer>> inputContainers,
-                         Map<? extends T2, Map<ResourceType, Integer>> outputContainers) throws Exception {
+                         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
+                         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws Exception {
         Map<ResourceType, Integer> replacedInput = addReplacedBlanks(input, inputBlanks, inputBlanksRep);
         Map<ResourceType, Integer> replacedOutput = addReplacedBlanks(output, outputBlanks, outputBlanksRep);
 
@@ -173,7 +173,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Try removing all input storable resources from cloned resource containers;
            if an exception is thrown, the transfer is not possible */
-        for (T1 resContainer : inputContainers.keySet())
+        for (ResourceContainer resContainer : inputContainers.keySet())
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -184,7 +184,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Try adding all output storable resources into cloned resource containers (with input removed);
            if an exception is thrown, the transfer is not possible */
-        for (T2 resContainer : outputContainers.keySet())
+        for (ResourceContainer resContainer : outputContainers.keySet())
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -196,7 +196,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Remove all input storable resources from real resource containers;
            this should be possible, as it worked with cloned resource containers */
-        for (T1 resContainer : inputContainers.keySet())
+        for (ResourceContainer resContainer : inputContainers.keySet())
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -207,7 +207,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Add all output storable resources into real resource containers;
            this should be possible, as it worked with cloned resource containers */
-        for (T2 resContainer : outputContainers.keySet())
+        for (ResourceContainer resContainer : outputContainers.keySet())
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {

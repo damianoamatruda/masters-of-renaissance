@@ -13,7 +13,7 @@ public class ProductionLeader extends LeaderCard {
     /**
      * The production associated with the card.
      */
-    private final Production<ResourceContainer, Strongbox> production;
+    private final Production production;
 
     /**
      * Class constructor.
@@ -24,13 +24,13 @@ public class ProductionLeader extends LeaderCard {
      * @param requirement   the requirement to be satisfied in order to enable the card
      * @param victoryPoints the amount of victory points associated with the card
      */
-    public ProductionLeader(Production<ResourceContainer, Strongbox> production, ResourceType resource, CardRequirement requirement, int victoryPoints) {
+    public ProductionLeader(Production production, ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
         this.production = production;
     }
 
     @Override
-    public Production<ResourceContainer, Strongbox> getProduction() {
+    public Production getProduction() {
         if (isActive()) return production;
         else return super.getProduction();
     }

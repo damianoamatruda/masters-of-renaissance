@@ -59,7 +59,7 @@ public class JavaGameFactory implements GameFactory {
                     leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i+1)),
                     new Warehouse(3),
                     new Strongbox(),
-                    new Production<>(Map.of(), 2, Map.of(), 1), 3
+                    new Production(Map.of(), 2, Map.of(), 1), 3
             );
             players.add(player);
         }
@@ -90,7 +90,7 @@ public class JavaGameFactory implements GameFactory {
                 shuffledLeaderCards.subList(0, playerLeadersCount),
                 new Warehouse(3),
                 new Strongbox(),
-                new Production<>(Map.of(), 2, Map.of(), 1), 3
+                new Production(Map.of(), 2, Map.of(), 1), 3
         );
 
         return new SoloGame(
@@ -131,7 +131,7 @@ public class JavaGameFactory implements GameFactory {
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -142,7 +142,7 @@ public class JavaGameFactory implements GameFactory {
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -153,7 +153,7 @@ public class JavaGameFactory implements GameFactory {
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -164,7 +164,7 @@ public class JavaGameFactory implements GameFactory {
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -177,7 +177,7 @@ public class JavaGameFactory implements GameFactory {
                                 entry(Shield.getInstance(), 1),
                                 entry(Servant.getInstance(), 1),
                                 entry(Stone.getInstance(), 1))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -190,7 +190,7 @@ public class JavaGameFactory implements GameFactory {
                                 entry(Shield.getInstance(), 1),
                                 entry(Servant.getInstance(), 1),
                                 entry(Coin.getInstance(), 1))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -203,7 +203,7 @@ public class JavaGameFactory implements GameFactory {
                                 entry(Coin.getInstance(), 1),
                                 entry(Servant.getInstance(), 1),
                                 entry(Stone.getInstance(), 1))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -216,7 +216,7 @@ public class JavaGameFactory implements GameFactory {
                                 entry(Shield.getInstance(), 1),
                                 entry(Stone.getInstance(), 1),
                                 entry(Coin.getInstance(), 1))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -227,7 +227,7 @@ public class JavaGameFactory implements GameFactory {
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -240,7 +240,7 @@ public class JavaGameFactory implements GameFactory {
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -253,7 +253,7 @@ public class JavaGameFactory implements GameFactory {
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -266,7 +266,7 @@ public class JavaGameFactory implements GameFactory {
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -280,7 +280,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 2),
                                 entry(Coin.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -294,7 +294,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 2),
                                 entry(Stone.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -308,7 +308,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 2),
                                 entry(Servant.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1),
                                         entry(Stone.getInstance(), 1)),
@@ -322,7 +322,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 2),
                                 entry(Shield.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -335,7 +335,7 @@ public class JavaGameFactory implements GameFactory {
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -346,7 +346,7 @@ public class JavaGameFactory implements GameFactory {
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -357,7 +357,7 @@ public class JavaGameFactory implements GameFactory {
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -368,7 +368,7 @@ public class JavaGameFactory implements GameFactory {
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -380,7 +380,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 3),
                                 entry(Servant.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -393,7 +393,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 3),
                                 entry(Coin.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -406,7 +406,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 3),
                                 entry(Stone.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Stone.getInstance(), 1)),
@@ -419,7 +419,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 3),
                                 entry(Shield.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -431,7 +431,7 @@ public class JavaGameFactory implements GameFactory {
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 5))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -443,7 +443,7 @@ public class JavaGameFactory implements GameFactory {
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 5))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -455,7 +455,7 @@ public class JavaGameFactory implements GameFactory {
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 5))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -467,7 +467,7 @@ public class JavaGameFactory implements GameFactory {
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 5))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -480,7 +480,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 3),
                                 entry(Coin.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -493,7 +493,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 3),
                                 entry(Shield.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -506,7 +506,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 3),
                                 entry(Stone.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -519,7 +519,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 3),
                                 entry(Servant.getInstance(), 3))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -531,7 +531,7 @@ public class JavaGameFactory implements GameFactory {
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 6))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -543,7 +543,7 @@ public class JavaGameFactory implements GameFactory {
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 6))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -555,7 +555,7 @@ public class JavaGameFactory implements GameFactory {
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 6))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -567,7 +567,7 @@ public class JavaGameFactory implements GameFactory {
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 6))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 2)),
                                 0, Map.ofEntries(
@@ -580,7 +580,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 5),
                                 entry(Servant.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -595,7 +595,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 5),
                                 entry(Coin.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -610,7 +610,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 5),
                                 entry(Stone.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1),
                                         entry(Shield.getInstance(), 1)),
@@ -625,7 +625,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 5),
                                 entry(Servant.getInstance(), 2))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1),
                                         entry(Servant.getInstance(), 1)),
@@ -639,7 +639,7 @@ public class JavaGameFactory implements GameFactory {
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 7))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -651,7 +651,7 @@ public class JavaGameFactory implements GameFactory {
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 7))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -663,7 +663,7 @@ public class JavaGameFactory implements GameFactory {
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 7))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -675,7 +675,7 @@ public class JavaGameFactory implements GameFactory {
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 7))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -688,7 +688,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Shield.getInstance(), 4),
                                 entry(Coin.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -701,7 +701,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Servant.getInstance(), 4),
                                 entry(Shield.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -714,7 +714,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Coin.getInstance(), 4),
                                 entry(Stone.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -727,7 +727,7 @@ public class JavaGameFactory implements GameFactory {
                         new ResourceRequirement(Map.ofEntries(
                                 entry(Stone.getInstance(), 4),
                                 entry(Servant.getInstance(), 4))),
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 0, Map.ofEntries(
@@ -826,7 +826,7 @@ public class JavaGameFactory implements GameFactory {
                 )), 5),
                 /* 61 */
                 new ProductionLeader(
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Shield.getInstance(), 1)),
                                 0,
@@ -840,7 +840,7 @@ public class JavaGameFactory implements GameFactory {
                 )), 4),
                 /* 62 */
                 new ProductionLeader(
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Servant.getInstance(), 1)),
                                 0,
@@ -854,7 +854,7 @@ public class JavaGameFactory implements GameFactory {
                 )), 4),
                 /* 63 */
                 new ProductionLeader(
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Stone.getInstance(), 1)),
                                 0,
@@ -868,7 +868,7 @@ public class JavaGameFactory implements GameFactory {
                 )), 4),
                 /* 64 */
                 new ProductionLeader(
-                        new Production<>(
+                        new Production(
                                 Map.ofEntries(
                                         entry(Coin.getInstance(), 1)),
                                 0,
