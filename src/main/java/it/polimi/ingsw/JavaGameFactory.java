@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.GameFactory;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.devcardcolors.Green;
@@ -745,32 +744,28 @@ public class JavaGameFactory implements GameFactory {
     public List<LeaderCard> generateLeaderCards() {
         return List.of(
                 /* 49 */
-                new DiscountLeader(1, Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Yellow.getInstance(), 0),
-                                entry(Green.getInstance(), 0)
-                        ), 1)
+                new DiscountLeader(1, Servant.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Yellow.getInstance(), 0, 1),
+                                new DevCardRequirementEntry(Green.getInstance(), 0, 1)
                 )), 2),
                 /* 50 */
-                new DiscountLeader(1, Shield.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Blue.getInstance(), 0),
-                                entry(Purple.getInstance(), 0)
-                        ), 1)
+                new DiscountLeader(1, Shield.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Blue.getInstance(), 0, 1),
+                                new DevCardRequirementEntry(Purple.getInstance(), 0, 1)
                 )), 2),
                 /* 51 */
-                new DiscountLeader(1, Stone.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Green.getInstance(), 0),
-                                entry(Blue.getInstance(), 0)
-                        ), 1)
+                new DiscountLeader(1, Stone.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Green.getInstance(), 0, 1),
+                                new DevCardRequirementEntry(Blue.getInstance(), 0, 1)
                 )), 2),
                 /* 52 */
-                new DiscountLeader(1, Coin.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Yellow.getInstance(), 0),
-                                entry(Purple.getInstance(), 0)
-                        ), 1)
+                new DiscountLeader(1, Coin.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Yellow.getInstance(), 0, 1),
+                                new DevCardRequirementEntry(Purple.getInstance(), 0, 1)
                 )), 2),
                 /* 53 */
                 new DepotLeader(2, Stone.getInstance(), new ResourceRequirement(Map.ofEntries(
@@ -789,40 +784,28 @@ public class JavaGameFactory implements GameFactory {
                         entry(Shield.getInstance(), 5)
                 )), 3),
                 /* 57 */
-                new ZeroLeader(Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Yellow.getInstance(), 0)
-                        ), 2),
-                        entry(Map.ofEntries(
-                                entry(Blue.getInstance(), 0)
-                        ), 1)
+                new ZeroLeader(Servant.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Yellow.getInstance(), 0, 2),
+                                new DevCardRequirementEntry(Blue.getInstance(), 0, 1)
                 )), 5),
                 /* 58 */
-                new ZeroLeader(Shield.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Green.getInstance(), 0)
-                        ), 2),
-                        entry(Map.ofEntries(
-                                entry(Purple.getInstance(), 0)
-                        ), 1)
+                new ZeroLeader(Shield.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Green.getInstance(), 0, 2),
+                                new DevCardRequirementEntry(Purple.getInstance(), 0, 1)
                 )), 5),
                 /* 59 */
-                new ZeroLeader(Stone.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Blue.getInstance(), 0)
-                        ), 2),
-                        entry(Map.ofEntries(
-                                entry(Yellow.getInstance(), 0)
-                        ), 1)
+                new ZeroLeader(Stone.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Blue.getInstance(), 0, 2),
+                                new DevCardRequirementEntry(Yellow.getInstance(), 0, 1)
                 )), 5),
                 /* 60 */
-                new ZeroLeader(Coin.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Purple.getInstance(), 0)
-                        ), 2),
-                        entry(Map.ofEntries(
-                                entry(Green.getInstance(), 0)
-                        ), 1)
+                new ZeroLeader(Coin.getInstance(), new DevCardRequirement(
+                        List.of(
+                                new DevCardRequirementEntry(Purple.getInstance(), 0, 2),
+                                new DevCardRequirementEntry(Green.getInstance(), 0, 1)
                 )), 5),
                 /* 61 */
                 new ProductionLeader(
@@ -833,10 +816,9 @@ public class JavaGameFactory implements GameFactory {
                                 Map.ofEntries(
                                         entry(Faith.getInstance(), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Yellow.getInstance(), 2)
-                        ), 1)
+                        Servant.getInstance(), new DevCardRequirement(
+                                List.of(
+                                new DevCardRequirementEntry(Yellow.getInstance(), 2, 1)
                 )), 4),
                 /* 62 */
                 new ProductionLeader(
@@ -847,10 +829,9 @@ public class JavaGameFactory implements GameFactory {
                                 Map.ofEntries(
                                         entry(Faith.getInstance(), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Blue.getInstance(), 2)
-                        ), 1)
+                        Servant.getInstance(), new DevCardRequirement(
+                                List.of(
+                                        new DevCardRequirementEntry(Blue.getInstance(), 2, 1)
                 )), 4),
                 /* 63 */
                 new ProductionLeader(
@@ -861,10 +842,9 @@ public class JavaGameFactory implements GameFactory {
                                 Map.ofEntries(
                                         entry(Faith.getInstance(), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Purple.getInstance(), 2)
-                        ), 1)
+                        Servant.getInstance(), new DevCardRequirement(
+                                List.of(
+                                new DevCardRequirementEntry(Purple.getInstance(), 2, 1)
                 )), 4),
                 /* 64 */
                 new ProductionLeader(
@@ -875,10 +855,9 @@ public class JavaGameFactory implements GameFactory {
                                 Map.ofEntries(
                                         entry(Faith.getInstance(), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(Map.ofEntries(
-                        entry(Map.ofEntries(
-                                entry(Green.getInstance(), 2)
-                        ), 1)
+                        Servant.getInstance(), new DevCardRequirement(
+                                List.of(
+                                new DevCardRequirementEntry(Green.getInstance(), 2, 1)
                 )), 4)
         );
     }

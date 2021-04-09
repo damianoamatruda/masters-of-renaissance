@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 
 // TODO: Add Javadoc
-class DevCardRequirementEntry {
+public class DevCardRequirementEntry {
     public final DevCardColor color;
     public final int level;
     public int amount = 0;
