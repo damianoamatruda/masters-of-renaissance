@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaGameFactory;
-import it.polimi.ingsw.model.devcardcolors.Blue;
-import it.polimi.ingsw.model.devcardcolors.Green;
-import it.polimi.ingsw.model.devcardcolors.Purple;
-import it.polimi.ingsw.model.devcardcolors.Yellow;
+import it.polimi.ingsw.model.devcardcolors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameTest {
-
+    DevCardColorFactory devCardColorFactory;
     Game game;
 
     /**
@@ -27,6 +25,7 @@ public class GameTest {
      */
     @BeforeAll
     public void setup() {
+        devCardColorFactory = new JavaDevCardColorFactory();
         game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
     }
 
@@ -52,10 +51,10 @@ public class GameTest {
     @ValueSource(ints = {1,2,3})
     @Disabled("Only works with card set from the original game")
     void devGridTest(int level){
-        assertAll(() -> assertEquals(4, game.devCardGrid.grid.get(Blue.getInstance()).get(level).size()),
-                () -> assertEquals(4, game.devCardGrid.grid.get(Green.getInstance()).get(level).size()),
-                () -> assertEquals(4, game.devCardGrid.grid.get(Purple.getInstance()).get(level).size()),
-                () -> assertEquals(4, game.devCardGrid.grid.get(Yellow.getInstance()).get(level).size()));
+        assertAll(() -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Blue")).get(level).size()),
+                () -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Green")).get(level).size()),
+                () -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Purple")).get(level).size()),
+                () -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Yellow")).get(level).size()));
     }
 
     /**

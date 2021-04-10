@@ -5,14 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
 
+import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
+import it.polimi.ingsw.model.devcardcolors.DevCardColor;
+import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.model.devcardcolors.Blue;
 import it.polimi.ingsw.model.resourcetypes.*;
 
 /**
@@ -20,17 +22,19 @@ import it.polimi.ingsw.model.resourcetypes.*;
  */
 public class DevelopmentCardTest {
     private ResourceTypeFactory resTypeFactory;
+    private DevCardColorFactory devCardColorFactory;
     
     // TODO: Add Javadoc
     @BeforeEach
     void setup() {
         resTypeFactory = new JavaResourceTypeFactory();
+        devCardColorFactory = new JavaDevCardColorFactory();
     }
     
     // TODO: Add Javadoc
     @Test
     void takeFromPlayer() {
-        DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
+        DevelopmentCard card = new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
             new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), null, 0);
 
         Player player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
@@ -43,7 +47,7 @@ public class DevelopmentCardTest {
     // TODO: Add Javadoc
     @Test
     void takeFromPlayerNotEnoughRes() {
-        DevelopmentCard card = new DevelopmentCard(Blue.getInstance(), 1,
+        DevelopmentCard card = new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
             new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), null, 0);
 
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);

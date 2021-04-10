@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
 import it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo;
 import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
-import it.polimi.ingsw.model.devcardcolors.Blue;
-import it.polimi.ingsw.model.devcardcolors.Green;
-import it.polimi.ingsw.model.devcardcolors.Purple;
-import it.polimi.ingsw.model.devcardcolors.Yellow;
+import it.polimi.ingsw.model.devcardcolors.*;
 import it.polimi.ingsw.model.leadercards.*;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
@@ -26,6 +23,9 @@ import static java.util.Map.entry;
 public class JavaGameFactory implements GameFactory {
     /** The factory of resource types. */
     private final ResourceTypeFactory resTypeFactory;
+
+    /** The factory of development card colors. */
+    private final DevCardColorFactory devCardColorFactory;
     
     /** Maximum number of players that can connect to the same game instance. */
     private final int maxPlayersCount = 4;
@@ -35,6 +35,7 @@ public class JavaGameFactory implements GameFactory {
     
     public JavaGameFactory() {
         resTypeFactory = new JavaResourceTypeFactory();
+        devCardColorFactory = new JavaDevCardColorFactory();
     }
 
     /**
@@ -136,7 +137,7 @@ public class JavaGameFactory implements GameFactory {
         return List.of(
                 /* 1 */
                 new DevelopmentCard(
-                        Green.getInstance(), 1,
+                        devCardColorFactory.get("Green"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 2))),
                         new Production(
@@ -147,7 +148,7 @@ public class JavaGameFactory implements GameFactory {
                         1),
                 /* 2 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 1,
+                        devCardColorFactory.get("Purple"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 2))),
                         new Production(
@@ -158,7 +159,7 @@ public class JavaGameFactory implements GameFactory {
                         1),
                 /* 3 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 1,
+                        devCardColorFactory.get("Blue"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 2))),
                         new Production(
@@ -169,7 +170,7 @@ public class JavaGameFactory implements GameFactory {
                         1),
                 /* 4 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 1,
+                        devCardColorFactory.get("Yellow"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 2))),
                         new Production(
@@ -180,7 +181,7 @@ public class JavaGameFactory implements GameFactory {
                         1),
                 /* 5 */
                 new DevelopmentCard(
-                        Green.getInstance(), 1,
+                        devCardColorFactory.get("Green"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 1),
                                 entry(resTypeFactory.get("Servant"), 1),
@@ -193,7 +194,7 @@ public class JavaGameFactory implements GameFactory {
                         2),
                 /* 6 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 1,
+                        devCardColorFactory.get("Purple"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 1),
                                 entry(resTypeFactory.get("Servant"), 1),
@@ -206,7 +207,7 @@ public class JavaGameFactory implements GameFactory {
                         2),
                 /* 7 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 1,
+                        devCardColorFactory.get("Blue"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 1),
                                 entry(resTypeFactory.get("Servant"), 1),
@@ -219,7 +220,7 @@ public class JavaGameFactory implements GameFactory {
                         2),
                 /* 8 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 1,
+                        devCardColorFactory.get("Yellow"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 1),
                                 entry(resTypeFactory.get("Stone"), 1),
@@ -232,7 +233,7 @@ public class JavaGameFactory implements GameFactory {
                         2),
                 /* 9 */
                 new DevelopmentCard(
-                        Green.getInstance(), 1,
+                        devCardColorFactory.get("Green"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 3))),
                         new Production(
@@ -245,7 +246,7 @@ public class JavaGameFactory implements GameFactory {
                         3),
                 /* 10 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 1,
+                        devCardColorFactory.get("Purple"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 3))),
                         new Production(
@@ -258,7 +259,7 @@ public class JavaGameFactory implements GameFactory {
                         3),
                 /* 11 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 1,
+                        devCardColorFactory.get("Blue"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 3))),
                         new Production(
@@ -271,7 +272,7 @@ public class JavaGameFactory implements GameFactory {
                         3),
                 /* 12 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 1,
+                        devCardColorFactory.get("Yellow"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 3))),
                         new Production(
@@ -284,7 +285,7 @@ public class JavaGameFactory implements GameFactory {
                         3),
                 /* 13 */
                 new DevelopmentCard(
-                        Green.getInstance(), 1,
+                        devCardColorFactory.get("Green"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 2),
                                 entry(resTypeFactory.get("Coin"), 2))),
@@ -298,7 +299,7 @@ public class JavaGameFactory implements GameFactory {
                         4),
                 /* 14 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 1,
+                        devCardColorFactory.get("Purple"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 2),
                                 entry(resTypeFactory.get("Stone"), 2))),
@@ -312,7 +313,7 @@ public class JavaGameFactory implements GameFactory {
                         4),
                 /* 15 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 1,
+                        devCardColorFactory.get("Blue"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 2),
                                 entry(resTypeFactory.get("Servant"), 2))),
@@ -326,7 +327,7 @@ public class JavaGameFactory implements GameFactory {
                         4),
                 /* 16 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 1,
+                        devCardColorFactory.get("Yellow"), 1,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 2),
                                 entry(resTypeFactory.get("Shield"), 2))),
@@ -340,7 +341,7 @@ public class JavaGameFactory implements GameFactory {
                         4),
                 /* 17 */
                 new DevelopmentCard(
-                        Green.getInstance(), 2,
+                        devCardColorFactory.get("Green"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 4))),
                         new Production(
@@ -351,7 +352,7 @@ public class JavaGameFactory implements GameFactory {
                         5),
                 /* 18 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 2,
+                        devCardColorFactory.get("Purple"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 4))),
                         new Production(
@@ -362,7 +363,7 @@ public class JavaGameFactory implements GameFactory {
                         5),
                 /* 19 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 2,
+                        devCardColorFactory.get("Blue"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 4))),
                         new Production(
@@ -373,7 +374,7 @@ public class JavaGameFactory implements GameFactory {
                         5),
                 /* 20 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 2,
+                        devCardColorFactory.get("Yellow"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 4))),
                         new Production(
@@ -384,7 +385,7 @@ public class JavaGameFactory implements GameFactory {
                         5),
                 /* 21 */
                 new DevelopmentCard(
-                        Green.getInstance(), 2,
+                        devCardColorFactory.get("Green"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 3),
                                 entry(resTypeFactory.get("Servant"), 2))),
@@ -397,7 +398,7 @@ public class JavaGameFactory implements GameFactory {
                         6),
                 /* 22 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 2,
+                        devCardColorFactory.get("Purple"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 3),
                                 entry(resTypeFactory.get("Coin"), 2))),
@@ -410,7 +411,7 @@ public class JavaGameFactory implements GameFactory {
                         6),
                 /* 23 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 2,
+                        devCardColorFactory.get("Blue"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 3),
                                 entry(resTypeFactory.get("Stone"), 2))),
@@ -423,7 +424,7 @@ public class JavaGameFactory implements GameFactory {
                         6),
                 /* 24 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 2,
+                        devCardColorFactory.get("Yellow"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 3),
                                 entry(resTypeFactory.get("Shield"), 2))),
@@ -436,7 +437,7 @@ public class JavaGameFactory implements GameFactory {
                         6),
                 /* 25 */
                 new DevelopmentCard(
-                        Green.getInstance(), 2,
+                        devCardColorFactory.get("Green"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 5))),
                         new Production(
@@ -448,7 +449,7 @@ public class JavaGameFactory implements GameFactory {
                         7),
                 /* 26 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 2,
+                        devCardColorFactory.get("Purple"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 5))),
                         new Production(
@@ -460,7 +461,7 @@ public class JavaGameFactory implements GameFactory {
                         7),
                 /* 27 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 2,
+                        devCardColorFactory.get("Blue"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 5))),
                         new Production(
@@ -472,7 +473,7 @@ public class JavaGameFactory implements GameFactory {
                         7),
                 /* 28 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 2,
+                        devCardColorFactory.get("Yellow"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 5))),
                         new Production(
@@ -484,7 +485,7 @@ public class JavaGameFactory implements GameFactory {
                         7),
                 /* 29 */
                 new DevelopmentCard(
-                        Green.getInstance(), 2,
+                        devCardColorFactory.get("Green"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 3),
                                 entry(resTypeFactory.get("Coin"), 3))),
@@ -497,7 +498,7 @@ public class JavaGameFactory implements GameFactory {
                         8),
                 /* 30 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 2,
+                        devCardColorFactory.get("Purple"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 3),
                                 entry(resTypeFactory.get("Shield"), 3))),
@@ -510,7 +511,7 @@ public class JavaGameFactory implements GameFactory {
                         8),
                 /* 31 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 2,
+                        devCardColorFactory.get("Blue"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 3),
                                 entry(resTypeFactory.get("Stone"), 3))),
@@ -523,7 +524,7 @@ public class JavaGameFactory implements GameFactory {
                         8),
                 /* 32 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 2,
+                        devCardColorFactory.get("Yellow"), 2,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 3),
                                 entry(resTypeFactory.get("Servant"), 3))),
@@ -536,7 +537,7 @@ public class JavaGameFactory implements GameFactory {
                         8),
                 /* 33 */
                 new DevelopmentCard(
-                        Green.getInstance(), 3,
+                        devCardColorFactory.get("Green"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 6))),
                         new Production(
@@ -548,7 +549,7 @@ public class JavaGameFactory implements GameFactory {
                         9),
                 /* 34 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 3,
+                        devCardColorFactory.get("Purple"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 6))),
                         new Production(
@@ -560,7 +561,7 @@ public class JavaGameFactory implements GameFactory {
                         9),
                 /* 35 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 3,
+                        devCardColorFactory.get("Blue"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 6))),
                         new Production(
@@ -572,7 +573,7 @@ public class JavaGameFactory implements GameFactory {
                         9),
                 /* 36 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 3,
+                        devCardColorFactory.get("Yellow"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 6))),
                         new Production(
@@ -584,7 +585,7 @@ public class JavaGameFactory implements GameFactory {
                         9),
                 /* 37 */
                 new DevelopmentCard(
-                        Green.getInstance(), 3,
+                        devCardColorFactory.get("Green"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 5),
                                 entry(resTypeFactory.get("Servant"), 2))),
@@ -599,7 +600,7 @@ public class JavaGameFactory implements GameFactory {
                         10),
                 /* 38 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 3,
+                        devCardColorFactory.get("Purple"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 5),
                                 entry(resTypeFactory.get("Coin"), 2))),
@@ -614,7 +615,7 @@ public class JavaGameFactory implements GameFactory {
                         10),
                 /* 39 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 3,
+                        devCardColorFactory.get("Blue"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 5),
                                 entry(resTypeFactory.get("Stone"), 2))),
@@ -629,7 +630,7 @@ public class JavaGameFactory implements GameFactory {
                         10),
                 /* 40 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 3,
+                        devCardColorFactory.get("Yellow"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 5),
                                 entry(resTypeFactory.get("Servant"), 2))),
@@ -644,7 +645,7 @@ public class JavaGameFactory implements GameFactory {
                         10),
                 /* 41 */
                 new DevelopmentCard(
-                        Green.getInstance(), 3,
+                        devCardColorFactory.get("Green"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 7))),
                         new Production(
@@ -656,7 +657,7 @@ public class JavaGameFactory implements GameFactory {
                         11),
                 /* 42 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 3,
+                        devCardColorFactory.get("Purple"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 7))),
                         new Production(
@@ -668,7 +669,7 @@ public class JavaGameFactory implements GameFactory {
                         11),
                 /* 43 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 3,
+                        devCardColorFactory.get("Blue"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 7))),
                         new Production(
@@ -680,7 +681,7 @@ public class JavaGameFactory implements GameFactory {
                         11),
                 /* 44 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 3,
+                        devCardColorFactory.get("Yellow"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 7))),
                         new Production(
@@ -692,7 +693,7 @@ public class JavaGameFactory implements GameFactory {
                         11),
                 /* 45 */
                 new DevelopmentCard(
-                        Green.getInstance(), 3,
+                        devCardColorFactory.get("Green"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Shield"), 4),
                                 entry(resTypeFactory.get("Coin"), 4))),
@@ -705,7 +706,7 @@ public class JavaGameFactory implements GameFactory {
                         12),
                 /* 46 */
                 new DevelopmentCard(
-                        Purple.getInstance(), 3,
+                        devCardColorFactory.get("Purple"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Servant"), 4),
                                 entry(resTypeFactory.get("Shield"), 4))),
@@ -718,7 +719,7 @@ public class JavaGameFactory implements GameFactory {
                         12),
                 /* 47 */
                 new DevelopmentCard(
-                        Blue.getInstance(), 3,
+                        devCardColorFactory.get("Blue"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Coin"), 4),
                                 entry(resTypeFactory.get("Stone"), 4))),
@@ -731,7 +732,7 @@ public class JavaGameFactory implements GameFactory {
                         12),
                 /* 48 */
                 new DevelopmentCard(
-                        Yellow.getInstance(), 3,
+                        devCardColorFactory.get("Yellow"), 3,
                         new ResourceRequirement(Map.ofEntries(
                                 entry(resTypeFactory.get("Stone"), 4),
                                 entry(resTypeFactory.get("Servant"), 4))),
@@ -755,26 +756,26 @@ public class JavaGameFactory implements GameFactory {
                 /* 49 */
                 new DiscountLeader(1, resTypeFactory.get("Servant"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Yellow.getInstance(), 0, 1),
-                                new DevCardRequirement.Entry(Green.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 1),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 1)
                 )), 2),
                 /* 50 */
                 new DiscountLeader(1, resTypeFactory.get("Shield"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Blue.getInstance(), 0, 1),
-                                new DevCardRequirement.Entry(Purple.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 1),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 1)
                 )), 2),
                 /* 51 */
                 new DiscountLeader(1, resTypeFactory.get("Stone"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Green.getInstance(), 0, 1),
-                                new DevCardRequirement.Entry(Blue.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 1),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 1)
                 )), 2),
                 /* 52 */
                 new DiscountLeader(1, resTypeFactory.get("Coin"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Yellow.getInstance(), 0, 1),
-                                new DevCardRequirement.Entry(Purple.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 1),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 1)
                 )), 2),
                 /* 53 */
                 new DepotLeader(2, resTypeFactory.get("Stone"), new ResourceRequirement(Map.ofEntries(
@@ -795,26 +796,26 @@ public class JavaGameFactory implements GameFactory {
                 /* 57 */
                 new ZeroLeader(resTypeFactory.get("Servant"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Yellow.getInstance(), 0, 2),
-                                new DevCardRequirement.Entry(Blue.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 2),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 1)
                 )), 5),
                 /* 58 */
                 new ZeroLeader(resTypeFactory.get("Shield"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Green.getInstance(), 0, 2),
-                                new DevCardRequirement.Entry(Purple.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 2),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 1)
                 )), 5),
                 /* 59 */
                 new ZeroLeader(resTypeFactory.get("Stone"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Blue.getInstance(), 0, 2),
-                                new DevCardRequirement.Entry(Yellow.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 2),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 1)
                 )), 5),
                 /* 60 */
                 new ZeroLeader(resTypeFactory.get("Coin"), new DevCardRequirement(
                         List.of(
-                                new DevCardRequirement.Entry(Purple.getInstance(), 0, 2),
-                                new DevCardRequirement.Entry(Green.getInstance(), 0, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 2),
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 1)
                 )), 5),
                 /* 61 */
                 new ProductionLeader(
@@ -827,7 +828,7 @@ public class JavaGameFactory implements GameFactory {
                                 1),
                         resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
-                                new DevCardRequirement.Entry(Yellow.getInstance(), 2, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 2, 1)
                 )), 4),
                 /* 62 */
                 new ProductionLeader(
@@ -840,7 +841,7 @@ public class JavaGameFactory implements GameFactory {
                                 1),
                         resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
-                                        new DevCardRequirement.Entry(Blue.getInstance(), 2, 1)
+                                        new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 2, 1)
                 )), 4),
                 /* 63 */
                 new ProductionLeader(
@@ -853,7 +854,7 @@ public class JavaGameFactory implements GameFactory {
                                 1),
                         resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
-                                new DevCardRequirement.Entry(Purple.getInstance(), 2, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 2, 1)
                 )), 4),
                 /* 64 */
                 new ProductionLeader(
@@ -866,7 +867,7 @@ public class JavaGameFactory implements GameFactory {
                                 1),
                         resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
-                                new DevCardRequirement.Entry(Green.getInstance(), 2, 1)
+                                new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 2, 1)
                 )), 4)
         );
     }
@@ -928,10 +929,10 @@ public class JavaGameFactory implements GameFactory {
                 new ActionTokenBlackMoveTwo(),
                 new ActionTokenBlackMoveTwo(),
                 new ActionTokenBlackMoveOneShuffle(),
-                new ActionTokenDiscardTwo(Blue.getInstance()),
-                new ActionTokenDiscardTwo(Green.getInstance()),
-                new ActionTokenDiscardTwo(Purple.getInstance()),
-                new ActionTokenDiscardTwo(Yellow.getInstance())
+                new ActionTokenDiscardTwo(devCardColorFactory.get("Blue")),
+                new ActionTokenDiscardTwo(devCardColorFactory.get("Green")),
+                new ActionTokenDiscardTwo(devCardColorFactory.get("Purple")),
+                new ActionTokenDiscardTwo(devCardColorFactory.get("Yellow"))
         );
     }
 }

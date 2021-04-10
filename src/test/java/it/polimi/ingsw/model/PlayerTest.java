@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
-import it.polimi.ingsw.model.devcardcolors.Blue;
+import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.*;
 import org.junit.jupiter.api.*;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PlayerTest {
     ResourceTypeFactory resTypeFactory;
+    DevCardColorFactory devCardColorFactory;
     Game game;
     Player player;
 
@@ -32,6 +34,7 @@ public class PlayerTest {
     @BeforeAll
     void setup() {
         resTypeFactory = new JavaResourceTypeFactory();
+        devCardColorFactory = new JavaDevCardColorFactory();
         game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         player = game.getPlayers().get(0);
     }
@@ -105,7 +108,7 @@ public class PlayerTest {
 
                 resTypeFactory.get("Shield").addIntoContainer(player.getWarehouse().getShelves().get(0));
 
-                player.addToDevSlot(game, 1, new DevelopmentCard(Blue.getInstance(), 1,
+                player.addToDevSlot(game, 1, new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
                                 new ResourceRequirement(
                                         new HashMap<>() {{
                                             put(resTypeFactory.get("Coin"), 3);

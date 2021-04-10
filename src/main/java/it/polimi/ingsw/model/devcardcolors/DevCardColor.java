@@ -1,11 +1,27 @@
 package it.polimi.ingsw.model.devcardcolors;
 
 /**
- * Interface that represents a generic development card color
+ * This class represents a generic development card color.
  */
-public abstract class DevCardColor {
+public class DevCardColor {
+    /** The name of the color. */
+    private final String name;
+
     /**
-     * @return  a name that will be displayed by the view, based on the concrete color
+     * Constructor of the development card color.
+     *
+     * @param name  the name of the development card color
      */
-    abstract String getName();
+    public DevCardColor(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Returns the name of the development card color.
+     *
+     * @return  the name of the resource associated with the class, for UI purposes only
+     */
+    public String getName() {
+        return name;
+    }
 }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.actiontokens;
 
 import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.devcardcolors.Blue;
+import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ class ActionTokenDiscardTwoTest {
     // TODO: Add Javadoc
     @Test
     void trigger() {
-        ActionToken token = new ActionTokenDiscardTwo(new Blue());
+        ActionToken token = new ActionTokenDiscardTwo(new DevCardColor(""));
         List<List<Stack<DevelopmentCard>>> devCards = new ArrayList<>();
     }
 }
