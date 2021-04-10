@@ -242,9 +242,9 @@ public class Player {
 
         devCard.takeFromPlayer(game, this, resContainers);
 
-        slot.push(devCard);
-
         game.onAddToDevSlot(this, this.devSlots.stream().mapToInt(stack -> stack.size()).sum());
+        
+        slot.push(devCard);
     }
 
     /**
