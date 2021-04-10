@@ -12,14 +12,14 @@ import it.polimi.ingsw.model.devcardcolors.DevCardColor;
  */
 public class DevCardRequirement implements CardRequirement {
     /** The development cards required to activate the leader card. */
-    private final List<Entry> entryList;
+    private final Set<Entry> entryList;
 
     /**
      * Class constructor.
      *
      * @param requirements the development cards that form the requirement.
      */
-    public DevCardRequirement(List<Entry> requirements) {
+    public DevCardRequirement(Set<Entry> requirements) {
         entryList = requirements;
     }
 
