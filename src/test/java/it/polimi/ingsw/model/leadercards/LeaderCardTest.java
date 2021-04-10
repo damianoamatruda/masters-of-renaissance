@@ -108,6 +108,6 @@ public class LeaderCardTest {
 
         Map<ResourceType, Integer> res = Map.of(resTypeFactory.get("Zero"), 1);
 
-        assertTrue(res.equals(leader.processZeros(new HashMap<>(res), null)));
+        assertTrue(res.equals(leader.replaceMarketResources(resTypeFactory.get("Zero"), new HashMap<>(res), null)));
     }
 }

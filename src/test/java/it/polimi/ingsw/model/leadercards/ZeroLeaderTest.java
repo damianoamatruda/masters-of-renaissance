@@ -33,7 +33,7 @@ public class ZeroLeaderTest {
 
         try { leader.activate(p); } catch (Exception e) { }
 
-        assertNull(leader.processZeros(null, null));
+        assertNull(leader.replaceMarketResources(null, null, null));
     }
 
     // TODO: Add Javadoc
@@ -44,7 +44,7 @@ public class ZeroLeaderTest {
 
         try { leader.activate(p); } catch (Exception e) { }
 
-        assertTrue(new HashMap<>().equals(leader.processZeros(new HashMap<>(), new HashMap<>())));
+        assertTrue(new HashMap<>().equals(leader.replaceMarketResources(resTypeFactory.get("Zero"), new HashMap<>(), new HashMap<>())));
     }
 
     /**
@@ -60,11 +60,11 @@ public class ZeroLeaderTest {
         Map<ResourceType, Integer>  toProcess = Map.of(resTypeFactory.get("Coin"), 1),  // nothing to convert (no Zero res)
                                     zeros = Map.of(resTypeFactory.get("Zero"), 1);      // and choice != this leader (different bound res)
         
-        assertTrue(leader.processZeros(toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
+        assertTrue(leader.replaceMarketResources(resTypeFactory.get("Zero"), toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
         assertTrue(zeros.equals(Map.of(resTypeFactory.get("Zero"), 1)));
 
         zeros = Map.of(resTypeFactory.get("Coin"), 1);                                  // choose this leader (res ok), still nothing to convert from
-        assertTrue(leader.processZeros(toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
+        assertTrue(leader.replaceMarketResources(resTypeFactory.get("Zero"), toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
         assertTrue(zeros.equals(Map.of(resTypeFactory.get("Coin"), 1)));                // same results, processing changes nothing
     }
 
@@ -79,7 +79,7 @@ public class ZeroLeaderTest {
         Map<ResourceType, Integer>  toProcess = Map.of(resTypeFactory.get("Zero"), 1),
                                     zeros = new HashMap<>(Map.of(resTypeFactory.get("Coin"), 1));
 
-        assertTrue(leader.processZeros(toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
+        assertTrue(leader.replaceMarketResources(resTypeFactory.get("Zero"), toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
         assertTrue(zeros.equals(new HashMap<>()));
     }
 }

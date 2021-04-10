@@ -36,7 +36,8 @@ public class MarketTest {
                         resTypeFactory.get("Faith"), 1,
                         resTypeFactory.get("Servant"), 2,
                         resTypeFactory.get("Shield"), 3),
-        3);
+                3,
+                resTypeFactory.get("Zero"));
 
         assertEquals(3, market.getColsCount());
         assertEquals(2, market.getRowsCount()); /* 6 / 3 */
@@ -54,7 +55,8 @@ public class MarketTest {
                         resTypeFactory.get("Shield"), 2,
                         resTypeFactory.get("Stone"), 3,
                         resTypeFactory.get("Zero"), 4),
-                4);
+                4,
+                resTypeFactory.get("Zero"));
 
         assertEquals(4, market.getColsCount());
         assertEquals(3, market.getRowsCount()); /* 12 / 4 */
@@ -72,7 +74,8 @@ public class MarketTest {
                         resTypeFactory.get("Shield"), 2,
                         resTypeFactory.get("Stone"), 3,
                         resTypeFactory.get("Zero"), 4),
-                4);
+                4,
+                resTypeFactory.get("Zero"));
 
         //assertEquals(4, market.getColsCount());
         //assertEquals(3, market.getRowsCount()); /* 12 / 4 */

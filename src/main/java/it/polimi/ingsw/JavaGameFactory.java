@@ -76,7 +76,7 @@ public class JavaGameFactory implements GameFactory {
         return new Game(
                 players,
                 new DevCardGrid(generateDevCards(), 3, 4),
-                new Market(generateMarketResources(), 4),
+                new Market(generateMarketResources(), 4, resTypeFactory.get("Zero")),
                 new FaithTrack(generateVaticanSections(), generateYellowTiles()), 24,
                 7
         );
@@ -105,7 +105,7 @@ public class JavaGameFactory implements GameFactory {
         return new SoloGame(
                 player,
                 new DevCardGrid(generateDevCards(), 3, 4),
-                new Market(generateMarketResources(), 4),
+                new Market(generateMarketResources(), 4, resTypeFactory.get("Zero")),
                 new FaithTrack(generateVaticanSections(), generateYellowTiles()), generateActionTokens(), 24,
                 7);
     }
