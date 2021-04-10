@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class SoloGame extends Game {
      */
     public SoloGame(Player player, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
                     List<ActionToken> actionTokens, int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(List.of(player), devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
+        super(new ArrayList<>(){{add(player);}}, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
         this.actionTokens = actionTokens;
         blackPoints = 0;
         blackWinner = false;
@@ -59,8 +60,7 @@ public class SoloGame extends Game {
      */
     @Override
     public boolean hasEnded() {
-        // TODO: Don't access protected attributes
-        if(blackPoints == maxFaithPointsCount || devCardGrid.grid.size() < devCardGrid.getColorsCount()){
+        if(blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()){
             setBlackWinner();
             return true;
         }

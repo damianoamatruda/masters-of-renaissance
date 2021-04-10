@@ -128,6 +128,16 @@ public class JavaGameFactory implements GameFactory {
         return playerLeadersCount;
     }
 
+    //TODO Javadoc
+    public ResourceTypeFactory getResTypeFactory() {
+        return resTypeFactory;
+    }
+
+    //TODO Javadoc
+    public DevCardColorFactory getDevCardColorFactory() {
+        return devCardColorFactory;
+    }
+
     /**
      * Returns a list of all possible development cards.
      *

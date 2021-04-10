@@ -71,6 +71,23 @@ public class DevCardGrid {
     }
 
     /**
+     * Calculates how many different colors are available for purchase
+     * @return  number of different colors that are still available for purchase
+     */
+    public int numOfAvailableColors() {
+        return grid.size();
+    }
+
+    /**
+     * Getter of the deck corresponding the given color and level.
+     *
+     * @return the deck corresponding the given color and level
+     */
+    public Stack<DevelopmentCard> getDeck(DevCardColor color, int level) {
+        return grid.get(color).get(level);
+    }
+
+    /**
      * Retrieves the top card of each deck (the cards that can be bought during this turn).
      *
      * @return  the top card of each deck
@@ -80,6 +97,7 @@ public class DevCardGrid {
         for(DevCardColor color : grid.keySet()){
             top.add(grid.get(color)
                     .stream()
+                    .filter(deck -> deck != null)
                     .map(deck -> deck.peek())
                     .collect(Collectors.toList()));
         }
@@ -120,10 +138,13 @@ public class DevCardGrid {
      * @param quantity  the number of cards to be discarded
      */
     public void discardDevCards(DevCardColor color, int quantity) {
-        // TODO: Re-implement (this is an endless loop)
         int level = 1;
+        while(getDeck(color,level).size() == 0) level++;
         while(quantity > 0 && level <= 3) {
-            DevelopmentCard card = grid.get(color).get(level).pop();
+            DevelopmentCard card = getDeck(color,level).pop();
+            if(getDeck(color,level).size() == 0) level++;
+            quantity--;
         }
+        if(quantity > 0) grid.remove(color);
     }
 }

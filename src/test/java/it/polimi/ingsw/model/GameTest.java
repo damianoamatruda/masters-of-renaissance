@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameTest {
     DevCardColorFactory devCardColorFactory;
     Game game;
+    List<Player> initialOrder;
+
 
     /**
      * First instantiation of Game with 3 players.
@@ -27,6 +29,7 @@ public class GameTest {
     public void setup() {
         devCardColorFactory = new JavaDevCardColorFactory();
         game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        initialOrder = game.getPlayers();
     }
 
     /**
@@ -41,45 +44,10 @@ public class GameTest {
     }
 
     /**
-     * Checks correct instantiation of devGrid with original rules.
-     *
-     * @param level level of the cards to test
-     */
-    // TODO: Make new class 'DevCardGridTest' with tests like this
-    // TODO: Don't access protected attributes
-    @ParameterizedTest
-    @ValueSource(ints = {1,2,3})
-    @Disabled("Only works with card set from the original game")
-    void devGridTest(int level){
-        assertAll(() -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Blue")).get(level).size()),
-                () -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Green")).get(level).size()),
-                () -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Purple")).get(level).size()),
-                () -> assertEquals(4, game.devCardGrid.grid.get(devCardColorFactory.get("Yellow")).get(level).size()));
-    }
-
-    /**
-     * Basic test on peek of what cards can be purchased during the current turn.
-     */
-    @Disabled("Not yet implemented.") // TODO
-    @Test
-    void peekCardsTest() {
-
-    }
-
-    /**
-     * Basic test on development card purchase.
-     */
-    @Disabled("Not yet implemented.") // TODO
-    @Test
-    void buyCardTest() {
-
-    }
-
-    /**
      * Checks that first advance does not give any points.
      */
     @Test
-    void firstadvanceNoPts() {
+    void firstAdvanceNoPts() {
         game.getPlayers().get(0).incrementFaithPoints(game);
         assertEquals(0, game.getPlayers().get(0).getVictoryPoints());
     }
@@ -223,12 +191,11 @@ public class GameTest {
          * Ensures that the previously executed methods in advancePlayers() have not had any side effects on the order
          * of the players.
          */
-        @Test
-        @Disabled("Random 1st player is yet to be handled") // TODO
+        @RepeatedTest(value = 10)
         void arePlayersStillInSameOrder() {
-            assertAll(()->assertEquals(game.getPlayers().get(0).getNickname(),"Alessandro"),
-                    ()->assertEquals(game.getPlayers().get(1).getNickname(),"Damiano"),
-                    ()->assertEquals(game.getPlayers().get(2).getNickname(),"Marco"));
+            assertAll(()->assertEquals(game.getPlayers().get(0).getNickname(), initialOrder.get(0).getNickname()),
+                    ()->assertEquals(game.getPlayers().get(1).getNickname(),initialOrder.get(1).getNickname()),
+                    ()->assertEquals(game.getPlayers().get(2).getNickname(),initialOrder.get(2).getNickname()));
         }
         /**
          * Ensures that the previously executed methods in advancePlayers() have not had any side effects on the number
@@ -348,31 +315,31 @@ public class GameTest {
          * Checks the functioning of player switch with one (out of three) inactive player.
          */
         @Test
-        @Disabled("Random 1st player is yet to be handled") // TODO
         void onTurnEndWithOneInactivePlayer() {
+            String next = game.getPlayers().get(2).getNickname();
             game.getPlayers().get(1).setActive(false);
-            assertEquals("Marco", game.onTurnEnd().getNickname());
+            assertEquals(next, game.onTurnEnd().getNickname());
         }
 
         /**
          * Checks the functioning of player switch with two (out of three) inactive players.
          */
         @Test
-        @Disabled("Random 1st player is yet to be handled") // TODO
         void onTurnEndWithTwoInactivePlayers() {
             game.getPlayers().get(0).setActive(false);
             game.getPlayers().get(1).setActive(false);
+            String next = game.getPlayers().get(2).getNickname();
             Player nowPlaying;
             nowPlaying = game.onTurnEnd();
             nowPlaying = game.onTurnEnd();
             nowPlaying = game.onTurnEnd();
-            assertEquals("Marco", nowPlaying.getNickname());
+            assertEquals(next, nowPlaying.getNickname());
         }
 
         /**
          * Checks the Game behavior if current player disconnects before ending their own turn.
          */
-        @Test
+        @Test   //TODO
         @Disabled("Yet to be handled when current player disconnects")
         void currentPlayerDisconnects() {
             game.getPlayers().get(0).setActive(false);
@@ -382,7 +349,7 @@ public class GameTest {
         /**
          * Checks the Game behavior if all players disconnect.
          */
-        @Test
+        @Test   //TODO
         @Disabled("Yet to be handled")
         void onTurnEndWithAllInactivePlayers() {
 

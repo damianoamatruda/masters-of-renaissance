@@ -13,12 +13,15 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
+    JavaGameFactory factory = new JavaGameFactory();
     ResourceTypeFactory resTypeFactory;
     SoloGame game;
     Player player;
+    FaithTrack track = new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles());
 
     /**
      * The setup: instantiation of game and the single player.
@@ -26,11 +29,11 @@ public class SoloGameTest {
     @BeforeEach
     void setup() {
         resTypeFactory = new JavaResourceTypeFactory();
-        player = new Player("Alessandro", true, List.of(
-                new DepotLeader(2, resTypeFactory.get("Coin"),null,0),
-                new DepotLeader(2, resTypeFactory.get("Coin"),null,0)
-        ), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 0, 0);
+        player = new Player("Alessandro", true, new ArrayList<>(){{
+            add(new DepotLeader(2, resTypeFactory.get("Coin"),null,0));
+            add(new DepotLeader(2, resTypeFactory.get("Coin"),null,0));
+        }}, new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
+        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
 
     }
     /*
@@ -39,13 +42,9 @@ public class SoloGameTest {
     @Disabled("To be fixed") // TODO
     @Test
     void blackPointsGetterTest() {
-        List<ActionToken> stack = new ArrayList<>();
-        stack.add(new ActionTokenBlackMoveOneShuffle());
-        stack.add(new ActionTokenBlackMoveOneShuffle());
-        stack.add(new ActionTokenBlackMoveOneShuffle());
-        stack.add(new ActionTokenBlackMoveOneShuffle());
         Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), stack, 0, 0);
+        List<ActionToken> stack = new ArrayList<>();
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), stack, 24, 7);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 
@@ -69,9 +68,9 @@ public class SoloGameTest {
 //        void setup() {
 //            player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
 //                    new Production(Map.of(), 0, Map.of(), 0), 3);
-//            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 0, 0);
+//            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
 //
-//            for(int i = 0; i < Collections.min(game.getVaticanSections().keySet())-1; i++)
+//            for(int i = 0; i < Collections.min(track.getVaticanSections().keySet())-1; i++)
 //                player.incrementFaithPoints(game);
 //            for(int i = 0; i < Collections.min(game.getVaticanSections().keySet()); i++)
 //                game.incrementBlackPoints();
@@ -92,7 +91,6 @@ public class SoloGameTest {
 //        /**
 //         * Ensures that if Lorenzo arrives first the player has lost.
 //         */
-//        @Disabled("To fix") // TODO
 //        @Test
 //        void losingGame() {
 //            assumeTrue(Collections.min(game.getVaticanSections().keySet()) - game.getVaticanSections().get(Collections.min(game.getVaticanSections().keySet()))[0] >= 1);
@@ -110,7 +108,6 @@ public class SoloGameTest {
     /**
      * Test for onTurnEnd method.
      */
-    @Disabled("To be fixed") // TODO
     @Test
     void onTurnEnd() {
         player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
@@ -118,7 +115,7 @@ public class SoloGameTest {
         game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), new ArrayList<>() {{
             for(int i = 0; i < 4; i++)
                 add(new ActionTokenBlackMoveTwo());
-        }}, 0, 0);
+        }}, 24, 7);
 
         assertEquals(player, game.onTurnEnd());
 
@@ -127,7 +124,6 @@ public class SoloGameTest {
     /**
      * Test for discardDevCards method.
      */
-    @Disabled("To be fixed") // TODO
     @Test
     void discardDevCards() {
         try {
@@ -136,6 +132,7 @@ public class SoloGameTest {
             assertEquals(2,player.getFaithPoints());
         }
         catch (Exception e){
+            e.printStackTrace();
             fail("Exception has been thrown");
         }
     }
