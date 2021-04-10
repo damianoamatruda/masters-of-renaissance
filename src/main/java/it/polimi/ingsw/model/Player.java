@@ -240,7 +240,7 @@ public class Player {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new Exception();
 
-        devCard.getCost().take(game, this, resContainers);
+        devCard.takeFromPlayer(game, this, resContainers);
 
         slot.push(devCard);
 
