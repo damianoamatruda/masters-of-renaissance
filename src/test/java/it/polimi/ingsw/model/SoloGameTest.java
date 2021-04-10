@@ -1,16 +1,15 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.JavaGameFactory;
+import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
 import it.polimi.ingsw.model.leadercards.DepotLeader;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
-import it.polimi.ingsw.model.resourcetypes.Coin;
+import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
 import org.junit.jupiter.api.*;
-//import org.junit.jupiter.params.ParameterizedTest;
-//import org.junit.jupiter.params.provider.ValueSource;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,34 +17,33 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
+    JavaGameFactory factory = new JavaGameFactory();
+    ResourceTypeFactory resTypeFactory;
     SoloGame game;
     Player player;
+    FaithTrack track = new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles());
 
     /**
      * The setup: instantiation of game and the single player.
      */
     @BeforeEach
     void setup() {
-        player = new Player("Alessandro", true, List.of(
-                new DepotLeader(2, Coin.getInstance(),null,0),
-                new DepotLeader(2, Coin.getInstance(),null,0)
-        ), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 3);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), null, 0, 0);
+        resTypeFactory = new JavaResourceTypeFactory();
+        player = new Player("Alessandro", true, new ArrayList<>(){{
+            add(new DepotLeader(2, resTypeFactory.get("Coin"),null,0));
+            add(new DepotLeader(2, resTypeFactory.get("Coin"),null,0));
+        }}, new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
+        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
 
     }
-    /*
+    /**
      * Tests if black has been incremented properly and if getter of blackPoints returns the correct value.
      */
-    @Disabled("To be fixed") // TODO
     @Test
     void blackPointsGetterTest() {
+        Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         List<ActionToken> stack = new ArrayList<>();
-        stack.add(new ActionTokenBlackMoveOneShuffle());
-        stack.add(new ActionTokenBlackMoveOneShuffle());
-        stack.add(new ActionTokenBlackMoveOneShuffle());
-        stack.add(new ActionTokenBlackMoveOneShuffle());
-        Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production<>(Map.of(), 0, Map.of(), 0), 0);
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), stack, 0, 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), stack, 24, 7);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 
@@ -59,6 +57,9 @@ public class SoloGameTest {
     class FaithTrackTest{
         SoloGame game;
         Player player;
+        OptionalInt firstVaticanReportTile;
+        OptionalInt lastVaticanReportTile;
+        OptionalInt firstVaticanSectionTile;
 
         /**
          * The setup: instantiation and advances till first Vatican report:
@@ -68,12 +69,25 @@ public class SoloGameTest {
         @BeforeEach
         void setup() {
             player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                    new Production<>(Map.of(), 0, Map.of(), 0), 3);
-            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), null, 0, 0);
+                    new Production(Map.of(), 0, Map.of(), 0), 3);
+            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
 
-            for(int i = 0; i < Collections.min(game.getVaticanSections().keySet())-1; i++)
+            firstVaticanReportTile = track.getVaticanSections()
+                    .stream()
+                    .mapToInt(FaithTrack.VaticanSection::getFaithPointsEnd)
+                    .min();
+            lastVaticanReportTile = track.getVaticanSections()
+                    .stream()
+                    .mapToInt(FaithTrack.VaticanSection::getFaithPointsEnd)
+                    .max();
+            firstVaticanSectionTile = track.getVaticanSections()
+                    .stream()
+                    .mapToInt(FaithTrack.VaticanSection::getFaithPointsBeginning)
+                    .min();
+
+            for(int i = 0; i < firstVaticanReportTile.getAsInt()-1; i++)
                 player.incrementFaithPoints(game);
-            for(int i = 0; i < Collections.min(game.getVaticanSections().keySet()); i++)
+            for(int i = 0; i < firstVaticanReportTile.getAsInt(); i++)
                 game.incrementBlackPoints();
         }
 
@@ -82,9 +96,9 @@ public class SoloGameTest {
          */
         @Test
         void FirstSoloReport() {
-            assumeTrue(Collections.min(game.getVaticanSections().keySet()) - game.getVaticanSections().get(Collections.min(game.getVaticanSections().keySet()))[0] >= 1);
+            assumeTrue(firstVaticanReportTile.getAsInt() - firstVaticanSectionTile.getAsInt() >= 1);
 
-            int result = game.getVaticanSections().get(game.getBlackPoints())[1];
+            int result = track.getVaticanSectionReport(game.getBlackPoints()).getVictoryPoints();
 
             assertEquals(result, player.getVictoryPoints());
         }
@@ -92,12 +106,12 @@ public class SoloGameTest {
         /**
          * Ensures that if Lorenzo arrives first the player has lost.
          */
-        @Disabled("To fix") // TODO
         @Test
         void losingGame() {
-            assumeTrue(Collections.min(game.getVaticanSections().keySet()) - game.getVaticanSections().get(Collections.min(game.getVaticanSections().keySet()))[0] >= 1);
 
-            for(int i = 0; i < Collections.max(game.getVaticanSections().keySet()) - Collections.min(game.getVaticanSections().keySet()); i++)
+            assumeTrue(firstVaticanReportTile.getAsInt() - firstVaticanSectionTile.getAsInt() >= 1);
+
+            for(int i = 0; i < lastVaticanReportTile.getAsInt() - firstVaticanReportTile.getAsInt(); i++)
                 game.incrementBlackPoints();
             game.hasEnded();
             assertAll(()->assertEquals(2, player.getVictoryPoints()),
@@ -110,15 +124,14 @@ public class SoloGameTest {
     /**
      * Test for onTurnEnd method.
      */
-    @Disabled("To be fixed") // TODO
     @Test
     void onTurnEnd() {
         player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                new Production<>(Map.of(), 0, Map.of(), 0), 3);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles(), new ArrayList<>() {{
+                new Production(Map.of(), 0, Map.of(), 0), 3);
+        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), new ArrayList<>() {{
             for(int i = 0; i < 4; i++)
                 add(new ActionTokenBlackMoveTwo());
-        }}, 0, 0);
+        }}, 24, 7);
 
         assertEquals(player, game.onTurnEnd());
 
@@ -127,7 +140,6 @@ public class SoloGameTest {
     /**
      * Test for discardDevCards method.
      */
-    @Disabled("To be fixed") // TODO
     @Test
     void discardDevCards() {
         try {
@@ -136,6 +148,7 @@ public class SoloGameTest {
             assertEquals(2,player.getFaithPoints());
         }
         catch (Exception e){
+            e.printStackTrace();
             fail("Exception has been thrown");
         }
     }

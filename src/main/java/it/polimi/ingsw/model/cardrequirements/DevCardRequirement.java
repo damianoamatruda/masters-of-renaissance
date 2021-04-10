@@ -1,7 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.cardrequirements;
 
 import java.util.*;
 
+import it.polimi.ingsw.model.DevelopmentCard;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 
 /**
@@ -10,24 +12,15 @@ import it.polimi.ingsw.model.devcardcolors.DevCardColor;
  */
 public class DevCardRequirement implements CardRequirement {
     /** The development cards required to activate the leader card. */
-    private final List<DevCardRequirementEntry> entryList;
+    private final Set<Entry> entryList;
 
     /**
      * Class constructor.
      *
      * @param requirements the development cards that form the requirement.
      */
-    public DevCardRequirement(Map<Map<DevCardColor, Integer>, Integer> requirements) {
-        entryList = buildRequirements(requirements);
-    }
-
-    // TODO: Add Javadoc
-    private List<DevCardRequirementEntry> buildRequirements(Map<Map<DevCardColor, Integer>, Integer> reqs) {
-        List<DevCardRequirementEntry> entries = new ArrayList<>();
-
-        reqs.forEach((map, amount) -> map.forEach((color, level) -> entries.add(new DevCardRequirementEntry(color, level, amount))));
-        
-        return entries;
+    public DevCardRequirement(Set<Entry> requirements) {
+        entryList = requirements;
     }
 
     @Override
@@ -37,18 +30,18 @@ public class DevCardRequirement implements CardRequirement {
         for (int i = 0; i < player.getDevSlots().size(); i++)
             playerCards.addAll(player.getDevSlots().get(i));
         
-        List<DevCardRequirementEntry>   playerState = new ArrayList<>(),
+        List<Entry>   playerState = new ArrayList<>(),
                                         reqCopy = new ArrayList<>(entryList);
 
         playerCards.forEach(card -> {
-            int index = playerState.indexOf(new DevCardRequirementEntry(card.getColor(), card.getLevel()));
+            int index = playerState.indexOf(new Entry(card.getColor(), card.getLevel()));
             // if not present add a new entry
-            if (index < 0) playerState.add(new DevCardRequirementEntry(card.getColor(), card.getLevel(), 1));
+            if (index < 0) playerState.add(new Entry(card.getColor(), card.getLevel(), 1));
             // else increment the amount available
             else  playerState.add(index, playerState.get(index).setAmount(playerState.get(index).amount + 1));
         });
 
-        for (DevCardRequirementEntry entry : reqCopy) {
+        for (Entry entry : reqCopy) {
             int index = playerState.indexOf(entry);
             if (index < 0) throw new Exception(); // entry not found in player's cards -> requirements not satisfied
 
@@ -60,29 +53,29 @@ public class DevCardRequirement implements CardRequirement {
     }
 
     // TODO: Add Javadoc
-    private class DevCardRequirementEntry {
+    public static class Entry {
         public final DevCardColor color;
         public final int level;
         public int amount = 0;
 
         // TODO: Add Javadoc
-        DevCardRequirementEntry(DevCardColor color, int level) {
+        public Entry(DevCardColor color, int level) {
             this.color = color; this.level = level;
         }
         // TODO: Add Javadoc
-        DevCardRequirementEntry(DevCardColor color, int level, int amount) {
-            this.color = color; this.level = level; this.amount = amount; 
+        public Entry(DevCardColor color, int level, int amount) {
+            this.color = color; this.level = level; this.amount = amount;
         }
 
         // TODO: Add Javadoc
-        public DevCardRequirementEntry setAmount(int newAmount) { amount = newAmount; return this; }
-    
+        public Entry setAmount(int newAmount) { amount = newAmount; return this; }
+
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof DevCardRequirementEntry)) return false;
-    
-            return  ((DevCardRequirementEntry)o).color == this.color &&
-                    (((DevCardRequirementEntry)o).level == 0 || this.level == 0 || ((DevCardRequirementEntry)o).level == this.level);
+            if (!(o instanceof Entry)) return false;
+
+            return  ((Entry)o).color == this.color &&
+                    (((Entry)o).level == 0 || this.level == 0 || ((Entry)o).level == this.level);
         }
     }
 }

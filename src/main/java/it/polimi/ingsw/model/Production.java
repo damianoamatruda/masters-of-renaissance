@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * This class represents a production, that is a transaction of transfers of resources from and to resource containers
  * and a player.
  */
-public class Production<T1 extends ResourceContainer, T2 extends ResourceContainer> {
+public class Production {
     /** The map of the input resources. */
     private final Map<ResourceType, Integer> input;
 
@@ -62,12 +62,12 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
      *
      * @param productions   the list of the productions to sum
      */
-    public Production(List<Production<? extends T1, ? extends T2>> productions) {
+    public Production(List<Production> productions) {
         this.input = new HashMap<>();
         int inputBlanks = 0;
         this.output = new HashMap<>();
         int outputBlanks = 0;
-        for (Production<? extends T1, ? extends T2> production : productions) {
+        for (Production production : productions) {
             production.input.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
             inputBlanks += production.inputBlanks;
             production.output.forEach((r, q) -> this.input.merge(r, q, Integer::sum));
@@ -76,60 +76,6 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
         this.inputBlanks = inputBlanks;
         this.outputBlanks = outputBlanks;
         this.discardableOutput = productions.stream().allMatch(production -> production.discardableOutput);
-    }
-
-    /**
-     * Returns the map of the input resources of the production.
-     *
-     * @return  the map of the input resources
-     */
-    public Map<ResourceType, Integer> getInput() {
-        return new HashMap<>(input);
-    }
-
-    /**
-     * Returns the number of the input blanks of the production.
-     *
-     * @return  the number of the input blanks
-     */
-    public int getInputBlanks() {
-        return inputBlanks;
-    }
-
-    /**
-     * Returns the map of the output resources of the production.
-     *
-     * @return  the map of the output resources
-     */
-    public Map<ResourceType, Integer> getOutput() {
-        return new HashMap<>(output);
-    }
-
-    /**
-     * Returns the number of the output blanks of the production.
-     *
-     * @return  the number of the output blanks
-     */
-    public int getOutputBlanks() {
-        return outputBlanks;
-    }
-
-    /**
-     * Returns whether the production has discardable output.
-     *
-     * @return  <code>true</code> if the output can be discarded; <code>false</code> otherwise.
-     */
-    public boolean hasDiscardableOutput() {
-        return discardableOutput;
-    }
-
-    /**
-     * Returns whether the production is empty.
-     *
-     * @return  <code>true</code> if the production has empty input and empty output; <code>false</code> otherwise.
-     */
-    public boolean isEmpty() {
-        return input.isEmpty() && output.isEmpty();
     }
 
     /**
@@ -152,8 +98,8 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     public void activate(Game game, Player player,
                          Map<ResourceType, Integer> inputBlanksRep,
                          Map<ResourceType, Integer> outputBlanksRep,
-                         Map<? extends T1, Map<ResourceType, Integer>> inputContainers,
-                         Map<? extends T2, Map<ResourceType, Integer>> outputContainers) throws Exception {
+                         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
+                         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws Exception {
         Map<ResourceType, Integer> replacedInput = addReplacedBlanks(input, inputBlanks, inputBlanksRep);
         Map<ResourceType, Integer> replacedOutput = addReplacedBlanks(output, outputBlanks, outputBlanksRep);
 
@@ -173,7 +119,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Try removing all input storable resources from cloned resource containers;
            if an exception is thrown, the transfer is not possible */
-        for (T1 resContainer : inputContainers.keySet())
+        for (ResourceContainer resContainer : inputContainers.keySet())
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -184,7 +130,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Try adding all output storable resources into cloned resource containers (with input removed);
            if an exception is thrown, the transfer is not possible */
-        for (T2 resContainer : outputContainers.keySet())
+        for (ResourceContainer resContainer : outputContainers.keySet())
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -196,7 +142,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Remove all input storable resources from real resource containers;
            this should be possible, as it worked with cloned resource containers */
-        for (T1 resContainer : inputContainers.keySet())
+        for (ResourceContainer resContainer : inputContainers.keySet())
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -207,7 +153,7 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
 
         /* Add all output storable resources into real resource containers;
            this should be possible, as it worked with cloned resource containers */
-        for (T2 resContainer : outputContainers.keySet())
+        for (ResourceContainer resContainer : outputContainers.keySet())
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
@@ -262,19 +208,19 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
     /**
      * Checks that resource containers are given for respectively all non-storable resources in a given map.
      *
-     * @param mapWithoutBlanks  the map of resources without blanks
-     * @param resContainers     the map of the resource containers to use for all the resources
-     * @return                  <code>true</code> if the resources and the quantities match; <code>false</code> otherwise.
+     * @param resourceMap   the map of resources
+     * @param resContainers the map of the resource containers to use for all the resources
+     * @return              <code>true</code> if the resources and the quantities match; <code>false</code> otherwise.
      */
-    private static boolean checkContainers(Map<ResourceType, Integer> mapWithoutBlanks,
-                                           Map<? extends ResourceContainer, Map<ResourceType, Integer>> resContainers) {
+    private static boolean checkContainers(Map<ResourceType, Integer> resourceMap,
+                                           Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) {
         /* Filter the storable resources */
-        mapWithoutBlanks = mapWithoutBlanks.entrySet().stream()
+        resourceMap = resourceMap.entrySet().stream()
                 .filter(e -> e.getKey().isStorable())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         /* Check that mapWithoutBlanks and resContainers contain the same number of storable resources */
-        int mapWithoutBlanksResourcesCount = mapWithoutBlanks.values().stream().reduce(0, Integer::sum);
+        int mapWithoutBlanksResourcesCount = resourceMap.values().stream().reduce(0, Integer::sum);
         int containersResourcesCount = resContainers.values().stream()
                 .map(m -> m.values().stream().reduce(0, Integer::sum))
                 .reduce(0, Integer::sum);
@@ -282,14 +228,68 @@ public class Production<T1 extends ResourceContainer, T2 extends ResourceContain
             return false;
 
         /* Check that the amount of each storable resource type in mapWithoutBlanks is the same as in resContainers */
-        for (ResourceType resType : mapWithoutBlanks.keySet()) {
+        for (ResourceType resType : resourceMap.keySet()) {
             int containersResourceCount = 0;
             for (ResourceContainer resContainer : resContainers.keySet())
                 containersResourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
-            if (containersResourceCount != mapWithoutBlanks.get(resType))
+            if (containersResourceCount != resourceMap.get(resType))
                 return false;
         }
 
         return true;
+    }
+
+    /**
+     * Returns the map of the input resources of the production.
+     *
+     * @return  the map of the input resources
+     */
+    public Map<ResourceType, Integer> getInput() {
+        return new HashMap<>(input);
+    }
+
+    /**
+     * Returns the number of the input blanks of the production.
+     *
+     * @return  the number of the input blanks
+     */
+    public int getInputBlanks() {
+        return inputBlanks;
+    }
+
+    /**
+     * Returns the map of the output resources of the production.
+     *
+     * @return  the map of the output resources
+     */
+    public Map<ResourceType, Integer> getOutput() {
+        return new HashMap<>(output);
+    }
+
+    /**
+     * Returns the number of the output blanks of the production.
+     *
+     * @return  the number of the output blanks
+     */
+    public int getOutputBlanks() {
+        return outputBlanks;
+    }
+
+    /**
+     * Returns whether the production has discardable output.
+     *
+     * @return  <code>true</code> if the output can be discarded; <code>false</code> otherwise.
+     */
+    public boolean hasDiscardableOutput() {
+        return discardableOutput;
+    }
+
+    /**
+     * Returns whether the production is empty.
+     *
+     * @return  <code>true</code> if the production has empty input and empty output; <code>false</code> otherwise.
+     */
+    public boolean isEmpty() {
+        return input.isEmpty() && output.isEmpty();
     }
 }

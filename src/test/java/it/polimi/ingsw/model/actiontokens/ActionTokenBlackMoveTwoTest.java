@@ -10,7 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of the functionalities of the class "ActionTokenBlackMoveTwo".
  */
 class ActionTokenBlackMoveTwoTest {
-    // TODO: Add Javadoc
+    /**
+     * Ensures Lorenzo's marker has advanced by 2 after triggering the "Advance by 2" token.
+     */
     @Test
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo();

@@ -7,20 +7,35 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 /**
  * Generic resource archetype.
  */
-public abstract class ResourceType {
+public class ResourceType {
+    /** The name of the resource type. */
+    private final String name;
+
+    /** <code>true</code> if the resource can be stored in a resource container; <code>false</code> otherwise. */
+    private final boolean storable;
+
+    public ResourceType(String name, boolean storable) {
+        this.name = name;
+        this.storable = storable;
+    }
+
     /**
      * Returns whether the resource type is storable.
      *
      * @return  whether the resource can be stored in a resource container.
      */
-    public abstract boolean isStorable();
+    public boolean isStorable() {
+        return storable;
+    }
 
     /**
      * Returns the name of the resource type.
      *
      * @return  the name of the resource associated with the class, for UI purposes only
      */
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
     /**
      * Routine for giving a resource of this type to the player. This should be always possible.
@@ -53,7 +68,7 @@ public abstract class ResourceType {
     /**
      * Routine for adding a resource of this type into a resource container.
      *
-     * @param resContainer  the storage in which the resource is deposited, if applicable
+     * @param resContainer     the storage in which the resource is deposited, if applicable
      * @throws Exception    if it is not possible
      */
     public void addIntoContainer(ResourceContainer resContainer) throws Exception {
@@ -63,7 +78,7 @@ public abstract class ResourceType {
     /**
      * Routine for removing a resource of this type from a resource container.
      *
-     * @param resContainer  the storage from which the resource is removed, if applicable
+     * @param resContainer     the storage from which the resource is removed, if applicable
      * @throws Exception    if it is not possible
      */
     public void removeFromContainer(ResourceContainer resContainer) throws Exception {

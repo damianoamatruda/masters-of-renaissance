@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaGameFactory;
-import it.polimi.ingsw.model.devcardcolors.Blue;
+import it.polimi.ingsw.JavaResourceTypeFactory;
+import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
+import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.*;
 import org.junit.jupiter.api.*;
@@ -20,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PlayerTest {
+    ResourceTypeFactory resTypeFactory;
+    DevCardColorFactory devCardColorFactory;
     Game game;
     Player player;
 
@@ -28,7 +33,9 @@ public class PlayerTest {
      */
     @BeforeAll
     void setup() {
-        game = game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        resTypeFactory = new JavaResourceTypeFactory();
+        devCardColorFactory = new JavaDevCardColorFactory();
+        game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         player = game.getPlayers().get(0);
     }
 
@@ -39,10 +46,10 @@ public class PlayerTest {
     void getNumOfResourcesTestStrongboxOnly() {
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().addIntoContainer(player.getStrongbox());
+                resTypeFactory.get("Coin").addIntoContainer(player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().addIntoContainer(player.getStrongbox());
-            Shield.getInstance().addIntoContainer(player.getStrongbox());
+                resTypeFactory.get("Servant").addIntoContainer(player.getStrongbox());
+            resTypeFactory.get("Shield").addIntoContainer(player.getStrongbox());
             assertEquals(12, player.getResourcesCount());
         }
         catch (Exception e){
@@ -57,13 +64,13 @@ public class PlayerTest {
     void getNumOfResourcesTestAnyStorage() {
         try {
             for(int i = 0; i < 4; i++)
-                Coin.getInstance().addIntoContainer(player.getStrongbox());
+                resTypeFactory.get("Coin").addIntoContainer(player.getStrongbox());
             for(int i = 0; i < 7; i++)
-                Servant.getInstance().addIntoContainer(player.getStrongbox());
+                resTypeFactory.get("Servant").addIntoContainer(player.getStrongbox());
             for(int i = 0; i < 2; i++)
-                Stone.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(1));
+                resTypeFactory.get("Stone").addIntoContainer(player.getWarehouse().getShelves().get(1));
 
-            Shield.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(0));
+            resTypeFactory.get("Shield").addIntoContainer(player.getWarehouse().getShelves().get(0));
             assertEquals(14, player.getResourcesCount());
         }
         catch (Exception e){
@@ -85,27 +92,27 @@ public class PlayerTest {
         void prepareResources() {
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
                 put(player.getStrongbox(), new HashMap<>() {{
-                    put(Coin.getInstance(), 3);
+                    put(resTypeFactory.get("Coin"), 3);
                 }});
                 put(player.getWarehouse().getShelves().get(1), new HashMap<>() {{
-                    put(Stone.getInstance(), 2);
+                    put(resTypeFactory.get("Stone"), 2);
                 }});
             }};
             try {
                 for (int i = 0; i < 4; i++)
-                    Coin.getInstance().addIntoContainer(player.getStrongbox());
+                    resTypeFactory.get("Coin").addIntoContainer(player.getStrongbox());
                 for (int i = 0; i < 7; i++)
-                    Servant.getInstance().addIntoContainer(player.getStrongbox());
+                    resTypeFactory.get("Servant").addIntoContainer(player.getStrongbox());
                 for (int i = 0; i < 2; i++)
-                    Stone.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(1));
+                    resTypeFactory.get("Stone").addIntoContainer(player.getWarehouse().getShelves().get(1));
 
-                Shield.getInstance().addIntoContainer(player.getWarehouse().getShelves().get(0));
+                resTypeFactory.get("Shield").addIntoContainer(player.getWarehouse().getShelves().get(0));
 
-                player.addToDevSlot(game, 1, new DevelopmentCard(Blue.getInstance(), 1,
+                player.addToDevSlot(game, 1, new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
                                 new ResourceRequirement(
                                         new HashMap<>() {{
-                                            put(Coin.getInstance(), 3);
-                                            put(Stone.getInstance(), 2);
+                                            put(resTypeFactory.get("Coin"), 3);
+                                            put(resTypeFactory.get("Stone"), 2);
                                         }}), null, 2),
                         resContainers);
 
@@ -120,21 +127,21 @@ public class PlayerTest {
          */
         @Test
         void addToDevSlotStrongboxCoins() {
-            assertEquals(1, player.getStrongbox().getResourceQuantity(Coin.getInstance()));
+            assertEquals(1, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Coin")));
         }
         /**
          * Checks amount of servants left.
          */
         @Test
         void addToDevSlotStrongboxServants() {
-            assertEquals(7, player.getStrongbox().getResourceQuantity(Servant.getInstance()));
+            assertEquals(7, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Servant")));
         }
         /**
          * Checks amount of stones left.
          */
         @Test
         void addToDevSlotWarehouseShelfStones() {
-            assertEquals(0, player.getWarehouse().getShelves().get(0).getResourceQuantity(Stone.getInstance()));
+            assertEquals(0, player.getWarehouse().getShelves().get(0).getResourceQuantity(resTypeFactory.get("Stone")));
         }
          /**
           * Checks value of card obtained.
