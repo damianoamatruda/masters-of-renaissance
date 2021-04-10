@@ -24,16 +24,14 @@ public class SoloGame extends Game {
      * @param player                      the nickname of the player who joined
      * @param devCardGrid                   the development card grid
      * @param market                        the resource market
-     * @param vaticanSections               the map of the vatican sections
-     * @param yellowTiles                   the map of the faith tiles which will give bonus points at the end
+     * @param faithTrack                    the faith track
      * @param actionTokens                  the stack of tokens, of which the top token is activated after each turn
      * @param maxFaithPointsCount           the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards         the number of development cards a player can have, before triggering the end of the game
      */
-    public SoloGame(Player player, DevCardGrid devCardGrid, Market market, Map<Integer, Integer[]> vaticanSections,
-                    Map<Integer, Integer> yellowTiles, List<ActionToken> actionTokens,
-                    int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(List.of(player), devCardGrid, market, vaticanSections, yellowTiles, maxFaithPointsCount, maxObtainableDevCards);
+    public SoloGame(Player player, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
+                    List<ActionToken> actionTokens, int maxFaithPointsCount, int maxObtainableDevCards) {
+        super(List.of(player), devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
         this.actionTokens = actionTokens;
         blackPoints = 0;
         blackWinner = false;

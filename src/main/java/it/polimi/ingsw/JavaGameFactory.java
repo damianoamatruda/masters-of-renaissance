@@ -16,10 +16,7 @@ import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Map.entry;
 
@@ -72,7 +69,7 @@ public class JavaGameFactory implements GameFactory {
                 players,
                 new DevCardGrid(generateDevCards(), 3, 4),
                 new Market(generateMarketResources(), 4),
-                generateVaticanSections(), generateYellowTiles(), 24,
+                new FaithTrack(generateVaticanSections(), generateYellowTiles()), 24,
                 7
         );
     }
@@ -101,7 +98,7 @@ public class JavaGameFactory implements GameFactory {
                 player,
                 new DevCardGrid(generateDevCards(), 3, 4),
                 new Market(generateMarketResources(), 4),
-                generateVaticanSections(), generateYellowTiles(), generateActionTokens(), 24,
+                new FaithTrack(generateVaticanSections(), generateYellowTiles()), generateActionTokens(), 24,
                 7);
     }
 
@@ -884,33 +881,33 @@ public class JavaGameFactory implements GameFactory {
     }
 
     /**
-     * Returns a map of the vatican sections.
+     * Returns a set of the vatican sections.
      *
-     * @return  map of the vatican sections
+     * @return  set of the vatican sections
      */
-    public Map<Integer, Integer[]> generateVaticanSections() {
-        return Map.ofEntries(
-                entry(8, new Integer[]{5, 2}),
-                entry(16, new Integer[]{12, 3}),
-                entry(24, new Integer[]{19, 4})
+    public Set<FaithTrack.VaticanSection> generateVaticanSections() {
+        return Set.of(
+                new FaithTrack.VaticanSection(5, 8, 2),
+                new FaithTrack.VaticanSection(12, 16, 3),
+                new FaithTrack.VaticanSection(19, 24, 4)
         );
     }
 
     /**
-     * Returns a map of the yellow tiles.
+     * Returns a set of the yellow tiles.
      *
-     * @return  map of the yellow tiles
+     * @return  set of the yellow tiles
      */
-    public Map<Integer, Integer> generateYellowTiles() {
-        return Map.ofEntries(
-                entry(3, 1),
-                entry(6, 2),
-                entry(9, 4),
-                entry(12,6),
-                entry(15,9),
-                entry(18,12),
-                entry(21,16),
-                entry(24,20)
+    public Set<FaithTrack.YellowTile> generateYellowTiles() {
+        return Set.of(
+                new FaithTrack.YellowTile(3, 1),
+                new FaithTrack.YellowTile(6, 2),
+                new FaithTrack.YellowTile(9, 4),
+                new FaithTrack.YellowTile(12, 6),
+                new FaithTrack.YellowTile(15, 9),
+                new FaithTrack.YellowTile(18, 12),
+                new FaithTrack.YellowTile(21, 16),
+                new FaithTrack.YellowTile(24, 20)
         );
     }
 

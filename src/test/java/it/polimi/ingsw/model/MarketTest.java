@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.resourcetypes.*;
 import it.polimi.ingsw.model.resourcecontainers.Shelf;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,7 +69,7 @@ public class MarketTest {
         //assertEquals(3, market.getRowsCount()); /* 12 / 4 */
 
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
-        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new HashMap<>(), new HashMap<>(), 0, 0);
+        Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         Map<ResourceType, Shelf> shelves = Map.of(
                 Coin.getInstance(), new Shelf(12),
