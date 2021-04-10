@@ -36,10 +36,9 @@ public class SoloGameTest {
         game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
 
     }
-    /*
+    /**
      * Tests if black has been incremented properly and if getter of blackPoints returns the correct value.
      */
-    @Disabled("To be fixed") // TODO
     @Test
     void blackPointsGetterTest() {
         Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
@@ -51,59 +50,76 @@ public class SoloGameTest {
         assertEquals(2,solo.getBlackPoints());
     }
 
-//    /**
-//     * Faith track related tests.
-//     */
-//    @Nested
-//    class FaithTrackTest{
-//        SoloGame game;
-//        Player player;
-//
-//        /**
-//         * The setup: instantiation and advances till first Vatican report:
-//         * Player: one tile before first vatican report
-//         * Lorenzo: first vatican report tile
-//         */
-//        @BeforeEach
-//        void setup() {
-//            player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-//                    new Production(Map.of(), 0, Map.of(), 0), 3);
-//            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
-//
-//            for(int i = 0; i < Collections.min(track.getVaticanSections().keySet())-1; i++)
-//                player.incrementFaithPoints(game);
-//            for(int i = 0; i < Collections.min(game.getVaticanSections().keySet()); i++)
-//                game.incrementBlackPoints();
-//        }
-//
-//        /**
-//         * Ensures the player has earned the first Pope's favor.
-//         */
-//        @Test
-//        void FirstSoloReport() {
-//            assumeTrue(Collections.min(game.getVaticanSections().keySet()) - game.getVaticanSections().get(Collections.min(game.getVaticanSections().keySet()))[0] >= 1);
-//
-//            int result = game.getVaticanSections().get(game.getBlackPoints())[1];
-//
-//            assertEquals(result, player.getVictoryPoints());
-//        }
-//
-//        /**
-//         * Ensures that if Lorenzo arrives first the player has lost.
-//         */
-//        @Test
-//        void losingGame() {
-//            assumeTrue(Collections.min(game.getVaticanSections().keySet()) - game.getVaticanSections().get(Collections.min(game.getVaticanSections().keySet()))[0] >= 1);
-//
-//            for(int i = 0; i < Collections.max(game.getVaticanSections().keySet()) - Collections.min(game.getVaticanSections().keySet()); i++)
-//                game.incrementBlackPoints();
-//            game.hasEnded();
-//            assertAll(()->assertEquals(2, player.getVictoryPoints()),
-//                    ()->assertFalse(player.isWinner()),
-//                    ()->assertTrue(game.isBlackWinner()));
-//        }
-//
-//    }
+    /**
+     * Faith track related tests.
+     */
+    @Nested
+    class FaithTrackTest{
+        SoloGame game;
+        Player player;
+        OptionalInt firstVaticanReportTile;
+        OptionalInt lastVaticanReportTile;
+        OptionalInt firstVaticanSectionTile;
+
+        /**
+         * The setup: instantiation and advances till first Vatican report:
+         * Player: one tile before first vatican report
+         * Lorenzo: first vatican report tile
+         */
+        @BeforeEach
+        void setup() {
+            player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
+                    new Production(Map.of(), 0, Map.of(), 0), 3);
+            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
+
+            firstVaticanReportTile = track.getVaticanSections()
+                    .stream()
+                    .mapToInt(FaithTrack.VaticanSection::getFaithPointsEnd)
+                    .min();
+            lastVaticanReportTile = track.getVaticanSections()
+                    .stream()
+                    .mapToInt(FaithTrack.VaticanSection::getFaithPointsEnd)
+                    .max();
+            firstVaticanSectionTile = track.getVaticanSections()
+                    .stream()
+                    .mapToInt(FaithTrack.VaticanSection::getFaithPointsBeginning)
+                    .min();
+
+            for(int i = 0; i < firstVaticanReportTile.getAsInt()-1; i++)
+                player.incrementFaithPoints(game);
+            for(int i = 0; i < firstVaticanReportTile.getAsInt(); i++)
+                game.incrementBlackPoints();
+        }
+
+        /**
+         * Ensures the player has earned the first Pope's favor.
+         */
+        @Test
+        void FirstSoloReport() {
+            assumeTrue(firstVaticanReportTile.getAsInt() - firstVaticanSectionTile.getAsInt() >= 1);
+
+            int result = track.getVaticanSectionReport(game.getBlackPoints()).getVictoryPoints();
+
+            assertEquals(result, player.getVictoryPoints());
+        }
+
+        /**
+         * Ensures that if Lorenzo arrives first the player has lost.
+         */
+        @Test
+        void losingGame() {
+
+            assumeTrue(firstVaticanReportTile.getAsInt() - firstVaticanSectionTile.getAsInt() >= 1);
+
+            for(int i = 0; i < lastVaticanReportTile.getAsInt() - firstVaticanReportTile.getAsInt(); i++)
+                game.incrementBlackPoints();
+            game.hasEnded();
+            assertAll(()->assertEquals(2, player.getVictoryPoints()),
+                    ()->assertFalse(player.isWinner()),
+                    ()->assertTrue(game.isBlackWinner()));
+        }
+
+    }
 
     /**
      * Test for onTurnEnd method.
