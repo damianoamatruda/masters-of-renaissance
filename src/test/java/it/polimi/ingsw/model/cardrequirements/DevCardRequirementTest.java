@@ -8,8 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
-import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +27,8 @@ public class DevCardRequirementTest {
     }
     
     /**
-     * Tests the requirements' checking when the card's color is different from 
+     * Tests whether the requirement checking process works in a scenario where it should fail
+     * due to the color of the cards the player possesses doesn't correspond to the requirement's.
      */
     @Test
     void checkReqsWrongColor() {
@@ -43,7 +42,10 @@ public class DevCardRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the requirement checking process works in a scenario where it should fail
+     * due to the level of the cards the player possesses doesn't correspond to the requirement's.
+     */
     @Test
     void checkReqsWrongLevel() {
         DevelopmentCard devCard = new DevelopmentCard(devCardColorFactory.get("Green"), 1, new ResourceRequirement(Map.of()), null, 1);
@@ -56,7 +58,10 @@ public class DevCardRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the requirement checking process works in a scenario where it should fail
+     * due to the amount of cards the player possesses being different from the requirement's.
+     */
     @Test
     void checkReqsWrongAmount() {
         DevelopmentCard devCard = new DevelopmentCard(devCardColorFactory.get("Green"), 1, new ResourceRequirement(Map.of()), null, 1);
@@ -69,7 +74,9 @@ public class DevCardRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the requirement checking process works in a scenario where it should be fulfilled.
+     */
     @Test
     void checkRequirements() {
         DevelopmentCard devCard = new DevelopmentCard(devCardColorFactory.get("Green"), 1, new ResourceRequirement(Map.of()), null, 1);

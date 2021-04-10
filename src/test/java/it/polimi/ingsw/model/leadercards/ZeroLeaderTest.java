@@ -25,7 +25,10 @@ public class ZeroLeaderTest {
         resTypeFactory = new JavaResourceTypeFactory();
     }
     
-    // TODO: Add Javadoc
+    /**
+     * Tests a zero leader on a null map.
+     * The result should be another null map.
+     */
     @Test
     void nullMaps() {
         ZeroLeader leader = new ZeroLeader(resTypeFactory.get("Coin"), null, 0);
@@ -36,7 +39,10 @@ public class ZeroLeaderTest {
         assertNull(leader.replaceMarketResources(null, null, null));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests a zero leader on a non-null map that is empty.
+     * The result should be another empty map.
+     */
     @Test
     void emptyMaps() {
         ZeroLeader leader = new ZeroLeader(resTypeFactory.get("Coin"), null, 0);
@@ -49,6 +55,7 @@ public class ZeroLeaderTest {
 
     /**
      * Tests the case in which there's nothing to convert.
+     * The result should be a map with the same values as the input map.
      */
     @Test
     void otherResourceInput() {
@@ -68,7 +75,9 @@ public class ZeroLeaderTest {
         assertTrue(zeros.equals(Map.of(resTypeFactory.get("Coin"), 1)));                // same results, processing changes nothing
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests the zero leader converting resources properly.
+     */
     @Test
     void normalUse() {
         ZeroLeader leader = new ZeroLeader(resTypeFactory.get("Coin"), null, 0);

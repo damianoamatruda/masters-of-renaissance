@@ -27,7 +27,9 @@ public class ResourceRequirementTest {
         resTypeFactory = new JavaResourceTypeFactory();
     }
     
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the checking process for a resource requirement fails if the player's resources don't satisfy it.
+     */
     @Test
     void checkReqsWrongRes() {
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
@@ -38,7 +40,9 @@ public class ResourceRequirementTest {
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the checking process for a resource requirement succeeds if the player's resources satisfy it.
+     */
     @Test
     void checkRequirements() {
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);

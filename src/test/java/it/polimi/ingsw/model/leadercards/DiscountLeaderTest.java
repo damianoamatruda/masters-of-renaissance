@@ -25,17 +25,17 @@ public class DiscountLeaderTest {
      * @return  stream of arguments. The arguments are combinations of parameters.
      */
     private static Stream<Arguments> provideParameters() {
-        List<Arguments> arguments = new ArrayList<>();                  // arguments for each test call
+        List<Arguments> arguments = new ArrayList<>(); // arguments for each test call
 
         ResourceTypeFactory resTypeFactory = new JavaResourceTypeFactory();
 
         Map<ResourceType, Integer> ogZeroCost = new HashMap<>(),
                                    ogNonemptyCost = new HashMap<>();
-        ogZeroCost.put(resTypeFactory.get("Coin"), 0);                          // test against cost set to zero
+        ogZeroCost.put(resTypeFactory.get("Coin"), 0); // test against cost set to zero
         ogNonemptyCost.put(resTypeFactory.get("Coin"), 1);
 
         List<Map<ResourceType, Integer>> ogCosts = Arrays.asList(null, ogZeroCost, ogNonemptyCost); // cost maps to discount
-        List<Integer> discounts = Arrays.asList(-1, 0, 1);                      // discount amounts
+        List<Integer> discounts = Arrays.asList(-1, 0, 1); // discount amounts
 
         // build every possible combination of the above
         discounts.forEach(discount ->
@@ -45,7 +45,13 @@ public class DiscountLeaderTest {
         return arguments.stream();
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the discount process works given a certain cost map.
+     * 
+     * @param resTypeFactory    the factory to produce resources.
+     * @param discount          the discount's amount to be applied.
+     * @param ogCost            the original cost to check the result against.
+     */
     @ParameterizedTest
     @MethodSource("provideParameters")
     void getDevCardCost(ResourceTypeFactory resTypeFactory, int discount, Map<ResourceType, Integer> ogCost) {

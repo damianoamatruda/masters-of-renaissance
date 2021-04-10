@@ -28,25 +28,31 @@ public class LeaderCardTest {
         resTypeFactory = new JavaResourceTypeFactory();
     }
     
-    // TODO: Add Javadoc
+    /**
+     * Tests the fact that a LeaderCard cannot be created without a binding resource.
+     */
     @Test
     void nullResourceCreation() {
-        assertThrows(AssertionError.class, () -> new LeaderCard(null, null, 0));
+        assertThrows(AssertionError.class, () -> new ZeroLeader(null, null, 0));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests the card's activation in case it doesn't have any requirements.
+     */
     @Test
     void activateNoRequirements() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), null, 0);
+        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), null, 0);
 
         assertDoesNotThrow(() -> leader.activate(null));
         assertTrue(leader.isActive());
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests that the card results activated when its requirements are met by the player that owns the card.
+     */
     @Test
     void activateWithRequirements() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         try { p.getStrongbox().addResource(resTypeFactory.get("Coin")); } catch (Exception e) { }
@@ -55,10 +61,12 @@ public class LeaderCardTest {
         assertTrue(leader.isActive());
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests the card's activation in case the player who owns it doesn't meet the resource requirements.
+     */
     @Test
     void activateWrongResources() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         try { p.getStrongbox().addResource(resTypeFactory.get("Shield")); } catch (Exception e) { }
@@ -67,44 +75,54 @@ public class LeaderCardTest {
         assertTrue(!leader.isActive());
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests the card's ability to expose its binding resource.
+     */
     @Test
     void getResource() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         assertEquals(resTypeFactory.get("Coin"), leader.getResource());
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the leader card returns null when asked for its depot.
+     */
     @Test
     void getDepot() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         assertNull(leader.getDepot());
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests the card's ability to expose its cost.
+     */
     @Test
     void getDevCardCost() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Map<ResourceType, Integer> cost = Map.of(resTypeFactory.get("Coin"), 1);
 
         assertTrue(cost.equals(leader.getDevCardCost(new HashMap<>(cost))));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether the leader card returns null when asked for its production.
+     */
     @Test
     void getProduction() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         assertNull(leader.getProduction());
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests the card's ability to be transparent to the replacement of market resources.
+     */
     @Test
-    void processZeros() {
-        LeaderCard leader = new LeaderCard(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+    void replaceMarketResources() {
+        LeaderCard leader = new DepotLeader(0, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Map<ResourceType, Integer> res = Map.of(resTypeFactory.get("Zero"), 1);
 

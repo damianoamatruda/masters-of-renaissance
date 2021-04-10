@@ -27,7 +27,9 @@ public class ProductionLeaderTest {
         resTypeFactory = new JavaResourceTypeFactory();
     }
     
-    // TODO: Add Javadoc
+    /**
+     * Tests a production leader initialized with a null production.
+     */
     @Test
     void nullProduction() {
         ProductionLeader leader = new ProductionLeader(null, resTypeFactory.get("Coin"), null, 0);
@@ -38,7 +40,9 @@ public class ProductionLeaderTest {
         assertNull(leader.getProduction());
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests a production leader initialized with a non-null production.
+     */
     @Test
     void production() {
         Production prod = new Production(null, 0, null, 0);

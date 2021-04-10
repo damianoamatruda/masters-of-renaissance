@@ -8,7 +8,6 @@ import java.util.*;
 import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
@@ -24,14 +23,18 @@ public class DevelopmentCardTest {
     private ResourceTypeFactory resTypeFactory;
     private DevCardColorFactory devCardColorFactory;
     
-    // TODO: Add Javadoc
+    /**
+     * Test setup to be executed before each test.
+     */
     @BeforeEach
     void setup() {
         resTypeFactory = new JavaResourceTypeFactory();
         devCardColorFactory = new JavaDevCardColorFactory();
     }
     
-    // TODO: Add Javadoc
+    /**
+     * Tests whether taking the resources specified in the card's requirements works if the player satisfies them.
+     */
     @Test
     void takeFromPlayer() {
         DevelopmentCard card = new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
@@ -44,7 +47,9 @@ public class DevelopmentCardTest {
         assertDoesNotThrow(() -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(resTypeFactory.get("Coin"), 1))));
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Tests whether taking the resources specified in the card's requirements fails if the player does not have enough of the correct type.
+     */
     @Test
     void takeFromPlayerNotEnoughRes() {
         DevelopmentCard card = new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
