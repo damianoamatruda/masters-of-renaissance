@@ -7,20 +7,35 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 /**
  * Generic resource archetype.
  */
-public abstract class ResourceType {
+public class ResourceType {
+    /** The name of the resource type. */
+    private final String name;
+
+    /** <code>true</code> if the resource can be stored in a resource container; <code>false</code> otherwise. */
+    private final boolean storable;
+
+    public ResourceType(String name, boolean storable) {
+        this.name = name;
+        this.storable = storable;
+    }
+
     /**
      * Returns whether the resource type is storable.
      *
      * @return  whether the resource can be stored in a resource container.
      */
-    public abstract boolean isStorable();
+    public boolean isStorable() {
+        return storable;
+    }
 
     /**
      * Returns the name of the resource type.
      *
      * @return  the name of the resource associated with the class, for UI purposes only
      */
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
     /**
      * Routine for giving a resource of this type to the player. This should be always possible.

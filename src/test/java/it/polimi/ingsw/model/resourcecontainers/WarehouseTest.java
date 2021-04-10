@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.resourcecontainers;
 
+import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.resourcetypes.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for Warehouse and WarehouseShelf classes.
  */
 public class WarehouseTest {
+    private ResourceTypeFactory resTypeFactory;
+
+    @BeforeEach
+    void setup() {
+        resTypeFactory = new JavaResourceTypeFactory();
+    }
+    
     /**
      * Test the size of the shelves.
      */
@@ -28,8 +37,8 @@ public class WarehouseTest {
     @Test
     public void testShelvesContent() {
         Warehouse w = new Warehouse(3);
-        ResourceType c = Coin.getInstance();
-        ResourceType s = Servant.getInstance();
+        ResourceType c = resTypeFactory.get("Coin");
+        ResourceType s = resTypeFactory.get("Servant");
 
         try {
             /* Shelf 1 */

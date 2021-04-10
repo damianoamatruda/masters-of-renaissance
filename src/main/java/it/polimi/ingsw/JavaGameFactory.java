@@ -24,11 +24,18 @@ import static java.util.Map.entry;
  * This class builds games with the original parameters.
  */
 public class JavaGameFactory implements GameFactory {
+    /** The factory of resource types. */
+    private final ResourceTypeFactory resTypeFactory;
+    
     /** Maximum number of players that can connect to the same game instance. */
     private final int maxPlayersCount = 4;
 
     /** Number of distinct leader cards given to each player at the beginning of the game. */
     private final int playerLeadersCount = 4;
+    
+    public JavaGameFactory() {
+        resTypeFactory = new JavaResourceTypeFactory();
+    }
 
     /**
      * Builder of an original multiplayer game.
@@ -131,609 +138,609 @@ public class JavaGameFactory implements GameFactory {
                 new DevelopmentCard(
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 2))),
+                                entry(resTypeFactory.get("Shield"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         1),
                 /* 2 */
                 new DevelopmentCard(
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 2))),
+                                entry(resTypeFactory.get("Servant"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         1),
                 /* 3 */
                 new DevelopmentCard(
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 2))),
+                                entry(resTypeFactory.get("Coin"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         1),
                 /* 4 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 2))),
+                                entry(resTypeFactory.get("Stone"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         1),
                 /* 5 */
                 new DevelopmentCard(
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 1),
-                                entry(Servant.getInstance(), 1),
-                                entry(Stone.getInstance(), 1))),
+                                entry(resTypeFactory.get("Shield"), 1),
+                                entry(resTypeFactory.get("Servant"), 1),
+                                entry(resTypeFactory.get("Stone"), 1))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Servant"), 1)), 0),
                         2),
                 /* 6 */
                 new DevelopmentCard(
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 1),
-                                entry(Servant.getInstance(), 1),
-                                entry(Coin.getInstance(), 1))),
+                                entry(resTypeFactory.get("Shield"), 1),
+                                entry(resTypeFactory.get("Servant"), 1),
+                                entry(resTypeFactory.get("Coin"), 1))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Shield"), 1)), 0),
                         2),
                 /* 7 */
                 new DevelopmentCard(
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 1),
-                                entry(Servant.getInstance(), 1),
-                                entry(Stone.getInstance(), 1))),
+                                entry(resTypeFactory.get("Coin"), 1),
+                                entry(resTypeFactory.get("Servant"), 1),
+                                entry(resTypeFactory.get("Stone"), 1))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Stone"), 1)), 0),
                         2),
                 /* 8 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 1),
-                                entry(Stone.getInstance(), 1),
-                                entry(Coin.getInstance(), 1))),
+                                entry(resTypeFactory.get("Shield"), 1),
+                                entry(resTypeFactory.get("Stone"), 1),
+                                entry(resTypeFactory.get("Coin"), 1))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 1)), 0),
                         2),
                 /* 9 */
                 new DevelopmentCard(
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 3))),
+                                entry(resTypeFactory.get("Shield"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Servant"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Shield.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Shield"), 1),
+                                        entry(resTypeFactory.get("Stone"), 1)), 0),
                         3),
                 /* 10 */
                 new DevelopmentCard(
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 3))),
+                                entry(resTypeFactory.get("Servant"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Coin"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 1),
-                                        entry(Shield.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Servant"), 1),
+                                        entry(resTypeFactory.get("Shield"), 1),
+                                        entry(resTypeFactory.get("Stone"), 1)), 0),
                         3),
                 /* 11 */
                 new DevelopmentCard(
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 3))),
+                                entry(resTypeFactory.get("Coin"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Stone"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1),
+                                        entry(resTypeFactory.get("Stone"), 1)), 0),
                         3),
                 /* 12 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 3))),
+                                entry(resTypeFactory.get("Stone"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Shield"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1),
+                                        entry(resTypeFactory.get("Stone"), 1)), 0),
                         3),
                 /* 13 */
                 new DevelopmentCard(
                         Green.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 2),
-                                entry(Coin.getInstance(), 2))),
+                                entry(resTypeFactory.get("Shield"), 2),
+                                entry(resTypeFactory.get("Coin"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         4),
                 /* 14 */
                 new DevelopmentCard(
                         Purple.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 2),
-                                entry(Stone.getInstance(), 2))),
+                                entry(resTypeFactory.get("Servant"), 2),
+                                entry(resTypeFactory.get("Stone"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Stone"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         4),
                 /* 15 */
                 new DevelopmentCard(
                         Blue.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 2),
-                                entry(Servant.getInstance(), 2))),
+                                entry(resTypeFactory.get("Coin"), 2),
+                                entry(resTypeFactory.get("Servant"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Servant"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         4),
                 /* 16 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 1,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 2),
-                                entry(Shield.getInstance(), 2))),
+                                entry(resTypeFactory.get("Stone"), 2),
+                                entry(resTypeFactory.get("Shield"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Shield"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         4),
                 /* 17 */
                 new DevelopmentCard(
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 4))),
+                                entry(resTypeFactory.get("Shield"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         5),
                 /* 18 */
                 new DevelopmentCard(
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 4))),
+                                entry(resTypeFactory.get("Servant"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         5),
                 /* 19 */
                 new DevelopmentCard(
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 4))),
+                                entry(resTypeFactory.get("Coin"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         5),
                 /* 20 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 4))),
+                                entry(resTypeFactory.get("Stone"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         5),
                 /* 21 */
                 new DevelopmentCard(
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 3),
-                                entry(Servant.getInstance(), 2))),
+                                entry(resTypeFactory.get("Shield"), 3),
+                                entry(resTypeFactory.get("Servant"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Stone"), 3)), 0),
                         6),
                 /* 22 */
                 new DevelopmentCard(
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 3),
-                                entry(Coin.getInstance(), 2))),
+                                entry(resTypeFactory.get("Servant"), 3),
+                                entry(resTypeFactory.get("Coin"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Shield"), 3)), 0),
                         6),
                 /* 23 */
                 new DevelopmentCard(
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 3),
-                                entry(Stone.getInstance(), 2))),
+                                entry(resTypeFactory.get("Coin"), 3),
+                                entry(resTypeFactory.get("Stone"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Servant"), 3)), 0),
                         6),
                 /* 24 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 3),
-                                entry(Shield.getInstance(), 2))),
+                                entry(resTypeFactory.get("Stone"), 3),
+                                entry(resTypeFactory.get("Shield"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1),
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Coin"), 3)), 0),
                         6),
                 /* 25 */
                 new DevelopmentCard(
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 5))),
+                                entry(resTypeFactory.get("Shield"), 5))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Coin"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Stone"), 2),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         7),
                 /* 26 */
                 new DevelopmentCard(
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 5))),
+                                entry(resTypeFactory.get("Servant"), 5))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Coin"), 2),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         7),
                 /* 27 */
                 new DevelopmentCard(
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 5))),
+                                entry(resTypeFactory.get("Coin"), 5))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Servant"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Shield"), 2),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         7),
                 /* 28 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 5))),
+                                entry(resTypeFactory.get("Stone"), 5))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Shield"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Servant"), 2),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         7),
                 /* 29 */
                 new DevelopmentCard(
                         Green.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 3),
-                                entry(Coin.getInstance(), 3))),
+                                entry(resTypeFactory.get("Shield"), 3),
+                                entry(resTypeFactory.get("Coin"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Shield"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         8),
                 /* 30 */
                 new DevelopmentCard(
                         Purple.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 3),
-                                entry(Shield.getInstance(), 3))),
+                                entry(resTypeFactory.get("Servant"), 3),
+                                entry(resTypeFactory.get("Shield"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Servant"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         8),
                 /* 31 */
                 new DevelopmentCard(
                         Blue.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 3),
-                                entry(Stone.getInstance(), 3))),
+                                entry(resTypeFactory.get("Coin"), 3),
+                                entry(resTypeFactory.get("Stone"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Stone"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         8),
                 /* 32 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 2,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 3),
-                                entry(Servant.getInstance(), 3))),
+                                entry(resTypeFactory.get("Stone"), 3),
+                                entry(resTypeFactory.get("Servant"), 3))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         8),
                 /* 33 */
                 new DevelopmentCard(
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 6))),
+                                entry(resTypeFactory.get("Shield"), 6))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Coin"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Stone"), 3),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         9),
                 /* 34 */
                 new DevelopmentCard(
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 6))),
+                                entry(resTypeFactory.get("Servant"), 6))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Stone"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Coin"), 3),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         9),
                 /* 35 */
                 new DevelopmentCard(
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 6))),
+                                entry(resTypeFactory.get("Coin"), 6))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Servant"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Shield"), 3),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         9),
                 /* 36 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 6))),
+                                entry(resTypeFactory.get("Stone"), 6))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 2)),
+                                        entry(resTypeFactory.get("Shield"), 2)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 3),
-                                        entry(Faith.getInstance(), 2)), 0),
+                                        entry(resTypeFactory.get("Servant"), 3),
+                                        entry(resTypeFactory.get("Faith"), 2)), 0),
                         9),
                 /* 37 */
                 new DevelopmentCard(
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 5),
-                                entry(Servant.getInstance(), 2))),
+                                entry(resTypeFactory.get("Shield"), 5),
+                                entry(resTypeFactory.get("Servant"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 2),
-                                        entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Shield"), 2),
+                                        entry(resTypeFactory.get("Stone"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         10),
                 /* 38 */
                 new DevelopmentCard(
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 5),
-                                entry(Coin.getInstance(), 2))),
+                                entry(resTypeFactory.get("Servant"), 5),
+                                entry(resTypeFactory.get("Coin"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1),
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 2),
-                                        entry(Servant.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 2),
+                                        entry(resTypeFactory.get("Servant"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         10),
                 /* 39 */
                 new DevelopmentCard(
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 5),
-                                entry(Stone.getInstance(), 2))),
+                                entry(resTypeFactory.get("Coin"), 5),
+                                entry(resTypeFactory.get("Stone"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 2),
-                                        entry(Stone.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Servant"), 2),
+                                        entry(resTypeFactory.get("Stone"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         10),
                 /* 40 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 5),
-                                entry(Servant.getInstance(), 2))),
+                                entry(resTypeFactory.get("Stone"), 5),
+                                entry(resTypeFactory.get("Servant"), 2))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1),
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 2),
-                                        entry(Shield.getInstance(), 2),
-                                        entry(Faith.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 2),
+                                        entry(resTypeFactory.get("Shield"), 2),
+                                        entry(resTypeFactory.get("Faith"), 1)), 0),
                         10),
                 /* 41 */
                 new DevelopmentCard(
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 7))),
+                                entry(resTypeFactory.get("Shield"), 7))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Faith"), 3)), 0),
                         11),
                 /* 42 */
                 new DevelopmentCard(
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 7))),
+                                entry(resTypeFactory.get("Servant"), 7))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Stone"), 1),
+                                        entry(resTypeFactory.get("Faith"), 3)), 0),
                         11),
                 /* 43 */
                 new DevelopmentCard(
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 7))),
+                                entry(resTypeFactory.get("Coin"), 7))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Shield.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Shield"), 1),
+                                        entry(resTypeFactory.get("Faith"), 3)), 0),
                         11),
                 /* 44 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 7))),
+                                entry(resTypeFactory.get("Stone"), 7))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Servant.getInstance(), 1),
-                                        entry(Faith.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Servant"), 1),
+                                        entry(resTypeFactory.get("Faith"), 3)), 0),
                         11),
                 /* 45 */
                 new DevelopmentCard(
                         Green.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Shield.getInstance(), 4),
-                                entry(Coin.getInstance(), 4))),
+                                entry(resTypeFactory.get("Shield"), 4),
+                                entry(resTypeFactory.get("Coin"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 3),
-                                        entry(Shield.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Coin"), 3),
+                                        entry(resTypeFactory.get("Shield"), 1)), 0),
                         12),
                 /* 46 */
                 new DevelopmentCard(
                         Purple.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Servant.getInstance(), 4),
-                                entry(Shield.getInstance(), 4))),
+                                entry(resTypeFactory.get("Servant"), 4),
+                                entry(resTypeFactory.get("Shield"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 3),
-                                        entry(Servant.getInstance(), 1)), 0),
+                                        entry(resTypeFactory.get("Stone"), 3),
+                                        entry(resTypeFactory.get("Servant"), 1)), 0),
                         12),
                 /* 47 */
                 new DevelopmentCard(
                         Blue.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Coin.getInstance(), 4),
-                                entry(Stone.getInstance(), 4))),
+                                entry(resTypeFactory.get("Coin"), 4),
+                                entry(resTypeFactory.get("Stone"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Coin.getInstance(), 1),
-                                        entry(Shield.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Coin"), 1),
+                                        entry(resTypeFactory.get("Shield"), 3)), 0),
                         12),
                 /* 48 */
                 new DevelopmentCard(
                         Yellow.getInstance(), 3,
                         new ResourceRequirement(Map.ofEntries(
-                                entry(Stone.getInstance(), 4),
-                                entry(Servant.getInstance(), 4))),
+                                entry(resTypeFactory.get("Stone"), 4),
+                                entry(resTypeFactory.get("Servant"), 4))),
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0, Map.ofEntries(
-                                        entry(Stone.getInstance(), 1),
-                                        entry(Servant.getInstance(), 3)), 0),
+                                        entry(resTypeFactory.get("Stone"), 1),
+                                        entry(resTypeFactory.get("Servant"), 3)), 0),
                         12)
         );
     }
@@ -746,65 +753,65 @@ public class JavaGameFactory implements GameFactory {
     public List<LeaderCard> generateLeaderCards() {
         return List.of(
                 /* 49 */
-                new DiscountLeader(1, Servant.getInstance(), new DevCardRequirement(
+                new DiscountLeader(1, resTypeFactory.get("Servant"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Yellow.getInstance(), 0, 1),
                                 new DevCardRequirement.Entry(Green.getInstance(), 0, 1)
                 )), 2),
                 /* 50 */
-                new DiscountLeader(1, Shield.getInstance(), new DevCardRequirement(
+                new DiscountLeader(1, resTypeFactory.get("Shield"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Blue.getInstance(), 0, 1),
                                 new DevCardRequirement.Entry(Purple.getInstance(), 0, 1)
                 )), 2),
                 /* 51 */
-                new DiscountLeader(1, Stone.getInstance(), new DevCardRequirement(
+                new DiscountLeader(1, resTypeFactory.get("Stone"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Green.getInstance(), 0, 1),
                                 new DevCardRequirement.Entry(Blue.getInstance(), 0, 1)
                 )), 2),
                 /* 52 */
-                new DiscountLeader(1, Coin.getInstance(), new DevCardRequirement(
+                new DiscountLeader(1, resTypeFactory.get("Coin"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Yellow.getInstance(), 0, 1),
                                 new DevCardRequirement.Entry(Purple.getInstance(), 0, 1)
                 )), 2),
                 /* 53 */
-                new DepotLeader(2, Stone.getInstance(), new ResourceRequirement(Map.ofEntries(
-                        entry(Coin.getInstance(), 5)
+                new DepotLeader(2, resTypeFactory.get("Stone"), new ResourceRequirement(Map.ofEntries(
+                        entry(resTypeFactory.get("Coin"), 5)
                 )), 3),
                 /* 54 */
-                new DepotLeader(2, Servant.getInstance(), new ResourceRequirement(Map.ofEntries(
-                        entry(Stone.getInstance(), 5)
+                new DepotLeader(2, resTypeFactory.get("Servant"), new ResourceRequirement(Map.ofEntries(
+                        entry(resTypeFactory.get("Stone"), 5)
                 )), 3),
                 /* 55 */
-                new DepotLeader(2, Shield.getInstance(), new ResourceRequirement(Map.ofEntries(
-                        entry(Servant.getInstance(), 5)
+                new DepotLeader(2, resTypeFactory.get("Shield"), new ResourceRequirement(Map.ofEntries(
+                        entry(resTypeFactory.get("Servant"), 5)
                 )), 3),
                 /* 56 */
-                new DepotLeader(2, Coin.getInstance(), new ResourceRequirement(Map.ofEntries(
-                        entry(Shield.getInstance(), 5)
+                new DepotLeader(2, resTypeFactory.get("Coin"), new ResourceRequirement(Map.ofEntries(
+                        entry(resTypeFactory.get("Shield"), 5)
                 )), 3),
                 /* 57 */
-                new ZeroLeader(Servant.getInstance(), new DevCardRequirement(
+                new ZeroLeader(resTypeFactory.get("Servant"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Yellow.getInstance(), 0, 2),
                                 new DevCardRequirement.Entry(Blue.getInstance(), 0, 1)
                 )), 5),
                 /* 58 */
-                new ZeroLeader(Shield.getInstance(), new DevCardRequirement(
+                new ZeroLeader(resTypeFactory.get("Shield"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Green.getInstance(), 0, 2),
                                 new DevCardRequirement.Entry(Purple.getInstance(), 0, 1)
                 )), 5),
                 /* 59 */
-                new ZeroLeader(Stone.getInstance(), new DevCardRequirement(
+                new ZeroLeader(resTypeFactory.get("Stone"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Blue.getInstance(), 0, 2),
                                 new DevCardRequirement.Entry(Yellow.getInstance(), 0, 1)
                 )), 5),
                 /* 60 */
-                new ZeroLeader(Coin.getInstance(), new DevCardRequirement(
+                new ZeroLeader(resTypeFactory.get("Coin"), new DevCardRequirement(
                         List.of(
                                 new DevCardRequirement.Entry(Purple.getInstance(), 0, 2),
                                 new DevCardRequirement.Entry(Green.getInstance(), 0, 1)
@@ -813,12 +820,12 @@ public class JavaGameFactory implements GameFactory {
                 new ProductionLeader(
                         new Production(
                                 Map.ofEntries(
-                                        entry(Shield.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Shield"), 1)),
                                 0,
                                 Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Faith"), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(
+                        resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
                                 new DevCardRequirement.Entry(Yellow.getInstance(), 2, 1)
                 )), 4),
@@ -826,12 +833,12 @@ public class JavaGameFactory implements GameFactory {
                 new ProductionLeader(
                         new Production(
                                 Map.ofEntries(
-                                        entry(Servant.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Servant"), 1)),
                                 0,
                                 Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Faith"), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(
+                        resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
                                         new DevCardRequirement.Entry(Blue.getInstance(), 2, 1)
                 )), 4),
@@ -839,12 +846,12 @@ public class JavaGameFactory implements GameFactory {
                 new ProductionLeader(
                         new Production(
                                 Map.ofEntries(
-                                        entry(Stone.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Stone"), 1)),
                                 0,
                                 Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Faith"), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(
+                        resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
                                 new DevCardRequirement.Entry(Purple.getInstance(), 2, 1)
                 )), 4),
@@ -852,12 +859,12 @@ public class JavaGameFactory implements GameFactory {
                 new ProductionLeader(
                         new Production(
                                 Map.ofEntries(
-                                        entry(Coin.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Coin"), 1)),
                                 0,
                                 Map.ofEntries(
-                                        entry(Faith.getInstance(), 1)),
+                                        entry(resTypeFactory.get("Faith"), 1)),
                                 1),
-                        Servant.getInstance(), new DevCardRequirement(
+                        resTypeFactory.get("Servant"), new DevCardRequirement(
                                 List.of(
                                 new DevCardRequirement.Entry(Green.getInstance(), 2, 1)
                 )), 4)
@@ -871,12 +878,12 @@ public class JavaGameFactory implements GameFactory {
      */
     private Map<ResourceType, Integer> generateMarketResources() {
         return Map.ofEntries(
-                entry(Coin.getInstance(), 2),
-                entry(Faith.getInstance(), 1),
-                entry(Servant.getInstance(), 2),
-                entry(Shield.getInstance(), 2),
-                entry(Stone.getInstance(), 2),
-                entry(Zero.getInstance(), 4)
+                entry(resTypeFactory.get("Coin"), 2),
+                entry(resTypeFactory.get("Faith"), 1),
+                entry(resTypeFactory.get("Servant"), 2),
+                entry(resTypeFactory.get("Shield"), 2),
+                entry(resTypeFactory.get("Stone"), 2),
+                entry(resTypeFactory.get("Zero"), 4)
         );
     }
 

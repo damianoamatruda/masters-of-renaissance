@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
 import it.polimi.ingsw.model.resourcecontainers.Shelf;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -17,16 +19,23 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for Market class.
  */
 public class MarketTest {
+    ResourceTypeFactory resTypeFactory;
+    
+    @BeforeEach
+    void setup() {
+        resTypeFactory = new JavaResourceTypeFactory();
+    }
+    
     /**
      * First test that checks that the right number of columns and rows in the market grid is gotten.
      */
     @Test
     public void checkColsRows1() {
         Market market = new Market(
-                Map.of(Coin.getInstance(), 1,
-                        Faith.getInstance(), 1,
-                        Servant.getInstance(), 2,
-                        Shield.getInstance(), 3),
+                Map.of(resTypeFactory.get("Coin"), 1,
+                        resTypeFactory.get("Faith"), 1,
+                        resTypeFactory.get("Servant"), 2,
+                        resTypeFactory.get("Shield"), 3),
         3);
 
         assertEquals(3, market.getColsCount());
@@ -39,12 +48,12 @@ public class MarketTest {
     @Test
     public void checkColsRows2() {
         Market market = new Market(
-                Map.of(Coin.getInstance(), 1,
-                        Faith.getInstance(), 1,
-                        Servant.getInstance(), 2,
-                        Shield.getInstance(), 2,
-                        Stone.getInstance(), 3,
-                        Zero.getInstance(), 4),
+                Map.of(resTypeFactory.get("Coin"), 1,
+                        resTypeFactory.get("Faith"), 1,
+                        resTypeFactory.get("Servant"), 2,
+                        resTypeFactory.get("Shield"), 2,
+                        resTypeFactory.get("Stone"), 3,
+                        resTypeFactory.get("Zero"), 4),
                 4);
 
         assertEquals(4, market.getColsCount());
@@ -57,12 +66,12 @@ public class MarketTest {
     @Test
     public void checkShiftRow() {
         Market market = new Market(
-                Map.of(Coin.getInstance(), 1,
-                        Faith.getInstance(), 1,
-                        Servant.getInstance(), 2,
-                        Shield.getInstance(), 2,
-                        Stone.getInstance(), 3,
-                        Zero.getInstance(), 4),
+                Map.of(resTypeFactory.get("Coin"), 1,
+                        resTypeFactory.get("Faith"), 1,
+                        resTypeFactory.get("Servant"), 2,
+                        resTypeFactory.get("Shield"), 2,
+                        resTypeFactory.get("Stone"), 3,
+                        resTypeFactory.get("Zero"), 4),
                 4);
 
         //assertEquals(4, market.getColsCount());
@@ -72,12 +81,12 @@ public class MarketTest {
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         Map<ResourceType, Shelf> shelves = Map.of(
-                Coin.getInstance(), new Shelf(12),
-                Faith.getInstance(), new Shelf(12),     /* Ignored */
-                Servant.getInstance(), new Shelf(12),
-                Shield.getInstance(), new Shelf(12),
-                Stone.getInstance(), new Shelf(12),
-                Zero.getInstance(), new Shelf(12));     /* Ignored */
+                resTypeFactory.get("Coin"), new Shelf(12),
+                resTypeFactory.get("Faith"), new Shelf(12),     /* Ignored */
+                resTypeFactory.get("Servant"), new Shelf(12),
+                resTypeFactory.get("Shield"), new Shelf(12),
+                resTypeFactory.get("Stone"), new Shelf(12),
+                resTypeFactory.get("Zero"), new Shelf(12));     /* Ignored */
 
         for (int rowIndex = 0; rowIndex < market.getRowsCount(); rowIndex++) {
             List<ResourceType> rowBefore = new ArrayList<>(market.getGrid().get(rowIndex));

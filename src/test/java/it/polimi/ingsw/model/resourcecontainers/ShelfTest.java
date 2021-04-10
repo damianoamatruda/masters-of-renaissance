@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.resourcecontainers;
 
+import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.resourcetypes.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for Shelf class.
  */
 public class ShelfTest {
+    private ResourceTypeFactory resTypeFactory;
+
+    @BeforeEach
+    void setup() {
+        resTypeFactory = new JavaResourceTypeFactory();
+    }
+    
     /**
      * Tests the quantity of a resource in a shelf.
      */
@@ -28,7 +37,7 @@ public class ShelfTest {
     @Test
     public void testQuantity2() {
         Shelf s = new Shelf(3);
-        ResourceType c = Coin.getInstance();
+        ResourceType c = resTypeFactory.get("Coin");
 
         try {
             for (int i = 0; i < 3; i++)
@@ -51,7 +60,7 @@ public class ShelfTest {
     @Test
     public void testAddGet() {
         Shelf s = new Shelf(3);
-        ResourceType c = Coin.getInstance();
+        ResourceType c = resTypeFactory.get("Coin");
 
         try {
             for (int i = 0; i < 3; i++)
