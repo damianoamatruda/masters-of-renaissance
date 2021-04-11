@@ -30,13 +30,16 @@ import javax.xml.bind.Unmarshaller;
 
 
 public class FileGameFactory implements GameFactory {
-    /** The path of the configuration file */
+    /** The path of the configuration file. */
     private String configPath;
-    /** The unmarshalled object */
+
+    /** The unmarshalled object. */
     private ModelConfig config;
-    /** The factory of development card colors */
+
+    /** The factory of development card colors. */
     private JavaDevCardColorFactory colorFactory;
-    /** The factory of resource types */
+
+    /** The factory of resource types. */
     private JavaResourceTypeFactory resTypeFactory;
 
     /**
