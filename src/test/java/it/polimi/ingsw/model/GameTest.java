@@ -27,7 +27,7 @@ public class GameTest {
      */
     @BeforeEach
     public void setup() {
-        FileGameFactory factory = new FileGameFactory("src/main/resources/config.xml");
+        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
         game = factory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         devCardColorFactory = factory.getDevCardColorFactory();
         initialOrder = game.getPlayers();

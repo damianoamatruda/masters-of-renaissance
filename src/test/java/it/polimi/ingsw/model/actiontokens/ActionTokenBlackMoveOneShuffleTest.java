@@ -21,7 +21,7 @@ class ActionTokenBlackMoveOneShuffleTest {
     @Test
     @DisplayName("Move one and shuffle")
     void testBlackAdvancement() {
-        FileGameFactory factory = new FileGameFactory("src/main/resources/config.xml");
+        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);

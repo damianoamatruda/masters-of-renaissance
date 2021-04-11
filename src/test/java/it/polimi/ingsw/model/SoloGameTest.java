@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
-    FileGameFactory factory = new FileGameFactory("src/main/resources/config.xml");
+    GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
     ResourceTypeFactory resTypeFactory;
     SoloGame game;
     Player player;
@@ -68,7 +68,7 @@ public class SoloGameTest {
          */
         @BeforeEach
         void setup() {
-            FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
+            GameFactory f = new FileGameFactory("src/main/resources/config.xml");
             game = f.buildSoloGame("Alessandro");
             player = game.getPlayers().get(0);
 
@@ -126,7 +126,7 @@ public class SoloGameTest {
      */
     @Test
     void onTurnEnd() {
-        FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
+        GameFactory f = new FileGameFactory("src/main/resources/config.xml");
         game = f.buildSoloGame("Alessandro");
         player = game.getPlayers().get(0);
 

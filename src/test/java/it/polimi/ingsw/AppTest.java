@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.GameFactory;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBException;

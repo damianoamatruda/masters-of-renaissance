@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DevCardGridTest {
-    FileGameFactory factory;
+    GameFactory factory;
     Game game;
     DevCardColorFactory colorFactory;
     ResourceTypeFactory resTypeFactory;

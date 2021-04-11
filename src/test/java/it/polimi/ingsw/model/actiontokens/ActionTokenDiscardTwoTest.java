@@ -2,10 +2,7 @@ package it.polimi.ingsw.model.actiontokens;
 
 import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.model.DevCardGrid;
-import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.SoloGame;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
@@ -24,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ActionTokenDiscardTwoTest {
-    FileGameFactory factory;
+    GameFactory factory;
     DevCardColorFactory colorFactory;
     ResourceTypeFactory resTypeFactory;
     SoloGame game;
