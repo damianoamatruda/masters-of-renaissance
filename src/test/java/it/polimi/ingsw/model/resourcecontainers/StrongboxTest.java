@@ -1,75 +1,186 @@
 package it.polimi.ingsw.model.resourcecontainers;
 
-import it.polimi.ingsw.JavaResourceTypeFactory;
-import it.polimi.ingsw.model.resourcetypes.*;
-import org.junit.jupiter.api.BeforeEach;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit test for Strongbox class.
- */
-public class StrongboxTest {
-    private ResourceTypeFactory resTypeFactory;
+class StrongboxTest {
+    @Test
+    void newStrongboxShouldBeEmpty() {
+        Strongbox strongbox = new Strongbox();
+        assertTrue(strongbox.isEmpty());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceTypesOfShelfWithResourcesOfSameType(int resourcesCount) {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        assertEquals(Set.of(r), strongbox.getResourceTypes());
+    }
     
-    @BeforeEach
-    void setup() {
-        resTypeFactory = new JavaResourceTypeFactory();
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void quantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        assertEquals(resourcesCount, strongbox.getQuantity());
     }
 
-    /**
-     * Tests the quantity of resource of a type.
-     */
-    @Test
-    public void testQuantity1() {
-        Strongbox s = new Strongbox();
-        ResourceType c = resTypeFactory.get("Coin");
-
-        assertTrue(s.isEmpty());
-        assertEquals(0, s.getResourceQuantity(c));
-        assertEquals(0, s.getQuantity());
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceQuantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        assertEquals(resourcesCount, strongbox.getResourceQuantity(r));
     }
 
-    /**
-     * Tests the quantity of resources of a type.
-     */
-    @Test
-    public void testQuantity2() {
-        Strongbox s = new Strongbox();
-        ResourceType c = resTypeFactory.get("Coin");
-
-        try {
-            for (int i = 0; i < 3; i++)
-                s.addResource(c);
-            for (int i = 0; i < 3; i++)
-                s.removeResource(c);
-        } catch (Exception e) {
-            fail();
-        }
-
-        assertTrue(s.isEmpty());
-        assertEquals(0, s.getResourceQuantity(c));
-        assertEquals(0, s.getQuantity());
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void strongboxWithResourcesOfSameTypeShouldNotBeEmpty(int resourcesCount) {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        assertFalse(strongbox.isEmpty());
     }
 
-    /**
-     * Tests by adding a resource multiple times and getting it.
-     */
     @Test
-    public void testAddGet() {
-        Strongbox s = new Strongbox();
-        ResourceType c = resTypeFactory.get("Coin");
+    void resourceTypesOfStrongboxWithResourcesOfMultipleTypes() throws Exception {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r3 = new ResourceType("r3", true);
+        for (int i = 0; i < 2; i++)
+            strongbox.addResource(r1);
+        for (int i = 0; i < 3; i++)
+            strongbox.addResource(r2);
+        for (int i = 0; i < 5; i++)
+            strongbox.addResource(r3);
+        assertEquals(Set.of(r1, r2, r3), strongbox.getResourceTypes());
+    }
 
-        try {
-            for (int i = 0; i < 3; i++)
-                s.addResource(c);
-        } catch (Exception e) {
-            fail();
-        }
+    @Test
+    void quantityOfStrongboxWithResourcesOfMultipleTypes() throws Exception {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r3 = new ResourceType("r3", true);
+        for (int i = 0; i < 2; i++)
+            strongbox.addResource(r1);
+        for (int i = 0; i < 3; i++)
+            strongbox.addResource(r2);
+        for (int i = 0; i < 5; i++)
+            strongbox.addResource(r3);
+        assertEquals(10, strongbox.getQuantity());
+    }
 
-        assertFalse(s.isEmpty());
-        assertEquals(3, s.getResourceQuantity(c));
-        assertEquals(3, s.getQuantity());
+    @Test
+    void resourceQuantityOfStrongboxWithResourcesOfMultipleTypes() throws Exception {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r3 = new ResourceType("r3", true);
+        for (int i = 0; i < 2; i++)
+            strongbox.addResource(r1);
+        for (int i = 0; i < 3; i++)
+            strongbox.addResource(r2);
+        for (int i = 0; i < 5; i++)
+            strongbox.addResource(r3);
+        assertAll("getResourceQuantity",
+                () -> assertEquals(2, strongbox.getResourceQuantity(r1)),
+                () -> assertEquals(3, strongbox.getResourceQuantity(r2)),
+                () -> assertEquals(5, strongbox.getResourceQuantity(r3))
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws Exception {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        strongbox.removeResource(r);
+        assertEquals(resourcesCount - 1, strongbox.getQuantity());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws Exception {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        strongbox.removeResource(r);
+        assertEquals(resourcesCount - 1, strongbox.getResourceQuantity(r));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void clearedStrongboxShouldBeEmpty(int resourcesCount) throws Exception {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.removeResource(r);
+        assertTrue(strongbox.isEmpty());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) throws Exception {
+        Strongbox strongbox = new Strongbox();
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            strongbox.removeResource(r);
+        assertThrows(Exception.class, () -> strongbox.removeResource(r));
+    }
+
+    @Test
+    void addAllFromStrongbox() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r3 = new ResourceType("r3", true);
+
+        Strongbox strongbox = new Strongbox();
+        for (int i = 0; i < 5; i++)
+            strongbox.addResource(r1);
+        for (int i = 0; i < 7; i++)
+            strongbox.addResource(r2);
+
+        ResourceContainer resContainer = new Strongbox();
+        for (int i = 0; i < 2; i++)
+            resContainer.addResource(r1);
+        for (int i = 0; i < 3; i++)
+            resContainer.addResource(r2);
+        for (int i = 0; i < 5; i++)
+            resContainer.addResource(r3);
+
+        strongbox.addAll(resContainer);
+
+        assertAll("strongbox",
+                () -> assertEquals(Set.of(r1, r2, r3), strongbox.getResourceTypes()),
+                () -> assertEquals(22, strongbox.getQuantity()),
+                () -> assertAll("getResourceQuantity",
+                        () -> assertEquals(7, strongbox.getResourceQuantity(r1)),
+                        () -> assertEquals(10, strongbox.getResourceQuantity(r2)),
+                        () -> assertEquals(5, strongbox.getResourceQuantity(r3))
+                )
+        );
     }
 }

@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import java.util.Set;
 
 /**
- * This interface represents a container of resources.
+ * This interface represents a container of storable resources.
  */
 public interface ResourceContainer {
     /**
@@ -18,14 +18,14 @@ public interface ResourceContainer {
     /**
      * Returns the types of the resources contained.
      *
-     * @return  the types of the resources
+     * @return  the resource types
      */
     Set<ResourceType> getResourceTypes();
 
     /**
      * Returns the quantity of the resources contained.
      *
-     * @return  the quantity of the resources
+     * @return  the total quantity
      */
     int getQuantity();
 
@@ -33,23 +33,23 @@ public interface ResourceContainer {
      * Returns the quantity of resources of the given type.
      *
      * @param resType   the type of the resources
-     * @return          the quantity of the resources
+     * @return          the quantity
      */
     int getResourceQuantity(ResourceType resType);
 
     /**
-     * Adds a storable resource of the given type.
+     * Adds a resource of the given type.
      *
      * @param resType       the resource to add
-     * @throws Exception    if it is not possible
+     * @throws Exception    if the container is full
      */
     void addResource(ResourceType resType) throws Exception;
 
     /**
-     * Removes a storable resource of the given type.
+     * Removes a resource of the given type.
      *
      * @param resType       the resource to remove
-     * @throws Exception    if it is not possible
+     * @throws Exception    if the container is empty
      */
     void removeResource(ResourceType resType) throws Exception;
 
@@ -57,14 +57,14 @@ public interface ResourceContainer {
      * Adds the content of a resource container.
      *
      * @param resourceContainer the resource container from which to get the resources to add
-     * @throws Exception        if it is not possible
+     * @throws Exception        if the content cannot be added
      */
     void addAll(ResourceContainer resourceContainer) throws Exception;
 
     /**
      * Returns whether the resource container is empty.
      *
-     * @return  true if the resource container contains no resources, false otherwise
+     * @return  <code>true</code> if the resource container contains no resources, <code>false</code> otherwise.
      */
     boolean isEmpty();
 }

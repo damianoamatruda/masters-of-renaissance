@@ -1,73 +1,452 @@
 package it.polimi.ingsw.model.resourcecontainers;
 
-import it.polimi.ingsw.JavaResourceTypeFactory;
-import it.polimi.ingsw.model.resourcetypes.*;
-import org.junit.jupiter.api.BeforeEach;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit test for Warehouse and WarehouseShelf classes.
- */
 public class WarehouseTest {
-    private ResourceTypeFactory resTypeFactory;
+    @Test
+    void emptyWarehouse() {
+        Warehouse warehouse = new Warehouse(0);
+        assertEquals(List.of(), warehouse.getShelves());
+    }
 
-    @BeforeEach
-    void setup() {
-        resTypeFactory = new JavaResourceTypeFactory();
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 3, 5 })
+    void growingSizeOfWarehouseShelves(int shelvesCount) {
+        Warehouse warehouse = new Warehouse(shelvesCount);
+        for (int i = 0; i < shelvesCount; i++)
+            assertEquals(i + 1, warehouse.getShelves().get(i).getSize());
     }
     
-    /**
-     * Test the size of the shelves.
-     */
     @Test
-    public void testShelvesSize() {
-        Warehouse w = new Warehouse(3);
-
-        assertNotNull(w.getShelves());
-        assertEquals(w.getShelvesCount(), w.getShelves().size());
-        for (int i = 0; i < w.getShelvesCount(); i++)
-            assertEquals(i+1, w.getShelves().get(i).getSize());
+    void resourceTypesOfNewWarehouseShelf() {
+        Warehouse warehouse = new Warehouse(1);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        assertEquals(Set.of(), warehouseShelf.getResourceTypes());
     }
 
-    /**
-     * Test the content of the shelves.
-     */
     @Test
-    public void testShelvesContent() {
-        Warehouse w = new Warehouse(3);
-        ResourceType c = resTypeFactory.get("Coin");
-        ResourceType s = resTypeFactory.get("Servant");
+    void quantityOfNewWarehouseShelf() {
+        Warehouse warehouse = new Warehouse(1);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        assertEquals(0, warehouseShelf.getQuantity());
+    }
 
-        try {
-            /* Shelf 1 */
-            w.getShelves().get(1).addResource(c);
+    @Test
+    void resourceQuantityOfNewWarehouseShelf() {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(1);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        assertEquals(0, warehouseShelf.getResourceQuantity(r));
+    }
 
-            /* Shelf 2 */
-            w.getShelves().get(2).addResource(s);
-            w.getShelves().get(2).addResource(s);
-            w.getShelves().get(2).addResource(s);
-        } catch (Exception e) {
-            fail();
-        }
+    @Test
+    void resourceTypeOfNewWarehouseShelf() {
+        Warehouse warehouse = new Warehouse(1);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        assertNull(warehouseShelf.getResourceType());
+    }
 
-        assertTrue(w.getShelves().get(0).isEmpty());
-        assertFalse(w.getShelves().get(0).isFull());
+    @Test
+    void newWarehouseShelfShouldBeEmpty() {
+        Warehouse warehouse = new Warehouse(1);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        assertTrue(warehouseShelf.isEmpty());
+    }
 
-        assertFalse(w.getShelves().get(1).isEmpty());
-        assertFalse(w.getShelves().get(1).isFull());
+    @Test
+    void newWarehouseShelfShouldNotBeFull() {
+        Warehouse warehouse = new Warehouse(1);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        assertFalse(warehouseShelf.isFull());
+    }
 
-        assertFalse(w.getShelves().get(2).isEmpty());
-        assertTrue(w.getShelves().get(2).isFull());
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceTypesOfWarehouseShelf(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        assertEquals(Set.of(r), warehouseShelf.getResourceTypes());
+    }
 
-        assertNull(w.getShelves().get(0).getResType());
-        assertEquals(0, w.getShelves().get(0).getQuantity());
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void quantityOfWarehouseShelf(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        assertEquals(resourcesCount, warehouseShelf.getQuantity());
+    }
 
-        assertEquals(c, w.getShelves().get(1).getResType());
-        assertEquals(1, w.getShelves().get(1).getQuantity());
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceQuantityOfWarehouseShelf(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        assertEquals(resourcesCount, warehouseShelf.getResourceQuantity(r));
+    }
 
-        assertEquals(s, w.getShelves().get(2).getResType());
-        assertEquals(3, w.getShelves().get(2).getQuantity());
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void warehouseShelfShouldNotBeEmpty(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        assertFalse(warehouseShelf.isEmpty());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void warehouseShelfShouldNotBeFull(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(resourcesCount + 1);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        assertFalse(warehouseShelf.isFull());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void warehouseShelfShouldBeFull(int resourcesCount) throws Exception {
+        Warehouse warehouse = new Warehouse(resourcesCount);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount - 1);
+        ResourceType r = new ResourceType("r", true);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        assertTrue(warehouseShelf.isFull());
+    }
+
+    @Test
+    void warehouseShelfShouldNotBeAbleToAddResourceOfAnotherType() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < 2; i++)
+            warehouseShelf.addResource(r1);
+        assertThrows(Exception.class, () -> warehouseShelf.addResource(r2));
+    }
+
+    @Test
+    void warehouseShelfShouldNotBeAbleToAddResourceInAnotherWarehouseShelf() throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(2);
+
+        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(0);
+        warehouseShelf1.addResource(r);
+
+        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(1);
+        assertThrows(Exception.class, () -> warehouseShelf2.addResource(r));
+    }
+
+    @Test
+    void warehouseShelfShouldNotBeAbleToRemoveResourceOfAnotherType() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < 3; i++)
+            warehouseShelf.addResource(r1);
+        assertThrows(Exception.class, () -> warehouseShelf.removeResource(r2));
+    }
+
+    @Test
+    void emptyWarehouseShelfShouldNotBeAbleToRemoveResource() {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        assertThrows(Exception.class, () -> warehouseShelf.removeResource(r));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void quantityOfWarehouseShelfWithOneRemovedResource(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        warehouseShelf.removeResource(r);
+        assertEquals(resourcesCount - 1, warehouseShelf.getQuantity());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceQuantityOfWarehouseShelfWithOneRemovedResource(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        warehouseShelf.removeResource(r);
+        assertEquals(resourcesCount - 1, warehouseShelf.getResourceQuantity(r));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceTypesOfClearedWarehouseShelf(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(3);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.removeResource(r);
+        assertEquals(Set.of(), warehouseShelf.getResourceTypes());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void quantityOfClearedWarehouseShelf(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(3);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.removeResource(r);
+        assertEquals(0, warehouseShelf.getQuantity());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceQuantityOfClearedWarehouseShelf(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(3);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.removeResource(r);
+        assertEquals(0, warehouseShelf.getResourceQuantity(r));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void resourceTypeOfClearedWarehouseShelf(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(3);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.removeResource(r);
+        assertNull(warehouseShelf.getResourceType());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void clearedWarehouseShelfShouldBeEmpty(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(3);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.removeResource(r);
+        assertTrue(warehouseShelf.isEmpty());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void clearedShelfShouldNotBeFull(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(3);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.removeResource(r);
+        assertFalse(warehouseShelf.isFull());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2, 3 })
+    void clearedShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse = new Warehouse(5);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.addResource(r);
+        for (int i = 0; i < resourcesCount; i++)
+            warehouseShelf.removeResource(r);
+        assertThrows(Exception.class, () -> warehouseShelf.removeResource(r));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 10, 13 })
+    void addAllFromSmallerOrEqualShelf(int size) throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse1 = new Warehouse(13);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse1.getShelves().get(12);
+
+        Warehouse warehouse2 = new Warehouse(size);
+        ResourceContainer resContainer = warehouse2.getShelves().get(size - 1);
+        for (int i = 0; i < size; i++)
+            resContainer.addResource(r);
+
+        warehouseShelf.addAll(resContainer);
+
+        assertAll("warehouseShelf",
+                () -> assertEquals(resContainer.getResourceTypes(), warehouseShelf.getResourceTypes()),
+                () -> assertEquals(resContainer.getQuantity(), warehouseShelf.getQuantity()),
+                () -> assertEquals(resContainer.getResourceQuantity(r), warehouseShelf.getResourceQuantity(r))
+        );
+    }
+
+    @Test
+    void addAllShouldNotBePossibleBecauseOfQuantities() throws Exception {
+        ResourceType r = new ResourceType("r", true);
+        Warehouse warehouse1 = new Warehouse(7);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse1.getShelves().get(6);
+
+        Warehouse warehouse2 = new Warehouse(10);
+        ResourceContainer resContainer = warehouse2.getShelves().get(9);
+        for (int i = 0; i < 10; i++)
+            resContainer.addResource(r);
+
+        assertThrows(Exception.class, () -> warehouseShelf.addAll(resContainer));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 10, 13 })
+    void addAllShouldNotBePossibleBecauseOfResourceTypes(int size) throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        Warehouse warehouse1 = new Warehouse(14);
+        Warehouse.WarehouseShelf warehouseShelf = warehouse1.getShelves().get(13);
+        warehouseShelf.addResource(r1);
+
+        Warehouse warehouse2 = new Warehouse(size);
+        ResourceContainer resContainer = warehouse2.getShelves().get(size - 1);
+        for (int i = 0; i < size; i++)
+            resContainer.addResource(r2);
+
+        assertThrows(Exception.class, () -> warehouseShelf.addAll(resContainer));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void swapShouldBePossible(boolean direct) throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+
+        Warehouse warehouse1 = new Warehouse(7);
+        Warehouse.WarehouseShelf warehouseShelf1 = warehouse1.getShelves().get(6);
+        for (int i = 0; i < 3; i++)
+            warehouseShelf1.addResource(r1);
+
+        Warehouse warehouse2 = new Warehouse(13);
+        Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
+        for (int i = 0; i < 5; i++)
+            warehouseShelf2.addResource(r2);
+
+        if (direct)
+            Shelf.swap(warehouseShelf1, warehouseShelf2);
+        else
+            Shelf.swap(warehouseShelf2, warehouseShelf1);
+
+        assertAll("shelves",
+                () -> assertAll("warehouseShelf1",
+                        () -> assertEquals(7, warehouseShelf1.getSize()),
+                        () -> assertEquals(Set.of(r2), warehouseShelf1.getResourceTypes()),
+                        () -> assertEquals(5, warehouseShelf1.getQuantity()),
+                        () -> assertEquals(5, warehouseShelf1.getResourceQuantity(r2))
+                ),
+                () -> assertAll("warehouseShelf2",
+                        () -> assertEquals(13, warehouseShelf2.getSize()),
+                        () -> assertEquals(Set.of(r1), warehouseShelf2.getResourceTypes()),
+                        () -> assertEquals(3, warehouseShelf2.getQuantity()),
+                        () -> assertEquals(3, warehouseShelf2.getResourceQuantity(r1))
+                )
+        );
+    }
+
+    @Test
+    void swapShouldNotBePossibleBecauseOfQuantities() throws Exception {
+        ResourceType r = new ResourceType("r", true);
+
+        ResourceShelf warehouseShelf1 = new ResourceShelf(r, 3);
+        for (int i = 0; i < 3; i++)
+            warehouseShelf1.addResource(r);
+
+        ResourceShelf warehouseShelf2 = new ResourceShelf(r, 5);
+        for (int i = 0; i < 5; i++)
+            warehouseShelf2.addResource(r);
+
+        assertThrows(Exception.class, () -> Shelf.swap(warehouseShelf1, warehouseShelf2));
+    }
+
+    @Test
+    void swapShouldNotBePossibleBecauseOfResourceTypes() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+
+        Warehouse warehouse1 = new Warehouse(7);
+        Warehouse.WarehouseShelf warehouseShelf1a = warehouse1.getShelves().get(5);
+        for (int i = 0; i < 2; i++)
+            warehouseShelf1a.addResource(r2);
+        Warehouse.WarehouseShelf warehouseShelf1b = warehouse1.getShelves().get(6);
+        for (int i = 0; i < 3; i++)
+            warehouseShelf1b.addResource(r1);
+
+        Warehouse warehouse2 = new Warehouse(13);
+        Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
+        for (int i = 0; i < 5; i++)
+            warehouseShelf2.addResource(r2);
+
+        assertThrows(Exception.class, () -> Shelf.swap(warehouseShelf1b, warehouseShelf2));
+    }
+
+    @Test
+    void swapTwice() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+
+        Warehouse warehouse1 = new Warehouse(7);
+        Warehouse.WarehouseShelf warehouseShelf1 = warehouse1.getShelves().get(6);
+        for (int i = 0; i < 3; i++)
+            warehouseShelf1.addResource(r1);
+
+        Warehouse warehouse2 = new Warehouse(13);
+        Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
+        for (int i = 0; i < 5; i++)
+            warehouseShelf2.addResource(r2);
+
+        Shelf.swap(warehouseShelf1, warehouseShelf2);
+        Shelf.swap(warehouseShelf1, warehouseShelf2);
+
+        assertAll("shelves",
+                () -> assertAll("warehouseShelf1",
+                        () -> assertEquals(7, warehouseShelf1.getSize()),
+                        () -> assertEquals(Set.of(r1), warehouseShelf1.getResourceTypes()),
+                        () -> assertEquals(3, warehouseShelf1.getQuantity()),
+                        () -> assertEquals(3, warehouseShelf1.getResourceQuantity(r1))
+                ),
+                () -> assertAll("warehouseShelf2",
+                        () -> assertEquals(13, warehouseShelf2.getSize()),
+                        () -> assertEquals(Set.of(r2), warehouseShelf2.getResourceTypes()),
+                        () -> assertEquals(5, warehouseShelf2.getQuantity()),
+                        () -> assertEquals(5, warehouseShelf2.getResourceQuantity(r2))
+                )
+        );
     }
 }

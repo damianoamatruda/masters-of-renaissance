@@ -62,7 +62,7 @@ public class ResourceRequirement implements CardRequirement {
 
         for (ResourceType r : discountedRes.keySet()) {
             int playerAmount = player.getStrongbox().getResourceQuantity(r);
-            playerAmount += shelves.stream().filter(e -> e.getResType() == r).mapToInt(s -> s.getResourceQuantity(r)).sum();
+            playerAmount += shelves.stream().filter(e -> e.getResourceType() == r).mapToInt(s -> s.getResourceQuantity(r)).sum();
             
             if (discountedRes.get(r) - playerAmount > 0) throw new Exception();
         }

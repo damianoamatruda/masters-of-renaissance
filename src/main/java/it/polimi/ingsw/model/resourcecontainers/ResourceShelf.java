@@ -2,8 +2,10 @@ package it.polimi.ingsw.model.resourcecontainers;
 
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
+import java.util.Set;
+
 /**
- * This class represents a container of resources of a specific type in limited quantity.
+ * This class represents a limited container of resources of a specific type.
  */
 public class ResourceShelf extends Shelf {
     /** The specific type of resources the shelf can contain. */
@@ -21,9 +23,9 @@ public class ResourceShelf extends Shelf {
     }
 
     /**
-     * Copy constructor. Makes a deep copy of a ResourceShelf.
+     * Copy constructor. Makes a deep copy of a resource shelf.
      *
-     * @param resourceShelf the ResourceShelf to copy
+     * @param resourceShelf the resource shelf to copy
      */
     public ResourceShelf(ResourceShelf resourceShelf) {
         super(resourceShelf);
@@ -40,6 +42,13 @@ public class ResourceShelf extends Shelf {
         if (!resType.equals(this.boundedResType))
             throw new Exception();
         super.addResource(resType);
+    }
+
+    @Override
+    public void addAll(ResourceContainer resourceContainer) throws Exception {
+        if (!resourceContainer.isEmpty() && !resourceContainer.getResourceTypes().equals(Set.of(boundedResType)))
+            throw new Exception();
+        super.addAll(resourceContainer);
     }
 
     /**

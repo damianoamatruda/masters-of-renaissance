@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.resourcecontainers;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,9 +27,9 @@ public class Warehouse {
     }
 
     /**
-     * Copy constructor. Makes a deep copy of a Warehouse.
+     * Copy constructor. Makes a deep copy of a warehouse.
      *
-     * @param warehouse the Warehouse to copy
+     * @param warehouse the warehouse to copy
      */
     public Warehouse(Warehouse warehouse) {
         shelves = new ArrayList<>();
@@ -37,21 +38,12 @@ public class Warehouse {
     }
 
     /**
-     * Returns the number of shelves inside the warehouse
-     *
-     * @return  the number of shelves
-     */
-    public int getShelvesCount() {
-        return shelves.size();
-    }
-
-    /**
      * Returns the shelves inside the warehouse
      *
      * @return  a list of the shelves
      */
     public List<WarehouseShelf> getShelves() {
-        return shelves;
+        return Collections.unmodifiableList(shelves);
     }
 
     /**
@@ -76,9 +68,9 @@ public class Warehouse {
         }
 
         /**
-         * Copy constructor. Makes a deep copy of a WarehouseShelf.
+         * Copy constructor. Makes a deep copy of a warehouse shelf.
          *
-         * @param warehouseShelf    the WarehouseShelf to copy
+         * @param warehouseShelf    the warehouse shelf to copy
          */
         public WarehouseShelf(WarehouseShelf warehouseShelf) {
             super(warehouseShelf);
@@ -93,8 +85,8 @@ public class Warehouse {
         @Override
         public void addResource(ResourceType resType) throws Exception {
             if (warehouse.shelves.stream()
-                    .filter(s -> !s.equals(this) && !s.isEmpty())
-                    .anyMatch(s -> s.getResType().equals(resType)))
+                    .filter(s -> !s.equals(this))
+                    .anyMatch(s -> s.getResourceType() != null && s.getResourceType().equals(resType)))
                 throw new Exception();
             super.addResource(resType);
         }

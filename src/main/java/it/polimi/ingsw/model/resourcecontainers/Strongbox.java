@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class represents a container of resources in unlimited quantity.
+ * This class represents an infinite container of resources.
  */
 public class Strongbox implements ResourceContainer {
     /** The map of the contained resources. */
@@ -21,9 +21,9 @@ public class Strongbox implements ResourceContainer {
     }
 
     /**
-     * Copy constructor. Makes a deep copy of a Strongbox.
+     * Copy constructor. Makes a deep copy of a strongbox.
      *
-     * @param strongbox the Strongbox to copy
+     * @param strongbox the strongbox to copy
      */
     public Strongbox(Strongbox strongbox) {
         resources = new HashMap<>(strongbox.resources);
@@ -50,9 +50,9 @@ public class Strongbox implements ResourceContainer {
     }
 
     @Override
-    public void addResource(ResourceType resType) throws Exception {
+    public void addResource(ResourceType resType) {
         if (!resType.isStorable())
-            throw new Exception();
+            throw new RuntimeException();
         resources.compute(resType, (r, q) -> (q == null) ? 1 : q + 1);
     }
 
@@ -60,11 +60,13 @@ public class Strongbox implements ResourceContainer {
     public void removeResource(ResourceType resType) throws Exception {
         if (!resources.containsKey(resType))
             throw new Exception();
+        if (!resType.isStorable())
+            throw new RuntimeException();
         resources.computeIfPresent(resType, (r, q) -> (q == 1) ? null : q - 1);
     }
 
     @Override
-    public void addAll(ResourceContainer resourceContainer) throws Exception {
+    public void addAll(ResourceContainer resourceContainer) {
         for (ResourceType resType : resourceContainer.getResourceTypes())
             for (int i = 0; i < resourceContainer.getResourceQuantity(resType); i++)
                 addResource(resType);
