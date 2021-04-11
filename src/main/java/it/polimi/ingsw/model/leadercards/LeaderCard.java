@@ -11,7 +11,7 @@ import java.util.Map;
  * When active, its ability can be used.
  * Activation requires the player to own either certain resources or development cards.
  */
-public class LeaderCard extends Card {
+public abstract class LeaderCard extends Card {
     private final ResourceType resource;
     private final CardRequirement requirement;
     /**

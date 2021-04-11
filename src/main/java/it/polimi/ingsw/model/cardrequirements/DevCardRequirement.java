@@ -30,44 +30,64 @@ public class DevCardRequirement implements CardRequirement {
         for (int i = 0; i < player.getDevSlots().size(); i++)
             playerCards.addAll(player.getDevSlots().get(i));
         
-        List<Entry>   playerState = new ArrayList<>(),
-                                        reqCopy = new ArrayList<>(entryList);
+        Set<Entry> playerState = new HashSet<>(),
+                   reqCopy = new HashSet<>(entryList);
 
         playerCards.forEach(card -> {
-            int index = playerState.indexOf(new Entry(card.getColor(), card.getLevel()));
+            Entry currCard = new Entry(card.getColor(), card.getLevel());
             // if not present add a new entry
-            if (index < 0) playerState.add(new Entry(card.getColor(), card.getLevel(), 1));
+            if (!playerState.contains(currCard))
+                playerState.add(currCard.setAmount(1));
             // else increment the amount available
-            else  playerState.add(index, playerState.get(index).setAmount(playerState.get(index).amount + 1));
+            else playerState.stream().filter(e -> e.equals(currCard)).findFirst().get().amount++;
         });
 
         for (Entry entry : reqCopy) {
-            int index = playerState.indexOf(entry);
-            if (index < 0) throw new Exception(); // entry not found in player's cards -> requirements not satisfied
+            if (!playerState.stream().anyMatch(e -> e.equals(entry))) throw new Exception(); // entry not found in player's cards -> requirements not satisfied
 
-            entry.setAmount(entry.amount - playerState.get(index).amount);
+            entry.setAmount(entry.amount - playerState.stream().filter(e -> e.equals(entry)).findFirst().get().amount);
         }
 
         // if the req hold positive amounts it means they haven't been satisfied
         if (reqCopy.stream().filter(entry -> entry.amount > 0).count() > 0) throw new Exception();
     }
 
-    // TODO: Add Javadoc
+    /**
+     * Models a requirement entry.
+     * It mimicks a double-keyed map, with color and level as keys and amount as value.
+     */
     public static class Entry {
         public final DevCardColor color;
         public final int level;
         public int amount = 0;
 
-        // TODO: Add Javadoc
+        /**
+         * Class constructor. Creates an Entry with set color and level, and zero as its amount.
+         * 
+         * @param color the card color to be matched.
+         * @param level the card level to be matched.
+         */
         public Entry(DevCardColor color, int level) {
             this.color = color; this.level = level;
         }
-        // TODO: Add Javadoc
+
+        /**
+         * Class constructor. Creates an Entry with set color, level and amount.
+         * 
+         * @param color     the card color to be matched.
+         * @param level     the card level to be matched.
+         * @param amount    the amount of cards to be matched.
+         */
         public Entry(DevCardColor color, int level, int amount) {
             this.color = color; this.level = level; this.amount = amount;
         }
 
-        // TODO: Add Javadoc
+        /**
+         * Sets the new amount of cards in the entry.
+         * 
+         * @param newAmount the new amount of cards the entry holds.
+         * @return          the updated entry.
+         */
         public Entry setAmount(int newAmount) { amount = newAmount; return this; }
 
         @Override
