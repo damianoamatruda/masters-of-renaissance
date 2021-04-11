@@ -48,10 +48,10 @@ public class PlayerTest {
     void getNumOfResourcesTestStrongboxOnly() {
         try {
             for(int i = 0; i < 4; i++)
-                resTypeFactory.get("Coin").addIntoContainer(player.getStrongbox());
+                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
             for(int i = 0; i < 7; i++)
-                resTypeFactory.get("Servant").addIntoContainer(player.getStrongbox());
-            resTypeFactory.get("Shield").addIntoContainer(player.getStrongbox());
+                player.getStrongbox().addResource(resTypeFactory.get("Servant"));
+            player.getStrongbox().addResource(resTypeFactory.get("Shield"));
             assertEquals(12, player.getResourcesCount());
         }
         catch (Exception e){
@@ -66,13 +66,13 @@ public class PlayerTest {
     void getNumOfResourcesTestAnyStorage() {
         try {
             for(int i = 0; i < 4; i++)
-                resTypeFactory.get("Coin").addIntoContainer(player.getStrongbox());
+                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
             for(int i = 0; i < 7; i++)
-                resTypeFactory.get("Servant").addIntoContainer(player.getStrongbox());
+                player.getStrongbox().addResource(resTypeFactory.get("Servant"));
             for(int i = 0; i < 2; i++)
-                resTypeFactory.get("Stone").addIntoContainer(player.getWarehouse().getShelves().get(1));
+                player.getWarehouse().getShelves().get(1).addResource(resTypeFactory.get("Stone"));
 
-            resTypeFactory.get("Shield").addIntoContainer(player.getWarehouse().getShelves().get(0));
+            player.getWarehouse().getShelves().get(0).addResource(resTypeFactory.get("Shield"));
             assertEquals(14, player.getResourcesCount());
         }
         catch (Exception e){
@@ -102,13 +102,13 @@ public class PlayerTest {
             }};
             try {
                 for (int i = 0; i < 4; i++)
-                    resTypeFactory.get("Coin").addIntoContainer(player.getStrongbox());
+                    player.getStrongbox().addResource(resTypeFactory.get("Coin"));
                 for (int i = 0; i < 7; i++)
-                    resTypeFactory.get("Servant").addIntoContainer(player.getStrongbox());
+                    player.getStrongbox().addResource(resTypeFactory.get("Servant"));
                 for (int i = 0; i < 2; i++)
-                    resTypeFactory.get("Stone").addIntoContainer(player.getWarehouse().getShelves().get(1));
+                    player.getWarehouse().getShelves().get(1).addResource(resTypeFactory.get("Stone"));
 
-                resTypeFactory.get("Shield").addIntoContainer(player.getWarehouse().getShelves().get(0));
+                player.getWarehouse().getShelves().get(0).addResource(resTypeFactory.get("Shield"));
 
                 player.addToDevSlot(game, 1, new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
                                 new ResourceRequirement(

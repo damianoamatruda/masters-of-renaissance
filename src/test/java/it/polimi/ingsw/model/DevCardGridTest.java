@@ -85,7 +85,7 @@ public class DevCardGridTest {
             }});
         }};
         try {
-            resTypeFactory.get("Coin").addIntoContainer(buyer.getStrongbox());
+            buyer.getStrongbox().addResource(resTypeFactory.get("Coin"));
 
             theGrid.buyDevCard(game, buyer, colorFactory.get("Blue"), level, 0, resContainers);
             List<List<DevelopmentCard>> top = theGrid.peekDevCards();

@@ -123,7 +123,7 @@ public class Production {
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.removeFromContainer(clonedContainers.get(resContainer));
+                        clonedContainers.get(resContainer).removeResource(resType);
                     } catch (Exception e) {
                         throw new Exception();
                     }
@@ -134,7 +134,7 @@ public class Production {
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.addIntoContainer(clonedContainers.get(resContainer));
+                        clonedContainers.get(resContainer).addResource(resType);
                     } catch (Exception e) {
                         if (!discardableOutput)
                             throw new Exception();
@@ -146,7 +146,7 @@ public class Production {
             for (ResourceType resType : inputContainers.get(resContainer).keySet())
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.removeFromContainer(resContainer);
+                        resContainer.removeResource(resType);
                     } catch (Exception e) {
                         throw new RuntimeException();
                     }
@@ -157,7 +157,7 @@ public class Production {
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
-                        resType.addIntoContainer(resContainer);
+                        resContainer.addResource(resType);
                     } catch (Exception e) {
                         if (discardableOutput)
                             resType.discard(game, player);

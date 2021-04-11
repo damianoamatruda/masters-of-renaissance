@@ -64,24 +64,4 @@ public class ResourceType {
                 .filter(p -> !p.equals(player))
                 .forEach(p -> p.incrementFaithPoints(game));
     }
-
-    /**
-     * Routine for adding a resource of this type into a resource container.
-     *
-     * @param resContainer     the storage in which the resource is deposited, if applicable
-     * @throws Exception    if it is not possible
-     */
-    public void addIntoContainer(ResourceContainer resContainer) throws Exception {
-        resContainer.addResource(this);
-    }
-
-    /**
-     * Routine for removing a resource of this type from a resource container.
-     *
-     * @param resContainer     the storage from which the resource is removed, if applicable
-     * @throws Exception    if it is not possible
-     */
-    public void removeFromContainer(ResourceContainer resContainer) throws Exception {
-        resContainer.removeResource(this);
-    }
 }
