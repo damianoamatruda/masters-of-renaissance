@@ -128,12 +128,20 @@ public class JavaGameFactory implements GameFactory {
         return playerLeadersCount;
     }
 
-    //TODO Javadoc
+    /**
+     * Getter of the factory of resources.
+     *
+     * @return the factory of resources.
+     */
     public ResourceTypeFactory getResTypeFactory() {
         return resTypeFactory;
     }
 
-    //TODO Javadoc
+    /**
+     * Getter of the factory of development colors.
+     *
+     * @return the factory of development colors.
+     */
     public DevCardColorFactory getDevCardColorFactory() {
         return devCardColorFactory;
     }
@@ -929,7 +937,7 @@ public class JavaGameFactory implements GameFactory {
         );
     }
 
-    /*
+    /**
      * Returns a list of the action tokens.
      *
      * @return  list of action tokens

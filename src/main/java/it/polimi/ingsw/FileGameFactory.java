@@ -30,11 +30,20 @@ import javax.xml.bind.Unmarshaller;
 
 
 public class FileGameFactory implements GameFactory {
-    String configPath;
-    ModelConfig config;
-    JavaDevCardColorFactory colorFactory;
-    JavaResourceTypeFactory resTypeFactory;
+    /** The path of the configuration file */
+    private String configPath;
+    /** The unmarshalled object */
+    private ModelConfig config;
+    /** The factory of development card colors */
+    private JavaDevCardColorFactory colorFactory;
+    /** The factory of resource types */
+    private JavaResourceTypeFactory resTypeFactory;
 
+    /**
+     * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config file.
+     *
+     * @param path  the config file to be parsed
+     */
     public FileGameFactory(String path) {
         configPath = path;
         try {
@@ -48,10 +57,22 @@ public class FileGameFactory implements GameFactory {
         resTypeFactory = new JavaResourceTypeFactory();
     }
 
+    /**
+     * Unmarshalls the XML in order to parse the game parameters.
+     *
+     * @param path                      the config file to be parsed
+     * @return                          the object created by the XML unmarshalling
+     * @throws JAXBException            generic exception from the JAXB library
+     * @throws FileNotFoundException    config file not found
+     */
     public ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
         JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
         return (ModelConfig) context.createUnmarshaller()
                 .unmarshal(new FileReader(path));
+    }
+
+    public ModelConfig getModelConfig() {
+        return config;
     }
 
     /**
@@ -72,6 +93,12 @@ public class FileGameFactory implements GameFactory {
         return colorFactory;
     }
 
+    /**
+     * Builder of a multiplayer game instance.
+     *
+     * @param nicknames the list of nicknames of players who joined
+     * @return          the multiplayer game
+     */
     public Game buildMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
         if (nicknames.size() > config.getMaxPlayers())
@@ -112,6 +139,12 @@ public class FileGameFactory implements GameFactory {
         return new Game(players, new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()), generateMarket(), new FaithTrack(generateVaticanSections(), generateYellowTiles()), parseMaxFaith(), parseMaxDevCards());
     }
 
+    /**
+     * Builder of a single-player game instance.
+     *
+     * @param nickname  the nickname of the only player
+     * @return          the single-player game
+     */
     public SoloGame buildSoloGame(String nickname) {
         int playerLeadersCount = config.getNumLeaders();
         List<LeaderCard> shuffledLeaderCards = null;
@@ -150,6 +183,11 @@ public class FileGameFactory implements GameFactory {
         return game;
     }
 
+    /**
+     * Returns a list of all possible development cards.
+     *
+     * @return  list of development cards
+     */
     public List<DevelopmentCard> generateDevCards(){
         List<ModelConfig.XmlDevCard> source = config.getDevCards();
         final ResourceRequirement[] cost = new ResourceRequirement[1];
@@ -167,11 +205,12 @@ public class FileGameFactory implements GameFactory {
         return devCards;
     }
 
+    /**
+     * Returns a list of all possible leader cards.
+     *
+     * @return  list of leader cards
+     */
     public List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-//        List<ModelConfig.XmlDepotLeaderCard> sourceDepot = config.getDepotLeaderCards();
-//        List<ModelConfig.XmlDiscountLeaderCard> sourceDiscount = config.getDiscountLeaderCards();
-//        List<ModelConfig.XmlZeroLeaderCard> sourceZero = config.getZeroLeaderCards();
-//        List<ModelConfig.XmlProductionLeaderCard> sourceProduction = config.getProductionLeaderCards();
         List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
         CardRequirement[] cost = new CardRequirement[1];
         Class<?> className;
@@ -198,6 +237,11 @@ public class FileGameFactory implements GameFactory {
         return leaderCards;
     }
 
+    /**
+     * Returns a new Market instance.
+     *
+     * @return  the Market
+     */
     public Market generateMarket(){
         return new Market(new HashMap<>(){{
             for(ModelConfig.XmlResourceEntry entry : config.getMarket())
@@ -205,6 +249,11 @@ public class FileGameFactory implements GameFactory {
         }}, parseColumnsCount(), resTypeFactory.get("zero"));
     }
 
+    /**
+     * Returns a set of the vatican sections.
+     *
+     * @return  set of the vatican sections
+     */
     public Set<FaithTrack.VaticanSection> generateVaticanSections(){
         return new HashSet<>(){{
             for(ModelConfig.XmlFaithTrack.XmlVaticanSection section : config.getFaithTrack().getSections()){
@@ -213,6 +262,11 @@ public class FileGameFactory implements GameFactory {
         }};
     }
 
+    /**
+     * Returns a set of the yellow tiles.
+     *
+     * @return  set of the yellow tiles
+     */
     public Set<FaithTrack.YellowTile> generateYellowTiles(){
         return new HashSet<>(){{
             for(ModelConfig.XmlFaithTrack.XmlYellowTile tile : config.getFaithTrack().getTiles()){
@@ -221,6 +275,11 @@ public class FileGameFactory implements GameFactory {
         }};
     }
 
+    /**
+     * Returns a list of the action tokens.
+     *
+     * @return  list of action tokens
+     */
     public List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlActionToken> source = config.getTokens();
         List<ActionToken> tokens = new ArrayList<>();
@@ -241,22 +300,57 @@ public class FileGameFactory implements GameFactory {
         return tokens;
     }
 
+    /**
+     * Returns the maximum level a development card can have.
+     *
+     * @return  max card level
+     */
     public int parseLevelsCount(){
         return config.getMaxLevel();
     }
+
+    /**
+     * Returns the number of different card colors.
+     *
+     * @return  number of card colors
+     */
     public int parseColorsCount(){
         return config.getNumColors();
     }
+
+    /**
+     * Returns the number of columns of the market grid.
+     *
+     * @return  number of market columns
+     */
     public int parseColumnsCount(){
         return config.getMarketColumns();
     }
+
+    /**
+     * Returns the maximum amount of faith points a player can have.
+     *
+     * @return  max number of faith points
+     */
     public int parseMaxFaith(){
         return config.getMaxFaith();
     }
+
+    /**
+     * Returns the number of development cards a player can have before triggering the end of a game.
+     *
+     * @return  max number of development cards purchasable by a player
+     */
     public int parseMaxDevCards(){
         return config.getMaxDevCards();
     }
 
+    /**
+     * Helper method that generates a Production.
+     *
+     * @param production    the production "recipe" parsed from file
+     * @return              a new Production
+     */
     private Production generateProduction(ModelConfig.XmlProduction production){
         return new Production(new HashMap<>(){{
             if(production.getInput() != null)
@@ -269,6 +363,12 @@ public class FileGameFactory implements GameFactory {
         }}, production.getOutputBlanks());
     }
 
+    /**
+     * Helper method that puts together the parsed resources entries in a new data structure.
+     *
+     * @param requirements  the resources and relative amounts required, obtained from parsing the config file
+     * @return              a new data structure for resource requirements
+     */
     private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceEntry> requirements){
         return new ResourceRequirement(new HashMap<>() {{
             for (ModelConfig.XmlResourceEntry entry : requirements)

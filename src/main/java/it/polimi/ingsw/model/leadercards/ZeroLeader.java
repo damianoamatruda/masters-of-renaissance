@@ -14,6 +14,9 @@ public class ZeroLeader extends LeaderCard {
     /**
      * Class constructor.
      *
+     * @param discount      the amount of resources to be subtracted when applying the ability (unused in this case)
+     * @param shelfSize     the maximum amount of resources the card can store (unused in this case)
+     * @param production    the production of the card (unused in this case)
      * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied for card activation
