@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.*;
@@ -23,13 +23,13 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DevCardGridTest {
-    JavaGameFactory factory;
+    FileGameFactory factory;
     Game game;
     DevCardColorFactory colorFactory;
     ResourceTypeFactory resTypeFactory;
     @BeforeAll
     void setup(){
-        factory = new JavaGameFactory();
+        factory = new FileGameFactory("src/main/resources/config.xml");
         game = factory.buildMultiGame(List.of("Alessandro", "Damiano", "Marco"));
         colorFactory = factory.getDevCardColorFactory();
         resTypeFactory = factory.getResTypeFactory();
@@ -55,7 +55,7 @@ public class DevCardGridTest {
      */
     @RepeatedTest(value = 10)
     void peekCardsTest() {
-        Game otherGame = new JavaGameFactory().buildMultiGame(List.of("Alessandro", "Damiano", "Marco"));
+        Game otherGame = new FileGameFactory("src/main/resources/config.xml").buildMultiGame(List.of("Alessandro", "Damiano", "Marco"));
         DevCardGrid grid = otherGame.getDevCardGrid();
         List<List<DevelopmentCard>> top = grid.peekDevCards();
         for(int i = 0; i < top.size(); i++)

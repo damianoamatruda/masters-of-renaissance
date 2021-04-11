@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.actiontokens;
 
+import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.model.DevCardGrid;
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.Game;
@@ -24,14 +24,14 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ActionTokenDiscardTwoTest {
-    JavaGameFactory factory;
+    FileGameFactory factory;
     DevCardColorFactory colorFactory;
     ResourceTypeFactory resTypeFactory;
     SoloGame game;
 
     @BeforeAll
     void setup(){
-        factory = new JavaGameFactory();
+        factory = new FileGameFactory("src/main/resources/config.xml");
         game = factory.buildSoloGame("Alessandro");
         colorFactory = factory.getDevCardColorFactory();
         resTypeFactory = factory.getResTypeFactory();

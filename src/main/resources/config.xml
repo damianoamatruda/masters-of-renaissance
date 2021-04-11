@@ -631,7 +631,7 @@
         <!-- 19 -->
         <Card>
             <color>Blue</color>
-            <level>4</level>
+            <level>2</level>
             <cost>
                 <resource-entry>
                     <resource-type>Coin</resource-type>
@@ -659,7 +659,7 @@
         <!-- 20 -->
         <Card>
             <color>Yellow</color>
-            <level>4</level>
+            <level>2</level>
             <cost>
                 <resource-entry>
                     <resource-type>Stone</resource-type>
@@ -1680,7 +1680,7 @@
     <leader-cards>
         <!-- 49 -->
         <Card>
-            <type>DiscountLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DiscountLeader</type>
             <discount>1</discount>
             <resource>Servant</resource>
             <cost>
@@ -1699,7 +1699,7 @@
         </Card>
         <!-- 50 -->
         <Card>
-            <type>DiscountLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DiscountLeader</type>
             <discount>1</discount>
             <resource>Shield</resource>
             <cost>
@@ -1718,7 +1718,7 @@
         </Card>
         <!-- 51 -->
         <Card>
-            <type>DiscountLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DiscountLeader</type>
             <discount>1</discount>
             <resource>Stone</resource>
             <cost>
@@ -1737,7 +1737,7 @@
         </Card>
         <!-- 52 -->
         <Card>
-            <type>DiscountLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DiscountLeader</type>
             <discount>1</discount>
             <resource>Coin</resource>
             <cost>
@@ -1756,7 +1756,7 @@
         </Card>
         <!-- 53 -->
         <Card>
-            <type>DepotLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Stone</resource>
             <cost>
@@ -1769,7 +1769,7 @@
         </Card>
         <!-- 54 -->
         <Card>
-            <type>DepotLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Servant</resource>
             <cost>
@@ -1782,7 +1782,7 @@
         </Card>
         <!-- 55 -->
         <Card>
-            <type>DepotLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Shield</resource>
             <cost>
@@ -1795,7 +1795,7 @@
         </Card>
         <!-- 56 -->
         <Card>
-            <type>DepotLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Coin</resource>
             <cost>
@@ -1808,7 +1808,7 @@
         </Card>
         <!-- 57 -->
         <Card>
-            <type>ZeroLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ZeroLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1826,7 +1826,7 @@
         </Card>
         <!-- 58 -->
         <Card>
-            <type>ZeroLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ZeroLeader</type>
             <resource>Shield</resource>
             <cost>
                 <card-requirement>
@@ -1844,7 +1844,7 @@
         </Card>
         <!-- 59 -->
         <Card>
-            <type>ZeroLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ZeroLeader</type>
             <resource>Stone</resource>
             <cost>
                 <card-requirement>
@@ -1862,7 +1862,7 @@
         </Card>
         <!-- 60 -->
         <Card>
-            <type>ZeroLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ZeroLeader</type>
             <resource>Coin</resource>
             <cost>
                 <card-requirement>
@@ -1880,7 +1880,7 @@
         </Card>
         <!-- 61 -->
         <Card>
-            <type>DiscountLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ProductionLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1909,7 +1909,7 @@
         </Card>
         <!-- 62 -->
         <Card>
-            <type>DiscountLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ProductionLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1938,7 +1938,7 @@
         </Card>
         <!-- 63 -->
         <Card>
-            <type>DiscountLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ProductionLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1967,7 +1967,7 @@
         </Card>
         <!-- 64 -->
         <Card>
-            <type>ProductionLeader</type>
+            <type>it.polimi.ingsw.model.leadercards.ProductionLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1997,27 +1997,27 @@
     </leader-cards>
     <market>
         <resource-entry>
-            <type>Coin</type>
+            <resource-type>Coin</resource-type>
             <amount>2</amount>
         </resource-entry>
         <resource-entry>
-            <type>Faith</type>
+            <resource-type>Faith</resource-type>
             <amount>1</amount>
         </resource-entry>
         <resource-entry>
-            <type>Servant</type>
+            <resource-type>Servant</resource-type>
             <amount>2</amount>
         </resource-entry>
         <resource-entry>
-            <type>Shield</type>
+            <resource-type>Shield</resource-type>
             <amount>2</amount>
         </resource-entry>
         <resource-entry>
-            <type>Stone</type>
+            <resource-type>Stone</resource-type>
             <amount>2</amount>
         </resource-entry>
         <resource-entry>
-            <type>Zero</type>
+            <resource-type>Zero</resource-type>
             <amount>4</amount>
         </resource-entry>
     </market>
@@ -2080,28 +2080,28 @@
     </base-production>
     <action-tokens>
         <token>
-            <name>ActionTokenBlackMoveOneShuffle</name>
+            <name>it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle</name>
         </token>
         <token>
-            <name>ActionTokenBlackMoveTwo</name>
+            <name>it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo</name>
         </token>
         <token>
-            <name>ActionTokenBlackMoveTwo</name>
+            <name>it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo</name>
         </token>
         <token>
-            <name>ActionTokenDiscardTwo</name>
+            <name>it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo</name>
             <color>Blue</color>
         </token>
         <token>
-            <name>ActionTokenDiscardTwo</name>
+            <name>it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo</name>
             <color>Green</color>
         </token>
         <token>
-            <name>ActionTokenDiscardTwo</name>
+            <name>it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo</name>
             <color>Purple</color>
         </token>
         <token>
-            <name>ActionTokenDiscardTwo</name>
+            <name>it.polimi.ingsw.model.actiontokens.ActionTokenDiscardTwo</name>
             <color>Yellow</color>
         </token>
     </action-tokens>

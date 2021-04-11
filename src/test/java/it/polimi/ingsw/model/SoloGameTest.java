@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.JavaGameFactory;
+import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
-    JavaGameFactory factory = new JavaGameFactory();
+    FileGameFactory factory = new FileGameFactory("src/main/resources/config.xml");
     ResourceTypeFactory resTypeFactory;
     SoloGame game;
     Player player;
@@ -33,7 +33,7 @@ public class SoloGameTest {
             add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
             add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
         }}, new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
+        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles()), null, 24, 7);
 
     }
     /**
@@ -43,7 +43,7 @@ public class SoloGameTest {
     void blackPointsGetterTest() {
         Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         List<ActionToken> stack = new ArrayList<>();
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), stack, 24, 7);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles()), stack, 24, 7);
         solo.incrementBlackPoints();
         solo.incrementBlackPoints();
 
@@ -68,9 +68,9 @@ public class SoloGameTest {
          */
         @BeforeEach
         void setup() {
-            player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                    new Production(Map.of(), 0, Map.of(), 0), 3);
-            game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
+            FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
+            game = f.buildSoloGame("Alessandro");
+            player = game.getPlayers().get(0);
 
             firstVaticanReportTile = track.getVaticanSections()
                     .stream()
@@ -126,12 +126,9 @@ public class SoloGameTest {
      */
     @Test
     void onTurnEnd() {
-        player = new Player("Alessandro", true, new ArrayList<>(), new Warehouse(3), new Strongbox(),
-                new Production(Map.of(), 0, Map.of(), 0), 3);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), new ArrayList<>() {{
-            for(int i = 0; i < 4; i++)
-                add(new ActionTokenBlackMoveTwo());
-        }}, 24, 7);
+        FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
+        game = f.buildSoloGame("Alessandro");
+        player = game.getPlayers().get(0);
 
         assertEquals(player, game.onTurnEnd());
 

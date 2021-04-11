@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.model.devcardcolors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,10 +25,11 @@ public class GameTest {
     /**
      * First instantiation of Game with 3 players.
      */
-    @BeforeAll
+    @BeforeEach
     public void setup() {
-        devCardColorFactory = new JavaDevCardColorFactory();
-        game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        FileGameFactory factory = new FileGameFactory("src/main/resources/config.xml");
+        game = factory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        devCardColorFactory = factory.getDevCardColorFactory();
         initialOrder = game.getPlayers();
     }
 
@@ -366,11 +367,4 @@ public class GameTest {
 
     }
 
-    /**
-     * Restores Game to initial conditions, so that every single test is not influenced by other tests.
-     */
-    @AfterEach
-    void restore() {
-        setup();
-    }
 }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
@@ -12,6 +12,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 //import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 
+import javax.xml.bind.JAXBException;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,7 @@ public class PlayerTest {
     void setup() {
         resTypeFactory = new JavaResourceTypeFactory();
         devCardColorFactory = new JavaDevCardColorFactory();
-        game = new JavaGameFactory().buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+        game = new FileGameFactory("src/main/resources/config.xml").buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         player = game.getPlayers().get(0);
     }
 

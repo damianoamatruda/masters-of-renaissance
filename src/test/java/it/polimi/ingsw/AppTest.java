@@ -32,7 +32,8 @@ public class AppTest
     @Test
     void test2() throws JAXBException, FileNotFoundException {
         FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
-        assertEquals(48, f.generateDevCards().size());
-        assertNotEquals(f.generateDevCards().get(0).getLevel(), f.generateDevCards().get(40).getLevel());
+//        assertEquals(48, f.generateDevCards().size());
+//        assertNotEquals(f.generateDevCards().get(0).getLevel(), f.generateDevCards().get(40).getLevel());
+        assertEquals(13, f.config.getMarket().stream().mapToInt(m -> m.getAmount()).sum());
     }
 }
