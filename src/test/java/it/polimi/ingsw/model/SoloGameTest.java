@@ -30,8 +30,8 @@ public class SoloGameTest {
     void setup() {
         resTypeFactory = new JavaResourceTypeFactory();
         player = new Player("Alessandro", true, new ArrayList<>(){{
-            add(new DepotLeader(2, resTypeFactory.get("Coin"),null,0));
-            add(new DepotLeader(2, resTypeFactory.get("Coin"),null,0));
+            add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
+            add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
         }}, new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
         game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(new JavaGameFactory().generateVaticanSections(), new JavaGameFactory().generateYellowTiles()), null, 24, 7);
 

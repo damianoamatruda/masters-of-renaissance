@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leadercards;
 
+import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.ResourceShelf;
@@ -21,7 +22,7 @@ public class DepotLeader extends LeaderCard {
      * @param requirement   the requirement to be satisfied to activate the card
      * @param victoryPoints the victory points associated with the card
      */
-    public DepotLeader(int shelfSize, ResourceType resource, CardRequirement requirement, int victoryPoints) {
+    public DepotLeader(int discount, int shelfSize, Production production, ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
         this.shelf = new ResourceShelf(resource, shelfSize);
     }

@@ -764,71 +764,71 @@ public class JavaGameFactory implements GameFactory {
     public List<LeaderCard> generateLeaderCards() {
         return List.of(
                 /* 49 */
-                new DiscountLeader(1, resTypeFactory.get("Servant"), new DevCardRequirement(
+                new DiscountLeader(1, 0, null, resTypeFactory.get("Servant"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 1),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 1)
                 )), 2),
                 /* 50 */
-                new DiscountLeader(1, resTypeFactory.get("Shield"), new DevCardRequirement(
+                new DiscountLeader(1, 0, null, resTypeFactory.get("Shield"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 1),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 1)
                 )), 2),
                 /* 51 */
-                new DiscountLeader(1, resTypeFactory.get("Stone"), new DevCardRequirement(
+                new DiscountLeader(1, 0, null, resTypeFactory.get("Stone"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 1),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 1)
                 )), 2),
                 /* 52 */
-                new DiscountLeader(1, resTypeFactory.get("Coin"), new DevCardRequirement(
+                new DiscountLeader(1, 0, null, resTypeFactory.get("Coin"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 1),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 1)
                 )), 2),
                 /* 53 */
-                new DepotLeader(2, resTypeFactory.get("Stone"), new ResourceRequirement(Map.ofEntries(
+                new DepotLeader(0, 2, null, resTypeFactory.get("Stone"), new ResourceRequirement(Map.ofEntries(
                         entry(resTypeFactory.get("Coin"), 5)
                 )), 3),
                 /* 54 */
-                new DepotLeader(2, resTypeFactory.get("Servant"), new ResourceRequirement(Map.ofEntries(
+                new DepotLeader(0, 2, null, resTypeFactory.get("Servant"), new ResourceRequirement(Map.ofEntries(
                         entry(resTypeFactory.get("Stone"), 5)
                 )), 3),
                 /* 55 */
-                new DepotLeader(2, resTypeFactory.get("Shield"), new ResourceRequirement(Map.ofEntries(
+                new DepotLeader(0, 2, null, resTypeFactory.get("Shield"), new ResourceRequirement(Map.ofEntries(
                         entry(resTypeFactory.get("Servant"), 5)
                 )), 3),
                 /* 56 */
-                new DepotLeader(2, resTypeFactory.get("Coin"), new ResourceRequirement(Map.ofEntries(
+                new DepotLeader(0, 2, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.ofEntries(
                         entry(resTypeFactory.get("Shield"), 5)
                 )), 3),
                 /* 57 */
-                new ZeroLeader(resTypeFactory.get("Servant"), new DevCardRequirement(
+                new ZeroLeader(0, 0, null, resTypeFactory.get("Servant"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 2),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 1)
                 )), 5),
                 /* 58 */
-                new ZeroLeader(resTypeFactory.get("Shield"), new DevCardRequirement(
+                new ZeroLeader(0, 0, null, resTypeFactory.get("Shield"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 2),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 1)
                 )), 5),
                 /* 59 */
-                new ZeroLeader(resTypeFactory.get("Stone"), new DevCardRequirement(
+                new ZeroLeader(0, 0, null, resTypeFactory.get("Stone"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 0, 2),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 0, 1)
                 )), 5),
                 /* 60 */
-                new ZeroLeader(resTypeFactory.get("Coin"), new DevCardRequirement(
+                new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new DevCardRequirement(
                         Set.of(
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 0, 2),
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 0, 1)
                 )), 5),
                 /* 61 */
-                new ProductionLeader(
+                new ProductionLeader(0, 0,
                         new Production(
                                 Map.ofEntries(
                                         entry(resTypeFactory.get("Shield"), 1)),
@@ -841,7 +841,7 @@ public class JavaGameFactory implements GameFactory {
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Yellow"), 2, 1)
                 )), 4),
                 /* 62 */
-                new ProductionLeader(
+                new ProductionLeader(0, 0,
                         new Production(
                                 Map.ofEntries(
                                         entry(resTypeFactory.get("Servant"), 1)),
@@ -854,7 +854,7 @@ public class JavaGameFactory implements GameFactory {
                                         new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 2, 1)
                 )), 4),
                 /* 63 */
-                new ProductionLeader(
+                new ProductionLeader(0, 0,
                         new Production(
                                 Map.ofEntries(
                                         entry(resTypeFactory.get("Stone"), 1)),
@@ -867,7 +867,7 @@ public class JavaGameFactory implements GameFactory {
                                 new DevCardRequirement.Entry(devCardColorFactory.get("Purple"), 2, 1)
                 )), 4),
                 /* 64 */
-                new ProductionLeader(
+                new ProductionLeader(0, 0,
                         new Production(
                                 Map.ofEntries(
                                         entry(resTypeFactory.get("Coin"), 1)),

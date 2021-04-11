@@ -5,32 +5,36 @@
     <num-leader-cards>4</num-leader-cards>
     <max-faith>24</max-faith>
     <max-development-cards>7</max-development-cards>
+    <num-leaders>4</num-leaders>
+    <max-level>3</max-level>
+    <num-colors>4</num-colors>
+    <market-columns>4</market-columns>
+    <max-shelf-size>3</max-shelf-size>
+    <slots-count>3</slots-count>
     <development-cards>
-        <max-level>3</max-level>
-        <num-colors>4</num-colors>
         <!-- 1 -->
         <Card>
             <color>Green</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -41,24 +45,24 @@
             <color>Purple</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -69,24 +73,24 @@
             <color>Blue</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -97,24 +101,24 @@
             <color>Yellow</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -125,32 +129,32 @@
             <color>Green</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>1</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -161,32 +165,32 @@
             <color>Purple</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>1</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -197,32 +201,32 @@
             <color>Blue</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>1</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -233,32 +237,32 @@
             <color>Yellow</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>1</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>1</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -269,32 +273,32 @@
             <color>Green</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -305,32 +309,32 @@
             <color>Purple</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -341,32 +345,32 @@
             <color>Blue</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -377,32 +381,32 @@
             <color>Yellow</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -413,36 +417,36 @@
             <color>Green</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>2</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -453,36 +457,36 @@
             <color>Purple</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>2</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -493,36 +497,36 @@
             <color>Blue</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>2</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -533,36 +537,36 @@
             <color>Yellow</color>
             <level>1</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>2</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -573,24 +577,24 @@
             <color>Green</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>4</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -601,24 +605,24 @@
             <color>Purple</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>4</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -629,24 +633,24 @@
             <color>Blue</color>
             <level>4</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>1</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -657,24 +661,24 @@
             <color>Yellow</color>
             <level>4</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>1</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -685,32 +689,32 @@
             <color>Green</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -721,32 +725,32 @@
             <color>Purple</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -757,32 +761,32 @@
             <color>Blue</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -793,32 +797,32 @@
             <color>Yellow</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -829,28 +833,28 @@
             <color>Green</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>5</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -861,28 +865,28 @@
             <color>Purple</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>5</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -893,28 +897,28 @@
             <color>Blue</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>5</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -925,28 +929,28 @@
             <color>Yellow</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>5</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -957,32 +961,32 @@
             <color>Green</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -993,32 +997,32 @@
             <color>Purple</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1029,32 +1033,32 @@
             <color>Blue</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1065,32 +1069,32 @@
             <color>Yellow</color>
             <level>2</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>3</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>3</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1101,28 +1105,28 @@
             <color>Green</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>6</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>3</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1133,28 +1137,28 @@
             <color>Purple</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>6</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>3</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1165,28 +1169,28 @@
             <color>Blue</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>6</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>3</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1197,28 +1201,28 @@
             <color>Yellow</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>6</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>3</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>2</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1229,40 +1233,40 @@
             <color>Green</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>5</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1273,40 +1277,40 @@
             <color>Purple</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>5</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1317,40 +1321,40 @@
             <color>Blue</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>5</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1361,40 +1365,40 @@
             <color>Yellow</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>5</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>2</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>2</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1405,28 +1409,28 @@
             <color>Green</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>7</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1437,28 +1441,28 @@
             <color>Purple</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>7</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1469,28 +1473,28 @@
             <color>Blue</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>7</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1501,28 +1505,28 @@
             <color>Yellow</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>7</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1533,32 +1537,32 @@
             <color>Green</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>4</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>4</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>3</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1569,32 +1573,32 @@
             <color>Purple</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>4</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Shield</resource-type>
                     <amount>4</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>3</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1605,32 +1609,32 @@
             <color>Blue</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Coin</resource-type>
                     <amount>4</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>4</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1641,32 +1645,32 @@
             <color>Yellow</color>
             <level>3</level>
             <cost>
-                <requirement>
+                <resource-entry>
                     <resource-type>Stone</resource-type>
                     <amount>4</amount>
-                </requirement>
-                <requirement>
+                </resource-entry>
+                <resource-entry>
                     <resource-type>Servant</resource-type>
                     <amount>4</amount>
-                </requirement>
+                </resource-entry>
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
-                    <entry>
+                    </resource-entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>3</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>0</output-blanks>
             </production>
@@ -1676,7 +1680,7 @@
     <leader-cards>
         <!-- 49 -->
         <Card>
-            <type>Discount</type>
+            <type>DiscountLeader</type>
             <discount>1</discount>
             <resource>Servant</resource>
             <cost>
@@ -1695,7 +1699,7 @@
         </Card>
         <!-- 50 -->
         <Card>
-            <type>Discount</type>
+            <type>DiscountLeader</type>
             <discount>1</discount>
             <resource>Shield</resource>
             <cost>
@@ -1714,7 +1718,7 @@
         </Card>
         <!-- 51 -->
         <Card>
-            <type>Discount</type>
+            <type>DiscountLeader</type>
             <discount>1</discount>
             <resource>Stone</resource>
             <cost>
@@ -1733,7 +1737,7 @@
         </Card>
         <!-- 52 -->
         <Card>
-            <type>Discount</type>
+            <type>DiscountLeader</type>
             <discount>1</discount>
             <resource>Coin</resource>
             <cost>
@@ -1752,59 +1756,59 @@
         </Card>
         <!-- 53 -->
         <Card>
-            <type>Depot</type>
+            <type>DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Stone</resource>
             <cost>
-                <resource-requirement>
+                <resource-entry>
                     <card-color>Coin</card-color>
                     <amount>5</amount>
-                </resource-requirement>
+                </resource-entry>
             </cost>
             <victory-points>3</victory-points>
         </Card>
         <!-- 54 -->
         <Card>
-            <type>Depot</type>
+            <type>DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Servant</resource>
             <cost>
-                <resource-requirement>
+                <resource-entry>
                     <card-color>Stone</card-color>
                     <amount>5</amount>
-                </resource-requirement>
+                </resource-entry>
             </cost>
             <victory-points>3</victory-points>
         </Card>
         <!-- 55 -->
         <Card>
-            <type>Depot</type>
+            <type>DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Shield</resource>
             <cost>
-                <resource-requirement>
+                <resource-entry>
                     <card-color>Servant</card-color>
                     <amount>5</amount>
-                </resource-requirement>
+                </resource-entry>
             </cost>
             <victory-points>3</victory-points>
         </Card>
         <!-- 56 -->
         <Card>
-            <type>Depot</type>
+            <type>DepotLeader</type>
             <shelf-size>2</shelf-size>
             <resource>Coin</resource>
             <cost>
-                <resource-requirement>
+                <resource-entry>
                     <card-color>Shield</card-color>
                     <amount>5</amount>
-                </resource-requirement>
+                </resource-entry>
             </cost>
             <victory-points>3</victory-points>
         </Card>
         <!-- 57 -->
         <Card>
-            <type>Zero</type>
+            <type>ZeroLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1822,7 +1826,7 @@
         </Card>
         <!-- 58 -->
         <Card>
-            <type>Zero</type>
+            <type>ZeroLeader</type>
             <resource>Shield</resource>
             <cost>
                 <card-requirement>
@@ -1840,7 +1844,7 @@
         </Card>
         <!-- 59 -->
         <Card>
-            <type>Zero</type>
+            <type>ZeroLeader</type>
             <resource>Stone</resource>
             <cost>
                 <card-requirement>
@@ -1858,7 +1862,7 @@
         </Card>
         <!-- 60 -->
         <Card>
-            <type>Zero</type>
+            <type>ZeroLeader</type>
             <resource>Coin</resource>
             <cost>
                 <card-requirement>
@@ -1876,7 +1880,7 @@
         </Card>
         <!-- 61 -->
         <Card>
-            <type>Production</type>
+            <type>DiscountLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1887,17 +1891,17 @@
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Shield</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>1</output-blanks>
             </production>
@@ -1905,7 +1909,7 @@
         </Card>
         <!-- 62 -->
         <Card>
-            <type>Production</type>
+            <type>DiscountLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1916,17 +1920,17 @@
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Servant</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>1</output-blanks>
             </production>
@@ -1934,7 +1938,7 @@
         </Card>
         <!-- 63 -->
         <Card>
-            <type>Production</type>
+            <type>DiscountLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1945,17 +1949,17 @@
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Stone</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>1</output-blanks>
             </production>
@@ -1963,7 +1967,7 @@
         </Card>
         <!-- 64 -->
         <Card>
-            <type>Production</type>
+            <type>ProductionLeader</type>
             <resource>Servant</resource>
             <cost>
                 <card-requirement>
@@ -1974,102 +1978,106 @@
             </cost>
             <production>
                 <input>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Coin</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </input>
                 <input-blanks>0</input-blanks>
                 <output>
-                    <entry>
+                    <resource-entry>
                         <resource-type>Faith</resource-type>
                         <amount>1</amount>
-                    </entry>
+                    </resource-entry>
                 </output>
                 <output-blanks>1</output-blanks>
             </production>
             <victory-points>4</victory-points>
         </Card>
-
     </leader-cards>
     <market>
-        <columns>4</columns>
-        <marble>
+        <resource-entry>
             <type>Coin</type>
             <amount>2</amount>
-        </marble>
-        <marble>
+        </resource-entry>
+        <resource-entry>
             <type>Faith</type>
             <amount>1</amount>
-        </marble>
-        <marble>
+        </resource-entry>
+        <resource-entry>
             <type>Servant</type>
             <amount>2</amount>
-        </marble>
-        <marble>
+        </resource-entry>
+        <resource-entry>
             <type>Shield</type>
             <amount>2</amount>
-        </marble>
-        <marble>
+        </resource-entry>
+        <resource-entry>
             <type>Stone</type>
             <amount>2</amount>
-        </marble>
-        <marble>
+        </resource-entry>
+        <resource-entry>
             <type>Zero</type>
             <amount>4</amount>
-        </marble>
+        </resource-entry>
     </market>
-    <vatican-sections>
-        <section>
-            <section-end>8</section-end>
-            <section-begin>5</section-begin>
-            <section-points>2</section-points>
-        </section>
-        <section>
-            <section-end>16</section-end>
-            <section-begin>12</section-begin>
-            <section-points>3</section-points>
-        </section>
-        <section>
-            <section-end>24</section-end>
-            <section-begin>19</section-begin>
-            <section-points>4</section-points>
-        </section>
-    </vatican-sections>
-    <yellow-tiles>
-        <tile>
-            <number>3</number>
-            <points>1</points>
-        </tile>
-        <tile>
-            <number>6</number>
-            <points>2</points>
-        </tile>
-        <tile>
-            <number>9</number>
-            <points>4</points>
-        </tile>
-        <tile>
-            <number>12</number>
-            <points>6</points>
-        </tile>
-        <tile>
-            <number>15</number>
-            <points>9</points>
-        </tile>
-        <tile>
-            <number>18</number>
-            <points>12</points>
-        </tile>
-        <tile>
-            <number>21</number>
-            <points>16</points>
-        </tile>
-        <tile>
-            <number>24</number>
-            <points>20</points>
-        </tile>
-    </yellow-tiles>
+    <Faith-Track>
+        <vatican-sections>
+            <section>
+                <section-end>8</section-end>
+                <section-begin>5</section-begin>
+                <section-points>2</section-points>
+            </section>
+            <section>
+                <section-end>16</section-end>
+                <section-begin>12</section-begin>
+                <section-points>3</section-points>
+            </section>
+            <section>
+                <section-end>24</section-end>
+                <section-begin>19</section-begin>
+                <section-points>4</section-points>
+            </section>
+        </vatican-sections>
+        <yellow-tiles>
+            <tile>
+                <number>3</number>
+                <points>1</points>
+            </tile>
+            <tile>
+                <number>6</number>
+                <points>2</points>
+            </tile>
+            <tile>
+                <number>9</number>
+                <points>4</points>
+            </tile>
+            <tile>
+                <number>12</number>
+                <points>6</points>
+            </tile>
+            <tile>
+                <number>15</number>
+                <points>9</points>
+            </tile>
+            <tile>
+                <number>18</number>
+                <points>12</points>
+            </tile>
+            <tile>
+                <number>21</number>
+                <points>16</points>
+            </tile>
+            <tile>
+                <number>24</number>
+                <points>20</points>
+            </tile>
+        </yellow-tiles>
+    </Faith-Track>
+    <base-production>
+        <input-blanks>2</input-blanks>
+        <output-blanks>1</output-blanks>
+    </base-production>
     <action-tokens>
         <token>
             <name>ActionTokenBlackMoveOneShuffle</name>

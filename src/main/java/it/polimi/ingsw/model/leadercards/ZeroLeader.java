@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.leadercards;
 
+import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
@@ -18,7 +19,7 @@ public class ZeroLeader extends LeaderCard {
      * @param requirement   the requirement to be satisfied for card activation
      * @param victoryPoints the victory points associated with the card
      */
-    public ZeroLeader(ResourceType resource, CardRequirement requirement, int victoryPoints) {
+    public ZeroLeader(int discount, int shelfSize, Production production, ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
     }
 
