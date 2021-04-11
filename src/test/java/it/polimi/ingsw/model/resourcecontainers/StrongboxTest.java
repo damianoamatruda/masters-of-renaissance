@@ -9,6 +9,9 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for Strongbox.
+ */
 class StrongboxTest {
     @Test
     void newStrongboxShouldBeEmpty() {
@@ -57,7 +60,7 @@ class StrongboxTest {
     }
 
     @Test
-    void resourceTypesOfStrongboxWithResourcesOfMultipleTypes() throws Exception {
+    void resourceTypesOfStrongboxWithResourcesOfMultipleTypes() throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
@@ -72,7 +75,7 @@ class StrongboxTest {
     }
 
     @Test
-    void quantityOfStrongboxWithResourcesOfMultipleTypes() throws Exception {
+    void quantityOfStrongboxWithResourcesOfMultipleTypes() throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
@@ -87,7 +90,7 @@ class StrongboxTest {
     }
 
     @Test
-    void resourceQuantityOfStrongboxWithResourcesOfMultipleTypes() throws Exception {
+    void resourceQuantityOfStrongboxWithResourcesOfMultipleTypes() throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
@@ -107,7 +110,7 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws Exception {
+    void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)
@@ -118,7 +121,7 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws Exception {
+    void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)
@@ -129,7 +132,7 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void clearedStrongboxShouldBeEmpty(int resourcesCount) throws Exception {
+    void clearedStrongboxShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)
@@ -141,18 +144,18 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) throws Exception {
+    void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)
             strongbox.addResource(r);
         for (int i = 0; i < resourcesCount; i++)
             strongbox.removeResource(r);
-        assertThrows(Exception.class, () -> strongbox.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> strongbox.removeResource(r));
     }
 
     @Test
-    void addAllFromStrongbox() throws Exception {
+    void addAllFromStrongbox() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);

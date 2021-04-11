@@ -52,16 +52,16 @@ public class Strongbox implements ResourceContainer {
     @Override
     public void addResource(ResourceType resType) {
         if (!resType.isStorable())
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         resources.compute(resType, (r, q) -> (q == null) ? 1 : q + 1);
     }
 
     @Override
-    public void removeResource(ResourceType resType) throws Exception {
+    public void removeResource(ResourceType resType) throws IllegalResourceTransferException {
         if (!resources.containsKey(resType))
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         if (!resType.isStorable())
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         resources.computeIfPresent(resType, (r, q) -> (q == 1) ? null : q - 1);
     }
 

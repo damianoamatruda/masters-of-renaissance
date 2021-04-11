@@ -47,11 +47,11 @@ public class Shelf implements ResourceContainer {
     /**
      * Swaps the content of two shelves if possible.
      *
-     * @param s1            the first shelf
-     * @param s2            the second shelf
-     * @throws Exception    if the shelves cannot be swapped
+     * @param s1                                the first shelf
+     * @param s2                                the second shelf
+     * @throws IllegalResourceTransferException if the shelves cannot be swapped
      */
-    public static void swap(Shelf s1, Shelf s2) throws Exception {
+    public static void swap(Shelf s1, Shelf s2) throws IllegalResourceTransferException {
         ResourceContainer clone1 = s1.copy();
         ResourceContainer clone2 = s2.copy();
 
@@ -106,40 +106,40 @@ public class Shelf implements ResourceContainer {
     }
 
     @Override
-    public void addResource(ResourceType resType) throws Exception {
+    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
         if (this.resType != null && !resType.equals(this.resType))
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         if (!resType.isStorable())
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         if (quantity == size)
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         this.resType = resType;
         this.quantity++;
     }
 
     @Override
-    public void removeResource(ResourceType resType) throws Exception {
+    public void removeResource(ResourceType resType) throws IllegalResourceTransferException {
         if (this.resType != null && !resType.equals(this.resType))
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         if (quantity == 0)
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         if (!resType.isStorable())
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
         if (quantity == 1)
             this.resType = null;
         this.quantity--;
     }
 
     @Override
-    public void addAll(ResourceContainer resourceContainer) throws Exception {
+    public void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException {
         if (resourceContainer.isEmpty())
             return;
         if (resourceContainer.getResourceTypes().size() > 1)
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         if (resourceContainer.getQuantity() > size - quantity)
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         if (resType != null && !resourceContainer.getResourceTypes().equals(Set.of(resType)))
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         resType = resourceContainer.getResourceTypes().stream().findFirst().orElse(null);
         quantity += resourceContainer.getQuantity();
     }

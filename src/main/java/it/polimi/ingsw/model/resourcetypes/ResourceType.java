@@ -38,7 +38,7 @@ public class ResourceType {
     }
 
     /**
-     * Routine for giving a resource of this type to the player. This should be always possible.
+     * Routine for giving a resource of this type to the player.
      *
      * @param game          the game the player is playing in
      * @param player        the player the resource goes to
@@ -46,7 +46,7 @@ public class ResourceType {
     public void giveToPlayer(Game game, Player player) { }
 
     /**
-     * Routine for taking a resource of this type from the player. This should be always possible.
+     * Routine for taking a resource of this type from the player.
      *
      * @param game          the game the player is playing in
      * @param player        the player the resource is taken from
@@ -54,7 +54,7 @@ public class ResourceType {
     public void takeFromPlayer(Game game, Player player) { }
 
     /**
-     * Routine for discarding a resource of this type. This should be always possible.
+     * Routine for discarding a resource of this type.
      *
      * @param game      the game the player is playing in
      * @param player    the player discarding the resource

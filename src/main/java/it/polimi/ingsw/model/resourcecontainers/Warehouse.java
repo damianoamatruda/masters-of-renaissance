@@ -83,11 +83,11 @@ public class Warehouse {
         }
 
         @Override
-        public void addResource(ResourceType resType) throws Exception {
+        public void addResource(ResourceType resType) throws IllegalResourceTransferException {
             if (warehouse.shelves.stream()
                     .filter(s -> !s.equals(this))
                     .anyMatch(s -> s.getResourceType() != null && s.getResourceType().equals(resType)))
-                throw new Exception();
+                throw new IllegalResourceTransferException();
             super.addResource(resType);
         }
     }

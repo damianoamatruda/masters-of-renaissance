@@ -66,7 +66,7 @@ public class MarketTest {
      * Checks that a row of the market grid remains the same after a complete shift.
      */
     @Test
-    public void completelyShiftRow() throws Exception {
+    public void completelyShiftRow() throws IllegalMarketTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", false);
         ResourceType r3 = new ResourceType("r3", true);

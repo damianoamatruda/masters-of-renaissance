@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 
@@ -29,7 +30,8 @@ public class Production {
 
     /**
      * Initializes the production specifying its input and its output.
-     *  @param input            the map of the resources to be given as input of the production
+     *
+     * @param input             the map of the resources to be given as input of the production
      * @param inputBlanks       the number of the input blanks
      * @param output            the map of the resources to be taken as output of the production
      * @param outputBlanks      the number of the output blanks
@@ -47,6 +49,7 @@ public class Production {
 
     /**
      * Initializes a production with non-discardable output specifying its input and its output.
+     *
      * @param input         the map of the resources to be given as input of the production
      * @param inputBlanks   the number of the input blanks
      * @param output        the map of the resources to be taken as output of the production
@@ -87,26 +90,26 @@ public class Production {
      * This is a transaction: if the transfer is unsuccessful, a checked exception is thrown and the states of the
      * player and the resource containers remain unchanged.
      *
-     * @param game              the game the player is playing in
-     * @param player            the player on which to trigger the actions of the non-storable resources
-     * @param inputBlanksRep    the map of the resources chosen as replacement for blanks in input
-     * @param outputBlanksRep   the map of the resources chosen as replacement for blanks in output
-     * @param inputContainers   the map of the resource containers from which to remove the input storable resources
-     * @param outputContainers  the map of the resource containers into which to add the output storable resources
-     * @throws Exception        if the transaction failed
+     * @param game                                  the game the player is playing in
+     * @param player                                the player on which to trigger the actions of the non-storable resources
+     * @param inputBlanksRep                        the map of the resources chosen as replacement for blanks in input
+     * @param outputBlanksRep                       the map of the resources chosen as replacement for blanks in output
+     * @param inputContainers                       the map of the resource containers from which to remove the input storable resources
+     * @param outputContainers                      the map of the resource containers into which to add the output storable resources
+     * @throws IllegalProductionActivationException if the transaction failed
      */
     public void activate(Game game, Player player,
                          Map<ResourceType, Integer> inputBlanksRep,
                          Map<ResourceType, Integer> outputBlanksRep,
                          Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws Exception {
+                         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalProductionActivationException {
         Map<ResourceType, Integer> replacedInput = addReplacedBlanks(input, inputBlanks, inputBlanksRep);
         Map<ResourceType, Integer> replacedOutput = addReplacedBlanks(output, outputBlanks, outputBlanksRep);
 
         if (!checkContainers(replacedInput, inputContainers))
-            throw new Exception();
+            throw new IllegalProductionActivationException();
         if (!checkContainers(replacedOutput, outputContainers))
-            throw new Exception();
+            throw new IllegalProductionActivationException();
 
         /* Get set of all resource containers, in input and in output */
         Set<ResourceContainer> allContainers = new HashSet<>();
@@ -124,8 +127,8 @@ public class Production {
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
                         clonedContainers.get(resContainer).removeResource(resType);
-                    } catch (Exception e) {
-                        throw new Exception();
+                    } catch (IllegalResourceTransferException e) {
+                        throw new IllegalProductionActivationException();
                     }
 
         /* Try adding all output storable resources into cloned resource containers (with input removed);
@@ -135,9 +138,9 @@ public class Production {
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
                         clonedContainers.get(resContainer).addResource(resType);
-                    } catch (Exception e) {
+                    } catch (IllegalResourceTransferException e) {
                         if (!discardableOutput)
-                            throw new Exception();
+                            throw new IllegalProductionActivationException();
                     }
 
         /* Remove all input storable resources from real resource containers;
@@ -147,7 +150,7 @@ public class Production {
                 for (int i = 0; i < inputContainers.get(resContainer).get(resType); i++)
                     try {
                         resContainer.removeResource(resType);
-                    } catch (Exception e) {
+                    } catch (IllegalResourceTransferException e) {
                         throw new RuntimeException();
                     }
 
@@ -158,7 +161,7 @@ public class Production {
                 for (int i = 0; i < outputContainers.get(resContainer).get(resType); i++)
                     try {
                         resContainer.addResource(resType);
-                    } catch (Exception e) {
+                    } catch (IllegalResourceTransferException e) {
                         if (discardableOutput)
                             resType.discard(game, player);
                         else
@@ -187,17 +190,17 @@ public class Production {
     /**
      * Builds a resource map with replaced blanks.
      *
-     * @param resourceMap   the map of resources
-     * @param blanks        the number of the blanks to add
-     * @param blanksRep     the map of replacement resources of blanks
-     * @return              a map of resources including replaced blanks
-     * @throws Exception    if it is not possible
+     * @param resourceMap                           the map of resources
+     * @param blanks                                the number of the blanks to add
+     * @param blanksRep                             the map of replacement resources of blanks
+     * @return                                      a map of resources including replaced blanks
+     * @throws IllegalProductionActivationException if it is not possible
      */
     private static Map<ResourceType, Integer> addReplacedBlanks(Map<ResourceType, Integer> resourceMap, int blanks,
-                                                                Map<ResourceType, Integer> blanksRep) throws Exception {
+                                                                Map<ResourceType, Integer> blanksRep) throws IllegalProductionActivationException {
         /* Check that the map of replacement resources has the same number of resources as blanks */
         if (!blanksRep.isEmpty() && blanksRep.values().stream().reduce(0, Integer::sum) != blanks)
-            throw new Exception();
+            throw new IllegalProductionActivationException();
 
         Map<ResourceType, Integer> mapWithReplacedBlanks = new HashMap<>(resourceMap);
         blanksRep.forEach((r, q) -> mapWithReplacedBlanks.merge(r, q, Integer::sum));

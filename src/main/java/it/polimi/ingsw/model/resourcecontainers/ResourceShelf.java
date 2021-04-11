@@ -38,16 +38,16 @@ public class ResourceShelf extends Shelf {
     }
 
     @Override
-    public void addResource(ResourceType resType) throws Exception {
+    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
         if (!resType.equals(this.boundedResType))
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         super.addResource(resType);
     }
 
     @Override
-    public void addAll(ResourceContainer resourceContainer) throws Exception {
+    public void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException {
         if (!resourceContainer.isEmpty() && !resourceContainer.getResourceTypes().equals(Set.of(boundedResType)))
-            throw new Exception();
+            throw new IllegalResourceTransferException();
         super.addAll(resourceContainer);
     }
 

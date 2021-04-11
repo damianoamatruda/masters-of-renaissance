@@ -59,7 +59,7 @@ public class FileGameFactory implements GameFactory {
     public Game buildMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
         if (nicknames.size() > config.getMaxPlayers())
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
 
         List<LeaderCard> leaderCards;
 
@@ -72,13 +72,13 @@ public class FileGameFactory implements GameFactory {
         }
         Collections.shuffle(leaderCards);
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
 
         /* Shuffle the nicknames */
         List<String> shuffledNicknames = new ArrayList<>(nicknames);
         Collections.shuffle(shuffledNicknames);
         if (playerLeadersCount > 0 && shuffledNicknames.size() > leaderCards.size() / playerLeadersCount)
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
 
         List<Player> players = new ArrayList<>();
         for (int i = 0; i < shuffledNicknames.size(); i++) {

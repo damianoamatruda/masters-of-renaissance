@@ -55,7 +55,7 @@ public class LeaderCardTest {
         LeaderCard leader = new ZeroLeader(0,0,null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
-        try { p.getStrongbox().addResource(resTypeFactory.get("Coin")); } catch (Exception e) { }
+        p.getStrongbox().addResource(resTypeFactory.get("Coin"));
 
         assertDoesNotThrow(() -> leader.activate(p));
         assertTrue(leader.isActive());
@@ -69,7 +69,7 @@ public class LeaderCardTest {
         LeaderCard leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
-        try { p.getStrongbox().addResource(resTypeFactory.get("Shield")); } catch (Exception e) { }
+        p.getStrongbox().addResource(resTypeFactory.get("Shield"));
 
         assertThrows(Exception.class, () -> leader.activate(p));
         assertTrue(!leader.isActive());

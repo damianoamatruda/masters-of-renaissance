@@ -9,6 +9,9 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for Shelf.
+ */
 public class ShelfTest {
     @Test
     void resourceTypesOfNewShelf() {
@@ -49,7 +52,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void resourceTypesOfShelf(int resourcesCount) throws Exception {
+    void resourceTypesOfShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < resourcesCount; i++)
@@ -59,7 +62,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void quantityOfShelf(int resourcesCount) throws Exception {
+    void quantityOfShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < resourcesCount; i++)
@@ -69,7 +72,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void resourceQuantityOfShelf(int resourcesCount) throws Exception {
+    void resourceQuantityOfShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < resourcesCount; i++)
@@ -79,7 +82,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void shelfShouldNotBeEmpty(int resourcesCount) throws Exception {
+    void shelfShouldNotBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
         for (int i = 0; i < resourcesCount; i++)
@@ -89,7 +92,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void shelfShouldNotBeFull(int resourcesCount) throws Exception {
+    void shelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(resourcesCount + 1);
         for (int i = 0; i < resourcesCount; i++)
@@ -99,7 +102,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void shelfShouldBeFull(int resourcesCount) throws Exception {
+    void shelfShouldBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(resourcesCount);
         for (int i = 0; i < resourcesCount; i++)
@@ -108,35 +111,35 @@ public class ShelfTest {
     }
 
     @Test
-    void shelfShouldNotBeAbleToAddResourceOfAnotherType() throws Exception {
+    void shelfShouldNotBeAbleToAddResourceOfAnotherType() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < 2; i++)
             shelf.addResource(r1);
-        assertThrows(Exception.class, () -> shelf.addResource(r2));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.addResource(r2));
     }
 
     @Test
-    void shelfShouldNotBeAbleToRemoveResourceOfAnotherType() throws Exception {
+    void shelfShouldNotBeAbleToRemoveResourceOfAnotherType() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < 3; i++)
             shelf.addResource(r1);
-        assertThrows(Exception.class, () -> shelf.removeResource(r2));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r2));
     }
 
     @Test
     void emptyShelfShouldNotBeAbleToRemoveResource() {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        assertThrows(Exception.class, () -> shelf.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r));
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void quantityOfShelfWithOneRemovedResource(int resourcesCount) throws Exception {
+    void quantityOfShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < resourcesCount; i++)
@@ -147,7 +150,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void resourceQuantityOfShelfWithOneRemovedResource(int resourcesCount) throws Exception {
+    void resourceQuantityOfShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < resourcesCount; i++)
@@ -158,7 +161,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void resourceTypesOfClearedShelf(int resourcesCount) throws Exception {
+    void resourceTypesOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
         for (int i = 0; i < resourcesCount; i++)
@@ -170,7 +173,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void quantityOfClearedShelf(int resourcesCount) throws Exception {
+    void quantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
         for (int i = 0; i < resourcesCount; i++)
@@ -182,7 +185,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void resourceQuantityOfClearedShelf(int resourcesCount) throws Exception {
+    void resourceQuantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
         for (int i = 0; i < resourcesCount; i++)
@@ -194,7 +197,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void resourceTypeOfClearedShelf(int resourcesCount) throws Exception {
+    void resourceTypeOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
         for (int i = 0; i < resourcesCount; i++)
@@ -206,7 +209,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void clearedShelfShouldBeEmpty(int resourcesCount) throws Exception {
+    void clearedShelfShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
         for (int i = 0; i < resourcesCount; i++)
@@ -218,7 +221,7 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void clearedShelfShouldNotBeFull(int resourcesCount) throws Exception {
+    void clearedShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
         for (int i = 0; i < resourcesCount; i++)
@@ -230,19 +233,19 @@ public class ShelfTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 1, 2, 3 })
-    void clearedShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws Exception {
+    void clearedShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         for (int i = 0; i < resourcesCount; i++)
             shelf.addResource(r);
         for (int i = 0; i < resourcesCount; i++)
             shelf.removeResource(r);
-        assertThrows(Exception.class, () -> shelf.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r));
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 10, 13 })
-    void addAllFromSmallerOrEqualShelf(int size) throws Exception {
+    void addAllFromSmallerOrEqualShelf(int size) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(17);
         for (int i = 0; i < 4; i++)
@@ -262,7 +265,7 @@ public class ShelfTest {
     }
 
     @Test
-    void addAllShouldNotBePossibleBecauseOfQuantities() throws Exception {
+    void addAllShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(7);
 
@@ -270,11 +273,11 @@ public class ShelfTest {
         for (int i = 0; i < 10; i++)
             resContainer.addResource(r);
 
-        assertThrows(Exception.class, () -> shelf.addAll(resContainer));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.addAll(resContainer));
     }
 
     @Test
-    void addAllShouldNotBePossibleBecauseOfResourceTypes() throws Exception {
+    void addAllShouldNotBePossibleBecauseOfResourceTypes() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Shelf shelf = new Shelf(7);
@@ -284,12 +287,12 @@ public class ShelfTest {
         for (int i = 0; i < 10; i++)
             resContainer.addResource(r2);
 
-        assertThrows(Exception.class, () -> shelf.addAll(resContainer));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.addAll(resContainer));
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
-    void swapShouldBePossible(boolean direct) throws Exception {
+    void swapShouldBePossible(boolean direct) throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
 
@@ -323,7 +326,7 @@ public class ShelfTest {
     }
 
     @Test
-    void swapShouldNotBePossibleBecauseOfQuantities() throws Exception {
+    void swapShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
 
         Shelf shelf1 = new Shelf(3);
@@ -334,11 +337,11 @@ public class ShelfTest {
         for (int i = 0; i < 5; i++)
             shelf2.addResource(r);
 
-        assertThrows(Exception.class, () -> Shelf.swap(shelf1, shelf2));
+        assertThrows(IllegalResourceTransferException.class, () -> Shelf.swap(shelf1, shelf2));
     }
 
     @Test
-    void swapTwice() throws Exception {
+    void swapTwice() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
 

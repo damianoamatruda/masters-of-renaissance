@@ -35,15 +35,15 @@ public class Market {
 
         /* Check that colsCount is not zero. */
         if (colsCount == 0)
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
 
         /* Check that the resulting grid, therefore excluding the slide, is not empty. */
         if (resourcesList.size() <= 1)
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
 
         /* Check that the resulting grid, therefore excluding the slide, is full. */
         if (resourcesList.size() % colsCount != 1)
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
 
         Collections.shuffle(resourcesList);
 
@@ -68,18 +68,18 @@ public class Market {
      * After taking the resources, the chosen row or column is shifted one place from respectively the right or bottom,
      * the resource in the slide takes the uncovered place in the grid and the leftover resource goes into the slide.
      *
-     * @param game          the game the player is playing in
-     * @param player        the player on which to trigger the action of the resource, if applicable
-     * @param isRow         true if a row is selected, false if a column is selected
-     * @param index         index of the selected row or column
-     * @param replacements  a map of the chosen resources to take, if choices are applicable
-     * @param shelves       a map of the shelves where to add the taken resources, if possible
-     * @throws Exception    if it is not possible
+     * @param game                              the game the player is playing in
+     * @param player                            the player on which to trigger the action of the resource, if applicable
+     * @param isRow                             true if a row is selected, false if a column is selected
+     * @param index                             index of the selected row or column
+     * @param replacements                      a map of the chosen resources to take, if choices are applicable
+     * @param shelves                           a map of the shelves where to add the taken resources, if possible
+     * @throws IllegalMarketTransferException   if it is not possible
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
-                              Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws Exception {
+                              Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalMarketTransferException {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
-            throw new RuntimeException();
+            throw new IllegalArgumentException();
 
         Map<ResourceType, Integer> output = IntStream
                 .range(0, isRow ? getColsCount() : getRowsCount())
@@ -90,8 +90,12 @@ public class Market {
             output = leader.replaceMarketResources(replaceableResType, output, replacements);
         output.remove(replaceableResType);
 
-        new Production(new HashMap<>(), 0, output, 0, true)
-                .activate(game, player, new HashMap<>(), new HashMap<>(), new HashMap<>(), shelves);
+        try {
+            new Production(new HashMap<>(), 0, output, 0, true)
+                    .activate(game, player, new HashMap<>(), new HashMap<>(), new HashMap<>(), shelves);
+        } catch (IllegalProductionActivationException e) {
+            throw new IllegalMarketTransferException();
+        }
 
         shift(isRow, index);
     }

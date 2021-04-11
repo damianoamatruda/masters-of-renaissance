@@ -40,26 +40,26 @@ public interface ResourceContainer {
     /**
      * Adds a resource of the given type.
      *
-     * @param resType       the resource to add
-     * @throws Exception    if the container is full
+     * @param resType                   the resource to add
+     * @throws IllegalResourceTransferException    if the container is full
      */
-    void addResource(ResourceType resType) throws Exception;
+    void addResource(ResourceType resType) throws IllegalResourceTransferException;
 
     /**
      * Removes a resource of the given type.
      *
-     * @param resType       the resource to remove
-     * @throws Exception    if the container is empty
+     * @param resType                   the resource to remove
+     * @throws IllegalResourceTransferException    if the container is empty
      */
-    void removeResource(ResourceType resType) throws Exception;
+    void removeResource(ResourceType resType) throws IllegalResourceTransferException;
 
     /**
      * Adds the content of a resource container.
      *
-     * @param resourceContainer the resource container from which to get the resources to add
-     * @throws Exception        if the content cannot be added
+     * @param resourceContainer         the resource container from which to get the resources to add
+     * @throws IllegalResourceTransferException    if the content cannot be added
      */
-    void addAll(ResourceContainer resourceContainer) throws Exception;
+    void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException;
 
     /**
      * Returns whether the resource container is empty.

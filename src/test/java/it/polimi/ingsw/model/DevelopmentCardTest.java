@@ -42,7 +42,7 @@ public class DevelopmentCardTest {
 
         Player player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
-        try { player.getStrongbox().addResource(resTypeFactory.get("Coin")); } catch (Exception e) { }
+        player.getStrongbox().addResource(resTypeFactory.get("Coin"));
 
         assertDoesNotThrow(() -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(resTypeFactory.get("Coin"), 1))));
     }
@@ -57,7 +57,7 @@ public class DevelopmentCardTest {
 
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
-        try { player.getStrongbox().addResource(resTypeFactory.get("Shield")); } catch (Exception e) { }
+        player.getStrongbox().addResource(resTypeFactory.get("Shield"));
 
         assertThrows(Exception.class, () -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(resTypeFactory.get("Coin"), 1))));
     }
