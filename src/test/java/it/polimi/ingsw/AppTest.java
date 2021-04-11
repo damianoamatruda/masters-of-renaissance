@@ -13,14 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AppTest 
 {
-    /**
-     * Example.
-     */
-    @Test
-    public void shouldAnswerWithTrue() {
-        assertTrue(true);
-    }
-
     @Test
     void test() throws FileNotFoundException, JAXBException {
         ModelConfig config = new FileGameFactory("src/main/resources/config.xml").unmarshall("src/main/resources/config.xml");

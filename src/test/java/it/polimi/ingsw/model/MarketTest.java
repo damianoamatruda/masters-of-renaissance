@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class MarketTest {
     @Test
-    public void getColsCount1() {
+    void getColsCount1() {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
@@ -28,7 +28,7 @@ public class MarketTest {
     }
 
     @Test
-    public void getRowsCount1() {
+    void getRowsCount1() {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
@@ -39,7 +39,7 @@ public class MarketTest {
     }
 
     @Test
-    public void getColsCount2() {
+    void getColsCount2() {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
@@ -51,7 +51,7 @@ public class MarketTest {
     }
 
     @Test
-    public void getRowsCount2() {
+    void getRowsCount2() {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
@@ -66,7 +66,7 @@ public class MarketTest {
      * Checks that a row of the market grid remains the same after a complete shift.
      */
     @Test
-    public void completelyShiftRow() throws IllegalMarketTransferException {
+    void completelyShiftRow() throws IllegalMarketTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", false);
         ResourceType r3 = new ResourceType("r3", true);

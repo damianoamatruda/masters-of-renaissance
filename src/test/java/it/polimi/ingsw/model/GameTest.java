@@ -26,7 +26,7 @@ public class GameTest {
      * First instantiation of Game with 3 players.
      */
     @BeforeEach
-    public void setup() {
+    void setup() {
         GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
         game = factory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
         devCardColorFactory = factory.getDevCardColorFactory();
@@ -70,7 +70,7 @@ public class GameTest {
          * </ol>
          */
         @BeforeEach
-        public void advancePlayers() {
+        void advancePlayers() {
             for (int i = 0; i < 5; i++)
                 game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
@@ -119,7 +119,7 @@ public class GameTest {
          * </ol>
          */
         @BeforeEach
-        public void advancePlayers() {
+        void advancePlayers() {
             for (int i = 0; i < 5; i++)
                 game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)
@@ -171,7 +171,7 @@ public class GameTest {
          * </ol>
          */
         @BeforeEach
-        public void advancePlayers() {
+        void advancePlayers() {
             for (int i = 0; i < 5; i++)
                 game.getPlayers().get(0).incrementFaithPoints(game);
             for (int i = 0; i < 8; i++)

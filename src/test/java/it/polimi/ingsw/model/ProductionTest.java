@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class ProductionTest {
     @Test
-    public void productionWithoutBlanks() throws IllegalProductionActivationException {
+    void productionWithoutBlanks() throws IllegalProductionActivationException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Production production = new Production(Map.of(r1, 2), 0, Map.of(r2, 3), 0, false);
@@ -36,7 +36,7 @@ public class ProductionTest {
     }
 
     @Test
-    public void productionWithInputBlanks() throws IllegalProductionActivationException {
+    void productionWithInputBlanks() throws IllegalProductionActivationException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
@@ -61,7 +61,7 @@ public class ProductionTest {
     }
 
     @Test
-    public void productionWithOutputBlanks() throws IllegalProductionActivationException {
+    void productionWithOutputBlanks() throws IllegalProductionActivationException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
