@@ -1,143 +1,85 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
-import it.polimi.ingsw.model.resourcetypes.*;
-import org.junit.jupiter.api.BeforeEach;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit test for Production class.
+ * Test class for Production.
  */
 public class ProductionTest {
-    private ResourceTypeFactory resTypeFactory;
-
-    @BeforeEach
-    void setup() {
-        resTypeFactory = new JavaResourceTypeFactory();
-    }
-    
-    /**
-     * Tests a general production without blanks.
-     */
     @Test
-    public void generalProductionWithoutBlanks() {
-        Production production = new Production(
-                Map.of(resTypeFactory.get("Coin"), 2),
-                0,
-                Map.of(resTypeFactory.get("Servant"), 3),
-                0,
-                false);
+    public void productionWithoutBlanks() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        Production production = new Production(Map.of(r1, 2), 0, Map.of(r2, 3), 0, false);
 
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
-        try {
-            for (int i = 0; i < 6; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
-        } catch (Exception e) {
-            fail();
-        }
+        for (int i = 0; i < 6; i++)
+            player.getStrongbox().addResource(r1);
 
-        try {
-            production.activate(game, player, Map.of(), Map.of(),
-                    Map.of(player.getStrongbox(), Map.of(resTypeFactory.get("Coin"), 2)),
-                    Map.of(player.getStrongbox(), Map.of(resTypeFactory.get("Servant"), 3)));
-        } catch (Exception e) {
-            fail();
-        }
+        production.activate(game, player, Map.of(), Map.of(),
+                Map.of(player.getStrongbox(), Map.of(r1, 2)),
+                Map.of(player.getStrongbox(), Map.of(r2, 3)));
 
-        assertEquals(4, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Coin")));
-        assertEquals(3, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Servant")));
+        assertAll("getResourceQuantity",
+                () -> assertEquals(4, player.getStrongbox().getResourceQuantity(r1)),
+                () -> assertEquals(3, player.getStrongbox().getResourceQuantity(r2))
+        );
     }
 
-    /**
-     * Tests a general production with blanks in input.
-     */
     @Test
-    public void generalProductionWithBlanksInInput() {
-        Production production = new Production(
-                Map.of(resTypeFactory.get("Coin"), 2),
-                3,
-                Map.of(resTypeFactory.get("Servant"), 3),
-                0,
-                false);
+    public void productionWithInputBlanks() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r3 = new ResourceType("r3", true);
+        Production production = new Production(Map.of(r1, 2), 3, Map.of(r2, 3), 0, false);
 
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
-        try {
-            for (int i = 0; i < 6; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
-            for (int i = 0; i < 2; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Shield"));
-        } catch (Exception e) {
-            fail();
-        }
+        for (int i = 0; i < 6; i++)
+            player.getStrongbox().addResource(r1);
+        for (int i = 0; i < 2; i++)
+            player.getStrongbox().addResource(r3);
 
-        try {
-            production.activate(game, player,
-                    Map.of(resTypeFactory.get("Coin"), 1,
-                            resTypeFactory.get("Shield"), 2),
-                    Map.of(),
-                    Map.of(player.getStrongbox(), Map.of(
-                            resTypeFactory.get("Coin"), 3,      /* 2 + 1 replaced blank */
-                            resTypeFactory.get("Shield"), 2)),  /* 0 + 2 replaced blanks */
-                    Map.of(player.getStrongbox(), Map.of(
-                            resTypeFactory.get("Servant"), 3)));
-        } catch (Exception e) {
-            fail();
-        }
+        production.activate(game, player, Map.of(r1, 1, r3, 2), Map.of(),
+                Map.of(player.getStrongbox(), Map.of(r1, 3, r3, 2)),
+                Map.of(player.getStrongbox(), Map.of(r2, 3)));
 
-        assertEquals(3, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Coin")));
-        assertEquals(0, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Shield")));
-        assertEquals(3, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Servant")));
+        assertAll("getResourceQuantity",
+                () -> assertEquals(3, player.getStrongbox().getResourceQuantity(r1)),
+                () -> assertEquals(3, player.getStrongbox().getResourceQuantity(r2)),
+                () -> assertEquals(0, player.getStrongbox().getResourceQuantity(r3)));
     }
 
-    /**
-     * Tests a general production with blanks in output.
-     */
     @Test
-    public void generalProductionWithBlanksInOutput() {
-        Production production = new Production(
-                Map.of(resTypeFactory.get("Coin"), 2),
-                0,
-                Map.of(resTypeFactory.get("Servant"), 3),
-                3,
-                false);
+    public void productionWithOutputBlanks() throws Exception {
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r3 = new ResourceType("r3", true);
+        Production production = new Production(Map.of(r1, 2), 0, Map.of(r2, 3), 3, false);
 
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
-        try {
-            for (int i = 0; i < 6; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
-        } catch (Exception e) {
-            fail();
-        }
+        for (int i = 0; i < 6; i++)
+            player.getStrongbox().addResource(r1);
 
-        try {
-            production.activate(game, player,
-                    Map.of(),
-                    Map.of(resTypeFactory.get("Servant"), 2,
-                            resTypeFactory.get("Shield"), 1),
-                    Map.of(player.getStrongbox(), Map.of(
-                            resTypeFactory.get("Coin"), 2 )),
-                    Map.of(player.getStrongbox(), Map.of(
-                            resTypeFactory.get("Servant"), 5,   /* 3 + 2 replaced blanks */
-                            resTypeFactory.get("Shield"), 1))); /* 0 + 1 replaced blanks */
-        } catch (Exception e) {
-            fail();
-        }
+        production.activate(game, player, Map.of(), Map.of(r2, 2, r3, 1),
+                Map.of(player.getStrongbox(), Map.of(r1, 2 )),
+                Map.of(player.getStrongbox(), Map.of(r2, 5, r3, 1)));
 
-        assertEquals(4, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Coin")));
-        assertEquals(5, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Servant")));
-        assertEquals(1, player.getStrongbox().getResourceQuantity(resTypeFactory.get("Shield")));
+        assertAll("getResourceQuantity",
+                () -> assertEquals(4, player.getStrongbox().getResourceQuantity(r1)),
+                () -> assertEquals(5, player.getStrongbox().getResourceQuantity(r2)),
+                () -> assertEquals(1, player.getStrongbox().getResourceQuantity(r3)));
     }
 }
