@@ -5,8 +5,8 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.JavaGameFactory;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
@@ -83,7 +83,7 @@ public class DevCardRequirementTest {
 
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3);
         try {
-            p.addToDevSlot(new JavaGameFactory().buildSoloGame("Marco"), 0, devCard, Map.of());
+            p.addToDevSlot(new FileGameFactory("src/main/resources/config.xml").buildSoloGame("Marco"), 0, devCard, Map.of());
         } catch (Exception e) { }
 
         DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 1, 1)));

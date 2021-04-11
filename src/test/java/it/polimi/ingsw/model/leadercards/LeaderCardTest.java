@@ -33,7 +33,7 @@ public class LeaderCardTest {
      */
     @Test
     void nullResourceCreation() {
-        assertThrows(AssertionError.class, () -> new ZeroLeader(null, null, 0));
+        assertThrows(AssertionError.class, () -> new ZeroLeader(0,0,null, null, null,0));
     }
 
     /**
@@ -41,7 +41,7 @@ public class LeaderCardTest {
      */
     @Test
     void activateNoRequirements() {
-        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), null, 0);
+        LeaderCard leader = new ZeroLeader(0,0,null,resTypeFactory.get("Coin"), null, 0);
 
         assertDoesNotThrow(() -> leader.activate(null));
         assertTrue(leader.isActive());
@@ -52,7 +52,7 @@ public class LeaderCardTest {
      */
     @Test
     void activateWithRequirements() {
-        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(0,0,null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         try { p.getStrongbox().addResource(resTypeFactory.get("Coin")); } catch (Exception e) { }
@@ -66,7 +66,7 @@ public class LeaderCardTest {
      */
     @Test
     void activateWrongResources() {
-        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
         try { p.getStrongbox().addResource(resTypeFactory.get("Shield")); } catch (Exception e) { }
@@ -80,7 +80,7 @@ public class LeaderCardTest {
      */
     @Test
     void getResource() {
-        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         assertEquals(resTypeFactory.get("Coin"), leader.getResource());
     }
@@ -90,7 +90,7 @@ public class LeaderCardTest {
      */
     @Test
     void getDepot() {
-        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         assertNull(leader.getDepot());
     }
@@ -100,7 +100,7 @@ public class LeaderCardTest {
      */
     @Test
     void getDevCardCost() {
-        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Map<ResourceType, Integer> cost = Map.of(resTypeFactory.get("Coin"), 1);
 
@@ -112,7 +112,7 @@ public class LeaderCardTest {
      */
     @Test
     void getProduction() {
-        LeaderCard leader = new ZeroLeader(resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         assertNull(leader.getProduction());
     }
@@ -122,7 +122,7 @@ public class LeaderCardTest {
      */
     @Test
     void replaceMarketResources() {
-        LeaderCard leader = new DepotLeader(0, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
+        LeaderCard leader = new DepotLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
         Map<ResourceType, Integer> res = Map.of(resTypeFactory.get("Zero"), 1);
 
