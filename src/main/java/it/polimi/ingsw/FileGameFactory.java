@@ -41,9 +41,7 @@ public class FileGameFactory implements GameFactory {
         config = null;
         try {
             config = unmarshall(path);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();
         }
         colorFactory = new JavaDevCardColorFactory();

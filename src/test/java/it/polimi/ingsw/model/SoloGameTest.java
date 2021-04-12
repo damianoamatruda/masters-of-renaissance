@@ -138,16 +138,23 @@ public class SoloGameTest {
      * Test for discardDevCards method.
      */
     @Test
-    void discardDevCards() {
-        try {
-            player.discardLeader(game, 0);
-            player.discardLeader(game, 0);
-            assertEquals(2,player.getFaithPoints());
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            fail("Exception has been thrown");
-        }
+    void discardDevCards() throws AlreadyActiveException {
+
+        player.discardLeader(game, 0);
+        player.discardLeader(game, 0);
+        assertEquals(2,player.getFaithPoints());
+
+    }
+
+    /**
+     * Test the AlreadyActiveException when a Leader card is already active.
+     */
+    @Test
+    void discardActiveDevCard() throws Exception {
+
+        player.getLeaders().get(0).activate(player);
+        assertThrows(AlreadyActiveException.class, () -> player.discardLeader(game, 0));
+
     }
 }
 

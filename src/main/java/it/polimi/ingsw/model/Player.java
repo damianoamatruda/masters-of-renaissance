@@ -106,11 +106,11 @@ public class Player {
      *
      * @param game          the game the player is playing in
      * @param index         the index of the card to be discarded
-     * @throws Exception    leader is already active
+     * @throws AlreadyActiveException    leader is already active
      */
-    public void discardLeader(Game game, int index) throws Exception {
+    public void discardLeader(Game game, int index) throws AlreadyActiveException {
         LeaderCard toBeDiscarded = leaders.get(index);
-        if(toBeDiscarded.isActive()) throw new Exception();
+        if(toBeDiscarded.isActive()) throw new AlreadyActiveException();
         toBeDiscarded.onDiscarded(game, this);
         leaders.remove(index);
     }
@@ -228,17 +228,17 @@ public class Player {
     /**
      * Places a new card on top of a given production slot and consume required resources.
      *
-     * @param game          the game the player is playing in
-     * @param index         the destination production slot
-     * @param devCard       the development card that has just been bought
-     * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws Exception    blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
-     * @throws Exception    error during the actual payment
+     * @param game                              the game the player is playing in
+     * @param index                             the destination production slot
+     * @param devCard                           the development card that has just been bought
+     * @param resContainers                     a map of the resource containers where to take the storable resources
+     * @throws IllegalCardDepositException      blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
+     * @throws Exception                        error during the actual payment
      */
     public void addToDevSlot(Game game, int index, DevelopmentCard devCard,
                                 Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
         Stack<DevelopmentCard> slot = devSlots.get(index);
-        if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new Exception();
+        if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new IllegalCardDepositException();
 
         devCard.takeFromPlayer(game, this, resContainers);
 

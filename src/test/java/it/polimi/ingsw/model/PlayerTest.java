@@ -175,16 +175,13 @@ public class PlayerTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {0, 7, 16, 23})
-    void discardLeaderTest(int marker){
+    void discardLeaderTest(int marker) throws AlreadyActiveException {
         for (int i = 0; i < marker; i++)
             player.incrementFaithPoints(game);
-        try {
-            player.discardLeader(game, 0);
-            assertEquals(marker+1, player.getFaithPoints());
-        }
-        catch (Exception e){
-            fail("Exception has been thrown");
-        }
+
+        player.discardLeader(game, 0);
+        assertEquals(marker+1, player.getFaithPoints());
+
     }
 
     /**
