@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public class ProductionGroup {
     /** The list of the productions to sum. */
-    public final List<ProductionRequest> productionRequests;
+    private final List<ProductionRequest> productionRequests;
 
     /**
      * Initializes a production group.
@@ -172,9 +172,9 @@ public class ProductionGroup {
             if (!outputBlanksRep.isEmpty() && outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
                 return false;
 
-            if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
-                return false;
             if (inputBlanksRep.keySet().stream().anyMatch(resType -> production.getInputBlanksExclusions().contains(resType)))
+                return false;
+            if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
                 return false;
 
             return checkContainers(getReplacedInput(), inputContainers) && checkContainers(getReplacedOutput(), outputContainers);

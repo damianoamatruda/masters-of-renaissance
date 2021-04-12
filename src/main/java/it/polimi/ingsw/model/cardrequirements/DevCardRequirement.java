@@ -57,9 +57,9 @@ public class DevCardRequirement implements CardRequirement {
      * It mimicks a double-keyed map, with color and level as keys and amount as value.
      */
     public static class Entry {
-        public final DevCardColor color;
-        public final int level;
-        public int amount = 0;
+        private final DevCardColor color;
+        private final int level;
+        private int amount = 0;
 
         /**
          * Class constructor. Creates an Entry with set color and level, and zero as its amount.
