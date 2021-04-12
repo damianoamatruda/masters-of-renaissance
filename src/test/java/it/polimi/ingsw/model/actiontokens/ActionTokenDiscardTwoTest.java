@@ -60,6 +60,11 @@ class ActionTokenDiscardTwoTest {
         assert true;
     }
 
+    /**
+     * Checks the token effect when level 1 deck only has 1 card, so that the token also discards one level 2 card.
+     *
+     * @param colorString   the color name to be tested
+     */
     @ParameterizedTest
     @ValueSource(strings = {"Blue", "Yellow", "Purple", "Green"})
     void discardDifferentLevels(String colorString){
@@ -77,6 +82,12 @@ class ActionTokenDiscardTwoTest {
                 ()-> assertEquals(grid.getDeck(color,2).size(), initialSize - 1));
     }
 
+    /**
+     * Checks the token effect / the game state when all the cards of one color are no more available.
+     * Last card is discarded by the token.
+     *
+     * @param colorString   the color name to be tested
+     */
     @ParameterizedTest
     @ValueSource(strings = {"Blue", "Yellow", "Purple", "Green"})
     void discardEndOfGame(String colorString){
