@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test of the functionalities of the class "ActionTokenDiscardTwo".
  */
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 class ActionTokenDiscardTwoTest {
     FileGameFactory factory;
     DevCardColorFactory colorFactory;

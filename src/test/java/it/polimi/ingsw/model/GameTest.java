@@ -1,23 +1,19 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.FileGameFactory;
-import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.model.devcardcolors.*;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-//import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test of base game operations.
  */
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 public class GameTest {
-    DevCardColorFactory devCardColorFactory;
     Game game;
     List<Player> initialOrder;
 
@@ -27,9 +23,43 @@ public class GameTest {
      */
     @BeforeEach
     void setup() {
-        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
-        game = factory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
-        devCardColorFactory = factory.getDevCardColorFactory();
+        List<String> shuffledNicknames = new ArrayList<>(List.of("Alessandro","Damiano","Marco"));
+        Collections.shuffle(shuffledNicknames);
+
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < shuffledNicknames.size(); i++) {
+            Player player = new Player(
+                    shuffledNicknames.get(i),
+                    i == 0, List.of(),
+                    new Warehouse(3), new Strongbox(),
+                    new Production(Map.of(), 2, Map.of(), 1), 3
+            );
+            players.add(player);
+        }
+
+        ResourceType r1 = new ResourceType("r1", true);
+        Market market = new Market(
+                Map.of(r1, 13), 4, r1);
+
+        game = new Game(
+                players,
+                new DevCardGrid(List.of(), 3, 4),
+                market,
+                new FaithTrack(Set.of(
+                        new FaithTrack.VaticanSection(5, 8, 2),
+                        new FaithTrack.VaticanSection(12, 16, 3),
+                        new FaithTrack.VaticanSection(19, 24, 4)
+                ), Set.of(
+                        new FaithTrack.YellowTile(15, 9),
+                        new FaithTrack.YellowTile(18, 12),
+                        new FaithTrack.YellowTile(24, 20)
+                )), 24,
+                7
+        );
+
+//        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
+//        game = factory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
+//        devCardColorFactory = factory.getDevCardColorFactory();
         initialOrder = game.getPlayers();
     }
 
@@ -54,11 +84,11 @@ public class GameTest {
     }
 
     /**
-     * Nested class for first Vatican Report related tests.
+     * Nested class for onIncrement method - first Vatican Report related tests.
      */
     @Nested
     @DisplayName("First Vatican Report Tests")
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
     class FirstVaticanReport {
         /**
          * Simulates a possible scenario after triggering 1st Vatican Report.
@@ -103,10 +133,10 @@ public class GameTest {
     }
 
     /**
-     * Nested class for second Vatican Report related tests.
+     * Nested class for onIncrement method - second Vatican Report related tests.
      */
     @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
     @DisplayName("Second Vatican Report Tests")
     class SecondVaticanReport {
         /**
@@ -158,7 +188,7 @@ public class GameTest {
      * Nested class for last Vatican Report and late game related tests.
      */
     @Nested
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
     @DisplayName("Last Vatican Report and Late Game Tests")
     class LastVaticanReport {
         /**
@@ -210,10 +240,9 @@ public class GameTest {
         }
 
         /**
-         * Nested class for 3rd Vatican section tests before calling hasEnded().
+         * Nested class for onIncrement method - 3rd Vatican section tests before calling hasEnded().
          */
         @Nested
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
         @DisplayName("Last Vatican Report tests before deciding winner")
         class LateGameBeforeWinnerCalcs {
             /**
@@ -245,7 +274,6 @@ public class GameTest {
          * Nested class for 3rd Vatican section tests after calling hasEnded().
          */
         @Nested
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
         @DisplayName("Last Vatican Report tests after deciding winner")
         class LateGameAfterWinnerCalcs {
             /**
@@ -362,12 +390,15 @@ public class GameTest {
     }
 
     /**
-     * Tests the lack of rep exposure.
+     * Tests that any player that has not reached any yellow tiles (nor sections, nor has cards / resources) has no yellow tile bonus points.
      */
-    @Disabled("Not yet implemented.") // TODO
     @Test
-    void noRepExposureTest() {
-
+    void noYellowTilesEndOfGame(){
+        for(int i = 0; i < 24; i++)
+            game.getPlayers().get(0).incrementFaithPoints(game);
+        game.hasEnded();
+        assertAll(() -> assertTrue(game.hasEnded()),
+                ()-> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
 
 }

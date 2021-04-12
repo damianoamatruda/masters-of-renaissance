@@ -10,10 +10,6 @@ import it.polimi.ingsw.model.resourcetypes.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-//import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
-
-import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test of Player operations.
  */
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PlayerTest {
     ResourceTypeFactory resTypeFactory;
     DevCardColorFactory devCardColorFactory;
@@ -33,7 +28,7 @@ public class PlayerTest {
     /**
      * Sets up initial conditions by initializing Game and Player.
      */
-    @BeforeAll
+    @BeforeEach
     void setup() {
         resTypeFactory = new JavaResourceTypeFactory();
         devCardColorFactory = new JavaDevCardColorFactory();
@@ -184,19 +179,4 @@ public class PlayerTest {
 
     }
 
-    /**
-     * Tests the lack of rep exposure.
-     */
-    @Disabled("Not yet implemented.") // TODO
-    @Test
-    void noRepExposureTest() {
-
-    }
-    /**
-     * Restores state to initial conditions, so that every single test is not influenced by other tests.
-     */
-    @AfterEach
-    void restore() {
-        setup();
-    }
 }

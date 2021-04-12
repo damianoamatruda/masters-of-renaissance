@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Test class for Development Card grid operations
  */
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 public class DevCardGridTest {
     GameFactory factory;
     Game game;
