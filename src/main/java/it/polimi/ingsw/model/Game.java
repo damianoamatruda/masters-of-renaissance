@@ -101,9 +101,12 @@ public class Game {
      * <p>
      * If next player is inactive, the operation is repeated until an active player is found.
      *
-     * @return  the next player that has to play a turn
+     * @return                      the next player that has to play a turn
+     * @throws AllInactiveException all players are set to inactive
      */
-    public Player onTurnEnd() {
+    public Player onTurnEnd() throws AllInactiveException{
+        if (players.stream().filter(p -> p.isActive()).count() == 0) throw new AllInactiveException();
+
         Player temp = players.get(0);
         do {
             players.remove(0);
@@ -111,6 +114,7 @@ public class Game {
             temp = players.get(0);
         } while (!temp.isActive());
         return temp;
+
     }
 
     /**

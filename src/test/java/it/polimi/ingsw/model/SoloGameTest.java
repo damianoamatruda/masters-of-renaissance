@@ -125,7 +125,7 @@ public class SoloGameTest {
      * Test for onTurnEnd method.
      */
     @Test
-    void onTurnEnd() {
+    void onTurnEnd() throws AllInactiveException {
         GameFactory f = new FileGameFactory("src/main/resources/config.xml");
         game = f.buildSoloGame("Alessandro");
         player = game.getPlayers().get(0);

@@ -316,7 +316,7 @@ public class GameTest {
          * Checks the functioning of player switch with one (out of three) inactive player.
          */
         @Test
-        void onTurnEndWithOneInactivePlayer() {
+        void onTurnEndWithOneInactivePlayer() throws AllInactiveException {
             String next = game.getPlayers().get(2).getNickname();
             game.getPlayers().get(1).setActive(false);
             assertEquals(next, game.onTurnEnd().getNickname());
@@ -326,10 +326,10 @@ public class GameTest {
          * Checks the functioning of player switch with two (out of three) inactive players.
          */
         @Test
-        void onTurnEndWithTwoInactivePlayers() {
-            game.getPlayers().get(0).setActive(false);
+        void onTurnEndWithTwoInactivePlayers() throws AllInactiveException {
             game.getPlayers().get(1).setActive(false);
-            String next = game.getPlayers().get(2).getNickname();
+            game.getPlayers().get(2).setActive(false);
+            String next = game.getPlayers().get(0).getNickname();
             Player nowPlaying;
             nowPlaying = game.onTurnEnd();
             nowPlaying = game.onTurnEnd();
@@ -340,20 +340,23 @@ public class GameTest {
         /**
          * Checks the Game behavior if current player disconnects before ending their own turn.
          */
-        @Test   //TODO
-        @Disabled("Yet to be handled when current player disconnects")
-        void currentPlayerDisconnects() {
+        @Test
+        void currentPlayerDisconnects() throws AllInactiveException {
+            Player expected = game.getPlayers().get(1);
             game.getPlayers().get(0).setActive(false);
-            assertEquals("Damiano", game.getPlayers().get(0).getNickname());
+            Player next = game.onTurnEnd();
+            assertEquals(expected, next);
         }
 
         /**
          * Checks the Game behavior if all players disconnect.
          */
-        @Test   //TODO
-        @Disabled("Yet to be handled")
+        @Test
         void onTurnEndWithAllInactivePlayers() {
-
+            game.getPlayers().get(0).setActive(false);
+            game.getPlayers().get(1).setActive(false);
+            game.getPlayers().get(2).setActive(false);
+            assertThrows(AllInactiveException.class, () -> game.onTurnEnd());
         }
 
     }
