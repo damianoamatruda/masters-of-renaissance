@@ -91,8 +91,11 @@ public class Market {
         output.remove(replaceableResType);
 
         try {
-            new Production(new HashMap<>(), 0, output, 0, true)
-                    .activate(game, player, new HashMap<>(), new HashMap<>(), new HashMap<>(), shelves);
+            new ProductionGroup(List.of(
+                    new ProductionGroup.ProductionRequest(
+                            new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
+                            Map.of(), Map.of(), Map.of(), shelves)
+            )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
             throw new IllegalMarketTransferException();
         }

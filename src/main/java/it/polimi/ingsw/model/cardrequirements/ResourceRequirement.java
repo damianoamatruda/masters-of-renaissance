@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.cardrequirements;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.IllegalProductionActivationException;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Production;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
@@ -80,8 +77,11 @@ public class ResourceRequirement implements CardRequirement {
      */
     public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
         try {
-            new Production(getDiscountedCost(player), 0, new HashMap<>(), 0)
-                    .activate(game, player, new HashMap<>(), new HashMap<>(), resContainers, new HashMap<>());
+            new ProductionGroup(List.of(
+                    new ProductionGroup.ProductionRequest(
+                        new Production(getDiscountedCost(player), 0, new HashMap<>(), 0),
+                        Map.of(), Map.of(), resContainers, Map.of())
+            )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
             throw new Exception();
         }
