@@ -1,15 +1,11 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.FileGameFactory;
-import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
-import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
 import it.polimi.ingsw.model.leadercards.DepotLeader;
 import it.polimi.ingsw.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
-import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
 import org.junit.jupiter.api.*;
 import java.util.*;
 
@@ -19,7 +15,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 /** Test of SoloGame operations */
 public class SoloGameTest {
     GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
-    ResourceTypeFactory resTypeFactory;
     SoloGame game;
     Player player;
     FaithTrack track = new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles());
@@ -29,10 +24,9 @@ public class SoloGameTest {
      */
     @BeforeEach
     void setup() {
-        resTypeFactory = new JavaResourceTypeFactory();
         player = new Player("Alessandro", true, new ArrayList<>(){{
-            add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
-            add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
+            add(new DepotLeader(0, 2, null, factory.getResType("Coin"),null,0));
+            add(new DepotLeader(0, 2, null, factory.getResType("Coin"),null,0));
         }}, new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0);
         game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles()), null, 24, 7);
 

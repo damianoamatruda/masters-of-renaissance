@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
+import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
-import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -14,20 +14,20 @@ public interface GameFactory {
     SoloGame buildSoloGame(String nickname);
 
     /**
-     * Getter of the factory of resources.
+     * Getter of a resource type in the game  by its name.
      *
-     * @return the factory of resources.
+     * @return  the resource type
      */
     @Deprecated
-    ResourceTypeFactory getResTypeFactory();
+    ResourceType getResType(String name);
 
     /**
-     * Getter of the factory of development colors.
+     * Getter of a development card color in the game by its name.
      *
-     * @return the factory of development colors.
+     * @return  the development card color
      */
     @Deprecated
-    DevCardColorFactory getDevCardColorFactory();
+    DevCardColor getDevCardColor(String name);
 
     /**
      * Returns a list of all possible development cards.

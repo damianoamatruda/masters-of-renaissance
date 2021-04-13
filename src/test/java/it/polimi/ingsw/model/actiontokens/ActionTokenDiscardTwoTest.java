@@ -1,21 +1,14 @@
 package it.polimi.ingsw.model.actiontokens;
 
 import it.polimi.ingsw.FileGameFactory;
-import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
-import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
-import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActionTokenDiscardTwoTest {
     FileGameFactory factory;
-    DevCardColorFactory colorFactory;
-    ResourceTypeFactory resTypeFactory;
     SoloGame game;
     Player player;
 
@@ -34,8 +25,6 @@ class ActionTokenDiscardTwoTest {
     void setup(){
         factory = new FileGameFactory("src/main/resources/config.xml");
         game = factory.buildSoloGame("Alessandro");
-        colorFactory = factory.getDevCardColorFactory();
-        resTypeFactory = factory.getResTypeFactory();
         player = game.getPlayers().get(0);
     }
 
@@ -44,7 +33,7 @@ class ActionTokenDiscardTwoTest {
      */
     @Test
     void triggerFirstTurn() {
-        ActionToken token = new ActionTokenDiscardTwo(colorFactory.get("Blue"));
+        ActionToken token = new ActionTokenDiscardTwo(factory.getDevCardColor("Blue"));
         DevCardGrid grid = game.getDevCardGrid();
         boolean foundTheChange = false;
         List<List<DevelopmentCard>> top = grid.peekDevCards();
@@ -53,9 +42,9 @@ class ActionTokenDiscardTwoTest {
         for(int i = 0; i < top.size(); i++)
             for(int j = 1; j <= top.get(i).size(); j++){
                 DevCardColor color = top.get(i).get(0).getColor();
-                if(grid.getDeck(color,j).peek() != top.get(i).get(j-1) && color != colorFactory.get("Blue")) fail();
-                else if (!foundTheChange && grid.getDeck(color,j).peek() == top.get(i).get(j-1) && color == colorFactory.get("Blue")) fail();
-                else if (!foundTheChange && grid.getDeck(color,j).peek() != top.get(i).get(j-1) && color == colorFactory.get("Blue")) foundTheChange = true;
+                if(grid.getDeck(color,j).peek() != top.get(i).get(j-1) && color != factory.getDevCardColor("Blue")) fail();
+                else if (!foundTheChange && grid.getDeck(color,j).peek() == top.get(i).get(j-1) && color == factory.getDevCardColor("Blue")) fail();
+                else if (!foundTheChange && grid.getDeck(color,j).peek() != top.get(i).get(j-1) && color == factory.getDevCardColor("Blue")) foundTheChange = true;
             }
         assert true;
     }
@@ -68,7 +57,7 @@ class ActionTokenDiscardTwoTest {
     @ParameterizedTest
     @ValueSource(strings = {"Blue", "Yellow", "Purple", "Green"})
     void discardDifferentLevels(String colorString){
-        DevCardColor color = colorFactory.get(colorString);
+        DevCardColor color = factory.getDevCardColor(colorString);
         ActionToken token = new ActionTokenDiscardTwo(color);
         DevCardGrid grid = game.getDevCardGrid();
         int initialSize = grid.getDeck(color,2).size();
@@ -91,7 +80,7 @@ class ActionTokenDiscardTwoTest {
     @ParameterizedTest
     @ValueSource(strings = {"Blue", "Yellow", "Purple", "Green"})
     void discardEndOfGame(String colorString){
-        DevCardColor color = colorFactory.get(colorString);
+        DevCardColor color = factory.getDevCardColor(colorString);
         ActionToken token = new ActionTokenDiscardTwo(color);
         DevCardGrid grid = game.getDevCardGrid();
         int level;

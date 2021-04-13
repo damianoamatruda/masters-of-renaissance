@@ -23,14 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DevCardGridTest {
     GameFactory factory;
     Game game;
-    DevCardColorFactory colorFactory;
-    ResourceTypeFactory resTypeFactory;
     @BeforeEach
     void setup(){
         factory = new FileGameFactory("src/main/resources/config.xml");
         game = factory.buildMultiGame(List.of("Alessandro", "Damiano", "Marco"));
-        colorFactory = factory.getDevCardColorFactory();
-        resTypeFactory = factory.getResTypeFactory();
     }
 
 
@@ -42,10 +38,10 @@ public class DevCardGridTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void devGridTest(int level) {
-        assertAll(() -> assertEquals(4, game.getDevCardGrid().getDeck(colorFactory.get("Blue"), level).size()),
-                () -> assertEquals(4, game.getDevCardGrid().getDeck(colorFactory.get("Green"), level).size()),
-                () -> assertEquals(4, game.getDevCardGrid().getDeck(colorFactory.get("Purple"), level).size()),
-                () -> assertEquals(4, game.getDevCardGrid().getDeck(colorFactory.get("Yellow"), level).size()));
+        assertAll(() -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Blue"), level).size()),
+                () -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Green"), level).size()),
+                () -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Purple"), level).size()),
+                () -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Yellow"), level).size()));
     }
 
     /**
@@ -70,25 +66,25 @@ public class DevCardGridTest {
     @Test
     void buyCardTest() throws Exception {
         DevCardGrid theGrid = game.getDevCardGrid();
-        Stack<DevelopmentCard> deck = theGrid.getDeck(colorFactory.get("Blue"), 1);
-        deck.push(new DevelopmentCard(colorFactory.get("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(resTypeFactory.get("Coin"), 1);
+        Stack<DevelopmentCard> deck = theGrid.getDeck(factory.getDevCardColor("Blue"), 1);
+        deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
+            put(factory.getResType("Coin"), 1);
         }}), null, 0));
         Player buyer = game.getPlayers().get(0);
         List<List<DevelopmentCard>> oldGrid = game.getDevCardGrid().peekDevCards();
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
-                put(resTypeFactory.get("Coin"), 1);
+                put(factory.getResType("Coin"), 1);
             }});
         }};
 
-        buyer.getStrongbox().addResource(resTypeFactory.get("Coin"));
+        buyer.getStrongbox().addResource(factory.getResType("Coin"));
 
-        theGrid.buyDevCard(game, buyer, colorFactory.get("Blue"), 1, 0, resContainers);
+        theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers);
         List<List<DevelopmentCard>> top = theGrid.peekDevCards();
 
         assertAll(() -> assertNotEquals(oldGrid, top),
-                () -> assertEquals(buyer.getDevSlots().get(0).peek().getColor(), colorFactory.get("Blue")),
+                () -> assertEquals(buyer.getDevSlots().get(0).peek().getColor(), factory.getDevCardColor("Blue")),
                 () -> assertEquals(buyer.getDevSlots().get(0).peek().getLevel(), 1));
 
     }
@@ -100,18 +96,18 @@ public class DevCardGridTest {
     void buyCardWrongLevel(){
         DevCardGrid theGrid = game.getDevCardGrid();
         Player buyer = game.getPlayers().get(0);
-        Stack<DevelopmentCard> deck = theGrid.getDeck(colorFactory.get("Blue"), 1);
+        Stack<DevelopmentCard> deck = theGrid.getDeck(factory.getDevCardColor("Blue"), 1);
 
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
-                put(resTypeFactory.get("Coin"), 1);
+                put(factory.getResType("Coin"), 1);
             }});
         }};
 
-        deck.push(new DevelopmentCard(colorFactory.get("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(resTypeFactory.get("Coin"), 1);
+        deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
+            put(factory.getResType("Coin"), 1);
         }}), null, 0));
 
-        assertThrows(Exception.class, () -> theGrid.buyDevCard(game, buyer, colorFactory.get("Blue"), 1, 0, resContainers));
+        assertThrows(Exception.class, () -> theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers));
     }
 }

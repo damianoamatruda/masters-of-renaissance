@@ -6,12 +6,10 @@ import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
-import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -20,6 +18,7 @@ import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -27,11 +26,11 @@ public class FileGameFactory implements GameFactory {
     /** The unmarshalled object. */
     private ModelConfig config;
 
-    /** The factory of development card colors. */
-    private final FileDevCardColorFactory colorFactory;
+    /** The development card colors. */
+    Map<String, DevCardColor> devCardColorMap;
 
-    /** The factory of resource types. */
-    private final FileResourceTypeFactory resTypeFactory;
+    /** The resource types. */
+    Map<String, ResourceType> resTypeMap;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config file.
@@ -45,8 +44,10 @@ public class FileGameFactory implements GameFactory {
         } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();
         }
-        colorFactory = new FileDevCardColorFactory(this);
-        resTypeFactory = new FileResourceTypeFactory(this);
+        devCardColorMap = generateDevCardColors().stream()
+                .collect(Collectors.toMap(DevCardColor::getName, Function.identity()));
+        resTypeMap = generateResourceTypes().stream()
+                .collect(Collectors.toMap(ResourceType::getName, Function.identity()));
     }
 
     /**
@@ -162,13 +163,13 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public ResourceTypeFactory getResTypeFactory() {
-        return resTypeFactory;
+    public ResourceType getResType(String name) {
+        return resTypeMap.get(name);
     }
 
     @Override
-    public DevCardColorFactory getDevCardColorFactory() {
-        return colorFactory;
+    public DevCardColor getDevCardColor(String name) {
+        return devCardColorMap.get(name);
     }
 
     @Override
@@ -183,7 +184,7 @@ public class FileGameFactory implements GameFactory {
 
                 production[0] = generateProduction(card.getProduction());
 
-                add(new DevelopmentCard(colorFactory.get(card.getColor()), card.getLevel(), cost[0], production[0], card.getVictoryPoints()));
+                add(new DevelopmentCard(getDevCardColor(card.getColor()), card.getLevel(), cost[0], production[0], card.getVictoryPoints()));
             }
         }};
         return devCards;
@@ -205,13 +206,13 @@ public class FileGameFactory implements GameFactory {
             } else {
                 cost[0] = new DevCardRequirement(new HashSet<>() {{
                     for (ModelConfig.XmlCardRequirement req : card.getColorRequirements())
-                        add(new DevCardRequirement.Entry(colorFactory.get(req.getColor()), req.getLevel(), req.getAmount()));
+                        add(new DevCardRequirement.Entry(getDevCardColor(req.getColor()), req.getLevel(), req.getAmount()));
                 }});
             }
             if (card.getProduction() != null)
                 production[0] = generateProduction(card.getProduction());
 
-            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production[0], resTypeFactory.get(card.getResource()), cost[0], card.getVictoryPoints()));
+            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production[0], getResType(card.getResource()), cost[0], card.getVictoryPoints()));
         }
         return leaderCards;
     }
@@ -220,8 +221,8 @@ public class FileGameFactory implements GameFactory {
     public Market generateMarket() {
         return new Market(new HashMap<>() {{
             for (ModelConfig.XmlResourceEntry entry : config.getMarket())
-                put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
-        }}, parseColumnsCount(), resTypeFactory.get("zero"));
+                put(getResType(entry.getResourceType()), entry.getAmount());
+        }}, parseColumnsCount(), getResType("zero"));
     }
 
     @Override
@@ -255,7 +256,7 @@ public class FileGameFactory implements GameFactory {
                 tokens.add((ActionToken) constructor.newInstance());
             } else {
                 constructor = className.getConstructor(DevCardColor.class);
-                tokens.add((ActionToken) constructor.newInstance(colorFactory.get(token.getColor())));
+                tokens.add((ActionToken) constructor.newInstance(getDevCardColor(token.getColor())));
             }
         }
 
@@ -317,11 +318,11 @@ public class FileGameFactory implements GameFactory {
         return new Production(new HashMap<>() {{
             if (production.getInput() != null)
                 for (ModelConfig.XmlResourceEntry entry : production.getInput())
-                    put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
+                    put(getResType(entry.getResourceType()), entry.getAmount());
         }}, production.getInputBlanks(), new HashMap<>() {{
             if (production.getOutput() != null)
                 for (ModelConfig.XmlResourceEntry entry : production.getOutput())
-                    put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
+                    put(getResType(entry.getResourceType()), entry.getAmount());
         }}, production.getOutputBlanks());
     }
 
@@ -334,7 +335,7 @@ public class FileGameFactory implements GameFactory {
     private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceEntry> requirements) {
         return new ResourceRequirement(new HashMap<>() {{
             for (ModelConfig.XmlResourceEntry entry : requirements)
-                put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
+                put(getResType(entry.getResourceType()), entry.getAmount());
         }});
     }
 
