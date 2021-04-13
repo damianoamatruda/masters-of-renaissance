@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class ActionTokenDiscardTwoTest {
-    FileGameFactory factory;
+    GameFactory factory;
     SoloGame game;
     Player player;
 

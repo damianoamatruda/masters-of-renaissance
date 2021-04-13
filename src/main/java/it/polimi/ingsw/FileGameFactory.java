@@ -52,12 +52,7 @@ public class FileGameFactory implements GameFactory {
                 .collect(Collectors.toMap(ResourceType::getName, Function.identity()));
     }
 
-    /**
-     * Builder of a multiplayer game instance.
-     *
-     * @param nicknames the list of nicknames of players who joined
-     * @return          the multiplayer game
-     */
+    @Override
     public Game buildMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
         if (nicknames.size() > config.getMaxPlayers())
@@ -100,12 +95,7 @@ public class FileGameFactory implements GameFactory {
         return new Game(players, new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()), generateMarket(), new FaithTrack(generateVaticanSections(), generateYellowTiles()), parseMaxFaith(), parseMaxDevCards());
     }
 
-    /**
-     * Builder of a single-player game instance.
-     *
-     * @param nickname  the nickname of the only player
-     * @return          the single-player game
-     */
+    @Override
     public SoloGame buildSoloGame(String nickname) {
         int playerLeadersCount = config.getNumLeaders();
         List<LeaderCard> shuffledLeaderCards = null;
@@ -160,10 +150,6 @@ public class FileGameFactory implements GameFactory {
                 .unmarshal(new FileReader(path));
     }
 
-    public ModelConfig getModelConfig() {
-        return config;
-    }
-
     @Override
     public ResourceType getResType(String name) {
         return resTypeMap.get(name);
@@ -193,7 +179,56 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public Set<FaithTrack.VaticanSection> generateVaticanSections() {
+        return new HashSet<>() {{
+            for (ModelConfig.XmlFaithTrack.XmlVaticanSection section : config.getFaithTrack().getSections()) {
+                add(new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()));
+            }
+        }};
+    }
+
+    @Override
+    public Set<FaithTrack.YellowTile> generateYellowTiles() {
+        return new HashSet<>() {{
+            for (ModelConfig.XmlFaithTrack.XmlYellowTile tile : config.getFaithTrack().getTiles()) {
+                add(new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()));
+            }
+        }};
+    }
+
+    @Override
+    public int parseLevelsCount() {
+        return config.getMaxLevel();
+    }
+
+    /**
+     * Returns the loaded model configuration.
+     *
+     * @return  the model configuration
+     */
+    @Deprecated
+    public ModelConfig getModelConfig() {
+        return config;
+    }
+
+    /**
+     * Returns a new Market instance.
+     *
+     * @return  the Market
+     */
+    private Market generateMarket() {
+        return new Market(new HashMap<>() {{
+            for (ModelConfig.XmlResourceEntry entry : config.getMarket())
+                put(getResType(entry.getResourceType()), entry.getAmount());
+        }}, parseColumnsCount(), getResType("zero"));
+    }
+
+    /**
+     * Returns a list of all possible leader cards.
+     *
+     * @return  list of leader cards
+     */
+    private List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
         CardRequirement[] cost = new CardRequirement[1];
         Class<?> className;
@@ -219,34 +254,12 @@ public class FileGameFactory implements GameFactory {
         return leaderCards;
     }
 
-    @Override
-    public Market generateMarket() {
-        return new Market(new HashMap<>() {{
-            for (ModelConfig.XmlResourceEntry entry : config.getMarket())
-                put(getResType(entry.getResourceType()), entry.getAmount());
-        }}, parseColumnsCount(), getResType("zero"));
-    }
-
-    @Override
-    public Set<FaithTrack.VaticanSection> generateVaticanSections() {
-        return new HashSet<>() {{
-            for (ModelConfig.XmlFaithTrack.XmlVaticanSection section : config.getFaithTrack().getSections()) {
-                add(new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()));
-            }
-        }};
-    }
-
-    @Override
-    public Set<FaithTrack.YellowTile> generateYellowTiles() {
-        return new HashSet<>() {{
-            for (ModelConfig.XmlFaithTrack.XmlYellowTile tile : config.getFaithTrack().getTiles()) {
-                add(new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()));
-            }
-        }};
-    }
-
-    @Override
-    public List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    /**
+     * Returns a list of the action tokens.
+     *
+     * @return  list of action tokens
+     */
+    private List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlActionToken> source = config.getTokens();
         List<ActionToken> tokens = new ArrayList<>();
         Class<?> className;
@@ -266,20 +279,11 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
-     * Returns the maximum level a development card can have.
-     *
-     * @return  max card level
-     */
-    public int parseLevelsCount() {
-        return config.getMaxLevel();
-    }
-
-    /**
      * Returns the number of different card colors.
      *
      * @return  number of card colors
      */
-    public int parseColorsCount() {
+    private int parseColorsCount() {
         return config.getNumColors();
     }
 
@@ -288,7 +292,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  number of market columns
      */
-    public int parseColumnsCount() {
+    private int parseColumnsCount() {
         return config.getMarketColumns();
     }
 
@@ -297,7 +301,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  max number of faith points
      */
-    public int parseMaxFaith() {
+    private int parseMaxFaith() {
         return config.getMaxFaith();
     }
 
@@ -306,7 +310,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  max number of development cards purchasable by a player
      */
-    public int parseMaxDevCards() {
+    private int parseMaxDevCards() {
         return config.getMaxDevCards();
     }
 
@@ -341,11 +345,11 @@ public class FileGameFactory implements GameFactory {
         }});
     }
 
-    public Set<DevCardColor> generateDevCardColors(){
+    private Set<DevCardColor> generateDevCardColors() {
         return config.getCardColors().stream().map(s -> new DevCardColor(s)).collect(Collectors.toSet());
     }
 
-    public Set<ResourceType> generateResourceTypes(){
+    private Set<ResourceType> generateResourceTypes() {
         return config.getResourceTypes().stream().map(s -> new ResourceType(s.getName(), s.isStorable())).collect(Collectors.toSet());
     }
 }
