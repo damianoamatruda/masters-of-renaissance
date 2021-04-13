@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.leadercards;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
+import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.ResourceShelf;
 import java.util.Map;
@@ -10,6 +11,10 @@ import java.util.Map;
  * Card with a special ability. Can only be activated or discarded during a game.
  * When active, its ability can be used.
  * Activation requires the player to own either certain resources or development cards.
+ * 
+ * @see Card
+ * @see CardRequirement
+ * @see Player
  */
 public abstract class LeaderCard extends Card {
     private final ResourceType resource;
@@ -29,15 +34,15 @@ public abstract class LeaderCard extends Card {
      */
     public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(victoryPoints);
-        assert resource != null;
+        if (resource == null) this.resource = new ResourceType("", false);
+        else this.resource = resource;
         this.requirement = requirement;
-        this.resource = resource;
     }
 
     /**
      * Returns the activation status of the card.
-     * It doesn't have to be checked prior to the card's use, as it is used internally
-     * to check whether the card's ability can be used
+     * It doesn't have to be checked prior to the card's use,
+     * since the card's status is already checked for internally
      *
      * @return the card's activation status.
      */
@@ -46,13 +51,18 @@ public abstract class LeaderCard extends Card {
     /**
      * Activates the card, enabling its effects.
      * 
-     * @param player        the player activating the card.
-     *                      The card's requirements will be checked on them.
-     * @throws Exception    if the player does not meet the card's requirements.
+     * @param player                        the player activating the card.
+     *                                      The card's requirements will be checked on them.
+     * @throws IllegalActivationException   if the player does not meet the card's requirements.
      */
-    public void activate(Player player) throws Exception {
-        if (requirement != null) requirement.checkRequirements(player);
-
+    public void activate(Player player) throws IllegalActivationException {
+        if (requirement != null) {
+            try { requirement.checkRequirements(player); }
+            catch (RequirementsNotMetException e) {
+                throw new IllegalActivationException(
+                    String.format("\nThe leader card cannot be activated due to the following reason: %s", e.getMessage()));
+            }
+        }
         isActive = true;
     }
 
@@ -80,14 +90,12 @@ public abstract class LeaderCard extends Card {
     /**
      * Applies the leader card's discount.
      *
-     * @param devCardCost the cost to apply the discount on.
-     * @return  the cost discounted by the card's ability's amount.
+     * @param devCardCost   the cost to apply the discount on.
+     * @return              the cost discounted by the card's ability's amount.
      */
     public Map<ResourceType, Integer> getDevCardCost(Map<ResourceType, Integer> devCardCost) { return devCardCost; }
 
     /**
-     * Returns the <code>Production</code> associated with the leader card.
-     *
      * @return the Production object of the leader card.
      */
     public Production getProduction() { return null; }
@@ -96,14 +104,14 @@ public abstract class LeaderCard extends Card {
      * Processes <code>Zero</code> resources. If the leader is a ZeroLeader, they are replaced by the
      * <code>ResourceType</code> of the leader card.
      *
-     * @param replaceableResType   the type of the resources to be replaced
-     * @param toProcess            the resources to be processed
-     * @param replacements         the resources to substitute to the replaceable resources. If the leader's resource
-     *                             has a non-zero value, the leader is activated, and the entry relative to the leader's
-     *                             resource (if present) will be removed. This is to ensure proper re-utilization of the
-     *                             current map in cascading calls to the method on multiple leaders. If there's
-     *                             resources of different type from the leader's, they will be ignored.
-     * @return          the resources transformed as per the leader's ability
+     * @param replaceableResType    the type of the resources to be replaced
+     * @param toProcess             the resources to be processed
+     * @param replacements          the resources to substitute to the replaceable resources. If the leader's resource
+     *                              has a non-zero value, the leader is activated, and the entry relative to the leader's
+     *                              resource (if present) will be removed. This is to ensure proper re-utilization of the
+     *                              current map in cascading calls to the method on multiple leaders. If there's
+     *                              resources of different type from the leader's, they will be ignored.
+     * @return                      the resources transformed as per the leader's ability
      */
     public Map<ResourceType, Integer> replaceMarketResources(ResourceType replaceableResType,
                                                              Map<ResourceType, Integer> toProcess,
