@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.devcardcolors.DevCardColor;
  */
 public class ActionTokenDiscardTwo implements ActionToken{
     /** The specific color of the cards to be discarded after activation (target color). */
-    private DevCardColor discardedColor;
+    private final DevCardColor discardedColor;
 
     /**
      * Initializes class and member.

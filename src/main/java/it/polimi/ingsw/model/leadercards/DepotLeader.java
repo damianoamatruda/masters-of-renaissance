@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceShelf;
 
 /**
  * Leader card with the ability of storing resources, which will be considered as part of the player's warehouse.
+ * 
+ * @see LeaderCard
  */
 public class DepotLeader extends LeaderCard {
     /**

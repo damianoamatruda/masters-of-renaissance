@@ -20,6 +20,7 @@ import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class FileGameFactory implements GameFactory {
@@ -27,10 +28,10 @@ public class FileGameFactory implements GameFactory {
     private ModelConfig config;
 
     /** The factory of development card colors. */
-    private final JavaDevCardColorFactory colorFactory;
+    private final FileDevCardColorFactory colorFactory;
 
     /** The factory of resource types. */
-    private final JavaResourceTypeFactory resTypeFactory;
+    private final FileResourceTypeFactory resTypeFactory;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config file.
@@ -44,8 +45,8 @@ public class FileGameFactory implements GameFactory {
         } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();
         }
-        colorFactory = new JavaDevCardColorFactory();
-        resTypeFactory = new JavaResourceTypeFactory();
+        colorFactory = new FileDevCardColorFactory(this);
+        resTypeFactory = new FileResourceTypeFactory(this);
     }
 
     /**
@@ -87,7 +88,9 @@ public class FileGameFactory implements GameFactory {
                     leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
                     new Warehouse(config.getMaxShelfSize()),
                     new Strongbox(),
-                    generateProduction(production), config.getSlotsCount()
+                    generateProduction(production), config.getSlotsCount(),
+                    config.getInitialResources().get(i).getNumResources(),
+                    config.getInitialResources().get(i).getFaith()
             );
             players.add(player);
         }
@@ -118,7 +121,9 @@ public class FileGameFactory implements GameFactory {
                 shuffledLeaderCards.subList(0, playerLeadersCount),
                 new Warehouse(config.getMaxShelfSize()),
                 new Strongbox(),
-                generateProduction(config.getBaseProduction()), config.getSlotsCount()
+                generateProduction(config.getBaseProduction()), config.getSlotsCount(),
+                config.getInitialResources().get(0).getNumResources(),
+                config.getInitialResources().get(0).getFaith()
         );
 
         SoloGame game = null;
@@ -331,5 +336,13 @@ public class FileGameFactory implements GameFactory {
             for (ModelConfig.XmlResourceEntry entry : requirements)
                 put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
         }});
+    }
+
+    public Set<DevCardColor> generateDevCardColors(){
+        return config.getCardColors().stream().map(s -> new DevCardColor(s)).collect(Collectors.toSet());
+    }
+
+    public Set<ResourceType> generateResourceTypes(){
+        return config.getResourceTypes().stream().map(s -> new ResourceType(s.getName(), s.isStorable())).collect(Collectors.toSet());
     }
 }

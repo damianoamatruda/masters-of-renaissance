@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
@@ -18,7 +19,7 @@ public class DevCardGrid {
     protected final int colorsCount;
 
     /** All the cards that are still not bought by any player. */
-    protected Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
+    protected final Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
 
     /**
      * Generates the grid.
@@ -81,7 +82,9 @@ public class DevCardGrid {
     /**
      * Getter of the deck corresponding the given color and level.
      *
-     * @return the deck corresponding the given color and level
+     * @param color the color of choice
+     * @param level the level of choice
+     * @return      the deck corresponding the given color and level
      */
     public Stack<DevelopmentCard> getDeck(DevCardColor color, int level) {
         return grid.get(color).get(level);
@@ -114,18 +117,18 @@ public class DevCardGrid {
      * @param position                      the position of the dev slot where to put the development card
      * @param resContainers                 a map of the resource containers where to take the storable resources
      * @throws IllegalCardDepositException  Bought card cannot fit in chosen player slot
-     * @throws Exception                    error while player was depositing the card
+     * @throws RequirementsNotMetException  error while player was depositing the card
      * @throws EmptyStackException          No cards available with given color and level
      */
     public void buyDevCard(Game game, Player player, DevCardColor color, int level, int position,
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
-            throws Exception, IllegalCardDepositException, EmptyStackException {
+            throws RequirementsNotMetException, IllegalCardDepositException, EmptyStackException {
 
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
             player.addToDevSlot(game, position, card, resContainers);
         }
-        catch (Exception e){
+        catch (RequirementsNotMetException | IllegalCardDepositException e){
             grid.get(color).get(level).push(card);
             throw e;
         }

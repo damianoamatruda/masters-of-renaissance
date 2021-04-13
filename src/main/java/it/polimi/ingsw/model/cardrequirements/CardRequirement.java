@@ -20,8 +20,8 @@ public interface CardRequirement {
     /**
      * Checks whether the player satisfies the requirements.
      *
-     * @param player        the player to be checked for ownership of the required objects.
-     * @throws Exception    if the player does not meet the requirements.
+     * @param player                        the player to be checked for ownership of the required objects.
+     * @throws RequirementsNotMetException  if the player does not meet the requirements.
      */
-    public void checkRequirements(Player player) throws Exception;
+    public void checkRequirements(Player player) throws RequirementsNotMetException;
 }

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.FileGameFactory;
-import it.polimi.ingsw.JavaDevCardColorFactory;
-import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.*;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
