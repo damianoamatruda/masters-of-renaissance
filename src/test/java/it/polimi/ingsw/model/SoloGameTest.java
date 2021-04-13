@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveOneShuffle;
 import it.polimi.ingsw.model.actiontokens.ActionTokenBlackMoveTwo;
 import it.polimi.ingsw.model.leadercards.DepotLeader;
+import it.polimi.ingsw.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
@@ -135,22 +136,10 @@ public class SoloGameTest {
     }
 
     /**
-     * Test for discardDevCards method.
-     */
-    @Test
-    void discardDevCards() throws AlreadyActiveException {
-
-        player.discardLeader(game, 0);
-        player.discardLeader(game, 0);
-        assertEquals(2,player.getFaithPoints());
-
-    }
-
-    /**
      * Test the AlreadyActiveException when a Leader card is already active.
      */
     @Test
-    void discardActiveDevCard() throws Exception {
+    void discardActiveDevCard() throws IllegalActivationException {
 
         player.getLeaders().get(0).activate(player);
         assertThrows(AlreadyActiveException.class, () -> player.discardLeader(game, 0));

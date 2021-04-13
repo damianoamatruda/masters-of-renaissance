@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
+import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
@@ -42,39 +43,28 @@ public class PlayerTest {
      */
     @Test
     void getNumOfResourcesTestStrongboxOnly() {
-        try {
-            for(int i = 0; i < 4; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
-            for(int i = 0; i < 7; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Servant"));
-            player.getStrongbox().addResource(resTypeFactory.get("Shield"));
-            assertEquals(12, player.getResourcesCount());
-        }
-        catch (Exception e){
-            fail("Exception has been thrown");
-        }
+        for(int i = 0; i < 4; i++)
+            player.getStrongbox().addResource(resTypeFactory.get("Coin"));
+        for(int i = 0; i < 7; i++)
+            player.getStrongbox().addResource(resTypeFactory.get("Servant"));
+        player.getStrongbox().addResource(resTypeFactory.get("Shield"));
+        assertEquals(12, player.getResourcesCount());
     }
 
     /**
      * Checks that stored resources are counted correctly.
      */
     @Test
-    void getNumOfResourcesTestAnyStorage() {
-        try {
-            for(int i = 0; i < 4; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
-            for(int i = 0; i < 7; i++)
-                player.getStrongbox().addResource(resTypeFactory.get("Servant"));
-            for(int i = 0; i < 2; i++)
-                player.getWarehouse().getShelves().get(1).addResource(resTypeFactory.get("Stone"));
+    void getNumOfResourcesTestAnyStorage() throws IllegalResourceTransferException {
+        for(int i = 0; i < 4; i++)
+            player.getStrongbox().addResource(resTypeFactory.get("Coin"));
+        for(int i = 0; i < 7; i++)
+            player.getStrongbox().addResource(resTypeFactory.get("Servant"));
+        for(int i = 0; i < 2; i++)
+            player.getWarehouse().getShelves().get(1).addResource(resTypeFactory.get("Stone"));
 
-            player.getWarehouse().getShelves().get(0).addResource(resTypeFactory.get("Shield"));
-            assertEquals(14, player.getResourcesCount());
-        }
-        catch (Exception e){
-            fail("Exception has been thrown");
-        }
-
+        player.getWarehouse().getShelves().get(0).addResource(resTypeFactory.get("Shield"));
+        assertEquals(14, player.getResourcesCount());
     }
 
     /**
@@ -87,7 +77,7 @@ public class PlayerTest {
          * Prepares stored resources and resources to pay.
          */
         @BeforeEach
-        void prepareResources() {
+        void prepareResources() throws RequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
                 put(player.getStrongbox(), new HashMap<>() {{
                     put(resTypeFactory.get("Coin"), 3);
@@ -96,28 +86,24 @@ public class PlayerTest {
                     put(resTypeFactory.get("Stone"), 2);
                 }});
             }};
-            try {
-                for (int i = 0; i < 4; i++)
-                    player.getStrongbox().addResource(resTypeFactory.get("Coin"));
-                for (int i = 0; i < 7; i++)
-                    player.getStrongbox().addResource(resTypeFactory.get("Servant"));
-                for (int i = 0; i < 2; i++)
-                    player.getWarehouse().getShelves().get(1).addResource(resTypeFactory.get("Stone"));
 
-                player.getWarehouse().getShelves().get(0).addResource(resTypeFactory.get("Shield"));
+            for (int i = 0; i < 4; i++)
+                player.getStrongbox().addResource(resTypeFactory.get("Coin"));
+            for (int i = 0; i < 7; i++)
+                player.getStrongbox().addResource(resTypeFactory.get("Servant"));
+            for (int i = 0; i < 2; i++)
+                player.getWarehouse().getShelves().get(1).addResource(resTypeFactory.get("Stone"));
 
-                player.addToDevSlot(game, 1, new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
-                                new ResourceRequirement(
-                                        new HashMap<>() {{
-                                            put(resTypeFactory.get("Coin"), 3);
-                                            put(resTypeFactory.get("Stone"), 2);
-                                        }}), null, 2),
-                        resContainers);
+            player.getWarehouse().getShelves().get(0).addResource(resTypeFactory.get("Shield"));
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail("Exception has been thrown");
-            }
+            player.addToDevSlot(game, 1, new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
+                            new ResourceRequirement(
+                                    new HashMap<>() {{
+                                        put(resTypeFactory.get("Coin"), 3);
+                                        put(resTypeFactory.get("Stone"), 2);
+                                    }}), null, 2),
+                    resContainers);
+
         }
 
         /**

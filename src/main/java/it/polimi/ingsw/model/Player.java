@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
@@ -113,9 +114,9 @@ public class Player {
     /**
      * Action performed when the player discards a leader card. The player receives one faith point.
      *
-     * @param game          the game the player is playing in
-     * @param index         the index of the card to be discarded
-     * @throws AlreadyActiveException    leader is already active
+     * @param game                      the game the player is playing in
+     * @param index                     the index of the card to be discarded
+     * @throws AlreadyActiveException   leader is already active
      */
     public void discardLeader(Game game, int index) throws AlreadyActiveException {
         LeaderCard toBeDiscarded = leaders.get(index);
@@ -242,10 +243,10 @@ public class Player {
      * @param devCard                           the development card that has just been bought
      * @param resContainers                     a map of the resource containers where to take the storable resources
      * @throws IllegalCardDepositException      blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
-     * @throws Exception                        error during the actual payment
+     * @throws RequirementsNotMetException                        error during the actual payment
      */
     public void addToDevSlot(Game game, int index, DevelopmentCard devCard,
-                                Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
+                                Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException, IllegalCardDepositException {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new IllegalCardDepositException();
 
