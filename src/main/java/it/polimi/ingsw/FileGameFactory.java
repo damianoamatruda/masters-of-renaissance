@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 
 public class FileGameFactory implements GameFactory {
     /** The unmarshalled object. */
-    private ModelConfig config;
+    private final ModelConfig config;
 
     /** The development card colors. */
-    Map<String, DevCardColor> devCardColorMap;
+    private final Map<String, DevCardColor> devCardColorMap;
 
     /** The resource types. */
-    Map<String, ResourceType> resTypeMap;
+    private final Map<String, ResourceType> resTypeMap;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config file.
@@ -38,12 +38,14 @@ public class FileGameFactory implements GameFactory {
      * @param path  the config file to be parsed
      */
     public FileGameFactory(String path) {
-        config = null;
+        ModelConfig tempConfig;
         try {
-            config = unmarshall(path);
+            tempConfig = unmarshall(path);
         } catch (JAXBException | FileNotFoundException e) {
+            tempConfig = null;
             e.printStackTrace();
         }
+        config = tempConfig;
         devCardColorMap = generateDevCardColors().stream()
                 .collect(Collectors.toMap(DevCardColor::getName, Function.identity()));
         resTypeMap = generateResourceTypes().stream()
