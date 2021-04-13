@@ -93,12 +93,12 @@ public class ResourceRequirement implements CardRequirement {
      * Takes the resources that form the requirement from the player. Each storable resource is taken from a given
      * resource container.
      *
-     * @param game          the game the player is playing in
-     * @param player        the player the resources are taken from
-     * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws Exception    if it is not possible
+     * @param game                          the game the player is playing in
+     * @param player                        the player the resources are taken from
+     * @param resContainers                 a map of the resource containers where to take the storable resources
+     * @throws RequirementsNotMetException  if it is not possible
      */
-    public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
+    public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException {
         try {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(

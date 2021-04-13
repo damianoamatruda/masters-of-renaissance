@@ -16,6 +16,7 @@ public abstract class Card {
      * Class constructor.
      *
      * @param victoryPoints the amount of victory points associated with the card
+     * 
      * @see Game
      * @see Player
      */
