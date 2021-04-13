@@ -78,13 +78,13 @@ public class ResourceRequirement implements CardRequirement {
         }
 
         if (!missingResources.keySet().isEmpty()) {
-            String msg = String.format("Player %s lacks the following resources by the following amounts:\n", player.getNickname());
+            String msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", player.getNickname());
             
             for (Map.Entry<ResourceType, Integer> e : missingResources.entrySet()) {
-                msg = msg.concat(String.format("Resource %s, missing %s\n", e.getKey().getName(), Integer.toString(e.getValue())));
+                msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey().getName(), Integer.toString(e.getValue())));
             }
             
-            throw new RequirementsNotMetException(String.format("The ResourceRequirement was not satisfied by player %s due to the following reason: \n%s",
+            throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
                 player.getNickname(), msg));
         }
     }
@@ -106,7 +106,7 @@ public class ResourceRequirement implements CardRequirement {
                         Map.of(), Map.of(), resContainers, Map.of())
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
-            throw new RequirementsNotMetException(String.format("The ResourceRequirement was not satisfied by player %s due to the following reason: %s",
+            throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
                 player.getNickname(), e.getMessage()));
         }
     }

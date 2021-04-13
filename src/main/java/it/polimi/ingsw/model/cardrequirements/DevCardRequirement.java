@@ -67,13 +67,13 @@ public class DevCardRequirement implements CardRequirement {
 
         // if the missing set isn't empty the requirements haven't been met
         if (missing.size() != 0) {
-            String msg = String.format("Player %s does not satisfy the following entries:\n", player.getNickname());
+            String msg = String.format("\nPlayer %s does not satisfy the following entries:", player.getNickname());
             
             for (Entry e : missing.stream().collect(Collectors.toList())) {
-                msg = msg.concat(String.format("Color %s, level %s, missing %s\n", e.color.getName(), Integer.toString(e.level), Integer.toString(e.amount)));
+                msg = msg.concat(String.format("\nColor %s, level %s, missing %s", e.color.getName(), Integer.toString(e.level), Integer.toString(e.amount)));
             }
             
-            throw new RequirementsNotMetException(String.format("The ResourceRequirement was not satisfied by player %s due to the following reason: \n%s",
+            throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
                 player.getNickname(), msg));
         }
     }

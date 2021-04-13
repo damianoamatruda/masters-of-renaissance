@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.cardrequirements;
 
 /**
  * Exception signaling that the player being examined does not meet the specified requirements.
+ * 
+ * @see CardRequirement
+ * @see Player
  */
 public class RequirementsNotMetException extends Exception {
     /**

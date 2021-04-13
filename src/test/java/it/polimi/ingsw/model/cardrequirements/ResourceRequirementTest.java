@@ -18,8 +18,8 @@ import it.polimi.ingsw.model.resourcetypes.*;
  */
 public class ResourceRequirementTest {
     private Player p;
-    ResourceType coin = new ResourceType("coin", true),
-                 shield = new ResourceType("shield", true);
+    private ResourceType coin = new ResourceType("coin", true),
+                         shield = new ResourceType("shield", true);
 
     @BeforeEach
     void setup() {
