@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 

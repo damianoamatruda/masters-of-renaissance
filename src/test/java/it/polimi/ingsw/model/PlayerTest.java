@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.leadercards.DepotLeader;
 import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;

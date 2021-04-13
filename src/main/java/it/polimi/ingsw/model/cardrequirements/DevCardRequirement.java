@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
+import it.polimi.ingsw.model.DevCardColor;
 
 /**
  * Requirement for leader card activation. Specifies what kind of development cards the player must have to be able to

@@ -11,8 +11,6 @@ import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.model.devcardcolors.*;
-
 /**
  * Test class for DevCardRequirement.
  */
