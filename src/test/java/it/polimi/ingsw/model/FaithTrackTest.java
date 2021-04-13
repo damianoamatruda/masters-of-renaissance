@@ -28,7 +28,7 @@ class FaithTrackTest {
         track = new FaithTrack(Set.of(), Set.of(
                 new FaithTrack.YellowTile(3, 1)
         ));
-        player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, track, 0, 0);
     }
 

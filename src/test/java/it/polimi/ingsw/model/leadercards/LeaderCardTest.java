@@ -54,7 +54,7 @@ public class LeaderCardTest {
     void activateWithRequirements() {
         LeaderCard leader = new ZeroLeader(0,0,null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         p.getStrongbox().addResource(resTypeFactory.get("Coin"));
 
         assertDoesNotThrow(() -> leader.activate(p));
@@ -68,7 +68,7 @@ public class LeaderCardTest {
     void activateWrongResources() {
         LeaderCard leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), 0);
 
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         p.getStrongbox().addResource(resTypeFactory.get("Shield"));
 
         assertThrows(Exception.class, () -> leader.activate(p));

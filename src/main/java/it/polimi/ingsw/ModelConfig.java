@@ -1,158 +1,84 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.FaithTrack;
-import it.polimi.ingsw.model.Market;
-import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.leadercards.LeaderCard;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "config")
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class ModelConfig {
-    private int maxPlayers;
-    private int numOfLeaderCards;
-    private int maxFaith;
-    private int maxDevCards;
-    private int maxLevel;
-    private int numColors;
-    private int marketColumns;
-    private int numLeaders;
-    private int maxShelfSize;
-    private int slotsCount;
-    private List<XmlDevCard> devCards;
-    private List<XmlLeaderCard> leaderCards;
-    private List<XmlResourceEntry> market;
-    private XmlFaithTrack faithTrack;
-    private List<XmlActionToken> tokens;
-    private XmlProduction baseProduction;
-
     @XmlElement(name = "max-players")
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
-
+    private int maxPlayers;
     @XmlElement(name = "num-leader-cards")
-    public void setNumOfLeaderCards(int numOfLeaderCards) {
-        this.numOfLeaderCards = numOfLeaderCards;
-    }
-
+    private int numOfLeaderCards;
     @XmlElement(name = "max-faith")
-    public void setMaxFaith(int maxFaith) {
-        this.maxFaith = maxFaith;
-    }
-
+    private int maxFaith;
     @XmlElement(name = "max-development-cards")
-    public void setMaxDevCards(int maxDevCards) {
-        this.maxDevCards = maxDevCards;
-    }
-
+    private int maxDevCards;
     @XmlElement(name = "max-level")
-    public void setMaxLevel(int maxLevel) {
-        this.maxLevel = maxLevel;
-    }
-
+    private int maxLevel;
     @XmlElement(name = "num-colors")
-    public void setNumColors(int numColors) {
-        this.numColors = numColors;
-    }
-
+    private int numColors;
+    @XmlElement(name="market-columns")
+    private int marketColumns;
+    @XmlElement(name="num-leaders")
+    private int numLeaders;
+    @XmlElement(name = "max-shelf-size")
+    private int maxShelfSize;
+    @XmlElement(name = "slots-count")
+    private int slotsCount;
     @XmlElementWrapper(name="development-cards")
     @XmlElement(name="Card")
-    public void setDevCards(List<XmlDevCard> devCards){
-//        this.devCards = new ArrayList<>(){{
-//            for(XmlDevCard card : devCards)
-//                add(new DevelopmentCard(new JavaDevCardColorFactory().get(card.getColor()), card.getLevel(), null, null, card.getVictoryPoints()));
-//        }};
-        this.devCards = devCards;
-    }
+    private List<XmlDevCard> devCards;
+    @XmlElementWrapper(name = "leader-cards")
+    @XmlElement(name = "Card")
+    private List<XmlLeaderCard> leaderCards;
+    @XmlElementWrapper(name="market")
+    @XmlElement(name="resource-entry")
+    private List<XmlResourceEntry> market;
+    @XmlElement(name="Faith-Track")
+    private XmlFaithTrack faithTrack;
+    @XmlElementWrapper(name = "action-tokens")
+    @XmlElement(name = "token")
+    private List<XmlActionToken> tokens;
+    @XmlElement(name = "base-production")
+    private XmlProduction baseProduction;
+    @XmlElementWrapper(name = "initial-resources")
+    @XmlElement(name = "player")
+    private List<XmlBoost> initialResources;
 
-    @XmlElement(name="market-columns")
-    public void setMarketColumns(int marketColumns) {
-        this.marketColumns = marketColumns;
+    public List<XmlBoost> getInitialResources() {
+        return initialResources;
     }
 
     public List<XmlResourceEntry> getMarket() {
         return market;
     }
 
-    @XmlElementWrapper(name="market")
-    @XmlElement(name="resource-entry")
-    public void setMarket(List<XmlResourceEntry> market) {
-        this.market = market;
-    }
-
     public XmlFaithTrack getFaithTrack() {
         return faithTrack;
-    }
-
-    @XmlElement(name="Faith-Track")
-    public void setFaithTrack(XmlFaithTrack faithTrack) {
-        this.faithTrack = faithTrack;
     }
 
     public List<XmlLeaderCard> getLeaderCards() {
         return leaderCards;
     }
 
-    @XmlElementWrapper(name = "leader-cards")
-    @XmlElement(name = "Card")
-    public void setLeaderCards(List<XmlLeaderCard> leaderCards) {
-        this.leaderCards = leaderCards;
-    }
-
     public List<XmlActionToken> getTokens() {
         return tokens;
     }
 
-    @XmlElementWrapper(name = "action-tokens")
-    @XmlElement(name = "token")
-    public void setTokens(List<XmlActionToken> tokens) {
-        this.tokens = tokens;
-    }
-
-
     public int getNumLeaders() {
         return numLeaders;
-    }
-
-    @XmlElement(name="num-leaders")
-    public void setNumLeaders(int numLeaders) {
-        this.numLeaders = numLeaders;
     }
 
     public int getMaxShelfSize() {
         return maxShelfSize;
     }
 
-    @XmlElement(name = "max-shelf-size")
-    public void setMaxShelfSize(int maxShelfSize) {
-        this.maxShelfSize = maxShelfSize;
-    }
-
     public XmlProduction getBaseProduction() {
         return baseProduction;
     }
 
-    @XmlElement(name = "base-production")
-    public void setBaseProduction(XmlProduction baseProduction) {
-        this.baseProduction = baseProduction;
-    }
-
     public int getSlotsCount() {
         return slotsCount;
-    }
-
-    @XmlElement(name = "slots-count")
-    public void setSlotsCount(int slotsCount) {
-        this.slotsCount = slotsCount;
     }
 
     public int getMarketColumns() {
@@ -189,212 +115,140 @@ public class ModelConfig {
 
     @XmlRootElement(name = "resource-entry")
     static class XmlResourceEntry{
+        @XmlElement(name = "resource-type")
         private String resourceType;
+        @XmlElement(name = "amount")
         private int amount;
 
         public String getResourceType() {
             return resourceType;
         }
 
-        @XmlElement(name = "resource-type")
-        public void setResourceType(String resourceType) {
-            this.resourceType = resourceType;
-        }
-
         public int getAmount() {
             return amount;
-        }
-
-        @XmlElement(name = "amount")
-        public void setAmount(int amount) {
-            this.amount = amount;
         }
 
     }
 
     @XmlRootElement(name = "Card")
     static class XmlDevCard{
+        @XmlElement(name = "color")
         private String color;
+        @XmlElement(name = "level")
         private int level;
+        @XmlElementWrapper(name="cost")
+        @XmlElement(name = "resource-entry")
         private List<XmlResourceEntry> cost;
+        @XmlElement(name = "production")
         private XmlProduction production;
+        @XmlElement(name = "victory-points")
         private int victoryPoints;
 
         public String getColor() {
             return color;
         }
 
-        @XmlElement(name = "color")
-        public void setColor(String color) {
-            this.color = color;
-        }
-
         public int getLevel() {
             return level;
-        }
-
-        @XmlElement(name = "level")
-        public void setLevel(int level) {
-            this.level = level;
         }
 
         public int getVictoryPoints() {
             return victoryPoints;
         }
 
-        @XmlElement(name = "victory-points")
-        public void setVictoryPoints(int victoryPoints) {
-            this.victoryPoints = victoryPoints;
-        }
-
         public List<XmlResourceEntry> getCost() {
             return cost;
-        }
-
-        @XmlElementWrapper(name="cost")
-        @XmlElement(name = "resource-entry")
-        public void setCost(List<XmlResourceEntry> cost) {
-            this.cost = cost;
         }
 
         public XmlProduction getProduction() {
             return production;
         }
 
-        @XmlElement(name = "production")
-        public void setProduction(XmlProduction production) {
-            this.production = production;
-        }
-
     }
 
     @XmlRootElement(name = "production")
     static class XmlProduction{
+        @XmlElementWrapper(name="input", nillable = true)
+        @XmlElement(name = "resource-entry")
         private List<XmlResourceEntry> input;
+        @XmlElementWrapper(name="output", nillable = true)
+        @XmlElement(name = "resource-entry")
         private List<XmlResourceEntry> output;
+        @XmlElement(name = "input-blanks")
         private int inputBlanks;
+        @XmlElement(name = "output-blanks")
         private int outputBlanks;
 
         public List<XmlResourceEntry> getInput() {
             return input;
         }
 
-        @XmlElementWrapper(name="input", nillable = true)
-        @XmlElement(name = "resource-entry")
-        public void setInput(List<XmlResourceEntry> input) {
-            this.input = input;
-        }
-
         public List<XmlResourceEntry> getOutput() {
             return output;
-        }
-
-        @XmlElementWrapper(name="output", nillable = true)
-        @XmlElement(name = "resource-entry")
-        public void setOutput(List<XmlResourceEntry> output) {
-            this.output = output;
         }
 
         public int getInputBlanks() {
             return inputBlanks;
         }
 
-        @XmlElement(name = "input-blanks")
-        public void setInputBlanks(int inputBlanks) {
-            this.inputBlanks = inputBlanks;
-        }
-
         public int getOutputBlanks() {
             return outputBlanks;
-        }
-
-        @XmlElement(name = "output-blanks")
-        public void setOutputBlanks(int ouputBlanks) {
-            this.outputBlanks = ouputBlanks;
         }
 
     }
 
     @XmlRootElement(name = "Faith-Track")
     static class XmlFaithTrack{
+        @XmlElementWrapper(name="vatican-sections")
+        @XmlElement(name = "section")
         private List<XmlVaticanSection> sections;
+        @XmlElementWrapper(name="yellow-tiles")
+        @XmlElement(name = "tile")
         private List<XmlYellowTile> tiles;
 
         public List<XmlVaticanSection> getSections() {
             return sections;
         }
 
-        @XmlElementWrapper(name="vatican-sections")
-        @XmlElement(name = "section")
-        public void setSections(List<XmlVaticanSection> sections) {
-            this.sections = sections;
-        }
-
         public List<XmlYellowTile> getTiles() {
             return tiles;
         }
 
-        @XmlElementWrapper(name="yellow-tiles")
-        @XmlElement(name = "tile")
-        public void setTiles(List<XmlYellowTile> tiles) {
-            this.tiles = tiles;
-        }
-
         @XmlRootElement(name = "section")
         static class XmlVaticanSection{
+            @XmlElement(name = "section-begin")
             private int beginning;
+            @XmlElement(name = "section-end")
             private int end;
+            @XmlElement(name = "section-points")
             private int points;
 
             public int getBeginning() {
                 return beginning;
             }
 
-            @XmlElement(name = "section-begin")
-            public void setBeginning(int beginning) {
-                this.beginning = beginning;
-            }
-
             public int getEnd() {
                 return end;
-            }
-
-            @XmlElement(name = "section-end")
-            public void setEnd(int end) {
-                this.end = end;
             }
 
             public int getPoints() {
                 return points;
             }
 
-            @XmlElement(name = "section-points")
-            public void setPoints(int points) {
-                this.points = points;
-            }
-
         }
         @XmlRootElement(name = "tile")
         static class XmlYellowTile{
+            @XmlElement(name = "number")
             private int tileNumber;
+            @XmlElement(name = "points")
             private int points;
 
             public int getTileNumber() {
                 return tileNumber;
             }
 
-            @XmlElement(name = "number")
-            public void setTileNumber(int tileNumber) {
-                this.tileNumber = tileNumber;
-            }
-
             public int getPoints() {
                 return points;
-            }
-
-            @XmlElement(name = "points")
-            public void setPoints(int points) {
-                this.points = points;
             }
 
         }
@@ -402,48 +256,46 @@ public class ModelConfig {
 
     @XmlRootElement(name = "card-requirement")
     static class XmlCardRequirement{
+        @XmlElement(name = "card-color")
         private String color;
+        @XmlElement(name = "card-level")
         private int level;
+        @XmlElement(name = "amount")
         private int amount;
 
         public String getColor() {
             return color;
         }
 
-        @XmlElement(name = "card-color")
-        public void setColor(String color) {
-            this.color = color;
-        }
-
         public int getLevel() {
             return level;
-        }
-
-        @XmlElement(name = "card-level")
-        public void setLevel(int level) {
-            this.level = level;
         }
 
         public int getAmount() {
             return amount;
         }
 
-        @XmlElement(name = "amount")
-        public void setAmount(int amount) {
-            this.amount = amount;
-        }
-
     }
 
     @XmlRootElement(name = "Card")
     static class XmlLeaderCard{
+        @XmlElement(name = "type")
         private String type;
+        @XmlElement(name = "discount", nillable = true)
         private int discount;
+        @XmlElement(name = "shelf-size", nillable = true)
         private int shelfSize;
+        @XmlElement(name = "resource")
         private String resource;
+        @XmlElementWrapper(name = "cost")
+        @XmlElement(name = "resource-entry", nillable = true)
         private List<XmlResourceEntry> resourceRequirements;
+        @XmlElementWrapper(name = "cost")
+        @XmlElement(name = "card-requirement", nillable = true)
         private List<XmlCardRequirement> ColorRequirements;
+        @XmlElement(name = "production", nillable = true)
         private XmlProduction production;
+        @XmlElement(name = "victory-points")
         private int victoryPoints;
 
         public int getShelfSize() {
@@ -458,90 +310,64 @@ public class ModelConfig {
             return type;
         }
 
-        @XmlElement(name = "type")
-        public void setType(String type) {
-            this.type = type;
-        }
-
         public String getResource() {
             return resource;
-        }
-
-        @XmlElement(name = "resource")
-        public void setResource(String resource) {
-            this.resource = resource;
         }
 
         public List<XmlResourceEntry> getResourceRequirements() {
             return resourceRequirements;
         }
 
-        @XmlElementWrapper(name = "cost")
-        @XmlElement(name = "resource-entry", nillable = true)
-        public void setResourceRequirements(List<XmlResourceEntry> resourceRequirements) {
-            this.resourceRequirements = resourceRequirements;
-        }
-
         public List<XmlCardRequirement> getColorRequirements() {
             return ColorRequirements;
-        }
-
-        @XmlElementWrapper(name = "cost")
-        @XmlElement(name = "card-requirement", nillable = true)
-        public void setColorRequirements(List<XmlCardRequirement> colorRequirements) {
-            ColorRequirements = colorRequirements;
         }
 
         public int getVictoryPoints() {
             return victoryPoints;
         }
 
-        @XmlElement(name = "victory-points")
-        public void setVictoryPoints(int victoryPoints) {
-            this.victoryPoints = victoryPoints;
-        }
-
-        @XmlElement(name = "production", nillable = true)
-        public void setProduction(XmlProduction production) {
-            this.production = production;
-        }
-
-        @XmlElement(name = "shelf-size", nillable = true)
-        public void setShelfSize(int shelfSize) {
-            this.shelfSize = shelfSize;
-        }
-
         public int getDiscount() {
             return discount;
         }
 
-        @XmlElement(name = "discount", nillable = true)
-        public void setDiscount(int discount) {
-            this.discount = discount;
-        }
     }
 
     @XmlRootElement(name = "token")
     static class XmlActionToken{
+        @XmlElement(name = "name")
         private String type;
+        @XmlElement(name = "color", nillable = true)
         private String color;
 
         public String getType() {
             return type;
         }
 
-        @XmlElement(name = "name")
-        public void setType(String type) {
-            this.type = type;
-        }
-
         public String getColor() {
             return color;
         }
 
-        @XmlElement(name = "color", nillable = true)
-        public void setColor(String color) {
-            this.color = color;
+    }
+
+    @XmlRootElement(name = "player")
+    static class XmlBoost{
+        @XmlElement(name = "order")
+        private int order;
+        @XmlElement(name = "num-storable")
+        private int numResources;
+        @XmlElement(name = "faith")
+        private int faith;
+
+        public int getOrder() {
+            return order;
+        }
+
+        public int getNumResources() {
+            return numResources;
+        }
+
+        public int getFaith() {
+            return faith;
         }
 
     }

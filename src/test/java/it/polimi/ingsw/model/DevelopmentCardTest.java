@@ -40,7 +40,7 @@ public class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
             new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), null, 0);
 
-        Player player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
         player.getStrongbox().addResource(resTypeFactory.get("Coin"));
 
@@ -55,7 +55,7 @@ public class DevelopmentCardTest {
         DevelopmentCard card = new DevelopmentCard(devCardColorFactory.get("Blue"), 1,
             new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1)), null, 0);
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
         player.getStrongbox().addResource(resTypeFactory.get("Shield"));
 

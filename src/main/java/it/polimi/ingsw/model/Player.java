@@ -33,6 +33,9 @@ public class Player {
     /** The base production "recipe". */
     private final Production baseProduction;
 
+    /** The number of (storable) resources the player can still choose at the beginning */
+    private int initialResources;
+
     /** The player's faith track marker. */
     private int faithPoints;
 
@@ -54,9 +57,11 @@ public class Player {
      * @param strongbox         the player's strongbox
      * @param baseProduction    the player's base production
      * @param devSlotsCount     number of possible production slots that can be occupied by development cards
+     * @param initialResources  number of resources the player can choose at the beginning
+     * @param initialFaith      initial faith points
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  Production baseProduction, int devSlotsCount) {
+                  Production baseProduction, int devSlotsCount, int initialResources, int initialFaith) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = leaders;
@@ -72,6 +77,9 @@ public class Player {
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
+
+        this.initialResources = initialResources;
+        this.faithPoints = initialFaith;
     }
 
     /**
@@ -291,5 +299,20 @@ public class Player {
     @Override
     public String toString() {
         return nickname;
+    }
+
+    /**
+     * Chooses an initial resource to be given to the player.
+     *
+     * @param resource                  the chosen resource
+     * @param game                      the game instance the player is playing in
+     * @throws AlreadyChosenException   all the allowed initial resources have already been chosen
+     * @throws InvalidChoiceException   the resource cannot be given
+     */
+    public void chooseResource(ResourceType resource, Game game) throws AlreadyChosenException, InvalidChoiceException {
+        if(initialResources <= 0) throw new AlreadyChosenException();
+        if(resource.getName() == "Zero" || resource.getName() == "Faith") throw new InvalidChoiceException();
+
+        resource.giveToPlayer(game, this);
     }
 }

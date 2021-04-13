@@ -32,7 +32,7 @@ public class ResourceRequirementTest {
      */
     @Test
     void checkReqsWrongRes() {
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         p.getStrongbox().addResource(resTypeFactory.get("Coin"));
 
         ResourceRequirement req = new ResourceRequirement(Map.of(resTypeFactory.get("Shield"), 1));
@@ -45,7 +45,7 @@ public class ResourceRequirementTest {
      */
     @Test
     void checkRequirements() {
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         p.getStrongbox().addResource(resTypeFactory.get("Coin"));
 
         ResourceRequirement req = new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1));

@@ -33,7 +33,7 @@ public class GameTest {
                     i == 0, List.of(),
                     new Warehouse(3), new Strongbox(),
                     new Production(Map.of(), 2, Map.of(), 1), 3
-            );
+                    , 0, 0);
             players.add(player);
         }
 

@@ -87,7 +87,9 @@ public class FileGameFactory implements GameFactory {
                     leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
                     new Warehouse(config.getMaxShelfSize()),
                     new Strongbox(),
-                    generateProduction(production), config.getSlotsCount()
+                    generateProduction(production), config.getSlotsCount(),
+                    config.getInitialResources().get(i).getNumResources(),
+                    config.getInitialResources().get(i).getFaith()
             );
             players.add(player);
         }
@@ -118,7 +120,9 @@ public class FileGameFactory implements GameFactory {
                 shuffledLeaderCards.subList(0, playerLeadersCount),
                 new Warehouse(config.getMaxShelfSize()),
                 new Strongbox(),
-                generateProduction(config.getBaseProduction()), config.getSlotsCount()
+                generateProduction(config.getBaseProduction()), config.getSlotsCount(),
+                config.getInitialResources().get(0).getNumResources(),
+                config.getInitialResources().get(0).getFaith()
         );
 
         SoloGame game = null;

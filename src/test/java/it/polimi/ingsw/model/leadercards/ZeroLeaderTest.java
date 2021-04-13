@@ -32,7 +32,7 @@ public class ZeroLeaderTest {
     @Test
     void nullMaps() {
         ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -46,7 +46,7 @@ public class ZeroLeaderTest {
     @Test
     void emptyMaps() {
         ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -60,7 +60,7 @@ public class ZeroLeaderTest {
     @Test
     void otherResourceInput() {
         ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
         try { leader.activate(p); } catch (Exception e) { }
 
@@ -81,7 +81,7 @@ public class ZeroLeaderTest {
     @Test
     void normalUse() {
         ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
         try { leader.activate(p); } catch (Exception e) { }
         

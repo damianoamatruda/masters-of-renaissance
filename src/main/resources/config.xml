@@ -2105,4 +2105,26 @@
             <color>Yellow</color>
         </token>
     </action-tokens>
+    <initial-resources>
+        <player>
+            <order>1</order>
+            <num-storable>0</num-storable>
+            <faith>0</faith>
+        </player>
+        <player>
+            <order>2</order>
+            <num-storable>1</num-storable>
+            <faith>0</faith>
+        </player>
+        <player>
+            <order>3</order>
+            <num-storable>1</num-storable>
+            <faith>1</faith>
+        </player>
+        <player>
+            <order>4</order>
+            <num-storable>2</num-storable>
+            <faith>1</faith>
+        </player>
+    </initial-resources>
 </config>
