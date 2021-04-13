@@ -44,6 +44,12 @@ public class ModelConfig {
     @XmlElementWrapper(name = "initial-resources")
     @XmlElement(name = "player")
     private List<XmlBoost> initialResources;
+    @XmlElementWrapper(name = "resource-types")
+    @XmlElement(name = "type")
+    private List<XmlResource> resourceTypes;
+    @XmlElementWrapper(name = "card-colors")
+    @XmlElement(name = "color")
+    private List<String> cardColors;
 
     public List<XmlBoost> getInitialResources() {
         return initialResources;
@@ -111,6 +117,14 @@ public class ModelConfig {
 
     public int getNumColors() {
         return numColors;
+    }
+
+    public List<XmlResource> getResourceTypes() {
+        return resourceTypes;
+    }
+
+    public List<String> getCardColors() {
+        return cardColors;
     }
 
     @XmlRootElement(name = "resource-entry")
@@ -370,5 +384,21 @@ public class ModelConfig {
             return faith;
         }
 
+    }
+
+    @XmlRootElement(name = "type")
+    static class XmlResource {
+        @XmlElement(name = "name")
+        private String name;
+        @XmlElement(name = "storable")
+        private boolean isStorable;
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isStorable() {
+            return isStorable;
+        }
     }
 }

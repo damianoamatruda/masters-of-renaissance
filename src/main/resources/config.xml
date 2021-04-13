@@ -11,6 +11,38 @@
     <market-columns>4</market-columns>
     <max-shelf-size>3</max-shelf-size>
     <slots-count>3</slots-count>
+    <resource-types>
+        <type>
+            <name>Coin</name>
+            <storable>true</storable>
+        </type>
+        <type>
+            <name>Faith</name>
+            <storable>false</storable>
+        </type>
+        <type>
+            <name>Servant</name>
+            <storable>true</storable>
+        </type>
+        <type>
+            <name>Shield</name>
+            <storable>true</storable>
+        </type>
+        <type>
+            <name>Stone</name>
+            <storable>true</storable>
+        </type>
+        <type>
+            <name>Zero</name>
+            <storable>false</storable>
+        </type>
+    </resource-types>
+    <card-colors>
+        <color>Blue</color>
+        <color>Green</color>
+        <color>Purple</color>
+        <color>Yellow</color>
+    </card-colors>
     <development-cards>
         <!-- 1 -->
         <Card>
