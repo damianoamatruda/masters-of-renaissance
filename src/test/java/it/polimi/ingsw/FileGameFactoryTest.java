@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.GameFactory;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBException;
@@ -9,9 +8,9 @@ import java.io.FileNotFoundException;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit test for App.
+ * Unit test for FileGameFactory.
  */
-public class AppTest 
+public class FileGameFactoryTest
 {
     @Test
     void test() throws FileNotFoundException, JAXBException {
@@ -23,7 +22,7 @@ public class AppTest
     }
 
     @Test
-    void test2() throws JAXBException, FileNotFoundException {
+    void test2() {
         FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
 //        assertEquals(48, f.generateDevCards().size());
 //        assertNotEquals(f.generateDevCards().get(0).getLevel(), f.generateDevCards().get(40).getLevel());
