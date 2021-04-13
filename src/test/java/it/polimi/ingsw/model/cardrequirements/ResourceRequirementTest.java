@@ -3,12 +3,9 @@ package it.polimi.ingsw.model.cardrequirements;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
-import it.polimi.ingsw.JavaResourceTypeFactory;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Production;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,11 +17,13 @@ import it.polimi.ingsw.model.resourcetypes.*;
  * Test class for ResourceRequirement.
  */
 public class ResourceRequirementTest {
-    private ResourceTypeFactory resTypeFactory;
+    private Player p;
+    ResourceType coin = new ResourceType("coin", true),
+                 shield = new ResourceType("shield", true);
 
     @BeforeEach
     void setup() {
-        resTypeFactory = new JavaResourceTypeFactory();
+        p = new Player("", false, new ArrayList<>(), new Warehouse(1), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0);
     }
     
     /**
@@ -32,12 +31,12 @@ public class ResourceRequirementTest {
      */
     @Test
     void checkReqsWrongRes() {
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
-        p.getStrongbox().addResource(resTypeFactory.get("Coin"));
+        p.getStrongbox().addResource(coin);
+        assertDoesNotThrow(() -> p.getWarehouse().getShelves().get(0).addResource(coin));
 
-        ResourceRequirement req = new ResourceRequirement(Map.of(resTypeFactory.get("Shield"), 1));
+        ResourceRequirement req = new ResourceRequirement(Map.of(shield, 1));
 
-        assertThrows(Exception.class, () -> req.checkRequirements(p));
+        assertThrows(RequirementsNotMetException.class, () -> req.checkRequirements(p));
     }
 
     /**
@@ -46,9 +45,9 @@ public class ResourceRequirementTest {
     @Test
     void checkRequirements() {
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
-        p.getStrongbox().addResource(resTypeFactory.get("Coin"));
+        p.getStrongbox().addResource(coin);
 
-        ResourceRequirement req = new ResourceRequirement(Map.of(resTypeFactory.get("Coin"), 1));
+        ResourceRequirement req = new ResourceRequirement(Map.of(coin, 1));
 
         assertDoesNotThrow(() -> req.checkRequirements(p));
     }

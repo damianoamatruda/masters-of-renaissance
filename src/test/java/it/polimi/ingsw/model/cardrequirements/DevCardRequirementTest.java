@@ -5,8 +5,6 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import it.polimi.ingsw.FileGameFactory;
-import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
@@ -19,11 +17,15 @@ import it.polimi.ingsw.model.devcardcolors.*;
  * Test class for DevCardRequirement.
  */
 public class DevCardRequirementTest {
-    private DevCardColorFactory devCardColorFactory;
+    private Player p;
+    private Game g;
+    private DevCardColor green = new DevCardColor("green"),
+                 blue = new DevCardColor("blue");
     
     @BeforeEach
     void setup() {
-        devCardColorFactory = new JavaDevCardColorFactory();
+        p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0);
+        g = new Game(List.of(p), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 10);
     }
     
     /**
@@ -32,14 +34,13 @@ public class DevCardRequirementTest {
      */
     @Test
     void checkReqsWrongColor() {
-        DevelopmentCard devCard = new DevelopmentCard(devCardColorFactory.get("Green"), 1, new ResourceRequirement(Map.of()), null, 1);
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
-        try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
+        assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 
-        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(devCardColorFactory.get("Blue"), 1, 1)));
+        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(blue, 1, 1)));
 
-        assertThrows(Exception.class, () -> req.checkRequirements(p));
+        assertThrows(RequirementsNotMetException.class, () -> req.checkRequirements(p));
     }
 
     /**
@@ -48,14 +49,13 @@ public class DevCardRequirementTest {
      */
     @Test
     void checkReqsWrongLevel() {
-        DevelopmentCard devCard = new DevelopmentCard(devCardColorFactory.get("Green"), 1, new ResourceRequirement(Map.of()), null, 1);
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
-        try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
+        assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 
-        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 2, 1)));
+        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(green, 2, 1)));
 
-        assertThrows(Exception.class, () -> req.checkRequirements(p));
+        assertThrows(RequirementsNotMetException.class, () -> req.checkRequirements(p));
     }
 
     /**
@@ -64,29 +64,25 @@ public class DevCardRequirementTest {
      */
     @Test
     void checkReqsWrongAmount() {
-        DevelopmentCard devCard = new DevelopmentCard(devCardColorFactory.get("Green"), 1, new ResourceRequirement(Map.of()), null, 1);
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
-        try { p.addToDevSlot(null, 0, devCard, Map.of()); } catch (Exception e) { }
+        assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 
-        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 1, 2)));
+        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(green, 1, 2)));
 
         assertThrows(Exception.class, () -> req.checkRequirements(p));
     }
 
     /**
-     * Tests whether the requirement checking process works in a scenario where it should be fulfilled.
+     * Tests whether the requirement checking process works in a scenario where it should pass.
      */
     @Test
-    void checkRequirements() {
-        DevelopmentCard devCard = new DevelopmentCard(devCardColorFactory.get("Green"), 1, new ResourceRequirement(Map.of()), null, 1);
+    void checkRequirementsPass() {
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
 
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0);
-        try {
-            p.addToDevSlot(new FileGameFactory("src/main/resources/config.xml").buildSoloGame("Marco"), 0, devCard, Map.of());
-        } catch (Exception e) { }
+        assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 
-        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(devCardColorFactory.get("Green"), 1, 1)));
+        DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(green, 1, 1)));
 
         assertDoesNotThrow(() -> req.checkRequirements(p));
     }
