@@ -307,6 +307,7 @@ public class Player {
      * Chooses an initial resource to be given to the player.
      *
      * @param resource                              the chosen resource
+     * @param shelfIdx                              the destination warehouse shelf
      * @throws CannotChooseException                all the allowed initial resources have already been chosen
      * @throws InvalidChoiceException               the resource cannot be given
      * @throws IllegalResourceTransferException     invalid container

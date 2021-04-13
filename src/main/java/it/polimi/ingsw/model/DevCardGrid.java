@@ -19,7 +19,7 @@ public class DevCardGrid {
     protected final int colorsCount;
 
     /** All the cards that are still not bought by any player. */
-    protected Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
+    protected final Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
 
     /**
      * Generates the grid.
@@ -82,7 +82,9 @@ public class DevCardGrid {
     /**
      * Getter of the deck corresponding the given color and level.
      *
-     * @return the deck corresponding the given color and level
+     * @param color the color of choice
+     * @param level the level of choice
+     * @return      the deck corresponding the given color and level
      */
     public Stack<DevelopmentCard> getDeck(DevCardColor color, int level) {
         return grid.get(color).get(level);
