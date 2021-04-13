@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.leadercards.LeaderCard;
+import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
@@ -304,15 +305,17 @@ public class Player {
     /**
      * Chooses an initial resource to be given to the player.
      *
-     * @param resource                  the chosen resource
-     * @param game                      the game instance the player is playing in
-     * @throws AlreadyChosenException   all the allowed initial resources have already been chosen
-     * @throws InvalidChoiceException   the resource cannot be given
+     * @param resource                              the chosen resource
+     * @throws CannotChooseException                all the allowed initial resources have already been chosen
+     * @throws InvalidChoiceException               the resource cannot be given
+     * @throws IllegalResourceTransferException     invalid container
      */
-    public void chooseResource(ResourceType resource, Game game) throws AlreadyChosenException, InvalidChoiceException {
-        if(initialResources <= 0) throw new AlreadyChosenException();
-        if(resource.getName() == "Zero" || resource.getName() == "Faith") throw new InvalidChoiceException();
+    public void chooseResource(ResourceType resource, int shelfIdx) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+        if(initialResources <= 0) throw new CannotChooseException();
+        if(resource == null || !resource.isStorable()) throw new InvalidChoiceException();
 
-        resource.giveToPlayer(game, this);
+        getWarehouse().getShelves().get(shelfIdx).addResource(resource);
+
+        initialResources--;
     }
 }

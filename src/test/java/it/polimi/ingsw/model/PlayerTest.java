@@ -5,6 +5,7 @@ import it.polimi.ingsw.JavaDevCardColorFactory;
 import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
+import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.*;
 import org.junit.jupiter.api.*;
@@ -176,6 +177,81 @@ public class PlayerTest {
 
         player.discardLeader(game, 0);
         assertEquals(marker+1, player.getFaithPoints());
+
+    }
+
+    @Nested
+    @DisplayName("Tests related to the players receiving resources at the beginning")
+    class InitialResourcesTest {
+        FileGameFactory thisFactory;
+        Game thisGame;
+        List<Player> players;
+        ResourceTypeFactory resFact;
+
+        @BeforeEach
+        void setupResources(){
+            thisFactory = new FileGameFactory("src/main/resources/config.xml");
+            thisGame = thisFactory.buildMultiGame(List.of("A", "B", "C", "D"));
+            players = thisGame.getPlayers();
+            resFact = thisFactory.getResTypeFactory();
+        }
+
+        @Test
+        void firstPlayerNoFaith(){
+            assertEquals(players.get(0).getFaithPoints(), 0);
+        }
+
+        @Test
+        void secondPlayerNoFaith(){
+            assertEquals(players.get(1).getFaithPoints(), 0);
+        }
+
+        @Test
+        void thirdPlayerOneFaith(){
+            assertEquals(players.get(2).getFaithPoints(), 1);
+        }
+
+        @Test
+        void fourthPlayerOneFaith(){
+            assertEquals(players.get(3).getFaithPoints(), 1);
+        }
+
+        @Test
+        void firstPlayerNoResources(){
+            Player first = players.get(0);
+            assertThrows(CannotChooseException.class, ()->first.chooseResource(null, 0));
+        }
+
+        @Test
+        void secondPlayerOneResource() {
+            Player second = players.get(1);
+            DevelopmentCard card = new DevelopmentCard(thisFactory.getDevCardColorFactory().get("Blue"), 1,
+                    new ResourceRequirement(Map.of(resFact.get("Coin"), 1)), null, 0);
+            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
+                put(second.getWarehouse().getShelves().get(1), new HashMap<>() {{
+                    put(resFact.get("Coin"), 1);
+                }});
+            }};
+
+            assertAll(()->assertDoesNotThrow(()->second.chooseResource(resFact.get("Coin"), 1)),
+                    ()->assertDoesNotThrow(() -> second.addToDevSlot(thisGame, 1, card, resContainers)));
+
+        }
+
+        @Test
+        void fourthPlayerTwoResources(){
+            Player fourth = players.get(3);
+            assertAll(()->assertDoesNotThrow(()->fourth.chooseResource(resFact.get("Coin"), 1)),
+                    ()->assertDoesNotThrow(()->fourth.chooseResource(resFact.get("Coin"), 1)),
+                    ()->assertThrows(CannotChooseException.class, ()->fourth.chooseResource(resFact.get("Coin"), 1)));
+        }
+
+        @Test
+        void illegalResources(){
+            Player fourth = players.get(3);
+            assertAll(()->assertThrows(InvalidChoiceException.class, ()-> fourth.chooseResource(resFact.get("Zero"), 1)),
+                    ()->assertThrows(InvalidChoiceException.class, ()-> fourth.chooseResource(resFact.get("Faith"), 1)));
+        }
 
     }
 
