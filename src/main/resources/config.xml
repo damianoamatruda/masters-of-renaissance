@@ -9,6 +9,7 @@
     <max-level>3</max-level>
     <num-colors>4</num-colors>
     <market-columns>4</market-columns>
+    <market-replaceable-resource-type>Zero</market-replaceable-resource-type>
     <max-shelf-size>3</max-shelf-size>
     <slots-count>3</slots-count>
     <resource-types>
@@ -2109,6 +2110,9 @@
     <base-production>
         <input-blanks>2</input-blanks>
         <output-blanks>1</output-blanks>
+        <output-blanks-exclusions>
+            <resource-type>Faith</resource-type>
+        </output-blanks-exclusions>
     </base-production>
     <action-tokens>
         <token>

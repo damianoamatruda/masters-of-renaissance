@@ -92,7 +92,14 @@ public class FileGameFactory implements GameFactory {
             );
             players.add(player);
         }
-        return new Game(players, new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()), generateMarket(), new FaithTrack(generateVaticanSections(), generateYellowTiles()), parseMaxFaith(), parseMaxDevCards());
+        return new Game(
+                players,
+                new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()),
+                generateMarket(),
+                new FaithTrack(generateVaticanSections(), generateYellowTiles()),
+                parseMaxFaith(),
+                parseMaxDevCards()
+        );
     }
 
     @Override
@@ -121,7 +128,15 @@ public class FileGameFactory implements GameFactory {
 
         SoloGame game = null;
         try {
-            game = new SoloGame(player, new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()), generateMarket(), new FaithTrack(generateVaticanSections(), generateYellowTiles()), generateActionTokens(), parseMaxFaith(), parseMaxDevCards());
+            game = new SoloGame(
+                    player,
+                    new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()),
+                    generateMarket(),
+                    new FaithTrack(generateVaticanSections(), generateYellowTiles()),
+                    generateActionTokens(),
+                    parseMaxFaith(),
+                    parseMaxDevCards()
+            );
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
@@ -218,9 +233,9 @@ public class FileGameFactory implements GameFactory {
      */
     private Market generateMarket() {
         return new Market(new HashMap<>() {{
-            for (ModelConfig.XmlResourceEntry entry : config.getMarket())
+            for (ModelConfig.XmlResourceMapEntry entry : config.getMarket())
                 put(getResType(entry.getResourceType()), entry.getAmount());
-        }}, parseColumnsCount(), getResType("zero"));
+        }}, parseColumnsCount(), getResType(config.getMarketReplaceableResType()));
     }
 
     /**
@@ -321,15 +336,31 @@ public class FileGameFactory implements GameFactory {
      * @return              a new Production
      */
     private Production generateProduction(ModelConfig.XmlProduction production) {
-        return new Production(new HashMap<>() {{
-            if (production.getInput() != null)
-                for (ModelConfig.XmlResourceEntry entry : production.getInput())
-                    put(getResType(entry.getResourceType()), entry.getAmount());
-        }}, production.getInputBlanks(), new HashMap<>() {{
-            if (production.getOutput() != null)
-                for (ModelConfig.XmlResourceEntry entry : production.getOutput())
-                    put(getResType(entry.getResourceType()), entry.getAmount());
-        }}, production.getOutputBlanks());
+        return new Production(
+                new HashMap<>() {{
+                    if (production.getInput() != null)
+                        for (ModelConfig.XmlResourceMapEntry entry : production.getInput())
+                            put(getResType(entry.getResourceType()), entry.getAmount());
+                }},
+                production.getInputBlanks(),
+                new HashSet<>() {{
+                    if (production.getInputBlanksExclusions() != null)
+                        for (String entry : production.getInputBlanksExclusions())
+                            add(getResType(entry));
+                }},
+                new HashMap<>() {{
+                    if (production.getOutput() != null)
+                        for (ModelConfig.XmlResourceMapEntry entry : production.getOutput())
+                            put(getResType(entry.getResourceType()), entry.getAmount());
+                }},
+                production.getOutputBlanks(),
+                new HashSet<>() {{
+                    if (production.getOutputBlanksExclusions() != null)
+                        for (String entry : production.getOutputBlanksExclusions())
+                            add(getResType(entry));
+                }},
+                production.hasDiscardableOutput()
+        );
     }
 
     /**
@@ -338,9 +369,9 @@ public class FileGameFactory implements GameFactory {
      * @param requirements  the resources and relative amounts required, obtained from parsing the config file
      * @return              a new data structure for resource requirements
      */
-    private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceEntry> requirements) {
+    private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceMapEntry> requirements) {
         return new ResourceRequirement(new HashMap<>() {{
-            for (ModelConfig.XmlResourceEntry entry : requirements)
+            for (ModelConfig.XmlResourceMapEntry entry : requirements)
                 put(getResType(entry.getResourceType()), entry.getAmount());
         }});
     }

@@ -19,6 +19,8 @@ public class ModelConfig {
     private int numColors;
     @XmlElement(name="market-columns")
     private int marketColumns;
+    @XmlElement(name="market-replaceable-resource-type")
+    private String marketReplaceableResType;
     @XmlElement(name="num-leaders")
     private int numLeaders;
     @XmlElement(name = "max-shelf-size")
@@ -33,7 +35,7 @@ public class ModelConfig {
     private List<XmlLeaderCard> leaderCards;
     @XmlElementWrapper(name="market")
     @XmlElement(name="resource-entry")
-    private List<XmlResourceEntry> market;
+    private List<XmlResourceMapEntry> market;
     @XmlElement(name="Faith-Track")
     private XmlFaithTrack faithTrack;
     @XmlElementWrapper(name = "action-tokens")
@@ -55,7 +57,7 @@ public class ModelConfig {
         return initialResources;
     }
 
-    public List<XmlResourceEntry> getMarket() {
+    public List<XmlResourceMapEntry> getMarket() {
         return market;
     }
 
@@ -89,6 +91,10 @@ public class ModelConfig {
 
     public int getMarketColumns() {
         return marketColumns;
+    }
+
+    public String getMarketReplaceableResType() {
+        return marketReplaceableResType;
     }
 
     public List<XmlDevCard> getDevCards() {
@@ -128,7 +134,7 @@ public class ModelConfig {
     }
 
     @XmlRootElement(name = "resource-entry")
-    static class XmlResourceEntry{
+    static class XmlResourceMapEntry {
         @XmlElement(name = "resource-type")
         private String resourceType;
         @XmlElement(name = "amount")
@@ -152,7 +158,7 @@ public class ModelConfig {
         private int level;
         @XmlElementWrapper(name="cost")
         @XmlElement(name = "resource-entry")
-        private List<XmlResourceEntry> cost;
+        private List<XmlResourceMapEntry> cost;
         @XmlElement(name = "production")
         private XmlProduction production;
         @XmlElement(name = "victory-points")
@@ -170,7 +176,7 @@ public class ModelConfig {
             return victoryPoints;
         }
 
-        public List<XmlResourceEntry> getCost() {
+        public List<XmlResourceMapEntry> getCost() {
             return cost;
         }
 
@@ -184,20 +190,28 @@ public class ModelConfig {
     static class XmlProduction{
         @XmlElementWrapper(name="input", nillable = true)
         @XmlElement(name = "resource-entry")
-        private List<XmlResourceEntry> input;
+        private List<XmlResourceMapEntry> input;
         @XmlElementWrapper(name="output", nillable = true)
         @XmlElement(name = "resource-entry")
-        private List<XmlResourceEntry> output;
+        private List<XmlResourceMapEntry> output;
         @XmlElement(name = "input-blanks")
         private int inputBlanks;
         @XmlElement(name = "output-blanks")
         private int outputBlanks;
+        @XmlElementWrapper(name="input-blanks-exclusions", nillable = true)
+        @XmlElement(name = "resource-type")
+        private List<String> inputBlanksExclusions;
+        @XmlElementWrapper(name="output-blanks-exclusions", nillable = true)
+        @XmlElement(name = "resource-type")
+        private List<String> outputBlanksExclusions;
+        @XmlElement(name = "discardable-output", nillable = true)
+        private boolean discardableOutput;
 
-        public List<XmlResourceEntry> getInput() {
+        public List<XmlResourceMapEntry> getInput() {
             return input;
         }
 
-        public List<XmlResourceEntry> getOutput() {
+        public List<XmlResourceMapEntry> getOutput() {
             return output;
         }
 
@@ -207,6 +221,18 @@ public class ModelConfig {
 
         public int getOutputBlanks() {
             return outputBlanks;
+        }
+
+        public List<String> getInputBlanksExclusions() {
+            return inputBlanksExclusions;
+        }
+
+        public List<String> getOutputBlanksExclusions() {
+            return outputBlanksExclusions;
+        }
+
+        public boolean hasDiscardableOutput() {
+            return discardableOutput;
         }
 
     }
@@ -303,7 +329,7 @@ public class ModelConfig {
         private String resource;
         @XmlElementWrapper(name = "cost")
         @XmlElement(name = "resource-entry", nillable = true)
-        private List<XmlResourceEntry> resourceRequirements;
+        private List<XmlResourceMapEntry> resourceRequirements;
         @XmlElementWrapper(name = "cost")
         @XmlElement(name = "card-requirement", nillable = true)
         private List<XmlCardRequirement> ColorRequirements;
@@ -328,7 +354,7 @@ public class ModelConfig {
             return resource;
         }
 
-        public List<XmlResourceEntry> getResourceRequirements() {
+        public List<XmlResourceMapEntry> getResourceRequirements() {
             return resourceRequirements;
         }
 

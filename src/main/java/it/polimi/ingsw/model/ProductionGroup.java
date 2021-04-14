@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
  * This class represents a group of multiple requested contemporary productions.
  */
 public class ProductionGroup {
-    /** The list of the productions to sum. */
+    /** The list of the requested productions to activate. */
     private final List<ProductionRequest> productionRequests;
 
     /**
      * Initializes a production group.
      * 
-     * @param productionRequests    the list of the production requests to activate
+     * @param productionRequests    the list of the requested productions to activate
      */
     public ProductionGroup(List<ProductionRequest> productionRequests) {
         this.productionRequests = productionRequests;
@@ -126,6 +126,9 @@ public class ProductionGroup {
         }
     }
 
+    /**
+     * This class represents a production request.
+     */
     public static class ProductionRequest {
         private final Production production;
         private final Map<ResourceType, Integer> inputBlanksRep;

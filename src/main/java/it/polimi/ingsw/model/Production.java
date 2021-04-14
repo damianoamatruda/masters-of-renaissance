@@ -49,8 +49,8 @@ public class Production {
         this.inputBlanksExclusions = inputBlanksExclusions;
         this.output = output;
         this.outputBlanks = outputBlanks;
-        this.discardableOutput = discardableOutput;
         this.outputBlanksExclusions = outputBlanksExclusions;
+        this.discardableOutput = discardableOutput;
     }
 
     /**
