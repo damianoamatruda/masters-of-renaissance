@@ -96,7 +96,7 @@ class ActionTokenDiscardTwoTest {
         DevCardGrid grid = game.getDevCardGrid();
         int level;
 
-        for (level = 1; level < factory.parseLevelsCount(); level++)
+        for (level = 1; level < grid.getLevelsCount(); level++)
             while(grid.getDeck(color, level).size() >= 1)
                 grid.getDeck(color, level).pop();
 

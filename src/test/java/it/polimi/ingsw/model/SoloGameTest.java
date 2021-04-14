@@ -18,11 +18,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
-    GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
     ResourceTypeFactory resTypeFactory;
     SoloGame game;
     Player player;
-    FaithTrack track = new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles());
+    FaithTrack track;
 
     /**
      * The setup: instantiation of game and the single player.
@@ -34,7 +33,18 @@ public class SoloGameTest {
             add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
             add(new DepotLeader(0, 2, null, resTypeFactory.get("Coin"),null,0));
         }}, new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0);
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles()), null, 24, 7);
+
+        track = new FaithTrack(Set.of(
+                new FaithTrack.VaticanSection(5, 8, 2),
+                new FaithTrack.VaticanSection(12, 16, 3),
+                new FaithTrack.VaticanSection(19, 24, 4)
+        ), Set.of(
+                new FaithTrack.YellowTile(15, 9),
+                new FaithTrack.YellowTile(18, 12),
+                new FaithTrack.YellowTile(24, 20)
+        ));
+
+        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, track, null, 24, 7);
 
     }
     /**
@@ -44,11 +54,11 @@ public class SoloGameTest {
     void blackPointsGetterTest() {
         Player player = new Player("", true, new ArrayList<>(), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         List<ActionToken> stack = new ArrayList<>();
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles()), stack, 24, 7);
-        solo.incrementBlackPoints();
-        solo.incrementBlackPoints();
+//        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles()), stack, 24, 7);
+        game.incrementBlackPoints();
+        game.incrementBlackPoints();
 
-        assertEquals(2,solo.getBlackPoints());
+        assertEquals(2,game.getBlackPoints());
     }
 
     /**

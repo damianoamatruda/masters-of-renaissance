@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
@@ -20,7 +21,6 @@ import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class FileGameFactory implements GameFactory {
@@ -28,26 +28,50 @@ public class FileGameFactory implements GameFactory {
     private ModelConfig config;
 
     /** The factory of development card colors. */
-    private final FileDevCardColorFactory colorFactory;
+    private final DevCardColorFactory colorFactory;
 
     /** The factory of resource types. */
-    private final FileResourceTypeFactory resTypeFactory;
+    private final ResourceTypeFactory resTypeFactory;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config file.
      *
      * @param path  the config file to be parsed
      */
-    public FileGameFactory(String path) {
+    public FileGameFactory(/*ModelConfig config, ResourceTypeFactory resourceTypeFactory, DevCardColorFactory colorFactory*/String path) {
+//        this.config = config;
+//        this.resTypeFactory = resourceTypeFactory;
+//        this.colorFactory = colorFactory;
+
         config = null;
         try {
             config = unmarshall(path);
         } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();
         }
-        colorFactory = new FileDevCardColorFactory(this);
-        resTypeFactory = new FileResourceTypeFactory(this);
+//        config = unmarshall(path);
+
+        colorFactory = new FileDevCardColorFactory(config);
+        resTypeFactory = new FileResourceTypeFactory(config);
     }
+
+    /**
+     * Unmarshalls the XML in order to parse the game parameters.
+     *
+     * @param path                      the config file to be parsed
+     * @return                          the object created by the XML unmarshalling
+     * @throws JAXBException            generic exception from the JAXB library
+     * @throws FileNotFoundException    config file not found
+     */
+    private ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
+        JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
+        return (ModelConfig) context.createUnmarshaller()
+                .unmarshal(new FileReader(path));
+    }
+//
+//    public ModelConfig unmarshall(String path){
+//        return new Gson().fromJson(path, ModelConfig.class);
+//    }
 
     /**
      * Builder of a multiplayer game instance.
@@ -129,36 +153,10 @@ public class FileGameFactory implements GameFactory {
         SoloGame game = null;
         try {
             game = new SoloGame(player, new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()), generateMarket(), new FaithTrack(generateVaticanSections(), generateYellowTiles()), generateActionTokens(), parseMaxFaith(), parseMaxDevCards());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         return game;
-    }
-
-    /**
-     * Unmarshalls the XML in order to parse the game parameters.
-     *
-     * @param path                      the config file to be parsed
-     * @return                          the object created by the XML unmarshalling
-     * @throws JAXBException            generic exception from the JAXB library
-     * @throws FileNotFoundException    config file not found
-     */
-    public ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
-        JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
-        return (ModelConfig) context.createUnmarshaller()
-                .unmarshal(new FileReader(path));
-    }
-
-    public ModelConfig getModelConfig() {
-        return config;
     }
 
     @Override
@@ -171,7 +169,6 @@ public class FileGameFactory implements GameFactory {
         return colorFactory;
     }
 
-    @Override
     public List<DevelopmentCard> generateDevCards() {
         List<ModelConfig.XmlDevCard> source = config.getDevCards();
         final ResourceRequirement[] cost = new ResourceRequirement[1];
@@ -189,7 +186,6 @@ public class FileGameFactory implements GameFactory {
         return devCards;
     }
 
-    @Override
     public List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
         CardRequirement[] cost = new CardRequirement[1];
@@ -216,7 +212,6 @@ public class FileGameFactory implements GameFactory {
         return leaderCards;
     }
 
-    @Override
     public Market generateMarket() {
         return new Market(new HashMap<>() {{
             for (ModelConfig.XmlResourceEntry entry : config.getMarket())
@@ -224,7 +219,6 @@ public class FileGameFactory implements GameFactory {
         }}, parseColumnsCount(), resTypeFactory.get("zero"));
     }
 
-    @Override
     public Set<FaithTrack.VaticanSection> generateVaticanSections() {
         return new HashSet<>() {{
             for (ModelConfig.XmlFaithTrack.XmlVaticanSection section : config.getFaithTrack().getSections()) {
@@ -233,7 +227,6 @@ public class FileGameFactory implements GameFactory {
         }};
     }
 
-    @Override
     public Set<FaithTrack.YellowTile> generateYellowTiles() {
         return new HashSet<>() {{
             for (ModelConfig.XmlFaithTrack.XmlYellowTile tile : config.getFaithTrack().getTiles()) {
@@ -242,7 +235,6 @@ public class FileGameFactory implements GameFactory {
         }};
     }
 
-    @Override
     public List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlActionToken> source = config.getTokens();
         List<ActionToken> tokens = new ArrayList<>();
@@ -267,7 +259,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  max card level
      */
-    public int parseLevelsCount() {
+    private int parseLevelsCount() {
         return config.getMaxLevel();
     }
 
@@ -276,7 +268,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  number of card colors
      */
-    public int parseColorsCount() {
+    private int parseColorsCount() {
         return config.getNumColors();
     }
 
@@ -285,7 +277,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  number of market columns
      */
-    public int parseColumnsCount() {
+    private int parseColumnsCount() {
         return config.getMarketColumns();
     }
 
@@ -294,7 +286,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  max number of faith points
      */
-    public int parseMaxFaith() {
+    private int parseMaxFaith() {
         return config.getMaxFaith();
     }
 
@@ -303,7 +295,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  max number of development cards purchasable by a player
      */
-    public int parseMaxDevCards() {
+    private int parseMaxDevCards() {
         return config.getMaxDevCards();
     }
 
@@ -338,11 +330,4 @@ public class FileGameFactory implements GameFactory {
         }});
     }
 
-    public Set<DevCardColor> generateDevCardColors(){
-        return config.getCardColors().stream().map(s -> new DevCardColor(s)).collect(Collectors.toSet());
-    }
-
-    public Set<ResourceType> generateResourceTypes(){
-        return config.getResourceTypes().stream().map(s -> new ResourceType(s.getName(), s.isStorable())).collect(Collectors.toSet());
-    }
 }
