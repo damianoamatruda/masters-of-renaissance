@@ -5,10 +5,9 @@ import java.util.List;
 
 @XmlRootElement(name = "config")
 public class ModelConfig {
+    /** Maximum number of players for each Game. */
     @XmlElement(name = "max-players")
     private int maxPlayers;
-    @XmlElement(name = "num-leader-cards")
-    private int numOfLeaderCards;
 
     /** The maximum amount of faith points a player can have. */
     @XmlElement(name = "max-faith")
@@ -32,34 +31,58 @@ public class ModelConfig {
 
     @XmlElement(name="market-replaceable-resource-type")
     private String marketReplaceableResType;
+
+    /** Initial number of leader cards per player. */
     @XmlElement(name="num-leaders")
     private int numLeaders;
+
+    /** Maximum size of a Warehouse shelf. */
     @XmlElement(name = "max-shelf-size")
     private int maxShelfSize;
+
+    /** Number of development card production slots per player. */
     @XmlElement(name = "slots-count")
     private int slotsCount;
+
+    /** All the generated development card templates. */
     @XmlElementWrapper(name="development-cards")
     @XmlElement(name="Card")
     private List<XmlDevCard> devCards;
+
+    /** All the generated leader card templates */
     @XmlElementWrapper(name = "leader-cards")
     @XmlElement(name = "Card")
     private List<XmlLeaderCard> leaderCards;
+
+    /** The Market template. */
     @XmlElementWrapper(name="market")
     @XmlElement(name="resource-entry")
     private List<XmlResourceMapEntry> market;
+
+    /** The Faith Track template. */
     @XmlElement(name="Faith-Track")
     private XmlFaithTrack faithTrack;
+
+    /** All the action tokens templates. */
     @XmlElementWrapper(name = "action-tokens")
     @XmlElement(name = "token")
     private List<XmlActionToken> tokens;
+
+    /** The player's base production "recipe". */
     @XmlElement(name = "base-production")
     private XmlProduction baseProduction;
+
+    /** The initial boost in number of resources each player can have. */
     @XmlElementWrapper(name = "initial-resources")
     @XmlElement(name = "player")
     private List<XmlBoost> initialResources;
+
+    /** All the resource types which can be used in the Game. */
     @XmlElementWrapper(name = "resource-types")
     @XmlElement(name = "type")
     private List<XmlResource> resourceTypes;
+
+    /** All the colors a development card can have. */
     @XmlElementWrapper(name = "card-colors")
     @XmlElement(name = "color")
     private List<String> cardColors;
@@ -116,10 +139,6 @@ public class ModelConfig {
         return maxPlayers;
     }
 
-    public int getNumOfLeaderCards() {
-        return numOfLeaderCards;
-    }
-
     public int getMaxFaith() {
         return maxFaith;
     }
@@ -146,8 +165,11 @@ public class ModelConfig {
 
     @XmlRootElement(name = "resource-entry")
     static class XmlResourceMapEntry {
+        /** The name of the resource. */
         @XmlElement(name = "resource-type")
         private String resourceType;
+
+        /** The corresponding quantity. */
         @XmlElement(name = "amount")
         private int amount;
 
@@ -163,15 +185,24 @@ public class ModelConfig {
 
     @XmlRootElement(name = "Card")
     static class XmlDevCard{
+        /** The color of the card. */
         @XmlElement(name = "color")
         private String color;
+
+        /** The level of the card. */
         @XmlElement(name = "level")
         private int level;
+
+        /** The requirements for purchase. */
         @XmlElementWrapper(name="cost")
         @XmlElement(name = "resource-entry")
         private List<XmlResourceMapEntry> cost;
+
+        /** The associated production. */
         @XmlElement(name = "production")
         private XmlProduction production;
+
+        /** The victory points given at the end. */
         @XmlElement(name = "victory-points")
         private int victoryPoints;
 
@@ -199,22 +230,35 @@ public class ModelConfig {
 
     @XmlRootElement(name = "production")
     static class XmlProduction{
+        /** The input of the production. */
         @XmlElementWrapper(name="input", nillable = true)
         @XmlElement(name = "resource-entry")
         private List<XmlResourceMapEntry> input;
+
+        /** The output of the production. */
         @XmlElementWrapper(name="output", nillable = true)
         @XmlElement(name = "resource-entry")
         private List<XmlResourceMapEntry> output;
+
+        /** Number of choosable resources in input. */
         @XmlElement(name = "input-blanks")
         private int inputBlanks;
+
+        /** Number of choosable resources in output. */
         @XmlElement(name = "output-blanks")
         private int outputBlanks;
+
+        /** The types of resources that are forbidden as choosable input. */
         @XmlElementWrapper(name="input-blanks-exclusions", nillable = true)
         @XmlElement(name = "resource-type")
         private List<String> inputBlanksExclusions;
+
+        /** The types of resources that are forbidden as choosable output. */
         @XmlElementWrapper(name="output-blanks-exclusions", nillable = true)
         @XmlElement(name = "resource-type")
         private List<String> outputBlanksExclusions;
+
+        /** Says if the resource can be discarded as output. */
         @XmlElement(name = "discardable-output", nillable = true)
         private boolean discardableOutput;
 
@@ -250,9 +294,12 @@ public class ModelConfig {
 
     @XmlRootElement(name = "Faith-Track")
     static class XmlFaithTrack{
+        /** List of all the Vatican sections. */
         @XmlElementWrapper(name="vatican-sections")
         @XmlElement(name = "section")
         private List<XmlVaticanSection> sections;
+
+        /** List of all the yellow tiles. */
         @XmlElementWrapper(name="yellow-tiles")
         @XmlElement(name = "tile")
         private List<XmlYellowTile> tiles;
@@ -267,10 +314,15 @@ public class ModelConfig {
 
         @XmlRootElement(name = "section")
         static class XmlVaticanSection{
+            /** The first tile of the section. */
             @XmlElement(name = "section-begin")
             private int beginning;
+
+            /** The first tile of the section (i.e. the Vatican report tile). */
             @XmlElement(name = "section-end")
             private int end;
+
+            /** The victory points that can be earned in this section. */
             @XmlElement(name = "section-points")
             private int points;
 
@@ -289,8 +341,11 @@ public class ModelConfig {
         }
         @XmlRootElement(name = "tile")
         static class XmlYellowTile{
+            /** Progressive number of the tile. */
             @XmlElement(name = "number")
             private int tileNumber;
+
+            /** Bonus points given at the end, if reached. */
             @XmlElement(name = "points")
             private int points;
 
@@ -307,10 +362,13 @@ public class ModelConfig {
 
     @XmlRootElement(name = "card-requirement")
     static class XmlCardRequirement{
+        /** The color required. */
         @XmlElement(name = "card-color")
         private String color;
+        /** The level required. */
         @XmlElement(name = "card-level")
         private int level;
+        /** Amount of cards of the same specs required. */
         @XmlElement(name = "amount")
         private int amount;
 
@@ -330,22 +388,37 @@ public class ModelConfig {
 
     @XmlRootElement(name = "Card")
     static class XmlLeaderCard{
+        /** Type of leader card. */
         @XmlElement(name = "type")
         private String type;
+
+        /** Possible discount for a resource. */
         @XmlElement(name = "discount", nillable = true)
         private int discount;
+
+        /** Slots of possible extra storage for a resource */
         @XmlElement(name = "shelf-size", nillable = true)
         private int shelfSize;
+
+        /** Associated resource. */
         @XmlElement(name = "resource")
         private String resource;
+
+        /** Requirements in resources possessed. */
         @XmlElementWrapper(name = "cost")
         @XmlElement(name = "resource-entry", nillable = true)
         private List<XmlResourceMapEntry> resourceRequirements;
+
+        /** Requirements in development cards possessed. */
         @XmlElementWrapper(name = "cost")
         @XmlElement(name = "card-requirement", nillable = true)
         private List<XmlCardRequirement> ColorRequirements;
+
+        /** The associated production, if existent. */
         @XmlElement(name = "production", nillable = true)
         private XmlProduction production;
+
+        /** The victory points given at the end, if activated. */
         @XmlElement(name = "victory-points")
         private int victoryPoints;
 
@@ -385,8 +458,11 @@ public class ModelConfig {
 
     @XmlRootElement(name = "token")
     static class XmlActionToken{
+        /** Type of token. */
         @XmlElement(name = "name")
         private String type;
+
+        /** Associated color (if there is any). */
         @XmlElement(name = "color", nillable = true)
         private String color;
 
@@ -402,10 +478,15 @@ public class ModelConfig {
 
     @XmlRootElement(name = "player")
     static class XmlBoost{
+        /** Number of player in order to start. */
         @XmlElement(name = "order")
         private int order;
+
+        /** Number of choosable resources obtained at the beginning. */
         @XmlElement(name = "num-storable")
         private int numResources;
+
+        /** Starting faith points. */
         @XmlElement(name = "faith")
         private int faith;
 
@@ -425,8 +506,11 @@ public class ModelConfig {
 
     @XmlRootElement(name = "type")
     static class XmlResource {
+        /** Name of the resource. */
         @XmlElement(name = "name")
         private String name;
+
+        /** If this resource can be physically put in a container. */
         @XmlElement(name = "storable")
         private boolean isStorable;
 
