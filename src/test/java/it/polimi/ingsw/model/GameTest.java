@@ -359,8 +359,8 @@ public class GameTest {
             game.getPlayers().get(2).setActive(false);
             String next = game.getPlayers().get(0).getNickname();
             Player nowPlaying;
-            nowPlaying = game.onTurnEnd();
-            nowPlaying = game.onTurnEnd();
+            game.onTurnEnd();
+            game.onTurnEnd();
             nowPlaying = game.onTurnEnd();
             assertEquals(next, nowPlaying.getNickname());
         }

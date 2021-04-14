@@ -2,11 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
-import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
-import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.model.resourcecontainers.*;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.model.resourcecontainers.Strongbox;
-import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 
 import java.util.*;
 
@@ -243,7 +240,7 @@ public class Player {
      * @param devCard                           the development card that has just been bought
      * @param resContainers                     a map of the resource containers where to take the storable resources
      * @throws IllegalCardDepositException      blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
-     * @throws RequirementsNotMetException                        error during the actual payment
+     * @throws RequirementsNotMetException      requirements for card purchase are not satisfied
      */
     public void addToDevSlot(Game game, int index, DevelopmentCard devCard,
                                 Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException, IllegalCardDepositException {
@@ -275,7 +272,7 @@ public class Player {
         int quantity = 0;
         quantity += strongbox.getQuantity();
         quantity += warehouse.getShelves().stream()
-                .mapToInt(shelf -> shelf.getQuantity())
+                .mapToInt(Shelf::getQuantity)
                 .sum();
         return quantity;
     }
@@ -286,13 +283,13 @@ public class Player {
     public void sumCardsVictoryPoints() {
         int toSum = devSlots.stream()
                 .mapToInt(slot -> slot.stream()
-                        .mapToInt(card -> card.getVictoryPoints())
+                        .mapToInt(Card::getVictoryPoints)
                         .sum())
                 .sum();
 
         toSum += leaders.stream()
-                .filter(card -> card.isActive())
-                .mapToInt(card -> card.getVictoryPoints())
+                .filter(LeaderCard::isActive)
+                .mapToInt(Card::getVictoryPoints)
                 .sum();
 
         this.victoryPoints += toSum;

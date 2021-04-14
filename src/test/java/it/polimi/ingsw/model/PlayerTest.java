@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.leadercards.DepotLeader;
+import it.polimi.ingsw.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
@@ -190,6 +191,29 @@ public class PlayerTest {
         player.discardLeader(game, 0);
         assertEquals(marker+1, player.getFaithPoints());
 
+    }
+
+    /**
+     * Ensures that an exception is thrown when trying to discard an activated leader card.
+     *
+     * @throws AlreadyActiveException   leader card is already activated
+     */
+    @Test
+    void invalidLeaderDiscard() throws IllegalActivationException {
+        player.getLeaders().get(0).activate(player);
+
+        assertThrows(AlreadyActiveException.class, ()-> player.discardLeader(game, 0));
+
+    }
+
+    /**
+     * Ensures that an exception is thrown when trying to deposit a card on the wrong slot.
+     */
+    @Test
+    void cannotDepositNewCard(){
+        assertThrows(IllegalCardDepositException.class, ()-> player.addToDevSlot(game, 0,  new DevelopmentCard(blue, 2,
+                        new ResourceRequirement(
+                                new HashMap<>()), null, 2), new HashMap<>()));
     }
 
     @Nested
