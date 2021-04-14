@@ -9,16 +9,27 @@ public class ModelConfig {
     private int maxPlayers;
     @XmlElement(name = "num-leader-cards")
     private int numOfLeaderCards;
+
+    /** The maximum amount of faith points a player can have. */
     @XmlElement(name = "max-faith")
     private int maxFaith;
+
+    /** The number of development cards a player can have before triggering the end of a game. */
     @XmlElement(name = "max-development-cards")
     private int maxDevCards;
+
+    /** The maximum level a development card can have. */
     @XmlElement(name = "max-level")
     private int maxLevel;
+
+    /** The number of different card colors. */
     @XmlElement(name = "num-colors")
     private int numColors;
+
+    /** The number of columns of the market grid. */
     @XmlElement(name="market-columns")
     private int marketColumns;
+
     @XmlElement(name="market-replaceable-resource-type")
     private String marketReplaceableResType;
     @XmlElement(name="num-leaders")

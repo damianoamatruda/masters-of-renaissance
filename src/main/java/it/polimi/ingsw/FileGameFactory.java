@@ -66,6 +66,16 @@ public class FileGameFactory implements GameFactory {
                 .unmarshal(new FileReader(path));
     }
 
+    /**
+     * Returns the loaded model configuration.
+     *
+     * @return  the model configuration
+     */
+    @Deprecated
+    public ModelConfig getModelConfig() {
+        return config;
+    }
+
     @Override
     public Game buildMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
@@ -108,11 +118,11 @@ public class FileGameFactory implements GameFactory {
         }
         return new Game(
                 players,
-                new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()),
+                new DevCardGrid(generateDevCards(), config.getMaxLevel(), config.getNumColors()),
                 generateMarket(),
                 new FaithTrack(generateVaticanSections(), generateYellowTiles()),
-                parseMaxFaith(),
-                parseMaxDevCards()
+                config.getMaxFaith(),
+                config.getMaxDevCards()
         );
     }
 
@@ -144,12 +154,12 @@ public class FileGameFactory implements GameFactory {
         try {
             game = new SoloGame(
                     player,
-                    new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()),
+                    new DevCardGrid(generateDevCards(), config.getMaxLevel(), config.getNumColors()),
                     generateMarket(),
                     new FaithTrack(generateVaticanSections(), generateYellowTiles()),
                     generateActionTokens(),
-                    parseMaxFaith(),
-                    parseMaxDevCards()
+                    config.getMaxFaith(),
+                    config.getMaxDevCards()
             );
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
@@ -165,16 +175,6 @@ public class FileGameFactory implements GameFactory {
     @Override
     public DevCardColor getDevCardColor(String name) {
         return devCardColorMap.get(name);
-    }
-
-    /**
-     * Returns the loaded model configuration.
-     *
-     * @return  the model configuration
-     */
-    @Deprecated
-    public ModelConfig getModelConfig() {
-        return config;
     }
 
     /**
@@ -239,7 +239,7 @@ public class FileGameFactory implements GameFactory {
         return new Market(new HashMap<>() {{
             for (ModelConfig.XmlResourceMapEntry entry : config.getMarket())
                 put(getResType(entry.getResourceType()), entry.getAmount());
-        }}, parseColumnsCount(), getResType(config.getMarketReplaceableResType()));
+        }}, config.getMarketColumns(), getResType(config.getMarketReplaceableResType()));
     }
 
     /**
@@ -290,51 +290,6 @@ public class FileGameFactory implements GameFactory {
         }
 
         return tokens;
-    }
-
-    /**
-     * Returns the number of different card colors.
-     *
-     * @return  number of card colors
-     */
-    private int parseColorsCount() {
-        return config.getNumColors();
-    }
-
-    /**
-     * Returns the maximum level a development card can have.
-     *
-     * @return  max card level
-     */
-    private int parseLevelsCount() {
-        return config.getMaxLevel();
-    }
-
-    /**
-     * Returns the number of columns of the market grid.
-     *
-     * @return  number of market columns
-     */
-    private int parseColumnsCount() {
-        return config.getMarketColumns();
-    }
-
-    /**
-     * Returns the maximum amount of faith points a player can have.
-     *
-     * @return  max number of faith points
-     */
-    private int parseMaxFaith() {
-        return config.getMaxFaith();
-    }
-
-    /**
-     * Returns the number of development cards a player can have before triggering the end of a game.
-     *
-     * @return  max number of development cards purchasable by a player
-     */
-    private int parseMaxDevCards() {
-        return config.getMaxDevCards();
     }
 
     /**
