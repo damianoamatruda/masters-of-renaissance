@@ -9,6 +9,11 @@ package it.polimi.ingsw.model.leadercards;
  * @see it.polimi.ingsw.model.Player
  */
 public class IllegalActivationException extends Exception {
+    /**
+     * Class constructor.
+     * 
+     * @param msg   the message that describes the event.
+     */
     public IllegalActivationException(String msg) {
         super(msg);
     }

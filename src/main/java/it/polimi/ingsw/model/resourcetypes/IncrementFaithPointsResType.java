@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.resourcetypes;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
+/**
+ * ResourceType that, when given to a player, increments their faith points.
+ */
 public class IncrementFaithPointsResType extends ResourceType {
     /**
      * Class constructor.
