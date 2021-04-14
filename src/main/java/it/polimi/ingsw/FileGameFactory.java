@@ -52,6 +52,20 @@ public class FileGameFactory implements GameFactory {
                 .collect(Collectors.toMap(ResourceType::getName, Function.identity()));
     }
 
+    /**
+     * Unmarshalls the XML in order to parse the game parameters.
+     *
+     * @param path                      the config file to be parsed
+     * @return                          the object created by the XML unmarshalling
+     * @throws JAXBException            generic exception from the JAXB library
+     * @throws FileNotFoundException    config file not found
+     */
+    public ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
+        JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
+        return (ModelConfig) context.createUnmarshaller()
+                .unmarshal(new FileReader(path));
+    }
+
     @Override
     public Game buildMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
@@ -137,32 +151,10 @@ public class FileGameFactory implements GameFactory {
                     parseMaxFaith(),
                     parseMaxDevCards()
             );
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         return game;
-    }
-
-    /**
-     * Unmarshalls the XML in order to parse the game parameters.
-     *
-     * @param path                      the config file to be parsed
-     * @return                          the object created by the XML unmarshalling
-     * @throws JAXBException            generic exception from the JAXB library
-     * @throws FileNotFoundException    config file not found
-     */
-    public ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
-        JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
-        return (ModelConfig) context.createUnmarshaller()
-                .unmarshal(new FileReader(path));
     }
 
     @Override
@@ -175,8 +167,22 @@ public class FileGameFactory implements GameFactory {
         return devCardColorMap.get(name);
     }
 
-    @Override
-    public List<DevelopmentCard> generateDevCards() {
+    /**
+     * Returns the loaded model configuration.
+     *
+     * @return  the model configuration
+     */
+    @Deprecated
+    public ModelConfig getModelConfig() {
+        return config;
+    }
+
+    /**
+     * Returns a list of all possible development cards.
+     *
+     * @return  list of development cards
+     */
+    private List<DevelopmentCard> generateDevCards() {
         List<ModelConfig.XmlDevCard> source = config.getDevCards();
         final ResourceRequirement[] cost = new ResourceRequirement[1];
         final Production[] production = new Production[1];
@@ -191,51 +197,6 @@ public class FileGameFactory implements GameFactory {
             }
         }};
         return devCards;
-    }
-
-    @Override
-    public Set<FaithTrack.VaticanSection> generateVaticanSections() {
-        return new HashSet<>() {{
-            for (ModelConfig.XmlFaithTrack.XmlVaticanSection section : config.getFaithTrack().getSections()) {
-                add(new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()));
-            }
-        }};
-    }
-
-    @Override
-    public Set<FaithTrack.YellowTile> generateYellowTiles() {
-        return new HashSet<>() {{
-            for (ModelConfig.XmlFaithTrack.XmlYellowTile tile : config.getFaithTrack().getTiles()) {
-                add(new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()));
-            }
-        }};
-    }
-
-    @Override
-    public int parseLevelsCount() {
-        return config.getMaxLevel();
-    }
-
-    /**
-     * Returns the loaded model configuration.
-     *
-     * @return  the model configuration
-     */
-    @Deprecated
-    public ModelConfig getModelConfig() {
-        return config;
-    }
-
-    /**
-     * Returns a new Market instance.
-     *
-     * @return  the Market
-     */
-    private Market generateMarket() {
-        return new Market(new HashMap<>() {{
-            for (ModelConfig.XmlResourceMapEntry entry : config.getMarket())
-                put(getResType(entry.getResourceType()), entry.getAmount());
-        }}, parseColumnsCount(), getResType(config.getMarketReplaceableResType()));
     }
 
     /**
@@ -270,6 +231,44 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
+     * Returns a new Market instance.
+     *
+     * @return  the Market
+     */
+    private Market generateMarket() {
+        return new Market(new HashMap<>() {{
+            for (ModelConfig.XmlResourceMapEntry entry : config.getMarket())
+                put(getResType(entry.getResourceType()), entry.getAmount());
+        }}, parseColumnsCount(), getResType(config.getMarketReplaceableResType()));
+    }
+
+    /**
+     * Returns a set of the vatican sections.
+     *
+     * @return  set of the vatican sections
+     */
+    private Set<FaithTrack.VaticanSection> generateVaticanSections() {
+        return new HashSet<>() {{
+            for (ModelConfig.XmlFaithTrack.XmlVaticanSection section : config.getFaithTrack().getSections()) {
+                add(new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()));
+            }
+        }};
+    }
+
+    /**
+     * Returns a set of the yellow tiles.
+     *
+     * @return  set of the yellow tiles
+     */
+    private Set<FaithTrack.YellowTile> generateYellowTiles() {
+        return new HashSet<>() {{
+            for (ModelConfig.XmlFaithTrack.XmlYellowTile tile : config.getFaithTrack().getTiles()) {
+                add(new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()));
+            }
+        }};
+    }
+
+    /**
      * Returns a list of the action tokens.
      *
      * @return  list of action tokens
@@ -300,6 +299,15 @@ public class FileGameFactory implements GameFactory {
      */
     private int parseColorsCount() {
         return config.getNumColors();
+    }
+
+    /**
+     * Returns the maximum level a development card can have.
+     *
+     * @return  max card level
+     */
+    private int parseLevelsCount() {
+        return config.getMaxLevel();
     }
 
     /**

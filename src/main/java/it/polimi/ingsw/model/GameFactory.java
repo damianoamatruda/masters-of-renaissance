@@ -1,12 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This interface represents a factory of game instances.
@@ -43,36 +39,4 @@ public interface GameFactory {
      */
     @Deprecated
     DevCardColor getDevCardColor(String name);
-
-    /**
-     * Returns a list of all possible development cards.
-     *
-     * @return  list of development cards
-     */
-    @Deprecated
-    List<DevelopmentCard> generateDevCards();
-
-    /**
-     * Returns a set of the vatican sections.
-     *
-     * @return  set of the vatican sections
-     */
-    @Deprecated
-    Set<FaithTrack.VaticanSection> generateVaticanSections();
-
-    /**
-     * Returns a set of the yellow tiles.
-     *
-     * @return  set of the yellow tiles
-     */
-    @Deprecated
-    Set<FaithTrack.YellowTile> generateYellowTiles();
-
-    /**
-     * Returns the maximum level a development card can have.
-     *
-     * @return  max card level
-     */
-    @Deprecated
-    int parseLevelsCount();
 }

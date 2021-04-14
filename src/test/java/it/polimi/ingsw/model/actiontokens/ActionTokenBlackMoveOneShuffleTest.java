@@ -21,12 +21,12 @@ class ActionTokenBlackMoveOneShuffleTest {
     @Test
     @DisplayName("Move one and shuffle")
     void testBlackAdvancement() {
-        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
+//        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(factory.generateVaticanSections(), factory.generateYellowTiles()), stack, 0, 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), stack, 0, 0);
 
         token.trigger(solo);
 
