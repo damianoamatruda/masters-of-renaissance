@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.actiontokens;
 
-import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
@@ -21,7 +20,6 @@ class ActionTokenBlackMoveOneShuffleTest {
     @Test
     @DisplayName("Move one and shuffle")
     void testBlackAdvancement() {
-//        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
         List<ActionToken> stack = new ArrayList<>();
         stack.add(token);
