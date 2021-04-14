@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.devcardcolors;
+package it.polimi.ingsw.model;
 
 /**
  * This class represents a generic development card color.

@@ -5,13 +5,11 @@ import it.polimi.ingsw.model.actiontokens.ActionToken;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
-import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
+import it.polimi.ingsw.model.DevCardColor;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -20,17 +18,19 @@ import java.io.FileReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public class FileGameFactory implements GameFactory {
     /** The unmarshalled object. */
-    private ModelConfig config;
+    private final ModelConfig config;
 
-    /** The factory of development card colors. */
-    private final JavaDevCardColorFactory colorFactory;
+    /** The development card colors. */
+    private final Map<String, DevCardColor> devCardColorMap;
 
-    /** The factory of resource types. */
-    private final JavaResourceTypeFactory resTypeFactory;
+    /** The resource types. */
+    private final Map<String, ResourceType> resTypeMap;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config file.
@@ -38,22 +38,21 @@ public class FileGameFactory implements GameFactory {
      * @param path  the config file to be parsed
      */
     public FileGameFactory(String path) {
-        config = null;
+        ModelConfig tempConfig;
         try {
-            config = unmarshall(path);
+            tempConfig = unmarshall(path);
         } catch (JAXBException | FileNotFoundException e) {
+            tempConfig = null;
             e.printStackTrace();
         }
-        colorFactory = new JavaDevCardColorFactory();
-        resTypeFactory = new JavaResourceTypeFactory();
+        config = tempConfig;
+        devCardColorMap = generateDevCardColors().stream()
+                .collect(Collectors.toMap(DevCardColor::getName, Function.identity()));
+        resTypeMap = generateResourceTypes().stream()
+                .collect(Collectors.toMap(ResourceType::getName, Function.identity()));
     }
 
-    /**
-     * Builder of a multiplayer game instance.
-     *
-     * @param nicknames the list of nicknames of players who joined
-     * @return          the multiplayer game
-     */
+    @Override
     public Game buildMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
         if (nicknames.size() > config.getMaxPlayers())
@@ -87,19 +86,16 @@ public class FileGameFactory implements GameFactory {
                     leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
                     new Warehouse(config.getMaxShelfSize()),
                     new Strongbox(),
-                    generateProduction(production), config.getSlotsCount()
+                    generateProduction(production), config.getSlotsCount(),
+                    config.getInitialResources().get(i).getNumResources(),
+                    config.getInitialResources().get(i).getFaith()
             );
             players.add(player);
         }
         return new Game(players, new DevCardGrid(generateDevCards(), parseLevelsCount(), parseColorsCount()), generateMarket(), new FaithTrack(generateVaticanSections(), generateYellowTiles()), parseMaxFaith(), parseMaxDevCards());
     }
 
-    /**
-     * Builder of a single-player game instance.
-     *
-     * @param nickname  the nickname of the only player
-     * @return          the single-player game
-     */
+    @Override
     public SoloGame buildSoloGame(String nickname) {
         int playerLeadersCount = config.getNumLeaders();
         List<LeaderCard> shuffledLeaderCards = null;
@@ -118,7 +114,9 @@ public class FileGameFactory implements GameFactory {
                 shuffledLeaderCards.subList(0, playerLeadersCount),
                 new Warehouse(config.getMaxShelfSize()),
                 new Strongbox(),
-                generateProduction(config.getBaseProduction()), config.getSlotsCount()
+                generateProduction(config.getBaseProduction()), config.getSlotsCount(),
+                config.getInitialResources().get(0).getNumResources(),
+                config.getInitialResources().get(0).getFaith()
         );
 
         SoloGame game = null;
@@ -152,18 +150,14 @@ public class FileGameFactory implements GameFactory {
                 .unmarshal(new FileReader(path));
     }
 
-    public ModelConfig getModelConfig() {
-        return config;
+    @Override
+    public ResourceType getResType(String name) {
+        return resTypeMap.get(name);
     }
 
     @Override
-    public ResourceTypeFactory getResTypeFactory() {
-        return resTypeFactory;
-    }
-
-    @Override
-    public DevCardColorFactory getDevCardColorFactory() {
-        return colorFactory;
+    public DevCardColor getDevCardColor(String name) {
+        return devCardColorMap.get(name);
     }
 
     @Override
@@ -178,45 +172,10 @@ public class FileGameFactory implements GameFactory {
 
                 production[0] = generateProduction(card.getProduction());
 
-                add(new DevelopmentCard(colorFactory.get(card.getColor()), card.getLevel(), cost[0], production[0], card.getVictoryPoints()));
+                add(new DevelopmentCard(getDevCardColor(card.getColor()), card.getLevel(), cost[0], production[0], card.getVictoryPoints()));
             }
         }};
         return devCards;
-    }
-
-    @Override
-    public List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
-        CardRequirement[] cost = new CardRequirement[1];
-        Class<?> className;
-        Constructor<?> constructor;
-        Production[] production = new Production[1];
-        List<LeaderCard> leaderCards = new ArrayList<>();
-        for (ModelConfig.XmlLeaderCard card : source) {
-            className = Class.forName(card.getType());
-            constructor = className.getConstructor(int.class, int.class, Production.class, ResourceType.class, CardRequirement.class, int.class);
-            if (card.getColorRequirements() == null) {
-                cost[0] = generateResourceRequirement(card.getResourceRequirements());
-            } else {
-                cost[0] = new DevCardRequirement(new HashSet<>() {{
-                    for (ModelConfig.XmlCardRequirement req : card.getColorRequirements())
-                        add(new DevCardRequirement.Entry(colorFactory.get(req.getColor()), req.getLevel(), req.getAmount()));
-                }});
-            }
-            if (card.getProduction() != null)
-                production[0] = generateProduction(card.getProduction());
-
-            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production[0], resTypeFactory.get(card.getResource()), cost[0], card.getVictoryPoints()));
-        }
-        return leaderCards;
-    }
-
-    @Override
-    public Market generateMarket() {
-        return new Market(new HashMap<>() {{
-            for (ModelConfig.XmlResourceEntry entry : config.getMarket())
-                put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
-        }}, parseColumnsCount(), resTypeFactory.get("zero"));
     }
 
     @Override
@@ -238,7 +197,69 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public int parseLevelsCount() {
+        return config.getMaxLevel();
+    }
+
+    /**
+     * Returns the loaded model configuration.
+     *
+     * @return  the model configuration
+     */
+    @Deprecated
+    public ModelConfig getModelConfig() {
+        return config;
+    }
+
+    /**
+     * Returns a new Market instance.
+     *
+     * @return  the Market
+     */
+    private Market generateMarket() {
+        return new Market(new HashMap<>() {{
+            for (ModelConfig.XmlResourceEntry entry : config.getMarket())
+                put(getResType(entry.getResourceType()), entry.getAmount());
+        }}, parseColumnsCount(), getResType("zero"));
+    }
+
+    /**
+     * Returns a list of all possible leader cards.
+     *
+     * @return  list of leader cards
+     */
+    private List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
+        CardRequirement[] cost = new CardRequirement[1];
+        Class<?> className;
+        Constructor<?> constructor;
+        Production[] production = new Production[1];
+        List<LeaderCard> leaderCards = new ArrayList<>();
+        for (ModelConfig.XmlLeaderCard card : source) {
+            className = Class.forName(card.getType());
+            constructor = className.getConstructor(int.class, int.class, Production.class, ResourceType.class, CardRequirement.class, int.class);
+            if (card.getColorRequirements() == null) {
+                cost[0] = generateResourceRequirement(card.getResourceRequirements());
+            } else {
+                cost[0] = new DevCardRequirement(new HashSet<>() {{
+                    for (ModelConfig.XmlCardRequirement req : card.getColorRequirements())
+                        add(new DevCardRequirement.Entry(getDevCardColor(req.getColor()), req.getLevel(), req.getAmount()));
+                }});
+            }
+            if (card.getProduction() != null)
+                production[0] = generateProduction(card.getProduction());
+
+            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production[0], getResType(card.getResource()), cost[0], card.getVictoryPoints()));
+        }
+        return leaderCards;
+    }
+
+    /**
+     * Returns a list of the action tokens.
+     *
+     * @return  list of action tokens
+     */
+    private List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlActionToken> source = config.getTokens();
         List<ActionToken> tokens = new ArrayList<>();
         Class<?> className;
@@ -250,7 +271,7 @@ public class FileGameFactory implements GameFactory {
                 tokens.add((ActionToken) constructor.newInstance());
             } else {
                 constructor = className.getConstructor(DevCardColor.class);
-                tokens.add((ActionToken) constructor.newInstance(colorFactory.get(token.getColor())));
+                tokens.add((ActionToken) constructor.newInstance(getDevCardColor(token.getColor())));
             }
         }
 
@@ -258,20 +279,11 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
-     * Returns the maximum level a development card can have.
-     *
-     * @return  max card level
-     */
-    public int parseLevelsCount() {
-        return config.getMaxLevel();
-    }
-
-    /**
      * Returns the number of different card colors.
      *
      * @return  number of card colors
      */
-    public int parseColorsCount() {
+    private int parseColorsCount() {
         return config.getNumColors();
     }
 
@@ -280,7 +292,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  number of market columns
      */
-    public int parseColumnsCount() {
+    private int parseColumnsCount() {
         return config.getMarketColumns();
     }
 
@@ -289,7 +301,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  max number of faith points
      */
-    public int parseMaxFaith() {
+    private int parseMaxFaith() {
         return config.getMaxFaith();
     }
 
@@ -298,7 +310,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return  max number of development cards purchasable by a player
      */
-    public int parseMaxDevCards() {
+    private int parseMaxDevCards() {
         return config.getMaxDevCards();
     }
 
@@ -312,11 +324,11 @@ public class FileGameFactory implements GameFactory {
         return new Production(new HashMap<>() {{
             if (production.getInput() != null)
                 for (ModelConfig.XmlResourceEntry entry : production.getInput())
-                    put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
+                    put(getResType(entry.getResourceType()), entry.getAmount());
         }}, production.getInputBlanks(), new HashMap<>() {{
             if (production.getOutput() != null)
                 for (ModelConfig.XmlResourceEntry entry : production.getOutput())
-                    put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
+                    put(getResType(entry.getResourceType()), entry.getAmount());
         }}, production.getOutputBlanks());
     }
 
@@ -329,7 +341,15 @@ public class FileGameFactory implements GameFactory {
     private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceEntry> requirements) {
         return new ResourceRequirement(new HashMap<>() {{
             for (ModelConfig.XmlResourceEntry entry : requirements)
-                put(resTypeFactory.get(entry.getResourceType()), entry.getAmount());
+                put(getResType(entry.getResourceType()), entry.getAmount());
         }});
+    }
+
+    private Set<DevCardColor> generateDevCardColors() {
+        return config.getCardColors().stream().map(s -> new DevCardColor(s)).collect(Collectors.toSet());
+    }
+
+    private Set<ResourceType> generateResourceTypes() {
+        return config.getResourceTypes().stream().map(s -> new ResourceType(s.getName(), s.isStorable())).collect(Collectors.toSet());
     }
 }

@@ -1,14 +1,14 @@
 package it.polimi.ingsw.model.actiontokens;
 
 import it.polimi.ingsw.model.SoloGame;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
+import it.polimi.ingsw.model.DevCardColor;
 
 /**
  * Implements one of the possible effects which a token can trigger.
  */
 public class ActionTokenDiscardTwo implements ActionToken{
     /** The specific color of the cards to be discarded after activation (target color). */
-    private DevCardColor discardedColor;
+    private final DevCardColor discardedColor;
 
     /**
      * Initializes class and member.

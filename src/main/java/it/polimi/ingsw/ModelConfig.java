@@ -1,21 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.DevelopmentCard;
-import it.polimi.ingsw.model.FaithTrack;
-import it.polimi.ingsw.model.Market;
-import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.leadercards.LeaderCard;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "config")
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class ModelConfig {
     @XmlElement(name = "max-players")
     private int maxPlayers;
@@ -53,6 +41,19 @@ public class ModelConfig {
     private List<XmlActionToken> tokens;
     @XmlElement(name = "base-production")
     private XmlProduction baseProduction;
+    @XmlElementWrapper(name = "initial-resources")
+    @XmlElement(name = "player")
+    private List<XmlBoost> initialResources;
+    @XmlElementWrapper(name = "resource-types")
+    @XmlElement(name = "type")
+    private List<XmlResource> resourceTypes;
+    @XmlElementWrapper(name = "card-colors")
+    @XmlElement(name = "color")
+    private List<String> cardColors;
+
+    public List<XmlBoost> getInitialResources() {
+        return initialResources;
+    }
 
     public List<XmlResourceEntry> getMarket() {
         return market;
@@ -116,6 +117,14 @@ public class ModelConfig {
 
     public int getNumColors() {
         return numColors;
+    }
+
+    public List<XmlResource> getResourceTypes() {
+        return resourceTypes;
+    }
+
+    public List<String> getCardColors() {
+        return cardColors;
     }
 
     @XmlRootElement(name = "resource-entry")
@@ -352,5 +361,44 @@ public class ModelConfig {
             return color;
         }
 
+    }
+
+    @XmlRootElement(name = "player")
+    static class XmlBoost{
+        @XmlElement(name = "order")
+        private int order;
+        @XmlElement(name = "num-storable")
+        private int numResources;
+        @XmlElement(name = "faith")
+        private int faith;
+
+        public int getOrder() {
+            return order;
+        }
+
+        public int getNumResources() {
+            return numResources;
+        }
+
+        public int getFaith() {
+            return faith;
+        }
+
+    }
+
+    @XmlRootElement(name = "type")
+    static class XmlResource {
+        @XmlElement(name = "name")
+        private String name;
+        @XmlElement(name = "storable")
+        private boolean isStorable;
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isStorable() {
+            return isStorable;
+        }
     }
 }

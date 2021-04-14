@@ -9,6 +9,8 @@ import java.util.Map;
 
 /**
  * Leader card with the ability to transform white marbles into a resource when taken from the market.
+ * 
+ * @see LeaderCard
  */
 public class ZeroLeader extends LeaderCard {
     /**

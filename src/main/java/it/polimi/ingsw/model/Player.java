@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
+import it.polimi.ingsw.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
@@ -33,6 +35,9 @@ public class Player {
     /** The base production "recipe". */
     private final Production baseProduction;
 
+    /** The number of (storable) resources the player can still choose at the beginning */
+    private int initialResources;
+
     /** The player's faith track marker. */
     private int faithPoints;
 
@@ -54,9 +59,11 @@ public class Player {
      * @param strongbox         the player's strongbox
      * @param baseProduction    the player's base production
      * @param devSlotsCount     number of possible production slots that can be occupied by development cards
+     * @param initialResources  number of resources the player can choose at the beginning
+     * @param initialFaith      initial faith points
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  Production baseProduction, int devSlotsCount) {
+                  Production baseProduction, int devSlotsCount, int initialResources, int initialFaith) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = leaders;
@@ -72,6 +79,9 @@ public class Player {
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
+
+        this.initialResources = initialResources;
+        this.faithPoints = initialFaith;
     }
 
     /**
@@ -104,9 +114,9 @@ public class Player {
     /**
      * Action performed when the player discards a leader card. The player receives one faith point.
      *
-     * @param game          the game the player is playing in
-     * @param index         the index of the card to be discarded
-     * @throws AlreadyActiveException    leader is already active
+     * @param game                      the game the player is playing in
+     * @param index                     the index of the card to be discarded
+     * @throws AlreadyActiveException   leader is already active
      */
     public void discardLeader(Game game, int index) throws AlreadyActiveException {
         LeaderCard toBeDiscarded = leaders.get(index);
@@ -233,10 +243,10 @@ public class Player {
      * @param devCard                           the development card that has just been bought
      * @param resContainers                     a map of the resource containers where to take the storable resources
      * @throws IllegalCardDepositException      blocks the action if the level of the previous top card of the slot is not equal to current level minus 1
-     * @throws Exception                        error during the actual payment
+     * @throws RequirementsNotMetException                        error during the actual payment
      */
     public void addToDevSlot(Game game, int index, DevelopmentCard devCard,
-                                Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
+                                Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException, IllegalCardDepositException {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if((slot.isEmpty() && devCard.getLevel()!=1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel()-1)) throw new IllegalCardDepositException();
 
@@ -291,5 +301,23 @@ public class Player {
     @Override
     public String toString() {
         return nickname;
+    }
+
+    /**
+     * Chooses an initial resource to be given to the player.
+     *
+     * @param resource                              the chosen resource
+     * @param shelfIdx                              the destination warehouse shelf
+     * @throws CannotChooseException                all the allowed initial resources have already been chosen
+     * @throws InvalidChoiceException               the resource cannot be given
+     * @throws IllegalResourceTransferException     invalid container
+     */
+    public void chooseResource(ResourceType resource, int shelfIdx) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+        if(initialResources <= 0) throw new CannotChooseException();
+        if(resource == null || !resource.isStorable()) throw new InvalidChoiceException();
+
+        getWarehouse().getShelves().get(shelfIdx).addResource(resource);
+
+        initialResources--;
     }
 }

@@ -6,11 +6,11 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 /**
  * Leader card with the ability to produce resources.
+ * 
+ * @see LeaderCard
  */
 public class ProductionLeader extends LeaderCard {
-    /**
-     * The production associated with the card.
-     */
+    /** The production associated with the card. */
     private final Production production;
 
     /**

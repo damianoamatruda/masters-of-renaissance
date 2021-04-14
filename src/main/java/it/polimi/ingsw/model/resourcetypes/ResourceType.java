@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.resourcetypes;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 
 /**
  * Generic resource archetype.
@@ -14,6 +13,12 @@ public class ResourceType {
     /** <code>true</code> if the resource can be stored in a resource container; <code>false</code> otherwise. */
     private final boolean storable;
 
+    /**
+     * Class constructor.
+     * 
+     * @param name      the name of the resource being created.
+     * @param storable  whether the resource can be stored on a <code>Shelf</code>
+     */
     public ResourceType(String name, boolean storable) {
         this.name = name;
         this.storable = storable;

@@ -1,14 +1,19 @@
 package it.polimi.ingsw.model.cardrequirements;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import it.polimi.ingsw.model.DevelopmentCard;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
+import it.polimi.ingsw.model.DevCardColor;
 
 /**
  * Requirement for leader card activation. Specifies what kind of development cards the player must have to be able to
  * activate a leader.
+ * 
+ * @see it.polimi.ingsw.model.leadercards.LeaderCard
+ * @see CardRequirement
+ * @see Player
  */
 public class DevCardRequirement implements CardRequirement {
     /** The development cards required to activate the leader card. */
@@ -24,14 +29,19 @@ public class DevCardRequirement implements CardRequirement {
     }
 
     @Override
-    public void checkRequirements(Player player) throws Exception {
+    public void checkRequirements(Player player) throws RequirementsNotMetException {
+        /* gather all the player's dev cards
+        * from them another set of entries will be extracted
+        * then the two sets are compared to see if all required entries
+        * are present in the ones extracted from the player */
+        
         List<DevelopmentCard> playerCards = new ArrayList<>();
-
         for (int i = 0; i < player.getDevSlots().size(); i++)
             playerCards.addAll(player.getDevSlots().get(i));
         
         Set<Entry> playerState = new HashSet<>(),
-                   reqCopy = new HashSet<>(entryList);
+                   reqCopy = new HashSet<>(entryList), // never touch the original set
+                   missing = new HashSet<>();
 
         playerCards.forEach(card -> {
             Entry currCard = new Entry(card.getColor(), card.getLevel());
@@ -43,13 +53,29 @@ public class DevCardRequirement implements CardRequirement {
         });
 
         for (Entry entry : reqCopy) {
-            if (!playerState.stream().anyMatch(e -> e.equals(entry))) throw new Exception(); // entry not found in player's cards -> requirements not satisfied
-
-            entry.setAmount(entry.amount - playerState.stream().filter(e -> e.equals(entry)).findFirst().get().amount);
+            // entry not found in player's cards -> requirements not satisfied
+            if (!playerState.stream().anyMatch(e -> e.equals(entry)))
+                missing.add(entry);
+            // if the entry is found the amount of cards the player owns in that entry is subtracted from the requirements
+            else {
+                Entry found = playerState.stream().filter(e -> e.equals(entry)).findFirst().get();
+                
+                if (entry.amount - found.amount > 0)
+                    missing.add(new Entry(entry.color, entry.level, entry.amount - found.amount));
+            }
         }
 
-        // if the req hold positive amounts it means they haven't been satisfied
-        if (reqCopy.stream().filter(entry -> entry.amount > 0).count() > 0) throw new Exception();
+        // if the missing set isn't empty the requirements haven't been met
+        if (missing.size() != 0) {
+            String msg = String.format("\nPlayer %s does not satisfy the following entries:", player.getNickname());
+            
+            for (Entry e : missing.stream().collect(Collectors.toList())) {
+                msg = msg.concat(String.format("\nColor %s, level %s, missing %s", e.color.getName(), Integer.toString(e.level), Integer.toString(e.amount)));
+            }
+            
+            throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
+                player.getNickname(), msg));
+        }
     }
 
     /**
@@ -94,6 +120,10 @@ public class DevCardRequirement implements CardRequirement {
         public boolean equals(Object o) {
             if (!(o instanceof Entry)) return false;
 
+            /* two entries are defined as equal if
+             * if the color is the same and
+             * either the levels are the same, or
+             *      either the requirement's or the card's level are 0 (which means "any") */
             return  ((Entry)o).color == this.color &&
                     (((Entry)o).level == 0 || this.level == 0 || ((Entry)o).level == this.level);
         }

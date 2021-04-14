@@ -3,8 +3,8 @@ package it.polimi.ingsw.model;
 import java.util.Map;
 
 import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
+import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
-import it.polimi.ingsw.model.devcardcolors.DevCardColor;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
  * Development cards allow the player to produce resources. They can be bought in exchange for resources and their
  * level/color can make up part of a leader card's activation requirements.
  * 
+ * @see Card
  * @see DevCardRequirement
  * @see Production
  */
@@ -61,12 +62,12 @@ public class DevelopmentCard extends Card {
     /**
      * Gives the card to the specified player, paying the necessary resources.
      *
-     * @param game          the game the player is playing in
-     * @param player        the player to assign the card to and to take the resources from
-     * @param resContainers selection map specifying where to take the resources from
-     * @throws Exception    if the player does not own the required resources
+     * @param game                          the game the player is playing in
+     * @param player                        the player to assign the card to and to take the resources from
+     * @param resContainers                 selection map specifying where to take the resources from
+     * @throws RequirementsNotMetException  if the player does not own the required resources
      */
-    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws Exception {
+    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException {
         cost.checkRequirements(player);
 
         cost.take(game, player, resContainers);

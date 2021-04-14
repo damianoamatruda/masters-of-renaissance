@@ -1,33 +1,48 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.actiontokens.ActionToken;
-import it.polimi.ingsw.model.devcardcolors.DevCardColorFactory;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
-import it.polimi.ingsw.model.resourcetypes.ResourceTypeFactory;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This interface represents a factory of game instances.
+ */
 public interface GameFactory {
+    /**
+     * Builder of a multiplayer game instance.
+     *
+     * @param nicknames the list of nicknames of players who joined
+     * @return          the multiplayer game
+     */
     Game buildMultiGame(List<String> nicknames);
+
+    /**
+     * Builder of a single-player game instance.
+     *
+     * @param nickname  the nickname of the only player
+     * @return          the single-player game
+     */
     SoloGame buildSoloGame(String nickname);
 
     /**
-     * Getter of the factory of resources.
+     * Getter of a resource type in the game by its name.
      *
-     * @return the factory of resources.
+     * @return  the resource type
      */
     @Deprecated
-    ResourceTypeFactory getResTypeFactory();
+    ResourceType getResType(String name);
 
     /**
-     * Getter of the factory of development colors.
+     * Getter of a development card color in the game by its name.
      *
-     * @return the factory of development colors.
+     * @return  the development card color
      */
     @Deprecated
-    DevCardColorFactory getDevCardColorFactory();
+    DevCardColor getDevCardColor(String name);
 
     /**
      * Returns a list of all possible development cards.
@@ -36,22 +51,6 @@ public interface GameFactory {
      */
     @Deprecated
     List<DevelopmentCard> generateDevCards();
-
-    /**
-     * Returns a list of all possible leader cards.
-     *
-     * @return  list of leader cards
-     */
-    @Deprecated
-    List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
-
-    /**
-     * Returns a new Market instance.
-     *
-     * @return  the Market
-     */
-    @Deprecated
-    Market generateMarket();
 
     /**
      * Returns a set of the vatican sections.
@@ -70,10 +69,10 @@ public interface GameFactory {
     Set<FaithTrack.YellowTile> generateYellowTiles();
 
     /**
-     * Returns a list of the action tokens.
+     * Returns the maximum level a development card can have.
      *
-     * @return  list of action tokens
+     * @return  max card level
      */
     @Deprecated
-    List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
+    int parseLevelsCount();
 }

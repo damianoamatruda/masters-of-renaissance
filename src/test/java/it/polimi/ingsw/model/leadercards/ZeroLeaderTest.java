@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
-import it.polimi.ingsw.JavaResourceTypeFactory;
 import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
@@ -18,11 +17,15 @@ import it.polimi.ingsw.model.resourcetypes.*;
  * Test of properties of ZeroLeader.
  */
 public class ZeroLeaderTest {
-    private ResourceTypeFactory resTypeFactory;
+    private ResourceType coin = new ResourceType("coin", true),
+                         zero = new ResourceType("zero", false);
+    private ZeroLeader leader;
+    private Player p;
 
     @BeforeEach
     void setup() {
-        resTypeFactory = new JavaResourceTypeFactory();
+        leader = new ZeroLeader(0, 0, null, coin, null, 0);
+        p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
     }
     
     /**
@@ -31,10 +34,7 @@ public class ZeroLeaderTest {
      */
     @Test
     void nullMaps() {
-        ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
-
-        try { leader.activate(p); } catch (Exception e) { }
+        assertDoesNotThrow(() -> leader.activate(p));
 
         assertNull(leader.replaceMarketResources(null, null, null));
     }
@@ -45,12 +45,9 @@ public class ZeroLeaderTest {
      */
     @Test
     void emptyMaps() {
-        ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        assertDoesNotThrow(() -> leader.activate(p));
 
-        try { leader.activate(p); } catch (Exception e) { }
-
-        assertTrue(new HashMap<>().equals(leader.replaceMarketResources(resTypeFactory.get("Zero"), new HashMap<>(), new HashMap<>())));
+        assertTrue(new HashMap<>().equals(leader.replaceMarketResources(zero, new HashMap<>(), new HashMap<>())));
     }
 
     /**
@@ -59,20 +56,17 @@ public class ZeroLeaderTest {
      */
     @Test
     void otherResourceInput() {
-        ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
+        assertDoesNotThrow(() -> leader.activate(p));
 
-        try { leader.activate(p); } catch (Exception e) { }
-
-        Map<ResourceType, Integer>  toProcess = Map.of(resTypeFactory.get("Coin"), 1),  // nothing to convert (no Zero res)
-                                    zeros = Map.of(resTypeFactory.get("Zero"), 1);      // and choice != this leader (different bound res)
+        Map<ResourceType, Integer>  toProcess = Map.of(coin, 1),  // nothing to convert (no Zero res)
+                                    zeros = Map.of(zero, 1);      // and choice != this leader (different bound res)
         
-        assertTrue(leader.replaceMarketResources(resTypeFactory.get("Zero"), toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
-        assertTrue(zeros.equals(Map.of(resTypeFactory.get("Zero"), 1)));
+        assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
+        assertTrue(zeros.equals(Map.of(zero, 1)));
 
-        zeros = Map.of(resTypeFactory.get("Coin"), 1);                                  // choose this leader (res ok), still nothing to convert from
-        assertTrue(leader.replaceMarketResources(resTypeFactory.get("Zero"), toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
-        assertTrue(zeros.equals(Map.of(resTypeFactory.get("Coin"), 1)));                // same results, processing changes nothing
+        zeros = Map.of(coin, 1);                                  // choose this leader (res ok), still nothing to convert from
+        assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
+        assertTrue(zeros.equals(Map.of(coin, 1)));                // same results, processing changes nothing
     }
 
     /**
@@ -80,15 +74,12 @@ public class ZeroLeaderTest {
      */
     @Test
     void normalUse() {
-        ZeroLeader leader = new ZeroLeader(0, 0, null, resTypeFactory.get("Coin"), null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0);
-
-        try { leader.activate(p); } catch (Exception e) { }
+        assertDoesNotThrow(() -> leader.activate(p));
         
-        Map<ResourceType, Integer>  toProcess = Map.of(resTypeFactory.get("Zero"), 1),
-                                    zeros = new HashMap<>(Map.of(resTypeFactory.get("Coin"), 1));
+        Map<ResourceType, Integer> toProcess = Map.of(zero, 1),
+                                   zeros = new HashMap<>(Map.of(coin, 1));
 
-        assertTrue(leader.replaceMarketResources(resTypeFactory.get("Zero"), toProcess, zeros).equals(Map.of(resTypeFactory.get("Coin"), 1)));
+        assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
         assertTrue(zeros.equals(new HashMap<>()));
     }
 }
