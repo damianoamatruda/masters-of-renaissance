@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
+/** Factory class that builds game instances from file parameters, by acting like an adapter for parsing. */
 public class FileGameFactory implements GameFactory {
     /** The unmarshalled object. */
     private final ModelConfig config;
@@ -60,26 +60,16 @@ public class FileGameFactory implements GameFactory {
      * @throws JAXBException            generic exception from the JAXB library
      * @throws FileNotFoundException    config file not found
      */
-    public ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
+    private ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
         JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
         return (ModelConfig) context.createUnmarshaller()
                 .unmarshal(new FileReader(path));
     }
 
-    /**
-     * Returns the loaded model configuration.
-     *
-     * @return  the model configuration
-     */
-    @Deprecated
-    public ModelConfig getModelConfig() {
-        return config;
-    }
-
     @Override
     public Game buildMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
-        if (nicknames.size() > config.getMaxPlayers())
+        if (nicknames == null ||nicknames.size() > config.getMaxPlayers() || nicknames.size() == 0)
             throw new IllegalArgumentException();
 
         List<LeaderCard> leaderCards;
@@ -128,6 +118,7 @@ public class FileGameFactory implements GameFactory {
 
     @Override
     public SoloGame buildSoloGame(String nickname) {
+        if(nickname == null) throw new IllegalArgumentException();
         int playerLeadersCount = config.getNumLeaders();
         List<LeaderCard> shuffledLeaderCards = null;
         try {

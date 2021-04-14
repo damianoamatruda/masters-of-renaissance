@@ -15,45 +15,47 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for FileGameFactory.
  */
 public class FileGameFactoryTest {
-    FileGameFactory f;
+    FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
     ModelConfig config;
 
-    @BeforeEach
-    void setup() throws JAXBException, FileNotFoundException {
-        f = new FileGameFactory("src/main/resources/config.xml");
-        config = (ModelConfig) JAXBContext.newInstance(ModelConfig.class).createUnmarshaller()
-                .unmarshal(new FileReader("src/main/resources/config.xml"));
-    }
-
-    @Test
-    void testConfig() throws FileNotFoundException, JAXBException {
-        assertAll(()-> assertEquals(48, config.getDevCards().size()),
-                ()-> assertEquals(3, config.getFaithTrack().getSections().size()),
-                ()-> assertEquals(12, config.getFaithTrack().getSections().get(1).getBeginning()),
-                ()-> assertNotEquals(config.getDevCards().get(0),config.getDevCards().get(1)),
-                ()->assertEquals(13, config.getMarket().stream().mapToInt(m -> m.getAmount()).sum()));
-    }
-
-    @Test
-    void testCards() {
-//        assertAll(()-> assertEquals(48, f.generateDevCards().size()),
-//                ()->assertNotEquals(f.generateDevCards().get(0).getLevel(), f.generateDevCards().get(40).getLevel()));
-    }
-
+    /**
+     * Tests that the resource factory works properly.
+     */
     @Test
     void testResources() {
         assertAll(
                 () -> assertNotNull(f.getResType("Coin")),
-                () -> {
-                    assertNotNull(f.getResType("Faith"));
-                    assertFalse(f.getResType("Faith").isStorable());
-                }
+                () -> assertNotNull(f.getResType("Faith")),
+                () ->assertFalse(f.getResType("Faith").isStorable())
         );
     }
 
+    /**
+     * Tests that the color factory works properly.
+     */
     @Test
     void testColors() {
-        assertNotNull(f.getDevCardColor("Blue"));
-        assertNotNull(f.getDevCardColor("Green"));
+        assertAll(
+                ()-> assertNotNull(f.getDevCardColor("Blue")),
+                ()-> assertNotNull(f.getDevCardColor("Green"))
+        );
+    }
+
+    /**
+     * Tests building multiplayer games.
+     */
+    @Test
+    void testBuildGame(){
+        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.buildMultiGame(List.of())),
+                ()-> assertNotNull(f.buildMultiGame(List.of(""))));
+    }
+
+    /**
+     * Tests building solo games.
+     */
+    @Test
+    void testBuildSoloGame(){
+        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.buildSoloGame(null)),
+                ()-> assertNotNull(f.buildSoloGame("")));
     }
 }

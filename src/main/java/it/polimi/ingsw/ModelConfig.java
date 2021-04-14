@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
+/** Class used for file parsing purposes. */
 @XmlRootElement(name = "config")
 public class ModelConfig {
     /** Maximum number of players for each Game. */
@@ -163,6 +164,7 @@ public class ModelConfig {
         return cardColors;
     }
 
+    /** Parser class representing a resource entry - type, amount. */
     @XmlRootElement(name = "resource-entry")
     static class XmlResourceMapEntry {
         /** The name of the resource. */
@@ -183,6 +185,7 @@ public class ModelConfig {
 
     }
 
+    /** Parser class representing a development card. */
     @XmlRootElement(name = "Card")
     static class XmlDevCard{
         /** The color of the card. */
@@ -228,6 +231,7 @@ public class ModelConfig {
 
     }
 
+    /** Parser class representing a production recipe. */
     @XmlRootElement(name = "production")
     static class XmlProduction{
         /** The input of the production. */
@@ -292,6 +296,7 @@ public class ModelConfig {
 
     }
 
+    /** Parser class representing the faith track. */
     @XmlRootElement(name = "Faith-Track")
     static class XmlFaithTrack{
         /** List of all the Vatican sections. */
@@ -360,6 +365,7 @@ public class ModelConfig {
         }
     }
 
+    /** Parser class representing a requirement of development cards. */
     @XmlRootElement(name = "card-requirement")
     static class XmlCardRequirement{
         /** The color required. */
@@ -386,6 +392,7 @@ public class ModelConfig {
 
     }
 
+    /** Parser class representing a leader card. */
     @XmlRootElement(name = "Card")
     static class XmlLeaderCard{
         /** Type of leader card. */
@@ -456,6 +463,7 @@ public class ModelConfig {
 
     }
 
+    /** Parser class representing an action token. */
     @XmlRootElement(name = "token")
     static class XmlActionToken{
         /** Type of token. */
@@ -476,6 +484,7 @@ public class ModelConfig {
 
     }
 
+    /** Parser class representing the player's initial resources bonus. */
     @XmlRootElement(name = "player")
     static class XmlBoost{
         /** Number of player in order to start. */
@@ -504,6 +513,7 @@ public class ModelConfig {
 
     }
 
+    /** Parser class representing a resource type. */
     @XmlRootElement(name = "type")
     static class XmlResource {
         /** Name of the resource. */
