@@ -246,20 +246,22 @@ public class ProductionGroup {
                     .filter(e -> e.getKey().isStorable())
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-            /* Check that mapWithoutBlanks and resContainers contain the same number of storable resources */
-            int mapWithoutBlanksResourcesCount = resourceMap.values().stream().reduce(0, Integer::sum);
-            int containersResourcesCount = resContainers.values().stream()
+            /* Check that the map of resources and the map of resource containers contain the same number of storable
+               resources */
+            int resourceMapResourcesCount = resourceMap.values().stream().reduce(0, Integer::sum);
+            int resContainersResourcesCount = resContainers.values().stream()
                     .map(m -> m.values().stream().reduce(0, Integer::sum))
                     .reduce(0, Integer::sum);
-            if (containersResourcesCount != mapWithoutBlanksResourcesCount)
+            if (resContainersResourcesCount != resourceMapResourcesCount)
                 return false;
 
-            /* Check that the amount of each storable resource type in mapWithoutBlanks is the same as in resContainers */
+            /* Check that the quantity of each storable resource type in the map of resources is the same as in the map
+               of resource containers */
             for (ResourceType resType : resourceMap.keySet()) {
-                int containersResourceCount = 0;
+                int resourceCount = 0;
                 for (ResourceContainer resContainer : resContainers.keySet())
-                    containersResourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
-                if (containersResourceCount != resourceMap.get(resType))
+                    resourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
+                if (resourceCount != resourceMap.get(resType))
                     return false;
             }
 
