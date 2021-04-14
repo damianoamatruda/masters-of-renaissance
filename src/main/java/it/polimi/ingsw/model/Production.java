@@ -128,13 +128,4 @@ public class Production {
     public boolean hasDiscardableOutput() {
         return discardableOutput;
     }
-
-    /**
-     * Returns whether the production is empty.
-     *
-     * @return  <code>true</code> if the production has empty input and empty output; <code>false</code> otherwise.
-     */
-    public boolean isEmpty() {
-        return input.isEmpty() && output.isEmpty();
-    }
 }
