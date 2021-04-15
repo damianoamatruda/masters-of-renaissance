@@ -120,15 +120,6 @@ public class Game {
 
     }
 
-//    /**
-//     * Getter of the current player.
-//     *
-//     * @return  the player now playing
-//     */
-//    public Player getCurrentPlayer {
-//        return players.get(0);
-//    }
-
     /**
      * Getter of all the players who joined the game at the beginning.
      *
