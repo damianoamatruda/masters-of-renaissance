@@ -46,8 +46,7 @@ public class DiscountLeaderTest {
 
     /**
      * Tests whether the discount process works given a certain cost map.
-     * 
-     * @param resTypeFactory    the factory to produce resources.
+     *
      * @param discount          the discount's amount to be applied.
      * @param ogCost            the original cost to check the result against.
      */
