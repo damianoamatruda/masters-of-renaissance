@@ -50,8 +50,8 @@ public class PlayerTest {
                     shuffledNicknames.get(i),
                     i == 0, new ArrayList<>(List.of(new DepotLeader(0,0,null,null,null,0))),
                     new Warehouse(3), new Strongbox(),
-                    new Production(Map.of(), 2, Map.of(), 1), 3
-                    , bonusResources.get(i), bonusFaith.get(i));
+                    new Production(Map.of(), 2, Map.of(), 1), 3,
+                    bonusResources.get(i), bonusFaith.get(i));
             players.add(player);
         }
 

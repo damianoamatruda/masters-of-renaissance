@@ -3,15 +3,14 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.FileGameFactory;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,14 +19,44 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 public class DevCardGridTest {
-    GameFactory factory;
+    DevCardGrid devCardGrid;
+    Player buyer;
     Game game;
     ResourceType r1 = new ResourceType("r1", true);
+    DevCardColor c1 = new DevCardColor("c1");
+    DevCardColor c2 = new DevCardColor("c2");
     
     @BeforeEach
     void setup(){
-        factory = new FileGameFactory("src/main/resources/config.xml");
-        game = factory.getMultiGame(List.of("Alessandro", "Damiano", "Marco"));
+        Set<DevCardColor> colors = Set.of(c1, c2);
+        int levelsCount = 2;
+        List<DevelopmentCard> devCards = new ArrayList<>();
+        for (DevCardColor color : colors)
+            for (int level = 1; level <= levelsCount; level++)
+                for (int i = 1; i <= 2; i++)
+                    devCards.add(new DevelopmentCard(
+                            color, level,
+                            new ResourceRequirement(new HashMap<>(){{
+                                put(r1, 1);
+                            }}),
+                            new Production(Map.of(), 0, Map.of(), 0),
+                            3*i
+                    ));
+        devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
+
+        buyer = new Player(
+                "",
+                true, List.of(),
+                new Warehouse(0), new Strongbox(),
+                new Production(Map.of(), 0, Map.of(), 0), 1,
+                0, 0);
+        game = new Game(
+                List.of(buyer),
+                devCardGrid,
+                null,
+                new FaithTrack(Set.of(), Set.of()), 0,
+                2
+        );
     }
 
 
@@ -37,28 +66,23 @@ public class DevCardGridTest {
      * @param level level of the cards to test
      */
     @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3})
+    @ValueSource(ints = {1, 2})
     void devGridTest(int level) {
-        assertAll(() -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Blue"), level).size()),
-                () -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Green"), level).size()),
-                () -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Purple"), level).size()),
-                () -> assertEquals(4, game.getDevCardGrid().getDeck(factory.getDevCardColor("Yellow"), level).size()));
+        assertAll(() -> assertEquals(2, devCardGrid.getDeck(c1, level).size()),
+                () -> assertEquals(2, devCardGrid.getDeck(c2, level).size()));
     }
 
     /**
      * Basic test on peek of what cards can be purchased during the current turn.
      */
-    @RepeatedTest(value = 10)
+    @Test
     void peekCardsTest() {
-        Game otherGame = new FileGameFactory("src/main/resources/config.xml").getMultiGame(List.of("Alessandro", "Damiano", "Marco"));
-        DevCardGrid grid = otherGame.getDevCardGrid();
-        List<List<DevelopmentCard>> top = grid.peekDevCards();
-        for(int i = 0; i < top.size(); i++)
-            for(int j = 1; j <= top.get(i).size(); j++){
-                DevCardColor color = top.get(i).get(0).getColor();
-                if(grid.getDeck(color,j).peek() != top.get(i).get(j-1)) fail();
-            }
-        assert true;
+        List<List<DevelopmentCard>> top = devCardGrid.peekDevCards();
+        for (List<DevelopmentCard> developmentCards : top) {
+            DevCardColor color = developmentCards.get(0).getColor();
+            for (int level = 1; level <= developmentCards.size(); level++)
+                assertSame(devCardGrid.getDeck(color, level).peek(), developmentCards.get(level - 1));
+        }
     }
 
     /**
@@ -66,26 +90,21 @@ public class DevCardGridTest {
      */
     @Test
     void buyCardTest() throws Exception {
-        DevCardGrid theGrid = game.getDevCardGrid();
-        Stack<DevelopmentCard> deck = theGrid.getDeck(factory.getDevCardColor("Blue"), 1);
-        deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(r1, 1);
-        }}), null, 0));
-        Player buyer = game.getPlayers().get(0);
-        List<List<DevelopmentCard>> oldGrid = game.getDevCardGrid().peekDevCards();
+        buyer.getStrongbox().addResource(r1);
+
+        List<List<DevelopmentCard>> oldTop = devCardGrid.peekDevCards();
+
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
                 put(r1, 1);
             }});
         }};
+        devCardGrid.buyDevCard(game, buyer, c1, 1, 0, resContainers);
 
-        buyer.getStrongbox().addResource(r1);
+        List<List<DevelopmentCard>> newTop = devCardGrid.peekDevCards();
 
-        theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers);
-        List<List<DevelopmentCard>> top = theGrid.peekDevCards();
-
-        assertAll(() -> assertNotEquals(oldGrid, top),
-                () -> assertEquals(buyer.getDevSlots().get(0).peek().getColor(), factory.getDevCardColor("Blue")),
+        assertAll(() -> assertNotEquals(oldTop, newTop),
+                () -> assertEquals(buyer.getDevSlots().get(0).peek().getColor(), c1),
                 () -> assertEquals(buyer.getDevSlots().get(0).peek().getLevel(), 1));
 
     }
@@ -94,10 +113,8 @@ public class DevCardGridTest {
      * Checks that level 2+ cards cannot fit in an empty player card slot.
      */
     @Test
-    void buyCardWrongLevel(){
-        DevCardGrid theGrid = game.getDevCardGrid();
-        Player buyer = game.getPlayers().get(0);
-        Stack<DevelopmentCard> deck = theGrid.getDeck(factory.getDevCardColor("Blue"), 1);
+    void buyCardWrongLevel() {
+        buyer.getStrongbox().addResource(r1);
 
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
@@ -105,10 +122,6 @@ public class DevCardGridTest {
             }});
         }};
 
-        deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(r1, 1);
-        }}), null, 0));
-
-        assertThrows(Exception.class, () -> theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers));
+        assertThrows(IllegalCardDepositException.class, () -> devCardGrid.buyDevCard(game, buyer, c1, 2, 0, resContainers));
     }
 }
