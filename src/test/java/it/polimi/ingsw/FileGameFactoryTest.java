@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class FileGameFactoryTest {
     FileGameFactory f = new FileGameFactory("src/main/resources/config.xml");
-    ModelConfig config;
 
     /**
      * Tests that the resource factory works properly.
@@ -21,7 +20,7 @@ public class FileGameFactoryTest {
         assertAll(
                 () -> assertNotNull(f.getResourceType("Coin")),
                 () -> assertNotNull(f.getResourceType("Faith")),
-                () ->assertFalse(f.getResourceType("Faith").isStorable())
+                () -> assertFalse(f.getResourceType("Faith").isStorable())
         );
     }
 

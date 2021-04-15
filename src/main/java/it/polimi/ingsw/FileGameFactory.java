@@ -158,12 +158,20 @@ public class FileGameFactory implements GameFactory {
         return game;
     }
 
-    @Override
+    /**
+     * Getter of a resource type in the game by its name.
+     *
+     * @return  the resource type
+     */
     public ResourceType getResourceType(String name) {
         return resTypeMap.get(name);
     }
 
-    @Override
+    /**
+     * Getter of a development card color in the game by its name.
+     *
+     * @return  the development card color
+     */
     public DevCardColor getDevCardColor(String name) {
         return devCardColorMap.get(name);
     }

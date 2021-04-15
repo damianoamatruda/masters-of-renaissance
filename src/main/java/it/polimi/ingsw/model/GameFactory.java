@@ -23,20 +23,4 @@ public interface GameFactory {
      * @return          the single-player game
      */
     SoloGame getSoloGame(String nickname);
-
-    /**
-     * Getter of a resource type in the game by its name.
-     *
-     * @return  the resource type
-     */
-    @Deprecated
-    ResourceType getResourceType(String name);
-
-    /**
-     * Getter of a development card color in the game by its name.
-     *
-     * @return  the development card color
-     */
-    @Deprecated
-    DevCardColor getDevCardColor(String name);
 }
