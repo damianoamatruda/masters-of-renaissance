@@ -13,7 +13,7 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -35,12 +35,12 @@ public class FileGameFactory implements GameFactory {
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
      * file.
      *
-     * @param path the config file to be parsed
+     * @param inputStream the input stream to be parsed
      */
-    public FileGameFactory(String path) {
+    public FileGameFactory(InputStream inputStream) {
         ModelConfig tempConfig;
         try {
-            tempConfig = unmarshall(path);
+            tempConfig = unmarshal(inputStream);
         } catch (JAXBException | FileNotFoundException e) {
             tempConfig = null;
             e.printStackTrace();
@@ -53,17 +53,16 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
-     * Unmarshalls the XML in order to parse the game parameters.
+     * Unmarshals the XML in order to parse the game parameters.
      *
-     * @param path the config file to be parsed
+     * @param inputStream the input stream to be parsed
      * @return the object created by the XML unmarshalling
      * @throws JAXBException         generic exception from the JAXB library
      * @throws FileNotFoundException config file not found
      */
-    private ModelConfig unmarshall(String path) throws JAXBException, FileNotFoundException {
+    private ModelConfig unmarshal(InputStream inputStream) throws JAXBException, FileNotFoundException {
         JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
-        return (ModelConfig) context.createUnmarshaller()
-                .unmarshal(new FileReader(path));
+        return (ModelConfig) context.createUnmarshaller().unmarshal(inputStream);
     }
 
     @Override
@@ -120,7 +119,7 @@ public class FileGameFactory implements GameFactory {
     public SoloGame getSoloGame(String nickname) {
         if (nickname == null) throw new IllegalArgumentException();
         int playerLeadersCount = config.getNumLeaders();
-        List<LeaderCard> shuffledLeaderCards = null;
+        List<LeaderCard> shuffledLeaderCards;
         try {
             shuffledLeaderCards = new ArrayList<>(generateLeaderCards());
         } catch (Exception e) {
