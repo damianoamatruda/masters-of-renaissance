@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
-import it.polimi.ingsw.model.resourcetypes.*;
-import it.polimi.ingsw.model.resourcecontainers.Shelf;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

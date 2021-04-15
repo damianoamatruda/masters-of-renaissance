@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.actiontokens;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.DevCardColor;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
@@ -12,7 +11,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +33,7 @@ class ActionTokenDiscardTwoTest {
     DevCardColor yellow = new DevCardColor("Yellow");
 
     @BeforeEach
-    void setup(){
+    void setup() {
         Set<DevCardColor> colors = Set.of(blue, green, purple, yellow);
         int levelsCount = 3;
         List<DevelopmentCard> devCards = new ArrayList<>();
@@ -42,7 +44,7 @@ class ActionTokenDiscardTwoTest {
                             color, level,
                             new ResourceRequirement(Map.of()),
                             new Production(Map.of(), 0, Map.of(), 0),
-                            3*i
+                            3 * i
                     ));
         DevCardGrid devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 
@@ -73,12 +75,14 @@ class ActionTokenDiscardTwoTest {
         List<List<DevelopmentCard>> top = grid.peekDevCards();
         token.trigger(game);
 
-        for(int i = 0; i < top.size(); i++)
-            for(int j = 1; j <= top.get(i).size(); j++){
+        for (int i = 0; i < top.size(); i++)
+            for (int j = 1; j <= top.get(i).size(); j++) {
                 DevCardColor color = top.get(i).get(0).getColor();
-                if(grid.getDeck(color,j).peek() != top.get(i).get(j-1) && color != blue) fail();
-                else if (!foundTheChange && grid.getDeck(color,j).peek() == top.get(i).get(j-1) && color == blue) fail();
-                else if (!foundTheChange && grid.getDeck(color,j).peek() != top.get(i).get(j-1) && color == blue) foundTheChange = true;
+                if (grid.getDeck(color, j).peek() != top.get(i).get(j - 1) && color != blue) fail();
+                else if (!foundTheChange && grid.getDeck(color, j).peek() == top.get(i).get(j - 1) && color == blue)
+                    fail();
+                else if (!foundTheChange && grid.getDeck(color, j).peek() != top.get(i).get(j - 1) && color == blue)
+                    foundTheChange = true;
             }
         assert true;
     }
@@ -99,46 +103,46 @@ class ActionTokenDiscardTwoTest {
      */
     @ParameterizedTest
     @MethodSource("provideParameters")
-    void discardDifferentLevels(DevCardColor color){
+    void discardDifferentLevels(DevCardColor color) {
         ActionToken token = new ActionTokenDiscardTwo(color);
         DevCardGrid grid = game.getDevCardGrid();
-        int initialSize = grid.getDeck(color,2).size();
+        int initialSize = grid.getDeck(color, 2).size();
 
-        if(grid.getDeck(color, 1).size() % 2 == 0) grid.getDeck(color, 1).pop();
+        if (grid.getDeck(color, 1).size() % 2 == 0) grid.getDeck(color, 1).pop();
 
-        while(grid.getDeck(color, 1).size() > 1)
+        while (grid.getDeck(color, 1).size() > 1)
             token.trigger(game);
         token.trigger(game);
-        assertAll(()->assertEquals(grid.getDeck(color, 1).size(),0),
-                ()-> assertEquals(grid.getDeck(color,2).size(), initialSize - 1));
+        assertAll(() -> assertEquals(grid.getDeck(color, 1).size(), 0),
+                () -> assertEquals(grid.getDeck(color, 2).size(), initialSize - 1));
     }
 
     /**
-     * Checks the token effect / the game state when all the cards of one color are no more available.
-     * Last card is discarded by the token.
+     * Checks the token effect / the game state when all the cards of one color are no more available. Last card is
+     * discarded by the token.
      *
      * @param color the color to be tested
      */
     @ParameterizedTest
     @MethodSource("provideParameters")
-    void discardEndOfGame(DevCardColor color){
+    void discardEndOfGame(DevCardColor color) {
         ActionToken token = new ActionTokenDiscardTwo(color);
         DevCardGrid grid = game.getDevCardGrid();
         int level;
 
         for (level = 1; level < grid.getLevelsCount(); level++)
-            while(grid.getDeck(color, level).size() >= 1)
+            while (grid.getDeck(color, level).size() >= 1)
                 grid.getDeck(color, level).pop();
 
-        while(grid.getDeck(color, level).size() > 1)
+        while (grid.getDeck(color, level).size() > 1)
             grid.getDeck(color, level).pop();
 
-        if(grid.getDeck(color, level).size() % 2 == 0) grid.getDeck(color, 1).pop();
+        if (grid.getDeck(color, level).size() % 2 == 0) grid.getDeck(color, 1).pop();
 
         token.trigger(game);
         game.hasEnded();
-        assertAll(()->assertTrue(game.hasEnded()),
-                ()-> assertTrue(game.isBlackWinner()),
-                ()->assertFalse(player.isWinner()));
+        assertAll(() -> assertTrue(game.hasEnded()),
+                () -> assertTrue(game.isBlackWinner()),
+                () -> assertFalse(player.isWinner()));
     }
 }

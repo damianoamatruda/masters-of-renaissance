@@ -17,8 +17,8 @@ public class ProductionGroup {
 
     /**
      * Initializes a production group.
-     * 
-     * @param productionRequests    the list of the requested productions to activate
+     *
+     * @param productionRequests the list of the requested productions to activate
      */
     public ProductionGroup(List<ProductionRequest> productionRequests) {
         this.productionRequests = productionRequests;
@@ -30,12 +30,11 @@ public class ProductionGroup {
      * given resource containers, takes the non-storable input resources from the player and gives the non-storable
      * output resources to the player.
      * <p>
-     * This is a transaction: if the transfer is unsuccessful, a checked exception is thrown and the states of the
-     * game, the player and the resource containers remain unchanged.
+     * This is a transaction: if the transfer is unsuccessful, a checked exception is thrown and the states of the game,
+     * the player and the resource containers remain unchanged.
      *
-     * @param game                                  the game the player is playing in
-     * @param player                                the player on which to trigger the actions of the non-storable
-     *                                              resources
+     * @param game   the game the player is playing in
+     * @param player the player on which to trigger the actions of the non-storable resources
      * @throws IllegalProductionActivationException if the transaction failed
      */
     public void activate(Game game, Player player) throws IllegalProductionActivationException {
@@ -68,7 +67,7 @@ public class ProductionGroup {
                         } catch (IllegalResourceTransferException e) {
                             throw new IllegalProductionActivationException();
                         }
-    
+
             /* Try adding all output storable resources into cloned resource containers (with input removed) */
             for (ResourceContainer resContainer : productionReq.getOutputContainers().keySet())
                 for (ResourceType resType : productionReq.getOutputContainers().get(resContainer).keySet())
@@ -138,12 +137,12 @@ public class ProductionGroup {
 
         /**
          * Initializes a production request.
-         * 
-         * @param production        the production to use
-         * @param inputBlanksRep    the map of the resources chosen as replacement for blanks in input
-         * @param outputBlanksRep   the map of the resources chosen as replacement for blanks in output
-         * @param inputContainers   the map of the resource containers from which to remove the input storable resources
-         * @param outputContainers  the map of the resource containers into which to add the output storable resources
+         *
+         * @param production       the production to use
+         * @param inputBlanksRep   the map of the resources chosen as replacement for blanks in input
+         * @param outputBlanksRep  the map of the resources chosen as replacement for blanks in output
+         * @param inputContainers  the map of the resource containers from which to remove the input storable resources
+         * @param outputContainers the map of the resource containers into which to add the output storable resources
          */
         public ProductionRequest(Production production,
                                  Map<ResourceType, Integer> inputBlanksRep,
@@ -158,86 +157,11 @@ public class ProductionGroup {
         }
 
         /**
-         * Returns whether the production request is valid, i.e.:
-         * <ol>
-         *     <li>maps of input and output replacement resources have the same number of resources as input and output
-         *         blanks</li>
-         *     <li>maps of input and output replacement resources do not contain excluded resources</li>
-         *     <li>maps of input and output resource containers are given for respectively all non-storable resources in
-         *         input and output</li>
-         * </ol>
-         *
-         * @return  <code>true</code> if the production request is valid; <code>false</code> otherwise.
-         */
-        public boolean isValid() {
-            if (!inputBlanksRep.isEmpty() && inputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getInputBlanks())
-                return false;
-            if (!outputBlanksRep.isEmpty() && outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
-                return false;
-
-            if (inputBlanksRep.keySet().stream().anyMatch(resType -> production.getInputBlanksExclusions().contains(resType)))
-                return false;
-            if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
-                return false;
-
-            return checkContainers(getReplacedInput(), inputContainers) && checkContainers(getReplacedOutput(), outputContainers);
-        }
-
-        /**
-         * Returns the requested production.
-         * 
-         * @return  the production
-         */
-        public Production getProduction() {
-            return production;
-        }
-
-        /**
-         * Builds an input resource map with replaced blanks.
-         *
-         * @return  a map of resources including replaced blanks
-         */
-        public Map<ResourceType, Integer> getReplacedInput() {
-            Map<ResourceType, Integer> replacedInput = new HashMap<>(production.getInput());
-            inputBlanksRep.forEach((r, q) -> replacedInput.merge(r, q, Integer::sum));
-            return replacedInput;
-        }
-
-        /**
-         * Builds an output resource map with replaced blanks.
-         *
-         * @return  a map of resources including replaced blanks
-         */
-        public Map<ResourceType, Integer> getReplacedOutput() {
-            Map<ResourceType, Integer> replacedOutput = new HashMap<>(production.getOutput());
-            outputBlanksRep.forEach((r, q) -> replacedOutput.merge(r, q, Integer::sum));
-            return replacedOutput;
-        }
-
-        /**
-         * Returns the requested input resource containers.
-         * 
-         * @return  the input resource containers
-         */
-        public Map<ResourceContainer, Map<ResourceType, Integer>> getInputContainers() {
-            return inputContainers;
-        }
-
-        /**
-         * Returns the requested output resource containers.
-         *
-         * @return  the output resource containers
-         */
-        public Map<ResourceContainer, Map<ResourceType, Integer>> getOutputContainers() {
-            return outputContainers;
-        }
-
-        /**
          * Checks that resource containers are given for respectively all non-storable resources in a given map.
          *
          * @param resourceMap   the map of resources
          * @param resContainers the map of the resource containers to use for all the resources
-         * @return              <code>true</code> if the resources and the quantities match; <code>false</code> otherwise.
+         * @return <code>true</code> if the resources and the quantities match; <code>false</code> otherwise.
          */
         private static boolean checkContainers(Map<ResourceType, Integer> resourceMap,
                                                Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) {
@@ -266,6 +190,81 @@ public class ProductionGroup {
             }
 
             return true;
+        }
+
+        /**
+         * Returns whether the production request is valid, i.e.:
+         * <ol>
+         *     <li>maps of input and output replacement resources have the same number of resources as input and output
+         *         blanks</li>
+         *     <li>maps of input and output replacement resources do not contain excluded resources</li>
+         *     <li>maps of input and output resource containers are given for respectively all non-storable resources in
+         *         input and output</li>
+         * </ol>
+         *
+         * @return <code>true</code> if the production request is valid; <code>false</code> otherwise.
+         */
+        public boolean isValid() {
+            if (!inputBlanksRep.isEmpty() && inputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getInputBlanks())
+                return false;
+            if (!outputBlanksRep.isEmpty() && outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
+                return false;
+
+            if (inputBlanksRep.keySet().stream().anyMatch(resType -> production.getInputBlanksExclusions().contains(resType)))
+                return false;
+            if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
+                return false;
+
+            return checkContainers(getReplacedInput(), inputContainers) && checkContainers(getReplacedOutput(), outputContainers);
+        }
+
+        /**
+         * Returns the requested production.
+         *
+         * @return the production
+         */
+        public Production getProduction() {
+            return production;
+        }
+
+        /**
+         * Builds an input resource map with replaced blanks.
+         *
+         * @return a map of resources including replaced blanks
+         */
+        public Map<ResourceType, Integer> getReplacedInput() {
+            Map<ResourceType, Integer> replacedInput = new HashMap<>(production.getInput());
+            inputBlanksRep.forEach((r, q) -> replacedInput.merge(r, q, Integer::sum));
+            return replacedInput;
+        }
+
+        /**
+         * Builds an output resource map with replaced blanks.
+         *
+         * @return a map of resources including replaced blanks
+         */
+        public Map<ResourceType, Integer> getReplacedOutput() {
+            Map<ResourceType, Integer> replacedOutput = new HashMap<>(production.getOutput());
+            outputBlanksRep.forEach((r, q) -> replacedOutput.merge(r, q, Integer::sum));
+            return replacedOutput;
+        }
+
+        /**
+         * Returns the requested input resource containers.
+         *
+         * @return the input resource containers
+         */
+        public Map<ResourceContainer, Map<ResourceType, Integer>> getInputContainers() {
+            return inputContainers;
+        }
+
+        /**
+         * Returns the requested output resource containers.
+         *
+         * @return the output resource containers
+         */
+        public Map<ResourceContainer, Map<ResourceType, Integer>> getOutputContainers() {
+            return outputContainers;
         }
     }
 }

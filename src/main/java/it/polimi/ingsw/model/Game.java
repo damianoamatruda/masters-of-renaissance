@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -34,12 +35,14 @@ public class Game {
 
     /**
      * Constructor of Game instances.
+     *
      * @param players               the list of nicknames of players who joined
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
-     * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the game
+     * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
+     *                              game
      */
     public Game(List<Player> players, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
                 int maxFaithPointsCount, int maxObtainableDevCards) {
@@ -54,7 +57,7 @@ public class Game {
     /**
      * Proceeds to sum the remaining points and decide a winner after the game is over.
      *
-     * @return  <code>true</code> if the game is over; <code>false</code> otherwise.
+     * @return <code>true</code> if the game is over; <code>false</code> otherwise.
      */
     public boolean hasEnded() {
         if (lastTurn) {
@@ -68,8 +71,8 @@ public class Game {
     /**
      * Method called after a faith marker has been moved ahead, checks for available Vatican reports.
      *
-     * @param player        the player who has just moved ahead
-     * @param faithPoints   the faith marker (points) of whoever has just moved ahead
+     * @param player      the player who has just moved ahead
+     * @param faithPoints the faith marker (points) of whoever has just moved ahead
      */
     public void onIncrement(Player player, int faithPoints) {
         FaithTrack.VaticanSection vaticanSection = faithTrack.getVaticanSectionReport(faithPoints);
@@ -80,15 +83,15 @@ public class Game {
             vaticanSection.setActivated(true);
         }
 
-        if(faithPoints == maxFaithPointsCount)
+        if (faithPoints == maxFaithPointsCount)
             lastTurn = true;
     }
 
     /**
      * Method called after a card has been bought, checks if the maximum number of buyable cards has been reached.
      *
-     * @param player            the player that bought the development card
-     * @param obtainedDevCards  the number of all development cards obtained by the player
+     * @param player           the player that bought the development card
+     * @param obtainedDevCards the number of all development cards obtained by the player
      */
     public void onAddToDevSlot(Player player, int obtainedDevCards) {
         if (obtainedDevCards == maxObtainableDevCards)
@@ -101,10 +104,10 @@ public class Game {
      * <p>
      * If next player is inactive, the operation is repeated until an active player is found.
      *
-     * @return                      the next player that has to play a turn
+     * @return the next player that has to play a turn
      * @throws AllInactiveException all players are set to inactive
      */
-    public Player onTurnEnd() throws AllInactiveException{
+    public Player onTurnEnd() throws AllInactiveException {
         if (players.stream().filter(p -> p.isActive()).count() == 0) throw new AllInactiveException();
 
         Player temp = players.get(0);
@@ -129,7 +132,7 @@ public class Game {
     /**
      * Getter of all the players who joined the game at the beginning.
      *
-     * @return  the list of players (including who disconnected after)
+     * @return the list of players (including who disconnected after)
      */
     public List<Player> getPlayers() {
         return new ArrayList<>(players);
@@ -138,7 +141,7 @@ public class Game {
     /**
      * Getter of the current number of turn.
      *
-     * @return  the current turn number
+     * @return the current turn number
      */
     public int getTurns() {
         return turns;
@@ -147,7 +150,7 @@ public class Game {
     /**
      * Getter of the game development card grid.
      *
-     * @return  the development card grid
+     * @return the development card grid
      */
     public DevCardGrid getDevCardGrid() {
         return devCardGrid;
@@ -156,7 +159,7 @@ public class Game {
     /**
      * Getter of the game market.
      *
-     * @return  the market
+     * @return the market
      */
     public Market getMarket() {
         return market;
@@ -165,7 +168,7 @@ public class Game {
     /**
      * Getter of the game faith track.
      *
-     * @return  the development card grid
+     * @return the development card grid
      */
     public FaithTrack getFaithTrack() {
         return faithTrack;
@@ -177,7 +180,7 @@ public class Game {
     private void setWinnerPlayer() {
         sumPointsFromYellowTiles();
         sumResourcesVictoryPoints();
-        for(Player p : players)
+        for (Player p : players)
             p.sumCardsVictoryPoints();
 
         int maxPts = players.stream()
@@ -189,7 +192,7 @@ public class Game {
                 .filter(p -> p.getVictoryPoints() == maxPts)
                 .collect(Collectors.toList());
 
-        for(Player p : winners)
+        for (Player p : winners)
             p.setWinner(true);
     }
 

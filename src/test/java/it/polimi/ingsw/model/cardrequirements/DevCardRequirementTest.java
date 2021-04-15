@@ -1,15 +1,18 @@
 package it.polimi.ingsw.model.cardrequirements;
 
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for DevCardRequirement.
@@ -17,18 +20,18 @@ import org.junit.jupiter.api.Test;
 public class DevCardRequirementTest {
     private Player p;
     private Game g;
-    private DevCardColor green = new DevCardColor("green"),
-                 blue = new DevCardColor("blue");
-    
+    private final DevCardColor green = new DevCardColor("green");
+    private final DevCardColor blue = new DevCardColor("blue");
+
     @BeforeEach
     void setup() {
         p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0);
         g = new Game(List.of(p), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 10);
     }
-    
+
     /**
-     * Tests whether the requirement checking process works in a scenario where it should fail
-     * due to the color of the cards the player possesses doesn't correspond to the requirement's.
+     * Tests whether the requirement checking process works in a scenario where it should fail due to the color of the
+     * cards the player possesses doesn't correspond to the requirement's.
      */
     @Test
     void checkReqsWrongColor() {
@@ -42,8 +45,8 @@ public class DevCardRequirementTest {
     }
 
     /**
-     * Tests whether the requirement checking process works in a scenario where it should fail
-     * due to the level of the cards the player possesses doesn't correspond to the requirement's.
+     * Tests whether the requirement checking process works in a scenario where it should fail due to the level of the
+     * cards the player possesses doesn't correspond to the requirement's.
      */
     @Test
     void checkReqsWrongLevel() {
@@ -57,8 +60,8 @@ public class DevCardRequirementTest {
     }
 
     /**
-     * Tests whether the requirement checking process works in a scenario where it should fail
-     * due to the amount of cards the player possesses being different from the requirement's.
+     * Tests whether the requirement checking process works in a scenario where it should fail due to the amount of
+     * cards the player possesses being different from the requirement's.
      */
     @Test
     void checkReqsWrongAmount() {

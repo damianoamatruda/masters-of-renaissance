@@ -56,7 +56,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfResourceShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
@@ -66,7 +66,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void quantityOfResourceShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
@@ -76,7 +76,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfResourceShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
@@ -86,7 +86,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceShelfShouldNotBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
@@ -96,7 +96,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, resourcesCount + 1);
@@ -106,7 +106,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceShelfShouldBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, resourcesCount);
@@ -151,7 +151,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void quantityOfResourceShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
@@ -162,7 +162,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfResourceShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
@@ -173,7 +173,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
@@ -185,7 +185,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void quantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
@@ -197,7 +197,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
@@ -209,7 +209,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceTypeOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
@@ -221,7 +221,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void clearedResourceShelfShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
@@ -233,7 +233,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void clearedResourceShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
@@ -245,7 +245,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void clearedResourceShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
@@ -257,7 +257,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 10, 13 })
+    @ValueSource(ints = {10, 13})
     void addAllFromSmallerOrEqualShelf(int size) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 13);
@@ -288,7 +288,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 10, 13 })
+    @ValueSource(ints = {10, 13})
     void addAllShouldNotBePossibleBecauseOfResourceTypes(int size) throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
@@ -302,7 +302,7 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = { false, true })
+    @ValueSource(booleans = {false, true})
     void swapShouldBePossible(boolean direct) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
 

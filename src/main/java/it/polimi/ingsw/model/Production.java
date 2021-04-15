@@ -2,7 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class represents a production, that is a transaction of transfers of resources from and to resource containers
@@ -33,13 +35,13 @@ public class Production {
     /**
      * Initializes the production specifying its input and its output.
      *
-     * @param input                     the map of the resources to be given as input of the production
-     * @param inputBlanks               the number of the input blanks
-     * @param inputBlanksExclusions     the resources that cannot replace input blanks
-     * @param output                    the map of the resources to be taken as output of the production
-     * @param outputBlanks              the number of the output blanks
-     * @param outputBlanksExclusions    the resources that cannot replace output blanks
-     * @param discardableOutput         <code>true</code> if the output can be discarded; <code>false</code> otherwise.
+     * @param input                  the map of the resources to be given as input of the production
+     * @param inputBlanks            the number of the input blanks
+     * @param inputBlanksExclusions  the resources that cannot replace input blanks
+     * @param output                 the map of the resources to be taken as output of the production
+     * @param outputBlanks           the number of the output blanks
+     * @param outputBlanksExclusions the resources that cannot replace output blanks
+     * @param discardableOutput      <code>true</code> if the output can be discarded; <code>false</code> otherwise.
      */
     public Production(Map<ResourceType, Integer> input, int inputBlanks, Set<ResourceType> inputBlanksExclusions,
                       Map<ResourceType, Integer> output, int outputBlanks, Set<ResourceType> outputBlanksExclusions,
@@ -56,10 +58,10 @@ public class Production {
     /**
      * Initializes a production with no exclusions and non-discardable output specifying its input and its output.
      *
-     * @param input         the map of the resources to be given as input of the production
-     * @param inputBlanks   the number of the input blanks
-     * @param output        the map of the resources to be taken as output of the production
-     * @param outputBlanks  the number of the input blanks
+     * @param input        the map of the resources to be given as input of the production
+     * @param inputBlanks  the number of the input blanks
+     * @param output       the map of the resources to be taken as output of the production
+     * @param outputBlanks the number of the input blanks
      */
     public Production(Map<ResourceType, Integer> input, int inputBlanks,
                       Map<ResourceType, Integer> output, int outputBlanks) {
@@ -69,7 +71,7 @@ public class Production {
     /**
      * Returns the map of the input resources of the production.
      *
-     * @return  the map of the input resources
+     * @return the map of the input resources
      */
     public Map<ResourceType, Integer> getInput() {
         return new HashMap<>(input);
@@ -78,7 +80,7 @@ public class Production {
     /**
      * Returns the number of the input blanks of the production.
      *
-     * @return  the number of the input blanks
+     * @return the number of the input blanks
      */
     public int getInputBlanks() {
         return inputBlanks;
@@ -87,7 +89,7 @@ public class Production {
     /**
      * Returns the input blanks exclusions of the production.
      *
-     * @return  the input blanks exclusions
+     * @return the input blanks exclusions
      */
     public Set<ResourceType> getInputBlanksExclusions() {
         return inputBlanksExclusions;
@@ -96,7 +98,7 @@ public class Production {
     /**
      * Returns the map of the output resources of the production.
      *
-     * @return  the map of the output resources
+     * @return the map of the output resources
      */
     public Map<ResourceType, Integer> getOutput() {
         return new HashMap<>(output);
@@ -105,7 +107,7 @@ public class Production {
     /**
      * Returns the number of the output blanks of the production.
      *
-     * @return  the number of the output blanks
+     * @return the number of the output blanks
      */
     public int getOutputBlanks() {
         return outputBlanks;
@@ -114,7 +116,7 @@ public class Production {
     /**
      * Returns the output blanks exclusions of the production.
      *
-     * @return  the output blanks exclusions
+     * @return the output blanks exclusions
      */
     public Set<ResourceType> getOutputBlanksExclusions() {
         return outputBlanksExclusions;
@@ -123,7 +125,7 @@ public class Production {
     /**
      * Returns whether the production has discardable output.
      *
-     * @return  <code>true</code> if the output can be discarded; <code>false</code> otherwise.
+     * @return <code>true</code> if the output can be discarded; <code>false</code> otherwise.
      */
     public boolean hasDiscardableOutput() {
         return discardableOutput;

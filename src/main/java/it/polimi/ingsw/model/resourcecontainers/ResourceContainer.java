@@ -11,60 +11,60 @@ public interface ResourceContainer {
     /**
      * Copy method.
      *
-     * @return  a deep copy of the resource container
+     * @return a deep copy of the resource container
      */
     ResourceContainer copy();
 
     /**
      * Returns the types of the resources contained.
      *
-     * @return  the resource types
+     * @return the resource types
      */
     Set<ResourceType> getResourceTypes();
 
     /**
      * Returns the quantity of the resources contained.
      *
-     * @return  the total quantity
+     * @return the total quantity
      */
     int getQuantity();
 
     /**
      * Returns the quantity of resources of the given type.
      *
-     * @param resType   the type of the resources
-     * @return          the quantity
+     * @param resType the type of the resources
+     * @return the quantity
      */
     int getResourceQuantity(ResourceType resType);
 
     /**
      * Adds a resource of the given type.
      *
-     * @param resType                   the resource to add
-     * @throws IllegalResourceTransferException    if the container is full
+     * @param resType the resource to add
+     * @throws IllegalResourceTransferException if the container is full
      */
     void addResource(ResourceType resType) throws IllegalResourceTransferException;
 
     /**
      * Removes a resource of the given type.
      *
-     * @param resType                   the resource to remove
-     * @throws IllegalResourceTransferException    if the container is empty
+     * @param resType the resource to remove
+     * @throws IllegalResourceTransferException if the container is empty
      */
     void removeResource(ResourceType resType) throws IllegalResourceTransferException;
 
     /**
      * Adds the content of a resource container.
      *
-     * @param resourceContainer         the resource container from which to get the resources to add
-     * @throws IllegalResourceTransferException    if the content cannot be added
+     * @param resourceContainer the resource container from which to get the resources to add
+     * @throws IllegalResourceTransferException if the content cannot be added
      */
     void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException;
 
     /**
      * Returns whether the resource container is empty.
      *
-     * @return  <code>true</code> if the resource container contains no resources, <code>false</code> otherwise.
+     * @return <code>true</code> if the resource container contains no resources, <code>false</code> otherwise.
      */
     boolean isEmpty();
 }

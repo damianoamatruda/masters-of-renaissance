@@ -1,31 +1,32 @@
 package it.polimi.ingsw.model.cardrequirements;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.*;
-
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.model.resourcetypes.*;
+import java.util.ArrayList;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for ResourceRequirement.
  */
 public class ResourceRequirementTest {
     private Player p;
-    private ResourceType coin = new ResourceType("coin", true),
-                         shield = new ResourceType("shield", true);
+    private final ResourceType coin = new ResourceType("coin", true);
+    private final ResourceType shield = new ResourceType("shield", true);
 
     @BeforeEach
     void setup() {
         p = new Player("", false, new ArrayList<>(), new Warehouse(1), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0);
     }
-    
+
     /**
      * Tests whether the checking process for a resource requirement fails if the player's resources don't satisfy it.
      */

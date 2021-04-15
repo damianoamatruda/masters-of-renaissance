@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.actiontokens.ActionToken;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class represents the Solo version of the game, and contains all the extra functionality.
@@ -22,17 +21,21 @@ public class SoloGame extends Game {
 
     /**
      * Initializes the solo game with the following parameters.
-     * @param player                      the nickname of the player who joined
-     * @param devCardGrid                   the development card grid
-     * @param market                        the resource market
-     * @param faithTrack                    the faith track
-     * @param actionTokens                  the stack of tokens, of which the top token is activated after each turn
-     * @param maxFaithPointsCount           the number of the last reachable faith track tile by a player
-     * @param maxObtainableDevCards         the number of development cards a player can have, before triggering the end of the game
+     *
+     * @param player                the nickname of the player who joined
+     * @param devCardGrid           the development card grid
+     * @param market                the resource market
+     * @param faithTrack            the faith track
+     * @param actionTokens          the stack of tokens, of which the top token is activated after each turn
+     * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
+     * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
+     *                              game
      */
     public SoloGame(Player player, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
                     List<ActionToken> actionTokens, int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(new ArrayList<>(){{add(player);}}, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
+        super(new ArrayList<>() {{
+            add(player);
+        }}, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
         this.actionTokens = actionTokens;
         blackPoints = 0;
         blackWinner = false;
@@ -56,20 +59,18 @@ public class SoloGame extends Game {
     /**
      * Proceeds to sum the remaining points and decide a winner after the game is over.
      *
-     * @return  <code>true</code> if the game is over; <code>false</code> otherwise.
+     * @return <code>true</code> if the game is over; <code>false</code> otherwise.
      */
     @Override
     public boolean hasEnded() {
-        if(blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()){
+        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
             setBlackWinner();
             return true;
-        }
-        else return super.hasEnded();
+        } else return super.hasEnded();
     }
 
     /**
-     * Triggered after the player concludes a turn.
-     * This is Lorenzo's turn: a token will be activated.
+     * Triggered after the player concludes a turn. This is Lorenzo's turn: a token will be activated.
      *
      * @throws AllInactiveException all players are inactive
      */
@@ -86,7 +87,7 @@ public class SoloGame extends Game {
     /**
      * Returns Lorenzo's faith marker position.
      *
-     * @return  number of tile reached by Lorenzo
+     * @return number of tile reached by Lorenzo
      */
     public int getBlackPoints() {
         return blackPoints;
@@ -95,7 +96,7 @@ public class SoloGame extends Game {
     /**
      * Says whether Lorenzo has won the game or not.
      *
-     * @return  <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
+     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
      */
     public boolean isBlackWinner() {
         return blackWinner;

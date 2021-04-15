@@ -1,27 +1,27 @@
 package it.polimi.ingsw.model.leadercards;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.*;
-
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Production;
+import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
-
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
-import it.polimi.ingsw.model.resourcetypes.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test of the functionalities of the class 'LeaderCard'.
  */
 public class LeaderCardTest {
-    private ResourceType coin = new ResourceType("coin", true);
+    private final ResourceType coin = new ResourceType("coin", true);
     private LeaderCard leader;
-    
+
     @BeforeEach
     void setup() {
         leader = new ZeroLeader(0, 0, null, coin, new ResourceRequirement(Map.of(coin, 1)), 0);
@@ -32,7 +32,7 @@ public class LeaderCardTest {
      */
     @Test
     void nullResourceCreation() {
-        assertDoesNotThrow(() -> new ZeroLeader(0,0,null, null, null,0));
+        assertDoesNotThrow(() -> new ZeroLeader(0, 0, null, null, null, 0));
     }
 
     /**

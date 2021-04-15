@@ -10,7 +10,7 @@ public class DevCardColor {
     /**
      * Constructor of the development card color.
      *
-     * @param name  the name of the development card color
+     * @param name the name of the development card color
      */
     public DevCardColor(String name) {
         this.name = name;
@@ -19,7 +19,7 @@ public class DevCardColor {
     /**
      * Returns the name of the development card color.
      *
-     * @return  the name of the resource associated with the class, for UI purposes only
+     * @return the name of the resource associated with the class, for UI purposes only
      */
     public String getName() {
         return name;

@@ -18,7 +18,7 @@ public class Warehouse {
     /**
      * Initializes the warehouse by constructing the shelves of growing size.
      *
-     * @param shelvesCount  the number of shelves in the warehouse
+     * @param shelvesCount the number of shelves in the warehouse
      */
     public Warehouse(int shelvesCount) {
         shelves = new ArrayList<>();
@@ -40,15 +40,15 @@ public class Warehouse {
     /**
      * Returns the shelves inside the warehouse
      *
-     * @return  a list of the shelves
+     * @return a list of the shelves
      */
     public List<WarehouseShelf> getShelves() {
         return Collections.unmodifiableList(shelves);
     }
 
     /**
-     * This class represents a shelf in a warehouse, that is a shelf that cannot contain a resource that is contained also
-     * in another shelf of the same warehouse.
+     * This class represents a shelf in a warehouse, that is a shelf that cannot contain a resource that is contained
+     * also in another shelf of the same warehouse.
      *
      * @see Warehouse
      */
@@ -70,7 +70,7 @@ public class Warehouse {
         /**
          * Copy constructor. Makes a deep copy of a warehouse shelf.
          *
-         * @param warehouseShelf    the warehouse shelf to copy
+         * @param warehouseShelf the warehouse shelf to copy
          */
         public WarehouseShelf(WarehouseShelf warehouseShelf) {
             super(warehouseShelf);

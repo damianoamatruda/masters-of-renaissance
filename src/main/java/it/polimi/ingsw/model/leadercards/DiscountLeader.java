@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Leader card with the ability to give a discount when buying a development card.
- * 
+ *
  * @see LeaderCard
  */
 public class DiscountLeader extends LeaderCard {
@@ -22,8 +22,8 @@ public class DiscountLeader extends LeaderCard {
      * @param discount      the amount of resources to be subtracted when applying the ability.
      * @param shelfSize     the maximum amount of resources the card can store (unused in this case)
      * @param production    the production of the card (unused in this case)
-     * @param resource      the resource bound to the card.
-     *                      The card's ability is restricted to acting on this resource type only.
+     * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
+     *                      type only.
      * @param requirement   the requirement to be satisfied in order to enable the card.
      * @param victoryPoints the amount of victory points associated with the card.
      */
@@ -37,9 +37,9 @@ public class DiscountLeader extends LeaderCard {
         if (cost == null) return null;
 
         if (!isActive()) return super.getDevCardCost(cost);
-        
+
         Map<ResourceType, Integer> discountedCost = new HashMap<>(cost);
-        
+
         discountedCost.computeIfPresent(this.getResource(), (r, oldCost) -> oldCost - discount);
 
         return discountedCost;

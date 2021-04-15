@@ -23,7 +23,7 @@ public class GameTest {
      */
     @BeforeEach
     void setup() {
-        List<String> shuffledNicknames = new ArrayList<>(List.of("Alessandro","Damiano","Marco"));
+        List<String> shuffledNicknames = new ArrayList<>(List.of("Alessandro", "Damiano", "Marco"));
         Collections.shuffle(shuffledNicknames);
 
         List<Player> players = new ArrayList<>();
@@ -67,8 +67,8 @@ public class GameTest {
     @Test
     @DisplayName("Game should already be instantiated")
     void instantiationTest() {
-        assertAll(() -> assertEquals(game.getTurns(),1),
-                  () -> assertEquals(true, game.getPlayers().get(0).hasInkwell()));
+        assertAll(() -> assertEquals(game.getTurns(), 1),
+                () -> assertEquals(true, game.getPlayers().get(0).hasInkwell()));
     }
 
     /**
@@ -81,15 +81,26 @@ public class GameTest {
     }
 
     /**
+     * Tests that any player that has not reached any yellow tiles (nor sections, nor has cards / resources) has no
+     * yellow tile bonus points.
+     */
+    @Test
+    void noYellowTilesEndOfGame() {
+        for (int i = 0; i < 24; i++)
+            game.getPlayers().get(0).incrementFaithPoints(game);
+        game.hasEnded();
+        assertAll(() -> assertTrue(game.hasEnded()),
+                () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
+    }
+
+    /**
      * Nested class for onIncrement method - first Vatican Report related tests.
      */
     @Nested
     @DisplayName("First Vatican Report Tests")
-
     class FirstVaticanReport {
         /**
-         * Simulates a possible scenario after triggering 1st Vatican Report.
-         * Current tiles reached by the 3 markers:
+         * Simulates a possible scenario after triggering 1st Vatican Report. Current tiles reached by the 3 markers:
          * <ol>
          *     <li>Player 1: 5;</li>
          *     <li>Player 2: 8;</li>
@@ -137,8 +148,7 @@ public class GameTest {
     @DisplayName("Second Vatican Report Tests")
     class SecondVaticanReport {
         /**
-         * Simulates a possible scenario after triggering 2nd Vatican Report.
-         * Current tiles reached by the 3 markers:
+         * Simulates a possible scenario after triggering 2nd Vatican Report. Current tiles reached by the 3 markers:
          * <ol>
          *     <li>Player 1: 5;</li>
          *     <li>Player 2: 16;</li>
@@ -155,6 +165,7 @@ public class GameTest {
             for (int i = 0; i < 16; i++)
                 game.getPlayers().get(1).incrementFaithPoints(game);
         }
+
         /**
          * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded).
          */
@@ -189,8 +200,7 @@ public class GameTest {
     @DisplayName("Last Vatican Report and Late Game Tests")
     class LastVaticanReport {
         /**
-         * Simulates a possible scenario after triggering 1st Vatican Report.
-         * Current tiles reached by the 3 markers:
+         * Simulates a possible scenario after triggering 1st Vatican Report. Current tiles reached by the 3 markers:
          * <ol>
          *     <li>Player 1: 24;</li>
          *     <li>Player 2: 20;</li>
@@ -221,19 +231,20 @@ public class GameTest {
          */
         @RepeatedTest(value = 10)
         void arePlayersStillInSameOrder() {
-            assertAll(()->assertEquals(game.getPlayers().get(0).getNickname(), initialOrder.get(0).getNickname()),
-                    ()->assertEquals(game.getPlayers().get(1).getNickname(),initialOrder.get(1).getNickname()),
-                    ()->assertEquals(game.getPlayers().get(2).getNickname(),initialOrder.get(2).getNickname()));
+            assertAll(() -> assertEquals(game.getPlayers().get(0).getNickname(), initialOrder.get(0).getNickname()),
+                    () -> assertEquals(game.getPlayers().get(1).getNickname(), initialOrder.get(1).getNickname()),
+                    () -> assertEquals(game.getPlayers().get(2).getNickname(), initialOrder.get(2).getNickname()));
         }
+
         /**
          * Ensures that the previously executed methods in advancePlayers() have not had any side effects on the number
          * of resources stored.
          */
         @Test
         void doPlayersHaveStorableResources() {
-            assertAll(()->assertEquals(game.getPlayers().get(0).getResourcesCount(),0),
-                    ()->assertEquals(game.getPlayers().get(1).getResourcesCount(),0),
-                    ()->assertEquals(game.getPlayers().get(2).getResourcesCount(),0));
+            assertAll(() -> assertEquals(game.getPlayers().get(0).getResourcesCount(), 0),
+                    () -> assertEquals(game.getPlayers().get(1).getResourcesCount(), 0),
+                    () -> assertEquals(game.getPlayers().get(2).getResourcesCount(), 0));
         }
 
         /**
@@ -243,7 +254,8 @@ public class GameTest {
         @DisplayName("Last Vatican Report tests before deciding winner")
         class LateGameBeforeWinnerCalcs {
             /**
-             * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points excluded).
+             * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points
+             * excluded).
              */
             @Test
             void lastVaticanReportPtsObtained() {
@@ -251,7 +263,8 @@ public class GameTest {
             }
 
             /**
-             * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded).
+             * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points
+             * excluded).
              */
             @Test
             void lastVaticanReportPtsObtainedLead() {
@@ -259,7 +272,8 @@ public class GameTest {
             }
 
             /**
-             * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points excluded).
+             * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points
+             * excluded).
              */
             @Test
             void lastVaticanReportPtsNotObtained() {
@@ -290,27 +304,27 @@ public class GameTest {
             }
 
             /**
-            * Checks the total score achieved by Player 1.
-            */
+             * Checks the total score achieved by Player 1.
+             */
             @RepeatedTest(value = 10)
             void ptsAlessandroAfterCalcs() {
-             assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
+                assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
             }
 
             /**
-            * Checks the total score achieved by Player 2.
-            */
+             * Checks the total score achieved by Player 2.
+             */
             @RepeatedTest(value = 10)
             void ptsDamianoAfterCalcs() {
-             assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
+                assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
             }
 
             /**
-            * Checks the total score achieved by Player 3.
-            */
+             * Checks the total score achieved by Player 3.
+             */
             @RepeatedTest(value = 10)
             void ptsMarcoAfterCalcs() {
-             assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
+                assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
             }
 
             /**
@@ -384,18 +398,6 @@ public class GameTest {
             assertThrows(AllInactiveException.class, () -> game.onTurnEnd());
         }
 
-    }
-
-    /**
-     * Tests that any player that has not reached any yellow tiles (nor sections, nor has cards / resources) has no yellow tile bonus points.
-     */
-    @Test
-    void noYellowTilesEndOfGame(){
-        for(int i = 0; i < 24; i++)
-            game.getPlayers().get(0).incrementFaithPoints(game);
-        game.hasEnded();
-        assertAll(() -> assertTrue(game.hasEnded()),
-                ()-> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
 
 }

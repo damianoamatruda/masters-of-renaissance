@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.resourcecontainers;
 
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
-import java.util.*;
+import java.util.Set;
 
 /**
  * This class represents a finite container of resources of the same type.
@@ -20,7 +20,7 @@ public class Shelf implements ResourceContainer {
     /**
      * Initializes the shelf specifying the size.
      *
-     * @param size  the maximum quantity of resources in the shelf
+     * @param size the maximum quantity of resources in the shelf
      */
     public Shelf(int size) {
         this.size = size;
@@ -39,16 +39,11 @@ public class Shelf implements ResourceContainer {
         quantity = shelf.quantity;
     }
 
-    @Override
-    public ResourceContainer copy() {
-        return new Shelf(this);
-    }
-
     /**
      * Swaps the content of two shelves if possible.
      *
-     * @param s1                                the first shelf
-     * @param s2                                the second shelf
+     * @param s1 the first shelf
+     * @param s2 the second shelf
      * @throws IllegalResourceTransferException if the shelves cannot be swapped
      */
     public static void swap(Shelf s1, Shelf s2) throws IllegalResourceTransferException {
@@ -72,10 +67,15 @@ public class Shelf implements ResourceContainer {
         s2.quantity = clone2.getQuantity();
     }
 
+    @Override
+    public ResourceContainer copy() {
+        return new Shelf(this);
+    }
+
     /**
      * Returns the size of the shelf.
      *
-     * @return  the maximum quantity of resources in the shelf
+     * @return the maximum quantity of resources in the shelf
      */
     public int getSize() {
         return size;
@@ -84,7 +84,7 @@ public class Shelf implements ResourceContainer {
     /**
      * Returns the type of the resources in the shelf.
      *
-     * @return  the type of the resources
+     * @return the type of the resources
      */
     public ResourceType getResourceType() {
         return resType;
@@ -152,7 +152,7 @@ public class Shelf implements ResourceContainer {
     /**
      * Returns whether the shelf is full.
      *
-     * @return  <code>true</code> if the shelf contains all possible resources, <code>false</code> otherwise.
+     * @return <code>true</code> if the shelf contains all possible resources, <code>false</code> otherwise.
      */
     public boolean isFull() {
         return quantity == size;

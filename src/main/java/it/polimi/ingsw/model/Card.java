@@ -16,14 +16,17 @@ public abstract class Card {
      * Class constructor.
      *
      * @param victoryPoints the amount of victory points associated with the card
-     * 
      * @see Game
      * @see Player
      */
-    public Card(int victoryPoints) { this.victoryPoints = victoryPoints; }
+    public Card(int victoryPoints) {
+        this.victoryPoints = victoryPoints;
+    }
 
     /**
-     * @return  the amount of victory points set when created.
+     * @return the amount of victory points set when created.
      */
-    public int getVictoryPoints() { return victoryPoints; }
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
 }

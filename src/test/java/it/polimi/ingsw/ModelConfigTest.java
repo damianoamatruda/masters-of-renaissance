@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit test for ModelConfig.
@@ -30,8 +29,8 @@ public class ModelConfigTest {
      */
     @Test
     void testConfigFaithTrack() {
-        assertAll(()-> assertEquals(3, config.getFaithTrack().getSections().size()),
-                ()-> assertEquals(12, config.getFaithTrack().getSections().get(1).getBeginning()));
+        assertAll(() -> assertEquals(3, config.getFaithTrack().getSections().size()),
+                () -> assertEquals(12, config.getFaithTrack().getSections().get(1).getBeginning()));
     }
 
     /**
@@ -39,17 +38,17 @@ public class ModelConfigTest {
      */
     @Test
     void testConfigCards() {
-        assertAll(()-> assertEquals(48, config.getDevCards().size()),
-                ()-> assertNotEquals(config.getDevCards().get(0),config.getDevCards().get(1)),
-                ()-> assertEquals(48, config.getDevCards().size()),
-                ()-> assertNotEquals(config.getDevCards().get(0).getLevel(), config.getDevCards().get(40).getLevel()));
+        assertAll(() -> assertEquals(48, config.getDevCards().size()),
+                () -> assertNotEquals(config.getDevCards().get(0), config.getDevCards().get(1)),
+                () -> assertEquals(48, config.getDevCards().size()),
+                () -> assertNotEquals(config.getDevCards().get(0).getLevel(), config.getDevCards().get(40).getLevel()));
     }
 
     /**
      * Basic test of market grid parsing.
      */
     @Test
-    void testConfigMarket(){
+    void testConfigMarket() {
         assertEquals(13, config.getMarket().stream().mapToInt(m -> m.getAmount()).sum());
     }
 

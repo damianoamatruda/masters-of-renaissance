@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /** Class used for file parsing purposes. */
@@ -27,14 +29,14 @@ public class ModelConfig {
     private int numColors;
 
     /** The number of columns of the market grid. */
-    @XmlElement(name="market-columns")
+    @XmlElement(name = "market-columns")
     private int marketColumns;
 
-    @XmlElement(name="market-replaceable-resource-type")
+    @XmlElement(name = "market-replaceable-resource-type")
     private String marketReplaceableResType;
 
     /** Initial number of leader cards per player. */
-    @XmlElement(name="num-leaders")
+    @XmlElement(name = "num-leaders")
     private int numLeaders;
 
     /** Maximum size of a Warehouse shelf. */
@@ -46,8 +48,8 @@ public class ModelConfig {
     private int slotsCount;
 
     /** All the generated development card templates. */
-    @XmlElementWrapper(name="development-cards")
-    @XmlElement(name="Card")
+    @XmlElementWrapper(name = "development-cards")
+    @XmlElement(name = "Card")
     private List<XmlDevCard> devCards;
 
     /** All the generated leader card templates */
@@ -56,12 +58,12 @@ public class ModelConfig {
     private List<XmlLeaderCard> leaderCards;
 
     /** The Market template. */
-    @XmlElementWrapper(name="market")
-    @XmlElement(name="resource-entry")
+    @XmlElementWrapper(name = "market")
+    @XmlElement(name = "resource-entry")
     private List<XmlResourceMapEntry> market;
 
     /** The Faith Track template. */
-    @XmlElement(name="Faith-Track")
+    @XmlElement(name = "Faith-Track")
     private XmlFaithTrack faithTrack;
 
     /** All the action tokens templates. */
@@ -187,7 +189,7 @@ public class ModelConfig {
 
     /** Parser class representing a development card. */
     @XmlRootElement(name = "Card")
-    static class XmlDevCard{
+    static class XmlDevCard {
         /** The color of the card. */
         @XmlElement(name = "color")
         private String color;
@@ -197,7 +199,7 @@ public class ModelConfig {
         private int level;
 
         /** The requirements for purchase. */
-        @XmlElementWrapper(name="cost")
+        @XmlElementWrapper(name = "cost")
         @XmlElement(name = "resource-entry")
         private List<XmlResourceMapEntry> cost;
 
@@ -233,14 +235,14 @@ public class ModelConfig {
 
     /** Parser class representing a production recipe. */
     @XmlRootElement(name = "production")
-    static class XmlProduction{
+    static class XmlProduction {
         /** The input of the production. */
-        @XmlElementWrapper(name="input", nillable = true)
+        @XmlElementWrapper(name = "input", nillable = true)
         @XmlElement(name = "resource-entry")
         private List<XmlResourceMapEntry> input;
 
         /** The output of the production. */
-        @XmlElementWrapper(name="output", nillable = true)
+        @XmlElementWrapper(name = "output", nillable = true)
         @XmlElement(name = "resource-entry")
         private List<XmlResourceMapEntry> output;
 
@@ -253,12 +255,12 @@ public class ModelConfig {
         private int outputBlanks;
 
         /** The types of resources that are forbidden as choosable input. */
-        @XmlElementWrapper(name="input-blanks-exclusions", nillable = true)
+        @XmlElementWrapper(name = "input-blanks-exclusions", nillable = true)
         @XmlElement(name = "resource-type")
         private List<String> inputBlanksExclusions;
 
         /** The types of resources that are forbidden as choosable output. */
-        @XmlElementWrapper(name="output-blanks-exclusions", nillable = true)
+        @XmlElementWrapper(name = "output-blanks-exclusions", nillable = true)
         @XmlElement(name = "resource-type")
         private List<String> outputBlanksExclusions;
 
@@ -298,14 +300,14 @@ public class ModelConfig {
 
     /** Parser class representing the faith track. */
     @XmlRootElement(name = "Faith-Track")
-    static class XmlFaithTrack{
+    static class XmlFaithTrack {
         /** List of all the Vatican sections. */
-        @XmlElementWrapper(name="vatican-sections")
+        @XmlElementWrapper(name = "vatican-sections")
         @XmlElement(name = "section")
         private List<XmlVaticanSection> sections;
 
         /** List of all the yellow tiles. */
-        @XmlElementWrapper(name="yellow-tiles")
+        @XmlElementWrapper(name = "yellow-tiles")
         @XmlElement(name = "tile")
         private List<XmlYellowTile> tiles;
 
@@ -318,7 +320,7 @@ public class ModelConfig {
         }
 
         @XmlRootElement(name = "section")
-        static class XmlVaticanSection{
+        static class XmlVaticanSection {
             /** The first tile of the section. */
             @XmlElement(name = "section-begin")
             private int beginning;
@@ -344,8 +346,9 @@ public class ModelConfig {
             }
 
         }
+
         @XmlRootElement(name = "tile")
-        static class XmlYellowTile{
+        static class XmlYellowTile {
             /** Progressive number of the tile. */
             @XmlElement(name = "number")
             private int tileNumber;
@@ -367,7 +370,7 @@ public class ModelConfig {
 
     /** Parser class representing a requirement of development cards. */
     @XmlRootElement(name = "card-requirement")
-    static class XmlCardRequirement{
+    static class XmlCardRequirement {
         /** The color required. */
         @XmlElement(name = "card-color")
         private String color;
@@ -394,7 +397,7 @@ public class ModelConfig {
 
     /** Parser class representing a leader card. */
     @XmlRootElement(name = "Card")
-    static class XmlLeaderCard{
+    static class XmlLeaderCard {
         /** Type of leader card. */
         @XmlElement(name = "type")
         private String type;
@@ -465,7 +468,7 @@ public class ModelConfig {
 
     /** Parser class representing an action token. */
     @XmlRootElement(name = "token")
-    static class XmlActionToken{
+    static class XmlActionToken {
         /** Type of token. */
         @XmlElement(name = "name")
         private String type;
@@ -486,7 +489,7 @@ public class ModelConfig {
 
     /** Parser class representing the player's initial resources bonus. */
     @XmlRootElement(name = "player")
-    static class XmlBoost{
+    static class XmlBoost {
         /** Number of player in order to start. */
         @XmlElement(name = "order")
         private int order;

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test class for FaithTrack.
@@ -24,7 +24,7 @@ class FaithTrackTest {
      * Setup of the game instance, and assign the needed references.
      */
     @BeforeEach
-    void setup(){
+    void setup() {
         track = new FaithTrack(Set.of(), Set.of(
                 new FaithTrack.YellowTile(3, 1)
         ));
@@ -36,7 +36,7 @@ class FaithTrackTest {
      * Checks that if a player reaches a yellow tile, that tile appears as the last yellow tile reached.
      */
     @Test
-    void playerOnYellowTile(){
+    void playerOnYellowTile() {
         assertEquals(track.getLastReachedYellowTile(3).getFaithPoints(), 3);
     }
 
@@ -44,7 +44,7 @@ class FaithTrackTest {
      * Checks the correct last yellow tile reached (when the player has already gone past that tile).
      */
     @Test
-    void playerAfterYellowTile(){
+    void playerAfterYellowTile() {
         assertEquals(track.getLastReachedYellowTile(4).getFaithPoints(), 3);
     }
 
@@ -52,7 +52,7 @@ class FaithTrackTest {
      * Checks that no yellow tile is returned, if the player hasn't reached any.
      */
     @Test
-    void playerBeforeYellowTile(){
+    void playerBeforeYellowTile() {
         assertEquals(track.getLastReachedYellowTile(2), null);
     }
 }

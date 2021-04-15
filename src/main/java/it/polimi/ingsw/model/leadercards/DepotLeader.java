@@ -2,12 +2,12 @@ package it.polimi.ingsw.model.leadercards;
 
 import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
-import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.ResourceShelf;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 /**
  * Leader card with the ability of storing resources, which will be considered as part of the player's warehouse.
- * 
+ *
  * @see LeaderCard
  */
 public class DepotLeader extends LeaderCard {
@@ -32,5 +32,8 @@ public class DepotLeader extends LeaderCard {
     }
 
     @Override
-    public ResourceShelf getDepot() { if (isActive()) return shelf; else return super.getDepot(); }
+    public ResourceShelf getDepot() {
+        if (isActive()) return shelf;
+        else return super.getDepot();
+    }
 }

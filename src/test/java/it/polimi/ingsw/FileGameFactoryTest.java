@@ -30,8 +30,8 @@ public class FileGameFactoryTest {
     @Test
     void testColors() {
         assertAll(
-                ()-> assertNotNull(f.getDevCardColor("Blue")),
-                ()-> assertNotNull(f.getDevCardColor("Green"))
+                () -> assertNotNull(f.getDevCardColor("Blue")),
+                () -> assertNotNull(f.getDevCardColor("Green"))
         );
     }
 
@@ -39,17 +39,17 @@ public class FileGameFactoryTest {
      * Tests building multiplayer games.
      */
     @Test
-    void testGetMultiGame(){
-        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.getMultiGame(List.of())),
-                ()-> assertNotNull(f.getMultiGame(List.of(""))));
+    void testGetMultiGame() {
+        assertAll(() -> assertThrows(IllegalArgumentException.class, () -> f.getMultiGame(List.of())),
+                () -> assertNotNull(f.getMultiGame(List.of(""))));
     }
 
     /**
      * Tests building solo games.
      */
     @Test
-    void testGetSoloGame(){
-        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.getSoloGame(null)),
-                ()-> assertNotNull(f.getSoloGame("")));
+    void testGetSoloGame() {
+        assertAll(() -> assertThrows(IllegalArgumentException.class, () -> f.getSoloGame(null)),
+                () -> assertNotNull(f.getSoloGame("")));
     }
 }

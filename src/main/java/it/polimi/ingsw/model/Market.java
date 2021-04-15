@@ -15,19 +15,17 @@ import java.util.stream.IntStream;
 public class Market {
     /** The resources in the grid. */
     private final List<List<ResourceType>> grid;
-
-    /** The resource in the slide. */
-    private ResourceType slide;
-
     /** The type of the resources that can be replaced. */
     private final ResourceType replaceableResType;
+    /** The resource in the slide. */
+    private ResourceType slide;
 
     /**
      * Initializes the market by placing the resources randomly in the grid and in the slide.
      *
-     * @param resources             the map of the resources to put inside the market
-     * @param colsCount             the number of columns in the grid
-     * @param replaceableResType    the type of the resources that can be replaced
+     * @param resources          the map of the resources to put inside the market
+     * @param colsCount          the number of columns in the grid
+     * @param replaceableResType the type of the resources that can be replaced
      */
     public Market(Map<ResourceType, Integer> resources, int colsCount, ResourceType replaceableResType) {
         List<ResourceType> resourcesList = new ArrayList<>();
@@ -68,13 +66,13 @@ public class Market {
      * After taking the resources, the chosen row or column is shifted one place from respectively the right or bottom,
      * the resource in the slide takes the uncovered place in the grid and the leftover resource goes into the slide.
      *
-     * @param game                              the game the player is playing in
-     * @param player                            the player on which to trigger the action of the resource, if applicable
-     * @param isRow                             true if a row is selected, false if a column is selected
-     * @param index                             index of the selected row or column
-     * @param replacements                      a map of the chosen resources to take, if choices are applicable
-     * @param shelves                           a map of the shelves where to add the taken resources, if possible
-     * @throws IllegalMarketTransferException   if it is not possible
+     * @param game         the game the player is playing in
+     * @param player       the player on which to trigger the action of the resource, if applicable
+     * @param isRow        true if a row is selected, false if a column is selected
+     * @param index        index of the selected row or column
+     * @param replacements a map of the chosen resources to take, if choices are applicable
+     * @param shelves      a map of the shelves where to add the taken resources, if possible
+     * @throws IllegalMarketTransferException if it is not possible
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
                               Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalMarketTransferException {
@@ -106,7 +104,7 @@ public class Market {
     /**
      * Returns the number of rows in the grid.
      *
-     * @return  the number of rows
+     * @return the number of rows
      */
     public int getRowsCount() {
         return grid.size();
@@ -115,7 +113,7 @@ public class Market {
     /**
      * Returns the number of columns in the grid.
      *
-     * @return  the number of columns
+     * @return the number of columns
      */
     public int getColsCount() {
         return grid.get(0).size();
@@ -124,7 +122,7 @@ public class Market {
     /**
      * Returns the types of resources in the grid.
      *
-     * @return  the types of resources
+     * @return the types of resources
      */
     public List<List<ResourceType>> getGrid() {
         return grid;
@@ -133,7 +131,7 @@ public class Market {
     /**
      * Returns the type of the resource in the slide.
      *
-     * @return  the type of the resource
+     * @return the type of the resource
      */
     public ResourceType getSlide() {
         return slide;
@@ -142,7 +140,7 @@ public class Market {
     /**
      * Returns the type of the resources that can be replaced.
      *
-     * @return  the type of the replaceable resources
+     * @return the type of the replaceable resources
      */
     public ResourceType getReplaceableResType() {
         return replaceableResType;
@@ -160,12 +158,12 @@ public class Market {
         if (isRow) {
             slide = grid.get(index).get(0);
             for (int i = 1; i < getColsCount(); i++)
-                grid.get(index).set(i-1, grid.get(index).get(i));
+                grid.get(index).set(i - 1, grid.get(index).get(i));
             grid.get(index).set(getColsCount() - 1, oldSlide);
         } else {
             slide = grid.get(0).get(index);
             for (int i = 1; i < getRowsCount(); i++)
-                grid.get(i-1).set(index, grid.get(i).get(index));
+                grid.get(i - 1).set(index, grid.get(i).get(index));
             grid.get(getRowsCount() - 1).set(index, oldSlide);
         }
     }

@@ -4,8 +4,9 @@ import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
-import it.polimi.ingsw.model.resourcetypes.*;
-import org.junit.jupiter.api.*;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -24,9 +25,9 @@ public class DevCardGridTest {
     ResourceType r1 = new ResourceType("r1", true);
     DevCardColor c1 = new DevCardColor("c1");
     DevCardColor c2 = new DevCardColor("c2");
-    
+
     @BeforeEach
-    void setup(){
+    void setup() {
         Set<DevCardColor> colors = Set.of(c1, c2);
         int levelsCount = 2;
         List<DevelopmentCard> devCards = new ArrayList<>();
@@ -35,11 +36,11 @@ public class DevCardGridTest {
                 for (int i = 1; i <= 2; i++)
                     devCards.add(new DevelopmentCard(
                             color, level,
-                            new ResourceRequirement(new HashMap<>(){{
+                            new ResourceRequirement(new HashMap<>() {{
                                 put(r1, 1);
                             }}),
                             new Production(Map.of(), 0, Map.of(), 0),
-                            3*i
+                            3 * i
                     ));
         devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 

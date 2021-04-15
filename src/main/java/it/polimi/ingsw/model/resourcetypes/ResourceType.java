@@ -15,9 +15,9 @@ public class ResourceType {
 
     /**
      * Class constructor.
-     * 
-     * @param name      the name of the resource being created.
-     * @param storable  whether the resource can be stored on a <code>Shelf</code>
+     *
+     * @param name     the name of the resource being created.
+     * @param storable whether the resource can be stored on a <code>Shelf</code>
      */
     public ResourceType(String name, boolean storable) {
         this.name = name;
@@ -27,7 +27,7 @@ public class ResourceType {
     /**
      * Returns whether the resource type is storable.
      *
-     * @return  whether the resource can be stored in a resource container.
+     * @return whether the resource can be stored in a resource container.
      */
     public boolean isStorable() {
         return storable;
@@ -36,7 +36,7 @@ public class ResourceType {
     /**
      * Returns the name of the resource type.
      *
-     * @return  the name of the resource associated with the class, for UI purposes only
+     * @return the name of the resource associated with the class, for UI purposes only
      */
     public String getName() {
         return name;
@@ -45,24 +45,26 @@ public class ResourceType {
     /**
      * Routine for giving a resource of this type to the player.
      *
-     * @param game          the game the player is playing in
-     * @param player        the player the resource goes to
+     * @param game   the game the player is playing in
+     * @param player the player the resource goes to
      */
-    public void giveToPlayer(Game game, Player player) { }
+    public void giveToPlayer(Game game, Player player) {
+    }
 
     /**
      * Routine for taking a resource of this type from the player.
      *
-     * @param game          the game the player is playing in
-     * @param player        the player the resource is taken from
+     * @param game   the game the player is playing in
+     * @param player the player the resource is taken from
      */
-    public void takeFromPlayer(Game game, Player player) { }
+    public void takeFromPlayer(Game game, Player player) {
+    }
 
     /**
      * Routine for discarding a resource of this type.
      *
-     * @param game      the game the player is playing in
-     * @param player    the player discarding the resource
+     * @param game   the game the player is playing in
+     * @param player the player discarding the resource
      */
     public void discard(Game game, Player player) {
         game.getPlayers().stream()

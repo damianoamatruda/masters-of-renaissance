@@ -1,24 +1,26 @@
 package it.polimi.ingsw.model;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.*;
-
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.model.resourcetypes.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for DevelopmentCard.
  */
 public class DevelopmentCardTest {
-    private DevCardColor blue = new DevCardColor("blue");
-    private ResourceType coin = new ResourceType("coin", true);
+    private final DevCardColor blue = new DevCardColor("blue");
+    private final ResourceType coin = new ResourceType("coin", true);
     private DevelopmentCard card;
     private Player player;
     private Game game;
@@ -32,7 +34,7 @@ public class DevelopmentCardTest {
         player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
     }
-    
+
     /**
      * Tests whether taking the resources specified in the card's requirements works if the player satisfies them.
      */
@@ -44,7 +46,8 @@ public class DevelopmentCardTest {
     }
 
     /**
-     * Tests whether taking the resources specified in the card's requirements fails if the player does not have enough of the correct type.
+     * Tests whether taking the resources specified in the card's requirements fails if the player does not have enough
+     * of the correct type.
      */
     @Test
     void takeFromPlayerNotEnoughRes() {

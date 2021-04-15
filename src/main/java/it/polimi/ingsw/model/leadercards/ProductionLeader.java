@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.leadercards;
 
-import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.Production;
+import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 /**
  * Leader card with the ability to produce resources.
- * 
+ *
  * @see LeaderCard
  */
 public class ProductionLeader extends LeaderCard {

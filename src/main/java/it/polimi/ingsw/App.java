@@ -14,7 +14,7 @@ public class App {
     /**
      * Entry point of the main program.
      *
-     * @param args  the command line arguments
+     * @param args the command line arguments
      */
     public static void main(String[] args) {
         GameFactory gameFactory = new FileGameFactory("src/main/resources/config.xml");

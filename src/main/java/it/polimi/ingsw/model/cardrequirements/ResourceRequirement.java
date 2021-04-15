@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.cardrequirements;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.model.resourcecontainers.Shelf;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,13 +30,15 @@ public class ResourceRequirement implements CardRequirement {
      *
      * @param resources the resources that form the requirement
      */
-    public ResourceRequirement(Map<ResourceType, Integer> resources) { this.resources = resources; }
+    public ResourceRequirement(Map<ResourceType, Integer> resources) {
+        this.resources = resources;
+    }
 
     /**
      * Returns the cost of this requirement discounted by the player's leaders
-     * 
+     *
      * @param p the player whose leader are to be used in the discounting process.
-     * @return  the discounted cost of this requirement.
+     * @return the discounted cost of this requirement.
      */
     private Map<ResourceType, Integer> getDiscountedCost(Player p) {
         Map<ResourceType, Integer> discountedRes = new HashMap<>(resources);
@@ -55,10 +57,10 @@ public class ResourceRequirement implements CardRequirement {
          * the player is then checked for ownership of the specified amount */
 
         Map<ResourceType, Integer> discountedRes = getDiscountedCost(player),
-                                   missingResources = new HashMap<>();
+                missingResources = new HashMap<>();
 
         // get all warehouse shelves
-        List<Shelf> shelves = player.getWarehouse().getShelves().stream().map(e -> (Shelf)e).collect(Collectors.toList());
+        List<Shelf> shelves = player.getWarehouse().getShelves().stream().map(e -> (Shelf) e).collect(Collectors.toList());
 
         // add the leaders' depots (they count as warehouse shelves)
         for (int i = 0; i < player.getLeaders().size(); i++) {
@@ -71,7 +73,7 @@ public class ResourceRequirement implements CardRequirement {
             int playerAmount = player.getStrongbox().getResourceQuantity(r);
             // and every shelf the resource of which matches the currently examined resource
             playerAmount += shelves.stream().filter(e -> e.getResourceType() == r).mapToInt(s -> s.getResourceQuantity(r)).sum();
-            
+
             // if the player does not own enough of this resource, the requirements aren't met
             if (discountedRes.get(r) - playerAmount > 0)
                 missingResources.put(r, discountedRes.get(r) - playerAmount);
@@ -79,13 +81,13 @@ public class ResourceRequirement implements CardRequirement {
 
         if (!missingResources.keySet().isEmpty()) {
             String msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", player.getNickname());
-            
+
             for (Map.Entry<ResourceType, Integer> e : missingResources.entrySet()) {
-                msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey().getName(), Integer.toString(e.getValue())));
+                msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey().getName(), e.getValue()));
             }
-            
+
             throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
-                player.getNickname(), msg));
+                    player.getNickname(), msg));
         }
     }
 
@@ -93,21 +95,21 @@ public class ResourceRequirement implements CardRequirement {
      * Takes the resources that form the requirement from the player. Each storable resource is taken from a given
      * resource container.
      *
-     * @param game                          the game the player is playing in
-     * @param player                        the player the resources are taken from
-     * @param resContainers                 a map of the resource containers where to take the storable resources
-     * @throws RequirementsNotMetException  if it is not possible
+     * @param game          the game the player is playing in
+     * @param player        the player the resources are taken from
+     * @param resContainers a map of the resource containers where to take the storable resources
+     * @throws RequirementsNotMetException if it is not possible
      */
     public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException {
         try {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(
-                        new Production(getDiscountedCost(player), 0, new HashMap<>(), 0),
-                        Map.of(), Map.of(), resContainers, Map.of())
+                            new Production(getDiscountedCost(player), 0, new HashMap<>(), 0),
+                            Map.of(), Map.of(), resContainers, Map.of())
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
             throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
-                player.getNickname(), e.getMessage()));
+                    player.getNickname(), e.getMessage()));
         }
     }
 }

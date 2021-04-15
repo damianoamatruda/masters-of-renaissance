@@ -14,8 +14,8 @@ public class ResourceShelf extends Shelf {
     /**
      * Initializes the shelf specifying the type of resources it can contain.
      *
-     * @param boundedResType    the specific type of resources in the shelf
-     * @param size              the maximum quantity of resources in the shelf
+     * @param boundedResType the specific type of resources in the shelf
+     * @param size           the maximum quantity of resources in the shelf
      */
     public ResourceShelf(ResourceType boundedResType, int size) {
         super(size);
@@ -54,7 +54,7 @@ public class ResourceShelf extends Shelf {
     /**
      * Returns the specific type of resources the shelf can contain.
      *
-     * @return  the bounded type of resources
+     * @return the bounded type of resources
      */
     public ResourceType getBoundedResType() {
         return boundedResType;

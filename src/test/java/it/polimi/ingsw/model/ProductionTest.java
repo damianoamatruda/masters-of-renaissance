@@ -5,9 +5,13 @@ import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test class for Production.

@@ -1,17 +1,17 @@
 package it.polimi.ingsw.model;
 
-import java.util.Map;
-
 import it.polimi.ingsw.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.model.cardrequirements.RequirementsNotMetException;
 import it.polimi.ingsw.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
+import java.util.Map;
+
 /**
  * Development cards allow the player to produce resources. They can be bought in exchange for resources and their
  * level/color can make up part of a leader card's activation requirements.
- * 
+ *
  * @see Card
  * @see DevCardRequirement
  * @see Production
@@ -40,32 +40,40 @@ public class DevelopmentCard extends Card {
     }
 
     /**
-     * @return  the card's color
+     * @return the card's color
      */
-    public DevCardColor getColor() { return color; }
+    public DevCardColor getColor() {
+        return color;
+    }
 
     /**
-     * @return  the card's cost
+     * @return the card's cost
      */
-    public ResourceRequirement getCost() { return cost; }
+    public ResourceRequirement getCost() {
+        return cost;
+    }
 
     /**
-     * @return  the card's level
+     * @return the card's level
      */
-    public int getLevel() { return level; }
+    public int getLevel() {
+        return level;
+    }
 
     /**
-     * @return  the card's production
+     * @return the card's production
      */
-    public Production getProduction() { return production; }
+    public Production getProduction() {
+        return production;
+    }
 
     /**
      * Gives the card to the specified player, paying the necessary resources.
      *
-     * @param game                          the game the player is playing in
-     * @param player                        the player to assign the card to and to take the resources from
-     * @param resContainers                 selection map specifying where to take the resources from
-     * @throws RequirementsNotMetException  if the player does not own the required resources
+     * @param game          the game the player is playing in
+     * @param player        the player to assign the card to and to take the resources from
+     * @param resContainers selection map specifying where to take the resources from
+     * @throws RequirementsNotMetException if the player does not own the required resources
      */
     public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException {
         cost.checkRequirements(player);

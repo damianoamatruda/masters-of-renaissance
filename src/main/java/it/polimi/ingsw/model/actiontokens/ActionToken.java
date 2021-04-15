@@ -9,7 +9,7 @@ public interface ActionToken {
     /**
      * Triggers the effect of a specific token.
      *
-     * @param game  the current game in which the token is activated
+     * @param game the current game in which the token is activated
      */
     void trigger(SoloGame game);
 }

@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.actiontokens;
 
-import it.polimi.ingsw.model.SoloGame;
 import it.polimi.ingsw.model.DevCardColor;
+import it.polimi.ingsw.model.SoloGame;
 
 /**
  * Implements one of the possible effects which a token can trigger.
  */
-public class ActionTokenDiscardTwo implements ActionToken{
+public class ActionTokenDiscardTwo implements ActionToken {
     /** The specific color of the cards to be discarded after activation (target color). */
     private final DevCardColor discardedColor;
 
@@ -15,7 +15,7 @@ public class ActionTokenDiscardTwo implements ActionToken{
      *
      * @param color color to be assigned as the "target color"
      */
-    public ActionTokenDiscardTwo(DevCardColor color){
+    public ActionTokenDiscardTwo(DevCardColor color) {
         discardedColor = color;
     }
 
@@ -23,7 +23,7 @@ public class ActionTokenDiscardTwo implements ActionToken{
      * Triggers the effect of this token: disables the first two available cards of a given color, starting from the
      * lowest level.
      *
-     * @param game  the current game in which the token is activated
+     * @param game the current game in which the token is activated
      */
     @Override
     public void trigger(SoloGame game) {

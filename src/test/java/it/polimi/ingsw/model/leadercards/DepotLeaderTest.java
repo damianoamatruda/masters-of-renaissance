@@ -1,18 +1,17 @@
 package it.polimi.ingsw.model.leadercards;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.model.Player;
-
 import java.util.ArrayList;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -20,7 +19,7 @@ import java.util.Map;
  */
 public class DepotLeaderTest {
     private DepotLeader leader;
-    
+
     /**
      * Creation of a DepotLeader with a zero-sized depot.
      */

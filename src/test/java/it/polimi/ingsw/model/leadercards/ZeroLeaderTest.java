@@ -1,24 +1,25 @@
 package it.polimi.ingsw.model.leadercards;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.*;
-
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.resourcetypes.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test of properties of ZeroLeader.
  */
 public class ZeroLeaderTest {
-    private ResourceType coin = new ResourceType("coin", true),
-                         zero = new ResourceType("zero", false);
+    private final ResourceType coin = new ResourceType("coin", true);
+    private final ResourceType zero = new ResourceType("zero", false);
     private ZeroLeader leader;
     private Player p;
 
@@ -27,10 +28,9 @@ public class ZeroLeaderTest {
         leader = new ZeroLeader(0, 0, null, coin, null, 0);
         p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
     }
-    
+
     /**
-     * Tests a zero leader on a null map.
-     * The result should be another null map.
+     * Tests a zero leader on a null map. The result should be another null map.
      */
     @Test
     void nullMaps() {
@@ -40,8 +40,7 @@ public class ZeroLeaderTest {
     }
 
     /**
-     * Tests a zero leader on a non-null map that is empty.
-     * The result should be another empty map.
+     * Tests a zero leader on a non-null map that is empty. The result should be another empty map.
      */
     @Test
     void emptyMaps() {
@@ -51,16 +50,16 @@ public class ZeroLeaderTest {
     }
 
     /**
-     * Tests the case in which there's nothing to convert.
-     * The result should be a map with the same values as the input map.
+     * Tests the case in which there's nothing to convert. The result should be a map with the same values as the input
+     * map.
      */
     @Test
     void otherResourceInput() {
         assertDoesNotThrow(() -> leader.activate(p));
 
-        Map<ResourceType, Integer>  toProcess = Map.of(coin, 1),  // nothing to convert (no Zero res)
-                                    zeros = Map.of(zero, 1);      // and choice != this leader (different bound res)
-        
+        Map<ResourceType, Integer> toProcess = Map.of(coin, 1),  // nothing to convert (no Zero res)
+                zeros = Map.of(zero, 1);      // and choice != this leader (different bound res)
+
         assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
         assertTrue(zeros.equals(Map.of(zero, 1)));
 
@@ -75,9 +74,9 @@ public class ZeroLeaderTest {
     @Test
     void normalUse() {
         assertDoesNotThrow(() -> leader.activate(p));
-        
+
         Map<ResourceType, Integer> toProcess = Map.of(zero, 1),
-                                   zeros = new HashMap<>(Map.of(coin, 1));
+                zeros = new HashMap<>(Map.of(coin, 1));
 
         assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
         assertTrue(zeros.equals(new HashMap<>()));

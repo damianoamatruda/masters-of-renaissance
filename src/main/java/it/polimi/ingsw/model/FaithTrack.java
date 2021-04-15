@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,8 +22,8 @@ public class FaithTrack {
     /**
      * Constructor of the Faith Track.
      *
-     * @param vaticanSections   the set of the Vatican Sections
-     * @param yellowTiles       the set of the Yellow Tiles which will give bonus points at the end
+     * @param vaticanSections the set of the Vatican Sections
+     * @param yellowTiles     the set of the Yellow Tiles which will give bonus points at the end
      */
     public FaithTrack(Set<VaticanSection> vaticanSections, Set<YellowTile> yellowTiles) {
         this.vaticanSectionsMap = vaticanSections.stream()
@@ -30,9 +33,9 @@ public class FaithTrack {
 
     /**
      * Returns the Vatican Section ending on the faith points.
-     * 
-     * @param faithPoints   the faith points
-     * @return              the Vatican Section ending there
+     *
+     * @param faithPoints the faith points
+     * @return the Vatican Section ending there
      */
     public VaticanSection getVaticanSectionReport(int faithPoints) {
         return vaticanSectionsMap.get(faithPoints);
@@ -40,9 +43,9 @@ public class FaithTrack {
 
     /**
      * Returns the last Yellow Tile that has been reached, based on the faith points.
-     * 
-     * @param faithPoints   the faith points
-     * @return              the last Yellow Tile reached
+     *
+     * @param faithPoints the faith points
+     * @return the last Yellow Tile reached
      */
     public YellowTile getLastReachedYellowTile(int faithPoints) {
         return yellowTiles.stream()
@@ -54,7 +57,7 @@ public class FaithTrack {
     /**
      * Getter of the tiles of Vatican reports.
      *
-     * @return  the set of the Vatican Sections
+     * @return the set of the Vatican Sections
      */
     public Set<VaticanSection> getVaticanSections() {
         return new HashSet<>(vaticanSectionsMap.values());
@@ -63,7 +66,7 @@ public class FaithTrack {
     /**
      * Getter of the variable that maps the number of tile to the bonus progressive victory points earned.
      *
-     * @return  the set of the Yellow Tiles
+     * @return the set of the Yellow Tiles
      */
     public Set<YellowTile> getYellowTiles() {
         return new HashSet<>(yellowTiles);
@@ -88,12 +91,12 @@ public class FaithTrack {
         /**
          * Constructor of the Vatican Section.
          *
-         * @param faithPointsBeginning  the first tile of the Vatican Section, which needs to be reached in order to
-         *                              earn bonus points
-         * @param faithPointsEnd        the last tile of the Vatican Section, which needs to be reached in order to
-         *                              activate a Vatican report
-         * @param victoryPoints         the corresponding amount of bonus points that will be rewarded to the players
-         *                              after the Report is over
+         * @param faithPointsBeginning the first tile of the Vatican Section, which needs to be reached in order to earn
+         *                             bonus points
+         * @param faithPointsEnd       the last tile of the Vatican Section, which needs to be reached in order to
+         *                             activate a Vatican report
+         * @param victoryPoints        the corresponding amount of bonus points that will be rewarded to the players
+         *                             after the Report is over
          * @see VaticanSection
          */
         public VaticanSection(int faithPointsBeginning, int faithPointsEnd, int victoryPoints) {
@@ -106,25 +109,27 @@ public class FaithTrack {
         /**
          * Returns the first tile of the Vatican Section, which needs to be reached in order to earn bonus points.
          *
-         * @return  the faith points
+         * @return the faith points
          */
         public int getFaithPointsBeginning() {
             return faithPointsBeginning;
         }
 
         /**
-         * Returns the last tile of the Vatican Section, which needs to be reached in order to activate a Vatican report.
+         * Returns the last tile of the Vatican Section, which needs to be reached in order to activate a Vatican
+         * report.
          *
-         * @return  the faith points
+         * @return the faith points
          */
         public int getFaithPointsEnd() {
             return faithPointsEnd;
         }
 
         /**
-         * Returns the corresponding amount of bonus points that will be rewarded to the players after the Report is over.
+         * Returns the corresponding amount of bonus points that will be rewarded to the players after the Report is
+         * over.
          *
-         * @return  the victory points
+         * @return the victory points
          */
         public int getVictoryPoints() {
             return victoryPoints;
@@ -133,7 +138,7 @@ public class FaithTrack {
         /**
          * Returns whether the Vatican Section is activated.
          *
-         * @return  <code>true</code> if the Vatican Section is activated; <code>false</code> otherwise.
+         * @return <code>true</code> if the Vatican Section is activated; <code>false</code> otherwise.
          */
         public boolean isActivated() {
             return activated;
@@ -173,7 +178,7 @@ public class FaithTrack {
         /**
          * Returns the faith points in the Faith Track where the Yellow Tile is.
          *
-         * @return  the faith points
+         * @return the faith points
          */
         public int getFaithPoints() {
             return faithPoints;
@@ -182,7 +187,7 @@ public class FaithTrack {
         /**
          * Returns the bonus progressive victory points earned.
          *
-         * @return  the victory points
+         * @return the victory points
          */
         public int getVictoryPoints() {
             return victoryPoints;

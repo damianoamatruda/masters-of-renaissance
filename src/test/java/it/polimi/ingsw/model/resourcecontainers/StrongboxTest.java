@@ -20,7 +20,7 @@ class StrongboxTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfShelfWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
@@ -28,9 +28,9 @@ class StrongboxTest {
             strongbox.addResource(r);
         assertEquals(Set.of(r), strongbox.getResourceTypes());
     }
-    
+
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void quantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
@@ -40,7 +40,7 @@ class StrongboxTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
@@ -50,7 +50,7 @@ class StrongboxTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void strongboxWithResourcesOfSameTypeShouldNotBeEmpty(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
@@ -109,7 +109,7 @@ class StrongboxTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
@@ -120,7 +120,7 @@ class StrongboxTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
@@ -131,7 +131,7 @@ class StrongboxTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void clearedStrongboxShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
@@ -143,7 +143,7 @@ class StrongboxTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 1, 2, 3 })
+    @ValueSource(ints = {1, 2, 3})
     void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
