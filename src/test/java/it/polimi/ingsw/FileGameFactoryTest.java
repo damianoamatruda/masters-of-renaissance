@@ -40,7 +40,7 @@ public class FileGameFactoryTest {
      * Tests building multiplayer games.
      */
     @Test
-    void testBuildGame(){
+    void testGetMultiGame(){
         assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.getMultiGame(List.of())),
                 ()-> assertNotNull(f.getMultiGame(List.of(""))));
     }
@@ -49,7 +49,7 @@ public class FileGameFactoryTest {
      * Tests building solo games.
      */
     @Test
-    void testBuildSoloGame(){
+    void testGetSoloGame(){
         assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.getSoloGame(null)),
                 ()-> assertNotNull(f.getSoloGame("")));
     }

@@ -57,9 +57,6 @@ public class GameTest {
                 7
         );
 
-//        GameFactory factory = new FileGameFactory("src/main/resources/config.xml");
-//        game = factory.buildMultiGame(List.of("Alessandro","Damiano","Marco"));
-//        devCardColorFactory = factory.getDevCardColorFactory();
         initialOrder = game.getPlayers();
     }
 

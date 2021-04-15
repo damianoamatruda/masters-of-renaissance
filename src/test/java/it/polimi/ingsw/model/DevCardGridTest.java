@@ -22,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DevCardGridTest {
     GameFactory factory;
     Game game;
+    ResourceType r1 = new ResourceType("r1", true);
+    
     @BeforeEach
     void setup(){
         factory = new FileGameFactory("src/main/resources/config.xml");
@@ -67,17 +69,17 @@ public class DevCardGridTest {
         DevCardGrid theGrid = game.getDevCardGrid();
         Stack<DevelopmentCard> deck = theGrid.getDeck(factory.getDevCardColor("Blue"), 1);
         deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(factory.getResourceType("Coin"), 1);
+            put(r1, 1);
         }}), null, 0));
         Player buyer = game.getPlayers().get(0);
         List<List<DevelopmentCard>> oldGrid = game.getDevCardGrid().peekDevCards();
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
-                put(factory.getResourceType("Coin"), 1);
+                put(r1, 1);
             }});
         }};
 
-        buyer.getStrongbox().addResource(factory.getResourceType("Coin"));
+        buyer.getStrongbox().addResource(r1);
 
         theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers);
         List<List<DevelopmentCard>> top = theGrid.peekDevCards();
@@ -99,12 +101,12 @@ public class DevCardGridTest {
 
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
-                put(factory.getResourceType("Coin"), 1);
+                put(r1, 1);
             }});
         }};
 
         deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(factory.getResourceType("Coin"), 1);
+            put(r1, 1);
         }}), null, 0));
 
         assertThrows(Exception.class, () -> theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers));
