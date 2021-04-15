@@ -67,7 +67,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public Game buildMultiGame(List<String> nicknames) {
+    public Game getMultiGame(List<String> nicknames) {
         int playerLeadersCount = config.getNumLeaders();
         if (nicknames == null ||nicknames.size() > config.getMaxPlayers() || nicknames.size() == 0)
             throw new IllegalArgumentException();
@@ -117,7 +117,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public SoloGame buildSoloGame(String nickname) {
+    public SoloGame getSoloGame(String nickname) {
         if(nickname == null) throw new IllegalArgumentException();
         int playerLeadersCount = config.getNumLeaders();
         List<LeaderCard> shuffledLeaderCards = null;
@@ -159,7 +159,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public ResourceType getResType(String name) {
+    public ResourceType getResourceType(String name) {
         return resTypeMap.get(name);
     }
 
@@ -216,7 +216,7 @@ public class FileGameFactory implements GameFactory {
             if (card.getProduction() != null)
                 production[0] = generateProduction(card.getProduction());
 
-            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production[0], getResType(card.getResource()), cost[0], card.getVictoryPoints()));
+            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production[0], getResourceType(card.getResource()), cost[0], card.getVictoryPoints()));
         }
         return leaderCards;
     }
@@ -229,8 +229,8 @@ public class FileGameFactory implements GameFactory {
     private Market generateMarket() {
         return new Market(new HashMap<>() {{
             for (ModelConfig.XmlResourceMapEntry entry : config.getMarket())
-                put(getResType(entry.getResourceType()), entry.getAmount());
-        }}, config.getMarketColumns(), getResType(config.getMarketReplaceableResType()));
+                put(getResourceType(entry.getResourceType()), entry.getAmount());
+        }}, config.getMarketColumns(), getResourceType(config.getMarketReplaceableResType()));
     }
 
     /**
@@ -294,24 +294,24 @@ public class FileGameFactory implements GameFactory {
                 new HashMap<>() {{
                     if (production.getInput() != null)
                         for (ModelConfig.XmlResourceMapEntry entry : production.getInput())
-                            put(getResType(entry.getResourceType()), entry.getAmount());
+                            put(getResourceType(entry.getResourceType()), entry.getAmount());
                 }},
                 production.getInputBlanks(),
                 new HashSet<>() {{
                     if (production.getInputBlanksExclusions() != null)
                         for (String entry : production.getInputBlanksExclusions())
-                            add(getResType(entry));
+                            add(getResourceType(entry));
                 }},
                 new HashMap<>() {{
                     if (production.getOutput() != null)
                         for (ModelConfig.XmlResourceMapEntry entry : production.getOutput())
-                            put(getResType(entry.getResourceType()), entry.getAmount());
+                            put(getResourceType(entry.getResourceType()), entry.getAmount());
                 }},
                 production.getOutputBlanks(),
                 new HashSet<>() {{
                     if (production.getOutputBlanksExclusions() != null)
                         for (String entry : production.getOutputBlanksExclusions())
-                            add(getResType(entry));
+                            add(getResourceType(entry));
                 }},
                 production.hasDiscardableOutput()
         );
@@ -326,7 +326,7 @@ public class FileGameFactory implements GameFactory {
     private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceMapEntry> requirements) {
         return new ResourceRequirement(new HashMap<>() {{
             for (ModelConfig.XmlResourceMapEntry entry : requirements)
-                put(getResType(entry.getResourceType()), entry.getAmount());
+                put(getResourceType(entry.getResourceType()), entry.getAmount());
         }});
     }
 

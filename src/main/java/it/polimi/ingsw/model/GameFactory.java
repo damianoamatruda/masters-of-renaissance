@@ -14,7 +14,7 @@ public interface GameFactory {
      * @param nicknames the list of nicknames of players who joined
      * @return          the multiplayer game
      */
-    Game buildMultiGame(List<String> nicknames);
+    Game getMultiGame(List<String> nicknames);
 
     /**
      * Builder of a single-player game instance.
@@ -22,7 +22,7 @@ public interface GameFactory {
      * @param nickname  the nickname of the only player
      * @return          the single-player game
      */
-    SoloGame buildSoloGame(String nickname);
+    SoloGame getSoloGame(String nickname);
 
     /**
      * Getter of a resource type in the game by its name.
@@ -30,7 +30,7 @@ public interface GameFactory {
      * @return  the resource type
      */
     @Deprecated
-    ResourceType getResType(String name);
+    ResourceType getResourceType(String name);
 
     /**
      * Getter of a development card color in the game by its name.

@@ -1,12 +1,7 @@
 package it.polimi.ingsw;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,9 +19,9 @@ public class FileGameFactoryTest {
     @Test
     void testResources() {
         assertAll(
-                () -> assertNotNull(f.getResType("Coin")),
-                () -> assertNotNull(f.getResType("Faith")),
-                () ->assertFalse(f.getResType("Faith").isStorable())
+                () -> assertNotNull(f.getResourceType("Coin")),
+                () -> assertNotNull(f.getResourceType("Faith")),
+                () ->assertFalse(f.getResourceType("Faith").isStorable())
         );
     }
 
@@ -46,8 +41,8 @@ public class FileGameFactoryTest {
      */
     @Test
     void testBuildGame(){
-        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.buildMultiGame(List.of())),
-                ()-> assertNotNull(f.buildMultiGame(List.of(""))));
+        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.getMultiGame(List.of())),
+                ()-> assertNotNull(f.getMultiGame(List.of(""))));
     }
 
     /**
@@ -55,7 +50,7 @@ public class FileGameFactoryTest {
      */
     @Test
     void testBuildSoloGame(){
-        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.buildSoloGame(null)),
-                ()-> assertNotNull(f.buildSoloGame("")));
+        assertAll(()-> assertThrows(IllegalArgumentException.class, ()-> f.getSoloGame(null)),
+                ()-> assertNotNull(f.getSoloGame("")));
     }
 }

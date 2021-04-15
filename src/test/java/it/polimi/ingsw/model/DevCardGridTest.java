@@ -25,7 +25,7 @@ public class DevCardGridTest {
     @BeforeEach
     void setup(){
         factory = new FileGameFactory("src/main/resources/config.xml");
-        game = factory.buildMultiGame(List.of("Alessandro", "Damiano", "Marco"));
+        game = factory.getMultiGame(List.of("Alessandro", "Damiano", "Marco"));
     }
 
 
@@ -48,7 +48,7 @@ public class DevCardGridTest {
      */
     @RepeatedTest(value = 10)
     void peekCardsTest() {
-        Game otherGame = new FileGameFactory("src/main/resources/config.xml").buildMultiGame(List.of("Alessandro", "Damiano", "Marco"));
+        Game otherGame = new FileGameFactory("src/main/resources/config.xml").getMultiGame(List.of("Alessandro", "Damiano", "Marco"));
         DevCardGrid grid = otherGame.getDevCardGrid();
         List<List<DevelopmentCard>> top = grid.peekDevCards();
         for(int i = 0; i < top.size(); i++)
@@ -67,17 +67,17 @@ public class DevCardGridTest {
         DevCardGrid theGrid = game.getDevCardGrid();
         Stack<DevelopmentCard> deck = theGrid.getDeck(factory.getDevCardColor("Blue"), 1);
         deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(factory.getResType("Coin"), 1);
+            put(factory.getResourceType("Coin"), 1);
         }}), null, 0));
         Player buyer = game.getPlayers().get(0);
         List<List<DevelopmentCard>> oldGrid = game.getDevCardGrid().peekDevCards();
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
-                put(factory.getResType("Coin"), 1);
+                put(factory.getResourceType("Coin"), 1);
             }});
         }};
 
-        buyer.getStrongbox().addResource(factory.getResType("Coin"));
+        buyer.getStrongbox().addResource(factory.getResourceType("Coin"));
 
         theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers);
         List<List<DevelopmentCard>> top = theGrid.peekDevCards();
@@ -99,12 +99,12 @@ public class DevCardGridTest {
 
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
             put(buyer.getStrongbox(), new HashMap<>() {{
-                put(factory.getResType("Coin"), 1);
+                put(factory.getResourceType("Coin"), 1);
             }});
         }};
 
         deck.push(new DevelopmentCard(factory.getDevCardColor("Blue"), 1, new ResourceRequirement(new HashMap<>(){{
-            put(factory.getResType("Coin"), 1);
+            put(factory.getResourceType("Coin"), 1);
         }}), null, 0));
 
         assertThrows(Exception.class, () -> theGrid.buyDevCard(game, buyer, factory.getDevCardColor("Blue"), 1, 0, resContainers));

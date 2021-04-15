@@ -24,7 +24,7 @@ class ActionTokenDiscardTwoTest {
     @BeforeEach
     void setup(){
         factory = new FileGameFactory("src/main/resources/config.xml");
-        game = factory.buildSoloGame("Alessandro");
+        game = factory.getSoloGame("Alessandro");
         player = game.getPlayers().get(0);
     }
 
