@@ -33,12 +33,10 @@ public class SoloGame extends Game {
      */
     public SoloGame(Player player, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
                     List<ActionToken> actionTokens, int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(new ArrayList<>() {{
-            add(player);
-        }}, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
-        this.actionTokens = actionTokens;
-        blackPoints = 0;
-        blackWinner = false;
+        super(List.of(player), devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
+        this.actionTokens = new ArrayList<>(actionTokens);
+        this.blackPoints = 0;
+        this.blackWinner = false;
     }
 
     /**
@@ -82,7 +80,6 @@ public class SoloGame extends Game {
 
         return super.onTurnEnd();
     }
-
 
     /**
      * Returns Lorenzo's faith marker position.

@@ -102,9 +102,9 @@ public class DevCardGrid {
                     .stream()
                     .filter(deck -> deck != null)
                     .map(deck -> deck.peek())
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toUnmodifiableList()));
         }
-        return top;
+        return List.copyOf(top);
     }
 
     /**

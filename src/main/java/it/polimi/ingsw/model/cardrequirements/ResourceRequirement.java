@@ -6,10 +6,10 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * A concrete requirement for leader card activation.
@@ -60,7 +60,7 @@ public class ResourceRequirement implements CardRequirement {
                 missingResources = new HashMap<>();
 
         // get all warehouse shelves
-        List<Shelf> shelves = player.getWarehouse().getShelves().stream().map(e -> (Shelf) e).collect(Collectors.toList());
+        List<Shelf> shelves = new ArrayList<>(List.copyOf(player.getWarehouse().getShelves()));
 
         // add the leaders' depots (they count as warehouse shelves)
         for (int i = 0; i < player.getLeaders().size(); i++) {

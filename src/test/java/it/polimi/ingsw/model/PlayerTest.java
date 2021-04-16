@@ -160,14 +160,10 @@ public class PlayerTest {
          */
         @BeforeEach
         void prepareResources() throws RequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
-            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
-                put(player.getStrongbox(), new HashMap<>() {{
-                    put(coin, 3);
-                }});
-                put(player.getWarehouse().getShelves().get(1), new HashMap<>() {{
-                    put(stone, 2);
-                }});
-            }};
+            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
+                    player.getStrongbox(), Map.of(coin, 3),
+                    player.getWarehouse().getShelves().get(1), Map.of(stone, 2)
+            );
 
             for (int i = 0; i < 4; i++)
                 player.getStrongbox().addResource(coin);
@@ -180,10 +176,11 @@ public class PlayerTest {
 
             player.addToDevSlot(game, 1, new DevelopmentCard(blue, 1,
                             new ResourceRequirement(
-                                    new HashMap<>() {{
-                                        put(coin, 3);
-                                        put(stone, 2);
-                                    }}), null, 2),
+                                    Map.of(
+                                            coin, 3,
+                                            stone, 2
+                                    )
+                            ), null, 2),
                     resContainers);
 
         }
@@ -263,11 +260,9 @@ public class PlayerTest {
             Player second = players.get(1);
             DevelopmentCard card = new DevelopmentCard(blue, 1,
                     new ResourceRequirement(Map.of(coin, 1)), null, 0);
-            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
-                put(second.getWarehouse().getShelves().get(1), new HashMap<>() {{
-                    put(coin, 1);
-                }});
-            }};
+            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
+                    second.getWarehouse().getShelves().get(1), Map.of(coin, 1)
+            );
 
             assertAll(() -> assertDoesNotThrow(() -> second.chooseResource(coin, 1)),
                     () -> assertDoesNotThrow(() -> second.addToDevSlot(game, 1, card, resContainers)));

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * This class represents a group of multiple requested contemporary productions.
  */
 public class ProductionGroup {
-    /** The list of the requested productions to activate. */
+    /** The immutable list of the requested productions to activate. */
     private final List<ProductionRequest> productionRequests;
 
     /**
@@ -21,7 +21,7 @@ public class ProductionGroup {
      * @param productionRequests the list of the requested productions to activate
      */
     public ProductionGroup(List<ProductionRequest> productionRequests) {
-        this.productionRequests = productionRequests;
+        this.productionRequests = List.copyOf(productionRequests);
     }
 
     /**
@@ -150,10 +150,10 @@ public class ProductionGroup {
                                  Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) {
             this.production = production;
-            this.inputBlanksRep = inputBlanksRep;
-            this.outputBlanksRep = outputBlanksRep;
-            this.inputContainers = inputContainers;
-            this.outputContainers = outputContainers;
+            this.inputBlanksRep = Map.copyOf(inputBlanksRep);
+            this.outputBlanksRep = Map.copyOf(outputBlanksRep);
+            this.inputContainers = Map.copyOf(inputContainers);
+            this.outputContainers = Map.copyOf(outputContainers);
         }
 
         /**
@@ -235,7 +235,7 @@ public class ProductionGroup {
         public Map<ResourceType, Integer> getReplacedInput() {
             Map<ResourceType, Integer> replacedInput = new HashMap<>(production.getInput());
             inputBlanksRep.forEach((r, q) -> replacedInput.merge(r, q, Integer::sum));
-            return replacedInput;
+            return Map.copyOf(replacedInput);
         }
 
         /**
@@ -246,7 +246,7 @@ public class ProductionGroup {
         public Map<ResourceType, Integer> getReplacedOutput() {
             Map<ResourceType, Integer> replacedOutput = new HashMap<>(production.getOutput());
             outputBlanksRep.forEach((r, q) -> replacedOutput.merge(r, q, Integer::sum));
-            return replacedOutput;
+            return Map.copyOf(replacedOutput);
         }
 
         /**

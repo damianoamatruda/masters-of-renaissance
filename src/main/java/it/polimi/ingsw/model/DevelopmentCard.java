@@ -77,7 +77,6 @@ public class DevelopmentCard extends Card {
      */
     public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException {
         cost.checkRequirements(player);
-
         cost.take(game, player, resContainers);
     }
 }

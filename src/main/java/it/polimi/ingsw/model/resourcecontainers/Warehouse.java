@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.resourcecontainers;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,7 +42,7 @@ public class Warehouse {
      * @return a list of the shelves
      */
     public List<WarehouseShelf> getShelves() {
-        return Collections.unmodifiableList(shelves);
+        return List.copyOf(shelves);
     }
 
     /**

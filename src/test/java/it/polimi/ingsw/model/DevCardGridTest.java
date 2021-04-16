@@ -10,7 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,9 +39,7 @@ public class DevCardGridTest {
                 for (int i = 1; i <= 2; i++)
                     devCards.add(new DevelopmentCard(
                             color, level,
-                            new ResourceRequirement(new HashMap<>() {{
-                                put(r1, 1);
-                            }}),
+                            new ResourceRequirement(Map.of(r1, 1)),
                             new Production(Map.of(), 0, Map.of(), 0),
                             3 * i
                     ));
@@ -94,11 +95,9 @@ public class DevCardGridTest {
 
         List<List<DevelopmentCard>> oldTop = devCardGrid.peekDevCards();
 
-        Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
-            put(buyer.getStrongbox(), new HashMap<>() {{
-                put(r1, 1);
-            }});
-        }};
+        Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
+                buyer.getStrongbox(), Map.of(r1, 1)
+        );
         devCardGrid.buyDevCard(game, buyer, c1, 1, 0, resContainers);
 
         List<List<DevelopmentCard>> newTop = devCardGrid.peekDevCards();
@@ -116,11 +115,9 @@ public class DevCardGridTest {
     void buyCardWrongLevel() {
         buyer.getStrongbox().addResource(r1);
 
-        Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>() {{
-            put(buyer.getStrongbox(), new HashMap<>() {{
-                put(r1, 1);
-            }});
-        }};
+        Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
+                buyer.getStrongbox(), Map.of(r1, 1)
+        );
 
         assertThrows(IllegalCardDepositException.class, () -> devCardGrid.buyDevCard(game, buyer, c1, 2, 0, resContainers));
     }

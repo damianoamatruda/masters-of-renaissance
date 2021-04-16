@@ -36,7 +36,7 @@ public class Strongbox implements ResourceContainer {
 
     @Override
     public Set<ResourceType> getResourceTypes() {
-        return resources.keySet();
+        return Set.copyOf(resources.keySet());
     }
 
     @Override

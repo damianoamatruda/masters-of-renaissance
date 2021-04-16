@@ -288,7 +288,6 @@ public class FileGameFactory implements GameFactory {
                 tokens.add((ActionToken) constructor.newInstance(getDevCardColor(token.getColor())));
             }
         }
-
         return tokens;
     }
 

@@ -125,7 +125,10 @@ public class Market {
      * @return the types of resources
      */
     public List<List<ResourceType>> getGrid() {
-        return grid;
+        List<List<ResourceType>> grid = new ArrayList<>();
+        for (List<ResourceType> row : this.grid)
+            grid.add(List.copyOf(row));
+        return List.copyOf(grid);
     }
 
     /**

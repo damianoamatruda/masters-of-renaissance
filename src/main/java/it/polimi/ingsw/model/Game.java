@@ -46,7 +46,7 @@ public class Game {
      */
     public Game(List<Player> players, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
                 int maxFaithPointsCount, int maxObtainableDevCards) {
-        this.players = players;
+        this.players = new ArrayList<>(players);
         this.devCardGrid = devCardGrid;
         this.market = market;
         this.faithTrack = faithTrack;
@@ -126,7 +126,7 @@ public class Game {
      * @return the list of players (including who disconnected after)
      */
     public List<Player> getPlayers() {
-        return new ArrayList<>(players);
+        return List.copyOf(players);
     }
 
     /**

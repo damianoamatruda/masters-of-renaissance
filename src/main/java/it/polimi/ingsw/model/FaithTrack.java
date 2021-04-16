@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -27,8 +26,8 @@ public class FaithTrack {
      */
     public FaithTrack(Set<VaticanSection> vaticanSections, Set<YellowTile> yellowTiles) {
         this.vaticanSectionsMap = vaticanSections.stream()
-                .collect(Collectors.toMap(VaticanSection::getFaithPointsEnd, Function.identity()));
-        this.yellowTiles = yellowTiles;
+                .collect(Collectors.toUnmodifiableMap(VaticanSection::getFaithPointsEnd, Function.identity()));
+        this.yellowTiles = Set.copyOf(yellowTiles);
     }
 
     /**
@@ -60,7 +59,7 @@ public class FaithTrack {
      * @return the set of the Vatican Sections
      */
     public Set<VaticanSection> getVaticanSections() {
-        return new HashSet<>(vaticanSectionsMap.values());
+        return Set.copyOf(vaticanSectionsMap.values());
     }
 
     /**
@@ -69,7 +68,7 @@ public class FaithTrack {
      * @return the set of the Yellow Tiles
      */
     public Set<YellowTile> getYellowTiles() {
-        return new HashSet<>(yellowTiles);
+        return yellowTiles;
     }
 
     /**

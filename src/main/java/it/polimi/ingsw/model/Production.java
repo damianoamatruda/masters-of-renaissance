@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,12 +45,12 @@ public class Production {
     public Production(Map<ResourceType, Integer> input, int inputBlanks, Set<ResourceType> inputBlanksExclusions,
                       Map<ResourceType, Integer> output, int outputBlanks, Set<ResourceType> outputBlanksExclusions,
                       boolean discardableOutput) {
-        this.input = input;
+        this.input = Map.copyOf(input);
         this.inputBlanks = inputBlanks;
-        this.inputBlanksExclusions = inputBlanksExclusions;
-        this.output = output;
+        this.inputBlanksExclusions = Set.copyOf(inputBlanksExclusions);
+        this.output = Map.copyOf(output);
         this.outputBlanks = outputBlanks;
-        this.outputBlanksExclusions = outputBlanksExclusions;
+        this.outputBlanksExclusions = Set.copyOf(outputBlanksExclusions);
         this.discardableOutput = discardableOutput;
     }
 
@@ -74,7 +73,7 @@ public class Production {
      * @return the map of the input resources
      */
     public Map<ResourceType, Integer> getInput() {
-        return new HashMap<>(input);
+        return input;
     }
 
     /**
@@ -101,7 +100,7 @@ public class Production {
      * @return the map of the output resources
      */
     public Map<ResourceType, Integer> getOutput() {
-        return new HashMap<>(output);
+        return output;
     }
 
     /**

@@ -5,7 +5,10 @@ import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcecontainers.*;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * Class dedicated to the storage of the player's data and available operations.
@@ -13,18 +16,25 @@ import java.util.*;
 public class Player {
     /** The player's nickname. */
     private final String nickname;
+
     /** The hand of leader cards available to the player. */
     private final List<LeaderCard> leaders;
+
     /** The player's warehouse, standard container of buyable resources. */
     private final Warehouse warehouse;
+
     /** The player's strongbox, where all the production output goes. */
     private final Strongbox strongbox;
+
     /** The collection of cards in each production slot. */
     private final List<Stack<DevelopmentCard>> devSlots;
+
     /** The base production "recipe". */
     private final Production baseProduction;
+
     /** Visible to the view, this indicates whether the player starts first each turn. */
     private final boolean inkwell;
+
     /** The number of (storable) resources the player can still choose at the beginning */
     private int initialResources;
 
@@ -57,7 +67,7 @@ public class Player {
                   Production baseProduction, int devSlotsCount, int initialResources, int initialFaith) {
         this.nickname = nickname;
         this.inkwell = inkwell;
-        this.leaders = leaders;
+        this.leaders = new ArrayList<>(leaders);
         this.warehouse = warehouse;
         this.strongbox = strongbox;
 
@@ -90,7 +100,7 @@ public class Player {
      * @return the list of leader cards
      */
     public List<LeaderCard> getLeaders() {
-        return Collections.unmodifiableList(leaders);
+        return List.copyOf(leaders);
     }
 
     /**
@@ -151,7 +161,7 @@ public class Player {
      * @return the player's development slots
      */
     public List<Stack<DevelopmentCard>> getDevSlots() {
-        return Collections.unmodifiableList(devSlots);
+        return List.copyOf(devSlots);
     }
 
     /**
@@ -291,11 +301,6 @@ public class Player {
         this.victoryPoints += toSum;
     }
 
-    @Override
-    public String toString() {
-        return nickname;
-    }
-
     /**
      * Chooses an initial resource to be given to the player.
      *
@@ -312,5 +317,10 @@ public class Player {
         getWarehouse().getShelves().get(shelfIdx).addResource(resource);
 
         initialResources--;
+    }
+
+    @Override
+    public String toString() {
+        return nickname;
     }
 }

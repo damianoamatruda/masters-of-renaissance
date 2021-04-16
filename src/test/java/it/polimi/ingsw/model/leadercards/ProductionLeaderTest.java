@@ -36,7 +36,7 @@ public class ProductionLeaderTest {
      */
     @Test
     void production() {
-        Production prod = new Production(null, 0, null, 0);
+        Production prod = new Production(Map.of(), 0, Map.of(), 0);
         ProductionLeader leader = new ProductionLeader(0, 0, prod, coin, null, 0);
 
         assertDoesNotThrow(() -> leader.activate(p));
