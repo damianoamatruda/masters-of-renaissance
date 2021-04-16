@@ -45,12 +45,19 @@ The player, when starting the client in multiplayer mode, will be asked to input
 ```
 **send_nickname (client)**  
 ```json
-{ nickname: "Name" }
+{
+  "type": "send_nickname",
+  "nickname": "Name"
+}
 ```
 
 **nickname_ack (server)**  
 ```json
-{ accepted: true, isFirst: false }
+{
+  "type": "nickname_ack",
+  "accepted": true,
+  "isFirst": false
+}
 ```
 
 &nbsp;
@@ -72,7 +79,10 @@ Follows the event in which a player is the first of the game, and has to choose 
 ```
 **players_count_res (client)**  
 ```json
-{ count: 1 }
+{
+  "type": "players_count_res",
+  "count": 1
+}
 ```
 
 &nbsp;
@@ -91,7 +101,9 @@ As the game starts, the server braodcasts the event to all players.
 ```
 **game_started (server)**  
 ```json
-{ type: "GameStart" }
+{
+  "type": "game_started"
+}
 ```
 
 
@@ -123,12 +135,18 @@ The player is sent a portion of the deck of leader cards, from those they can ch
 ```
 **leader_offer (server)**  
 ```json
-{ leaders: <list of leader cards> }
+{
+  "type": "leader_offer",
+  "leaders": <list of leader cards>
+}
 ```
 
 **leader_choice (client)**  
 ```json
-{ choice: <list of leader cards> }
+{
+  "type": "leader_choice",
+  "choice": <list of leader cards>
+}
 ```
 
 &nbsp;
@@ -154,12 +172,22 @@ The client will respond by specifying the resources and the respective amounts.
 ```
 **resources_offer (server)**  
 ```json
-{ count: 1, available_res: <list of resource types> }
+{
+  "type": "resources_offer",
+  "count": 1,
+  "available_res": <list of resource types>
+}
 ```
 
 **resources_choice (client)**  
 ```json
-{ choice: { coin: 1, shield: 1 } }
+{
+  "type": "resources_choice",
+  "choice": {
+    "coin": 1,
+    "shield": 1
+  }
+}
 ```
 
 
@@ -194,15 +222,23 @@ That said, there are many other commands the player can issue during their turn,
 ```
 **show_market (client)**  
 ```json
-{ type: "ShowMarket" }
+{
+  "type": "show_market"
+}
 ```
 
 **market_view (server)**  
 ```json
-{ view: {
-  resources: [[ "coin", "shield" ], [ "coin", "shield" ]],
-  colCount: 2
-}}
+{
+  "type": "market_view",
+  view: {
+    resources: [
+      [ "coin", "shield" ],
+      [ "coin", "shield" ]
+    ],
+    colCount: 2
+  }
+}
 ```
 
 &nbsp;
@@ -224,12 +260,18 @@ That said, there are many other commands the player can issue during their turn,
 ```
 **show_shelves (client)**  
 ```json
-{ choice: [ 0, 2, 3 ] }
+{
+  "type": "show_shelves",
+  "choice": [ 0, 2, 3 ]
+}
 ```
 
 **shelves_view (server)**  
 ```json
-{ view: <list of shelf> }
+{
+  "type": "shelves_view",
+  "view": <list of shelves>
+}
 ```
 
 &nbsp;
@@ -251,12 +293,18 @@ That said, there are many other commands the player can issue during their turn,
 ```
 **show_leaders (client)**  
 ```json
-{ choice: [ 0, 2 ] }
+{
+  "type": "show_leaders",
+  "choice": [ 0, 2 ]
+}
 ```
 
 **leaders_view (server)**  
 ```json
-{ view: <list of leader card> }
+{
+  "type": "leaders_view",
+  "view": <list of leader card>
+}
 ```
 
 &nbsp;
@@ -296,18 +344,19 @@ To get the resources, the player needs to specify:
 **get_market_req (client)**  
 ```json
 {
-  index_choice: 0,
-  isRow: true,
-  discard_choice: [ 2 ],
-  leaders_choice: [ 0, 0, 1 ],
-  shelf_choice: {
-    shelf_index: 1,
-    resources: [{
-      type: "coin",
-      amount: 2
+  "type": "get_market_req",
+  "index_choice": 0,
+  "isRow": true,
+  "discard_choice": [ 2 ],
+  "leaders_choice": [ 0, 0, 1 ],
+  "shelf_choice": {
+    "shelf_index": 1,
+    "resources": [{
+      "type": "coin",
+      "amount": 2
     }, {
-      type: "shield",
-      amount: 1
+      "type": "shield",
+      "amount": 1
     }]
   }
 }
@@ -315,22 +364,23 @@ To get the resources, the player needs to specify:
 **get_market_resp (server)**  
 ```json
 {
-  shelves_view: <shelves_view JSON>,
-  market_view: <market_view JSON>
+  "type": "get_market_resp",
+  "shelves_view": <shelves_view JSON>,
+  "market_view": <market_view JSON>
 }
 ```
 **leader_choice_err (server)**  
 ```json
 {
-  type: "IllegalLeaderChoice",
-  msg: "The operation could not be completed because..."
+  "type": "IllegalLeaderChoice",
+  "msg": "The operation could not be completed because..."
 }
 ```
 **shelves_choice_err (server)**  
 ```json
 {
-  type: "IllegalShelfChoice",
-  msg: "The operation could not be completed because..."
+  "type": "IllegalShelfChoice",
+  "msg": "The operation could not be completed because..."
 }
 ```
 
