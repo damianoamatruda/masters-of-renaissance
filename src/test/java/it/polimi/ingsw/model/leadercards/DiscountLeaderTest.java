@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -57,7 +58,7 @@ public class DiscountLeaderTest {
         DiscountLeader leader = new DiscountLeader(discount, coin, null, 0);
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
-        leader.activate(p);
+        assertDoesNotThrow(() -> leader.activate(p));
 
         Map<ResourceType, Integer> postCost = leader.getDevCardCost(ogCost);
 
