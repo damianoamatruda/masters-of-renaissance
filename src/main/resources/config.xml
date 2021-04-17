@@ -1913,7 +1913,7 @@
         <!-- 61 -->
         <Card>
             <type>it.polimi.ingsw.model.leadercards.ProductionLeader</type>
-            <resource>Servant</resource>
+            <resource>Faith</resource>
             <cost>
                 <card-requirement>
                     <card-color>Yellow</card-color>
@@ -1971,7 +1971,7 @@
         <!-- 63 -->
         <Card>
             <type>it.polimi.ingsw.model.leadercards.ProductionLeader</type>
-            <resource>Servant</resource>
+            <resource>Stone</resource>
             <cost>
                 <card-requirement>
                     <card-color>Purple</card-color>
@@ -2000,7 +2000,7 @@
         <!-- 64 -->
         <Card>
             <type>it.polimi.ingsw.model.leadercards.ProductionLeader</type>
-            <resource>Servant</resource>
+            <resource>Coin</resource>
             <cost>
                 <card-requirement>
                     <card-color>Green</card-color>
