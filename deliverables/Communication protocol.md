@@ -504,5 +504,74 @@ The following information is needed when buying a development card:
 ```
 
 &nbsp;
+### Activate productions
+
+The following information is needed when activating a production:
+1. What productions to activate
+2. For each resource of each production, the shelf (or strongbox) to take it from/put it into
+3. For each replaceable resource slot in each production, the resource to replace it with
+
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |                 activate_prod  |
+               | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  shelves_view                  |
+               | <----------------------------- |
+               |                                |
+               |  prod_activation_err           |
+               | <----------------------------- |
+```
+**activate_prod (client)**  
+```json
+{
+  "type": "activate_prod",
+  "productions": [ 0, 3 ],
+  "inputBlanksRepl": [
+    { "prodID": 0, "resources": [ "coin", "shield" ] }
+  ],
+  "outputBlanksRepl": [
+    { "prodID": 3, "resources": [ "coin" ] }
+  ],
+  "inputShelves": [
+    {
+      "prodID": 0,
+      "mappings": [
+        { "res": "coin", "shelf": 1 },
+        { "res": "shield", "shelf": 0 }
+      ]
+    }, {
+      "prodID": 3,
+      "mappings": [
+        { "res": "shield", "shelf": 0 }
+      ]
+    }
+  ],
+  "outputShelves": [
+    {
+      "prodID": 0,
+      "mappings": [
+        { "res": "stone", "shelf": 2 }
+      ]
+    }
+  ],
+}
+```
+**prod_activation_err (server)**  
+```json
+{
+  "type": "prod_activation_err",
+  "msg": "The operation could not be completed because..."
+}
+```
+
 
 > The server manages the players' turns as per the game's rules. The server must handle a player disconnecting or leaving the game. If there are no players left the game will terminate and all players have to be notified.
