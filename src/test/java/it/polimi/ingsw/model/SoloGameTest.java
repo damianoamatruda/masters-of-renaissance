@@ -31,8 +31,8 @@ public class SoloGameTest {
     @BeforeEach
     void setup() {
         player = new Player("Alessandro", true, List.of(
-                new DepotLeader(0, 2, null, coin, null, 0),
-                new DepotLeader(0, 2, null, coin, null, 0)
+                new DepotLeader(2, coin, null, 0),
+                new DepotLeader(2, coin, null, 0)
         ), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0);
 
         track = new FaithTrack(Set.of(

@@ -40,8 +40,7 @@ public class FileGameFactoryTest {
      */
     @Test
     void testGetMultiGame() {
-        assertAll(() -> assertThrows(IllegalArgumentException.class, () -> f.getMultiGame(List.of())),
-                () -> assertNotNull(f.getMultiGame(List.of(""))));
+        assertThrows(IllegalArgumentException.class, () -> f.getMultiGame(List.of()));
     }
 
     /**
@@ -49,7 +48,6 @@ public class FileGameFactoryTest {
      */
     @Test
     void testGetSoloGame() {
-        assertAll(() -> assertThrows(IllegalArgumentException.class, () -> f.getSoloGame(null)),
-                () -> assertNotNull(f.getSoloGame("")));
+        assertThrows(IllegalArgumentException.class, () -> f.getSoloGame(null));
     }
 }

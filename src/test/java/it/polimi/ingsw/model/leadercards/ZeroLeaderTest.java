@@ -25,7 +25,7 @@ public class ZeroLeaderTest {
 
     @BeforeEach
     void setup() {
-        leader = new ZeroLeader(0, 0, null, coin, null, 0);
+        leader = new ZeroLeader(coin, null, 0);
         p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
     }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.leadercards;
 
-import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
@@ -20,14 +19,12 @@ public class DiscountLeader extends LeaderCard {
      * Class constructor.
      *
      * @param discount      the amount of resources to be subtracted when applying the ability.
-     * @param shelfSize     the maximum amount of resources the card can store (unused in this case)
-     * @param production    the production of the card (unused in this case)
      * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied in order to enable the card.
      * @param victoryPoints the amount of victory points associated with the card.
      */
-    public DiscountLeader(int discount, int shelfSize, Production production, ResourceType resource, CardRequirement requirement, int victoryPoints) {
+    public DiscountLeader(int discount, ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(resource, requirement, victoryPoints);
         this.discount = discount;
     }

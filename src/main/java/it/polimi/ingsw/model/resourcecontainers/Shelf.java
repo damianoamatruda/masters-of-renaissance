@@ -130,6 +130,7 @@ public class Shelf implements ResourceContainer {
         this.quantity--;
     }
 
+    // TODO: Check if this method is needed
     @Override
     public void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException {
         if (resourceContainer.isEmpty())

@@ -57,7 +57,7 @@ public class ResourceType {
      * @param game   the game the player is playing in
      * @param player the player the resource is taken from
      */
-    @SuppressWarnings("EmptyMethod")
+    @SuppressWarnings({"EmptyMethod", "unused"})
     public void takeFromPlayer(Game game, Player player) {
     }
 

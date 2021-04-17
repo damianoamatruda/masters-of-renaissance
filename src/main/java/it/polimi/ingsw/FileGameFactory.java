@@ -75,8 +75,7 @@ public class FileGameFactory implements GameFactory {
         try {
             leaderCards = generateLeaderCards();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
         Collections.shuffle(leaderCards);
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
@@ -121,8 +120,7 @@ public class FileGameFactory implements GameFactory {
         try {
             shuffledLeaderCards = new ArrayList<>(generateLeaderCards());
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
         Collections.shuffle(shuffledLeaderCards);
 

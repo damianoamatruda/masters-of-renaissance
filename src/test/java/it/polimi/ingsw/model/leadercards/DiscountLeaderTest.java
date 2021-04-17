@@ -53,14 +53,11 @@ public class DiscountLeaderTest {
      */
     @ParameterizedTest
     @MethodSource("provideParameters")
-    void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {
-        DiscountLeader leader = new DiscountLeader(discount, 0, null, coin, null, 0);
+    void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) throws IllegalActivationException {
+        DiscountLeader leader = new DiscountLeader(discount, coin, null, 0);
         Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
-        try {
-            leader.activate(p);
-        } catch (Exception e) {
-        }
+        leader.activate(p);
 
         Map<ResourceType, Integer> postCost = leader.getDevCardCost(ogCost);
 
