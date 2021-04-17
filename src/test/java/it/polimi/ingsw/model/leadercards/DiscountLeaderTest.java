@@ -9,12 +9,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test of properties of DiscountLeader.
@@ -30,10 +31,8 @@ public class DiscountLeaderTest {
     private static Stream<Arguments> provideParameters() {
         List<Arguments> arguments = new ArrayList<>(); // arguments for each test call
 
-        Map<ResourceType, Integer> ogZeroCost = new HashMap<>(),
-                ogNonemptyCost = new HashMap<>();
-        ogZeroCost.put(coin, 0); // test against cost set to zero
-        ogNonemptyCost.put(coin, 1);
+        Map<ResourceType, Integer> ogZeroCost = Map.of(coin, 0); // test against cost set to zero
+        Map<ResourceType, Integer> ogNonemptyCost = Map.of(coin, 1);
 
         List<Map<ResourceType, Integer>> ogCosts = Arrays.asList(null, ogZeroCost, ogNonemptyCost); // cost maps to discount
         List<Integer> discounts = Arrays.asList(-1, 0, 1); // discount amounts
@@ -56,7 +55,7 @@ public class DiscountLeaderTest {
     @MethodSource("provideParameters")
     void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) throws IllegalActivationException {
         DiscountLeader leader = new DiscountLeader(discount, coin, null, 0);
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
         assertDoesNotThrow(() -> leader.activate(p));
 

@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +22,7 @@ public class ProductionTest {
         ResourceType r2 = new ResourceType("r2", true);
         Production production = new Production(Map.of(r1, 2), 0, Set.of(), Map.of(r2, 3), 0, Set.of(), false);
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         for (int i = 0; i < 6; i++)
@@ -48,7 +47,7 @@ public class ProductionTest {
         ResourceType r3 = new ResourceType("r3", true);
         Production production = new Production(Map.of(r1, 2), 3, Set.of(), Map.of(r2, 3), 0, Set.of(), false);
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         for (int i = 0; i < 6; i++)
@@ -75,7 +74,7 @@ public class ProductionTest {
         ResourceType r3 = new ResourceType("r3", true);
         Production production = new Production(Map.of(r1, 2), 0, Set.of(), Map.of(r2, 3), 3, Set.of(), false);
 
-        Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         for (int i = 0; i < 6; i++)

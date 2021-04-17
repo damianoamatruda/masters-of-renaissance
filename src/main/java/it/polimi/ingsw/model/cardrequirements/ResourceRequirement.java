@@ -104,7 +104,7 @@ public class ResourceRequirement implements CardRequirement {
         try {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(
-                            new Production(getDiscountedCost(player), 0, new HashMap<>(), 0),
+                            new Production(getDiscountedCost(player), 0, Map.of(), 0),
                             Map.of(), Map.of(), resContainers, Map.of())
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {

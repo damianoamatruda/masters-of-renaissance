@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -24,7 +24,7 @@ public class ResourceRequirementTest {
 
     @BeforeEach
     void setup() {
-        p = new Player("", false, new ArrayList<>(), new Warehouse(1), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0);
+        p = new Player("", false, List.of(), new Warehouse(1), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0);
     }
 
     /**
@@ -45,7 +45,7 @@ public class ResourceRequirementTest {
      */
     @Test
     void checkRequirements() {
-        Player p = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
         p.getStrongbox().addResource(coin);
 
         ResourceRequirement req = new ResourceRequirement(Map.of(coin, 1));

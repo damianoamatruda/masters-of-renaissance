@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.resourcecontainers.Warehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,7 +27,7 @@ class FaithTrackTest {
         track = new FaithTrack(Set.of(), Set.of(
                 new FaithTrack.YellowTile(3, 1)
         ));
-        player = new Player("", true, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        player = new Player("", true, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
     }
 
     /**

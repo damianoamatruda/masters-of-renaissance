@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,7 @@ public class SoloGameTest {
                 new FaithTrack.YellowTile(24, 20)
         ));
 
-        game = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, track, List.of(
+        game = new SoloGame(player, new DevCardGrid(List.of(), 0, 0), null, track, List.of(
                 new ActionTokenBlackMoveTwo()
         ), 24, 7);
 

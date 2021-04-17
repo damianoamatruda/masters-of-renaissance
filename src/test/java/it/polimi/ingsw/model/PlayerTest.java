@@ -146,7 +146,7 @@ public class PlayerTest {
     void cannotDepositNewCard() {
         assertThrows(IllegalCardDepositException.class, () -> player.addToDevSlot(game, 0, new DevelopmentCard(blue, 2,
                 new ResourceRequirement(
-                        new HashMap<>()), null, 2), new HashMap<>()));
+                        Map.of()), null, 2), Map.of()));
     }
 
     /**
