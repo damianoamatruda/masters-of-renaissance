@@ -66,13 +66,6 @@ public class Strongbox implements ResourceContainer {
     }
 
     @Override
-    public void addAll(ResourceContainer resourceContainer) {
-        for (ResourceType resType : resourceContainer.getResourceTypes())
-            for (int i = 0; i < resourceContainer.getResourceQuantity(resType); i++)
-                addResource(resType);
-    }
-
-    @Override
     public boolean isEmpty() {
         return resources.isEmpty();
     }

@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.resourcecontainers;
 
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
-import java.util.Set;
-
 /**
  * This class represents a limited container of resources of a specific type.
  */
@@ -42,13 +40,6 @@ public class ResourceShelf extends Shelf {
         if (!resType.equals(this.boundedResType))
             throw new IllegalResourceTransferException();
         super.addResource(resType);
-    }
-
-    @Override
-    public void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException {
-        if (!resourceContainer.isEmpty() && !resourceContainer.getResourceTypes().equals(Set.of(boundedResType)))
-            throw new IllegalResourceTransferException();
-        super.addAll(resourceContainer);
     }
 
     /**

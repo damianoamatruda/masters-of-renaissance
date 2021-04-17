@@ -257,51 +257,6 @@ public class ResourceShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 13})
-    void addAllFromSmallerOrEqualShelf(int size) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
-        ResourceShelf resourceShelf = new ResourceShelf(r, 13);
-
-        ResourceContainer resContainer = new ResourceShelf(r, size);
-        for (int i = 0; i < size; i++)
-            resContainer.addResource(r);
-
-        resourceShelf.addAll(resContainer);
-
-        assertAll("resourceShelf",
-                () -> assertEquals(resContainer.getResourceTypes(), resourceShelf.getResourceTypes()),
-                () -> assertEquals(resContainer.getQuantity(), resourceShelf.getQuantity()),
-                () -> assertEquals(resContainer.getResourceQuantity(r), resourceShelf.getResourceQuantity(r))
-        );
-    }
-
-    @Test
-    void addAllShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
-        ResourceShelf resourceShelf = new ResourceShelf(r, 7);
-
-        ResourceContainer resContainer = new ResourceShelf(r, 10);
-        for (int i = 0; i < 10; i++)
-            resContainer.addResource(r);
-
-        assertThrows(IllegalResourceTransferException.class, () -> resourceShelf.addAll(resContainer));
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {10, 13})
-    void addAllShouldNotBePossibleBecauseOfResourceTypes(int size) throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceShelf resourceShelf = new ResourceShelf(r1, 13);
-
-        ResourceContainer resContainer = new ResourceShelf(r2, size);
-        for (int i = 0; i < size; i++)
-            resContainer.addResource(r2);
-
-        assertThrows(IllegalResourceTransferException.class, () -> resourceShelf.addAll(resContainer));
-    }
-
-    @ParameterizedTest
     @ValueSource(booleans = {false, true})
     void swapShouldBePossible(boolean direct) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);

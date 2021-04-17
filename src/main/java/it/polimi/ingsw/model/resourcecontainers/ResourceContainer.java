@@ -54,14 +54,6 @@ public interface ResourceContainer {
     void removeResource(ResourceType resType) throws IllegalResourceTransferException;
 
     /**
-     * Adds the content of a resource container.
-     *
-     * @param resourceContainer the resource container from which to get the resources to add
-     * @throws IllegalResourceTransferException if the content cannot be added
-     */
-    void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException;
-
-    /**
      * Returns whether the resource container is empty.
      *
      * @return <code>true</code> if the resource container contains no resources, <code>false</code> otherwise.

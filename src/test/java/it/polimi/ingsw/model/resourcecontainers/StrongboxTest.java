@@ -153,37 +153,4 @@ class StrongboxTest {
             strongbox.removeResource(r);
         assertThrows(IllegalResourceTransferException.class, () -> strongbox.removeResource(r));
     }
-
-    @Test
-    void addAllFromStrongbox() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
-
-        Strongbox strongbox = new Strongbox();
-        for (int i = 0; i < 5; i++)
-            strongbox.addResource(r1);
-        for (int i = 0; i < 7; i++)
-            strongbox.addResource(r2);
-
-        ResourceContainer resContainer = new Strongbox();
-        for (int i = 0; i < 2; i++)
-            resContainer.addResource(r1);
-        for (int i = 0; i < 3; i++)
-            resContainer.addResource(r2);
-        for (int i = 0; i < 5; i++)
-            resContainer.addResource(r3);
-
-        strongbox.addAll(resContainer);
-
-        assertAll("strongbox",
-                () -> assertEquals(Set.of(r1, r2, r3), strongbox.getResourceTypes()),
-                () -> assertEquals(22, strongbox.getQuantity()),
-                () -> assertAll("getResourceQuantity",
-                        () -> assertEquals(7, strongbox.getResourceQuantity(r1)),
-                        () -> assertEquals(10, strongbox.getResourceQuantity(r2)),
-                        () -> assertEquals(5, strongbox.getResourceQuantity(r3))
-                )
-        );
-    }
 }

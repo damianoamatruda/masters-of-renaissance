@@ -131,21 +131,6 @@ public class Shelf implements ResourceContainer {
         this.quantity--;
     }
 
-    // TODO: Check if this method is needed
-    @Override
-    public void addAll(ResourceContainer resourceContainer) throws IllegalResourceTransferException {
-        if (resourceContainer.isEmpty())
-            return;
-        if (resourceContainer.getResourceTypes().size() > 1)
-            throw new IllegalResourceTransferException();
-        if (resourceContainer.getQuantity() > size - quantity)
-            throw new IllegalResourceTransferException();
-        if (resType != null && !resourceContainer.getResourceTypes().equals(Set.of(resType)))
-            throw new IllegalResourceTransferException();
-        resType = resourceContainer.getResourceTypes().stream().findFirst().orElse(null);
-        quantity += resourceContainer.getQuantity();
-    }
-
     @Override
     public boolean isEmpty() {
         return quantity == 0;

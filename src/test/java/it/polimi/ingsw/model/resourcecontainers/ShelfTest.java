@@ -244,53 +244,6 @@ public class ShelfTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 13})
-    void addAllFromSmallerOrEqualShelf(int size) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
-        Shelf shelf = new Shelf(17);
-        for (int i = 0; i < 4; i++)
-            shelf.addResource(r);
-
-        ResourceContainer resContainer = new Shelf(size);
-        for (int i = 0; i < size; i++)
-            resContainer.addResource(r);
-
-        shelf.addAll(resContainer);
-
-        assertAll("shelf",
-                () -> assertEquals(Set.of(r), shelf.getResourceTypes()),
-                () -> assertEquals(size + 4, shelf.getQuantity()),
-                () -> assertEquals(size + 4, shelf.getResourceQuantity(r))
-        );
-    }
-
-    @Test
-    void addAllShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
-        Shelf shelf = new Shelf(7);
-
-        ResourceContainer resContainer = new Shelf(10);
-        for (int i = 0; i < 10; i++)
-            resContainer.addResource(r);
-
-        assertThrows(IllegalResourceTransferException.class, () -> shelf.addAll(resContainer));
-    }
-
-    @Test
-    void addAllShouldNotBePossibleBecauseOfResourceTypes() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        Shelf shelf = new Shelf(7);
-        shelf.addResource(r1);
-
-        ResourceContainer resContainer = new Shelf(10);
-        for (int i = 0; i < 10; i++)
-            resContainer.addResource(r2);
-
-        assertThrows(IllegalResourceTransferException.class, () -> shelf.addAll(resContainer));
-    }
-
-    @ParameterizedTest
     @ValueSource(booleans = {false, true})
     void swapShouldBePossible(boolean direct) throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);

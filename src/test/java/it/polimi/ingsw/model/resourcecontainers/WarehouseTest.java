@@ -295,58 +295,6 @@ public class WarehouseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 13})
-    void addAllFromSmallerOrEqualShelf(int size) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
-        Warehouse warehouse1 = new Warehouse(13);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse1.getShelves().get(12);
-
-        Warehouse warehouse2 = new Warehouse(size);
-        ResourceContainer resContainer = warehouse2.getShelves().get(size - 1);
-        for (int i = 0; i < size; i++)
-            resContainer.addResource(r);
-
-        warehouseShelf.addAll(resContainer);
-
-        assertAll("warehouseShelf",
-                () -> assertEquals(resContainer.getResourceTypes(), warehouseShelf.getResourceTypes()),
-                () -> assertEquals(resContainer.getQuantity(), warehouseShelf.getQuantity()),
-                () -> assertEquals(resContainer.getResourceQuantity(r), warehouseShelf.getResourceQuantity(r))
-        );
-    }
-
-    @Test
-    void addAllShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
-        Warehouse warehouse1 = new Warehouse(7);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse1.getShelves().get(6);
-
-        Warehouse warehouse2 = new Warehouse(10);
-        ResourceContainer resContainer = warehouse2.getShelves().get(9);
-        for (int i = 0; i < 10; i++)
-            resContainer.addResource(r);
-
-        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.addAll(resContainer));
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {10, 13})
-    void addAllShouldNotBePossibleBecauseOfResourceTypes(int size) throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        Warehouse warehouse1 = new Warehouse(14);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse1.getShelves().get(13);
-        warehouseShelf.addResource(r1);
-
-        Warehouse warehouse2 = new Warehouse(size);
-        ResourceContainer resContainer = warehouse2.getShelves().get(size - 1);
-        for (int i = 0; i < size; i++)
-            resContainer.addResource(r2);
-
-        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.addAll(resContainer));
-    }
-
-    @ParameterizedTest
     @ValueSource(booleans = {false, true})
     void swapShouldBePossible(boolean direct) throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
