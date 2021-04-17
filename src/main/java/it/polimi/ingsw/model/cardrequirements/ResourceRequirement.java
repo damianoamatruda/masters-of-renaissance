@@ -70,7 +70,7 @@ public class ResourceRequirement implements CardRequirement {
             // get the amount of this resource the player owns from both the strongbox
             int playerAmount = player.getStrongbox().getResourceQuantity(r);
             // and every shelf the resource of which matches the currently examined resource
-            playerAmount += shelves.stream().filter(e -> e.getResourceType() == r).mapToInt(s -> s.getResourceQuantity(r)).sum();
+            playerAmount += shelves.stream().filter(e -> e.getResourceType().isPresent() && e.getResourceType().get().equals(r)).mapToInt(s -> s.getResourceQuantity(r)).sum();
 
             // if the player does not own enough of this resource, the requirements aren't met
             if (discountedRes.get(r) - playerAmount > 0)

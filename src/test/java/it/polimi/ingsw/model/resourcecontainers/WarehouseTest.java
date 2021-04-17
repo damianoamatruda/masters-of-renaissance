@@ -54,7 +54,7 @@ public class WarehouseTest {
     void resourceTypeOfNewWarehouseShelf() {
         Warehouse warehouse = new Warehouse(1);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
-        assertNull(warehouseShelf.getResourceType());
+        assertTrue(warehouseShelf.getResourceType().isEmpty());
     }
 
     @Test
@@ -252,7 +252,7 @@ public class WarehouseTest {
             warehouseShelf.addResource(r);
         for (int i = 0; i < resourcesCount; i++)
             warehouseShelf.removeResource(r);
-        assertNull(warehouseShelf.getResourceType());
+        assertTrue(warehouseShelf.getResourceType().isEmpty());
     }
 
     @ParameterizedTest

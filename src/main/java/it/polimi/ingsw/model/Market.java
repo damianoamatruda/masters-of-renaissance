@@ -15,8 +15,10 @@ import java.util.stream.IntStream;
 public class Market {
     /** The resources in the grid. */
     private final List<List<ResourceType>> grid;
+
     /** The type of the resources that can be replaced. */
     private final ResourceType replaceableResType;
+
     /** The resource in the slide. */
     private ResourceType slide;
 

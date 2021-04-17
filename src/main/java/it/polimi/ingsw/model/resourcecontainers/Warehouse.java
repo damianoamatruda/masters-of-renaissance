@@ -74,7 +74,7 @@ public class Warehouse {
         public void addResource(ResourceType resType) throws IllegalResourceTransferException {
             if (warehouse.shelves.stream()
                     .filter(s -> !s.equals(this))
-                    .anyMatch(s -> s.getResourceType() != null && s.getResourceType().equals(resType)))
+                    .anyMatch(s -> s.getResourceType().isPresent() && s.getResourceType().get().equals(resType)))
                 throw new IllegalResourceTransferException();
             super.addResource(resType);
         }

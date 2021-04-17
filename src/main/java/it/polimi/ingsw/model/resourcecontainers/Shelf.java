@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.resourcecontainers;
 
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -84,10 +85,10 @@ public class Shelf implements ResourceContainer {
     /**
      * Returns the type of the resources in the shelf.
      *
-     * @return the type of the resources
+     * @return the optional type of the resources
      */
-    public ResourceType getResourceType() {
-        return resType;
+    public Optional<ResourceType> getResourceType() {
+        return Optional.ofNullable(resType);
     }
 
     @Override

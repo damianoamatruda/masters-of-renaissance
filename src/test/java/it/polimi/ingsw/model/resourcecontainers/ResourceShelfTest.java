@@ -38,7 +38,7 @@ public class ResourceShelfTest {
     void resourceTypeOfNewShelf() {
         ResourceType r = new ResourceType("r", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
-        assertNull(resourceShelf.getResourceType());
+        assertTrue(resourceShelf.getResourceType().isEmpty());
     }
 
     @Test
@@ -217,7 +217,7 @@ public class ResourceShelfTest {
             resourceShelf.addResource(r);
         for (int i = 0; i < resourcesCount; i++)
             resourceShelf.removeResource(r);
-        assertNull(resourceShelf.getResourceType());
+        assertTrue(resourceShelf.getResourceType().isEmpty());
     }
 
     @ParameterizedTest
