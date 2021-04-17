@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This class represents the Solo version of the game, and contains all the extra functionality.
+ * This class represents a single-player game of Masters of Renaissance. It contains all the extra functionality.
  */
 public class SoloGame extends Game {
     /** The deck of action tokens to be activated at the end of the player's turn. */

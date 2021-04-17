@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base game class containing the general components of the "game box", as well as some attributes shared by all players
- * that can be easily accessed from the outside.
+ * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
+ * as some attributes shared by the players that can be easily accessed from the outside.
  */
 public class Game {
     /** The "Development Card Grid", from which development cards can be "bought". */

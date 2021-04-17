@@ -139,7 +139,7 @@ public class Shelf implements ResourceContainer {
     /**
      * Returns whether the shelf is full.
      *
-     * @return <code>true</code> if the shelf contains all possible resources, <code>false</code> otherwise.
+     * @return <code>true</code> if the shelf contains all possible resources; <code>false</code> otherwise.
      */
     public boolean isFull() {
         return quantity == size;

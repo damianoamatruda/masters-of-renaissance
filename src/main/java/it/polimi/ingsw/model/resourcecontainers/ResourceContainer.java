@@ -56,7 +56,7 @@ public interface ResourceContainer {
     /**
      * Returns whether the resource container is empty.
      *
-     * @return <code>true</code> if the resource container contains no resources, <code>false</code> otherwise.
+     * @return <code>true</code> if the resource container contains no resources; <code>false</code> otherwise.
      */
     boolean isEmpty();
 }
