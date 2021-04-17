@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Requirement for leader card activation. Specifies what kind of development cards the player must have to be able to
@@ -57,7 +56,7 @@ public class DevCardRequirement implements CardRequirement {
 
         for (Entry entry : reqCopy) {
             // entry not found in player's cards -> requirements not satisfied
-            if (!playerState.stream().anyMatch(e -> e.equals(entry)))
+            if (playerState.stream().noneMatch(e -> e.equals(entry)))
                 missing.add(entry);
                 // if the entry is found the amount of cards the player owns in that entry is subtracted from the requirements
             else {
@@ -72,7 +71,7 @@ public class DevCardRequirement implements CardRequirement {
         if (missing.size() != 0) {
             String msg = String.format("\nPlayer %s does not satisfy the following entries:", player.getNickname());
 
-            for (Entry e : missing.stream().collect(Collectors.toList())) {
+            for (Entry e : new ArrayList<>(missing)) {
                 msg = msg.concat(String.format("\nColor %s, level %s, missing %s", e.color.getName(), e.level, e.amount));
             }
 

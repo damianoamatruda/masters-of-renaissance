@@ -49,7 +49,7 @@ public class ModelConfigTest {
      */
     @Test
     void testConfigMarket() {
-        assertEquals(13, config.getMarket().stream().mapToInt(m -> m.getAmount()).sum());
+        assertEquals(13, config.getMarket().stream().mapToInt(ModelConfig.XmlResourceMapEntry::getAmount).sum());
     }
 
 }

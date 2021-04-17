@@ -5,10 +5,7 @@ import it.polimi.ingsw.model.leadercards.LeaderCard;
 import it.polimi.ingsw.model.resourcecontainers.*;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Class dedicated to the storage of the player's data and available operations.
@@ -134,7 +131,7 @@ public class Player {
      */
     public void incrementFaithPoints(Game game) {
         faithPoints += 1;
-        game.onIncrement(this, faithPoints);
+        game.onIncrement(faithPoints);
     }
 
     /**
@@ -255,7 +252,7 @@ public class Player {
 
         devCard.takeFromPlayer(game, this, resContainers);
 
-        game.onAddToDevSlot(this, this.devSlots.stream().mapToInt(stack -> stack.size()).sum());
+        game.onAddToDevSlot(this.devSlots.stream().mapToInt(Vector::size).sum());
 
         slot.push(devCard);
     }

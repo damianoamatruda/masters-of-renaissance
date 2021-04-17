@@ -60,7 +60,7 @@ class StrongboxTest {
     }
 
     @Test
-    void resourceTypesOfStrongboxWithResourcesOfMultipleTypes() throws IllegalResourceTransferException {
+    void resourceTypesOfStrongboxWithResourcesOfMultipleTypes() {
         Strongbox strongbox = new Strongbox();
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
@@ -75,7 +75,7 @@ class StrongboxTest {
     }
 
     @Test
-    void quantityOfStrongboxWithResourcesOfMultipleTypes() throws IllegalResourceTransferException {
+    void quantityOfStrongboxWithResourcesOfMultipleTypes() {
         Strongbox strongbox = new Strongbox();
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
@@ -90,7 +90,7 @@ class StrongboxTest {
     }
 
     @Test
-    void resourceQuantityOfStrongboxWithResourcesOfMultipleTypes() throws IllegalResourceTransferException {
+    void resourceQuantityOfStrongboxWithResourcesOfMultipleTypes() {
         Strongbox strongbox = new Strongbox();
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);

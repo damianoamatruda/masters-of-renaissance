@@ -67,7 +67,7 @@ public class LeaderCardTest {
         p.getStrongbox().addResource(new ResourceType("shield", true));
 
         assertThrows(Exception.class, () -> leader.activate(p));
-        assertTrue(!leader.isActive());
+        assertFalse(leader.isActive());
     }
 
     /**
@@ -93,7 +93,7 @@ public class LeaderCardTest {
     void getDevCardCost() {
         Map<ResourceType, Integer> cost = Map.of(coin, 1);
 
-        assertTrue(cost.equals(leader.getDevCardCost(new HashMap<>(cost))));
+        assertEquals(cost, leader.getDevCardCost(new HashMap<>(cost)));
     }
 
     /**
@@ -113,6 +113,6 @@ public class LeaderCardTest {
 
         Map<ResourceType, Integer> res = Map.of(new ResourceType("zero", false), 1);
 
-        assertTrue(res.equals(leader.replaceMarketResources(new ResourceType("zero", false), new HashMap<>(res), null)));
+        assertEquals(res, leader.replaceMarketResources(new ResourceType("zero", false), new HashMap<>(res), null));
     }
 }

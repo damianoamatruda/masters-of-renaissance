@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class ActionTokenDiscardTwoTest {
     SoloGame game;
     Player player;
-    DevCardColor blue = new DevCardColor("Blue");
-    DevCardColor green = new DevCardColor("Green");
-    DevCardColor purple = new DevCardColor("Purple");
-    DevCardColor yellow = new DevCardColor("Yellow");
+    final DevCardColor blue = new DevCardColor("Blue");
+    final DevCardColor green = new DevCardColor("Green");
+    final DevCardColor purple = new DevCardColor("Purple");
+    final DevCardColor yellow = new DevCardColor("Yellow");
 
     @BeforeEach
     void setup() {
@@ -75,13 +75,13 @@ class ActionTokenDiscardTwoTest {
         List<List<DevelopmentCard>> top = grid.peekDevCards();
         token.trigger(game);
 
-        for (int i = 0; i < top.size(); i++)
-            for (int j = 1; j <= top.get(i).size(); j++) {
-                DevCardColor color = top.get(i).get(0).getColor();
-                if (grid.getDeck(color, j).peek() != top.get(i).get(j - 1) && color != blue) fail();
-                else if (!foundTheChange && grid.getDeck(color, j).peek() == top.get(i).get(j - 1) && color == blue)
+        for (List<DevelopmentCard> developmentCards : top)
+            for (int j = 1; j <= developmentCards.size(); j++) {
+                DevCardColor color = developmentCards.get(0).getColor();
+                if (grid.getDeck(color, j).peek() != developmentCards.get(j - 1) && color != blue) fail();
+                else if (!foundTheChange && grid.getDeck(color, j).peek() == developmentCards.get(j - 1) && color == blue)
                     fail();
-                else if (!foundTheChange && grid.getDeck(color, j).peek() != top.get(i).get(j - 1) && color == blue)
+                else if (!foundTheChange && grid.getDeck(color, j).peek() != developmentCards.get(j - 1) && color == blue)
                     foundTheChange = true;
             }
         assert true;

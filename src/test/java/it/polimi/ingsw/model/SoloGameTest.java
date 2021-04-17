@@ -23,7 +23,7 @@ public class SoloGameTest {
     Player player;
     FaithTrack track;
 
-    ResourceType coin = new ResourceType("Coin", true);
+    final ResourceType coin = new ResourceType("Coin", true);
 
     /**
      * The setup: instantiation of game and the single player.

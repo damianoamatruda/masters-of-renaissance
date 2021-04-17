@@ -12,7 +12,6 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +40,7 @@ public class FileGameFactory implements GameFactory {
         ModelConfig tempConfig;
         try {
             tempConfig = unmarshal(inputStream);
-        } catch (JAXBException | FileNotFoundException e) {
+        } catch (JAXBException e) {
             tempConfig = null;
             e.printStackTrace();
         }
@@ -58,9 +57,8 @@ public class FileGameFactory implements GameFactory {
      * @param inputStream the input stream to be parsed
      * @return the object created by the XML unmarshalling
      * @throws JAXBException         generic exception from the JAXB library
-     * @throws FileNotFoundException config file not found
      */
-    private ModelConfig unmarshal(InputStream inputStream) throws JAXBException, FileNotFoundException {
+    private ModelConfig unmarshal(InputStream inputStream) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
         return (ModelConfig) context.createUnmarshaller().unmarshal(inputStream);
     }
@@ -128,7 +126,6 @@ public class FileGameFactory implements GameFactory {
         }
         Collections.shuffle(shuffledLeaderCards);
 
-        ModelConfig.XmlProduction production = config.getBaseProduction();
         Player player = new Player(
                 nickname,
                 true,
@@ -187,7 +184,7 @@ public class FileGameFactory implements GameFactory {
         final ResourceRequirement[] cost = new ResourceRequirement[1];
         final Production[] production = new Production[1];
 
-        List<DevelopmentCard> devCards = new ArrayList<>() {{
+        return new ArrayList<>() {{
             for (ModelConfig.XmlDevCard card : source) {
                 cost[0] = generateResourceRequirement(card.getCost());
 
@@ -196,7 +193,6 @@ public class FileGameFactory implements GameFactory {
                 add(new DevelopmentCard(getDevCardColor(card.getColor()), card.getLevel(), cost[0], production[0], card.getVictoryPoints()));
             }
         }};
-        return devCards;
     }
 
     /**
@@ -339,7 +335,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     private Set<DevCardColor> generateDevCardColors() {
-        return config.getCardColors().stream().map(s -> new DevCardColor(s)).collect(Collectors.toSet());
+        return config.getCardColors().stream().map(DevCardColor::new).collect(Collectors.toSet());
     }
 
     private Set<ResourceType> generateResourceTypes() {

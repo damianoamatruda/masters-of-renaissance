@@ -71,10 +71,9 @@ public class Game {
     /**
      * Method called after a faith marker has been moved ahead, checks for available Vatican reports.
      *
-     * @param player      the player who has just moved ahead
      * @param faithPoints the faith marker (points) of whoever has just moved ahead
      */
-    public void onIncrement(Player player, int faithPoints) {
+    public void onIncrement(int faithPoints) {
         FaithTrack.VaticanSection vaticanSection = faithTrack.getVaticanSectionReport(faithPoints);
         if (vaticanSection != null && !vaticanSection.isActivated()) {
             for (Player p : players)
@@ -90,10 +89,9 @@ public class Game {
     /**
      * Method called after a card has been bought, checks if the maximum number of buyable cards has been reached.
      *
-     * @param player           the player that bought the development card
      * @param obtainedDevCards the number of all development cards obtained by the player
      */
-    public void onAddToDevSlot(Player player, int obtainedDevCards) {
+    public void onAddToDevSlot(int obtainedDevCards) {
         if (obtainedDevCards == maxObtainableDevCards)
             lastTurn = true;
     }
@@ -108,7 +106,7 @@ public class Game {
      * @throws AllInactiveException all players are set to inactive
      */
     public Player onTurnEnd() throws AllInactiveException {
-        if (players.stream().filter(p -> p.isActive()).count() == 0) throw new AllInactiveException();
+        if (players.stream().noneMatch(Player::isActive)) throw new AllInactiveException();
 
         Player temp = players.get(0);
         do {
@@ -177,7 +175,7 @@ public class Game {
         int maxPts = players.stream()
                 .mapToInt(Player::getVictoryPoints)
                 .max()
-                .getAsInt();
+                .orElse(0);
 
         List<Player> winners = players.stream()
                 .filter(p -> p.getVictoryPoints() == maxPts)

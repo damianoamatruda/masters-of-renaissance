@@ -46,7 +46,7 @@ public class ZeroLeaderTest {
     void emptyMaps() {
         assertDoesNotThrow(() -> leader.activate(p));
 
-        assertTrue(new HashMap<>().equals(leader.replaceMarketResources(zero, new HashMap<>(), new HashMap<>())));
+        assertEquals(new HashMap<>(), leader.replaceMarketResources(zero, new HashMap<>(), new HashMap<>()));
     }
 
     /**
@@ -60,12 +60,12 @@ public class ZeroLeaderTest {
         Map<ResourceType, Integer> toProcess = Map.of(coin, 1),  // nothing to convert (no Zero res)
                 zeros = Map.of(zero, 1);      // and choice != this leader (different bound res)
 
-        assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
-        assertTrue(zeros.equals(Map.of(zero, 1)));
+        assertEquals(leader.replaceMarketResources(zero, toProcess, zeros), Map.of(coin, 1));
+        assertEquals(zeros, Map.of(zero, 1));
 
         zeros = Map.of(coin, 1);                                  // choose this leader (res ok), still nothing to convert from
-        assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
-        assertTrue(zeros.equals(Map.of(coin, 1)));                // same results, processing changes nothing
+        assertEquals(leader.replaceMarketResources(zero, toProcess, zeros), Map.of(coin, 1));
+        assertEquals(zeros, Map.of(coin, 1));                // same results, processing changes nothing
     }
 
     /**
@@ -78,7 +78,7 @@ public class ZeroLeaderTest {
         Map<ResourceType, Integer> toProcess = Map.of(zero, 1),
                 zeros = new HashMap<>(Map.of(coin, 1));
 
-        assertTrue(leader.replaceMarketResources(zero, toProcess, zeros).equals(Map.of(coin, 1)));
-        assertTrue(zeros.equals(new HashMap<>()));
+        assertEquals(leader.replaceMarketResources(zero, toProcess, zeros), Map.of(coin, 1));
+        assertEquals(zeros, new HashMap<>());
     }
 }

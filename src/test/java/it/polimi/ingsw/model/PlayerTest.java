@@ -27,14 +27,14 @@ public class PlayerTest {
     Game game;
     Player player;
 
-    ResourceType coin = new ResourceType("Coin", true);
-    ResourceType faith = new ResourceType("Faith", false);
-    ResourceType servant = new ResourceType("Servant", true);
-    ResourceType shield = new ResourceType("Shield", true);
-    ResourceType stone = new ResourceType("Stone", true);
-    ResourceType zero = new ResourceType("Zero", false);
+    final ResourceType coin = new ResourceType("Coin", true);
+    final ResourceType faith = new ResourceType("Faith", false);
+    final ResourceType servant = new ResourceType("Servant", true);
+    final ResourceType shield = new ResourceType("Shield", true);
+    final ResourceType stone = new ResourceType("Stone", true);
+    final ResourceType zero = new ResourceType("Zero", false);
 
-    DevCardColor blue = new DevCardColor("Blue");
+    final DevCardColor blue = new DevCardColor("Blue");
 
     /**
      * Sets up initial conditions by initializing Game and Player.
@@ -129,7 +129,7 @@ public class PlayerTest {
     /**
      * Ensures that an exception is thrown when trying to discard an activated leader card.
      *
-     * @throws AlreadyActiveException leader card is already activated
+     * @throws IllegalActivationException leader card cannot be activated
      */
     @Test
     void invalidLeaderDiscard() throws IllegalActivationException {

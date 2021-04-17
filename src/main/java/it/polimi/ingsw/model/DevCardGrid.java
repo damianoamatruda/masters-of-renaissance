@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This class represents a grid of decks of development cards.
@@ -100,9 +99,9 @@ public class DevCardGrid {
         for (DevCardColor color : grid.keySet()) {
             top.add(grid.get(color)
                     .stream()
-                    .filter(deck -> deck != null)
-                    .map(deck -> deck.peek())
-                    .collect(Collectors.toUnmodifiableList()));
+                    .filter(Objects::nonNull)
+                    .map(Stack::peek)
+                    .toList());
         }
         return List.copyOf(top);
     }
@@ -143,7 +142,7 @@ public class DevCardGrid {
         int level = 1;
         while (getDeck(color, level).size() == 0) level++;
         while (quantity > 0 && level <= 3) {
-            DevelopmentCard card = getDeck(color, level).pop();
+            getDeck(color, level).pop();
             if (getDeck(color, level).size() == 0) level++;
             quantity--;
         }

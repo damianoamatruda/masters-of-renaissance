@@ -51,7 +51,7 @@ public class SoloGame extends Game {
      */
     public void incrementBlackPoints() {
         blackPoints += 1;
-        super.onIncrement(null, blackPoints);
+        super.onIncrement(blackPoints);
     }
 
     /**
