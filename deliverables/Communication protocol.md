@@ -308,7 +308,43 @@ That said, there are many other commands the player can issue during their turn,
 ```
 
 &nbsp;
-### Getting resources from the market
+### Show the development card grid
+
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                |
+\------------/ |                                |
+               |                 show_dev_grid  |
+               | -----------------------------> |
+               |                                |
+               |  dev_grid_view                 |
+               | <----------------------------- |
+```
+**show_dev_grid (client)**  
+```json
+{
+  "type": "show_dev_grid"
+}
+```
+
+**dev_grid_view (server)**  
+```json
+{
+  "type": "leaders_view",
+  "view": [
+    [ ID, ID, ID, ID ],
+    [ ID, ID, ID, ID ],
+    [ ID, ID, ID, ID ]
+  ]
+}
+```
+
+&nbsp;
+### Get resources from the market
 
 In order to decide whether to carry out the action, the player can ask to be shown the market's status and their shelves (warehouse's/depot leaders', so they can see whether the taken resources can be stored).  
 Moreover, the resources taken by the player may include a replaceable type, which will be processed by the server depending on the player's active (and chosen, on a per-resource basis) leader cards. Therefore, the player can also ask the server to be shown their leader cards.
@@ -425,6 +461,47 @@ For this to happen, the message sent by the client has to specify the two shelve
 }
 ```
 
+&nbsp;
+### Buy a development card
+
+The following information is needed when buying a development card:
+1. The row and column of the card to identify it in the grid
+2. For each resource, the shelf (or strongbox) to take it from
+3. The slot to place it into
+
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |                  buy_dev_card  |
+               | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  dev_card_grid_view            |
+               | <----------------------------- |
+               |                                |
+               |  shelf_swap_choice_err         |
+               | <----------------------------- |
+```
+**swap_shelves (client)**  
+```json
+{
+  "type": "swap_shelves",
+  "choice": [ 0, 3 ]
+}
+```
+**shelf_swap_choice_err (server)**  
+```json
+{
+  "type": "shelf_swap_choice_err",
+  "msg": "The operation could not be completed because..."
+}
+```
 
 &nbsp;
 
