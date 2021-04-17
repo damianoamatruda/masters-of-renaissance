@@ -384,6 +384,46 @@ To get the resources, the player needs to specify:
 }
 ```
 
+&nbsp;
+### Swap two shelves' content
+
+During their turn, the player can decide to reorder the warehouse (the leader cards' depots are thought as part of it).
+
+For this to happen, the message sent by the client has to specify the two shelves the player wants to swap. Sending more than one of this type of message will be allowed by the server during the player's turn.
+
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |                  swap_shelves  |
+               | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  shelves_view                  |
+               | <----------------------------- |
+               |                                |
+               |  shelf_swap_choice_err         |
+               | <----------------------------- |
+```
+**swap_shelves (client)**  
+```json
+{
+  "type": "swap_shelves",
+  "choice": [ 0, 3 ]
+}
+```
+**shelf_swap_choice_err (server)**  
+```json
+{
+  "type": "shelf_swap_choice_err",
+  "msg": "The operation could not be completed because..."
+}
+```
 
 
 &nbsp;
