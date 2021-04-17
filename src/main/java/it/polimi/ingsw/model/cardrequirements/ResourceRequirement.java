@@ -63,10 +63,8 @@ public class ResourceRequirement implements CardRequirement {
         List<Shelf> shelves = new ArrayList<>(List.copyOf(player.getWarehouse().getShelves()));
 
         // add the leaders' depots (they count as warehouse shelves)
-        for (int i = 0; i < player.getLeaders().size(); i++) {
-            if (player.getLeaders().get(i).getDepot() != null)
-                shelves.add(player.getLeaders().get(i).getDepot());
-        }
+        for (int i = 0; i < player.getLeaders().size(); i++)
+            player.getLeaders().get(i).getDepot().ifPresent(shelves::add);
 
         for (ResourceType r : discountedRes.keySet()) {
             // get the amount of this resource the player owns from both the strongbox

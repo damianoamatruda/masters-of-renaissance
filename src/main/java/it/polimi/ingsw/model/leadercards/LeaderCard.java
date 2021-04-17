@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.resourcecontainers.ResourceShelf;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Card with a special ability. Can only be activated or discarded during a game. When active, its ability can be used.
@@ -22,9 +23,8 @@ import java.util.Map;
 public abstract class LeaderCard extends Card {
     private final ResourceType resource;
     private final CardRequirement requirement;
-    /**
-     * The card's status. If active, the ability can be triggered.
-     */
+
+    /** The card's status. If active, the ability can be triggered. */
     private boolean isActive = false;
 
     /**
@@ -89,8 +89,8 @@ public abstract class LeaderCard extends Card {
     /**
      * @return the shelf pertaining to the leader.
      */
-    public ResourceShelf getDepot() {
-        return null;
+    public Optional<ResourceShelf> getDepot() {
+        return Optional.empty();
     }
 
     /**
@@ -106,8 +106,8 @@ public abstract class LeaderCard extends Card {
     /**
      * @return the Production object of the leader card.
      */
-    public Production getProduction() {
-        return null;
+    public Optional<Production> getProduction() {
+        return Optional.empty();
     }
 
     /**

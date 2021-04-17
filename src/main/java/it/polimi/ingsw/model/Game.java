@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Base game class containing the general components of the "game box", as well as some attributes shared by all players
@@ -179,7 +178,7 @@ public class Game {
 
         List<Player> winners = players.stream()
                 .filter(p -> p.getVictoryPoints() == maxPts)
-                .collect(Collectors.toList());
+                .toList();
 
         for (Player p : winners)
             p.setWinner(true);

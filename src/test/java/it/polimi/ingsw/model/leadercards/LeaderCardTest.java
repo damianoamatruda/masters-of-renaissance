@@ -79,11 +79,11 @@ public class LeaderCardTest {
     }
 
     /**
-     * Tests whether the leader card returns null when asked for its depot.
+     * Tests whether the leader card returns an empty optional when asked for its depot.
      */
     @Test
     void getDepot() {
-        assertNull(leader.getDepot());
+        assertTrue(leader.getDepot().isEmpty());
     }
 
     /**
@@ -97,11 +97,11 @@ public class LeaderCardTest {
     }
 
     /**
-     * Tests whether the leader card returns null when asked for its production.
+     * Tests whether the leader card returns an empty optional when asked for its production.
      */
     @Test
     void getProduction() {
-        assertNull(leader.getProduction());
+        assertTrue(leader.getProduction().isEmpty());
     }
 
     /**

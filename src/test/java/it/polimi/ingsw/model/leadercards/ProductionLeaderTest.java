@@ -20,18 +20,6 @@ public class ProductionLeaderTest {
     private final Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
     /**
-     * Tests a production leader initialized with a null production.
-     */
-    @Test
-    void nullProduction() {
-        ProductionLeader leader = new ProductionLeader(null, coin, null, 0);
-
-        assertDoesNotThrow(() -> leader.activate(p));
-
-        assertNull(leader.getProduction());
-    }
-
-    /**
      * Tests a production leader initialized with a non-null production.
      */
     @Test
@@ -41,6 +29,7 @@ public class ProductionLeaderTest {
 
         assertDoesNotThrow(() -> leader.activate(p));
 
-        assertEquals(prod, leader.getProduction());
+        assertTrue(leader.getProduction().isPresent());
+        assertEquals(prod, leader.getProduction().get());
     }
 }

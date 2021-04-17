@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.Production;
 import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
+import java.util.Optional;
+
 /**
  * Leader card with the ability to produce resources.
  *
@@ -44,8 +46,7 @@ public class ProductionLeader extends LeaderCard {
     }
 
     @Override
-    public Production getProduction() {
-        if (isActive()) return production;
-        else return super.getProduction();
+    public Optional<Production> getProduction() {
+        return isActive() ? Optional.of(production) : super.getProduction();
     }
 }

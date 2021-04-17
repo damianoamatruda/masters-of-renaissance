@@ -5,15 +5,15 @@ import it.polimi.ingsw.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.model.resourcecontainers.ResourceShelf;
 import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
+import java.util.Optional;
+
 /**
  * Leader card with the ability of storing resources, which will be considered as part of the player's warehouse.
  *
  * @see LeaderCard
  */
 public class DepotLeader extends LeaderCard {
-    /**
-     * The card's shelf. The resources that can be stored are only of one type, bound at creation.
-     */
+    /** The card's shelf. The resources that can be stored are only of one type, bound at creation. */
     private final ResourceShelf shelf;
 
     /**
@@ -46,8 +46,7 @@ public class DepotLeader extends LeaderCard {
     }
 
     @Override
-    public ResourceShelf getDepot() {
-        if (isActive()) return shelf;
-        else return super.getDepot();
+    public Optional<ResourceShelf> getDepot() {
+        return isActive() ? Optional.of(shelf) : super.getDepot();
     }
 }
