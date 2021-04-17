@@ -10,7 +10,7 @@ import java.util.List;
  * This class represents the Solo version of the game, and contains all the extra functionality.
  */
 public class SoloGame extends Game {
-    /** The stack of action tokens to be activated at the end of the player's turn. */
+    /** The deck of action tokens to be activated at the end of the player's turn. */
     private final List<ActionToken> actionTokens;
 
     /** The "marker" of Lorenzo il Magnifico on the faith track. */
@@ -26,7 +26,7 @@ public class SoloGame extends Game {
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
-     * @param actionTokens          the stack of tokens, of which the top token is activated after each turn
+     * @param actionTokens          the deck of tokens, of which the top token is activated after each turn
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      *                              game
@@ -40,7 +40,7 @@ public class SoloGame extends Game {
     }
 
     /**
-     * This action is triggered by certain type(s) of token. Shuffles and resets the stack.
+     * This action is triggered by certain type(s) of token. Shuffles and resets the deck.
      */
     public void shuffleActionTokens() {
         Collections.shuffle(actionTokens);

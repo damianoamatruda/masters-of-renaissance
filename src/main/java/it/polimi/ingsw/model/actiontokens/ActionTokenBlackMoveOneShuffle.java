@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.SoloGame;
  */
 public class ActionTokenBlackMoveOneShuffle implements ActionToken {
     /**
-     * Triggers the effect of this token: move Black cross ahead by one, then shuffle and reset the stack of tokens.
+     * Triggers the effect of this token: move Black cross ahead by one, then shuffle and reset the deck of tokens.
      *
      * @param game the current game in which the token is activated
      */

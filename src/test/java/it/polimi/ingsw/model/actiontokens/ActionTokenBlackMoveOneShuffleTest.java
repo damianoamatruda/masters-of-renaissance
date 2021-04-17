@@ -24,10 +24,10 @@ class ActionTokenBlackMoveOneShuffleTest {
     @DisplayName("Move one and shuffle")
     void testBlackAdvancement() {
         ActionToken token = new ActionTokenBlackMoveOneShuffle();
-        List<ActionToken> stack = new ArrayList<>();
-        stack.add(token);
+        List<ActionToken> deck = new ArrayList<>();
+        deck.add(token);
         Player player = new Player("", false, new ArrayList<>(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
-        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), stack, 0, 0);
+        SoloGame solo = new SoloGame(player, new DevCardGrid(new ArrayList<>(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), deck, 0, 0);
 
         token.trigger(solo);
 

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.resourcetypes.ResourceType;
 
 import java.util.*;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * This class represents a grid of decks of development cards.
@@ -37,8 +36,8 @@ public class DevCardGrid {
             for (DevelopmentCard card : devCards) {
                 if (!grid.containsKey(card.getColor()))
                     grid.put(card.getColor(),
-                            IntStream.range(0, levelsCount+1)
-                            .mapToObj(i -> i==0 ? null : new Stack<DevelopmentCard>())
+                            IntStream.range(0, levelsCount + 1)
+                                    .mapToObj(i -> i == 0 ? null : new Stack<DevelopmentCard>())
                             .toList()
                             );
                 List<Stack<DevelopmentCard>> column = grid.get(card.getColor());
