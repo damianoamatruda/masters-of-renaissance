@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -51,7 +52,7 @@ public class DevCardRequirement implements CardRequirement {
             if (!playerState.contains(currCard))
                 playerState.add(currCard.setAmount(1));
                 // else increment the amount available
-            else playerState.stream().filter(e -> e.equals(currCard)).findFirst().get().amount++;
+            else playerState.stream().filter(e -> e.equals(currCard)).findFirst().ifPresent(e -> e.amount++);
         });
 
         for (Entry entry : reqCopy) {
@@ -60,10 +61,10 @@ public class DevCardRequirement implements CardRequirement {
                 missing.add(entry);
                 // if the entry is found the amount of cards the player owns in that entry is subtracted from the requirements
             else {
-                Entry found = playerState.stream().filter(e -> e.equals(entry)).findFirst().get();
-
-                if (entry.amount - found.amount > 0)
-                    missing.add(new Entry(entry.color, entry.level, entry.amount - found.amount));
+                playerState.stream().filter(e -> e.equals(entry)).findFirst().ifPresent(e -> {
+                    if (entry.amount - e.amount > 0)
+                        missing.add(new Entry(entry.color, entry.level, entry.amount - e.amount));
+                });
             }
         }
 
@@ -81,7 +82,7 @@ public class DevCardRequirement implements CardRequirement {
     }
 
     /**
-     * Models a requirement entry. It mimicks a double-keyed map, with color and level as keys and amount as value.
+     * Models a requirement entry. It mimics a double-keyed map, with color and level as keys and amount as value.
      */
     public static class Entry {
         private final DevCardColor color;

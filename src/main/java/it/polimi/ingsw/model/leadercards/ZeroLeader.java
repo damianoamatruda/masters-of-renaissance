@@ -59,12 +59,12 @@ public class ZeroLeader extends LeaderCard {
                     amountToConvert = Math.min(convertibleAmount, chosenAmount); // can't convert more than the lowest of the two
 
             /* Add converted resources */
-            resCopy.compute(this.getResource(), (res, amount) -> amount == null ? amountToConvert : amount + amountToConvert);
+            resCopy.compute(this.getResource(), (res, amount) -> amount == null ? amountToConvert : amount.intValue() + amountToConvert);
             
             /* Remove converted resources, deleting key if none left.
                If there's some left, zeros can be used in successive conversions; else it shouldn't be possible to do so,
                for that would transform more resources than it is allowed */
-            resCopy.compute(replaceableResType, (res, amount) -> amount - amountToConvert == 0 ? null : amount - amountToConvert);
+            resCopy.compute(replaceableResType, (res, amount) -> amount == null || amount.intValue() - amountToConvert == 0 ? null : amount.intValue() - amountToConvert);
             replacements.compute(this.getResource(), (res, amount) -> amount - amountToConvert == 0 ? null : amount - amountToConvert);
         }
 
