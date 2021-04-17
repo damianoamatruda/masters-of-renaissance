@@ -62,7 +62,7 @@ public class DiscountLeaderTest {
         Map<ResourceType, Integer> postCost = leader.getDevCardCost(ogCost);
 
         if (ogCost == null)
-            assertNull(leader.getDevCardCost(ogCost));
+            assertNull(leader.getDevCardCost(null)); // leader.getDevCardCost(ogCost)
         else
             ogCost.forEach((r, c) -> assertEquals(r != coin ? c : (c == null ? null : c - discount), postCost.get(r)));
     }
