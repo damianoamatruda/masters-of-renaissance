@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of properties of ProductionLeader.
  */
 public class ProductionLeaderTest {
-    private final ResourceType coin = new ResourceType("coin", true);
+    private final ResourceType coin = new ResourceType("Coin", true);
     private final Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
 
     /**

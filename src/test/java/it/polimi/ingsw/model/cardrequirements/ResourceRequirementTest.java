@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class ResourceRequirementTest {
     private Player p;
-    private final ResourceType coin = new ResourceType("coin", true);
-    private final ResourceType shield = new ResourceType("shield", true);
+    private final ResourceType coin = new ResourceType("Coin", true);
+    private final ResourceType shield = new ResourceType("Shield", true);
 
     @BeforeEach
     void setup() {

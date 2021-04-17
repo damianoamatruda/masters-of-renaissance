@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of properties of ZeroLeader.
  */
 public class ZeroLeaderTest {
-    private final ResourceType coin = new ResourceType("coin", true);
-    private final ResourceType zero = new ResourceType("zero", false);
+    private final ResourceType coin = new ResourceType("Coin", true);
+    private final ResourceType zero = new ResourceType("Zero", false);
     private ZeroLeader leader;
     private Player p;
 
