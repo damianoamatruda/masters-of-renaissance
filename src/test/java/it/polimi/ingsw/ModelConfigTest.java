@@ -52,4 +52,8 @@ public class ModelConfigTest {
         assertEquals(13, config.getMarket().stream().mapToInt(ModelConfig.XmlResourceMapEntry::getAmount).sum());
     }
 
+    @Test
+    void testConfigCardRequirements() {
+        assertTrue(config.getLeaderCards().stream().allMatch(l -> (l.getColorRequirements()!=null && l.getResourceRequirements()==null)||(l.getColorRequirements()==null && l.getResourceRequirements()!=null)));
+    }
 }

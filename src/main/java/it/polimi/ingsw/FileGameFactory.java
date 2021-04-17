@@ -46,9 +46,9 @@ public class FileGameFactory implements GameFactory {
         }
         config = tempConfig;
         devCardColorMap = generateDevCardColors().stream()
-                .collect(Collectors.toMap(DevCardColor::getName, Function.identity()));
+                .collect(Collectors.toUnmodifiableMap(DevCardColor::getName, Function.identity()));
         resTypeMap = generateResourceTypes().stream()
-                .collect(Collectors.toMap(ResourceType::getName, Function.identity()));
+                .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
     }
 
     /**
@@ -181,18 +181,19 @@ public class FileGameFactory implements GameFactory {
      */
     private List<DevelopmentCard> generateDevCards() {
         List<ModelConfig.XmlDevCard> source = config.getDevCards();
-        final ResourceRequirement[] cost = new ResourceRequirement[1];
-        final Production[] production = new Production[1];
+        ResourceRequirement cost;
+        Production production;
 
-        return new ArrayList<>() {{
-            for (ModelConfig.XmlDevCard card : source) {
-                cost[0] = generateResourceRequirement(card.getCost());
+        List<DevelopmentCard> cards = new ArrayList<>();
 
-                production[0] = generateProduction(card.getProduction());
+        for (ModelConfig.XmlDevCard card : source) {
+            cost = generateResourceRequirement(card.getCost());
+            production = generateProduction(card.getProduction());
 
-                add(new DevelopmentCard(getDevCardColor(card.getColor()), card.getLevel(), cost[0], production[0], card.getVictoryPoints()));
-            }
-        }};
+            cards.add(new DevelopmentCard(getDevCardColor(card.getColor()), card.getLevel(), cost, production, card.getVictoryPoints()));
+        }
+
+        return cards;
     }
 
     /**
@@ -202,26 +203,29 @@ public class FileGameFactory implements GameFactory {
      */
     private List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
-        CardRequirement[] cost = new CardRequirement[1];
+        CardRequirement cost;
         Class<?> className;
         Constructor<?> constructor;
-        Production[] production = new Production[1];
+        Production production;
         List<LeaderCard> leaderCards = new ArrayList<>();
+
         for (ModelConfig.XmlLeaderCard card : source) {
             className = Class.forName(card.getType());
             constructor = className.getConstructor(int.class, int.class, Production.class, ResourceType.class, CardRequirement.class, int.class);
-            if (card.getColorRequirements() == null) {
-                cost[0] = generateResourceRequirement(card.getResourceRequirements());
-            } else {
-                cost[0] = new DevCardRequirement(new HashSet<>() {{
-                    for (ModelConfig.XmlCardRequirement req : card.getColorRequirements())
-                        add(new DevCardRequirement.Entry(getDevCardColor(req.getColor()), req.getLevel(), req.getAmount()));
-                }});
-            }
-            if (card.getProduction() != null)
-                production[0] = generateProduction(card.getProduction());
 
-            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production[0], getResourceType(card.getResource()), cost[0], card.getVictoryPoints()));
+            if (card.getResourceRequirements() != null) {
+                cost = generateResourceRequirement(card.getResourceRequirements());
+            } else {
+                cost = new DevCardRequirement(card.getColorRequirements()
+                        .stream()
+                        .map(req -> new DevCardRequirement.Entry(getDevCardColor(req.getColor()), req.getLevel(), req.getAmount()))
+                        .collect(Collectors.toUnmodifiableSet())
+                );
+            }
+
+            production = card.getProduction() != null ? generateProduction(card.getProduction()) : null;
+
+            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production, getResourceType(card.getResource()), cost, card.getVictoryPoints()));
         }
         return leaderCards;
     }
@@ -232,10 +236,11 @@ public class FileGameFactory implements GameFactory {
      * @return the Market
      */
     private Market generateMarket() {
-        return new Market(new HashMap<>() {{
-            for (ModelConfig.XmlResourceMapEntry entry : config.getMarket())
-                put(getResourceType(entry.getResourceType()), entry.getAmount());
-        }}, config.getMarketColumns(), getResourceType(config.getMarketReplaceableResType()));
+        Map<ResourceType, Integer> resources = config.getMarket()
+                .stream()
+                .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount));
+
+        return new Market(resources, config.getMarketColumns(), getResourceType(config.getMarketReplaceableResType()));
     }
 
     /**
@@ -244,11 +249,10 @@ public class FileGameFactory implements GameFactory {
      * @return set of the vatican sections
      */
     private Set<FaithTrack.VaticanSection> generateVaticanSections() {
-        return new HashSet<>() {{
-            for (ModelConfig.XmlFaithTrack.XmlVaticanSection section : config.getFaithTrack().getSections()) {
-                add(new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()));
-            }
-        }};
+        return config.getFaithTrack().getSections()
+                .stream()
+                .map(section -> new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /**
@@ -257,11 +261,10 @@ public class FileGameFactory implements GameFactory {
      * @return set of the yellow tiles
      */
     private Set<FaithTrack.YellowTile> generateYellowTiles() {
-        return new HashSet<>() {{
-            for (ModelConfig.XmlFaithTrack.XmlYellowTile tile : config.getFaithTrack().getTiles()) {
-                add(new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()));
-            }
-        }};
+        return config.getFaithTrack().getTiles()
+                .stream()
+                .map(tile -> new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /**
@@ -295,28 +298,32 @@ public class FileGameFactory implements GameFactory {
      */
     private Production generateProduction(ModelConfig.XmlProduction production) {
         return new Production(
-                new HashMap<>() {{
-                    if (production.getInput() != null)
-                        for (ModelConfig.XmlResourceMapEntry entry : production.getInput())
-                            put(getResourceType(entry.getResourceType()), entry.getAmount());
-                }},
+                Optional.ofNullable(production.getInput())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount)),
+
                 production.getInputBlanks(),
-                new HashSet<>() {{
-                    if (production.getInputBlanksExclusions() != null)
-                        for (String entry : production.getInputBlanksExclusions())
-                            add(getResourceType(entry));
-                }},
-                new HashMap<>() {{
-                    if (production.getOutput() != null)
-                        for (ModelConfig.XmlResourceMapEntry entry : production.getOutput())
-                            put(getResourceType(entry.getResourceType()), entry.getAmount());
-                }},
+
+                Optional.ofNullable(production.getInputBlanksExclusions())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(this::getResourceType)
+                .collect(Collectors.toUnmodifiableSet()),
+
+                Optional.ofNullable(production.getOutput())
+                        .orElseGet(Collections::emptyList)
+                        .stream()
+                        .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount)),
+
                 production.getOutputBlanks(),
-                new HashSet<>() {{
-                    if (production.getOutputBlanksExclusions() != null)
-                        for (String entry : production.getOutputBlanksExclusions())
-                            add(getResourceType(entry));
-                }},
+
+                Optional.ofNullable(production.getOutputBlanksExclusions())
+                        .orElseGet(Collections::emptyList)
+                        .stream()
+                        .map(this::getResourceType)
+                        .collect(Collectors.toUnmodifiableSet()),
+
                 production.hasDiscardableOutput()
         );
     }
@@ -328,10 +335,8 @@ public class FileGameFactory implements GameFactory {
      * @return a new data structure for resource requirements
      */
     private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceMapEntry> requirements) {
-        return new ResourceRequirement(new HashMap<>() {{
-            for (ModelConfig.XmlResourceMapEntry entry : requirements)
-                put(getResourceType(entry.getResourceType()), entry.getAmount());
-        }});
+        return new ResourceRequirement(requirements.stream()
+                .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount)));
     }
 
     private Set<DevCardColor> generateDevCardColors() {

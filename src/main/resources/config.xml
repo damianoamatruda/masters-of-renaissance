@@ -1793,7 +1793,7 @@
             <resource>Stone</resource>
             <cost>
                 <resource-entry>
-                    <card-color>Coin</card-color>
+                    <resource-type>Coin</resource-type>
                     <amount>5</amount>
                 </resource-entry>
             </cost>
@@ -1806,7 +1806,7 @@
             <resource>Servant</resource>
             <cost>
                 <resource-entry>
-                    <card-color>Stone</card-color>
+                    <resource-type>Stone</resource-type>
                     <amount>5</amount>
                 </resource-entry>
             </cost>
@@ -1819,7 +1819,7 @@
             <resource>Shield</resource>
             <cost>
                 <resource-entry>
-                    <card-color>Servant</card-color>
+                    <resource-type>Servant</resource-type>
                     <amount>5</amount>
                 </resource-entry>
             </cost>
@@ -1832,7 +1832,7 @@
             <resource>Coin</resource>
             <cost>
                 <resource-entry>
-                    <card-color>Shield</card-color>
+                    <resource-type>Shield</resource-type>
                     <amount>5</amount>
                 </resource-entry>
             </cost>
