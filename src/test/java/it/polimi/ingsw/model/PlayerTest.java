@@ -150,7 +150,7 @@ public class PlayerTest {
     }
 
     /**
-     * Generic test nested class for card deposit in normal conditions (no last turn).
+     * Generic test nested class for card deposit in normal conditions (no last round).
      */
     @Nested
     @DisplayName("Add development card to a slot")

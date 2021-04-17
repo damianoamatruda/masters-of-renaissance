@@ -29,7 +29,7 @@ public class Player {
     /** The base production "recipe". */
     private final Production baseProduction;
 
-    /** Visible to the view, this indicates whether the player starts first each turn. */
+    /** Visible to the view, this indicates whether the player starts first each round. */
     private final boolean inkwell;
 
     /** The number of (storable) resources the player can still choose at the beginning */
@@ -162,7 +162,7 @@ public class Player {
     }
 
     /**
-     * Checks whether the player has the inkwell, i.e. the player starts first at each turn.
+     * Checks whether the player has the inkwell, i.e. the player starts first at each round.
      *
      * @return <code>true</code> if this player starts first; <code>false</code> otherwise.
      */

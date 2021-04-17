@@ -26,7 +26,7 @@ public class SoloGame extends Game {
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
-     * @param actionTokens          the deck of tokens, of which the top token is activated after each turn
+     * @param actionTokens          the deck of tokens, of which the top token is activated after each round
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      *                              game
@@ -55,7 +55,8 @@ public class SoloGame extends Game {
     }
 
     /**
-     * Proceeds to sum the remaining points and decide a winner after the game is over.
+     * Triggered after a round is concluded. Proceeds to sum the remaining points and decide a winner after the game is
+     * over.
      *
      * @return <code>true</code> if the game is over; <code>false</code> otherwise.
      */

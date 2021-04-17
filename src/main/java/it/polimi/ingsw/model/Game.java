@@ -27,11 +27,11 @@ public class Game {
     /** Number of development cards a player can have, before triggering the end of the game. */
     private final int maxObtainableDevCards;
 
-    /** Progressive number of the current turn. */
-    protected int turns = 1;
+    /** Progressive number of the current round. */
+    protected int rounds = 1;
 
     /** Flag that indicates the Game is about to end. */
-    protected boolean lastTurn;
+    protected boolean lastRound;
 
     /**
      * Constructor of Game instances.
@@ -60,11 +60,11 @@ public class Game {
      * @return <code>true</code> if the game is over; <code>false</code> otherwise.
      */
     public boolean hasEnded() {
-        if (lastTurn) {
+        if (lastRound) {
             setWinnerPlayer();
             return true;
         }
-        turns++;
+        rounds++;
         return false;
     }
 
@@ -83,7 +83,7 @@ public class Game {
         }
 
         if (faithPoints == maxFaithPointsCount)
-            lastTurn = true;
+            lastRound = true;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Game {
      */
     public void onAddToDevSlot(int obtainedDevCards) {
         if (obtainedDevCards == maxObtainableDevCards)
-            lastTurn = true;
+            lastRound = true;
     }
 
     /**
@@ -128,12 +128,12 @@ public class Game {
     }
 
     /**
-     * Getter of the current number of turn.
+     * Getter of the current number of round.
      *
-     * @return the current turn number
+     * @return the current round number
      */
-    public int getTurns() {
-        return turns;
+    public int getRounds() {
+        return rounds;
     }
 
     /**
