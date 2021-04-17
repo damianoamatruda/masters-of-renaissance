@@ -37,7 +37,7 @@ public abstract class LeaderCard extends Card {
      */
     public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints) {
         super(victoryPoints);
-        this.resource = resource != null ? resource : new ResourceType("", false);
+        this.resource = resource;
         this.requirement = requirement;
     }
 
