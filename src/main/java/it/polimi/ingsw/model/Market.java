@@ -31,16 +31,14 @@ public class Market {
         List<ResourceType> resourcesList = new ArrayList<>();
         resources.forEach((r, q) -> IntStream.range(0, q).forEach(i -> resourcesList.add(r)));
 
-        /* Check that colsCount is not zero. */
-        if (colsCount == 0)
+        if (colsCount <= 0)
             throw new IllegalArgumentException();
 
-        /* Check that the resulting grid, therefore excluding the slide, is not empty. */
-        if (resourcesList.size() <= 1)
+        if (resourcesList.size() == 0)
             throw new IllegalArgumentException();
 
-        /* Check that the resulting grid, therefore excluding the slide, is full. */
-        if (resourcesList.size() % colsCount != 1)
+        /* Check that the resulting grid is full. */
+        if (colsCount > 1 && resourcesList.size() % colsCount != 1)
             throw new IllegalArgumentException();
 
         Collections.shuffle(resourcesList);
