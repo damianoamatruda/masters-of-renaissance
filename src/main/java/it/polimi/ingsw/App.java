@@ -1,8 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameFactory;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.server.controller.FileGameFactory;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.GameFactory;
+import it.polimi.ingsw.server.model.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;
