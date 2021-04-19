@@ -7,8 +7,33 @@ All values shown in the messages hold example values, only to show the messages'
 
 The communication session can be divided into connection phase and game phase.
 
+# Errors
+Three types of errors have been identified:
+1. Broken (unparsable) messages
+2. Illegal messages (messages sent at the wrong time)
+3. Incorrect messages (messages that when executed by the server return an exception, e.g. an incorrect choice)
 
+Messages in the third category are defined in the section they pertain to, following the message they respond to.
 
+Messages that generate an error of the second kind will receive an answer of type `err_illegal_message`:
+```json
+{
+  "type": "err_illegal_message",
+  "msg": "wrong message type"
+}
+```
+Only the server is able to generate this type of message.
+
+Unparsable messages will receive an answer of type `err_unparsable_message`:
+```json
+{
+  "type": "err_unparsable_message",
+  "msg": "unparsable message"
+}
+```
+When this type of message is received the last message will be recreated and sent again. More advanced solutions were not requested and will therefore not be taken into account to maintain simplicity and keep the focus on other features.
+
+The error messages' content is purposefully kept synthetic and will be expanded upon by the receiver if so appropriate.
 
 # Client-server connection
 A summary of the requirements highlighting the relevant parts is reported below:
