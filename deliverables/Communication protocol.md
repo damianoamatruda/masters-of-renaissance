@@ -46,7 +46,7 @@ The following specification for the additional feature "Multiple Games" is taken
 
 Given those requirements, the communication has been modeled in the following way.
 
-### Connecting/choosing a nickname
+## Connecting/choosing a nickname
 The player, when starting the client in multiplayer mode, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted as a connection attempt. Else, the player will be notified of the need to change it, restarting the process.
 ```
 +---------+                      +---------+ 
@@ -78,7 +78,7 @@ The player, when starting the client in multiplayer mode, will be asked to input
 }
 ```
 
-### Choosing the number of players
+## Choosing the number of players
 Follows the event in which a player is the first of the game, and has to choose the number of players the game will accept.
 ```
           +---------+                      +---------+ 
@@ -100,7 +100,7 @@ Follows the event in which a player is the first of the game, and has to choose 
 }
 ```
 
-### Game start
+## Game start
 As the game starts, the server braodcasts the event to all players.
 ```
 +---------+                      +---------+ 
@@ -118,12 +118,12 @@ As the game starts, the server braodcasts the event to all players.
 }
 ```
 
-## Game phase - Player setup
+# Game phase - Player setup
 When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices, since the players following the first are entitled to receive bonus resources and faith points.
 
 The player setup phase requires the players to choose leadercards and resources.
 
-### Choosing leader cards
+## Choosing leader cards
 The player is sent a portion of the deck of leader cards, from those they can choose which to keep and which to discard. The number of cards sent and chosen is set with parameters server-side.
 ```
           +---------+                      +---------+ 
@@ -154,7 +154,7 @@ The player is sent a portion of the deck of leader cards, from those they can ch
 }
 ```
 
-### Choosing starting resources
+## Choosing starting resources
 The players who haven't been given the inkwell have to choose their bonus starting resources.  
 The server will notify the player of the event, signaling the amount of resources the player can choose and which resources they can choose from.  
 The client will respond by specifying the resources and the respective amounts.
@@ -191,7 +191,7 @@ The client will respond by specifying the resources and the respective amounts.
 }
 ```
 
-## Game phase - Turns
+# Game phase - Turns
 After all players have gone through the setup phase, the server will start the turn loop.
 
 The player has to choose among three actions to carry out during their turn:
@@ -201,7 +201,7 @@ The player has to choose among three actions to carry out during their turn:
 
 That said, there are many other commands the player can issue during their turn, showinf the game's state, for example.
 
-### Show the market
+## Show the market
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -236,7 +236,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-### Show the player's shelves
+## Show the player's shelves
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -266,7 +266,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-### Show the player's leader cards
+## Show the player's leader cards
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -296,7 +296,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-### Show the development card grid
+## Show the development card grid
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -329,7 +329,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-### Get resources from the market
+## Get resources from the market
 In order to decide whether to carry out the action, the player can ask to be shown the market's status and their shelves (warehouse's/depot leaders', so they can see whether the taken resources can be stored).  
 Moreover, the resources taken by the player may include a replaceable type, which will be processed by the server depending on the player's active (and chosen, on a per-resource basis) leader cards. Therefore, the player can also ask the server to be shown their leader cards.
 
@@ -403,7 +403,7 @@ To get the resources, the player needs to specify:
 }
 ```
 
-### Swap two shelves' content
+## Swap two shelves' content
 During their turn, the player can decide to reorder the warehouse (the leader cards' depots are thought as part of it).
 
 For this to happen, the message sent by the client has to specify the two shelves the player wants to swap. Sending more than one of this type of message will be allowed by the server during the player's turn.
@@ -442,7 +442,7 @@ For this to happen, the message sent by the client has to specify the two shelve
 }
 ```
 
-### Buy a development card
+## Buy a development card
 The following information is needed when buying a development card:
 1. The row and column of the card to identify it in the grid
 2. For each resource, the shelf (or strongbox) to take it from
@@ -481,7 +481,7 @@ The following information is needed when buying a development card:
 }
 ```
 
-### Activate productions
+## Activate productions
 The following information is needed when activating a production:
 1. What productions to activate
 2. For each resource of each production, the shelf (or strongbox) to take it from/put it into
@@ -548,7 +548,7 @@ The following information is needed when activating a production:
 }
 ```
 
-### Leader actions
+## Leader actions
 During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
 
 To activate or discard a leader the server needs to know which card(s) the player wants to act on.
