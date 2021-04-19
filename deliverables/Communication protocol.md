@@ -1,5 +1,12 @@
-# Communication protocol documentation
+# Table of Contents
+1. [Communication protocol documentation](#communication-protocol-documentation)
+2. [Errors](#errors)
+3. [Client-server connection](#client-server-connection)
+4. [Connect/choose a nickname](#connect/choose-a-nickname)
+5. [Choose the number of players](#choose-the-number-of-players)
+6. [Game start](#game-start)
 
+# Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
 
 All messages are encoded using the GSON library and follow therefore the JSON specification, language-wise.  
