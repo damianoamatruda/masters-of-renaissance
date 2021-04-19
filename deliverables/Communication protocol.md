@@ -46,33 +46,33 @@ The following specification for the additional feature "Multiple Games" is taken
 
 Given those requirements, the communication has been modeled in the following way.
 
-## Connecting/choosing a nickname
+## Connect/choose a nickname
 The player, when starting the client in multiplayer mode, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted as a connection attempt. Else, the player will be notified of the need to change it, restarting the process.
 ```
 +---------+                      +---------+ 
 | Client  |                      | Server  |
 +---------+                      +---------+
      |                                |
-     |                 send_nickname  |
+     |                  req_nickname  |
      | -----------------------------> |
      |                                | /-----------------------\
      |                                |-| check nickname unique |
      |                                | \-----------------------/
-     |  nickname_ack                  |
+     |  res_nickname                  |
      | <----------------------------- |
      |                                |
 ```
-**send_nickname (client)**  
+**req_nickname (client)**  
 ```json
 {
-  "type": "send_nickname",
+  "type": "req_nickname",
   "nickname": "Name"
 }
 ```
-**nickname_ack (server)**  
+**res_nickname (server)**  
 ```json
 {
-  "type": "nickname_ack",
+  "type": "res_nickname",
   "accepted": true,
   "isFirst": false
 }
