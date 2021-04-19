@@ -573,5 +573,81 @@ The following information is needed when activating a production:
 }
 ```
 
+&nbsp;
+### Leader actions
+
+During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
+
+To activate or discard a leader the server needs to know which card(s) the player wants to act on.
+
+Leader activation:
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |               activate_leader  |
+               | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  leaders_view                  |
+               | <----------------------------- |
+               |                                |
+               |  leader_activation_err         |
+               | <----------------------------- |
+```
+**activate_leader (client)**  
+```json
+{
+  "type": "activate_leader",
+  "choice": [ 0 ]
+}
+```
+**leader_activation_err (server)**  
+```json
+{
+  "type": "leader_activation_err",
+  "msg": "The operation could not be completed because..."
+}
+```
+
+Discarding a leader:
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |                discard_leader  |
+               | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  leaders_view                  |
+               | <----------------------------- |
+               |                                |
+               |  leader_discard_err            |
+               | <----------------------------- |
+```
+**discard_leader (client)**  
+```json
+{
+  "type": "discard_leader",
+  "choice": [ 0 ]
+}
+```
+**leader_discard_err (server)**  
+```json
+{
+  "type": "leader_discard_err",
+  "msg": "The operation could not be completed because..."
+}
+```
 
 > The server manages the players' turns as per the game's rules. The server must handle a player disconnecting or leaving the game. If there are no players left the game will terminate and all players have to be notified.
