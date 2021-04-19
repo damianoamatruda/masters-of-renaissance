@@ -9,10 +9,7 @@ All messages shown in this page hold example values, to show the messages' struc
 The communication session can be divided into the connection phase and the game phase.  
 The game phase will be sectioned into player setup phase and turn phase for clarity.
 
-
-&nbsp;
 ## Connection phase
----
 The summary of the requirements' document given by the professors follows:
 
 > - On player connection: if there is no game in its starting phase (not enough players to start), a new one is created, else the player is automatically added to the half-full game currently being filled.
@@ -24,11 +21,9 @@ The following specification for the additional feature "Multiple Games" is inclu
 
 Given those requirements, it has been decided to model the communication the following way:
 
-&nbsp;
-### Connecting/choosing a nickname 
 
+### Connecting/choosing a nickname
 The player, when starting the client in multiplayer mode, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted as a connection attempt. Else, the player will be notified of the need to change it, restarting the process.
-
 ```
 +---------+                      +---------+ 
 | Client  |                      | Server  |
@@ -50,7 +45,6 @@ The player, when starting the client in multiplayer mode, will be asked to input
   "nickname": "Name"
 }
 ```
-
 **nickname_ack (server)**  
 ```json
 {
@@ -60,11 +54,8 @@ The player, when starting the client in multiplayer mode, will be asked to input
 }
 ```
 
-&nbsp;
 ### Choosing the number of players
-
 Follows the event in which a player is the first of the game, and has to choose the number of players the game will accept.
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -85,11 +76,8 @@ Follows the event in which a player is the first of the game, and has to choose 
 }
 ```
 
-&nbsp;
 ### Game start
-
 As the game starts, the server braodcasts the event to all players.
-
 ```
 +---------+                      +---------+ 
 | Client  |                      | Server  |
@@ -106,19 +94,13 @@ As the game starts, the server braodcasts the event to all players.
 }
 ```
 
-
-&nbsp;
 ## Game phase - Player setup
----
 When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices, since the players following the first are entitled to receive bonus resources and faith points.
 
 The player setup phase requires the players to choose leadercards and resources.
 
-&nbsp;
 ### Choosing leader cards
-
 The player is sent a portion of the deck of leader cards, from those they can choose which to keep and which to discard. The number of cards sent and chosen is set with parameters server-side.
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -140,7 +122,6 @@ The player is sent a portion of the deck of leader cards, from those they can ch
   "leaders": <list of leader cards>
 }
 ```
-
 **leader_choice (client)**  
 ```json
 {
@@ -149,13 +130,10 @@ The player is sent a portion of the deck of leader cards, from those they can ch
 }
 ```
 
-&nbsp;
 ### Choosing starting resources
-
 The players who haven't been given the inkwell have to choose their bonus starting resources.  
 The server will notify the player of the event, signaling the amount of resources the player can choose and which resources they can choose from.  
 The client will respond by specifying the resources and the respective amounts.
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -178,7 +156,6 @@ The client will respond by specifying the resources and the respective amounts.
   "available_res": <list of resource types>
 }
 ```
-
 **resources_choice (client)**  
 ```json
 {
@@ -190,10 +167,7 @@ The client will respond by specifying the resources and the respective amounts.
 }
 ```
 
-
-&nbsp;
 ## Game phase - Turns
----
 After all players have gone through the setup phase, the server will start the turn loop.
 
 The player has to choose among three actions to carry out during their turn:
@@ -203,9 +177,7 @@ The player has to choose among three actions to carry out during their turn:
 
 That said, there are many other commands the player can issue during their turn, showinf the game's state, for example.
 
-&nbsp;
 ### Show the market
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -226,7 +198,6 @@ That said, there are many other commands the player can issue during their turn,
   "type": "show_market"
 }
 ```
-
 **market_view (server)**  
 ```json
 {
@@ -241,9 +212,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-&nbsp;
 ### Show the player's shelves
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -265,7 +234,6 @@ That said, there are many other commands the player can issue during their turn,
   "choice": [ 0, 2, 3 ]
 }
 ```
-
 **shelves_view (server)**  
 ```json
 {
@@ -274,9 +242,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-&nbsp;
 ### Show the player's leader cards
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -298,7 +264,6 @@ That said, there are many other commands the player can issue during their turn,
   "choice": [ 0, 2 ]
 }
 ```
-
 **leaders_view (server)**  
 ```json
 {
@@ -307,9 +272,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-&nbsp;
 ### Show the development card grid
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -330,7 +293,6 @@ That said, there are many other commands the player can issue during their turn,
   "type": "show_dev_grid"
 }
 ```
-
 **dev_grid_view (server)**  
 ```json
 {
@@ -343,9 +305,7 @@ That said, there are many other commands the player can issue during their turn,
 }
 ```
 
-&nbsp;
 ### Get resources from the market
-
 In order to decide whether to carry out the action, the player can ask to be shown the market's status and their shelves (warehouse's/depot leaders', so they can see whether the taken resources can be stored).  
 Moreover, the resources taken by the player may include a replaceable type, which will be processed by the server depending on the player's active (and chosen, on a per-resource basis) leader cards. Therefore, the player can also ask the server to be shown their leader cards.
 
@@ -354,7 +314,6 @@ To get the resources, the player needs to specify:
 2. For each replaceable resource, which leader to use
 3. For each resource (after the leaders' processing), which shelf to use for its storage
 4. What resources, among the ones taken from the market, to discard
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -420,9 +379,7 @@ To get the resources, the player needs to specify:
 }
 ```
 
-&nbsp;
 ### Swap two shelves' content
-
 During their turn, the player can decide to reorder the warehouse (the leader cards' depots are thought as part of it).
 
 For this to happen, the message sent by the client has to specify the two shelves the player wants to swap. Sending more than one of this type of message will be allowed by the server during the player's turn.
@@ -461,14 +418,11 @@ For this to happen, the message sent by the client has to specify the two shelve
 }
 ```
 
-&nbsp;
 ### Buy a development card
-
 The following information is needed when buying a development card:
 1. The row and column of the card to identify it in the grid
 2. For each resource, the shelf (or strongbox) to take it from
 3. The slot to place it into
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -503,14 +457,11 @@ The following information is needed when buying a development card:
 }
 ```
 
-&nbsp;
 ### Activate productions
-
 The following information is needed when activating a production:
 1. What productions to activate
 2. For each resource of each production, the shelf (or strongbox) to take it from/put it into
 3. For each replaceable resource slot in each production, the resource to replace it with
-
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -573,9 +524,7 @@ The following information is needed when activating a production:
 }
 ```
 
-&nbsp;
 ### Leader actions
-
 During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
 
 To activate or discard a leader the server needs to know which card(s) the player wants to act on.
