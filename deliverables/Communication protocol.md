@@ -5,6 +5,7 @@
     1. [Connect/choose a nickname](#connect/choose-a-nickname)
     2. [Choose the number of players](#choose-the-number-of-players)
     3. [Game start](#game-start)
+4. [Game phase - Player setup](#game-phase---player-setup)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -157,9 +158,8 @@ As the game starts, the server notifies all players of the event.
 ```
 
 # Game phase - Player setup
-When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices, since the players following the first are entitled to receive bonus resources and faith points.
+When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices. Those include which leader cards to keep and resources, since the players following the first are entitled to receive bonus resources and faith points.
 
-The player setup phase requires the players to choose leadercards and resources.
 
 ## Choosing leader cards
 The player is sent a portion of the deck of leader cards, from those they can choose which to keep and which to discard. The number of cards sent and chosen is set with parameters server-side.
