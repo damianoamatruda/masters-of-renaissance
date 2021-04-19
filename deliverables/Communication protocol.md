@@ -78,8 +78,8 @@ The player, when starting the client in multiplayer mode, will be asked to input
 }
 ```
 
-## Choosing the number of players
-Follows the event in which a player is the first of the game, and has to choose the number of players the game will accept.
+## Choose the number of players
+When a player is chosen by the server as the first of a new game, they have to decide the number of players required to start it.
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -88,15 +88,37 @@ Follows the event in which a player is the first of the game, and has to choose 
 /------------\ |                                |
 | user input |-|                                |
 \------------/ |                                |
-               |             players_count_res  |
+               |             req_players_count  |
                | -----------------------------> |
+               |                                | /-------------\
+               |                                |-| try setting |
+               |                                | \-------------/
+               |  res_players_count             |
+               | <----------------------------- |
+               |                                |
+               |  err_players_count             |
+               | <----------------------------- |
                |                                |
 ```
-**players_count_res (client)**  
+**req_players_count (client)**
 ```json
 {
-  "type": "players_count_res",
-  "count": 1
+  "type": "req_players_count",
+  "count": 3
+}
+```
+**res_players_count (server)**
+```json
+{
+  "type": "res_players_count",
+  "msg": "the number of players has been set to 4"
+}
+```
+**err_players_count (server)**
+```json
+{
+  "type": "err_players_count",
+  "msg": "illegal number of players: 0"
 }
 ```
 
