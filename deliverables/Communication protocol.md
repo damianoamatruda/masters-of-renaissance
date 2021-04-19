@@ -123,20 +123,20 @@ When a player is chosen by the server as the first of a new game, they have to d
 ```
 
 ## Game start
-As the game starts, the server braodcasts the event to all players.
+As the game starts, the server notifies all players of the event.
 ```
 +---------+                      +---------+ 
 | Client  |                      | Server  |
 +---------+                      +---------+
      |                                |
-     |  game_started                  |
+     |  res_game_started              |
      | <----------------------------- |
      |                                |
 ```
-**game_started (server)**  
+**res_game_started (server)**  
 ```json
 {
-  "type": "game_started"
+  "type": "res_game_started"
 }
 ```
 
