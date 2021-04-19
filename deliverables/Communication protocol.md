@@ -7,6 +7,7 @@
     3. [Game start](#game-start)
 4. [Game phase - Player setup](#game-phase---player-setup)
     1. [Choose leader cards](#choose-leader-cards)
+    2. [Choose starting resources](#choose-starting-resources)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -217,40 +218,55 @@ If the choice is wrong, the client will be notified of the issue. Else, the serv
 }
 ```
 
-## Choosing starting resources
+## Choose starting resources
 The players who haven't been given the inkwell have to choose their bonus starting resources.  
-The server will notify the player of the event, signaling the amount of resources the player can choose and which resources they can choose from.  
-The client will respond by specifying the resources and the respective amounts.
+The server will notify the player of the event, signaling the amount of resources the player can choose and which resource types they can choose from.  
+The client will respond by specifying the resource types and the respective amounts.
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
           +---------+                      +---------+
                |                                |
-               |  resources_offer               |
+               |  offer_resources               |
                | <----------------------------- |
 /------------\ |                                |
 | user input |-|                                |
 \------------/ |                                |
-               |              resources_choice  |
+               |          req_resources_choice  |
                | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  res_resources_choice          |
+               | <----------------------------- |
                |                                |
+               |  err_resources_choice          |
+               | <----------------------------- |
+
 ```
-**resources_offer (server)**  
+**offer_resources (server)**  
 ```json
 {
-  "type": "resources_offer",
+  "type": "offer_resources",
   "count": 1,
-  "available_res": <list of resource types>
+  "res_type": [ "Coin", "Shield" ]
 }
 ```
-**resources_choice (client)**  
+**req_resources_choice (client)**  
 ```json
 {
-  "type": "resources_choice",
+  "type": "req_resources_choice",
   "choice": {
     "coin": 1,
     "shield": 1
   }
+}
+```
+**err_resources_choice (client)**  
+```json
+{
+  "type": "err_resources_choice",
+  "msg": "wrong starting resource choice: cannot choose 2 resources"
 }
 ```
 
