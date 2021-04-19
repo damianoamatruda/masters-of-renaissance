@@ -3,24 +3,23 @@
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
 
 All messages are encoded using the GSON library and follow therefore the JSON specification, language-wise.  
-Every message and the data it contains is mapped to a class (thanks to GSON's transparent serialization).  
-All messages shown in this page hold example values, to show the messages' structure.
+All values shown in the messages hold example values, only to show the messages' structure.  
 
-The communication session can be divided into the connection phase and the game phase.  
-The game phase will be sectioned into player setup phase and turn phase for clarity.
+The communication session can be divided into connection phase and game phase.
 
-## Connection phase
-The summary of the requirements' document given by the professors follows:
 
-> - On player connection: if there is no game in its starting phase (not enough players to start), a new one is created, else the player is automatically added to the half-full game currently being filled.
+
+
+# Client-server connection
+A summary of the requirements highlighting the relevant parts is reported below:
+> - On player connection: the player is automatically added to the game currently being filled. If there is no game in its starting phase, a new one is created.
 > - The player starting a new game chooses how many players have to join before the game can start.
 > - The game starts as soon as the specified number of players (given by the first player to join) is reached.
 
-The following specification for the additional feature "Multiple Games" is included in the communication protocol:
+The following specification for the additional feature "Multiple Games" is taken into account in the communication protocol's design:
 > Only one waiting room will be used to manage the players who join the server.
 
-Given those requirements, it has been decided to model the communication the following way:
-
+Given those requirements, the communication has been modeled in the following way.
 
 ### Connecting/choosing a nickname
 The player, when starting the client in multiplayer mode, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted as a connection attempt. Else, the player will be notified of the need to change it, restarting the process.
