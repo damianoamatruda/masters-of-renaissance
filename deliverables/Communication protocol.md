@@ -8,6 +8,7 @@
 4. [Game phase - Player setup](#game-phase---player-setup)
     1. [Choose leader cards](#choose-leader-cards)
     2. [Choose starting resources](#choose-starting-resources)
+5. [Game phase - Turns](#game-phase---turns)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -273,140 +274,16 @@ The client will respond by specifying the resource types and the respective amou
 # Game phase - Turns
 After all players have gone through the setup phase, the server will start the turn loop.
 
-The player has to choose among three actions to carry out during their turn:
+The player can request at any time to be shown the game's items (applies mostly to the CLI, as the GUI always displays everything), and therefore can send `show` commands whenever they please.
+
+During their turn, the player has to choose among three main actions to carry out:
 1. Getting resources from the market
 2. Buying a development card
 3. Activating the production
 
-That said, there are many other commands the player can issue during their turn, showinf the game's state, for example.
-
-## Show the market
-```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                |
-\------------/ |                                |
-               |                   show_market  |
-               | -----------------------------> |
-               |                                |
-               |  market_view                   |
-               | <----------------------------- |
-```
-**show_market (client)**  
-```json
-{
-  "type": "show_market"
-}
-```
-**market_view (server)**  
-```json
-{
-  "type": "market_view",
-  view: {
-    resources: [
-      [ "coin", "shield" ],
-      [ "coin", "shield" ]
-    ],
-    colCount: 2
-  }
-}
-```
-
-## Show the player's shelves
-```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                |
-\------------/ |                                |
-               |                  show_shelves  |
-               | -----------------------------> |
-               |                                |
-               |  shelves_view                  |
-               | <----------------------------- |
-```
-**show_shelves (client)**  
-```json
-{
-  "type": "show_shelves",
-  "choice": [ 0, 2, 3 ]
-}
-```
-**shelves_view (server)**  
-```json
-{
-  "type": "shelves_view",
-  "view": <list of shelves>
-}
-```
-
-## Show the player's leader cards
-```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                |
-\------------/ |                                |
-               |                  show_leaders  |
-               | -----------------------------> |
-               |                                |
-               |  leaders_view                  |
-               | <----------------------------- |
-```
-**show_leaders (client)**  
-```json
-{
-  "type": "show_leaders",
-  "choice": [ 0, 2 ]
-}
-```
-**leaders_view (server)**  
-```json
-{
-  "type": "leaders_view",
-  "view": <list of leader card>
-}
-```
-
-## Show the development card grid
-```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                |
-\------------/ |                                |
-               |                 show_dev_grid  |
-               | -----------------------------> |
-               |                                |
-               |  dev_grid_view                 |
-               | <----------------------------- |
-```
-**show_dev_grid (client)**  
-```json
-{
-  "type": "show_dev_grid"
-}
-```
-**dev_grid_view (server)**  
-```json
-{
-  "type": "leaders_view",
-  "view": [
-    [ ID, ID, ID, ID ],
-    [ ID, ID, ID, ID ],
-    [ ID, ID, ID, ID ]
-  ]
-}
-```
+In addition to these, they can choose to carry out other secondary actions. These can be performed as often as the player wants and at any point of the turn. They are:
+1. Swapping the content of the warehouse's shelves (the leader cards' depots count as such too)
+2. Activating/discarding a leader card
 
 ## Get resources from the market
 In order to decide whether to carry out the action, the player can ask to be shown the market's status and their shelves (warehouse's/depot leaders', so they can see whether the taken resources can be stored).  
