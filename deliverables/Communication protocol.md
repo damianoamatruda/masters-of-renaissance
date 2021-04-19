@@ -2,9 +2,9 @@
 1. [Communication protocol documentation](#communication-protocol-documentation)
 2. [Errors](#errors)
 3. [Client-server connection](#client-server-connection)
-4. [Connect/choose a nickname](#connect/choose-a-nickname)
-5. [Choose the number of players](#choose-the-number-of-players)
-6. [Game start](#game-start)
+    1. [Connect/choose a nickname](#connect/choose-a-nickname)
+    2. [Choose the number of players](#choose-the-number-of-players)
+    3. [Game start](#game-start)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -68,6 +68,9 @@ The player, when starting the client in multiplayer mode, will be asked to input
      |  res_nickname                  |
      | <----------------------------- |
      |                                |
+     |  err_nickname                  |
+     | <----------------------------- |
+     |                                |
 ```
 **req_nickname (client)**  
 ```json
@@ -80,8 +83,14 @@ The player, when starting the client in multiplayer mode, will be asked to input
 ```json
 {
   "type": "res_nickname",
-  "accepted": true,
   "isFirst": false
+}
+```
+**err_nickname (server)**  
+```json
+{
+  "type": "err_nickname",
+  "msg": "username already taken"
 }
 ```
 
@@ -136,14 +145,14 @@ As the game starts, the server notifies all players of the event.
 | Client  |                      | Server  |
 +---------+                      +---------+
      |                                |
-     |  res_game_started              |
+     |  game_started                  |
      | <----------------------------- |
      |                                |
 ```
-**res_game_started (server)**  
+**game_started (server)**  
 ```json
 {
-  "type": "res_game_started"
+  "type": "game_started"
 }
 ```
 
