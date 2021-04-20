@@ -16,6 +16,7 @@
         4. [Updating the development card grid](#updating-the-development-card-grid)
         5. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
         6. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
+        7. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -424,6 +425,26 @@ Indices reference the data given in [game start](#game-start).
   }
 }
 ```
+
+## Sending the activated solo action token
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  update_solo_token             |
+               | <----------------------------- |
+```
+**update_solo_token (server)**  
+```json
+{
+  "type": "update_solo_token",
+  "update": {
+    "index": 6
+  }
+}
+```
+
 During their turn, the player has to choose among three main actions to carry out:
 1. Getting resources from the market
 2. Buying a development card
