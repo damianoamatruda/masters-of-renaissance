@@ -15,6 +15,7 @@
         3. [Updating the player's leader cards](#updating-the-player's-leader-cards)
         4. [Updating the development card grid](#updating-the-development-card-grid)
         5. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
+        6. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -401,6 +402,25 @@ Indices reference the data given in [game start](#game-start).
   "update": {
     "slot_index": 0,
     "card_index": 7
+  }
+}
+```
+
+## Updating the player's position on the faith track
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  update_faith_track            |
+               | <----------------------------- |
+```
+**update_faith_track (server)**  
+```json
+{
+  "type": "update_faith_track",
+  "update": {
+    "position": 14
   }
 }
 ```
