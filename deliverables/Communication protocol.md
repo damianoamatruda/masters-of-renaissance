@@ -10,8 +10,8 @@
     2. [Choosing starting resources](#choosing-starting-resources)
 5. [Game phase - Turns](#game-phase---turns)
     1. [State messages](#state-messages)
-        2. [Show the player's shelves](#show-the-player's-shelves)
         1. [Updating the market](#updating-the-market)
+        2. [Updating the player's shelves](#updating-the-player's-shelves)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -314,32 +314,28 @@ Indices reference the data given in [game start](#game-start).
 }
 ```
 
-## Show the player's shelves
-The server will always send the status of the entire warehouse and strongbox when updating the client.  
-While this may seem like a waste of data, it greatly simplifies the parsing and unparsing of the messages, since the shelves' order will remain the same at all times, and for this reason the tradeoff was chosen.
-
-The `isStrongbox` field is used to distinguish between the warehouse's shelves and a multi-shelf representation of the player's strongbox (the strongbox is thought as being a dynamic collection of shelves, since it can hold multiple types of resources).
+## Updating the player's shelves
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
           +---------+                      +---------+
                |                                |
-               |  view_shelves                  |
+               |  update_shelves                |
                | <----------------------------- |
 ```
-**view_shelves (server)**  
+**update_shelves (server)**  
 ```json
 {
-  "type": "view_shelves",
-  "view": [
+  "type": "update_shelves",
+  "update": [
     {
+      "index": 0,
       "bound_res": "Coin",
       "amount": 1,
-      "isStrongbox": false
     }, {
+      "index": 1,
       "bound_res": null,
       "amount": 0,
-      "isStrongbox": true
     }
   ]
 }
