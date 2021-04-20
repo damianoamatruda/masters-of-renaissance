@@ -2,12 +2,12 @@
 1. [Communication protocol documentation](#communication-protocol-documentation)
 2. [Errors](#errors)
 3. [Client-server connection](#client-server-connection)
-    1. [Connect/choose a nickname](#connect/choose-a-nickname)
-    2. [Choose the number of players](#choose-the-number-of-players)
+    1. [Connecting/choosing a nickname](#connecting/choosing-a-nickname)
+    2. [Choosing the number of players](#choosing-the-number-of-players)
     3. [Game start](#game-start)
 4. [Game phase - Player setup](#game-phase---player-setup)
-    1. [Choose leader cards](#choose-leader-cards)
-    2. [Choose starting resources](#choose-starting-resources)
+    1. [Choosing leader cards](#choosing-leader-cards)
+    2. [Choosing starting resources](#choosing-starting-resources)
 5. [Game phase - Turns](#game-phase---turns)
 
 # Communication protocol documentation
@@ -57,7 +57,7 @@ The following specification for the additional feature "Multiple Games" is taken
 
 Given those requirements, the communication has been modeled in the following way.
 
-## Connect/choose a nickname
+## Connecting/choosing a nickname
 The player, when starting the client in multiplayer mode, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted as a connection attempt. Else, the player will be notified of the need to change it, restarting the process.
 ```
 +---------+                      +---------+ 
@@ -98,7 +98,7 @@ The player, when starting the client in multiplayer mode, will be asked to input
 }
 ```
 
-## Choose the number of players
+## Choosing the number of players
 When a player is chosen by the server as the first of a new game, they have to decide the number of players required to start it.
 ```
           +---------+                      +---------+ 
@@ -163,7 +163,7 @@ As the game starts, the server notifies all players of the event.
 # Game phase - Player setup
 When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices. Those include which leader cards to keep and resources, since the players following the first are entitled to receive bonus resources and faith points.
 
-## Choose leader cards
+## Choosing leader cards
 The players have to decide manually what leader cards they want to own.  
 Each player is sent a portion of the deck of leader cards, from which they can choose the cards to keep and discard. The number of cards to be sent and chosen is set by parameters server-side.
 
@@ -219,7 +219,7 @@ If the choice is wrong, the client will be notified of the issue. Else, the serv
 }
 ```
 
-## Choose starting resources
+## Choosing starting resources
 The players who haven't been given the inkwell have to choose their bonus starting resources.  
 The server will notify the player of the event, signaling the amount of resources the player can choose and which resource types they can choose from.  
 The client will respond by specifying the resource types and the respective amounts.
