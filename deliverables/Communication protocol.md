@@ -9,6 +9,7 @@
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
 5. [Game phase - Turns](#game-phase---turns)
+    1. [State messages](#state-messages)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -279,6 +280,13 @@ The messages will be differentiated into three categories:
 2. Secondary moves, which can be repeated within the player's turn
 3. Main moves, of which the player has to choose only one during the turn
 
+# State messages
+These messages are used to show the model's status to the player.
+
+The server automatically sends incremental updates to the player whenever an object changes.  
+With that said, in order to carry out a choice-heavy move, the player may want to see objects that were updated long before. On the GUI side, the player can glance at the entire board, but when playing from the CLI finding the last update of an object would be unoptimal.  
+In those cases the player can request a fresh view of the objects via commands, which, instead of reaching the server, will be served by the local cache. This allows for improved responsiveness and cuts back on the amount of data transferred, simplifying somewhat the communication protocol as well.  
+This solution allows every player to prepare their moves before their turn comes, speeding up the gameplay and improving the experience.
 During their turn, the player has to choose among three main actions to carry out:
 1. Getting resources from the market
 2. Buying a development card
