@@ -10,6 +10,7 @@
     2. [Choosing starting resources](#choosing-starting-resources)
 5. [Game phase - Turns](#game-phase---turns)
     1. [State messages](#state-messages)
+        1. [Show the market](#show-the-market)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -287,6 +288,26 @@ The server automatically sends incremental updates to the player whenever an obj
 With that said, in order to carry out a choice-heavy move, the player may want to see objects that were updated long before. On the GUI side, the player can glance at the entire board, but when playing from the CLI finding the last update of an object would be unoptimal.  
 In those cases the player can request a fresh view of the objects via commands, which, instead of reaching the server, will be served by the local cache. This allows for improved responsiveness and cuts back on the amount of data transferred, simplifying somewhat the communication protocol as well.  
 This solution allows every player to prepare their moves before their turn comes, speeding up the gameplay and improving the experience.
+
+## Show the market
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  view_market                   |
+               | <----------------------------- |
+```
+**view_market (server)**  
+```json
+{
+  "type": "view_market",
+  "view": [
+    [ "coin", "shield" ],
+    [ "shield", "stone" ]
+  ]
+}
+```
 During their turn, the player has to choose among three main actions to carry out:
 1. Getting resources from the market
 2. Buying a development card
