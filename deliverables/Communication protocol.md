@@ -13,6 +13,7 @@
         1. [Updating the market](#updating-the-market)
         2. [Updating the player's shelves](#updating-the-player's-shelves)
         3. [Updating the player's leader cards](#updating-the-player's-leader-cards)
+        4. [Updating the development card grid](#updating-the-development-card-grid)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -358,6 +359,27 @@ Indices reference the data given in [game start](#game-start).
   "update": {
     "index": 1,
     "isActive": true
+  }
+}
+```
+
+## Updating the development card grid
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  update_dev_grid               |
+               | <----------------------------- |
+```
+**update_dev_grid (server)**  
+```json
+{
+  "type": "update_dev_grid",
+  "update": {
+    "row_index": 1,
+    "col_index": 2,
+    "card_index": 4
   }
 }
 ```
