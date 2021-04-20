@@ -272,9 +272,12 @@ The client will respond by specifying the resource types and the respective amou
 ```
 
 # Game phase - Turns
-After all players have gone through the setup phase, the server will start the turn loop.
+After all players have gone through the setup phase, the server will send the initial game state to the clients' local caches (see the [State messages](#state-messages) section) and then start the turn loop.
 
-The player can request at any time to be shown the game's items (applies mostly to the CLI, as the GUI always displays everything), and therefore can send `show` commands whenever they please.
+The messages will be differentiated into three categories:
+1. State messages, which get the object's state from the server
+2. Secondary moves, which can be repeated within the player's turn
+3. Main moves, of which the player has to choose only one during the turn
 
 During their turn, the player has to choose among three main actions to carry out:
 1. Getting resources from the market
