@@ -12,6 +12,7 @@
     1. [State messages](#state-messages)
         1. [Updating the market](#updating-the-market)
         2. [Updating the player's shelves](#updating-the-player's-shelves)
+        3. [Updating the player's leader cards](#updating-the-player's-leader-cards)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -338,6 +339,26 @@ Indices reference the data given in [game start](#game-start).
       "amount": 0,
     }
   ]
+}
+```
+
+## Updating the player's leader cards
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  update_leaders                |
+               | <----------------------------- |
+```
+**update_leaders (server)**  
+```json
+{
+  "type": "update_leaders",
+  "update": {
+    "index": 1,
+    "isActive": true
+  }
 }
 ```
 During their turn, the player has to choose among three main actions to carry out:
