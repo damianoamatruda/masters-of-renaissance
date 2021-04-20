@@ -11,6 +11,7 @@
 5. [Game phase - Turns](#game-phase---turns)
     1. [State messages](#state-messages)
         1. [Show the market](#show-the-market)
+        2. [Show the player's shelves](#show-the-player's-shelves)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -305,6 +306,37 @@ This solution allows every player to prepare their moves before their turn comes
   "view": [
     [ "coin", "shield" ],
     [ "shield", "stone" ]
+  ]
+}
+```
+
+## Show the player's shelves
+The server will always send the status of the entire warehouse and strongbox when updating the client.  
+While this may seem like a waste of data, it greatly simplifies the parsing and unparsing of the messages, since the shelves' order will remain the same at all times, and for this reason the tradeoff was chosen.
+
+The `isStrongbox` field is used to distinguish between the warehouse's shelves and a multi-shelf representation of the player's strongbox (the strongbox is thought as being a dynamic collection of shelves, since it can hold multiple types of resources).
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  view_shelves                  |
+               | <----------------------------- |
+```
+**view_shelves (server)**  
+```json
+{
+  "type": "view_shelves",
+  "view": [
+    {
+      "bound_res": "Coin",
+      "amount": 1,
+      "isStrongbox": false
+    }, {
+      "bound_res": null,
+      "amount": 0,
+      "isStrongbox": true
+    }
   ]
 }
 ```
