@@ -19,6 +19,7 @@
         7. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
     2. [Secondary actions](#secondary-actions)
         1. [Swapping two shelves' content](#swapping-two-shelves'-content)
+        2. [Leader Actions](#leader-actions)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -490,59 +491,83 @@ This is technically only useful when taking resources from the market, as no oth
   "msg": "shelves 0 and 3 cannot be swapped: too many resources in shelf 3"
 }
 ```
-               |  leader_choice_err             |
+
+## Leader actions
+During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
+
+To activate or discard a leader the server needs to know which card(s) the player wants to act on.
+
+Leader activation:
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |           req_activate_leader  |
+               | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  update_leaders                |
                | <----------------------------- |
                |                                |
-               |  shelves_choice_err            |
+               |  err_leader_activation         |
                | <----------------------------- |
 ```
-**get_market_req (client)**  
+**req_activate_leader (client)**  
 ```json
 {
-  "type": "get_market_req",
-  "index_choice": 0,
-  "isRow": true,
-  "discard_choice": [ 2 ],
-  "leaders_choice": [ 0, 0, 1 ],
-  "shelf_choice": {
-    "shelf_index": 1,
-    "resources": [{
-      "type": "coin",
-      "amount": 2
-    }, {
-      "type": "shield",
-      "amount": 1
-    }]
-  }
+  "type": "req_activate_leader",
+  "choice": [ 0 ]
 }
 ```
-**get_market_resp (server)**  
+**err_leader_activation (server)**  
 ```json
 {
-  "type": "get_market_resp",
-  "shelves_view": <shelves_view JSON>,
-  "market_view": <market_view JSON>
-}
-```
-**leader_choice_err (server)**  
-```json
-{
-  "type": "IllegalLeaderChoice",
-  "msg": "The operation could not be completed because..."
-}
-```
-**shelves_choice_err (server)**  
-```json
-{
-  "type": "IllegalShelfChoice",
-  "msg": "The operation could not be completed because..."
+  "type": "err_leader_activation",
+  "msg": "leader 0 is already active"
 }
 ```
 
-## Swap two shelves' content
-During their turn, the player can decide to reorder the warehouse (the leader cards' depots are thought as part of it).
+Discarding a leader:
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |            req_discard_leader  |
+               | -----------------------------> |
+               |                                | /--------------------------\
+               |                                |-| try exec / check choices |
+               |                                | \--------------------------/
+               |  update_leaders                |
+               | <----------------------------- |
+               |                                |
+               |  err_leader_discard            |
+               | <----------------------------- |
+```
+**req_discard_leader (client)**  
+```json
+{
+  "type": "req_discard_leader",
+  "choice": [ 0 ]
+}
+```
+**err_leader_discard (server)**  
+```json
+{
+  "type": "err_leader_discard",
+  "msg": "leader 0 cannot be discarded: leader 0 is active"
+}
+```
 
-For this to happen, the message sent by the client has to specify the two shelves the player wants to swap. Sending more than one of this type of message will be allowed by the server during the player's turn.
+
 
 ```
           +---------+                      +---------+ 
