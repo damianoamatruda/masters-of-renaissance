@@ -17,6 +17,7 @@
         5. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
         6. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
         7. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+    2. [Secondary actions](#secondary-actions)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -445,6 +446,11 @@ Indices reference the data given in [game start](#game-start).
 }
 ```
 
+
+# Secondary actions
+Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
+1. Swapping the content of the warehouse's shelves (the leader cards' depots count as such too)
+2. Activating/discarding a leader card
 During their turn, the player has to choose among three main actions to carry out:
 1. Getting resources from the market
 2. Buying a development card
