@@ -27,7 +27,7 @@ public class Game {
     private final int maxObtainableDevCards;
 
     /** Progressive number of the current round. */
-    protected int rounds = 1;
+    protected int rounds = 0;
 
     /** Flag that indicates the Game is about to end. */
     protected boolean lastRound;
@@ -63,7 +63,6 @@ public class Game {
             setWinnerPlayer();
             return true;
         }
-        rounds++;
         return false;
     }
 
@@ -105,16 +104,28 @@ public class Game {
      * @throws AllInactiveException all players are set to inactive
      */
     public Player onTurnEnd() throws AllInactiveException {
-        if (players.stream().noneMatch(Player::isActive)) throw new AllInactiveException();
+        if (players.stream().noneMatch(Player::isActive))
+            throw new AllInactiveException();
 
-        Player temp = players.get(0);
+        Player nextPlayer;
         do {
-            players.remove(0);
-            players.add(temp);
-            temp = players.get(0);
-        } while (!temp.isActive());
-        return temp;
+            players.add(players.remove(0));
+            nextPlayer = players.get(0);
+        } while (!nextPlayer.isActive());
 
+        if (nextPlayer.equals(getFirstPlayer()))
+            rounds++;
+
+        return nextPlayer;
+    }
+
+    /**
+     * Returns the player with the inkwell.
+     *
+     * @return the first player
+     */
+    public Player getFirstPlayer() {
+        return players.stream().filter(Player::hasInkwell).findFirst().orElseThrow();
     }
 
     /**
@@ -127,7 +138,7 @@ public class Game {
     }
 
     /**
-     * Getter of the current number of round.
+     * Getter of the current number of completed rounds.
      *
      * @return the current round number
      */
