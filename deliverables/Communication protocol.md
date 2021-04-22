@@ -20,6 +20,7 @@
     2. [Secondary actions](#secondary-actions)
         1. [Swapping two shelves' content](#swapping-two-shelves'-content)
         2. [Leader Actions](#leader-actions)
+    3. [Main actions](#main-actions)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -568,6 +569,11 @@ Discarding a leader:
 ```
 
 
+# Main actions
+During their turn, the player has to choose among three main actions to carry out:
+1. Getting resources from the market
+2. Buying a development card
+3. Activating the production
 
 ```
           +---------+                      +---------+ 
