@@ -89,21 +89,21 @@ The player, when starting the client in multiplayer mode, will be asked to input
      | <----------------------------- |
      |                                |
 ```
-**req_nickname (client)**  
+**req_nickname (client)**
 ```json
 {
   "type": "req_nickname",
   "nickname": "Name"
 }
 ```
-**res_nickname (server)**  
+**res_nickname (server)**
 ```json
 {
   "type": "res_nickname",
   "isFirst": false
 }
 ```
-**err_nickname (server)**  
+**err_nickname (server)**
 ```json
 {
   "type": "err_nickname",
@@ -166,7 +166,7 @@ As the game starts, the server notifies all players of the event.
      | <----------------------------- |
      |                                |
 ```
-**game_started (server)**  
+**game_started (server)**
 ```json
 {
   "type": "game_started"
@@ -203,28 +203,28 @@ If the choice is wrong, the client will be notified of the issue. Else, the serv
                |  err_leader_choice             |
                | <----------------------------- |
 ```
-**offer_leader (server)**  
+**offer_leader (server)**
 ```json
 {
   "type": "offer_leader",
   "leaders_id": [ 3, 7, 14, 15 ]
 }
 ```
-**req_leader_choice (client)**  
+**req_leader_choice (client)**
 ```json
 {
   "type": "req_leader_choice",
   "choice": [ 3, 15 ]
 }
 ```
-**res_leader_choice (server)**  
+**res_leader_choice (server)**
 ```json
 {
   "type": "res_leader_choice",
   "choice": [ 3, 15 ]
 }
 ```
-**err_leader_choice (server)**  
+**err_leader_choice (server)**
 ```json
 {
   "type": "err_leader_choice",
@@ -258,7 +258,7 @@ The client will respond by specifying the resource types and the respective amou
                | <----------------------------- |
 
 ```
-**offer_resources (server)**  
+**offer_resources (server)**
 ```json
 {
   "type": "offer_resources",
@@ -266,7 +266,7 @@ The client will respond by specifying the resource types and the respective amou
   "res_type": [ "Coin", "Shield" ]
 }
 ```
-**req_resources_choice (client)**  
+**req_resources_choice (client)**
 ```json
 {
   "type": "req_resources_choice",
@@ -276,7 +276,7 @@ The client will respond by specifying the resource types and the respective amou
   }
 }
 ```
-**err_resources_choice (client)**  
+**err_resources_choice (client)**
 ```json
 {
   "type": "err_resources_choice",
@@ -311,7 +311,7 @@ Indices reference the data given in [game start](#game-start).
                |  update_market                 |
                | <----------------------------- |
 ```
-**update_market (server)**  
+**update_market (server)**
 ```json
 {
   "type": "update_market",
@@ -333,7 +333,7 @@ Indices reference the data given in [game start](#game-start).
                |  update_shelves                |
                | <----------------------------- |
 ```
-**update_shelves (server)**  
+**update_shelves (server)**
 ```json
 {
   "type": "update_shelves",
@@ -360,7 +360,7 @@ Indices reference the data given in [game start](#game-start).
                |  update_leaders                |
                | <----------------------------- |
 ```
-**update_leaders (server)**  
+**update_leaders (server)**
 ```json
 {
   "type": "update_leaders",
@@ -380,7 +380,7 @@ Indices reference the data given in [game start](#game-start).
                |  update_dev_grid               |
                | <----------------------------- |
 ```
-**update_dev_grid (server)**  
+**update_dev_grid (server)**
 ```json
 {
   "type": "update_dev_grid",
@@ -401,7 +401,7 @@ Indices reference the data given in [game start](#game-start).
                |  update_dev_card_slot          |
                | <----------------------------- |
 ```
-**update_dev_card_slot (server)**  
+**update_dev_card_slot (server)**
 ```json
 {
   "type": "update_dev_card_slot",
@@ -421,7 +421,7 @@ Indices reference the data given in [game start](#game-start).
                |  update_faith_track            |
                | <----------------------------- |
 ```
-**update_faith_track (server)**  
+**update_faith_track (server)**
 ```json
 {
   "type": "update_faith_track",
@@ -440,7 +440,7 @@ Indices reference the data given in [game start](#game-start).
                |  update_solo_token             |
                | <----------------------------- |
 ```
-**update_solo_token (server)**  
+**update_solo_token (server)**
 ```json
 {
   "type": "update_solo_token",
@@ -479,14 +479,14 @@ This is technically only useful when taking resources from the market, as no oth
                |  err_shelf_swap                |
                | <----------------------------- |
 ```
-**req_swap_shelves (client)**  
+**req_swap_shelves (client)**
 ```json
 {
   "type": "req_swap_shelves",
   "choice": [ 0, 3 ]
 }
 ```
-**shelf_swap_choice_err (server)**  
+**shelf_swap_choice_err (server)**
 ```json
 {
   "type": "err_shelf_swap",
@@ -519,14 +519,14 @@ Leader activation:
                |  err_leader_activation         |
                | <----------------------------- |
 ```
-**req_activate_leader (client)**  
+**req_activate_leader (client)**
 ```json
 {
   "type": "req_activate_leader",
   "choice": [ 0 ]
 }
 ```
-**err_leader_activation (server)**  
+**err_leader_activation (server)**
 ```json
 {
   "type": "err_leader_activation",
@@ -554,14 +554,14 @@ Discarding a leader:
                |  err_leader_discard            |
                | <----------------------------- |
 ```
-**req_discard_leader (client)**  
+**req_discard_leader (client)**
 ```json
 {
   "type": "req_discard_leader",
   "choice": [ 0 ]
 }
 ```
-**err_leader_discard (server)**  
+**err_leader_discard (server)**
 ```json
 {
   "type": "err_leader_discard",
@@ -614,7 +614,7 @@ Therefore, the only mistakes that can be made stem from fitting the resources in
                | <----------------------------- |
 
 ```
-**req_get_market (client)**  
+**req_get_market (client)**
 ```json
 {
   "type": "req_get_market",
@@ -636,14 +636,14 @@ Therefore, the only mistakes that can be made stem from fitting the resources in
   }
 }
 ```
-**err_shelves_choice (server)**  
+**err_shelves_choice (server)**
 ```json
 {
   "type": "err_shelves_choice",
   "msg": "cannot fit the resources in the shelves as chosen: no space left in shelf 3"
 }
 ```
-**err_leaders_choice (server)**  
+**err_leaders_choice (server)**
 ```json
 {
   "type": "err_leaders_choice",
@@ -675,14 +675,14 @@ The following information is needed when buying a development card:
                |  shelf_swap_choice_err         |
                | <----------------------------- |
 ```
-**swap_shelves (client)**  
+**swap_shelves (client)**
 ```json
 {
   "type": "swap_shelves",
   "choice": [ 0, 3 ]
 }
 ```
-**shelf_swap_choice_err (server)**  
+**shelf_swap_choice_err (server)**
 ```json
 {
   "type": "shelf_swap_choice_err",
@@ -714,7 +714,7 @@ The following information is needed when activating a production:
                |  prod_activation_err           |
                | <----------------------------- |
 ```
-**activate_prod (client)**  
+**activate_prod (client)**
 ```json
 {
   "type": "activate_prod",
@@ -749,7 +749,7 @@ The following information is needed when activating a production:
   ],
 }
 ```
-**prod_activation_err (server)**  
+**prod_activation_err (server)**
 ```json
 {
   "type": "prod_activation_err",
