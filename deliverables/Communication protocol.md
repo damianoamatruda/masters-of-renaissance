@@ -21,6 +21,7 @@
         1. [Swapping two shelves' content](#swapping-two-shelves'-content)
         2. [Leader Actions](#leader-actions)
     3. [Main actions](#main-actions)
+        1. [Getting resources from the market](#getting-resources-from-the-market)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -575,6 +576,18 @@ During their turn, the player has to choose among three main actions to carry ou
 2. Buying a development card
 3. Activating the production
 
+## Getting resources from the market
+The following needs to be specified:
+1. Which row/column the player wants to take the resources from
+2. For each replaceable resource, which leader to use (if applicable)
+3. For each resource (its type considered after the leader's processing), which shelf to use to store it
+4. What resources, among the ones taken from the market, to discard
+
+The data in the `leaders_choice` field of the request maps the leaders to be used with the resource in the chosen row/column in the same order they appear ("[0, -1, 2]" uses leader 0 for the first resource, no leader for the second and the leader 3 for the last).  
+The `discard_index` field holds the indexes of the resources to be discarded as they appear in the chosen list ("3" discards the 4th resource).
+
+It may look like possible errors may arise from choosing the wrong leader type-wise, but the server is designed to handle such case transparently.  
+Therefore, the only mistakes that can be made stem from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding them appropriately, or by specifying a nonexistent leader.
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -583,29 +596,58 @@ During their turn, the player has to choose among three main actions to carry ou
 /------------\ |                                |
 | user input |-|                                | 
 \------------/ |                                |
-               |                  swap_shelves  |
+               |                req_get_market  |
                | -----------------------------> |
                |                                | /--------------------------\
                |                                |-| try exec / check choices |
                |                                | \--------------------------/
-               |  shelves_view                  |
+               |  update_market                 |
                | <----------------------------- |
                |                                |
-               |  shelf_swap_choice_err         |
+               |  update_shelves                |
                | <----------------------------- |
+               |                                |
+               |  err_shelves_choice            |
+               | <----------------------------- |
+               |                                |
+               |  err_leaders_choice            |
+               | <----------------------------- |
+
 ```
-**swap_shelves (client)**  
+**req_get_market (client)**  
 ```json
 {
-  "type": "swap_shelves",
-  "choice": [ 0, 3 ]
+  "type": "req_get_market",
+  "choice": {
+    "market_index": 0,
+    "isRow": true,
+    "discard_index": [ 2 ],
+    "leaders_choice": [ 0, 0, 1 ],
+    "shelf_choice": [
+      {
+        "shelf_index": 1,
+        "res_amount": 2
+      }, {
+        "shelf_index": 3,
+        "res_amount": 2,
+        "res_type": "Coin"
+      }
+    ]
+  }
 }
 ```
-**shelf_swap_choice_err (server)**  
+**err_shelves_choice (server)**  
 ```json
 {
-  "type": "shelf_swap_choice_err",
-  "msg": "The operation could not be completed because..."
+  "type": "err_shelves_choice",
+  "msg": "cannot fit the resources in the shelves as chosen: no space left in shelf 3"
+}
+```
+**err_leaders_choice (server)**  
+```json
+{
+  "type": "err_leaders_choice",
+  "msg": "cannot use leader 4 to convert resources: leader does not exist"
 }
 ```
 
