@@ -18,6 +18,7 @@
         6. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
         7. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
     2. [Secondary actions](#secondary-actions)
+        1. [Swapping two shelves' content](#swapping-two-shelves'-content)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -451,24 +452,11 @@ Indices reference the data given in [game start](#game-start).
 Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
 1. Swapping the content of the warehouse's shelves (the leader cards' depots count as such too)
 2. Activating/discarding a leader card
-During their turn, the player has to choose among three main actions to carry out:
-1. Getting resources from the market
-2. Buying a development card
-3. Activating the production
 
-In addition to these, they can choose to carry out other secondary actions. These can be performed as often as the player wants and at any point of the turn. They are:
-1. Swapping the content of the warehouse's shelves (the leader cards' depots count as such too)
-2. Activating/discarding a leader card
+## Swapping two shelves' content
+During their turn, the player can decide to reorder the warehouse (the leader cards' depots are thought as a part of it).
 
-## Get resources from the market
-In order to decide whether to carry out the action, the player can ask to be shown the market's status and their shelves (warehouse's/depot leaders', so they can see whether the taken resources can be stored).  
-Moreover, the resources taken by the player may include a replaceable type, which will be processed by the server depending on the player's active (and chosen, on a per-resource basis) leader cards. Therefore, the player can also ask the server to be shown their leader cards.
-
-To get the resources, the player needs to specify:
-1. Which row/column they want to take the resources from
-2. For each replaceable resource, which leader to use
-3. For each resource (after the leaders' processing), which shelf to use for its storage
-4. What resources, among the ones taken from the market, to discard
+This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -477,14 +465,31 @@ To get the resources, the player needs to specify:
 /------------\ |                                |
 | user input |-|                                | 
 \------------/ |                                |
-               |                get_market_req  |
+               |              req_swap_shelves  |
                | -----------------------------> |
                |                                | /--------------------------\
                |                                |-| try exec / check choices |
                |                                | \--------------------------/
-               |  get_market_resp               |
+               |  update_shelves                |
                | <----------------------------- |
                |                                |
+               |  err_shelf_swap                |
+               | <----------------------------- |
+```
+**req_swap_shelves (client)**  
+```json
+{
+  "type": "req_swap_shelves",
+  "choice": [ 0, 3 ]
+}
+```
+**shelf_swap_choice_err (server)**  
+```json
+{
+  "type": "err_shelf_swap",
+  "msg": "shelves 0 and 3 cannot be swapped: too many resources in shelf 3"
+}
+```
                |  leader_choice_err             |
                | <----------------------------- |
                |                                |
