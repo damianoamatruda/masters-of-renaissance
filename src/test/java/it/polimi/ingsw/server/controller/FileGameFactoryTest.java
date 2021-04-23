@@ -20,7 +20,7 @@ public class FileGameFactoryTest {
         assertAll(
                 () -> assertNotNull(f.getResourceType("Coin")),
                 () -> assertNotNull(f.getResourceType("Faith")),
-                () -> assertFalse(f.getResourceType("Faith").isStorable())
+                () -> assertTrue(f.getResourceType("Faith").isPresent() && !f.getResourceType("Faith").get().isStorable())
         );
     }
 
@@ -30,8 +30,8 @@ public class FileGameFactoryTest {
     @Test
     void testColors() {
         assertAll(
-                () -> assertNotNull(f.getDevCardColor("Blue")),
-                () -> assertNotNull(f.getDevCardColor("Green"))
+                () -> assertTrue(f.getDevCardColor("Blue").isPresent()),
+                () -> assertTrue(f.getDevCardColor("Green").isPresent())
         );
     }
 

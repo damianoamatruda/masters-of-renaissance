@@ -195,8 +195,8 @@ public class FileGameFactory implements GameFactory {
      * @param name the name of the resource type
      * @return the resource type
      */
-    public ResourceType getResourceType(String name) {
-        return resTypeMap.get(name);
+    public Optional<ResourceType> getResourceType(String name) {
+        return Optional.ofNullable(resTypeMap.get(name));
     }
 
     /**
@@ -205,8 +205,8 @@ public class FileGameFactory implements GameFactory {
      * @param name the name of the development card color
      * @return the development card color
      */
-    public DevCardColor getDevCardColor(String name) {
-        return devCardColorMap.get(name);
+    public Optional<DevCardColor> getDevCardColor(String name) {
+        return Optional.ofNullable(devCardColorMap.get(name));
     }
 
     /**
