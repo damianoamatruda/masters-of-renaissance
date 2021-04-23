@@ -111,10 +111,9 @@ public class Game {
      * <p>
      * If next player is inactive, the operation is repeated until an active player is found.
      *
-     * @return the next player that has to play a turn
      * @throws AllInactiveException all players are set to inactive
      */
-    public Player onTurnEnd() throws AllInactiveException {
+    public void onTurnEnd() throws AllInactiveException {
         if (players.stream().noneMatch(Player::isActive))
             throw new AllInactiveException();
 
@@ -126,8 +125,6 @@ public class Game {
 
         if (nextPlayer.equals(getFirstPlayer()))
             rounds++;
-
-        return nextPlayer;
     }
 
     /**
@@ -137,6 +134,15 @@ public class Game {
      */
     public Player getFirstPlayer() {
         return players.stream().filter(Player::hasInkwell).findFirst().orElseThrow();
+    }
+
+    /**
+     * Returns the player that has to play a turn.
+     *
+     * @return the current player
+     */
+    public Player getCurrentPlayer() {
+        return players.get(0);
     }
 
     /**

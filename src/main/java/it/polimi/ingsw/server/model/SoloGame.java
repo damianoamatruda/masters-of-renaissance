@@ -54,12 +54,12 @@ public class SoloGame extends Game {
      * @throws AllInactiveException all players are inactive
      */
     @Override
-    public Player onTurnEnd() throws AllInactiveException {
+    public void onTurnEnd() throws AllInactiveException {
         ActionToken token = actionTokens.get(0);
         token.trigger(this);
         actionTokens.add(token);
 
-        return super.onTurnEnd();
+        super.onTurnEnd();
     }
 
     @Override

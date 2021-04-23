@@ -358,7 +358,8 @@ public class GameTest {
         void onTurnEndWithOneInactivePlayer() throws AllInactiveException {
             String next = game.getPlayers().get(2).getNickname();
             game.getPlayers().get(1).setActive(false);
-            assertEquals(next, game.onTurnEnd().getNickname());
+            game.onTurnEnd();
+            assertEquals(next, game.getCurrentPlayer().getNickname());
         }
 
         /**
@@ -369,11 +370,10 @@ public class GameTest {
             game.getPlayers().get(1).setActive(false);
             game.getPlayers().get(2).setActive(false);
             String next = game.getPlayers().get(0).getNickname();
-            Player nowPlaying;
             game.onTurnEnd();
             game.onTurnEnd();
-            nowPlaying = game.onTurnEnd();
-            assertEquals(next, nowPlaying.getNickname());
+            game.onTurnEnd();
+            assertEquals(next, game.getCurrentPlayer().getNickname());
         }
 
         /**
@@ -383,7 +383,8 @@ public class GameTest {
         void currentPlayerDisconnects() throws AllInactiveException {
             Player expected = game.getPlayers().get(1);
             game.getPlayers().get(0).setActive(false);
-            Player next = game.onTurnEnd();
+            game.onTurnEnd();
+            Player next = game.getCurrentPlayer();
             assertEquals(expected, next);
         }
 
