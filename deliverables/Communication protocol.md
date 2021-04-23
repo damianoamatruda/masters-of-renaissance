@@ -66,6 +66,7 @@ A summary of the requirements highlighting the relevant parts is reported below:
 > - On player connection: the player is automatically added to the game currently being filled. If there is no game in its starting phase, a new one is created.
 > - The player starting a new game chooses how many players have to join before the game can start.
 > - The game starts as soon as the specified number of players (given by the first player to join) is reached.
+> - The server manages the players' turns as per the game's rules. The server must handle a player disconnecting or leaving the game. If there are no players left the game will terminate and all players have to be notified.
 
 The following specification for the additional feature "Multiple Games" is taken into account in the communication protocol's design:
 > Only one waiting room will be used to manage the players who join the server.
@@ -588,7 +589,7 @@ The following needs to be specified:
 The data in the `leaders_choice` field of the request maps the leaders to be used with the resource in the chosen row/column in the same order they appear ("[0, -1, 2]" uses leader 0 for the first resource, no leader for the second and the leader 3 for the last).  
 The `discard_index` field holds the indexes of the resources to be discarded as they appear in the chosen list ("3" discards the 4th resource).
 
-It may look like possible errors may arise from choosing the wrong leader type-wise, but the server is designed to handle such case transparently.  
+It may look like errors may arise from choosing the wrong leader type-wise, but the server is designed to handle such case transparently.  
 Therefore, the only mistakes that can be made stem from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding them appropriately, or by specifying a nonexistent leader.
 ```
           +---------+                      +---------+ 
