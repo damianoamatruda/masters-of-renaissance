@@ -18,6 +18,7 @@
         6. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
         7. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
         8. [Updating a player's faith points](#updating-a-player's-faith-points)
+        9. [Declaring a winner](#declaring-a-winner)
     2. [Secondary actions](#secondary-actions)
         1. [Swapping two shelves' content](#swapping-two-shelves'-content)
         2. [Leader Actions](#leader-actions)
@@ -472,6 +473,31 @@ Indices reference the data given in [game start](#game-start).
   }
 }
 ```
+
+## Declaring a winner
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  update_winner                 |
+               | <----------------------------- |
+```
+**update_winner (server)**
+```json
+{
+  "type": "update_winner",
+  "update": {
+    "msg": "Player X wins!",
+    "victory_points": [
+      { "nickname": "X", "amount": 20 },
+      { "nickname": "Y", "amount": 16 },
+      { "nickname": "Z", "amount": 12 }
+    ]
+  }
+}
+```
+
 
 # Secondary actions
 Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
