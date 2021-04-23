@@ -23,6 +23,7 @@
     3. [Main actions](#main-actions)
         1. [Getting resources from the market](#getting-resources-from-the-market)
         2. [Buying a development card](#buying-a-development-card)
+        3. [Activating productions](#activating-productions)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -732,11 +733,18 @@ Possible errors include:
 }
 ```
 
-## Activate productions
+## Activating productions
 The following information is needed when activating a production:
 1. What productions to activate
 2. For each resource of each production, the shelf (or strongbox) to take it from/put it into
 3. For each replaceable resource slot in each production, the resource to replace it with
+
+The `replacing_res` field of the activation request holds the type of resource to substitute to the blank in the same order as they appear: it is therefore not required to specify the amount of resources associated with the replacement, since it's bound by the production's definition.
+
+Possible errors include:
+1. Specifying nonexistent productions
+2. Incomplete/wrong specification of resource-shelf mappings
+3. Incomplete/wrong specification of replaceable resources
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -745,39 +753,46 @@ The following information is needed when activating a production:
 /------------\ |                                |
 | user input |-|                                | 
 \------------/ |                                |
-               |                 activate_prod  |
+               |             req_activate_prod  |
                | -----------------------------> |
                |                                | /--------------------------\
                |                                |-| try exec / check choices |
                |                                | \--------------------------/
-               |  shelves_view                  |
+               |  update_shelves                |
                | <----------------------------- |
                |                                |
-               |  prod_activation_err           |
+               |  err_prod_choice               |
+               | <----------------------------- |
+               |                                |
+               |  err_shelf_map_choice          |
+               | <----------------------------- |
+               |                                |
+               |  err_replacement_choice        |
                | <----------------------------- |
 ```
-**activate_prod (client)**
+**req_activate_prod (client)**
 ```json
 {
-  "type": "activate_prod",
+  "type": "req_activate_prod",
   "productions": [ 0, 3 ],
   "inputBlanksRepl": [
-    { "prodID": 0, "resources": [ "coin", "shield" ] }
+    { "prodID": 0, "replacing_res": [ "Coin", "Shield" ] }
   ],
   "outputBlanksRepl": [
-    { "prodID": 3, "resources": [ "coin" ] }
+    { "prodID": 3, "replacing_res": [ "Shield" ] }
   ],
   "inputShelves": [
     {
       "prodID": 0,
       "mappings": [
-        { "res": "coin", "shelf": 1 },
-        { "res": "shield", "shelf": 0 }
+        { "res": "Coin", "shelf": 1, "amount": 1 },
+        { "res": "Coin", "shelf": 2, "amount": 2 },
+        { "res": "Shield", "shelf": 0, "amount": 2 }
       ]
     }, {
       "prodID": 3,
       "mappings": [
-        { "res": "shield", "shelf": 0 }
+        { "res": "Shield", "shelf": 0, "amount": 1 }
       ]
     }
   ],
@@ -785,93 +800,30 @@ The following information is needed when activating a production:
     {
       "prodID": 0,
       "mappings": [
-        { "res": "stone", "shelf": 2 }
+        { "res": "Stone", "shelf": 2, "amount": 1 }
       ]
-    }
+    } // prod 3 has faithpoints in output -> no shelf mapping required
   ],
 }
 ```
-**prod_activation_err (server)**
+**err_prod_choice (server)**
 ```json
 {
-  "type": "prod_activation_err",
-  "msg": "The operation could not be completed because..."
+  "type": "err_prod_choice",
+  "msg": "cannot activate production 17: production 17 does not exist"
 }
 ```
-
-## Leader actions
-During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
-
-To activate or discard a leader the server needs to know which card(s) the player wants to act on.
-
-Leader activation:
-```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |               activate_leader  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  leaders_view                  |
-               | <----------------------------- |
-               |                                |
-               |  leader_activation_err         |
-               | <----------------------------- |
-```
-**activate_leader (client)**  
+**err_shelf_map_choice (server)**
 ```json
 {
-  "type": "activate_leader",
-  "choice": [ 0 ]
+  "type": "err_shelf_map_choice",
+  "msg": "cannot place 3 resource Coin in shelf 2: wrong resource type: shelf 2 is bound to Shield"
 }
 ```
-**leader_activation_err (server)**  
+**err_replacement_choice (server)**
 ```json
 {
-  "type": "leader_activation_err",
-  "msg": "The operation could not be completed because..."
+  "type": "err_replacement_choice",
+  "msg": "replacements incomplete: production 3 requires 3 replacements, only 2 specified"
 }
 ```
-
-Discarding a leader:
-```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |                discard_leader  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  leaders_view                  |
-               | <----------------------------- |
-               |                                |
-               |  leader_discard_err            |
-               | <----------------------------- |
-```
-**discard_leader (client)**  
-```json
-{
-  "type": "discard_leader",
-  "choice": [ 0 ]
-}
-```
-**leader_discard_err (server)**  
-```json
-{
-  "type": "leader_discard_err",
-  "msg": "The operation could not be completed because..."
-}
-```
-
-> The server manages the players' turns as per the game's rules. The server must handle a player disconnecting or leaving the game. If there are no players left the game will terminate and all players have to be notified.
