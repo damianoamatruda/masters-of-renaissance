@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -176,15 +177,6 @@ public class Game {
     }
 
     /**
-     * Getter of the current number of completed rounds.
-     *
-     * @return the current round number
-     */
-    public int getRounds() {
-        return rounds;
-    }
-
-    /**
      * Getter of the game development card grid.
      *
      * @return the development card grid
@@ -212,6 +204,42 @@ public class Game {
     }
 
     /**
+     * Getter of the current number of completed rounds.
+     *
+     * @return the current round number
+     */
+    public int getRounds() {
+        return rounds;
+    }
+
+    /**
+     * Returns Lorenzo's faith marker position.
+     *
+     * @return number of tile reached by Lorenzo
+     */
+    public int getBlackPoints() {
+        return 0;
+    }
+
+    /**
+     * Returns the player who won, if the winner is a player.
+     *
+     * @return the optional player
+     */
+    public Optional<Player> getWinnerPlayer() {
+        return players.stream().filter(Player::isWinner).findAny();
+    }
+
+    /**
+     * Says whether Lorenzo has won the game or not.
+     *
+     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
+     */
+    public boolean isBlackWinner() {
+        return false;
+    }
+
+    /**
      * Proceeds to calculate the remaining points and chooses a winner.
      */
     private void setWinnerPlayer() {
@@ -229,26 +257,7 @@ public class Game {
                 .filter(p -> p.getVictoryPoints() == maxPts)
                 .toList();
 
-        for (Player p : winners)
-            p.setWinner(true);
-    }
-
-    /**
-     * Returns Lorenzo's faith marker position.
-     *
-     * @return number of tile reached by Lorenzo
-     */
-    public int getBlackPoints() {
-        return 0;
-    }
-
-    /**
-     * Says whether Lorenzo has won the game or not.
-     *
-     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
-     */
-    public boolean isBlackWinner() {
-        return false;
+        winners.stream().findFirst().ifPresent(p -> p.setWinner(true));
     }
 
     /**
