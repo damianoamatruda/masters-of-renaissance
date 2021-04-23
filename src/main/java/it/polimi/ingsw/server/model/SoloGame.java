@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class SoloGame extends Game {
     /** The deck of action tokens to be activated at the end of the player's turn. */
-    private final List<ActionToken> actionTokens;
+    protected final List<ActionToken> actionTokens;
 
     /** The "marker" of Lorenzo il Magnifico on the faith track. */
-    private int blackPoints;
+    protected int blackPoints;
 
     /** Flag that determines whether Lorenzo has won the game. */
-    private boolean blackWinner;
+    protected boolean blackWinner;
 
     /**
      * Initializes the solo game with the following parameters.
@@ -39,33 +39,13 @@ public class SoloGame extends Game {
         this.blackWinner = false;
     }
 
-    /**
-     * This action is triggered by certain type(s) of token. Shuffles and resets the deck.
-     */
-    public void shuffleActionTokens() {
-        Collections.shuffle(actionTokens);
-    }
-
-    /**
-     * Advances Lorenzo's marker on the faith track by one, then checks for Vatican Report.
-     */
-    public void incrementBlackPoints() {
-        blackPoints += 1;
-        super.onIncrement(blackPoints);
-    }
-
-    /**
-     * Triggered after a round is concluded. Proceeds to sum the remaining points and decide a winner after the game is
-     * over.
-     *
-     * @return <code>true</code> if the game is over; <code>false</code> otherwise.
-     */
     @Override
     public boolean hasEnded() {
         if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
             setBlackWinner();
             return true;
-        } else return super.hasEnded();
+        }
+        return super.hasEnded();
     }
 
     /**
@@ -82,22 +62,29 @@ public class SoloGame extends Game {
         return super.onTurnEnd();
     }
 
-    /**
-     * Returns Lorenzo's faith marker position.
-     *
-     * @return number of tile reached by Lorenzo
-     */
+    @Override
     public int getBlackPoints() {
         return blackPoints;
     }
 
-    /**
-     * Says whether Lorenzo has won the game or not.
-     *
-     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
-     */
+    @Override
     public boolean isBlackWinner() {
         return blackWinner;
+    }
+
+    /**
+     * This action is triggered by certain type(s) of token. Shuffles and resets the deck.
+     */
+    public void shuffleActionTokens() {
+        Collections.shuffle(actionTokens);
+    }
+
+    /**
+     * Advances Lorenzo's marker on the faith track by one, then checks for Vatican Report.
+     */
+    public void incrementBlackPoints() {
+        blackPoints += 1;
+        super.onIncrement(blackPoints);
     }
 
     /**

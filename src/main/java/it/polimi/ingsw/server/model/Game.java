@@ -207,6 +207,24 @@ public class Game {
     }
 
     /**
+     * Returns Lorenzo's faith marker position.
+     *
+     * @return number of tile reached by Lorenzo
+     */
+    public int getBlackPoints() {
+        return 0;
+    }
+
+    /**
+     * Says whether Lorenzo has won the game or not.
+     *
+     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
+     */
+    public boolean isBlackWinner() {
+        return false;
+    }
+
+    /**
      * Sums the points based on the number of resources left at the end of the game.
      */
     private void sumResourcesVictoryPoints() {
