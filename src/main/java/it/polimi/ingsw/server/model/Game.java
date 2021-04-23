@@ -25,7 +25,7 @@ public class Game {
     protected final int maxFaithPointsCount;
 
     /** Number of development cards a player can have, before triggering the end of the game. */
-    private final int maxObtainableDevCards;
+    protected final int maxObtainableDevCards;
 
     /** Progressive number of the current round. */
     protected int rounds = 0;
@@ -231,7 +231,7 @@ public class Game {
     }
 
     /**
-     * Says whether Lorenzo has won the game or not.
+     * Returns whether Lorenzo has won the game or not.
      *
      * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
      */

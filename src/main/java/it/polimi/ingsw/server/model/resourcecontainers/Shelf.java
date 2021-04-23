@@ -41,7 +41,7 @@ public class Shelf implements ResourceContainer {
     }
 
     /**
-     * Swaps the content of two shelves if possible.
+     * Swaps the content of two shelves.
      *
      * @param s1 the first shelf
      * @param s2 the second shelf

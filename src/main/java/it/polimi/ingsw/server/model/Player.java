@@ -57,7 +57,7 @@ public class Player {
      * @param strongbox        the player's strongbox
      * @param baseProduction   the player's base production
      * @param devSlotsCount    number of possible production slots that can be occupied by development cards
-     * @param initialResources number of resources the player can choose at the beginning
+     * @param initialResources number of storable resources the player can choose at the beginning
      * @param initialFaith     initial faith points
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
@@ -73,13 +73,11 @@ public class Player {
             this.devSlots.add(new Stack<>());
 
         this.baseProduction = baseProduction;
-        this.faithPoints = 0;
+        this.faithPoints = initialFaith;
+        this.initialResources = initialResources;
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
-
-        this.initialResources = initialResources;
-        this.faithPoints = initialFaith;
     }
 
     /**
@@ -92,7 +90,7 @@ public class Player {
     }
 
     /**
-     * Getter of the hand of leader cards available to the player
+     * Getter of the hand of leader cards available to the player.
      *
      * @return the list of leader cards
      */
@@ -101,12 +99,30 @@ public class Player {
     }
 
     /**
-     * Removes a leader from the hand of the player
+     * Removes a leader from the hand of the player.
      *
      * @param index the index of the leader card to remove
      */
     public void removeLeader(int index) {
         leaders.remove(index);
+    }
+
+    /**
+     * Chooses an initial resource to be given to the player.
+     *
+     * @param resource the chosen resource
+     * @param shelf    the destination warehouse shelf
+     * @throws CannotChooseException            all the allowed initial resources have already been chosen
+     * @throws InvalidChoiceException           the resource cannot be given
+     * @throws IllegalResourceTransferException invalid container
+     */
+    public void chooseResource(ResourceType resource, Warehouse.WarehouseShelf shelf) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+        if (initialResources <= 0) throw new CannotChooseException();
+        if (resource == null || !resource.isStorable()) throw new InvalidChoiceException();
+
+        shelf.addResource(resource);
+
+        initialResources--;
     }
 
     /**
@@ -181,7 +197,7 @@ public class Player {
     }
 
     /**
-     * Gets the position of the player's faith marker.
+     * Returns the position of the player's faith marker.
      *
      * @return the number of the tile reached by the player
      */
@@ -190,7 +206,16 @@ public class Player {
     }
 
     /**
-     * Says how many victory points have been scored so far by the player.
+     * Returns the number of storable resources the player can currently choose
+     *
+     * @return the number of storable resources the player can choose
+     */
+    public int getInitialResources() {
+        return initialResources;
+    }
+
+    /**
+     * Returns the number of victory points have been scored so far by the player.
      *
      * @return the current player score
      */
@@ -306,24 +331,6 @@ public class Player {
                 .sum();
 
         this.victoryPoints += toSum;
-    }
-
-    /**
-     * Chooses an initial resource to be given to the player.
-     *
-     * @param resource the chosen resource
-     * @param shelf    the destination warehouse shelf
-     * @throws CannotChooseException            all the allowed initial resources have already been chosen
-     * @throws InvalidChoiceException           the resource cannot be given
-     * @throws IllegalResourceTransferException invalid container
-     */
-    public void chooseResource(ResourceType resource, Warehouse.WarehouseShelf shelf) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
-        if (initialResources <= 0) throw new CannotChooseException();
-        if (resource == null || !resource.isStorable()) throw new InvalidChoiceException();
-
-        shelf.addResource(resource);
-
-        initialResources--;
     }
 
     @Override
