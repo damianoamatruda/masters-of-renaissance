@@ -69,6 +69,7 @@ public class Game {
     /**
      * Proceeds to sum the remaining points, decide a winner and end the game.
      */
+    @Deprecated
     public void end() {
         setWinnerPlayer();
         ended = true;
@@ -142,6 +143,9 @@ public class Game {
 
         if (nextPlayer.equals(getFirstPlayer()))
             rounds++;
+
+        if (lastRound)
+            end();
     }
 
     /**

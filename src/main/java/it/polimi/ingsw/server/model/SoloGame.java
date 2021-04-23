@@ -40,19 +40,13 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public boolean isLastRound() {
-        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
-            return true;
-        return super.isLastRound();
-    }
-
-    @Override
     public void end() {
-        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
-            setBlackWinner();
-            ended = true;
-        } else
+        // TODO: Remove this check, as this method is to be called only by 'onTurnEnd'
+        checkBlackWin();
+
+        if (!isBlackWinner())
             super.end();
+        ended = true;
     }
 
     /**
@@ -66,6 +60,8 @@ public class SoloGame extends Game {
         token.trigger(this);
         actionTokens.add(token);
 
+        checkBlackWin();
+
         super.onTurnEnd();
     }
 
@@ -77,6 +73,16 @@ public class SoloGame extends Game {
     @Override
     public boolean isBlackWinner() {
         return blackWinner;
+    }
+
+    /**
+     * Checks if Lorenzo is winning.
+     */
+    private void checkBlackWin() {
+        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
+            setBlackWinner();
+            lastRound = true;
+        }
     }
 
     /**
