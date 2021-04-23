@@ -54,16 +54,19 @@ public class Game {
     }
 
     /**
-     * Proceeds to sum the remaining points and decide a winner after the game is over.
+     * Returns whether the game is at its last round.
      *
-     * @return <code>true</code> if the game is over; <code>false</code> otherwise.
+     * @return <code>true</code> if the game is at its last round; <code>false</code> otherwise.
      */
-    public boolean hasEnded() {
-        if (lastRound) {
-            setWinnerPlayer();
-            return true;
-        }
-        return false;
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    /**
+     * Proceeds to sum the remaining points, decide a winner and end the game.
+     */
+    public void end() {
+        setWinnerPlayer();
     }
 
     /**

@@ -113,7 +113,7 @@ public class SoloGameTest {
         void losingGame() {
             for (int i = 0; i < 16; i++)
                 game.incrementBlackPoints();
-            game.hasEnded();
+            game.end();
             assertAll(() -> assertEquals(2, player.getVictoryPoints()),
                     () -> assertFalse(player.isWinner()),
                     () -> assertTrue(game.isBlackWinner()));

@@ -40,12 +40,18 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public boolean hasEnded() {
-        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
-            setBlackWinner();
+    public boolean isLastRound() {
+        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
             return true;
-        }
-        return super.hasEnded();
+        return super.isLastRound();
+    }
+
+    @Override
+    public void end() {
+        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
+            setBlackWinner();
+        else
+            super.end();
     }
 
     /**

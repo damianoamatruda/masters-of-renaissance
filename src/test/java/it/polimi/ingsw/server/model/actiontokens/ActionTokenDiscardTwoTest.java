@@ -140,8 +140,8 @@ class ActionTokenDiscardTwoTest {
         if (grid.getDeck(color, level).size() % 2 == 0) grid.getDeck(color, 1).pop();
 
         token.trigger(game);
-        game.hasEnded();
-        assertAll(() -> assertTrue(game.hasEnded()),
+        game.end();
+        assertAll(() -> assertTrue(game.isLastRound()),
                 () -> assertTrue(game.isBlackWinner()),
                 () -> assertFalse(player.isWinner()));
     }
