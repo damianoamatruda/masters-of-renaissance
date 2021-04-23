@@ -56,7 +56,7 @@ public class SoloGame extends Game {
      */
     @Override
     public void onTurnEnd() throws AllInactiveException {
-        ActionToken token = actionTokens.get(0);
+        ActionToken token = actionTokens.remove(0);
         token.trigger(this);
         actionTokens.add(token);
 
