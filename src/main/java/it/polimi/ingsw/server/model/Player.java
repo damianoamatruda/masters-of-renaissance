@@ -99,12 +99,12 @@ public class Player {
     }
 
     /**
-     * Removes a leader from the hand of the player.
+     * Chooses leaders from the hand of the player.
      *
-     * @param index the index of the leader card to remove
+     * @param leaders the leader cards to choose
      */
-    public void removeLeader(int index) {
-        leaders.remove(index);
+    public void chooseLeaders(List<LeaderCard> leaders) {
+        this.leaders.retainAll(leaders);
     }
 
     /**
