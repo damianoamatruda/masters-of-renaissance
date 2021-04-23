@@ -1,0 +1,530 @@
+[
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+    "discount": 1,
+    "resource": {
+      "name": "Servant",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Yellow"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Green"
+          },
+          "level": 0,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 2
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+    "discount": 1,
+    "resource": {
+      "name": "Shield",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Purple"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Blue"
+          },
+          "level": 0,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 2
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+    "discount": 1,
+    "resource": {
+      "name": "Stone",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Green"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Blue"
+          },
+          "level": 0,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 2
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+    "discount": 1,
+    "resource": {
+      "name": "Coin",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Yellow"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Purple"
+          },
+          "level": 0,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 2
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+    "shelf": {
+      "boundedResType": {
+        "name": "Stone",
+        "storable": true
+      },
+      "size": 2,
+      "quantity": 0
+    },
+    "resource": {
+      "name": "Stone",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+      "resources": [
+        [
+          {
+            "name": "Coin",
+            "storable": true
+          },
+          5
+        ]
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 3
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+    "shelf": {
+      "boundedResType": {
+        "name": "Servant",
+        "storable": true
+      },
+      "size": 2,
+      "quantity": 0
+    },
+    "resource": {
+      "name": "Servant",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+      "resources": [
+        [
+          {
+            "name": "Stone",
+            "storable": true
+          },
+          5
+        ]
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 3
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+    "shelf": {
+      "boundedResType": {
+        "name": "Shield",
+        "storable": true
+      },
+      "size": 2,
+      "quantity": 0
+    },
+    "resource": {
+      "name": "Shield",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+      "resources": [
+        [
+          {
+            "name": "Servant",
+            "storable": true
+          },
+          5
+        ]
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 3
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+    "shelf": {
+      "boundedResType": {
+        "name": "Coin",
+        "storable": true
+      },
+      "size": 2,
+      "quantity": 0
+    },
+    "resource": {
+      "name": "Coin",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+      "resources": [
+        [
+          {
+            "name": "Shield",
+            "storable": true
+          },
+          5
+        ]
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 3
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+    "resource": {
+      "name": "Servant",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Blue"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Yellow"
+          },
+          "level": 0,
+          "amount": 2
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 5
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+    "resource": {
+      "name": "Shield",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Purple"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Green"
+          },
+          "level": 0,
+          "amount": 2
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 5
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+    "resource": {
+      "name": "Stone",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Yellow"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Blue"
+          },
+          "level": 0,
+          "amount": 2
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 5
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+    "resource": {
+      "name": "Coin",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Green"
+          },
+          "level": 0,
+          "amount": 1
+        },
+        {
+          "color": {
+            "name": "Purple"
+          },
+          "level": 0,
+          "amount": 2
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 5
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+    "production": {
+      "input": [
+        [
+          {
+            "name": "Shield",
+            "storable": true
+          },
+          1
+        ]
+      ],
+      "inputBlanks": 0,
+      "inputBlanksExclusions": [],
+      "output": [
+        [
+          {
+            "name": "Faith",
+            "storable": false
+          },
+          1
+        ]
+      ],
+      "outputBlanks": 1,
+      "outputBlanksExclusions": [],
+      "discardableOutput": false
+    },
+    "resource": {
+      "name": "Faith",
+      "storable": false
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Yellow"
+          },
+          "level": 2,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 4
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+    "production": {
+      "input": [
+        [
+          {
+            "name": "Servant",
+            "storable": true
+          },
+          1
+        ]
+      ],
+      "inputBlanks": 0,
+      "inputBlanksExclusions": [],
+      "output": [
+        [
+          {
+            "name": "Faith",
+            "storable": false
+          },
+          1
+        ]
+      ],
+      "outputBlanks": 1,
+      "outputBlanksExclusions": [],
+      "discardableOutput": false
+    },
+    "resource": {
+      "name": "Servant",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Blue"
+          },
+          "level": 2,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 4
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+    "production": {
+      "input": [
+        [
+          {
+            "name": "Stone",
+            "storable": true
+          },
+          1
+        ]
+      ],
+      "inputBlanks": 0,
+      "inputBlanksExclusions": [],
+      "output": [
+        [
+          {
+            "name": "Faith",
+            "storable": false
+          },
+          1
+        ]
+      ],
+      "outputBlanks": 1,
+      "outputBlanksExclusions": [],
+      "discardableOutput": false
+    },
+    "resource": {
+      "name": "Stone",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Purple"
+          },
+          "level": 2,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 4
+  },
+  {
+    "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+    "production": {
+      "input": [
+        [
+          {
+            "name": "Coin",
+            "storable": true
+          },
+          1
+        ]
+      ],
+      "inputBlanks": 0,
+      "inputBlanksExclusions": [],
+      "output": [
+        [
+          {
+            "name": "Faith",
+            "storable": false
+          },
+          1
+        ]
+      ],
+      "outputBlanks": 1,
+      "outputBlanksExclusions": [],
+      "discardableOutput": false
+    },
+    "resource": {
+      "name": "Coin",
+      "storable": true
+    },
+    "requirement": {
+      "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+      "entryList": [
+        {
+          "color": {
+            "name": "Green"
+          },
+          "level": 2,
+          "amount": 1
+        }
+      ]
+    },
+    "isActive": false,
+    "victoryPoints": 4
+  }
+]

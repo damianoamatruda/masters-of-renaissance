@@ -414,15 +414,16 @@ public class ModelConfig {
         @XmlElement(name = "resource")
         private String resource;
 
-        /** Requirements in resources possessed. */
-        @XmlElementWrapper(name = "cost")
-        @XmlElement(name = "resource-entry", nillable = true)
-        private List<XmlResourceMapEntry> resourceRequirements;
 
         /** Requirements in development cards possessed. */
-        @XmlElementWrapper(name = "cost")
+        @XmlElementWrapper(name = "card-cost")
         @XmlElement(name = "card-requirement", nillable = true)
-        private List<XmlCardRequirement> ColorRequirements;
+        private List<XmlCardRequirement> colorRequirements;
+
+        /** Requirements in resources possessed. */
+        @XmlElementWrapper(name = "resource-cost")
+        @XmlElement(name = "resource-entry", nillable = true)
+        private List<XmlResourceMapEntry> resourceRequirements;
 
         /** The associated production, if existent. */
         @XmlElement(name = "production", nillable = true)
@@ -453,7 +454,7 @@ public class ModelConfig {
         }
 
         public List<XmlCardRequirement> getColorRequirements() {
-            return ColorRequirements;
+            return colorRequirements;
         }
 
         public int getVictoryPoints() {
@@ -527,6 +528,10 @@ public class ModelConfig {
         @XmlElement(name = "storable")
         private boolean isStorable;
 
+        /** Subtype of resource (if not of basic type). */
+        @XmlElement(name = "subtype", nillable = true)
+        private String subtype;
+
         public String getName() {
             return name;
         }
@@ -534,5 +539,7 @@ public class ModelConfig {
         public boolean isStorable() {
             return isStorable;
         }
+
+        public String getSubtype() { return subtype; }
     }
 }

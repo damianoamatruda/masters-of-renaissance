@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
@@ -37,6 +39,15 @@ public class FileGameFactory implements GameFactory {
      * @param inputStream the input stream to be parsed
      */
     public FileGameFactory(InputStream inputStream) {
+//
+//        GsonBuilder builder = new GsonBuilder().enableComplexMapKeySerialization();
+//        builder.setPrettyPrinting();
+//        Gson gson = builder.create();
+//        String jsonString = gson.toJson(generateDevCards().get(0));
+//        System.out.println(jsonString);
+//
+//        DevelopmentCard objectMarshal = gson.fromJson(jsonString, DevelopmentCard.class);
+
         ModelConfig tempConfig;
         try {
             tempConfig = unmarshal(inputStream);
@@ -177,7 +188,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of development cards
      */
-    private List<DevelopmentCard> generateDevCards() {
+    public List<DevelopmentCard> generateDevCards() {
         List<ModelConfig.XmlDevCard> source = config.getDevCards();
         ResourceRequirement cost;
         Production production;
@@ -199,7 +210,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of leader cards
      */
-    private List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
         CardRequirement cost;
         Class<?> className;
@@ -211,15 +222,16 @@ public class FileGameFactory implements GameFactory {
             className = Class.forName(card.getType());
             constructor = className.getConstructor(int.class, int.class, Production.class, ResourceType.class, CardRequirement.class, int.class);
 
-            if (card.getResourceRequirements() != null) {
+            if (card.getResourceRequirements() != null && card.getResourceRequirements().size() > 0) {
                 cost = generateResourceRequirement(card.getResourceRequirements());
-            } else {
+            } else if (card.getColorRequirements() != null && card.getColorRequirements().size() > 0) {
                 cost = new DevCardRequirement(card.getColorRequirements()
                         .stream()
                         .map(req -> new DevCardRequirement.Entry(getDevCardColor(req.getColor()), req.getLevel(), req.getAmount()))
                         .collect(Collectors.toUnmodifiableSet())
                 );
             }
+            else cost = new ResourceRequirement(Map.of());
 
             production = card.getProduction() != null ? generateProduction(card.getProduction()) : null;
 
@@ -233,7 +245,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return the Market
      */
-    private Market generateMarket() {
+    public Market generateMarket() {
         Map<ResourceType, Integer> resources = config.getMarket()
                 .stream()
                 .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount));
@@ -246,7 +258,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return set of the vatican sections
      */
-    private Set<FaithTrack.VaticanSection> generateVaticanSections() {
+    public Set<FaithTrack.VaticanSection> generateVaticanSections() {
         return config.getFaithTrack().getSections()
                 .stream()
                 .map(section -> new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()))
@@ -258,7 +270,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return set of the yellow tiles
      */
-    private Set<FaithTrack.YellowTile> generateYellowTiles() {
+    public Set<FaithTrack.YellowTile> generateYellowTiles() {
         return config.getFaithTrack().getTiles()
                 .stream()
                 .map(tile -> new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()))
@@ -270,7 +282,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of action tokens
      */
-    private List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<ModelConfig.XmlActionToken> source = config.getTokens();
         List<ActionToken> tokens = new ArrayList<>();
         Class<?> className;
@@ -337,11 +349,11 @@ public class FileGameFactory implements GameFactory {
                 .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount)));
     }
 
-    private Set<DevCardColor> generateDevCardColors() {
+    public Set<DevCardColor> generateDevCardColors() {
         return config.getCardColors().stream().map(DevCardColor::new).collect(Collectors.toSet());
     }
 
-    private Set<ResourceType> generateResourceTypes() {
+    public Set<ResourceType> generateResourceTypes() {
         return config.getResourceTypes().stream().map(s -> new ResourceType(s.getName(), s.isStorable())).collect(Collectors.toSet());
     }
 }
