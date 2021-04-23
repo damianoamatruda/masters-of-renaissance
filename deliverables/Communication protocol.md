@@ -17,6 +17,7 @@
         5. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
         6. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
         7. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+        8. [Updating a player's faith points](#updating-a-player's-faith-points)
     2. [Secondary actions](#secondary-actions)
         1. [Swapping two shelves' content](#swapping-two-shelves'-content)
         2. [Leader Actions](#leader-actions)
@@ -453,6 +454,24 @@ Indices reference the data given in [game start](#game-start).
 }
 ```
 
+## Updating a player's faith points
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+               |  update_faith_points           |
+               | <----------------------------- |
+```
+**update_faith_points (server)**
+```json
+{
+  "type": "update_faith_points",
+  "update": {
+    "amount": 20
+  }
+}
+```
 
 # Secondary actions
 Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
