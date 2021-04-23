@@ -22,6 +22,7 @@
         2. [Leader Actions](#leader-actions)
     3. [Main actions](#main-actions)
         1. [Getting resources from the market](#getting-resources-from-the-market)
+        2. [Buying a development card](#buying-a-development-card)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -651,11 +652,17 @@ Therefore, the only mistakes that can be made stem from fitting the resources in
 }
 ```
 
-## Buy a development card
+## Buying a development card
 The following information is needed when buying a development card:
 1. The row and column of the card to identify it in the grid
-2. For each resource, the shelf (or strongbox) to take it from
-3. The slot to place it into
+2. The slot to place the card into
+3. For each resource that has to be paid, the shelf (or strongbox) to take it from
+
+Possible errors include:
+1. Not identifying a valid card (invalid row/col choice)
+2. Not identifying a valid slot index
+3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
+4. Not specifying correctly where to take the resources from/how many to take
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -664,29 +671,64 @@ The following information is needed when buying a development card:
 /------------\ |                                |
 | user input |-|                                | 
 \------------/ |                                |
-               |                  buy_dev_card  |
+               |              req_buy_dev_card  |
                | -----------------------------> |
                |                                | /--------------------------\
                |                                |-| try exec / check choices |
                |                                | \--------------------------/
-               |  dev_card_grid_view            |
+               |  update_dev_grid               |
                | <----------------------------- |
                |                                |
-               |  shelf_swap_choice_err         |
+               |  err_dev_card_choice           |
+               | <----------------------------- |
+               |                                |
+               |  err_payment_shelf_choice      |
+               | <----------------------------- |
+               |                                |
+               |  err_slot_choice               |
                | <----------------------------- |
 ```
-**swap_shelves (client)**
+**req_buy_dev_card (client)**
 ```json
 {
-  "type": "swap_shelves",
-  "choice": [ 0, 3 ]
+  "type": "req_buy_dev_card",
+  "choice": {
+    "row_index": 0,
+    "col_index": 0,
+    "slot_index": 2,
+    "res_choice": [
+      {
+        "res_type": "Coin",
+        "shelf_index": 1,
+        "amount": 2
+      }, {
+        "res_type": "Coin",
+        "shelf_index": 4,
+        "amount": 1
+      }
+    ],
+  }
 }
 ```
-**shelf_swap_choice_err (server)**
+**err_dev_card_choice (server)**
 ```json
 {
-  "type": "shelf_swap_choice_err",
-  "msg": "The operation could not be completed because..."
+  "type": "err_dev_card_choice",
+  "msg": "cannot choose dev card in row 0 column 5: column 5 does not exist"
+}
+```
+**err_payment_shelf_choice (server)**
+```json
+{
+  "type": "err_payment_shelf_choice",
+  "msg": "cannot take 3 resource Coin from shelf 1: not enough resources"
+}
+```
+**err_slot_choice (server)**
+```json
+{
+  "type": "err_slot_choice",
+  "msg": "cannot assign dev card to slot 3: card level constraints not satisfied: required card of level 1 not present"
 }
 ```
 
