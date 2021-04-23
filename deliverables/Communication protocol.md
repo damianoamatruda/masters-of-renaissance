@@ -162,6 +162,23 @@ When a player is chosen by the server as the first of a new game, they have to d
 
 ## Game start
 As the game starts, the server notifies all players of the event.
+
+### Caching
+At the same time, it sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
+For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game for its state. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
+Caching also allows patial checks to be preemptively (but not exclusively) done client side.  
+For example, if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
+
+### Parameters and indices
+The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](#../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
+This file is avalable to both clients and server, which will use it to instantiate the game objects. It is therefore **extremely important** for both parties to have matching files.  
+The matching and ordering properties of the objects in the configuration file are used to identify game objects and syncronize the game state at the start of the match, eliminating the need for a more complex ID system (this has been put in place not for the lack of a better solution, but as a compromise to allow the developers to focus on other features, time being the key constraint of the project).
+
+This implies that every ID/index specified in this document has been syncronised at game start either by being taken from the configuration file or by being specified in the `game_started` message.
+
+The market's resources are placed randomly at creation, therefore needing to be syncronized: the entire market's state needs to be sent.  
+The leader cards will be shuffled before they can be chosen by the players: the `leader_cards` field of the `game_started` message contains the original placements (in the config file) of the leader cards in the order the server shuffled them (`leader_cards[0] = 2` means that the config file's third card is now the first).  
+The same principle applies to the development cards grid's stacks, sent as a list of objects, mapping colors with a list (levels) of lists (the deck of cards matching that level and color), and the solo action tokens.
 ```
 +---------+                      +---------+ 
 | Client  |                      | Server  |
@@ -174,7 +191,34 @@ As the game starts, the server notifies all players of the event.
 **game_started (server)**
 ```json
 {
-  "type": "game_started"
+  "type": "game_started",
+  "init_state": {
+    "nicknames": ["X", "Y", "Z"],
+    "market": {
+      "grid": [
+        [ "Coin", "Shield", "Coin" ],
+        [ "Coin", "Shield", "Stone" ]
+      ],
+      "slide": "Shield"
+    },
+    "leader_cards": [ 4, 2, 0, 1, 3 ],
+    "dev_card_grid": [
+      {
+        "color": "Blue",
+        "stacks": [
+          [ 2, 0, 1 ],
+          [ 3, 4, 5 ]
+        ]
+      }, {
+        "color": "Green",
+        "stacks": [
+          [ 8, 7, 6 ],
+          [ 9, 11, 10 ]
+        ]
+      }
+    ],
+    "solo_action_tokens": [ 4, 3, 0, 1, 2 ]
+  }
 }
 ```
 
