@@ -10,7 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for FileGameFactory.
  */
 public class FileGameFactoryTest {
-    final FileGameFactory f = new FileGameFactory(getClass().getResourceAsStream("/config.xml"));
+    final FileGameFactory f = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
+
+    public FileGameFactoryTest() throws Exception {
+    }
 
     /**
      * Tests that the resource factory works properly.
@@ -40,7 +43,7 @@ public class FileGameFactoryTest {
      */
     @Test
     void testGetMultiGame() {
-        assertDoesNotThrow(() -> f.getMultiGame(List.of("a", "b")));
+        assertDoesNotThrow(() -> f.getMultiGame(List.of("a", "b", "c", "d")));
         assertThrows(IllegalArgumentException.class, () -> f.getMultiGame(List.of()));
     }
 

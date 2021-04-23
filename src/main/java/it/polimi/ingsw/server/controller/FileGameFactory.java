@@ -1,36 +1,45 @@
 package it.polimi.ingsw.server.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
-import it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement;
-import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /** Factory class that builds game instances from file parameters, by acting like an adapter for parsing. */
 public class FileGameFactory implements GameFactory {
-    /** The unmarshalled object. */
-    private final ModelConfig config;
+    private final JsonObject parserObject;
+
+    private final Gson gson;
 
     /** The development card colors. */
     private final Map<String, DevCardColor> devCardColorMap;
 
     /** The resource types. */
     private final Map<String, ResourceType> resTypeMap;
+
+    private final int maxPlayers;
+    private final int playerLeadersCount;
+    private final int numDiscardedLeaders;
+    private final int maxFaith;
+    private final int maxDevCards;
+    private final int maxLevel;
+    private final int numCardColors;
+    private final int marketColumns;
+    private final int maxShelfSize;
+    private final int slotsCount;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
@@ -39,45 +48,35 @@ public class FileGameFactory implements GameFactory {
      * @param inputStream the input stream to be parsed
      */
     public FileGameFactory(InputStream inputStream) {
-//
-//        GsonBuilder builder = new GsonBuilder().enableComplexMapKeySerialization();
-//        builder.setPrettyPrinting();
-//        Gson gson = builder.create();
-//        String jsonString = gson.toJson(generateDevCards().get(0));
-//        System.out.println(jsonString);
-//
-//        DevelopmentCard objectMarshal = gson.fromJson(jsonString, DevelopmentCard.class);
+        gson = new GsonBuilder()
+                .enableComplexMapKeySerialization().setPrettyPrinting()
+                .create();
 
-        ModelConfig tempConfig;
-        try {
-            tempConfig = unmarshal(inputStream);
-        } catch (JAXBException e) {
-            tempConfig = null;
-            e.printStackTrace();
-        }
-        config = tempConfig;
+        parserObject = (JsonObject) new JsonParser().parse(new InputStreamReader(inputStream));
+
+        maxPlayers = gson.fromJson(parserObject.get("max-players"), int.class);
+        playerLeadersCount = gson.fromJson(parserObject.get("num-leader-cards"), int.class);
+        numDiscardedLeaders = gson.fromJson(parserObject.get("num-discarded-leader-cars"), int.class);
+        maxFaith = gson.fromJson(parserObject.get("max-faith"), int.class);
+        maxDevCards = gson.fromJson(parserObject.get("max-development-cards"), int.class);
+        maxLevel = gson.fromJson(parserObject.get("max-level"), int.class);
+        numCardColors = gson.fromJson(parserObject.get("num-colors"), int.class);
+        marketColumns = gson.fromJson(parserObject.get("market-columns"), int.class);
+        maxShelfSize = gson.fromJson(parserObject.get("max-shelf-size"), int.class);
+        slotsCount = gson.fromJson(parserObject.get("slots-count"), int.class);
+
         devCardColorMap = generateDevCardColors().stream()
                 .collect(Collectors.toUnmodifiableMap(DevCardColor::getName, Function.identity()));
+
+
         resTypeMap = generateResourceTypes().stream()
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
     }
 
-    /**
-     * Unmarshals the XML in order to parse the game parameters.
-     *
-     * @param inputStream the input stream to be parsed
-     * @return the object created by the XML unmarshalling
-     * @throws JAXBException         generic exception from the JAXB library
-     */
-    private ModelConfig unmarshal(InputStream inputStream) throws JAXBException {
-        JAXBContext context = JAXBContext.newInstance(ModelConfig.class);
-        return (ModelConfig) context.createUnmarshaller().unmarshal(inputStream);
-    }
-
     @Override
     public Game getMultiGame(List<String> nicknames) {
-        int playerLeadersCount = config.getNumLeaders();
-        if (nicknames == null || nicknames.size() > config.getMaxPlayers() || nicknames.size() == 0)
+
+        if (nicknames == null || nicknames.size() > maxPlayers || nicknames.size() == 0)
             throw new IllegalArgumentException();
 
         List<LeaderCard> leaderCards;
@@ -85,7 +84,7 @@ public class FileGameFactory implements GameFactory {
         /* Shuffle the leader cards */
         try {
             leaderCards = generateLeaderCards();
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException();
         }
         Collections.shuffle(leaderCards);
@@ -98,64 +97,70 @@ public class FileGameFactory implements GameFactory {
         if (playerLeadersCount > 0 && shuffledNicknames.size() > leaderCards.size() / playerLeadersCount)
             throw new IllegalArgumentException();
 
+        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>(){}.getType());
+
         List<Player> players = new ArrayList<>();
+        Production production = gson.fromJson(parserObject.get("base-production"), Production.class);
         for (int i = 0; i < shuffledNicknames.size(); i++) {
-            ModelConfig.XmlProduction production = config.getBaseProduction();
             Player player = new Player(
                     shuffledNicknames.get(i),
                     i == 0,
                     leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
-                    new Warehouse(config.getMaxShelfSize()),
+                    new Warehouse(maxShelfSize),
                     new Strongbox(),
-                    generateProduction(production), config.getSlotsCount(),
-                    config.getInitialResources().get(i).getNumResources(),
-                    config.getInitialResources().get(i).getFaith()
+                    production, slotsCount,
+                    boost.get(i+1).numStorable,
+                    boost.get(i+1).faith
             );
             players.add(player);
         }
+
         return new Game(
                 players,
-                new DevCardGrid(generateDevCards(), config.getMaxLevel(), config.getNumColors()),
+                new DevCardGrid(generateDevCards(), maxLevel, numCardColors),
                 generateMarket(),
-                new FaithTrack(generateVaticanSections(), generateYellowTiles()),
-                config.getMaxFaith(),
-                config.getMaxDevCards()
+                generateFaithTrack(),
+                maxFaith,
+                maxDevCards
         );
+
     }
 
     @Override
     public SoloGame getSoloGame(String nickname) {
+
         if (nickname == null) throw new IllegalArgumentException();
-        int playerLeadersCount = config.getNumLeaders();
         List<LeaderCard> shuffledLeaderCards;
         try {
             shuffledLeaderCards = new ArrayList<>(generateLeaderCards());
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException();
         }
         Collections.shuffle(shuffledLeaderCards);
+
+        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>(){}.getType());
 
         Player player = new Player(
                 nickname,
                 true,
                 shuffledLeaderCards.subList(0, playerLeadersCount),
-                new Warehouse(config.getMaxShelfSize()),
+                new Warehouse(maxShelfSize),
                 new Strongbox(),
-                generateProduction(config.getBaseProduction()), config.getSlotsCount(),
-                config.getInitialResources().get(0).getNumResources(),
-                config.getInitialResources().get(0).getFaith()
+                gson.fromJson(parserObject.get("base-production"), Production.class), slotsCount,
+                boost.get(1).numStorable,
+                boost.get(1).faith
         );
 
         SoloGame game = null;
         try {
             game = new SoloGame(
                     player,
-                    new DevCardGrid(generateDevCards(), config.getMaxLevel(), config.getNumColors()),
+                    new DevCardGrid(generateDevCards(), maxLevel, numCardColors),
                     generateMarket(),
-                    new FaithTrack(generateVaticanSections(), generateYellowTiles()),
+                    generateFaithTrack(),
                     generateActionTokens(),
-                    config.getMaxFaith(),
-                    config.getMaxDevCards()
+                    maxFaith,
+                    maxDevCards
             );
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
@@ -188,21 +193,8 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of development cards
      */
-    public List<DevelopmentCard> generateDevCards() {
-        List<ModelConfig.XmlDevCard> source = config.getDevCards();
-        ResourceRequirement cost;
-        Production production;
-
-        List<DevelopmentCard> cards = new ArrayList<>();
-
-        for (ModelConfig.XmlDevCard card : source) {
-            cost = generateResourceRequirement(card.getCost());
-            production = generateProduction(card.getProduction());
-
-            cards.add(new DevelopmentCard(getDevCardColor(card.getColor()), card.getLevel(), cost, production, card.getVictoryPoints()));
-        }
-
-        return cards;
+    private List<DevelopmentCard> generateDevCards() {
+        return gson.fromJson(parserObject.get("development-cards"), new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
     }
 
     /**
@@ -210,34 +202,17 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of leader cards
      */
-    public List<LeaderCard> generateLeaderCards() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        List<ModelConfig.XmlLeaderCard> source = config.getLeaderCards();
-        CardRequirement cost;
-        Class<?> className;
-        Constructor<?> constructor;
-        Production production;
-        List<LeaderCard> leaderCards = new ArrayList<>();
-
-        for (ModelConfig.XmlLeaderCard card : source) {
-            className = Class.forName(card.getType());
-            constructor = className.getConstructor(int.class, int.class, Production.class, ResourceType.class, CardRequirement.class, int.class);
-
-            if (card.getResourceRequirements() != null && card.getResourceRequirements().size() > 0) {
-                cost = generateResourceRequirement(card.getResourceRequirements());
-            } else if (card.getColorRequirements() != null && card.getColorRequirements().size() > 0) {
-                cost = new DevCardRequirement(card.getColorRequirements()
-                        .stream()
-                        .map(req -> new DevCardRequirement.Entry(getDevCardColor(req.getColor()), req.getLevel(), req.getAmount()))
-                        .collect(Collectors.toUnmodifiableSet())
-                );
-            }
-            else cost = new ResourceRequirement(Map.of());
-
-            production = card.getProduction() != null ? generateProduction(card.getProduction()) : null;
-
-            leaderCards.add((LeaderCard) constructor.newInstance(card.getDiscount(), card.getShelfSize(), production, getResourceType(card.getResource()), cost, card.getVictoryPoints()));
+    private List<LeaderCard> generateLeaderCards() throws ClassNotFoundException {
+        Gson otherGson = new GsonBuilder()
+                .enableComplexMapKeySerialization().setPrettyPrinting()
+                .registerTypeHierarchyAdapter(CardRequirement.class, new RequirementDeserializer())
+                .create();
+        List<LeaderCard> leaders = new ArrayList<>();
+        List<JsonObject> prototypes = otherGson.fromJson(parserObject.get("leader-cards"), new TypeToken<ArrayList<JsonObject>>(){}.getType());
+        for(JsonObject o : prototypes) {
+            leaders.add(otherGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
         }
-        return leaderCards;
+        return leaders;
     }
 
     /**
@@ -245,36 +220,20 @@ public class FileGameFactory implements GameFactory {
      *
      * @return the Market
      */
-    public Market generateMarket() {
-        Map<ResourceType, Integer> resources = config.getMarket()
-                .stream()
-                .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount));
-
-        return new Market(resources, config.getMarketColumns(), getResourceType(config.getMarketReplaceableResType()));
+    private Market generateMarket() {
+        return gson.fromJson(parserObject.get("market"), Market.class);
     }
 
     /**
-     * Returns a set of the vatican sections.
+     * Generates the Faith Track.
      *
-     * @return set of the vatican sections
+     * @return new faith track
      */
-    public Set<FaithTrack.VaticanSection> generateVaticanSections() {
-        return config.getFaithTrack().getSections()
-                .stream()
-                .map(section -> new FaithTrack.VaticanSection(section.getBeginning(), section.getEnd(), section.getPoints()))
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
-    /**
-     * Returns a set of the yellow tiles.
-     *
-     * @return set of the yellow tiles
-     */
-    public Set<FaithTrack.YellowTile> generateYellowTiles() {
-        return config.getFaithTrack().getTiles()
-                .stream()
-                .map(tile -> new FaithTrack.YellowTile(tile.getTileNumber(), tile.getPoints()))
-                .collect(Collectors.toUnmodifiableSet());
+    private FaithTrack generateFaithTrack() {
+        JsonObject track = parserObject.get("faith-track").getAsJsonObject();
+        Set<FaithTrack.YellowTile> tiles = gson.fromJson(track.get("yellow-tiles"), new TypeToken<HashSet<FaithTrack.YellowTile>>(){}.getType());
+        Set<FaithTrack.VaticanSection> sections = gson.fromJson(track.get("vatican-sections"), new TypeToken<HashSet<FaithTrack.VaticanSection>>(){}.getType());
+        return new FaithTrack(sections, tiles);
     }
 
     /**
@@ -282,78 +241,53 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of action tokens
      */
-    public List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        List<ModelConfig.XmlActionToken> source = config.getTokens();
+    private List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        JsonArray jsonArray = parserObject.get("action-tokens").getAsJsonArray();
         List<ActionToken> tokens = new ArrayList<>();
-        Class<?> className;
-        Constructor<?> constructor;
-        for (ModelConfig.XmlActionToken token : source) {
-            className = Class.forName(token.getType());
-            if (token.getColor() == null) {
-                constructor = className.getConstructor();
-                tokens.add((ActionToken) constructor.newInstance());
-            } else {
-                constructor = className.getConstructor(DevCardColor.class);
-                tokens.add((ActionToken) constructor.newInstance(getDevCardColor(token.getColor())));
-            }
+        List<JsonObject> prototypes = gson.fromJson(jsonArray, new TypeToken<ArrayList<JsonObject>>(){}.getType());
+        for(JsonObject o : prototypes) {
+            tokens.add(gson.fromJson(o, (Class<? extends ActionToken>) Class.forName(o.get("type").getAsString())));
         }
         return tokens;
     }
 
-    /**
-     * Helper method that generates a Production.
-     *
-     * @param production the production "recipe" parsed from file
-     * @return a new Production
-     */
-    private Production generateProduction(ModelConfig.XmlProduction production) {
-        return new Production(
-                Optional.ofNullable(production.getInput())
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount)),
-
-                production.getInputBlanks(),
-
-                Optional.ofNullable(production.getInputBlanksExclusions())
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .map(this::getResourceType)
-                .collect(Collectors.toUnmodifiableSet()),
-
-                Optional.ofNullable(production.getOutput())
-                        .orElseGet(Collections::emptyList)
-                        .stream()
-                        .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount)),
-
-                production.getOutputBlanks(),
-
-                Optional.ofNullable(production.getOutputBlanksExclusions())
-                        .orElseGet(Collections::emptyList)
-                        .stream()
-                        .map(this::getResourceType)
-                        .collect(Collectors.toUnmodifiableSet()),
-
-                production.hasDiscardableOutput()
-        );
+    private Set<DevCardColor> generateDevCardColors() {
+        return gson.fromJson(parserObject.get("card-colors"), new TypeToken<HashSet<DevCardColor>>(){}.getType());
     }
 
-    /**
-     * Helper method that puts together the parsed resources entries in a new data structure.
-     *
-     * @param requirements the resources and relative amounts required, obtained from parsing the config file
-     * @return a new data structure for resource requirements
-     */
-    private ResourceRequirement generateResourceRequirement(List<ModelConfig.XmlResourceMapEntry> requirements) {
-        return new ResourceRequirement(requirements.stream()
-                .collect(Collectors.toUnmodifiableMap(s -> getResourceType(s.getResourceType()), ModelConfig.XmlResourceMapEntry::getAmount)));
+    private Set<ResourceType> generateResourceTypes() {
+        Set<JsonObject> protoResources = gson.fromJson(parserObject.get("resource-types"), new TypeToken<HashSet<JsonObject>>(){}.getType());
+        Set<ResourceType> resources = new HashSet<>();
+        for(JsonObject o : protoResources){
+            JsonElement subtype = o.get("subtype");
+            try {
+                resources.add(subtype == null ? gson.fromJson(o, ResourceType.class) : gson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return resources;
     }
 
-    public Set<DevCardColor> generateDevCardColors() {
-        return config.getCardColors().stream().map(DevCardColor::new).collect(Collectors.toSet());
+    private static class Boost {
+        /** Number of choosable resources obtained at the beginning. */
+        private int numStorable;
+
+        /** Starting faith points. */
+        private int faith;
+
     }
 
-    public Set<ResourceType> generateResourceTypes() {
-        return config.getResourceTypes().stream().map(s -> new ResourceType(s.getName(), s.isStorable())).collect(Collectors.toSet());
+    private static class RequirementDeserializer implements JsonDeserializer<CardRequirement> {
+
+        @Override
+        public CardRequirement deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            try {
+                return new Gson().fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
     }
 }

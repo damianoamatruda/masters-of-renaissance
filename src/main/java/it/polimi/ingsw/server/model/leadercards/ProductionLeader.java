@@ -29,22 +29,6 @@ public class ProductionLeader extends LeaderCard {
         this.production = production;
     }
 
-    /**
-     * Complete class constructor needed for automatic construction.
-     *
-     * @param discount      the amount of resources to be subtracted when applying the ability (unused in this case)
-     * @param shelfSize     the maximum amount of resources the card can store (unused in this case)
-     * @param production    the production of the card (unused in this case)
-     * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
-     *                      type only.
-     * @param requirement   the requirement to be satisfied for card activation
-     * @param victoryPoints the victory points associated with the card
-     */
-    @SuppressWarnings("unused")
-    public ProductionLeader(int discount, int shelfSize, Production production, ResourceType resource, CardRequirement requirement, int victoryPoints) {
-        this(production, resource, requirement, victoryPoints);
-    }
-
     @Override
     public Optional<Production> getProduction() {
         return isActive() ? Optional.of(production) : super.getProduction();
