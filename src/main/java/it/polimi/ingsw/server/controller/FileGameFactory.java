@@ -12,7 +12,6 @@ import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
@@ -20,8 +19,10 @@ import java.util.stream.Collectors;
 
 /** Factory class that builds game instances from file parameters, by acting like an adapter for parsing. */
 public class FileGameFactory implements GameFactory {
+    /** The parser object corresponding to the config file. */
     private final JsonObject parserObject;
 
+    /** The Gson instance used for parsing. */
     private final Gson gson;
 
     /** The development card colors. */
@@ -30,15 +31,34 @@ public class FileGameFactory implements GameFactory {
     /** The resource types. */
     private final Map<String, ResourceType> resTypeMap;
 
+    /** Maximum number of players for each Game. */
     private final int maxPlayers;
+
+    /** Initial number of leader cards per player. */
     private final int playerLeadersCount;
+
+    /** Number of leader cards per player that must be discarded in the early game. */
     private final int numDiscardedLeaders;
+
+    /** The maximum amount of faith points a player can have. */
     private final int maxFaith;
+
+    /** The number of development cards a player can have before triggering the end of a game. */
     private final int maxDevCards;
+
+    /** The maximum level a development card can have. */
     private final int maxLevel;
+
+    /** The number of different card colors. */
     private final int numCardColors;
+
+    /** The number of columns of the market grid. */
     private final int marketColumns;
+
+    /** Maximum size of a Warehouse shelf. */
     private final int maxShelfSize;
+
+    /** Number of development card production slots per player. */
     private final int slotsCount;
 
     /**
@@ -54,6 +74,7 @@ public class FileGameFactory implements GameFactory {
 
         parserObject = (JsonObject) new JsonParser().parse(new InputStreamReader(inputStream));
 
+        //Parses all simple parameters
         maxPlayers = gson.fromJson(parserObject.get("max-players"), int.class);
         playerLeadersCount = gson.fromJson(parserObject.get("num-leader-cards"), int.class);
         numDiscardedLeaders = gson.fromJson(parserObject.get("num-discarded-leader-cars"), int.class);
@@ -162,7 +183,7 @@ public class FileGameFactory implements GameFactory {
                     maxFaith,
                     maxDevCards
             );
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return game;
@@ -241,7 +262,7 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of action tokens
      */
-    private List<ActionToken> generateActionTokens() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    private List<ActionToken> generateActionTokens() throws ClassNotFoundException {
         JsonArray jsonArray = parserObject.get("action-tokens").getAsJsonArray();
         List<ActionToken> tokens = new ArrayList<>();
         List<JsonObject> prototypes = gson.fromJson(jsonArray, new TypeToken<ArrayList<JsonObject>>(){}.getType());
@@ -251,10 +272,20 @@ public class FileGameFactory implements GameFactory {
         return tokens;
     }
 
+    /**
+     * Returns the set of all the card colors.
+     *
+     * @return all the cars colors
+     */
     private Set<DevCardColor> generateDevCardColors() {
         return gson.fromJson(parserObject.get("card-colors"), new TypeToken<HashSet<DevCardColor>>(){}.getType());
     }
 
+    /**
+     * Returns the set of all the resource types.
+     *
+     * @return all the resource types
+     */
     private Set<ResourceType> generateResourceTypes() {
         Set<JsonObject> protoResources = gson.fromJson(parserObject.get("resource-types"), new TypeToken<HashSet<JsonObject>>(){}.getType());
         Set<ResourceType> resources = new HashSet<>();
@@ -269,15 +300,16 @@ public class FileGameFactory implements GameFactory {
         return resources;
     }
 
+    /** Private class representing the early game boost in resources. */
     private static class Boost {
         /** Number of choosable resources obtained at the beginning. */
         private int numStorable;
 
         /** Starting faith points. */
         private int faith;
-
     }
 
+    /** Custom deserializer for leader card requirements. */
     private static class RequirementDeserializer implements JsonDeserializer<CardRequirement> {
 
         @Override

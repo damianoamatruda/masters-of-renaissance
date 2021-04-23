@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.leadercards;
 
-import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 

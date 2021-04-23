@@ -12,9 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FileGameFactoryTest {
     final FileGameFactory f = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
 
-    public FileGameFactoryTest() throws Exception {
-    }
-
     /**
      * Tests that the resource factory works properly.
      */
