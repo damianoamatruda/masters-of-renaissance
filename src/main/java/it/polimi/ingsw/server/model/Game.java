@@ -85,6 +85,17 @@ public class Game {
     }
 
     /**
+     * Method called after a resource has been discarded by a player.
+     *
+     * @param player the player who discarded the resource
+     */
+    public void onDiscard(Player player) {
+        players.stream()
+                .filter(p -> !p.equals(player))
+                .forEach(p -> p.incrementFaithPoints(this));
+    }
+
+    /**
      * Method called after a card has been bought, checks if the maximum number of buyable cards has been reached.
      *
      * @param obtainedDevCards the number of all development cards obtained by the player

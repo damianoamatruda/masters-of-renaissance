@@ -135,6 +135,16 @@ public class Player {
     }
 
     /**
+     * Discards a resource.
+     *
+     * @param game     the game the player is playing in
+     * @param resource the type of the resource to discard
+     */
+    public void discardResource(Game game, ResourceType resource) {
+        game.onDiscard(this);
+    }
+
+    /**
      * Requires access to the Warehouse of the player.
      *
      * @return the player's Warehouse
