@@ -141,7 +141,7 @@ class ActionTokenDiscardTwoTest {
 
         token.trigger(game);
         game.end();
-        assertAll(() -> assertTrue(game.isLastRound()),
+        assertAll(() -> assertTrue(game.hasEnded()),
                 () -> assertTrue(game.isBlackWinner()),
                 () -> assertFalse(player.isWinner()));
     }

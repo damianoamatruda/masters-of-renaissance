@@ -48,9 +48,10 @@ public class SoloGame extends Game {
 
     @Override
     public void end() {
-        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
+        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
             setBlackWinner();
-        else
+            ended = true;
+        } else
             super.end();
     }
 

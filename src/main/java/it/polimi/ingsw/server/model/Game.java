@@ -32,6 +32,9 @@ public class Game {
     /** Flag that indicates the Game is about to end. */
     protected boolean lastRound;
 
+    /** Flag that indicates the Game has ended. */
+    protected boolean ended;
+
     /**
      * Constructor of Game instances.
      *
@@ -51,6 +54,7 @@ public class Game {
         this.faithTrack = faithTrack;
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
+        this.ended = false;
     }
 
     /**
@@ -67,6 +71,16 @@ public class Game {
      */
     public void end() {
         setWinnerPlayer();
+        ended = true;
+    }
+
+    /**
+     * Returns whether the game has ended.
+     *
+     * @return <code>true</code> if the game has ended; <code>false</code> otherwise.
+     */
+    public boolean hasEnded() {
+        return ended;
     }
 
     /**

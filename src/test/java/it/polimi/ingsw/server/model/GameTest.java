@@ -89,7 +89,7 @@ public class GameTest {
         for (int i = 0; i < 24; i++)
             game.getPlayers().get(0).incrementFaithPoints(game);
         game.end();
-        assertAll(() -> assertTrue(game.isLastRound()),
+        assertAll(() -> assertTrue(game.hasEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
 
@@ -136,7 +136,7 @@ public class GameTest {
          */
         @Test
         void hasTheGameEnded() {
-            assertFalse(game.isLastRound());
+            assertFalse(game.hasEnded());
         }
     }
 
@@ -300,7 +300,7 @@ public class GameTest {
              */
             @Test
             void hasTheGameEnded() {
-                assertTrue(game.isLastRound());
+                assertTrue(game.hasEnded());
             }
 
             /**
