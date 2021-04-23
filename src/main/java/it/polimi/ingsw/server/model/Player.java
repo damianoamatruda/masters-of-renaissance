@@ -312,16 +312,16 @@ public class Player {
      * Chooses an initial resource to be given to the player.
      *
      * @param resource the chosen resource
-     * @param shelfIdx the destination warehouse shelf
+     * @param shelf    the destination warehouse shelf
      * @throws CannotChooseException            all the allowed initial resources have already been chosen
      * @throws InvalidChoiceException           the resource cannot be given
      * @throws IllegalResourceTransferException invalid container
      */
-    public void chooseResource(ResourceType resource, int shelfIdx) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+    public void chooseResource(ResourceType resource, Warehouse.WarehouseShelf shelf) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
         if (initialResources <= 0) throw new CannotChooseException();
         if (resource == null || !resource.isStorable()) throw new InvalidChoiceException();
 
-        getWarehouse().getShelves().get(shelfIdx).addResource(resource);
+        shelf.addResource(resource);
 
         initialResources--;
     }
