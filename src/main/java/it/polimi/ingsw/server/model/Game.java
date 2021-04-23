@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -24,13 +25,16 @@ public class Game {
     protected final int maxFaithPointsCount;
 
     /** Number of development cards a player can have, before triggering the end of the game. */
-    private final int maxObtainableDevCards;
+    protected final int maxObtainableDevCards;
 
     /** Progressive number of the current round. */
     protected int rounds = 0;
 
     /** Flag that indicates the Game is about to end. */
     protected boolean lastRound;
+
+    /** Flag that indicates the Game has ended. */
+    protected boolean ended;
 
     /**
      * Constructor of Game instances.
@@ -51,19 +55,34 @@ public class Game {
         this.faithTrack = faithTrack;
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
+        this.ended = false;
     }
 
     /**
-     * Proceeds to sum the remaining points and decide a winner after the game is over.
+     * Returns whether the game is at its last round.
      *
-     * @return <code>true</code> if the game is over; <code>false</code> otherwise.
+     * @return <code>true</code> if the game is at its last round; <code>false</code> otherwise.
+     */
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    /**
+     * Proceeds to sum the remaining points, decide a winner and end the game.
+     */
+    @Deprecated
+    public void end() {
+        setWinnerPlayer();
+        ended = true;
+    }
+
+    /**
+     * Returns whether the game has ended.
+     *
+     * @return <code>true</code> if the game has ended; <code>false</code> otherwise.
      */
     public boolean hasEnded() {
-        if (lastRound) {
-            setWinnerPlayer();
-            return true;
-        }
-        return false;
+        return ended;
     }
 
     /**
@@ -85,6 +104,17 @@ public class Game {
     }
 
     /**
+     * Method called after a resource has been discarded by a player.
+     *
+     * @param player the player who discarded the resource
+     */
+    public void onDiscard(Player player) {
+        players.stream()
+                .filter(p -> !p.equals(player))
+                .forEach(p -> p.incrementFaithPoints(this));
+    }
+
+    /**
      * Method called after a card has been bought, checks if the maximum number of buyable cards has been reached.
      *
      * @param obtainedDevCards the number of all development cards obtained by the player
@@ -100,10 +130,9 @@ public class Game {
      * <p>
      * If next player is inactive, the operation is repeated until an active player is found.
      *
-     * @return the next player that has to play a turn
      * @throws AllInactiveException all players are set to inactive
      */
-    public Player onTurnEnd() throws AllInactiveException {
+    public void onTurnEnd() throws AllInactiveException {
         if (players.stream().noneMatch(Player::isActive))
             throw new AllInactiveException();
 
@@ -116,7 +145,8 @@ public class Game {
         if (nextPlayer.equals(getFirstPlayer()))
             rounds++;
 
-        return nextPlayer;
+        if (lastRound)
+            end();
     }
 
     /**
@@ -129,21 +159,21 @@ public class Game {
     }
 
     /**
+     * Returns the player that has to play a turn.
+     *
+     * @return the current player
+     */
+    public Player getCurrentPlayer() {
+        return players.get(0);
+    }
+
+    /**
      * Getter of all the players who joined the game at the beginning.
      *
      * @return the list of players (including who disconnected after)
      */
     public List<Player> getPlayers() {
         return List.copyOf(players);
-    }
-
-    /**
-     * Getter of the current number of completed rounds.
-     *
-     * @return the current round number
-     */
-    public int getRounds() {
-        return rounds;
     }
 
     /**
@@ -174,6 +204,42 @@ public class Game {
     }
 
     /**
+     * Getter of the current number of completed rounds.
+     *
+     * @return the current round number
+     */
+    public int getRounds() {
+        return rounds;
+    }
+
+    /**
+     * Returns Lorenzo's faith marker position.
+     *
+     * @return number of tile reached by Lorenzo
+     */
+    public int getBlackPoints() {
+        return 0;
+    }
+
+    /**
+     * Returns the player who won, if the winner is a player.
+     *
+     * @return the optional player
+     */
+    public Optional<Player> getWinnerPlayer() {
+        return players.stream().filter(Player::isWinner).findAny();
+    }
+
+    /**
+     * Returns whether Lorenzo has won the game or not.
+     *
+     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
+     */
+    public boolean isBlackWinner() {
+        return false;
+    }
+
+    /**
      * Proceeds to calculate the remaining points and chooses a winner.
      */
     private void setWinnerPlayer() {
@@ -191,8 +257,7 @@ public class Game {
                 .filter(p -> p.getVictoryPoints() == maxPts)
                 .toList();
 
-        for (Player p : winners)
-            p.setWinner(true);
+        winners.stream().findFirst().ifPresent(p -> p.setWinner(true));
     }
 
     /**

@@ -60,16 +60,4 @@ public class ResourceType {
     @SuppressWarnings({"EmptyMethod", "unused"})
     public void takeFromPlayer(Game game, Player player) {
     }
-
-    /**
-     * Routine for discarding a resource of this type.
-     *
-     * @param game   the game the player is playing in
-     * @param player the player discarding the resource
-     */
-    public void discard(Game game, Player player) {
-        game.getPlayers().stream()
-                .filter(p -> !p.equals(player))
-                .forEach(p -> p.incrementFaithPoints(game));
-    }
 }

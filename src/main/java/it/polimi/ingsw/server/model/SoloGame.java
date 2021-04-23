@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class SoloGame extends Game {
     /** The deck of action tokens to be activated at the end of the player's turn. */
-    private final List<ActionToken> actionTokens;
+    protected final List<ActionToken> actionTokens;
 
     /** The "marker" of Lorenzo il Magnifico on the faith track. */
-    private int blackPoints;
+    protected int blackPoints;
 
     /** Flag that determines whether Lorenzo has won the game. */
-    private boolean blackWinner;
+    protected boolean blackWinner;
 
     /**
      * Initializes the solo game with the following parameters.
@@ -39,6 +39,52 @@ public class SoloGame extends Game {
         this.blackWinner = false;
     }
 
+    @Override
+    public void end() {
+        // TODO: Remove this check, as this method is to be called only by 'onTurnEnd'
+        checkBlackWin();
+
+        if (!isBlackWinner())
+            super.end();
+        ended = true;
+    }
+
+    /**
+     * Triggered after the player concludes a turn. This is Lorenzo's turn: a token will be activated.
+     *
+     * @throws AllInactiveException all players are inactive
+     */
+    @Override
+    public void onTurnEnd() throws AllInactiveException {
+        ActionToken token = actionTokens.get(0);
+        token.trigger(this);
+        actionTokens.add(token);
+
+        checkBlackWin();
+
+        super.onTurnEnd();
+    }
+
+    @Override
+    public int getBlackPoints() {
+        return blackPoints;
+    }
+
+    @Override
+    public boolean isBlackWinner() {
+        return blackWinner;
+    }
+
+    /**
+     * Checks if Lorenzo is winning.
+     */
+    private void checkBlackWin() {
+        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
+            setBlackWinner();
+            lastRound = true;
+        }
+    }
+
     /**
      * This action is triggered by certain type(s) of token. Shuffles and resets the deck.
      */
@@ -52,52 +98,6 @@ public class SoloGame extends Game {
     public void incrementBlackPoints() {
         blackPoints += 1;
         super.onIncrement(blackPoints);
-    }
-
-    /**
-     * Triggered after a round is concluded. Proceeds to sum the remaining points and decide a winner after the game is
-     * over.
-     *
-     * @return <code>true</code> if the game is over; <code>false</code> otherwise.
-     */
-    @Override
-    public boolean hasEnded() {
-        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
-            setBlackWinner();
-            return true;
-        } else return super.hasEnded();
-    }
-
-    /**
-     * Triggered after the player concludes a turn. This is Lorenzo's turn: a token will be activated.
-     *
-     * @throws AllInactiveException all players are inactive
-     */
-    @Override
-    public Player onTurnEnd() throws AllInactiveException {
-        ActionToken token = actionTokens.get(0);
-        token.trigger(this);
-        actionTokens.add(token);
-
-        return super.onTurnEnd();
-    }
-
-    /**
-     * Returns Lorenzo's faith marker position.
-     *
-     * @return number of tile reached by Lorenzo
-     */
-    public int getBlackPoints() {
-        return blackPoints;
-    }
-
-    /**
-     * Says whether Lorenzo has won the game or not.
-     *
-     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
-     */
-    public boolean isBlackWinner() {
-        return blackWinner;
     }
 
     /**

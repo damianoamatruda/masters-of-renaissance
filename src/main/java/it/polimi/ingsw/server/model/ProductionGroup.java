@@ -100,7 +100,7 @@ public class ProductionGroup {
                             resContainer.addResource(resType);
                         } catch (IllegalResourceTransferException e) {
                             if (productionReq.getProduction().hasDiscardableOutput())
-                                resType.discard(game, player);
+                                player.discardResource(game, resType);
                             else
                                 throw new RuntimeException();
                         }

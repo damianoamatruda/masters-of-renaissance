@@ -88,7 +88,7 @@ public class GameTest {
     void noYellowTilesEndOfGame() {
         for (int i = 0; i < 24; i++)
             game.getPlayers().get(0).incrementFaithPoints(game);
-        game.hasEnded();
+        game.end();
         assertAll(() -> assertTrue(game.hasEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
@@ -248,7 +248,7 @@ public class GameTest {
         }
 
         /**
-         * Nested class for onIncrement method - 3rd Vatican section tests before calling hasEnded().
+         * Nested class for onIncrement method - 3rd Vatican section tests before calling isLastRound().
          */
         @Nested
         @DisplayName("Last Vatican Report tests before deciding winner")
@@ -282,7 +282,7 @@ public class GameTest {
         }
 
         /**
-         * Nested class for 3rd Vatican section tests after calling hasEnded().
+         * Nested class for 3rd Vatican section tests after calling isLastRound().
          */
         @Nested
         @DisplayName("Last Vatican Report tests after deciding winner")
@@ -292,7 +292,7 @@ public class GameTest {
              */
             @BeforeEach
             void endGame() {
-                game.hasEnded();
+                game.end();
             }
 
             /**
@@ -358,7 +358,8 @@ public class GameTest {
         void onTurnEndWithOneInactivePlayer() throws AllInactiveException {
             String next = game.getPlayers().get(2).getNickname();
             game.getPlayers().get(1).setActive(false);
-            assertEquals(next, game.onTurnEnd().getNickname());
+            game.onTurnEnd();
+            assertEquals(next, game.getCurrentPlayer().getNickname());
         }
 
         /**
@@ -369,11 +370,10 @@ public class GameTest {
             game.getPlayers().get(1).setActive(false);
             game.getPlayers().get(2).setActive(false);
             String next = game.getPlayers().get(0).getNickname();
-            Player nowPlaying;
             game.onTurnEnd();
             game.onTurnEnd();
-            nowPlaying = game.onTurnEnd();
-            assertEquals(next, nowPlaying.getNickname());
+            game.onTurnEnd();
+            assertEquals(next, game.getCurrentPlayer().getNickname());
         }
 
         /**
@@ -383,7 +383,8 @@ public class GameTest {
         void currentPlayerDisconnects() throws AllInactiveException {
             Player expected = game.getPlayers().get(1);
             game.getPlayers().get(0).setActive(false);
-            Player next = game.onTurnEnd();
+            game.onTurnEnd();
+            Player next = game.getCurrentPlayer();
             assertEquals(expected, next);
         }
 

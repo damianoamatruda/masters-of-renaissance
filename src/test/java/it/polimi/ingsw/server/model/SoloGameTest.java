@@ -66,7 +66,8 @@ public class SoloGameTest {
     @Test
     void onTurnEnd() throws AllInactiveException {
         player = game.getPlayers().get(0);
-        assertEquals(player, game.onTurnEnd());
+        game.onTurnEnd();
+        assertEquals(player, game.getCurrentPlayer());
     }
 
     /**
@@ -112,7 +113,7 @@ public class SoloGameTest {
         void losingGame() {
             for (int i = 0; i < 16; i++)
                 game.incrementBlackPoints();
-            game.hasEnded();
+            game.end();
             assertAll(() -> assertEquals(2, player.getVictoryPoints()),
                     () -> assertFalse(player.isWinner()),
                     () -> assertTrue(game.isBlackWinner()));
