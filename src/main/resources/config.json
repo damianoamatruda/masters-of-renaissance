@@ -1,7 +1,7 @@
 {
   "max-players": 4,
   "num-leader-cards": 4,
-  "num-discarded-leader-cars": 2,
+  "num-chosen-leader-cards": 2,
   "max-faith": 24,
   "max-development-cards": 7,
   "max-level": 3,
