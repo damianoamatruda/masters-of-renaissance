@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
-import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.List;
@@ -41,15 +40,16 @@ abstract public class GameState {
     }
 
     /**
-     * Chooses an initial resource to take as a player.
+     * Chooses the initial resources to take as a player.
      *
-     * @param context  the context
-     * @param player   the player
-     * @param resource the chosen resource
-     * @param shelf    the destination warehouse shelf
-     * @throws IllegalActionException if the player cannot choose an initial resource in the current state
+     * @param context         the context
+     * @param player          the player
+     * @param chosenResources the chosen resources
+     * @param shelves         the destination shelves
+     * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
-    public void chooseResource(GameContext context, Player player, ResourceType resource, Warehouse.WarehouseShelf shelf) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
+    public void chooseResources(GameContext context, Player player, Map<ResourceType, Integer> chosenResources,
+                                Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
         throw new IllegalActionException();
     }
 

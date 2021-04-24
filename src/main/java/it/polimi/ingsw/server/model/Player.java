@@ -36,7 +36,10 @@ public class Player {
     private final int chosenLeadersCount;
 
     /** The number of (storable) resources the player can still choose at the beginning */
-    private int initialResources;
+    private final int initialResources;
+
+    /** <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise. */
+    private boolean hasChosenResources;
 
     /** The player's faith track marker. */
     private int faithPoints;
@@ -80,6 +83,7 @@ public class Player {
         this.baseProduction = baseProduction;
         this.chosenLeadersCount = chosenLeadersCount;
         this.initialResources = initialResources;
+        this.hasChosenResources = initialResources == 0;
         this.faithPoints = initialFaith;
         this.victoryPoints = 0;
         this.active = true;
@@ -116,21 +120,33 @@ public class Player {
     }
 
     /**
-     * Chooses an initial resource to be given to the player.
+     * Chooses the initial resources to be given to the player.
      *
-     * @param resource the chosen resource
-     * @param shelf    the destination warehouse shelf
+     * @param game            the game the player is playing in
+     * @param chosenResources the chosen resources
+     * @param shelves         the destination shelves
      * @throws CannotChooseException            all the allowed initial resources have already been chosen
      * @throws InvalidChoiceException           the resource cannot be given
      * @throws IllegalResourceTransferException invalid container
      */
-    public void chooseResource(ResourceType resource, Warehouse.WarehouseShelf shelf) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
-        if (initialResources <= 0) throw new CannotChooseException();
-        if (resource == null || !resource.isStorable()) throw new InvalidChoiceException();
+    public void chooseResources(Game game, Map<ResourceType, Integer> chosenResources, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+        // TODO: Exclude resource type "Faith" from chosenResources
+        // TODO: Make sure that shelves are of type Shelf
 
-        shelf.addResource(resource);
+        if (hasChosenResources)
+            throw new CannotChooseException();
 
-        initialResources--;
+        try {
+            new ProductionGroup(List.of(
+                    new ProductionGroup.ProductionRequest(
+                            new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, Set.of(), false),
+                            Map.of(), chosenResources, Map.of(), shelves)
+            )).activate(game, this);
+        } catch (IllegalProductionActivationException e) {
+            throw new InvalidChoiceException();
+        }
+
+        hasChosenResources = true;
     }
 
     /**
@@ -148,7 +164,7 @@ public class Player {
      * @return <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise.
      */
     public boolean hasChosenResources() {
-        return initialResources == 0;
+        return hasChosenResources;
     }
 
     /**

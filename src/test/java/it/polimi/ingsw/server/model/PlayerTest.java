@@ -253,7 +253,9 @@ public class PlayerTest {
         void firstPlayerNoResources() {
             Player first = players.get(0);
             Warehouse.WarehouseShelf shelf = first.getWarehouse().getShelves().get(0);
-            assertThrows(CannotChooseException.class, () -> first.chooseResource(null, shelf));
+            assertThrows(CannotChooseException.class, () -> first.chooseResources(
+                    game, Map.of(coin, 1), Map.of(shelf, Map.of(coin, 1))
+            ));
         }
 
         @Test
@@ -267,26 +269,34 @@ public class PlayerTest {
 
             Warehouse.WarehouseShelf shelf = second.getWarehouse().getShelves().get(1);
 
-            assertAll(() -> assertDoesNotThrow(() -> second.chooseResource(coin, shelf)),
+            assertAll(() -> assertDoesNotThrow(() -> second.chooseResources(
+                    game, Map.of(coin, 1), Map.of(shelf, Map.of(coin, 1))
+                    )),
                     () -> assertDoesNotThrow(() -> second.addToDevSlot(game, 1, card, resContainers)));
-
         }
 
         @Test
         void fourthPlayerTwoResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertDoesNotThrow(() -> fourth.chooseResource(coin, shelf)),
-                    () -> assertDoesNotThrow(() -> fourth.chooseResource(coin, shelf)),
-                    () -> assertThrows(CannotChooseException.class, () -> fourth.chooseResource(coin, shelf)));
+            assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+                    game, Map.of(coin, 3), Map.of(shelf, Map.of(coin, 3))
+                    )),
+                    () -> assertDoesNotThrow(() -> fourth.chooseResources(
+                            game, Map.of(coin, 2), Map.of(shelf, Map.of(coin, 2))
+                    )));
         }
 
         @Test
         void illegalResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResource(zero, shelf)),
-                    () -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResource(faith, shelf)));
+            assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+                    game, Map.of(zero, 1), Map.of(shelf, Map.of(zero, 1))
+                    )),
+                    () -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+                            game, Map.of(faith, 1), Map.of(shelf, Map.of(faith, 1))
+                    )));
         }
 
     }
