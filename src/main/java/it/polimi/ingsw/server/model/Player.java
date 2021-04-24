@@ -32,6 +32,9 @@ public class Player {
     /** Visible to the view, this indicates whether the player starts first each round. */
     private final boolean inkwell;
 
+    /** The number of leader cards that must be discarded in the early game. */
+    private final int chosenLeadersCount;
+
     /** The number of (storable) resources the player can still choose at the beginning */
     private int initialResources;
 
@@ -50,18 +53,20 @@ public class Player {
     /**
      * Initializes player's attributes.
      *
-     * @param nickname         the player's nickname to be seen by all the players
-     * @param inkwell          received only by the first player
-     * @param leaders          the leader cards in the player's hand
-     * @param warehouse        the player's warehouse
-     * @param strongbox        the player's strongbox
-     * @param baseProduction   the player's base production
-     * @param devSlotsCount    number of possible production slots that can be occupied by development cards
-     * @param initialResources number of storable resources the player can choose at the beginning
-     * @param initialFaith     initial faith points
+     * @param nickname           the player's nickname to be seen by all the players
+     * @param inkwell            received only by the first player
+     * @param leaders            the leader cards in the player's hand
+     * @param warehouse          the player's warehouse
+     * @param strongbox          the player's strongbox
+     * @param baseProduction     the player's base production
+     * @param devSlotsCount      number of possible production slots that can be occupied by development cards
+     * @param chosenLeadersCount number of leader cards that must be discarded in the early game
+     * @param initialResources   number of storable resources the player can choose at the beginning
+     * @param initialFaith       initial faith points
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  Production baseProduction, int devSlotsCount, int initialResources, int initialFaith) {
+                  Production baseProduction, int devSlotsCount, int chosenLeadersCount, int initialResources,
+                  int initialFaith) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = new ArrayList<>(leaders);
@@ -73,8 +78,9 @@ public class Player {
             this.devSlots.add(new Stack<>());
 
         this.baseProduction = baseProduction;
-        this.faithPoints = initialFaith;
+        this.chosenLeadersCount = chosenLeadersCount;
         this.initialResources = initialResources;
+        this.faithPoints = initialFaith;
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
@@ -101,10 +107,12 @@ public class Player {
     /**
      * Chooses leaders from the hand of the player.
      *
-     * @param leaders the leader cards to choose
+     * @param chosenLeaders the leader cards to choose
      */
-    public void chooseLeaders(List<LeaderCard> leaders) {
-        this.leaders.retainAll(leaders);
+    public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
+        if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))
+            throw new CannotChooseException();
+        leaders.retainAll(chosenLeaders);
     }
 
     /**

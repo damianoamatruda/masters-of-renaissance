@@ -59,7 +59,7 @@ public class GameContext {
      * @param leaders the leader cards to choose
      * @throws IllegalActionException if the player cannot choose the leaders in the current state
      */
-    public void chooseLeaders(Player player, List<LeaderCard> leaders) throws IllegalActionException {
+    public void chooseLeaders(Player player, List<LeaderCard> leaders) throws IllegalActionException, CannotChooseException {
         state.chooseLeaders(this, player, leaders);
     }
 

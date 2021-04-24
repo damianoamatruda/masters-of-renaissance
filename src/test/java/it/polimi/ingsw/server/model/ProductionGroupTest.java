@@ -20,7 +20,7 @@ public class ProductionGroupTest {
     void singleProductionWithoutBlanks() throws IllegalProductionActivationException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
         Production prod = new Production(
                 Map.of(r1, 2),
@@ -56,7 +56,7 @@ public class ProductionGroupTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
         Production prod = new Production(Map.of(r1, 2), 3, Set.of(), Map.of(r2, 3), 0, Set.of(), false);
 
@@ -86,7 +86,7 @@ public class ProductionGroupTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0);
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0);
         Game game = new Game(List.of(player), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
         Production prod = new Production(Map.of(r1, 2), 0, Set.of(), Map.of(r2, 3), 3, Set.of(), false);
 

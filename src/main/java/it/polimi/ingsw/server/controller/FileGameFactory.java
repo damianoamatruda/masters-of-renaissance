@@ -137,7 +137,9 @@ public class FileGameFactory implements GameFactory {
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
                     new Warehouse(maxShelfSize),
                     new Strongbox(),
-                    production, slotsCount,
+                    production,
+                    slotsCount,
+                    chosenLeadersCount,
                     boost.get(i + 1).numStorable,
                     boost.get(i + 1).faith
             ));
@@ -181,8 +183,9 @@ public class FileGameFactory implements GameFactory {
                 shuffledLeaderCards.subList(0, playerLeadersCount),
                 new Warehouse(maxShelfSize),
                 new Strongbox(),
-                gson.fromJson(parserObject.get("base-production"), Production.class), slotsCount,
-                boost.get(1).numStorable,
+                gson.fromJson(parserObject.get("base-production"), Production.class),
+                slotsCount,
+                chosenLeadersCount, boost.get(1).numStorable,
                 boost.get(1).faith
         );
 

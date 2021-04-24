@@ -36,7 +36,7 @@ abstract public class GameState {
      * @param leaders the leader cards to choose
      * @throws IllegalActionException if the player cannot choose the leaders in the current state
      */
-    public void chooseLeaders(GameContext context, Player player, List<LeaderCard> leaders) throws IllegalActionException {
+    public void chooseLeaders(GameContext context, Player player, List<LeaderCard> leaders) throws IllegalActionException, CannotChooseException {
         throw new IllegalActionException();
     }
 

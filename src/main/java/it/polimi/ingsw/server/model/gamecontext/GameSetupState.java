@@ -21,7 +21,7 @@ public class GameSetupState extends GameState {
     }
 
     @Override
-    public void chooseLeaders(GameContext context, Player player, List<LeaderCard> leaders) {
+    public void chooseLeaders(GameContext context, Player player, List<LeaderCard> leaders) throws CannotChooseException {
         player.chooseLeaders(leaders);
         checkEndSetup(context);
     }
