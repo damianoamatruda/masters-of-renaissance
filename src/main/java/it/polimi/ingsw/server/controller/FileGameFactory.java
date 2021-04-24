@@ -103,11 +103,7 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> leaderCards;
 
         /* Shuffle the leader cards */
-        try {
-            leaderCards = generateLeaderCards();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException();
-        }
+        leaderCards = generateLeaderCards();
         Collections.shuffle(leaderCards);
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
             throw new IllegalArgumentException();
@@ -152,11 +148,7 @@ public class FileGameFactory implements GameFactory {
 
         if (nickname == null) throw new IllegalArgumentException();
         List<LeaderCard> shuffledLeaderCards;
-        try {
-            shuffledLeaderCards = new ArrayList<>(generateLeaderCards());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException();
-        }
+        shuffledLeaderCards = new ArrayList<>(generateLeaderCards());
         Collections.shuffle(shuffledLeaderCards);
 
         Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>(){}.getType());
@@ -172,21 +164,15 @@ public class FileGameFactory implements GameFactory {
                 boost.get(1).faith
         );
 
-        SoloGame game = null;
-        try {
-            game = new SoloGame(
-                    player,
-                    new DevCardGrid(generateDevCards(), maxLevel, numCardColors),
-                    generateMarket(),
-                    generateFaithTrack(),
-                    generateActionTokens(),
-                    maxFaith,
-                    maxDevCards
-            );
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return game;
+        return new SoloGame(
+                player,
+                new DevCardGrid(generateDevCards(), maxLevel, numCardColors),
+                generateMarket(),
+                generateFaithTrack(),
+                generateActionTokens(),
+                maxFaith,
+                maxDevCards
+        );
     }
 
     /**
@@ -223,15 +209,20 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of leader cards
      */
-    private List<LeaderCard> generateLeaderCards() throws ClassNotFoundException {
+    private List<LeaderCard> generateLeaderCards() {
         Gson otherGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
                 .registerTypeHierarchyAdapter(CardRequirement.class, new RequirementDeserializer())
                 .create();
         List<LeaderCard> leaders = new ArrayList<>();
-        List<JsonObject> prototypes = otherGson.fromJson(parserObject.get("leader-cards"), new TypeToken<ArrayList<JsonObject>>(){}.getType());
-        for(JsonObject o : prototypes) {
-            leaders.add(otherGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
+        List<JsonObject> prototypes = otherGson.fromJson(parserObject.get("leader-cards"), new TypeToken<ArrayList<JsonObject>>() {
+        }.getType());
+        for (JsonObject o : prototypes) {
+            try {
+                leaders.add(otherGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException();
+            }
         }
         return leaders;
     }
@@ -262,12 +253,17 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of action tokens
      */
-    private List<ActionToken> generateActionTokens() throws ClassNotFoundException {
+    private List<ActionToken> generateActionTokens() {
         JsonArray jsonArray = parserObject.get("action-tokens").getAsJsonArray();
         List<ActionToken> tokens = new ArrayList<>();
-        List<JsonObject> prototypes = gson.fromJson(jsonArray, new TypeToken<ArrayList<JsonObject>>(){}.getType());
-        for(JsonObject o : prototypes) {
-            tokens.add(gson.fromJson(o, (Class<? extends ActionToken>) Class.forName(o.get("type").getAsString())));
+        List<JsonObject> prototypes = gson.fromJson(jsonArray, new TypeToken<ArrayList<JsonObject>>() {
+        }.getType());
+        for (JsonObject o : prototypes) {
+            try {
+                tokens.add(gson.fromJson(o, (Class<? extends ActionToken>) Class.forName(o.get("type").getAsString())));
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException();
+            }
         }
         return tokens;
     }
@@ -317,8 +313,7 @@ public class FileGameFactory implements GameFactory {
             try {
                 return new Gson().fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return null;
+                throw new RuntimeException();
             }
         }
     }
