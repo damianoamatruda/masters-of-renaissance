@@ -38,7 +38,7 @@ public class ResourceShelf extends Shelf {
     @Override
     public void addResource(ResourceType resType) throws IllegalResourceTransferException {
         if (!resType.equals(this.boundedResType))
-            throw new IllegalResourceTransferException();
+            throw new IllegalResourceTransferException("Cannot add a resource of a different type to the bounded type of the resource shelf.");
         super.addResource(resType);
     }
 

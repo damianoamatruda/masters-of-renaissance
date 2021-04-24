@@ -4,20 +4,24 @@ import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Player;
 
 /**
- * Generic resource archetype.
+ * This class represents a resource type.
  */
 public class ResourceType {
     /** The name of the resource type. */
     private final String name;
 
-    /** <code>true</code> if the resource can be stored in a resource container; <code>false</code> otherwise. */
+    /**
+     * <code>true</code> if the resources of this type can be stored in a resource container; <code>false</code>
+     * otherwise.
+     */
     private final boolean storable;
 
     /**
      * Class constructor.
      *
-     * @param name     the name of the resource being created.
-     * @param storable whether the resource can be stored on a <code>Shelf</code>
+     * @param name     the name of the resource type
+     * @param storable <code>true</code> if the resources of this type can be stored in a resource container;
+     *                 <code>false</code> otherwise.
      */
     public ResourceType(String name, boolean storable) {
         this.name = name;
@@ -27,7 +31,7 @@ public class ResourceType {
     /**
      * Returns whether the resource type is storable.
      *
-     * @return whether the resource can be stored in a resource container.
+     * @return <code>true</code> if the resources of this type can be stored in a resource container; <code>false</code> otherwise.
      */
     public boolean isStorable() {
         return storable;
@@ -36,23 +40,23 @@ public class ResourceType {
     /**
      * Returns the name of the resource type.
      *
-     * @return the name of the resource associated with the class, for UI purposes only
+     * @return the name of the resource type
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Routine for giving a resource of this type to the player.
+     * Routine for giving a non-storable resource of this type to the player.
      *
      * @param game   the game the player is playing in
-     * @param player the player the resource goes to
+     * @param player the player the resource is given to
      */
     public void giveToPlayer(Game game, Player player) {
     }
 
     /**
-     * Routine for taking a resource of this type from the player.
+     * Routine for taking a non-storable resource of this type from the player.
      *
      * @param game   the game the player is playing in
      * @param player the player the resource is taken from

@@ -269,7 +269,7 @@ public class FileGameFactory implements GameFactory {
             try {
                 resources.add(subtype == null ? gson.fromJson(o, ResourceType.class) : gson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
         return resources;
@@ -292,7 +292,7 @@ public class FileGameFactory implements GameFactory {
             try {
                 leaders.add(otherGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
         }
         return leaders;
@@ -343,7 +343,7 @@ public class FileGameFactory implements GameFactory {
             try {
                 tokens.add(gson.fromJson(o, (Class<? extends ActionToken>) Class.forName(o.get("type").getAsString())));
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
         }
         return tokens;
@@ -366,7 +366,7 @@ public class FileGameFactory implements GameFactory {
             try {
                 return new Gson().fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
         }
     }

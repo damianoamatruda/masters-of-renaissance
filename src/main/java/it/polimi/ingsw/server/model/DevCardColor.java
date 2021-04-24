@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.model;
 
 /**
- * This class represents a generic development card color.
+ * This class represents a development card color.
  */
 public class DevCardColor {
-    /** The name of the color. */
+    /** The name of the development card color. */
     private final String name;
 
     /**
@@ -19,7 +19,7 @@ public class DevCardColor {
     /**
      * Returns the name of the development card color.
      *
-     * @return the name of the resource associated with the class, for UI purposes only
+     * @return the name of the development card color
      */
     public String getName() {
         return name;
