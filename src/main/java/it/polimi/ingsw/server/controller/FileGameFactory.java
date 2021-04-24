@@ -25,12 +25,6 @@ public class FileGameFactory implements GameFactory {
     /** The Gson instance used for parsing. */
     private final Gson gson;
 
-    /** The development card colors. */
-    private final Map<String, DevCardColor> devCardColorMap;
-
-    /** The resource types. */
-    private final Map<String, ResourceType> resTypeMap;
-
     /** Maximum number of players for each Game. */
     private final int maxPlayers;
 
@@ -61,6 +55,18 @@ public class FileGameFactory implements GameFactory {
     /** Number of development card production slots per player. */
     private final int slotsCount;
 
+    /** The development card colors. */
+    private final Map<String, DevCardColor> devCardColorMap;
+
+    /** The resource types. */
+    private final Map<String, ResourceType> resTypeMap;
+
+    /** The leader cards. */
+    private final Map<Game, List<LeaderCard>> leaderCardLists;
+
+    /** The development cards. */
+    private final Map<Game, List<DevelopmentCard>> developmentCardLists;
+
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
      * file.
@@ -74,7 +80,7 @@ public class FileGameFactory implements GameFactory {
 
         parserObject = (JsonObject) new JsonParser().parse(new InputStreamReader(inputStream));
 
-        //Parses all simple parameters
+        /* Parses all simple parameters */
         maxPlayers = gson.fromJson(parserObject.get("max-players"), int.class);
         playerLeadersCount = gson.fromJson(parserObject.get("num-leader-cards"), int.class);
         numDiscardedLeaders = gson.fromJson(parserObject.get("num-discarded-leader-cars"), int.class);
@@ -89,14 +95,16 @@ public class FileGameFactory implements GameFactory {
         devCardColorMap = generateDevCardColors().stream()
                 .collect(Collectors.toUnmodifiableMap(DevCardColor::getName, Function.identity()));
 
-
         resTypeMap = generateResourceTypes().stream()
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
+
+        leaderCardLists = new HashMap<>();
+
+        developmentCardLists = new HashMap<>();
     }
 
     @Override
     public Game getMultiGame(List<String> nicknames) {
-
         if (nicknames == null || nicknames.size() > maxPlayers || nicknames.size() == 0)
             throw new IllegalArgumentException();
 
@@ -122,8 +130,8 @@ public class FileGameFactory implements GameFactory {
 
         List<Player> players = new ArrayList<>();
         Production production = gson.fromJson(parserObject.get("base-production"), Production.class);
-        for (int i = 0; i < shuffledNicknames.size(); i++) {
-            Player player = new Player(
+        for (int i = 0; i < shuffledNicknames.size(); i++)
+            players.add(new Player(
                     shuffledNicknames.get(i),
                     i == 0,
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
@@ -132,11 +140,9 @@ public class FileGameFactory implements GameFactory {
                     production, slotsCount,
                     boost.get(i + 1).numStorable,
                     boost.get(i + 1).faith
-            );
-            players.add(player);
-        }
+            ));
 
-        return new Game(
+        Game game = new Game(
                 players,
                 new DevCardGrid(developmentCards, maxLevel, numCardColors),
                 generateMarket(),
@@ -145,11 +151,14 @@ public class FileGameFactory implements GameFactory {
                 maxDevCards
         );
 
+        leaderCardLists.put(game, leaderCards);
+        developmentCardLists.put(game, developmentCards);
+
+        return game;
     }
 
     @Override
     public SoloGame getSoloGame(String nickname) {
-
         if (nickname == null)
             throw new IllegalArgumentException();
 
@@ -177,7 +186,7 @@ public class FileGameFactory implements GameFactory {
                 boost.get(1).faith
         );
 
-        return new SoloGame(
+        SoloGame game = new SoloGame(
                 player,
                 new DevCardGrid(developmentCards, maxLevel, numCardColors),
                 generateMarket(),
@@ -186,6 +195,11 @@ public class FileGameFactory implements GameFactory {
                 maxFaith,
                 maxDevCards
         );
+
+        leaderCardLists.put(game, leaderCards);
+        developmentCardLists.put(game, developmentCards);
+
+        return game;
     }
 
     /**
@@ -209,12 +223,33 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
+     * Getter of leader cards used in a game.
+     *
+     * @param game the game
+     * @return the leader card list
+     */
+    public Optional<List<LeaderCard>> getLeaderCards(Game game) {
+        return Optional.ofNullable(leaderCardLists.get(game));
+    }
+
+    /**
+     * Getter of development cards used in a game.
+     *
+     * @param game the game
+     * @return the development card list
+     */
+    public Optional<List<DevelopmentCard>> getDevelopmentCards(Game game) {
+        return Optional.ofNullable(developmentCardLists.get(game));
+    }
+
+    /**
      * Returns a list of all possible development cards.
      *
      * @return list of development cards
      */
     private List<DevelopmentCard> generateDevCards() {
-        return gson.fromJson(parserObject.get("development-cards"), new TypeToken<ArrayList<DevelopmentCard>>(){}.getType());
+        return gson.fromJson(parserObject.get("development-cards"), new TypeToken<ArrayList<DevelopmentCard>>() {
+        }.getType());
     }
 
     /**
