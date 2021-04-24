@@ -100,21 +100,25 @@ public class FileGameFactory implements GameFactory {
         if (nicknames == null || nicknames.size() > maxPlayers || nicknames.size() == 0)
             throw new IllegalArgumentException();
 
-        List<LeaderCard> leaderCards;
+        List<LeaderCard> leaderCards = generateLeaderCards();
+        List<DevelopmentCard> developmentCards = generateDevCards();
 
-        /* Shuffle the leader cards */
-        leaderCards = generateLeaderCards();
-        Collections.shuffle(leaderCards);
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
             throw new IllegalArgumentException();
+
+        if (playerLeadersCount > 0 && nicknames.size() > leaderCards.size() / playerLeadersCount)
+            throw new IllegalArgumentException();
+
+        /* Shuffle the leader cards */
+        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
+        Collections.shuffle(shuffledLeaderCards);
 
         /* Shuffle the nicknames */
         List<String> shuffledNicknames = new ArrayList<>(nicknames);
         Collections.shuffle(shuffledNicknames);
-        if (playerLeadersCount > 0 && shuffledNicknames.size() > leaderCards.size() / playerLeadersCount)
-            throw new IllegalArgumentException();
 
-        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>(){}.getType());
+        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>() {
+        }.getType());
 
         List<Player> players = new ArrayList<>();
         Production production = gson.fromJson(parserObject.get("base-production"), Production.class);
@@ -122,19 +126,19 @@ public class FileGameFactory implements GameFactory {
             Player player = new Player(
                     shuffledNicknames.get(i),
                     i == 0,
-                    leaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
+                    shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
                     new Warehouse(maxShelfSize),
                     new Strongbox(),
                     production, slotsCount,
-                    boost.get(i+1).numStorable,
-                    boost.get(i+1).faith
+                    boost.get(i + 1).numStorable,
+                    boost.get(i + 1).faith
             );
             players.add(player);
         }
 
         return new Game(
                 players,
-                new DevCardGrid(generateDevCards(), maxLevel, numCardColors),
+                new DevCardGrid(developmentCards, maxLevel, numCardColors),
                 generateMarket(),
                 generateFaithTrack(),
                 maxFaith,
@@ -146,12 +150,21 @@ public class FileGameFactory implements GameFactory {
     @Override
     public SoloGame getSoloGame(String nickname) {
 
-        if (nickname == null) throw new IllegalArgumentException();
-        List<LeaderCard> shuffledLeaderCards;
-        shuffledLeaderCards = new ArrayList<>(generateLeaderCards());
+        if (nickname == null)
+            throw new IllegalArgumentException();
+
+        List<LeaderCard> leaderCards = generateLeaderCards();
+        List<DevelopmentCard> developmentCards = generateDevCards();
+
+        if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
+            throw new IllegalArgumentException();
+
+        /* Shuffle the leader cards */
+        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
 
-        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>(){}.getType());
+        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>() {
+        }.getType());
 
         Player player = new Player(
                 nickname,
@@ -166,7 +179,7 @@ public class FileGameFactory implements GameFactory {
 
         return new SoloGame(
                 player,
-                new DevCardGrid(generateDevCards(), maxLevel, numCardColors),
+                new DevCardGrid(developmentCards, maxLevel, numCardColors),
                 generateMarket(),
                 generateFaithTrack(),
                 generateActionTokens(),
