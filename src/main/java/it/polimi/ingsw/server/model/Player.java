@@ -32,8 +32,14 @@ public class Player {
     /** Visible to the view, this indicates whether the player starts first each round. */
     private final boolean inkwell;
 
+    /** The number of leader cards that must be discarded in the early game. */
+    private final int chosenLeadersCount;
+
     /** The number of (storable) resources the player can still choose at the beginning */
-    private int initialResources;
+    private final int initialResources;
+
+    /** <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise. */
+    private boolean hasChosenResources;
 
     /** The player's faith track marker. */
     private int faithPoints;
@@ -50,18 +56,20 @@ public class Player {
     /**
      * Initializes player's attributes.
      *
-     * @param nickname         the player's nickname to be seen by all the players
-     * @param inkwell          received only by the first player
-     * @param leaders          the leader cards in the player's hand
-     * @param warehouse        the player's warehouse
-     * @param strongbox        the player's strongbox
-     * @param baseProduction   the player's base production
-     * @param devSlotsCount    number of possible production slots that can be occupied by development cards
-     * @param initialResources number of storable resources the player can choose at the beginning
-     * @param initialFaith     initial faith points
+     * @param nickname           the player's nickname to be seen by all the players
+     * @param inkwell            received only by the first player
+     * @param leaders            the leader cards in the player's hand
+     * @param warehouse          the player's warehouse
+     * @param strongbox          the player's strongbox
+     * @param baseProduction     the player's base production
+     * @param devSlotsCount      number of possible production slots that can be occupied by development cards
+     * @param chosenLeadersCount number of leader cards that must be discarded in the early game
+     * @param initialResources   number of storable resources the player can choose at the beginning
+     * @param initialFaith       initial faith points
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  Production baseProduction, int devSlotsCount, int initialResources, int initialFaith) {
+                  Production baseProduction, int devSlotsCount, int chosenLeadersCount, int initialResources,
+                  int initialFaith) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = new ArrayList<>(leaders);
@@ -73,8 +81,10 @@ public class Player {
             this.devSlots.add(new Stack<>());
 
         this.baseProduction = baseProduction;
-        this.faithPoints = initialFaith;
+        this.chosenLeadersCount = chosenLeadersCount;
         this.initialResources = initialResources;
+        this.hasChosenResources = initialResources == 0;
+        this.faithPoints = initialFaith;
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
@@ -101,28 +111,60 @@ public class Player {
     /**
      * Chooses leaders from the hand of the player.
      *
-     * @param leaders the leader cards to choose
+     * @param chosenLeaders the leader cards to choose
      */
-    public void chooseLeaders(List<LeaderCard> leaders) {
-        this.leaders.retainAll(leaders);
+    public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
+        if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))
+            throw new CannotChooseException();
+        leaders.retainAll(chosenLeaders);
     }
 
     /**
-     * Chooses an initial resource to be given to the player.
+     * Chooses the initial resources to be given to the player.
      *
-     * @param resource the chosen resource
-     * @param shelf    the destination warehouse shelf
+     * @param game            the game the player is playing in
+     * @param chosenResources the chosen resources
+     * @param shelves         the destination shelves
      * @throws CannotChooseException            all the allowed initial resources have already been chosen
      * @throws InvalidChoiceException           the resource cannot be given
      * @throws IllegalResourceTransferException invalid container
      */
-    public void chooseResource(ResourceType resource, Warehouse.WarehouseShelf shelf) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
-        if (initialResources <= 0) throw new CannotChooseException();
-        if (resource == null || !resource.isStorable()) throw new InvalidChoiceException();
+    public void chooseResources(Game game, Map<ResourceType, Integer> chosenResources, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+        // TODO: Exclude resource type "Faith" from chosenResources
+        // TODO: Make sure that shelves are of type Shelf
 
-        shelf.addResource(resource);
+        if (hasChosenResources)
+            throw new CannotChooseException();
 
-        initialResources--;
+        try {
+            new ProductionGroup(List.of(
+                    new ProductionGroup.ProductionRequest(
+                            new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, Set.of(), false),
+                            Map.of(), chosenResources, Map.of(), shelves)
+            )).activate(game, this);
+        } catch (IllegalProductionActivationException e) {
+            throw new InvalidChoiceException();
+        }
+
+        hasChosenResources = true;
+    }
+
+    /**
+     * Returns whether the player has chosen the leaders.
+     *
+     * @return <code>true</code> if the player has chosen the leaders; <code>false</code> otherwise.
+     */
+    public boolean hasChosenLeaders() {
+        return leaders.size() == chosenLeadersCount;
+    }
+
+    /**
+     * Returns whether the player has chosen the initial resources.
+     *
+     * @return <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise.
+     */
+    public boolean hasChosenResources() {
+        return hasChosenResources;
     }
 
     /**
@@ -203,15 +245,6 @@ public class Player {
      */
     public int getFaithPoints() {
         return faithPoints;
-    }
-
-    /**
-     * Returns the number of storable resources the player can currently choose
-     *
-     * @return the number of storable resources the player can choose
-     */
-    public int getInitialResources() {
-        return initialResources;
     }
 
     /**

@@ -26,7 +26,7 @@ public class DevCardRequirementTest {
     @BeforeEach
     void setup() {
         ResourceType r1 = new ResourceType("r1", true);
-        p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0);
+        p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 1, 0, 0, 0);
         g = new Game(List.of(p), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 10);
     }
 

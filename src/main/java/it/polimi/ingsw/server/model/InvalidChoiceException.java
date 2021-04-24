@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 /**
- * Exception thrown when a player wants to choose a non storable resource as bonus resource.
+ * Exception thrown when a player tries to obtain a bonus resource but has no right to it.
  */
 public class InvalidChoiceException extends Exception {
 }
