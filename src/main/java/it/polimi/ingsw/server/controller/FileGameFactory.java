@@ -203,16 +203,6 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
-     * Getter of a resource type in the game by its name.
-     *
-     * @param name the name of the resource type
-     * @return the resource type
-     */
-    public Optional<ResourceType> getResourceType(String name) {
-        return Optional.ofNullable(resTypeMap.get(name));
-    }
-
-    /**
      * Getter of a development card color in the game by its name.
      *
      * @param name the name of the development card color
@@ -220,6 +210,16 @@ public class FileGameFactory implements GameFactory {
      */
     public Optional<DevCardColor> getDevCardColor(String name) {
         return Optional.ofNullable(devCardColorMap.get(name));
+    }
+
+    /**
+     * Getter of a resource type in the game by its name.
+     *
+     * @param name the name of the resource type
+     * @return the resource type
+     */
+    public Optional<ResourceType> getResourceType(String name) {
+        return Optional.ofNullable(resTypeMap.get(name));
     }
 
     /**
@@ -243,13 +243,33 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
-     * Returns a list of all possible development cards.
+     * Returns the set of all the card colors.
      *
-     * @return list of development cards
+     * @return all the cars colors
      */
-    private List<DevelopmentCard> generateDevCards() {
-        return gson.fromJson(parserObject.get("development-cards"), new TypeToken<ArrayList<DevelopmentCard>>() {
+    private Set<DevCardColor> generateDevCardColors() {
+        return gson.fromJson(parserObject.get("card-colors"), new TypeToken<HashSet<DevCardColor>>() {
         }.getType());
+    }
+
+    /**
+     * Returns the set of all the resource types.
+     *
+     * @return all the resource types
+     */
+    private Set<ResourceType> generateResourceTypes() {
+        Set<JsonObject> protoResources = gson.fromJson(parserObject.get("resource-types"), new TypeToken<HashSet<JsonObject>>() {
+        }.getType());
+        Set<ResourceType> resources = new HashSet<>();
+        for (JsonObject o : protoResources) {
+            JsonElement subtype = o.get("subtype");
+            try {
+                resources.add(subtype == null ? gson.fromJson(o, ResourceType.class) : gson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return resources;
     }
 
     /**
@@ -273,6 +293,16 @@ public class FileGameFactory implements GameFactory {
             }
         }
         return leaders;
+    }
+
+    /**
+     * Returns a list of all possible development cards.
+     *
+     * @return list of development cards
+     */
+    private List<DevelopmentCard> generateDevCards() {
+        return gson.fromJson(parserObject.get("development-cards"), new TypeToken<ArrayList<DevelopmentCard>>() {
+        }.getType());
     }
 
     /**
@@ -314,34 +344,6 @@ public class FileGameFactory implements GameFactory {
             }
         }
         return tokens;
-    }
-
-    /**
-     * Returns the set of all the card colors.
-     *
-     * @return all the cars colors
-     */
-    private Set<DevCardColor> generateDevCardColors() {
-        return gson.fromJson(parserObject.get("card-colors"), new TypeToken<HashSet<DevCardColor>>(){}.getType());
-    }
-
-    /**
-     * Returns the set of all the resource types.
-     *
-     * @return all the resource types
-     */
-    private Set<ResourceType> generateResourceTypes() {
-        Set<JsonObject> protoResources = gson.fromJson(parserObject.get("resource-types"), new TypeToken<HashSet<JsonObject>>(){}.getType());
-        Set<ResourceType> resources = new HashSet<>();
-        for(JsonObject o : protoResources){
-            JsonElement subtype = o.get("subtype");
-            try {
-                resources.add(subtype == null ? gson.fromJson(o, ResourceType.class) : gson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return resources;
     }
 
     /** Private class representing the early game boost in resources. */
