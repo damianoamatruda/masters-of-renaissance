@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * This class represent a game state.
+ * This class represents a game state.
  */
 abstract public class GameState {
     /**

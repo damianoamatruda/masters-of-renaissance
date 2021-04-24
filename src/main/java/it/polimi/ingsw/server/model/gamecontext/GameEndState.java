@@ -5,7 +5,7 @@ import it.polimi.ingsw.server.model.Player;
 import java.util.Optional;
 
 /**
- * This class represent the state of an ended game.
+ * This class represents the state of an ended game.
  */
 public class GameEndState extends GameState {
     @Override
