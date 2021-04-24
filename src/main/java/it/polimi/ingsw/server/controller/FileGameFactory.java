@@ -76,6 +76,8 @@ public class FileGameFactory implements GameFactory {
     public FileGameFactory(InputStream inputStream) {
         gson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
+                .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
+                .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
                 .create();
 
         parserObject = (JsonObject) new JsonParser().parse(new InputStreamReader(inputStream));
@@ -251,7 +253,8 @@ public class FileGameFactory implements GameFactory {
      * @return all the cars colors
      */
     private Set<DevCardColor> generateDevCardColors() {
-        return gson.fromJson(parserObject.get("card-colors"), new TypeToken<HashSet<DevCardColor>>() {
+        Gson customGson = new GsonBuilder().create();
+        return customGson.fromJson(parserObject.get("card-colors"), new TypeToken<HashSet<DevCardColor>>() {
         }.getType());
     }
 
@@ -261,13 +264,14 @@ public class FileGameFactory implements GameFactory {
      * @return all the resource types
      */
     private Set<ResourceType> generateResourceTypes() {
-        Set<JsonObject> protoResources = gson.fromJson(parserObject.get("resource-types"), new TypeToken<HashSet<JsonObject>>() {
+        Gson customGson = new GsonBuilder().create();
+        Set<JsonObject> protoResources = customGson.fromJson(parserObject.get("resource-types"), new TypeToken<HashSet<JsonObject>>() {
         }.getType());
         Set<ResourceType> resources = new HashSet<>();
         for (JsonObject o : protoResources) {
             JsonElement subtype = o.get("subtype");
             try {
-                resources.add(subtype == null ? gson.fromJson(o, ResourceType.class) : gson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
+                resources.add(subtype == null ? customGson.fromJson(o, ResourceType.class) : customGson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -281,16 +285,16 @@ public class FileGameFactory implements GameFactory {
      * @return list of leader cards
      */
     private List<LeaderCard> generateLeaderCards() {
-        Gson otherGson = new GsonBuilder()
+        Gson customGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
                 .registerTypeHierarchyAdapter(CardRequirement.class, new RequirementDeserializer())
                 .create();
         List<LeaderCard> leaders = new ArrayList<>();
-        List<JsonObject> prototypes = otherGson.fromJson(parserObject.get("leader-cards"), new TypeToken<ArrayList<JsonObject>>() {
+        List<JsonObject> prototypes = customGson.fromJson(parserObject.get("leader-cards"), new TypeToken<ArrayList<JsonObject>>() {
         }.getType());
         for (JsonObject o : prototypes) {
             try {
-                leaders.add(otherGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
+                leaders.add(customGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -368,6 +372,21 @@ public class FileGameFactory implements GameFactory {
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    private class ColorDeserializer implements JsonDeserializer<DevCardColor> {
+        @Override
+        public DevCardColor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            return getDevCardColor(new Gson().fromJson(jsonElement.getAsJsonObject().get("name"), String.class)).orElse(null);
+        }
+    }
+
+    private class ResourceDeserializer implements JsonDeserializer<ResourceType> {
+        @Override
+        public ResourceType deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            Optional<ResourceType> res = getResourceType(new Gson().fromJson(jsonElement.getAsJsonObject().get("name"), String.class));
+            return res.orElse(null);
         }
     }
 }
