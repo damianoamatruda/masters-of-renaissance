@@ -134,6 +134,24 @@ public class Player {
     }
 
     /**
+     * Returns whether the player has chosen the leaders.
+     *
+     * @return <code>true</code> if the player has chosen the leaders; <code>false</code> otherwise.
+     */
+    public boolean hasChosenLeaders() {
+        return leaders.size() == chosenLeadersCount;
+    }
+
+    /**
+     * Returns whether the player has chosen the initial resources.
+     *
+     * @return <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise.
+     */
+    public boolean hasChosenResources() {
+        return initialResources == 0;
+    }
+
+    /**
      * Action performed when the player discards a leader card. The player receives one faith point.
      *
      * @param game  the game the player is playing in
@@ -211,15 +229,6 @@ public class Player {
      */
     public int getFaithPoints() {
         return faithPoints;
-    }
-
-    /**
-     * Returns the number of storable resources the player can currently choose
-     *
-     * @return the number of storable resources the player can choose
-     */
-    public int getInitialResources() {
-        return initialResources;
     }
 
     /**

@@ -38,7 +38,7 @@ public class GameSetupState extends GameState {
      * @param context the context
      */
     private void checkEndSetup(GameContext context) {
-        if (context.game.getPlayers().stream().allMatch(p -> p.getLeaders().size() == 2 && p.getInitialResources() == 0))
+        if (context.game.getPlayers().stream().allMatch(p -> p.hasChosenLeaders() && p.hasChosenResources()))
             context.setState(new GameTurnNotDoneState());
     }
 }
