@@ -391,14 +391,16 @@ public class FileGameFactory implements GameFactory {
     private class ColorDeserializer implements JsonDeserializer<DevCardColor> {
         @Override
         public DevCardColor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-            return getDevCardColor(new Gson().fromJson(jsonElement.getAsString(), String.class)).orElse(null);
+            return getDevCardColor(jsonElement.getAsString())
+                    .orElseThrow(() -> new RuntimeException("The given color does not exist."));
         }
     }
 
     private class ResourceDeserializer implements JsonDeserializer<ResourceType> {
         @Override
         public ResourceType deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-            return getResourceType(new Gson().fromJson(jsonElement.getAsString(), String.class)).orElse(null);
+            return getResourceType(jsonElement.getAsString())
+                    .orElseThrow(() -> new RuntimeException("The given resource type does not exist."));
         }
     }
 }
