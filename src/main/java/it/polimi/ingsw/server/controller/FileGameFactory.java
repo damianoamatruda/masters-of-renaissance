@@ -28,6 +28,9 @@ public class FileGameFactory implements GameFactory {
     /** Maximum number of players for each Game. */
     private final int maxPlayers;
 
+    /** Maximum size of a Warehouse shelf. */
+    private final int warehouseShelvesCount;
+
     /** Initial number of leader cards per player. */
     private final int playerLeadersCount;
 
@@ -48,9 +51,6 @@ public class FileGameFactory implements GameFactory {
 
     /** The number of columns of the market grid. */
     private final int marketColumns;
-
-    /** Maximum size of a Warehouse shelf. */
-    private final int maxShelfSize;
 
     /** Number of development card production slots per player. */
     private final int slotsCount;
@@ -84,13 +84,13 @@ public class FileGameFactory implements GameFactory {
 
         /* Parses all simple parameters */
         maxPlayers = gson.fromJson(parserObject.get("maxPlayers"), int.class);
+        warehouseShelvesCount = gson.fromJson(parserObject.get("warehouseShelvesCount"), int.class);
         playerLeadersCount = gson.fromJson(parserObject.get("playerLeadersCount"), int.class);
         chosenLeadersCount = gson.fromJson(parserObject.get("chosenLeadersCount"), int.class);
         maxFaith = gson.fromJson(parserObject.get("maxFaith"), int.class);
         maxDevCards = gson.fromJson(parserObject.get("maxDevCards"), int.class);
         levelsCount = gson.fromJson(parserObject.get("levelsCount"), int.class);
         marketColumns = gson.fromJson(parserObject.get("marketColumns"), int.class);
-        maxShelfSize = gson.fromJson(parserObject.get("maxShelfSize"), int.class);
         slotsCount = gson.fromJson(parserObject.get("slotsCount"), int.class);
 
         devCardColorMap = generateDevCardColors().stream()
@@ -138,7 +138,7 @@ public class FileGameFactory implements GameFactory {
                     shuffledNicknames.get(i),
                     i == 0,
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
-                    new Warehouse(maxShelfSize),
+                    new Warehouse(warehouseShelvesCount),
                     new Strongbox(),
                     baseProduction,
                     slotsCount,
@@ -184,7 +184,7 @@ public class FileGameFactory implements GameFactory {
                 nickname,
                 true,
                 shuffledLeaderCards.subList(0, playerLeadersCount),
-                new Warehouse(maxShelfSize),
+                new Warehouse(warehouseShelvesCount),
                 new Strongbox(),
                 gson.fromJson(parserObject.get("baseProduction"), Production.class),
                 slotsCount,
