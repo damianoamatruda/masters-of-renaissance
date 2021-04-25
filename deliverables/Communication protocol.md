@@ -26,6 +26,7 @@
         1. [Getting resources from the market](#getting-resources-from-the-market)
         2. [Buying a development card](#buying-a-development-card)
         3. [Activating productions](#activating-productions)
+        4. [Ending the turn](#ending-the-turn)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
@@ -943,4 +944,32 @@ Possible errors include:
   "type": "err_replacement_choice",
   "msg": "replacements incomplete: production 3 requires 3 replacements, only 2 specified"
 }
+```
+
+## Ending the turn
+Since the server cannot at any point assume that the player has finished choosing their moves (see [secondary actions](#secondary-actions)), an explicit message has to be sent.
+```
+          +---------+                      +---------+ 
+          | Client  |                      | Server  |
+          +---------+                      +---------+
+               |                                |
+/------------\ |                                |
+| user input |-|                                | 
+\------------/ |                                |
+               |                  req_turn_end  |
+               | -----------------------------> |
+               |                                | /------\
+               |                                |-| exec |
+               |                                | \------/
+               |  res_turn_end                  |
+               | <----------------------------- |
+               |                                |
+```
+**req_turn_end (client)**
+```json
+{ "type": "req_turn_end" }
+```
+**res_turn_end (server)**
+```json
+{ "type": "res_turn_end" }
 ```
