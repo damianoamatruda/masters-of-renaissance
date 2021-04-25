@@ -169,17 +169,17 @@ public class Player {
     }
 
     /**
-     * Action performed when the player discards a leader card. The player receives one faith point.
+     * Action performed when the player discards a leader card.
      *
      * @param game   the game the player is playing in
-     * @param leader the leader the card to discard
+     * @param leader the leader card to discard
      * @throws AlreadyActiveException leader is already active
      */
     public void discardLeader(Game game, LeaderCard leader) throws IllegalActivationException, AlreadyActiveException {
         if (!leaders.contains(leader))
             throw new IllegalActivationException("The leader card cannot be discarded");
         if (leader.isActive()) throw new AlreadyActiveException();
-        leader.onDiscarded(game, this);
+        game.onDiscardLeader(this);
         leaders.remove(leader);
     }
 
@@ -201,7 +201,7 @@ public class Player {
      * @param resource the type of the resource to discard
      */
     public void discardResource(Game game, ResourceType resource) {
-        game.onDiscard(this);
+        game.onDiscardResource(this);
     }
 
     /**
