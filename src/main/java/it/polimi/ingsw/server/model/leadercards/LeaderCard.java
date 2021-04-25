@@ -58,6 +58,7 @@ public abstract class LeaderCard extends Card {
      * @throws IllegalActivationException if the player does not meet the card's requirements.
      */
     public void activate(Player player) throws IllegalActivationException {
+        // TODO: Check that this card is owned by the player
         if (requirement != null) {
             try {
                 requirement.checkRequirements(player);

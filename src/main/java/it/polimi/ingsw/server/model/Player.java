@@ -171,7 +171,7 @@ public class Player {
      * Action performed when the player discards a leader card. The player receives one faith point.
      *
      * @param game  the game the player is playing in
-     * @param index the index of the card to be discarded
+     * @param index the index of the card to discard
      * @throws AlreadyActiveException leader is already active
      */
     public void discardLeader(Game game, int index) throws AlreadyActiveException {
