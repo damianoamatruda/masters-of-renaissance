@@ -5,41 +5,8 @@
   "maxFaith": 24,
   "maxDevCards": 7,
   "levelsCount": 3,
-  "marketColumns": 4,
-  "marketReplaceableResource": "Zero",
   "maxShelfSize": 3,
   "slotsCount": 3,
-
-  "baseProduction": {
-    "input": {},
-    "inputBlanks": 2,
-    "inputBlanksExclusions": [],
-    "output": {},
-    "outputBlanks": 1,
-    "outputBlanksExclusions": [
-      "Faith"
-    ],
-    "discardableOutput": false
-  },
-
-  "initialResources": [
-    {
-      "numStorable": 0,
-      "faith": 0
-    },
-    {
-      "numStorable": 1,
-      "faith": 0
-    },
-    {
-      "numStorable": 1,
-      "faith": 1
-    },
-    {
-      "numStorable": 2,
-      "faith": 1
-    }
-  ],
 
   "cardColors": [
     {
@@ -84,6 +51,37 @@
     }
   ],
 
+  "baseProduction": {
+    "input": {},
+    "inputBlanks": 2,
+    "inputBlanksExclusions": [],
+    "output": {},
+    "outputBlanks": 1,
+    "outputBlanksExclusions": [
+      "Faith"
+    ],
+    "discardableOutput": false
+  },
+
+  "initialResources": [
+    {
+      "numStorable": 0,
+      "faith": 0
+    },
+    {
+      "numStorable": 1,
+      "faith": 0
+    },
+    {
+      "numStorable": 1,
+      "faith": 1
+    },
+    {
+      "numStorable": 2,
+      "faith": 1
+    }
+  ],
+
   "marketResources": {
     "Coin": 2,
     "Faith": 1,
@@ -92,6 +90,8 @@
     "Stone": 2,
     "Zero": 4
   },
+  "marketColumns": 4,
+  "marketReplaceableResource": "Zero",
 
   "developmentCards": [
     {
