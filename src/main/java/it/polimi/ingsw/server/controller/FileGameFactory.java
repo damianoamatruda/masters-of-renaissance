@@ -89,13 +89,14 @@ public class FileGameFactory implements GameFactory {
         maxFaith = gson.fromJson(parserObject.get("maxFaith"), int.class);
         maxDevCards = gson.fromJson(parserObject.get("maxDevCards"), int.class);
         levelsCount = gson.fromJson(parserObject.get("levelsCount"), int.class);
-        colorsCount = gson.fromJson(parserObject.get("colorsCount"), int.class);
         marketColumns = gson.fromJson(parserObject.get("marketColumns"), int.class);
         maxShelfSize = gson.fromJson(parserObject.get("maxShelfSize"), int.class);
         slotsCount = gson.fromJson(parserObject.get("slotsCount"), int.class);
 
         devCardColorMap = generateDevCardColors().stream()
                 .collect(Collectors.toUnmodifiableMap(DevCardColor::getName, Function.identity()));
+
+        colorsCount = devCardColorMap.size();
 
         resTypeMap = generateResourceTypes().stream()
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));

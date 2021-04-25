@@ -5,7 +5,6 @@
   "maxFaith": 24,
   "maxDevCards": 7,
   "levelsCount": 3,
-  "colorsCount": 4,
   "marketColumns": 4,
   "marketReplaceableResource": "Zero",
   "maxShelfSize": 3,
