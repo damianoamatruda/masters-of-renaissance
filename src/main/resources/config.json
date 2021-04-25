@@ -1373,8 +1373,7 @@
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
         "boundedResType": "Stone",
-        "size": 2,
-        "quantity": 0
+        "size": 2
       },
       "resource": "Stone",
       "requirement": {
@@ -1390,8 +1389,7 @@
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
         "boundedResType": "Servant",
-        "size": 2,
-        "quantity": 0
+        "size": 2
       },
       "resource": "Servant",
       "requirement": {
@@ -1407,8 +1405,7 @@
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
         "boundedResType": "Shield",
-        "size": 2,
-        "quantity": 0
+        "size": 2
       },
       "resource": "Shield",
       "requirement": {
@@ -1424,8 +1421,7 @@
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
         "boundedResType": "Coin",
-        "size": 2,
-        "quantity": 0
+        "size": 2
       },
       "resource": "Coin",
       "requirement": {
