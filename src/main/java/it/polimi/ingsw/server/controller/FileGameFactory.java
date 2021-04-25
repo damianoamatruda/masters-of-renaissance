@@ -289,6 +289,8 @@ public class FileGameFactory implements GameFactory {
     private List<LeaderCard> generateLeaderCards() {
         Gson customGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
+                .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
+                .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
                 .registerTypeHierarchyAdapter(CardRequirement.class, new RequirementDeserializer())
                 .create();
         List<LeaderCard> leaders = new ArrayList<>();
@@ -369,12 +371,17 @@ public class FileGameFactory implements GameFactory {
     }
 
     /** Custom deserializer for leader card requirements. */
-    private static class RequirementDeserializer implements JsonDeserializer<CardRequirement> {
+    private class RequirementDeserializer implements JsonDeserializer<CardRequirement> {
 
         @Override
         public CardRequirement deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            Gson customGson = new GsonBuilder()
+                    .enableComplexMapKeySerialization().setPrettyPrinting()
+                    .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
+                    .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
+                    .create();
             try {
-                return new Gson().fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
+                return customGson.fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -391,8 +398,7 @@ public class FileGameFactory implements GameFactory {
     private class ResourceDeserializer implements JsonDeserializer<ResourceType> {
         @Override
         public ResourceType deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-            Optional<ResourceType> res = getResourceType(new Gson().fromJson(jsonElement.getAsJsonObject().get("name"), String.class));
-            return res.orElse(null);
+            return getResourceType(new Gson().fromJson(jsonElement.getAsString(), String.class)).orElse(null);
         }
     }
 }
