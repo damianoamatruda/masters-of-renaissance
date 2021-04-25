@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.*;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -170,15 +171,16 @@ public class Player {
     /**
      * Action performed when the player discards a leader card. The player receives one faith point.
      *
-     * @param game  the game the player is playing in
-     * @param index the index of the card to discard
+     * @param game   the game the player is playing in
+     * @param leader the leader the card to discard
      * @throws AlreadyActiveException leader is already active
      */
-    public void discardLeader(Game game, int index) throws AlreadyActiveException {
-        LeaderCard toBeDiscarded = leaders.get(index);
-        if (toBeDiscarded.isActive()) throw new AlreadyActiveException();
-        toBeDiscarded.onDiscarded(game, this);
-        leaders.remove(index);
+    public void discardLeader(Game game, LeaderCard leader) throws IllegalActivationException, AlreadyActiveException {
+        if (!leaders.contains(leader))
+            throw new IllegalActivationException("The leader card cannot be discarded");
+        if (leader.isActive()) throw new AlreadyActiveException();
+        leader.onDiscarded(game, this);
+        leaders.remove(leader);
     }
 
     /**

@@ -24,9 +24,9 @@ abstract public class GameTurnState extends GameState {
     }
 
     @Override
-    public void discardLeader(GameContext context, Player player, int index) throws IllegalActionException, AlreadyActiveException {
+    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, AlreadyActiveException {
         checkCurrentPlayer(context, player);
-        player.discardLeader(context.game, index);
+        player.discardLeader(context.game, leader);
     }
 
     /**
