@@ -129,7 +129,7 @@ public class FileGameFactory implements GameFactory {
         List<String> shuffledNicknames = new ArrayList<>(nicknames);
         Collections.shuffle(shuffledNicknames);
 
-        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>() {
+        List<Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<ArrayList<Boost>>() {
         }.getType());
 
         List<Player> players = new ArrayList<>();
@@ -144,8 +144,8 @@ public class FileGameFactory implements GameFactory {
                     production,
                     slotsCount,
                     chosenLeadersCount,
-                    boost.get(i + 1).numStorable,
-                    boost.get(i + 1).faith
+                    boost.get(i).numStorable,
+                    boost.get(i).faith
             ));
 
         Game game = new Game(
@@ -178,7 +178,7 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
 
-        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>() {
+        List<Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<ArrayList<Boost>>() {
         }.getType());
 
         Player player = new Player(
@@ -189,8 +189,8 @@ public class FileGameFactory implements GameFactory {
                 new Strongbox(),
                 gson.fromJson(parserObject.get("base-production"), Production.class),
                 slotsCount,
-                chosenLeadersCount, boost.get(1).numStorable,
-                boost.get(1).faith
+                chosenLeadersCount, boost.get(0).numStorable,
+                boost.get(0).faith
         );
 
         SoloGame game = new SoloGame(

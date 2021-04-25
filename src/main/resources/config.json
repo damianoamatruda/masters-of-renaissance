@@ -22,24 +22,25 @@
     ],
     "discardableOutput": false
   },
-  "initial-resources": {
-    "1": {
+
+  "initial-resources": [
+    {
       "numStorable": 0,
       "faith": 0
     },
-    "2": {
+    {
       "numStorable": 1,
       "faith": 0
     },
-    "3": {
+    {
       "numStorable": 1,
       "faith": 1
     },
-    "4": {
+    {
       "numStorable": 2,
       "faith": 1
     }
-  },
+  ],
 
   "card-colors": [
     {
