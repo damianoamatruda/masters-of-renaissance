@@ -80,7 +80,7 @@ public class FileGameFactory implements GameFactory {
                 .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
                 .create();
 
-        parserObject = (JsonObject) new JsonParser().parse(new InputStreamReader(inputStream));
+        parserObject = gson.fromJson(new InputStreamReader(inputStream), JsonObject.class);
 
         /* Parses all simple parameters */
         maxPlayers = gson.fromJson(parserObject.get("maxPlayers"), int.class);
