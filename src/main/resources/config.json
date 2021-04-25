@@ -95,58 +95,26 @@
     }
   ],
 
-  "market": {
-    "grid": [
-      [
-        {
-          "name": "Shield"
-        },
-        {
-          "name": "Coin"
-        },
-        {
-          "name": "Coin"
-        },
-        {
-          "name": "Servant"
-        }
-      ],
-      [
-        {
-          "name": "Zero"
-        },
-        {
-          "name": "Stone"
-        },
-        {
-          "name": "Shield"
-        },
-        {
-          "name": "Zero"
-        }
-      ],
-      [
-        {
-          "name": "Servant"
-        },
-        {
-          "name": "Stone"
-        },
-        {
-          "name": "Zero"
-        },
-        {
-          "name": "Faith"
-        }
-      ]
+  "market": [
+    [
+      {"name": "Coin"}, 2
     ],
-    "replaceableResType": {
-      "name": "Zero"
-    },
-    "slide": {
-      "name": "Zero"
-    }
-  },
+    [
+      {"name": "Faith"}, 1
+    ],
+    [
+      {"name": "Servant"}, 2
+    ],
+    [
+      {"name": "Shield"}, 2
+    ],
+    [
+      {"name": "Stone"}, 2
+    ],
+    [
+      {"name": "Zero"}, 4
+    ]
+  ],
 
   "development-cards": [
     {

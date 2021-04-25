@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
+import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
@@ -16,6 +17,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** Factory class that builds game instances from file parameters, by acting like an adapter for parsing. */
 public class FileGameFactory implements GameFactory {
@@ -318,7 +320,11 @@ public class FileGameFactory implements GameFactory {
      * @return the Market
      */
     private Market generateMarket() {
-        return gson.fromJson(parserObject.get("market"), Market.class);
+        JsonArray entries = parserObject.get("market").getAsJsonArray();
+
+        Map<ResourceType, Integer> map = gson.fromJson(entries, new TypeToken<HashMap<ResourceType, Integer>>(){}.getType());
+
+        return new Market(map, marketColumns, resTypeMap.get(parserObject.get("replaceable-resource").toString()));
     }
 
     /**
