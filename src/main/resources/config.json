@@ -1,17 +1,17 @@
 {
-  "max-players": 4,
-  "num-leader-cards": 4,
-  "num-chosen-leader-cards": 2,
-  "max-faith": 24,
-  "max-development-cards": 7,
-  "max-level": 3,
-  "num-colors": 4,
-  "market-columns": 4,
-  "replaceable-resource": "Zero",
-  "max-shelf-size": 3,
-  "slots-count": 3,
+  "maxPlayers": 4,
+  "playerLeadersCount": 4,
+  "chosenLeadersCount": 2,
+  "maxFaith": 24,
+  "maxDevCards": 7,
+  "levelsCount": 3,
+  "colorsCount": 4,
+  "marketColumns": 4,
+  "marketReplaceableResource": "Zero",
+  "maxShelfSize": 3,
+  "slotsCount": 3,
 
-  "base-production": {
+  "baseProduction": {
     "input": {},
     "inputBlanks": 2,
     "inputBlanksExclusions": [],
@@ -23,7 +23,7 @@
     "discardableOutput": false
   },
 
-  "initial-resources": [
+  "initialResources": [
     {
       "numStorable": 0,
       "faith": 0
@@ -42,7 +42,7 @@
     }
   ],
 
-  "card-colors": [
+  "cardColors": [
     {
       "name": "Yellow"
     },
@@ -57,7 +57,7 @@
     }
   ],
 
-  "resource-types": [
+  "resourceTypes": [
     {
       "subtype": "it.polimi.ingsw.server.model.resourcetypes.IncrementFaithPointsResType",
       "name": "Faith",
@@ -94,7 +94,7 @@
     "Zero": 4
   },
 
-  "development-cards": [
+  "developmentCards": [
     {
       "color": "Green",
       "cost": {
@@ -1281,7 +1281,7 @@
     }
   ],
 
-  "leader-cards": [
+  "leaderCards": [
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
       "discount": 1,
@@ -1640,8 +1640,8 @@
     }
   ],
 
-  "faith-track": {
-    "vatican-sections": [
+  "faithTrack": {
+    "vaticanSections": [
       {
         "faithPointsBeginning": 5,
         "faithPointsEnd": 8,
@@ -1661,7 +1661,7 @@
         "activated": false
       }
     ],
-    "yellow-tiles": [
+    "yellowTiles": [
       {
         "faithPoints": 12,
         "victoryPoints": 6
@@ -1697,7 +1697,7 @@
     ]
   },
 
-  "action-tokens": [
+  "actionTokens": [
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenBlackMoveOneShuffle"
     },
