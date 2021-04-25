@@ -640,9 +640,6 @@ Leader activation:
                |  update_leaders                |
                | <----------------------------- |
                |                                |
-               |  err_leader_activation         |
-               | <----------------------------- |
-               |                                |
 ```
 **req_activate_leader (client)**
 ```json
@@ -651,13 +648,7 @@ Leader activation:
   "choice": [ 0 ]
 }
 ```
-**err_leader_activation (server)**
-```json
-{
-  "type": "err_leader_activation",
-  "msg": "leader 0 is already active"
-}
-```
+If a leader is already active no error is raised, since it's not a critical event.
 
 Discarding a leader:
 ```
