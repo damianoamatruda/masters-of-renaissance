@@ -64,4 +64,9 @@ public class ResourceType {
     @SuppressWarnings({"EmptyMethod", "unused"})
     public void takeFromPlayer(Game game, Player player) {
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
