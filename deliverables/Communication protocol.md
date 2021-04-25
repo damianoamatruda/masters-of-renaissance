@@ -316,6 +316,9 @@ The client will respond by specifying the resource types and the respective amou
                |  err_resources_choice          |
                | <----------------------------- |
                |                                |
+               |  err_shelf_choice              |
+               | <----------------------------- |
+               |                                |
 ```
 **offer_resources (server)**
 ```json
@@ -329,10 +332,10 @@ The client will respond by specifying the resource types and the respective amou
 ```json
 {
   "type": "req_resources_choice",
-  "choice": {
-    "coin": 1,
-    "shield": 1
-  }
+  "choice": [
+    { "res": "Coin", "amount": 1, "shelf": 1 },
+    { "res": "Shield", "amount": 1, "shelf": 0 },
+  ]
 }
 ```
 **err_resources_choice (client)**
@@ -340,6 +343,13 @@ The client will respond by specifying the resource types and the respective amou
 {
   "type": "err_resources_choice",
   "msg": "wrong starting resource choice: cannot choose 2 resources"
+}
+```
+**err_shelf_choice (client)**
+```json
+{
+  "type": "err_shelf_choice",
+  "msg": "cannot place 3 resources of type Coin on shelf 0: not enough space"
 }
 ```
 
@@ -691,6 +701,8 @@ During their turn, the player has to choose among three main actions to carry ou
 2. Buying a development card
 3. Activating the production
 
+Since the player may want to make a secondary move after the main action, the server waits for a `turn_end` message to switch to the next player (timeouts are used in case the player takes too long to make a move/is AFK).
+
 ## Getting resources from the market
 The following needs to be specified:
 1. Which row/column the player wants to take the resources from
@@ -698,11 +710,11 @@ The following needs to be specified:
 3. For each resource (its type considered after the leader's processing), which shelf to use to store it
 4. What resources, among the ones taken from the market, to discard
 
-The data in the `leaders_choice` field of the request maps the leaders to be used with the resource in the chosen row/column in the same order they appear ("[0, -1, 2]" uses leader 0 for the first resource, no leader for the second and the leader 3 for the last).  
-The `discard_index` field holds the indexes of the resources to be discarded as they appear in the chosen list ("3" discards the 4th resource).
+Discarding is simply handled by diminishing the amount of resources assigned to a shelf. This also easily matches the rule for which only the resources given by the market can be discarded.
 
-It may look like errors may arise from choosing the wrong leader type-wise, but the server is designed to handle such case transparently.  
-Therefore, the only mistakes that can be made stem from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding them appropriately, or by specifying a nonexistent leader.
+The `replacements` field specifies how the resource conversion should be handled. Since the player knows what type of resource the leader convert to, they can easily select them by specifying, for each type of resource they want as output, how many replaceable resources (of the available ones) to use.
+
+Errors may arise from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding enough resources.
 ```
           +---------+                      +---------+ 
           | Client  |                      | Server  |
@@ -728,7 +740,7 @@ Therefore, the only mistakes that can be made stem from fitting the resources in
                |  err_shelves_choice            |
                | <----------------------------- |
                |                                |
-               |  err_leaders_choice            |
+               |  err_replacement_choice        |
                | <----------------------------- |
                |                                |
 ```
@@ -739,16 +751,16 @@ Therefore, the only mistakes that can be made stem from fitting the resources in
   "choice": {
     "market_index": 0,
     "isRow": true,
-    "discard_index": [ 2 ],
-    "leaders_choice": [ 0, 0, 1 ],
+    "replacements": [ { "res": "Coin", "amount": 2 } ],
     "shelf_choice": [
       {
         "shelf_index": 1,
-        "res_amount": 2 // not necessary to specify the resource if the shelf is already bound to one
+        "res_amount": 2,
+        "res_type": "Coin"
       }, {
         "shelf_index": 3,
         "res_amount": 2,
-        "res_type": "Coin" // empty shelf, needs to be bound -> res type specified
+        "res_type": "Shield"
       }
     ]
   }
@@ -761,11 +773,11 @@ Therefore, the only mistakes that can be made stem from fitting the resources in
   "msg": "cannot fit the resources in the shelves as chosen: no space left in shelf 3"
 }
 ```
-**err_leaders_choice (server)**
+**err_replacement_choice (server)**
 ```json
 {
-  "type": "err_leaders_choice",
-  "msg": "cannot use leader 4 to convert resources: leader does not exist"
+  "type": "err_replacement_choice",
+  "msg": "cannot convert 4 resources: only 3 allowed"
 }
 ```
 
@@ -811,8 +823,8 @@ Possible errors include:
 {
   "type": "req_buy_dev_card",
   "choice": {
-    "row_index": 0,
-    "col_index": 0,
+    "level": 1,
+    "color": "Blue",
     "slot_index": 2,
     "res_choice": [
       {
@@ -821,7 +833,7 @@ Possible errors include:
         "amount": 2
       }, {
         "res_type": "Coin",
-        "shelf_index": 4,
+        "shelf_index": 4, // two warehouse shelves cannot have the same resource -> one of them refers to the strongbox
         "amount": 1
       }
     ],
@@ -892,36 +904,39 @@ Possible errors include:
 ```json
 {
   "type": "req_activate_prod",
-  "productions": [ 0, 3 ],
-  "inputBlanksRepl": [
-    { "prodID": 0, "replacing_res": [ "Coin", "Shield" ] }
-  ],
-  "outputBlanksRepl": [
-    { "prodID": 3, "replacing_res": [ "Shield" ] }
-  ],
-  "inputShelves": [
-    {
-      "prodID": 0,
-      "mappings": [
-        { "res": "Coin", "shelf": 1, "amount": 1 },
-        { "res": "Coin", "shelf": 2, "amount": 2 },
-        { "res": "Shield", "shelf": 0, "amount": 2 }
-      ]
-    }, {
-      "prodID": 3,
-      "mappings": [
-        { "res": "Shield", "shelf": 0, "amount": 1 }
-      ]
-    }
-  ],
-  "outputShelves": [
-    {
-      "prodID": 0,
-      "mappings": [
-        { "res": "Stone", "shelf": 2, "amount": 1 }
-      ]
-    } // prod 3 has faithpoints in output -> no shelf mapping required
-  ],
+  "choice": {
+    "productions": [
+      {
+        "id": 0,
+        "inputBlanksRepl": [
+          {
+            "res": "Coin",
+            "amount": 2
+          }, {
+            "res": "Shield",
+            "amount": 1
+          }
+        ],
+        "outputBlanksRepl": [ { "res": "Shield", "amount": 1 } ],
+        "inputShelves": [
+            { "res": "Coin", "shelf": 1, "amount": 1 },
+            { "res": "Coin", "shelf": 2, "amount": 2 },
+            { "res": "Shield", "shelf": 0, "amount": 2 }
+          ],
+        "outputShelves": [
+          { "res": "Stone", "shelf": 2, "amount": 1 }
+        ]
+      }, {
+        "id": 3,
+        "inputBlanksRepl": [ { "res": "Stone", "amount": 1 } ],
+        "outputBlanksRepl": [ ], // no output blanks
+        "inputShelves": [
+            { "res": "Stone", "shelf": 0, "amount": 2 }
+          ],
+        "outputShelves": [ ] // prod 3 has faithpoints in output -> no shelf mapping required
+      }
+    ]
+  }
 }
 ```
 **err_prod_choice (server)**
