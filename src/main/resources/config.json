@@ -91,54 +91,34 @@
     }
   ],
 
-  "market": [
-    [
-      "Coin", 2
-    ],
-    [
-      "Faith", 1
-    ],
-    [
-      "Servant", 2
-    ],
-    [
-      "Shield", 2
-    ],
-    [
-      "Stone", 2
-    ],
-    [
-      "Zero", 4
-    ]
-  ],
+  "market": {
+    "Coin": 2,
+    "Faith": 1,
+    "Servant": 2,
+    "Shield": 2,
+    "Stone": 2,
+    "Zero": 4
+  },
 
   "development-cards": [
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Shield": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Coin",
-            3
-          ]
-        ],
+        "input": {
+          "Coin": 3
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -148,29 +128,21 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Servant": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -180,29 +152,21 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Coin",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Coin": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -212,29 +176,21 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Stone": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -244,37 +200,22 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ]
+        "resources": {
+          "Shield": 1,
+          "Servant": 1,
+          "Stone": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -284,37 +225,22 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ],
-          [
-            "Shield",
-            1
-          ]
-        ]
+        "resources": {
+          "Servant": 1,
+          "Coin": 1,
+          "Shield": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -324,37 +250,22 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ]
+        "resources": {
+          "Servant": 1,
+          "Coin": 1,
+          "Stone": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "output": {
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -364,37 +275,22 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ]
+        "resources": {
+          "Shield": 1,
+          "Coin": 1,
+          "Stone": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "output": {
+          "Coin": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -404,37 +300,22 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            3
-          ]
-        ]
+        "resources": {
+          "Shield": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Servant",
-            2
-          ]
-        ],
+        "input": {
+          "Servant": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 1,
+          "Coin": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -444,37 +325,22 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            3
-          ]
-        ]
+        "resources": {
+          "Servant": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Coin",
-            2
-          ]
-        ],
+        "input": {
+          "Coin": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 1,
+          "Servant": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -484,37 +350,22 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Coin",
-            3
-          ]
-        ]
+        "resources": {
+          "Coin": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Stone",
-            2
-          ]
-        ],
+        "input": {
+          "Stone": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 1,
+          "Coin": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -524,37 +375,22 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            3
-          ]
-        ]
+        "resources": {
+          "Stone": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Shield",
-            2
-          ]
-        ],
+        "input": {
+          "Shield": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 1,
+          "Coin": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -564,41 +400,24 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            2
-          ],
-          [
-            "Coin",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Shield": 2,
+          "Coin": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Coin",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Coin": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -608,41 +427,24 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            2
-          ],
-          [
-            "Stone",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Servant": 2,
+          "Stone": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Stone",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Stone": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -652,41 +454,24 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            2
-          ],
-          [
-            "Coin",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Servant": 2,
+          "Coin": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Servant",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Servant": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -696,41 +481,24 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            2
-          ],
-          [
-            "Stone",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Shield": 2,
+          "Stone": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Shield",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Shield": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -740,29 +508,21 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            4
-          ]
-        ]
+        "resources": {
+
+          "Shield": 4
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -772,29 +532,21 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            4
-          ]
-        ]
+        "resources": {
+
+          "Servant": 4
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -804,29 +556,21 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Coin",
-            1
-          ]
-        ]
+        "resources": {
+
+          "Coin": 1
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -836,29 +580,21 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            1
-          ]
-        ]
+        "resources": {
+
+          "Stone": 1
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -868,37 +604,23 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            3
-          ],
-          [
-            "Servant",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Shield": 3,
+          "Servant": 2
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Stone",
-            3
-          ]
-        ],
+        "output": {
+          "Stone": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -908,37 +630,23 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            3
-          ],
-          [
-            "Coin",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Servant": 3,
+          "Coin": 2
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            3
-          ]
-        ],
+        "output": {
+          "Shield": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -948,37 +656,23 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            2
-          ],
-          [
-            "Coin",
-            3
-          ]
-        ]
+        "resources": {
+
+          "Stone": 2,
+          "Coin": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            3
-          ]
-        ],
+        "output": {
+          "Servant": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -988,37 +682,23 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            2
-          ],
-          [
-            "Stone",
-            3
-          ]
-        ]
+        "resources": {
+
+          "Shield": 2,
+          "Stone": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Coin",
-            3
-          ]
-        ],
+        "output": {
+          "Coin": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1028,33 +708,22 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            5
-          ]
-        ]
+        "resources": {
+
+          "Shield": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Coin",
-            2
-          ]
-        ],
+        "input": {
+          "Coin": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Stone",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Stone": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1064,33 +733,22 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            5
-          ]
-        ]
+        "resources": {
+
+          "Servant": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Stone",
-            2
-          ]
-        ],
+        "input": {
+          "Stone": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Coin",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Coin": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1100,33 +758,22 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Coin",
-            5
-          ]
-        ]
+        "resources": {
+
+          "Coin": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Servant",
-            2
-          ]
-        ],
+        "input": {
+          "Servant": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Shield",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Shield": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1136,33 +783,22 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            5
-          ]
-        ]
+        "resources": {
+
+          "Stone": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Shield",
-            2
-          ]
-        ],
+        "input": {
+          "Shield": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Servant",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Servant": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1172,37 +808,23 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            3
-          ],
-          [
-            "Coin",
-            3
-          ]
-        ]
+        "resources": {
+
+          "Shield": 3,
+          "Coin": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Shield",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Shield": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1212,37 +834,23 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            3
-          ],
-          [
-            "Servant",
-            3
-          ]
-        ]
+        "resources": {
+
+          "Shield": 3,
+          "Servant": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Servant",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Servant": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1252,37 +860,23 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            3
-          ],
-          [
-            "Coin",
-            3
-          ]
-        ]
+        "resources": {
+
+          "Stone": 3,
+          "Coin": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Stone",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Stone": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1292,37 +886,23 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            3
-          ],
-          [
-            "Stone",
-            3
-          ]
-        ]
+        "resources": {
+
+          "Servant": 3,
+          "Stone": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ],
-          [
-            "Coin",
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Coin": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1332,33 +912,22 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            6
-          ]
-        ]
+        "resources": {
+
+          "Shield": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Coin",
-            2
-          ]
-        ],
+        "input": {
+          "Coin": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Stone",
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Stone": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1368,33 +937,22 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            6
-          ]
-        ]
+        "resources": {
+
+          "Servant": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Stone",
-            2
-          ]
-        ],
+        "input": {
+          "Stone": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Coin",
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Coin": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1404,33 +962,22 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Coin",
-            6
-          ]
-        ]
+        "resources": {
+
+          "Coin": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Servant",
-            2
-          ]
-        ],
+        "input": {
+          "Servant": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Shield",
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Shield": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1440,33 +987,22 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            6
-          ]
-        ]
+        "resources": {
+
+          "Stone": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Shield",
-            2
-          ]
-        ],
+        "input": {
+          "Shield": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            2
-          ],
-          [
-            "Servant",
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Servant": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1476,45 +1012,25 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            5
-          ],
-          [
-            "Servant",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Shield": 5,
+          "Servant": 2
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            2
-          ],
-          [
-            "Stone",
-            2
-          ],
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 2,
+          "Stone": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1524,45 +1040,25 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            5
-          ],
-          [
-            "Coin",
-            2
-          ]
-        ]
+        "resources": {
+
+          "Servant": 5,
+          "Coin": 2
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            2
-          ],
-          [
-            "Coin",
-            2
-          ],
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 2,
+          "Coin": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1572,45 +1068,25 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            2
-          ],
-          [
-            "Coin",
-            5
-          ]
-        ]
+        "resources": {
+
+          "Stone": 2,
+          "Coin": 5
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            2
-          ],
-          [
-            "Stone",
-            2
-          ],
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 2,
+          "Stone": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1620,45 +1096,25 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            2
-          ],
-          [
-            "Stone",
-            5
-          ]
-        ]
+        "resources": {
+
+          "Servant": 2,
+          "Stone": 5
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            2
-          ],
-          [
-            "Coin",
-            2
-          ],
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 2,
+          "Coin": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1668,33 +1124,22 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            7
-          ]
-        ]
+        "resources": {
+
+          "Shield": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            3
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Coin": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1704,33 +1149,22 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            7
-          ]
-        ]
+        "resources": {
+
+          "Servant": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            3
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1740,33 +1174,22 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Coin",
-            7
-          ]
-        ]
+        "resources": {
+
+          "Coin": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            3
-          ],
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Shield": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1776,33 +1199,22 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            7
-          ]
-        ]
+        "resources": {
+
+          "Stone": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            3
-          ],
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Servant": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1812,37 +1224,23 @@
     {
       "color": "Green",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            4
-          ],
-          [
-            "Coin",
-            4
-          ]
-        ]
+        "resources": {
+
+          "Shield": 4,
+          "Coin": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            1
-          ],
-          [
-            "Coin",
-            3
-          ]
-        ],
+        "output": {
+          "Shield": 1,
+          "Coin": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1852,37 +1250,23 @@
     {
       "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            "Shield",
-            4
-          ],
-          [
-            "Servant",
-            4
-          ]
-        ]
+        "resources": {
+
+          "Shield": 4,
+          "Servant": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            1
-          ],
-          [
-            "Stone",
-            3
-          ]
-        ],
+        "output": {
+          "Servant": 1,
+          "Stone": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1892,37 +1276,23 @@
     {
       "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            "Stone",
-            4
-          ],
-          [
-            "Coin",
-            4
-          ]
-        ]
+        "resources": {
+
+          "Stone": 4,
+          "Coin": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Shield",
-            3
-          ],
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 3,
+          "Coin": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1932,37 +1302,23 @@
     {
       "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            "Servant",
-            4
-          ],
-          [
-            "Stone",
-            4
-          ]
-        ]
+        "resources": {
+
+          "Servant": 4,
+          "Stone": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Servant",
-            3
-          ],
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 3,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2069,12 +1425,9 @@
       "resource": "Stone",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            "Coin",
-            5
-          ]
-        ]
+        "resources": {
+          "Coin": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
@@ -2089,12 +1442,9 @@
       "resource": "Servant",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            "Stone",
-            5
-          ]
-        ]
+        "resources": {
+          "Stone": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
@@ -2109,12 +1459,9 @@
       "resource": "Shield",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            "Servant",
-            5
-          ]
-        ]
+        "resources": {
+          "Servant": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
@@ -2129,12 +1476,9 @@
       "resource": "Coin",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            "Shield",
-            5
-          ]
-        ]
+        "resources": {
+          "Shield": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
@@ -2226,20 +1570,14 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            "Shield",
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2261,20 +1599,14 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            "Servant",
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2296,20 +1628,14 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            "Stone",
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2331,20 +1657,14 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            "Coin",
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            "Faith",
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
