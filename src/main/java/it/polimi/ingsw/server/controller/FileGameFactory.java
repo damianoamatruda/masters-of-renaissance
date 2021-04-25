@@ -321,11 +321,9 @@ public class FileGameFactory implements GameFactory {
      * @return the Market
      */
     private Market generateMarket() {
-        JsonElement entries = parserObject.get("market");
-
-        Map<ResourceType, Integer> map = gson.fromJson(entries, new TypeToken<HashMap<ResourceType, Integer>>(){}.getType());
-
-        return new Market(map, marketColumns, resTypeMap.get(parserObject.get("marketReplaceableResource").getAsString()));
+        JsonElement entries = parserObject.get("marketResources");
+        Map<ResourceType, Integer> marketResources = gson.fromJson(entries, new TypeToken<HashMap<ResourceType, Integer>>(){}.getType());
+        return new Market(marketResources, marketColumns, resTypeMap.get(parserObject.get("marketReplaceableResource").getAsString()));
     }
 
     /**

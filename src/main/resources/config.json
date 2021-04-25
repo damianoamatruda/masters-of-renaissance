@@ -84,7 +84,7 @@
     }
   ],
 
-  "market": {
+  "marketResources": {
     "Coin": 2,
     "Faith": 1,
     "Servant": 2,
