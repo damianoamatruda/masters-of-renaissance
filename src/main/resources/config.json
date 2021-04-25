@@ -118,7 +118,7 @@
 
   "development-cards": [
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -156,7 +156,7 @@
       "victoryPoints": 1
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -194,7 +194,7 @@
       "victoryPoints": 1
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -232,7 +232,7 @@
       "victoryPoints": 1
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -270,7 +270,7 @@
       "victoryPoints": 1
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -320,7 +320,7 @@
       "victoryPoints": 2
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -370,7 +370,7 @@
       "victoryPoints": 2
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -420,7 +420,7 @@
       "victoryPoints": 2
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -470,7 +470,7 @@
       "victoryPoints": 2
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -520,7 +520,7 @@
       "victoryPoints": 3
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -570,7 +570,7 @@
       "victoryPoints": 3
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -620,7 +620,7 @@
       "victoryPoints": 3
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -670,7 +670,7 @@
       "victoryPoints": 3
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -726,7 +726,7 @@
       "victoryPoints": 4
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -782,7 +782,7 @@
       "victoryPoints": 4
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -838,7 +838,7 @@
       "victoryPoints": 4
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -894,7 +894,7 @@
       "victoryPoints": 4
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -932,7 +932,7 @@
       "victoryPoints": 5
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -970,7 +970,7 @@
       "victoryPoints": 5
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -1008,7 +1008,7 @@
       "victoryPoints": 5
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -1046,7 +1046,7 @@
       "victoryPoints": 5
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -1096,7 +1096,7 @@
       "victoryPoints": 6
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -1146,7 +1146,7 @@
       "victoryPoints": 6
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -1196,7 +1196,7 @@
       "victoryPoints": 6
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -1246,7 +1246,7 @@
       "victoryPoints": 6
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -1290,7 +1290,7 @@
       "victoryPoints": 7
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -1334,7 +1334,7 @@
       "victoryPoints": 7
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -1378,7 +1378,7 @@
       "victoryPoints": 7
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -1422,7 +1422,7 @@
       "victoryPoints": 7
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -1472,7 +1472,7 @@
       "victoryPoints": 8
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -1522,7 +1522,7 @@
       "victoryPoints": 8
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -1572,7 +1572,7 @@
       "victoryPoints": 8
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -1622,7 +1622,7 @@
       "victoryPoints": 8
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -1666,7 +1666,7 @@
       "victoryPoints": 9
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -1710,7 +1710,7 @@
       "victoryPoints": 9
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -1754,7 +1754,7 @@
       "victoryPoints": 9
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -1798,7 +1798,7 @@
       "victoryPoints": 9
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -1860,7 +1860,7 @@
       "victoryPoints": 10
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -1922,7 +1922,7 @@
       "victoryPoints": 10
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -1984,7 +1984,7 @@
       "victoryPoints": 10
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -2046,7 +2046,7 @@
       "victoryPoints": 10
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -2090,7 +2090,7 @@
       "victoryPoints": 11
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -2134,7 +2134,7 @@
       "victoryPoints": 11
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -2178,7 +2178,7 @@
       "victoryPoints": 11
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -2222,7 +2222,7 @@
       "victoryPoints": 11
     },
     {
-      "color": { "name": "Green" },
+      "color": "Green",
       "cost": {
         "resources": [
           [
@@ -2272,7 +2272,7 @@
       "victoryPoints": 12
     },
     {
-      "color": { "name": "Purple" },
+      "color": "Purple",
       "cost": {
         "resources": [
           [
@@ -2322,7 +2322,7 @@
       "victoryPoints": 12
     },
     {
-      "color": { "name": "Blue" },
+      "color": "Blue",
       "cost": {
         "resources": [
           [
@@ -2372,7 +2372,7 @@
       "victoryPoints": 12
     },
     {
-      "color": { "name": "Yellow" },
+      "color": "Yellow",
       "cost": {
         "resources": [
           [
@@ -2433,12 +2433,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Yellow" },
+            "color": "Yellow",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Green" },
+            "color": "Green",
             "level": 0,
             "amount": 1
           }
@@ -2457,12 +2457,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Purple" },
+            "color": "Purple",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Blue" },
+            "color": "Blue",
             "level": 0,
             "amount": 1
           }
@@ -2481,12 +2481,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Green" },
+            "color": "Green",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Blue" },
+            "color": "Blue",
             "level": 0,
             "amount": 1
           }
@@ -2505,12 +2505,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Yellow" },
+            "color": "Yellow",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Purple" },
+            "color": "Purple",
             "level": 0,
             "amount": 1
           }
@@ -2632,12 +2632,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Blue" },
+            "color": "Blue",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Yellow" },
+            "color": "Yellow",
             "level": 0,
             "amount": 2
           }
@@ -2655,12 +2655,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Purple" },
+            "color": "Purple",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Green" },
+            "color": "Green",
             "level": 0,
             "amount": 2
           }
@@ -2678,12 +2678,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Yellow" },
+            "color": "Yellow",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Blue" },
+            "color": "Blue",
             "level": 0,
             "amount": 2
           }
@@ -2701,12 +2701,12 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Green" },
+            "color": "Green",
             "level": 0,
             "amount": 1
           },
           {
-            "color": { "name": "Purple" },
+            "color": "Purple",
             "level": 0,
             "amount": 2
           }
@@ -2748,7 +2748,7 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Yellow" },
+            "color": "Yellow",
             "level": 2,
             "amount": 1
           }
@@ -2789,7 +2789,7 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Blue" },
+            "color": "Blue",
             "level": 2,
             "amount": 1
           }
@@ -2830,7 +2830,7 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Purple" },
+            "color": "Purple",
             "level": 2,
             "amount": 1
           }
@@ -2871,7 +2871,7 @@
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": { "name": "Green" },
+            "color": "Green",
             "level": 2,
             "amount": 1
           }
@@ -2951,19 +2951,19 @@
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": { "name": "Blue" }
+      "discardedColor": "Blue"
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": { "name": "Green" }
+      "discardedColor": "Green"
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": { "name": "Purple" }
+      "discardedColor": "Purple"
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": { "name": "Yellow" }
+      "discardedColor": "Yellow"
     }
   ]
 

@@ -384,7 +384,7 @@ public class FileGameFactory implements GameFactory {
     private class ColorDeserializer implements JsonDeserializer<DevCardColor> {
         @Override
         public DevCardColor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-            return getDevCardColor(new Gson().fromJson(jsonElement.getAsJsonObject().get("name"), String.class)).orElse(null);
+            return getDevCardColor(new Gson().fromJson(jsonElement.getAsString(), String.class)).orElse(null);
         }
     }
 
