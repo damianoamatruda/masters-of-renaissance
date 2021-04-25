@@ -24,28 +24,20 @@
   },
   "initial-resources": {
     "1": {
-
       "numStorable": 0,
       "faith": 0
-
     },
     "2": {
-
       "numStorable": 1,
       "faith": 0
-
     },
     "3": {
-
       "numStorable": 1,
       "faith": 1
-
     },
     "4": {
-
       "numStorable": 2,
       "faith": 1
-
     }
   },
 
@@ -63,6 +55,7 @@
       "name": "Blue"
     }
   ],
+
   "resource-types": [
     {
       "subtype": "it.polimi.ingsw.server.model.resourcetypes.IncrementFaithPointsResType",
@@ -105,7 +98,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 2
         }
       },
@@ -129,7 +121,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 2
         }
       },
@@ -153,7 +144,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Coin": 2
         }
       },
@@ -177,7 +167,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Stone": 2
         }
       },
@@ -401,7 +390,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 2,
           "Coin": 2
         }
@@ -428,7 +416,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 2,
           "Stone": 2
         }
@@ -455,7 +442,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Servant": 2,
           "Coin": 2
         }
@@ -482,7 +468,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Shield": 2,
           "Stone": 2
         }
@@ -509,7 +494,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 4
         }
       },
@@ -533,7 +517,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 4
         }
       },
@@ -557,7 +540,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Coin": 1
         }
       },
@@ -581,7 +563,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Stone": 1
         }
       },
@@ -605,7 +586,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 3,
           "Servant": 2
         }
@@ -631,7 +611,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 3,
           "Coin": 2
         }
@@ -657,7 +636,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Stone": 2,
           "Coin": 3
         }
@@ -683,7 +661,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Shield": 2,
           "Stone": 3
         }
@@ -709,7 +686,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 5
         }
       },
@@ -734,7 +710,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 5
         }
       },
@@ -759,7 +734,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Coin": 5
         }
       },
@@ -784,7 +758,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Stone": 5
         }
       },
@@ -809,7 +782,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 3,
           "Coin": 3
         }
@@ -835,7 +807,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Shield": 3,
           "Servant": 3
         }
@@ -861,7 +832,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Stone": 3,
           "Coin": 3
         }
@@ -887,7 +857,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Servant": 3,
           "Stone": 3
         }
@@ -913,7 +882,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 6
         }
       },
@@ -938,7 +906,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 6
         }
       },
@@ -963,7 +930,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Coin": 6
         }
       },
@@ -988,7 +954,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Stone": 6
         }
       },
@@ -1013,7 +978,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 5,
           "Servant": 2
         }
@@ -1041,7 +1005,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 5,
           "Coin": 2
         }
@@ -1069,7 +1032,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Stone": 2,
           "Coin": 5
         }
@@ -1097,7 +1059,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Servant": 2,
           "Stone": 5
         }
@@ -1125,7 +1086,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 7
         }
       },
@@ -1150,7 +1110,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Servant": 7
         }
       },
@@ -1175,7 +1134,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Coin": 7
         }
       },
@@ -1200,7 +1158,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Stone": 7
         }
       },
@@ -1225,7 +1182,6 @@
       "color": "Green",
       "cost": {
         "resources": {
-
           "Shield": 4,
           "Coin": 4
         }
@@ -1251,7 +1207,6 @@
       "color": "Purple",
       "cost": {
         "resources": {
-
           "Shield": 4,
           "Servant": 4
         }
@@ -1277,7 +1232,6 @@
       "color": "Blue",
       "cost": {
         "resources": {
-
           "Stone": 4,
           "Coin": 4
         }
@@ -1303,7 +1257,6 @@
       "color": "Yellow",
       "cost": {
         "resources": {
-
           "Servant": 4,
           "Stone": 4
         }
@@ -1326,6 +1279,7 @@
       "victoryPoints": 12
     }
   ],
+
   "leader-cards": [
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
