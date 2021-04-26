@@ -117,7 +117,7 @@ public class Player {
      */
     public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
         if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))
-            throw new CannotChooseException();
+            throw new CannotChooseException(false);
         leaders.retainAll(chosenLeaders);
     }
 
@@ -135,7 +135,7 @@ public class Player {
         // TODO: Make sure that shelves are of type Shelf
 
         if (hasChosenResources)
-            throw new CannotChooseException();
+            throw new CannotChooseException(true);
 
         Map<ResourceType, Integer> chosenResources = shelves.values().stream()
                 .map(Map::entrySet)
