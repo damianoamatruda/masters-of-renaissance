@@ -117,11 +117,11 @@ public class PlayerTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {0, 7, 16, 23})
-    void discardLeaderTest(int marker) throws AlreadyActiveException {
+    void discardLeaderTest(int marker) throws IllegalActivationException, AlreadyActiveException {
         for (int i = 0; i < marker; i++)
             player.incrementFaithPoints(game);
 
-        player.discardLeader(game, 0);
+        player.discardLeader(game, player.getLeaders().get(0));
         assertEquals(marker + 1, player.getFaithPoints());
 
     }
@@ -135,7 +135,7 @@ public class PlayerTest {
     void invalidLeaderDiscard() throws IllegalActivationException {
         player.getLeaders().get(0).activate(player);
 
-        assertThrows(AlreadyActiveException.class, () -> player.discardLeader(game, 0));
+        assertThrows(AlreadyActiveException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
 
     }
 
@@ -254,7 +254,7 @@ public class PlayerTest {
             Player first = players.get(0);
             Warehouse.WarehouseShelf shelf = first.getWarehouse().getShelves().get(0);
             assertThrows(CannotChooseException.class, () -> first.chooseResources(
-                    game, Map.of(coin, 1), Map.of(shelf, Map.of(coin, 1))
+                    game, Map.of(shelf, Map.of(coin, 1))
             ));
         }
 
@@ -270,7 +270,7 @@ public class PlayerTest {
             Warehouse.WarehouseShelf shelf = second.getWarehouse().getShelves().get(1);
 
             assertAll(() -> assertDoesNotThrow(() -> second.chooseResources(
-                    game, Map.of(coin, 1), Map.of(shelf, Map.of(coin, 1))
+                    game, Map.of(shelf, Map.of(coin, 1))
                     )),
                     () -> assertDoesNotThrow(() -> second.addToDevSlot(game, 1, card, resContainers)));
         }
@@ -280,10 +280,10 @@ public class PlayerTest {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
             assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
-                    game, Map.of(coin, 3), Map.of(shelf, Map.of(coin, 3))
+                    game, Map.of(shelf, Map.of(coin, 3))
                     )),
                     () -> assertDoesNotThrow(() -> fourth.chooseResources(
-                            game, Map.of(coin, 2), Map.of(shelf, Map.of(coin, 2))
+                            game, Map.of(shelf, Map.of(coin, 2))
                     )));
         }
 
@@ -292,10 +292,10 @@ public class PlayerTest {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
             assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
-                    game, Map.of(zero, 1), Map.of(shelf, Map.of(zero, 1))
+                    game, Map.of(shelf, Map.of(zero, 1))
                     )),
                     () -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
-                            game, Map.of(faith, 1), Map.of(shelf, Map.of(faith, 1))
+                            game, Map.of(shelf, Map.of(faith, 1))
                     )));
         }
 

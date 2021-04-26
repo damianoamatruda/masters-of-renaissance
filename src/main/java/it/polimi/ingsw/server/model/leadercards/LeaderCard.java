@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model.leadercards;
 
 import it.polimi.ingsw.server.model.Card;
-import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
@@ -58,6 +57,7 @@ public abstract class LeaderCard extends Card {
      * @throws IllegalActivationException if the player does not meet the card's requirements.
      */
     public void activate(Player player) throws IllegalActivationException {
+        // TODO: Check that this card is owned by the player
         if (requirement != null) {
             try {
                 requirement.checkRequirements(player);
@@ -74,16 +74,6 @@ public abstract class LeaderCard extends Card {
      */
     public ResourceType getResource() {
         return resource;
-    }
-
-    /**
-     * Executes the discarding routine for leader cards.
-     *
-     * @param game   the game the player is playing in
-     * @param player the player that discards the card. All routine effects are applied on this player.
-     */
-    public void onDiscarded(Game game, Player player) {
-        player.incrementFaithPoints(game);
     }
 
     /**

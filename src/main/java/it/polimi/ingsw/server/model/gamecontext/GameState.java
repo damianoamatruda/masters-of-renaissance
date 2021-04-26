@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -42,13 +43,12 @@ abstract public class GameState {
     /**
      * Chooses the initial resources to take as a player.
      *
-     * @param context         the context
-     * @param player          the player
-     * @param chosenResources the chosen resources
-     * @param shelves         the destination shelves
+     * @param context the context
+     * @param player  the player
+     * @param shelves the destination shelves
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
-    public void chooseResources(GameContext context, Player player, Map<ResourceType, Integer> chosenResources,
+    public void chooseResources(GameContext context, Player player,
                                 Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
         throw new IllegalActionException();
     }
@@ -109,14 +109,26 @@ abstract public class GameState {
     }
 
     /**
-     * Makes a player discard a leader.
+     * Makes a player activate a leader card.
      *
      * @param context the context
      * @param player  the player
-     * @param index   the index of the card to be discarded
+     * @param leader  the leader card to activate
+     * @throws IllegalActionException if the player cannot activate a leader in the current state
+     */
+    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException {
+        throw new IllegalActionException();
+    }
+
+    /**
+     * Makes a player discard a leader card.
+     *
+     * @param context the context
+     * @param player  the player
+     * @param leader  the leader card to discard
      * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
-    public void discardLeader(GameContext context, Player player, int index) throws IllegalActionException, AlreadyActiveException {
+    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, AlreadyActiveException {
         throw new IllegalActionException();
     }
 

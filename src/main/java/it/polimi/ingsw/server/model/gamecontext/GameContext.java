@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -65,14 +66,12 @@ public class GameContext {
     /**
      * Chooses the initial resources to take as a player.
      *
-     * @param player          the player
-     * @param chosenResources the chosen resources
-     * @param shelves         the destination shelves
+     * @param player  the player
+     * @param shelves the destination shelves
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
-    public void chooseResources(Player player, Map<ResourceType, Integer> chosenResources,
-                                Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
-        state.chooseResources(this, player, chosenResources, shelves);
+    public void chooseResources(Player player, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
+        state.chooseResources(this, player, shelves);
     }
 
     /**
@@ -127,14 +126,25 @@ public class GameContext {
     }
 
     /**
-     * Makes a player discard a leader.
+     * Makes a player activate a leader card.
      *
      * @param player the player
-     * @param index  the index of the card to be discarded
+     * @param leader the leader card to activate
+     * @throws IllegalActionException if the player cannot activate a leader in the current state
+     */
+    public void activateLeader(Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException {
+        state.activateLeader(this, player, leader);
+    }
+
+    /**
+     * Makes a player discard a leader card.
+     *
+     * @param player the player
+     * @param leader the leader card to discard
      * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
-    public void discardLeader(Player player, int index) throws IllegalActionException, AlreadyActiveException {
-        state.discardLeader(this, player, index);
+    public void discardLeader(Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, AlreadyActiveException {
+        state.discardLeader(this, player, leader);
     }
 
     /**

@@ -28,9 +28,9 @@ public class GameSetupState extends GameState {
     }
 
     @Override
-    public void chooseResources(GameContext context, Player player, Map<ResourceType, Integer> chosenResources,
+    public void chooseResources(GameContext context, Player player,
                                 Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
-        player.chooseResources(context.game, chosenResources, shelves);
+        player.chooseResources(context.game, shelves);
         checkEndSetup(context);
     }
 

@@ -2,6 +2,8 @@ package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.AlreadyActiveException;
 import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
+import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 
@@ -16,9 +18,15 @@ abstract public class GameTurnState extends GameState {
     }
 
     @Override
-    public void discardLeader(GameContext context, Player player, int index) throws IllegalActionException, AlreadyActiveException {
+    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException {
         checkCurrentPlayer(context, player);
-        player.discardLeader(context.game, index);
+        leader.activate(player);
+    }
+
+    @Override
+    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, AlreadyActiveException {
+        checkCurrentPlayer(context, player);
+        player.discardLeader(context.game, leader);
     }
 
     /**

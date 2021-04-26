@@ -39,7 +39,7 @@ public class ProductionGroup {
      */
     public void activate(Game game, Player player) throws IllegalProductionActivationException {
         if (!productionRequests.stream().allMatch(ProductionRequest::isValid))
-            throw new IllegalProductionActivationException();
+            throw new IllegalProductionActivationException("Not all production requests are valid.");
 
         /* Get set of all resource containers, in input and in output */
         Set<ResourceContainer> allContainers = new HashSet<>();
@@ -65,7 +65,7 @@ public class ProductionGroup {
                         try {
                             clonedContainers.get(resContainer).removeResource(resType);
                         } catch (IllegalResourceTransferException e) {
-                            throw new IllegalProductionActivationException();
+                            throw new IllegalProductionActivationException("Illegal input transfer.", e);
                         }
 
             /* Try adding all output storable resources into cloned resource containers (with input removed) */
@@ -76,7 +76,7 @@ public class ProductionGroup {
                             clonedContainers.get(resContainer).addResource(resType);
                         } catch (IllegalResourceTransferException e) {
                             if (!productionReq.getProduction().hasDiscardableOutput())
-                                throw new IllegalProductionActivationException();
+                                throw new IllegalProductionActivationException("Illegal output transfer.", e);
                         }
         }
 
@@ -89,7 +89,7 @@ public class ProductionGroup {
                         try {
                             resContainer.removeResource(resType);
                         } catch (IllegalResourceTransferException e) {
-                            throw new RuntimeException();
+                            throw new RuntimeException("Implementation error when removing all input storable resources from real resource containers", e);
                         }
 
             /* Add all output storable resources into real resource containers */
@@ -102,7 +102,7 @@ public class ProductionGroup {
                             if (productionReq.getProduction().hasDiscardableOutput())
                                 player.discardResource(game, resType);
                             else
-                                throw new RuntimeException();
+                                throw new RuntimeException("Implementation error when adding all output storable resources into real resource containers.", e);
                         }
 
             /* Filter the non-storable resources */

@@ -1,11 +1,13 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.*;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class dedicated to the storage of the player's data and available operations.
@@ -122,19 +124,23 @@ public class Player {
     /**
      * Chooses the initial resources to be given to the player.
      *
-     * @param game            the game the player is playing in
-     * @param chosenResources the chosen resources
-     * @param shelves         the destination shelves
+     * @param game    the game the player is playing in
+     * @param shelves the destination shelves
      * @throws CannotChooseException            all the allowed initial resources have already been chosen
      * @throws InvalidChoiceException           the resource cannot be given
      * @throws IllegalResourceTransferException invalid container
      */
-    public void chooseResources(Game game, Map<ResourceType, Integer> chosenResources, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
-        // TODO: Exclude resource type "Faith" from chosenResources
+    public void chooseResources(Game game, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+        // TODO: Exclude resource type "Faith" from shelves
         // TODO: Make sure that shelves are of type Shelf
 
         if (hasChosenResources)
             throw new CannotChooseException();
+
+        Map<ResourceType, Integer> chosenResources = shelves.values().stream()
+                .map(Map::entrySet)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
 
         try {
             new ProductionGroup(List.of(
@@ -168,17 +174,18 @@ public class Player {
     }
 
     /**
-     * Action performed when the player discards a leader card. The player receives one faith point.
+     * Action performed when the player discards a leader card.
      *
-     * @param game  the game the player is playing in
-     * @param index the index of the card to be discarded
+     * @param game   the game the player is playing in
+     * @param leader the leader card to discard
      * @throws AlreadyActiveException leader is already active
      */
-    public void discardLeader(Game game, int index) throws AlreadyActiveException {
-        LeaderCard toBeDiscarded = leaders.get(index);
-        if (toBeDiscarded.isActive()) throw new AlreadyActiveException();
-        toBeDiscarded.onDiscarded(game, this);
-        leaders.remove(index);
+    public void discardLeader(Game game, LeaderCard leader) throws IllegalActivationException, AlreadyActiveException {
+        if (!leaders.contains(leader))
+            throw new IllegalActivationException("The leader card cannot be discarded");
+        if (leader.isActive()) throw new AlreadyActiveException();
+        game.onDiscardLeader(this);
+        leaders.remove(leader);
     }
 
     /**
@@ -199,7 +206,7 @@ public class Player {
      * @param resource the type of the resource to discard
      */
     public void discardResource(Game game, ResourceType resource) {
-        game.onDiscard(this);
+        game.onDiscardResource(this);
     }
 
     /**

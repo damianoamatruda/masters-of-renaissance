@@ -106,12 +106,21 @@ public class Game {
     /**
      * Method called after a resource has been discarded by a player.
      *
-     * @param player the player who discarded the resource
+     * @param player the player who has discarded the resource
      */
-    public void onDiscard(Player player) {
+    public void onDiscardResource(Player player) {
         players.stream()
                 .filter(p -> !p.equals(player))
                 .forEach(p -> p.incrementFaithPoints(this));
+    }
+
+    /**
+     * Method called after a leader card has been discarded by a player. The player receives one faith point.
+     *
+     * @param player the player who has discarded the leader card
+     */
+    public void onDiscardLeader(Player player) {
+        player.incrementFaithPoints(this);
     }
 
     /**

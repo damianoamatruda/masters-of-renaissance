@@ -77,6 +77,7 @@ public class Market {
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
                               Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalMarketTransferException {
         // TODO: Make sure that shelves are of type Shelf
+
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
             throw new IllegalArgumentException();
 
@@ -96,7 +97,7 @@ public class Market {
                             Map.of(), Map.of(), Map.of(), shelves)
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
-            throw new IllegalMarketTransferException();
+            throw new IllegalMarketTransferException("The resources from the market cannot be taken with the given options.", e);
         }
 
         shift(isRow, index);

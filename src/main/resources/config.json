@@ -1,61 +1,13 @@
 {
-  "max-players": 4,
-  "num-leader-cards": 4,
-  "num-chosen-leader-cards": 2,
-  "max-faith": 24,
-  "max-development-cards": 7,
-  "max-level": 3,
-  "num-colors": 4,
-  "market-columns": 4,
-  "replaceable-resource": {
-    "name": "Zero",
-    "storable": false
-  },
-  "max-shelf-size": 3,
-  "slots-count": 3,
-
-  "base-production": {
-    "input": {},
-    "inputBlanks": 2,
-    "inputBlanksExclusions": [],
-    "output": {},
-    "outputBlanks": 1,
-    "outputBlanksExclusions": [
-      {
-        "name": "Faith",
-        "storable": false
-      }
-    ],
-    "discardableOutput": false
-  },
-  "initial-resources": {
-    "1": {
-
-      "numStorable": 0,
-      "faith": 0
-
-    },
-    "2": {
-
-      "numStorable": 1,
-      "faith": 0
-
-    },
-    "3": {
-
-      "numStorable": 1,
-      "faith": 1
-
-    },
-    "4": {
-
-      "numStorable": 2,
-      "faith": 1
-
-    }
-  },
-
-  "card-colors": [
+  "maxPlayers": 4,
+  "warehouseShelvesCount": 3,
+  "playerLeadersCount": 4,
+  "chosenLeadersCount": 2,
+  "maxFaith": 24,
+  "maxDevCards": 7,
+  "levelsCount": 3,
+  "slotsCount": 3,
+  "cardColors": [
     {
       "name": "Yellow"
     },
@@ -69,7 +21,8 @@
       "name": "Blue"
     }
   ],
-  "resource-types": [
+
+  "resourceTypes": [
     {
       "subtype": "it.polimi.ingsw.server.model.resourcetypes.IncrementFaithPointsResType",
       "name": "Faith",
@@ -97,111 +50,66 @@
     }
   ],
 
-  "market": {
-    "grid": [
-      [
-        {
-          "name": "Shield",
-          "storable": true
-        },
-        {
-          "name": "Coin",
-          "storable": true
-        },
-        {
-          "name": "Coin",
-          "storable": true
-        },
-        {
-          "name": "Servant",
-          "storable": true
-        }
-      ],
-      [
-        {
-          "name": "Zero",
-          "storable": false
-        },
-        {
-          "name": "Stone",
-          "storable": true
-        },
-        {
-          "name": "Shield",
-          "storable": true
-        },
-        {
-          "name": "Zero",
-          "storable": false
-        }
-      ],
-      [
-        {
-          "name": "Servant",
-          "storable": true
-        },
-        {
-          "name": "Stone",
-          "storable": true
-        },
-        {
-          "name": "Zero",
-          "storable": false
-        },
-        {
-          "name": "Faith",
-          "storable": false
-        }
-      ]
+  "baseProduction": {
+    "input": {},
+    "inputBlanks": 2,
+    "inputBlanksExclusions": [],
+    "output": {},
+    "outputBlanks": 1,
+    "outputBlanksExclusions": [
+      "Faith"
     ],
-    "replaceableResType": {
-      "name": "Zero",
-      "storable": false
-    },
-    "slide": {
-      "name": "Zero",
-      "storable": false
-    }
+    "discardableOutput": false
   },
 
-  "development-cards": [
+  "initialResources": [
     {
-      "color": {
-        "name": "Green"
-      },
+      "numStorable": 0,
+      "faith": 0
+    },
+    {
+      "numStorable": 1,
+      "faith": 0
+    },
+    {
+      "numStorable": 1,
+      "faith": 1
+    },
+    {
+      "numStorable": 2,
+      "faith": 1
+    }
+  ],
+
+  "marketResources": {
+    "Coin": 2,
+    "Faith": 1,
+    "Servant": 2,
+    "Shield": 2,
+    "Stone": 2,
+    "Zero": 4
+  },
+  "marketColumns": 4,
+  "marketReplaceableResource": "Zero",
+
+  "developmentCards": [
+    {
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Shield": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "input": {
+          "Coin": 3
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -209,42 +117,22 @@
       "victoryPoints": 1
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Servant": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -252,42 +140,22 @@
       "victoryPoints": 1
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Coin": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -295,42 +163,22 @@
       "victoryPoints": 1
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Stone": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -338,56 +186,24 @@
       "victoryPoints": 1
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ]
+        "resources": {
+          "Shield": 1,
+          "Servant": 1,
+          "Stone": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -395,56 +211,24 @@
       "victoryPoints": 2
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ]
+        "resources": {
+          "Servant": 1,
+          "Coin": 1,
+          "Shield": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -452,56 +236,24 @@
       "victoryPoints": 2
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ]
+        "resources": {
+          "Servant": 1,
+          "Coin": 1,
+          "Stone": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -509,56 +261,24 @@
       "victoryPoints": 2
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ]
+        "resources": {
+          "Shield": 1,
+          "Coin": 1,
+          "Stone": 1
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Coin": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -566,56 +286,24 @@
       "victoryPoints": 2
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Shield": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Servant": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 1,
+          "Coin": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -623,56 +311,24 @@
       "victoryPoints": 3
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Servant": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Coin": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 1,
+          "Servant": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -680,56 +336,24 @@
       "victoryPoints": 3
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Coin": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Stone": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 1,
+          "Coin": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -737,56 +361,24 @@
       "victoryPoints": 3
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Stone": 3
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Shield": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 1,
+          "Coin": 1,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -794,63 +386,25 @@
       "victoryPoints": 3
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Shield": 2,
+          "Coin": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Coin": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -858,63 +412,25 @@
       "victoryPoints": 4
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Servant": 2,
+          "Stone": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Stone": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -922,63 +438,25 @@
       "victoryPoints": 4
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Servant": 2,
+          "Coin": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Servant": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -986,63 +464,25 @@
       "victoryPoints": 4
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Shield": 2,
+          "Stone": 2
+        }
       },
       "level": 1,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Shield": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1050,42 +490,22 @@
       "victoryPoints": 4
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            4
-          ]
-        ]
+        "resources": {
+          "Shield": 4
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1093,42 +513,22 @@
       "victoryPoints": 5
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            4
-          ]
-        ]
+        "resources": {
+          "Servant": 4
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1136,42 +536,22 @@
       "victoryPoints": 5
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ]
+        "resources": {
+          "Coin": 1
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1179,42 +559,22 @@
       "victoryPoints": 5
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ]
+        "resources": {
+          "Stone": 1
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1222,56 +582,24 @@
       "victoryPoints": 5
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Shield": 3,
+          "Servant": 2
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Stone": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1279,56 +607,24 @@
       "victoryPoints": 6
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Servant": 3,
+          "Coin": 2
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Shield": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1336,56 +632,24 @@
       "victoryPoints": 6
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Stone": 2,
+          "Coin": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Servant": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1393,56 +657,24 @@
       "victoryPoints": 6
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Shield": 2,
+          "Stone": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Coin": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1450,49 +682,23 @@
       "victoryPoints": 6
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Shield": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Coin": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Stone": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1500,49 +706,23 @@
       "victoryPoints": 7
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Servant": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Stone": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Coin": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1550,49 +730,23 @@
       "victoryPoints": 7
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Coin": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Servant": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Shield": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1600,49 +754,23 @@
       "victoryPoints": 7
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Stone": 5
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Shield": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Servant": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1650,56 +778,24 @@
       "victoryPoints": 7
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Shield": 3,
+          "Coin": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Shield": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1707,56 +803,24 @@
       "victoryPoints": 8
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Shield": 3,
+          "Servant": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Servant": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1764,56 +828,24 @@
       "victoryPoints": 8
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Stone": 3,
+          "Coin": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Stone": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1821,56 +853,24 @@
       "victoryPoints": 8
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            3
-          ]
-        ]
+        "resources": {
+          "Servant": 3,
+          "Stone": 3
+        }
       },
       "level": 2,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "output": {
+          "Faith": 1,
+          "Coin": 2
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1878,49 +878,23 @@
       "victoryPoints": 8
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            6
-          ]
-        ]
+        "resources": {
+          "Shield": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Coin": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Stone": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1928,49 +902,23 @@
       "victoryPoints": 9
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            6
-          ]
-        ]
+        "resources": {
+          "Servant": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Stone": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Coin": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -1978,49 +926,23 @@
       "victoryPoints": 9
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            6
-          ]
-        ]
+        "resources": {
+          "Coin": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Servant": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Shield": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2028,49 +950,23 @@
       "victoryPoints": 9
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            6
-          ]
-        ]
+        "resources": {
+          "Stone": 6
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ]
-        ],
+        "input": {
+          "Shield": 2
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            2
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Faith": 2,
+          "Servant": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2078,70 +974,26 @@
       "victoryPoints": 9
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            5
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Shield": 5,
+          "Servant": 2
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 2,
+          "Stone": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2149,70 +1001,26 @@
       "victoryPoints": 10
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            5
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ]
-        ]
+        "resources": {
+          "Servant": 5,
+          "Coin": 2
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 2,
+          "Coin": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2220,70 +1028,26 @@
       "victoryPoints": 10
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Stone": 2,
+          "Coin": 5
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1,
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 2,
+          "Stone": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2291,70 +1055,26 @@
       "victoryPoints": 10
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Servant": 2,
+          "Stone": 5
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1,
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            2
-          ],
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 2,
+          "Coin": 2,
+          "Faith": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2362,49 +1082,23 @@
       "victoryPoints": 10
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            7
-          ]
-        ]
+        "resources": {
+          "Shield": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            3
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Coin": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2412,49 +1106,23 @@
       "victoryPoints": 11
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            7
-          ]
-        ]
+        "resources": {
+          "Servant": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            3
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2462,49 +1130,23 @@
       "victoryPoints": 11
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            7
-          ]
-        ]
+        "resources": {
+          "Coin": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            3
-          ],
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Shield": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2512,49 +1154,23 @@
       "victoryPoints": 11
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            7
-          ]
-        ]
+        "resources": {
+          "Stone": 7
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            3
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 3,
+          "Servant": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2562,56 +1178,24 @@
       "victoryPoints": 11
     },
     {
-      "color": {
-        "name": "Green"
-      },
+      "color": "Green",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            4
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            4
-          ]
-        ]
+        "resources": {
+          "Shield": 4,
+          "Coin": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Shield": 1,
+          "Coin": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2619,56 +1203,24 @@
       "victoryPoints": 12
     },
     {
-      "color": {
-        "name": "Purple"
-      },
+      "color": "Purple",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            4
-          ],
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            4
-          ]
-        ]
+        "resources": {
+          "Shield": 4,
+          "Servant": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            3
-          ]
-        ],
+        "output": {
+          "Servant": 1,
+          "Stone": 3
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2676,56 +1228,24 @@
       "victoryPoints": 12
     },
     {
-      "color": {
-        "name": "Blue"
-      },
+      "color": "Blue",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            4
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            4
-          ]
-        ]
+        "resources": {
+          "Stone": 4,
+          "Coin": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Shield": 3,
+          "Coin": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2733,56 +1253,24 @@
       "victoryPoints": 12
     },
     {
-      "color": {
-        "name": "Yellow"
-      },
+      "color": "Yellow",
       "cost": {
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            4
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            4
-          ]
-        ]
+        "resources": {
+          "Servant": 4,
+          "Stone": 4
+        }
       },
       "level": 3,
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            3
-          ],
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Servant": 3,
+          "Stone": 1
+        },
         "outputBlanks": 0,
         "outputBlanksExclusions": [],
         "discardableOutput": false
@@ -2790,28 +1278,22 @@
       "victoryPoints": 12
     }
   ],
-  "leader-cards": [
+
+  "leaderCards": [
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
       "discount": 1,
-      "resource": {
-        "name": "Servant",
-        "storable": true
-      },
+      "resource": "Servant",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Yellow"
-            },
+            "color": "Yellow",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Green"
-            },
+            "color": "Green",
             "level": 0,
             "amount": 1
           }
@@ -2823,24 +1305,17 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
       "discount": 1,
-      "resource": {
-        "name": "Shield",
-        "storable": true
-      },
+      "resource": "Shield",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Purple"
-            },
+            "color": "Purple",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Blue"
-            },
+            "color": "Blue",
             "level": 0,
             "amount": 1
           }
@@ -2852,24 +1327,17 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
       "discount": 1,
-      "resource": {
-        "name": "Stone",
-        "storable": true
-      },
+      "resource": "Stone",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Green"
-            },
+            "color": "Green",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Blue"
-            },
+            "color": "Blue",
             "level": 0,
             "amount": 1
           }
@@ -2881,24 +1349,17 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
       "discount": 1,
-      "resource": {
-        "name": "Coin",
-        "storable": true
-      },
+      "resource": "Coin",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Yellow"
-            },
+            "color": "Yellow",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Purple"
-            },
+            "color": "Purple",
             "level": 0,
             "amount": 1
           }
@@ -2910,28 +1371,15 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
-        "boundedResType": {
-          "name": "Stone",
-          "storable": true
-        },
-        "size": 2,
-        "quantity": 0
+        "boundedResType": "Stone",
+        "size": 2
       },
-      "resource": {
-        "name": "Stone",
-        "storable": true
-      },
+      "resource": "Stone",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Coin": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
@@ -2939,28 +1387,15 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
-        "boundedResType": {
-          "name": "Servant",
-          "storable": true
-        },
-        "size": 2,
-        "quantity": 0
+        "boundedResType": "Servant",
+        "size": 2
       },
-      "resource": {
-        "name": "Servant",
-        "storable": true
-      },
+      "resource": "Servant",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Stone": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
@@ -2968,28 +1403,15 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
-        "boundedResType": {
-          "name": "Shield",
-          "storable": true
-        },
-        "size": 2,
-        "quantity": 0
+        "boundedResType": "Shield",
+        "size": 2
       },
-      "resource": {
-        "name": "Shield",
-        "storable": true
-      },
+      "resource": "Shield",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Servant": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
@@ -2997,52 +1419,32 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
       "shelf": {
-        "boundedResType": {
-          "name": "Coin",
-          "storable": true
-        },
-        "size": 2,
-        "quantity": 0
+        "boundedResType": "Coin",
+        "size": 2
       },
-      "resource": {
-        "name": "Coin",
-        "storable": true
-      },
+      "resource": "Coin",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
-        "resources": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            5
-          ]
-        ]
+        "resources": {
+          "Shield": 5
+        }
       },
       "isActive": false,
       "victoryPoints": 3
     },
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
-      "resource": {
-        "name": "Servant",
-        "storable": true
-      },
+      "resource": "Servant",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Blue"
-            },
+            "color": "Blue",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Yellow"
-            },
+            "color": "Yellow",
             "level": 0,
             "amount": 2
           }
@@ -3053,24 +1455,17 @@
     },
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
-      "resource": {
-        "name": "Shield",
-        "storable": true
-      },
+      "resource": "Shield",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Purple"
-            },
+            "color": "Purple",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Green"
-            },
+            "color": "Green",
             "level": 0,
             "amount": 2
           }
@@ -3081,24 +1476,17 @@
     },
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
-      "resource": {
-        "name": "Stone",
-        "storable": true
-      },
+      "resource": "Stone",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Yellow"
-            },
+            "color": "Yellow",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Blue"
-            },
+            "color": "Blue",
             "level": 0,
             "amount": 2
           }
@@ -3109,24 +1497,17 @@
     },
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
-      "resource": {
-        "name": "Coin",
-        "storable": true
-      },
+      "resource": "Coin",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Green"
-            },
+            "color": "Green",
             "level": 0,
             "amount": 1
           },
           {
-            "color": {
-              "name": "Purple"
-            },
+            "color": "Purple",
             "level": 0,
             "amount": 2
           }
@@ -3138,41 +1519,24 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            {
-              "name": "Shield",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Shield": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
       },
-      "resource": {
-        "name": "Faith",
-        "storable": false
-      },
+      "resource": "Shield",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Yellow"
-            },
+            "color": "Yellow",
             "level": 2,
             "amount": 1
           }
@@ -3184,41 +1548,24 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            {
-              "name": "Servant",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Servant": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
       },
-      "resource": {
-        "name": "Servant",
-        "storable": true
-      },
+      "resource": "Servant",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Blue"
-            },
+            "color": "Blue",
             "level": 2,
             "amount": 1
           }
@@ -3230,41 +1577,24 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            {
-              "name": "Stone",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Stone": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
       },
-      "resource": {
-        "name": "Stone",
-        "storable": true
-      },
+      "resource": "Stone",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Purple"
-            },
+            "color": "Purple",
             "level": 2,
             "amount": 1
           }
@@ -3276,41 +1606,24 @@
     {
       "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
       "production": {
-        "input": [
-          [
-            {
-              "name": "Coin",
-              "storable": true
-            },
-            1
-          ]
-        ],
+        "input": {
+          "Coin": 1
+        },
         "inputBlanks": 0,
         "inputBlanksExclusions": [],
-        "output": [
-          [
-            {
-              "name": "Faith",
-              "storable": false
-            },
-            1
-          ]
-        ],
+        "output": {
+          "Faith": 1
+        },
         "outputBlanks": 1,
         "outputBlanksExclusions": [],
         "discardableOutput": false
       },
-      "resource": {
-        "name": "Coin",
-        "storable": true
-      },
+      "resource": "Coin",
       "requirement": {
         "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
         "entryList": [
           {
-            "color": {
-              "name": "Green"
-            },
+            "color": "Green",
             "level": 2,
             "amount": 1
           }
@@ -3321,8 +1634,8 @@
     }
   ],
 
-  "faith-track": {
-    "vatican-sections": [
+  "faithTrack": {
+    "vaticanSections": [
       {
         "faithPointsBeginning": 5,
         "faithPointsEnd": 8,
@@ -3342,7 +1655,7 @@
         "activated": false
       }
     ],
-    "yellow-tiles": [
+    "yellowTiles": [
       {
         "faithPoints": 12,
         "victoryPoints": 6
@@ -3378,7 +1691,7 @@
     ]
   },
 
-  "action-tokens": [
+  "actionTokens": [
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenBlackMoveOneShuffle"
     },
@@ -3390,28 +1703,19 @@
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": {
-        "name": "Blue"
-      }
+      "discardedColor": "Blue"
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": {
-        "name": "Green"
-      }
+      "discardedColor": "Green"
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": {
-        "name": "Purple"
-      }
+      "discardedColor": "Purple"
     },
     {
       "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
-      "discardedColor": {
-        "name": "Yellow"
-      }
+      "discardedColor": "Yellow"
     }
   ]
-
 }

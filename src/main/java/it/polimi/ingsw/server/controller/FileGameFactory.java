@@ -28,6 +28,9 @@ public class FileGameFactory implements GameFactory {
     /** Maximum number of players for each Game. */
     private final int maxPlayers;
 
+    /** Maximum size of a Warehouse shelf. */
+    private final int warehouseShelvesCount;
+
     /** Initial number of leader cards per player. */
     private final int playerLeadersCount;
 
@@ -41,16 +44,13 @@ public class FileGameFactory implements GameFactory {
     private final int maxDevCards;
 
     /** The maximum level a development card can have. */
-    private final int maxLevel;
+    private final int levelsCount;
 
     /** The number of different card colors. */
-    private final int numCardColors;
+    private final int colorsCount;
 
     /** The number of columns of the market grid. */
     private final int marketColumns;
-
-    /** Maximum size of a Warehouse shelf. */
-    private final int maxShelfSize;
 
     /** Number of development card production slots per player. */
     private final int slotsCount;
@@ -76,24 +76,27 @@ public class FileGameFactory implements GameFactory {
     public FileGameFactory(InputStream inputStream) {
         gson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
+                .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
+                .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
                 .create();
 
-        parserObject = (JsonObject) new JsonParser().parse(new InputStreamReader(inputStream));
+        parserObject = gson.fromJson(new InputStreamReader(inputStream), JsonObject.class);
 
         /* Parses all simple parameters */
-        maxPlayers = gson.fromJson(parserObject.get("max-players"), int.class);
-        playerLeadersCount = gson.fromJson(parserObject.get("num-leader-cards"), int.class);
-        chosenLeadersCount = gson.fromJson(parserObject.get("num-chosen-leader-cards"), int.class);
-        maxFaith = gson.fromJson(parserObject.get("max-faith"), int.class);
-        maxDevCards = gson.fromJson(parserObject.get("max-development-cards"), int.class);
-        maxLevel = gson.fromJson(parserObject.get("max-level"), int.class);
-        numCardColors = gson.fromJson(parserObject.get("num-colors"), int.class);
-        marketColumns = gson.fromJson(parserObject.get("market-columns"), int.class);
-        maxShelfSize = gson.fromJson(parserObject.get("max-shelf-size"), int.class);
-        slotsCount = gson.fromJson(parserObject.get("slots-count"), int.class);
+        maxPlayers = gson.fromJson(parserObject.get("maxPlayers"), int.class);
+        warehouseShelvesCount = gson.fromJson(parserObject.get("warehouseShelvesCount"), int.class);
+        playerLeadersCount = gson.fromJson(parserObject.get("playerLeadersCount"), int.class);
+        chosenLeadersCount = gson.fromJson(parserObject.get("chosenLeadersCount"), int.class);
+        maxFaith = gson.fromJson(parserObject.get("maxFaith"), int.class);
+        maxDevCards = gson.fromJson(parserObject.get("maxDevCards"), int.class);
+        levelsCount = gson.fromJson(parserObject.get("levelsCount"), int.class);
+        marketColumns = gson.fromJson(parserObject.get("marketColumns"), int.class);
+        slotsCount = gson.fromJson(parserObject.get("slotsCount"), int.class);
 
         devCardColorMap = generateDevCardColors().stream()
                 .collect(Collectors.toUnmodifiableMap(DevCardColor::getName, Function.identity()));
+
+        colorsCount = devCardColorMap.size();
 
         resTypeMap = generateResourceTypes().stream()
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
@@ -125,28 +128,28 @@ public class FileGameFactory implements GameFactory {
         List<String> shuffledNicknames = new ArrayList<>(nicknames);
         Collections.shuffle(shuffledNicknames);
 
-        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>() {
+        List<Boost> initialResources = gson.fromJson(parserObject.get("initialResources"), new TypeToken<ArrayList<Boost>>() {
         }.getType());
 
         List<Player> players = new ArrayList<>();
-        Production production = gson.fromJson(parserObject.get("base-production"), Production.class);
+        Production baseProduction = gson.fromJson(parserObject.get("baseProduction"), Production.class);
         for (int i = 0; i < shuffledNicknames.size(); i++)
             players.add(new Player(
                     shuffledNicknames.get(i),
                     i == 0,
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
-                    new Warehouse(maxShelfSize),
+                    new Warehouse(warehouseShelvesCount),
                     new Strongbox(),
-                    production,
+                    baseProduction,
                     slotsCount,
                     chosenLeadersCount,
-                    boost.get(i + 1).numStorable,
-                    boost.get(i + 1).faith
+                    initialResources.get(i).numStorable,
+                    initialResources.get(i).faith
             ));
 
         Game game = new Game(
                 players,
-                new DevCardGrid(developmentCards, maxLevel, numCardColors),
+                new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
                 maxFaith,
@@ -174,24 +177,24 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
 
-        Map<Integer, Boost> boost = gson.fromJson(parserObject.get("initial-resources"), new TypeToken<HashMap<Integer, Boost>>() {
+        List<Boost> initialResources = gson.fromJson(parserObject.get("initialResources"), new TypeToken<ArrayList<Boost>>() {
         }.getType());
 
         Player player = new Player(
                 nickname,
                 true,
                 shuffledLeaderCards.subList(0, playerLeadersCount),
-                new Warehouse(maxShelfSize),
+                new Warehouse(warehouseShelvesCount),
                 new Strongbox(),
-                gson.fromJson(parserObject.get("base-production"), Production.class),
+                gson.fromJson(parserObject.get("baseProduction"), Production.class),
                 slotsCount,
-                chosenLeadersCount, boost.get(1).numStorable,
-                boost.get(1).faith
+                chosenLeadersCount, initialResources.get(0).numStorable,
+                initialResources.get(0).faith
         );
 
         SoloGame game = new SoloGame(
                 player,
-                new DevCardGrid(developmentCards, maxLevel, numCardColors),
+                new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
                 generateActionTokens(),
@@ -251,7 +254,8 @@ public class FileGameFactory implements GameFactory {
      * @return all the cars colors
      */
     private Set<DevCardColor> generateDevCardColors() {
-        return gson.fromJson(parserObject.get("card-colors"), new TypeToken<HashSet<DevCardColor>>() {
+        Gson customGson = new GsonBuilder().create();
+        return customGson.fromJson(parserObject.get("cardColors"), new TypeToken<HashSet<DevCardColor>>() {
         }.getType());
     }
 
@@ -261,15 +265,16 @@ public class FileGameFactory implements GameFactory {
      * @return all the resource types
      */
     private Set<ResourceType> generateResourceTypes() {
-        Set<JsonObject> protoResources = gson.fromJson(parserObject.get("resource-types"), new TypeToken<HashSet<JsonObject>>() {
+        Gson customGson = new GsonBuilder().create();
+        Set<JsonObject> protoResources = customGson.fromJson(parserObject.get("resourceTypes"), new TypeToken<HashSet<JsonObject>>() {
         }.getType());
         Set<ResourceType> resources = new HashSet<>();
         for (JsonObject o : protoResources) {
             JsonElement subtype = o.get("subtype");
             try {
-                resources.add(subtype == null ? gson.fromJson(o, ResourceType.class) : gson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
+                resources.add(subtype == null ? customGson.fromJson(o, ResourceType.class) : customGson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
         return resources;
@@ -281,18 +286,20 @@ public class FileGameFactory implements GameFactory {
      * @return list of leader cards
      */
     private List<LeaderCard> generateLeaderCards() {
-        Gson otherGson = new GsonBuilder()
+        Gson customGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
+                .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
+                .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
                 .registerTypeHierarchyAdapter(CardRequirement.class, new RequirementDeserializer())
                 .create();
         List<LeaderCard> leaders = new ArrayList<>();
-        List<JsonObject> prototypes = otherGson.fromJson(parserObject.get("leader-cards"), new TypeToken<ArrayList<JsonObject>>() {
+        List<JsonObject> prototypes = customGson.fromJson(parserObject.get("leaderCards"), new TypeToken<ArrayList<JsonObject>>() {
         }.getType());
         for (JsonObject o : prototypes) {
             try {
-                leaders.add(otherGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
+                leaders.add(customGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
         }
         return leaders;
@@ -304,7 +311,7 @@ public class FileGameFactory implements GameFactory {
      * @return list of development cards
      */
     private List<DevelopmentCard> generateDevCards() {
-        return gson.fromJson(parserObject.get("development-cards"), new TypeToken<ArrayList<DevelopmentCard>>() {
+        return gson.fromJson(parserObject.get("developmentCards"), new TypeToken<ArrayList<DevelopmentCard>>() {
         }.getType());
     }
 
@@ -314,7 +321,9 @@ public class FileGameFactory implements GameFactory {
      * @return the Market
      */
     private Market generateMarket() {
-        return gson.fromJson(parserObject.get("market"), Market.class);
+        JsonElement entries = parserObject.get("marketResources");
+        Map<ResourceType, Integer> marketResources = gson.fromJson(entries, new TypeToken<HashMap<ResourceType, Integer>>(){}.getType());
+        return new Market(marketResources, marketColumns, resTypeMap.get(parserObject.get("marketReplaceableResource").getAsString()));
     }
 
     /**
@@ -323,9 +332,9 @@ public class FileGameFactory implements GameFactory {
      * @return new faith track
      */
     private FaithTrack generateFaithTrack() {
-        JsonObject track = parserObject.get("faith-track").getAsJsonObject();
-        Set<FaithTrack.YellowTile> tiles = gson.fromJson(track.get("yellow-tiles"), new TypeToken<HashSet<FaithTrack.YellowTile>>(){}.getType());
-        Set<FaithTrack.VaticanSection> sections = gson.fromJson(track.get("vatican-sections"), new TypeToken<HashSet<FaithTrack.VaticanSection>>(){}.getType());
+        JsonObject track = parserObject.get("faithTrack").getAsJsonObject();
+        Set<FaithTrack.YellowTile> tiles = gson.fromJson(track.get("yellowTiles"), new TypeToken<HashSet<FaithTrack.YellowTile>>(){}.getType());
+        Set<FaithTrack.VaticanSection> sections = gson.fromJson(track.get("vaticanSections"), new TypeToken<HashSet<FaithTrack.VaticanSection>>(){}.getType());
         return new FaithTrack(sections, tiles);
     }
 
@@ -335,7 +344,7 @@ public class FileGameFactory implements GameFactory {
      * @return list of action tokens
      */
     private List<ActionToken> generateActionTokens() {
-        JsonArray jsonArray = parserObject.get("action-tokens").getAsJsonArray();
+        JsonArray jsonArray = parserObject.get("actionTokens").getAsJsonArray();
         List<ActionToken> tokens = new ArrayList<>();
         List<JsonObject> prototypes = gson.fromJson(jsonArray, new TypeToken<ArrayList<JsonObject>>() {
         }.getType());
@@ -343,7 +352,7 @@ public class FileGameFactory implements GameFactory {
             try {
                 tokens.add(gson.fromJson(o, (Class<? extends ActionToken>) Class.forName(o.get("type").getAsString())));
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
         }
         return tokens;
@@ -359,15 +368,36 @@ public class FileGameFactory implements GameFactory {
     }
 
     /** Custom deserializer for leader card requirements. */
-    private static class RequirementDeserializer implements JsonDeserializer<CardRequirement> {
+    private class RequirementDeserializer implements JsonDeserializer<CardRequirement> {
 
         @Override
         public CardRequirement deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            Gson customGson = new GsonBuilder()
+                    .enableComplexMapKeySerialization().setPrettyPrinting()
+                    .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
+                    .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
+                    .create();
             try {
-                return new Gson().fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
+                return customGson.fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
+        }
+    }
+
+    private class ColorDeserializer implements JsonDeserializer<DevCardColor> {
+        @Override
+        public DevCardColor deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            return getDevCardColor(jsonElement.getAsString())
+                    .orElseThrow(() -> new RuntimeException("The given color does not exist."));
+        }
+    }
+
+    private class ResourceDeserializer implements JsonDeserializer<ResourceType> {
+        @Override
+        public ResourceType deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            return getResourceType(jsonElement.getAsString())
+                    .orElseThrow(() -> new RuntimeException("The given resource type does not exist."));
         }
     }
 }
