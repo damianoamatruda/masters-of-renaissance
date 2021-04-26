@@ -153,7 +153,7 @@ public class GameContext {
      * @param player the player
      * @throws IllegalActionException if the player cannot end the turn in the current state
      */
-    public void endTurn(Player player) throws AllInactiveException, IllegalActionException {
+    public void endTurn(Player player) throws NoActivePlayersException, IllegalActionException {
         state.endTurn(this, player);
     }
 

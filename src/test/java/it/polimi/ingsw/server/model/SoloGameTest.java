@@ -64,7 +64,7 @@ public class SoloGameTest {
      * Test for onTurnEnd method.
      */
     @Test
-    void onTurnEnd() throws AllInactiveException {
+    void onTurnEnd() throws NoActivePlayersException {
         player = game.getPlayers().get(0);
         game.onTurnEnd();
         assertEquals(player, game.getCurrentPlayer());

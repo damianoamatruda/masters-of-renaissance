@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.gamecontext;
 
-import it.polimi.ingsw.server.model.AllInactiveException;
+import it.polimi.ingsw.server.model.NoActivePlayersException;
 import it.polimi.ingsw.server.model.Player;
 
 /**
@@ -8,7 +8,7 @@ import it.polimi.ingsw.server.model.Player;
  */
 public class GameTurnDoneState extends GameTurnState {
     @Override
-    public void endTurn(GameContext context, Player player) throws IllegalActionException, AllInactiveException {
+    public void endTurn(GameContext context, Player player) throws IllegalActionException, NoActivePlayersException {
         checkCurrentPlayer(context, player);
         context.game.onTurnEnd();
         context.setState(context.game.hasEnded() ? new GameEndState() : new GameTurnNotDoneState());

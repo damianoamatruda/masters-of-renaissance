@@ -139,11 +139,11 @@ public class Game {
      * <p>
      * If next player is inactive, the operation is repeated until an active player is found.
      *
-     * @throws AllInactiveException all players are set to inactive
+     * @throws NoActivePlayersException all players are set to inactive
      */
-    public void onTurnEnd() throws AllInactiveException {
+    public void onTurnEnd() throws NoActivePlayersException {
         if (players.stream().noneMatch(Player::isActive))
-            throw new AllInactiveException();
+            throw new NoActivePlayersException();
 
         Player nextPlayer;
         do {

@@ -140,10 +140,10 @@ abstract public class GameState {
      *
      * @param context the context
      * @param player  the player
-     * @throws AllInactiveException   all players are set to inactive
+     * @throws NoActivePlayersException   all players are set to inactive
      * @throws IllegalActionException if the player cannot end the turn in the current state
      */
-    public void endTurn(GameContext context, Player player) throws IllegalActionException, AllInactiveException {
+    public void endTurn(GameContext context, Player player) throws IllegalActionException, NoActivePlayersException {
         throw new IllegalActionException();
     }
 
