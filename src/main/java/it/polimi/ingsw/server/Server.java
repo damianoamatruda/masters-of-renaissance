@@ -1,10 +1,12 @@
 package it.polimi.ingsw.server;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,7 +40,16 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server(Integer.parseInt(args[0]));
+        Server server;
+        if(args.length == 1)
+            server = new Server(Integer.parseInt(args[0]));
+        else
+            server = new Gson().fromJson(
+                    new InputStreamReader(
+                            Objects.requireNonNull(Server.class.getResourceAsStream("/server.json"))
+                    ), Server.class
+            );
+
         server.startServer();
     }
 }
