@@ -334,7 +334,7 @@ The client will respond by specifying the resource types and the respective amou
   "type": "req_resources_choice",
   "choice": [
     { "res": "Coin", "amount": 1, "shelf": 1 },
-    { "res": "Shield", "amount": 1, "shelf": 0 },
+    { "res": "Shield", "amount": 1, "shelf": 0 }
   ]
 }
 ```
@@ -433,11 +433,11 @@ All messages are broadcast to all players, as the game rules don't specify that 
     {
       "index": 0,
       "bound_res": "Coin",
-      "amount": 1,
+      "amount": 1
     }, {
       "index": 1,
       "bound_res": null,
-      "amount": 0,
+      "amount": 0
     }
   ]
 }
@@ -827,7 +827,7 @@ Possible errors include:
         "shelf_index": 4, // two warehouse shelves cannot have the same resource -> one of them refers to the strongbox
         "amount": 1
       }
-    ],
+    ]
   }
 }
 ```
