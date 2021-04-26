@@ -86,7 +86,7 @@ public class Player {
         this.chosenLeadersCount = chosenLeadersCount;
         this.initialResources = initialResources;
         this.hasChosenResources = initialResources == 0;
-        this.faithPoints = initialFaith;
+        this.faithPoints = initialFaith; /* This does not trigger game.onIncrement(initialFaith); */
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
