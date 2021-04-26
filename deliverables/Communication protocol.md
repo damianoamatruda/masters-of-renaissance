@@ -89,16 +89,16 @@ The information of whether the player is the first of the match is included in t
  ┌────────┒                      ┌────────┒ 
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-     ┊                                ┊
-     ┊                  req_nickname  ┊
-     ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-     ┊                                ┊ ╭───────────────────────╮
-     ┊                                ├─┤ check nickname unique │
-     ┊  res_nickname                  ┊ ╰───────────────────────╯
-     ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-     ┊                                ┊
-     ┊  err_nickname                  ┊
-     ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+     │                   req_nickname │
+     ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+     │                                │ ╭───────────────────────╮
+     │                                ├─┤ check nickname unique │
+     │ res_nickname                   │ ╰───────────────────────╯
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+     │ err_nickname                   │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      ┆                                ┆
 ```
 **req_nickname (client)**
@@ -130,17 +130,17 @@ When a player is chosen by the server as the first of a new game, they have to d
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊
-╰────────────╯ ┊             req_players_count  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭─────────────╮
-               ┊                                ├─┤ try setting │
-               ┊  res_players_count             ┊ ╰─────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_players_count             ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │
+╰────────────╯ │              req_players_count │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭─────────────╮
+               │                                ├─┤ try setting │
+               │ res_players_count              │ ╰─────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_players_count              │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_players_count (client)**
@@ -191,9 +191,9 @@ After reordering the cached objects to match the server's state, all indices sen
  ┌────────┒                      ┌────────┒ 
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-     ┊                                ┊
-     ┊  game_started                  ┊
-     ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+     │ game_started                   │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      ┆                                ┆
 ```
 **game_started (server)**
@@ -243,20 +243,20 @@ To confirm the success of the operation, the server will echo back the chosen in
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  offer_leader                  ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊
-╰────────────╯ ┊             req_leader_choice  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  res_leader_choice             ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_leader_choice             ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ offer_leader                   │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │
+╰────────────╯ │              req_leader_choice │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ res_leader_choice              │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_leader_choice              │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **offer_leader (server)**
@@ -297,23 +297,23 @@ The client will respond by specifying the resource types and the respective amou
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  offer_resources               ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊
-╰────────────╯ ┊          req_resources_choice  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  res_resources_choice          ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_resources_choice          ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_shelf_choice              ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ offer_resources                │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │
+╰────────────╯ │           req_resources_choice │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ res_resources_choice           │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_resources_choice           │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_shelf_choice               │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **offer_resources (server)**
@@ -376,9 +376,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_cur_player             ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_cur_player              │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_cur_player (server)**
@@ -396,8 +396,8 @@ All messages are broadcast to all players, as the game rules don't specify that 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                ┆                                ┆
-               ┊  update_market                 ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │ update_market                  │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_market (server)**
@@ -419,9 +419,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_shelves                ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_shelves                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_shelves (server)**
@@ -448,9 +448,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_leaders                ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_leaders                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_leaders (server)**
@@ -470,9 +470,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_dev_grid               ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_dev_grid                │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_dev_grid (server)**
@@ -493,9 +493,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_dev_card_slot          ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_dev_card_slot           │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_dev_card_slot (server)**
@@ -515,10 +515,10 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_faith_track            ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
+               │                                │
+               │ update_faith_track             │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
 ```
 **update_faith_track (server)**
 ```json
@@ -537,9 +537,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_solo_token             ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_solo_token              │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_solo_token (server)**
@@ -558,9 +558,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               ┊                                ┊
-               ┊  update_winner                 ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_winner                  │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **update_winner (server)**
@@ -593,17 +593,17 @@ This is technically only useful when taking resources from the market, as no oth
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊ 
-╰────────────╯ ┊              req_swap_shelves  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  update_shelves                ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_shelf_swap                ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │               req_swap_shelves │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_shelves                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_shelf_swap                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_swap_shelves (client)**
@@ -632,14 +632,14 @@ Leader activation:
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊ 
-╰────────────╯ ┊           req_activate_leader  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  update_leaders                ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │            req_activate_leader │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_leaders                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_activate_leader (client)**
@@ -657,17 +657,17 @@ Discarding a leader:
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊ 
-╰────────────╯ ┊            req_discard_leader  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  update_leaders                ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_leader_discard            ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │             req_discard_leader │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_leaders                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_leader_discard             │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_discard_leader (client)**
@@ -711,26 +711,26 @@ Errors may arise from fitting the resources in the shelves, either by specifying
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊ 
-╰────────────╯ ┊                req_get_market  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  update_market                 ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  update_shelves                ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  update_leaders                ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_shelves_choice            ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_replacement_choice        ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │                 req_get_market │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_market                  │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_shelves                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_leaders                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_shelves_choice             │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_replacement_choice         │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_get_market (client)**
@@ -786,23 +786,23 @@ Possible errors include:
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊ 
-╰────────────╯ ┊              req_buy_dev_card  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  update_dev_grid               ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_dev_card_choice           ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_payment_shelf_choice      ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_slot_choice               ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │               req_buy_dev_card │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_dev_grid                │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_dev_card_choice            │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_payment_shelf_choice       │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_slot_choice                │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_buy_dev_card (client)**
@@ -866,23 +866,23 @@ Possible errors include:
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊ 
-╰────────────╯ ┊             req_activate_prod  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────────────────────────╮
-               ┊                                ├─┤ try exec / check choices │
-               ┊  update_shelves                ┊ ╰──────────────────────────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_prod_choice               ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_shelf_map_choice          ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┊                                ┊
-               ┊  err_replacement_choice        ┊
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │              req_activate_prod │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_shelves                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_prod_choice                │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_shelf_map_choice           │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_replacement_choice         │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_activate_prod (client)**
@@ -953,14 +953,14 @@ Since the server cannot at any point assume that the player has finished choosin
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ ┊                                ┊
-│ user input ├─┤                                ┊ 
-╰────────────╯ ┊                  req_turn_end  ┊
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
-               ┊                                ┊ ╭──────╮
-               ┊                                ├─┤ exec │
-               ┊  res_turn_end                  ┊ ╰──────╯
-               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │                   req_turn_end │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────╮
+               │                                ├─┤ exec │
+               │ res_turn_end                   │ ╰──────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_turn_end (client)**
