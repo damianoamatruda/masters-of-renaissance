@@ -86,21 +86,21 @@ The player, when starting the client in multiplayer mode, will be asked to input
 
 The information of whether the player is the first of the match is included in the response given to the client. This is necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
 ```
-+---------+                      +---------+ 
-| Client  |                      | Server  |
-+---------+                      +---------+
-     |                                |
-     |                  req_nickname  |
-     | -----------------------------> |
-     |                                | /-----------------------\
-     |                                |-| check nickname unique |
-     |                                | \-----------------------/
-     |  res_nickname                  |
-     | <----------------------------- |
-     |                                |
-     |  err_nickname                  |
-     | <----------------------------- |
-     |                                |
+ ┌────────┒                      ┌────────┒ 
+ │ Client ┃                      │ Server ┃
+ ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+     ┊                                ┊
+     ┊                  req_nickname  ┊
+     ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+     ┊                                ┊ ╭───────────────────────╮
+     ┊                                ├─┤ check nickname unique │
+     ┊                                ┊ ╰───────────────────────╯
+     ┊  res_nickname                  ┊
+     ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     ┊                                ┊
+     ┊  err_nickname                  ┊
+     ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     ┆                                ┆
 ```
 **req_nickname (client)**
 ```json
@@ -126,25 +126,26 @@ The information of whether the player is the first of the match is included in t
 
 ## Choosing the number of players
 When a player is chosen by the server as the first of a new game, they have to decide the number of players required to start it.
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                |
-\------------/ |                                |
-               |             req_players_count  |
-               | -----------------------------> |
-               |                                | /-------------\
-               |                                |-| try setting |
-               |                                | \-------------/
-               |  res_players_count             |
-               | <----------------------------- |
-               |                                |
-               |  err_players_count             |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊
+╰────────────╯ ┊                                ┊
+               │             req_players_count  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭─────────────╮
+               ┊                                ├─┤ try setting │
+               ┊                                ┊ ╰─────────────╯
+               ┊  res_players_count             ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_players_count             ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_players_count (client)**
 ```json
@@ -189,14 +190,15 @@ The leader cards will be shuffled before they can be chosen by the players: the 
 The same principle applies to the development cards grid's stacks, sent as a list of objects, mapping colors with a list (levels) of lists (the deck of cards matching that level and color), and the solo action tokens.
 
 After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
+
 ```
-+---------+                      +---------+ 
-| Client  |                      | Server  |
-+---------+                      +---------+
-     |                                |
-     |  game_started                  |
-     | <----------------------------- |
-     |                                |
+ ┌────────┒                      ┌────────┒ 
+ │ Client ┃                      │ Server ┃
+ ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+     ┊                                ┊
+     ┊  game_started                  ┊
+     ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     ┆                                ┆
 ```
 **game_started (server)**
 ```json
@@ -240,27 +242,28 @@ As per the game's rules, the players have to decide manually what leader cards t
 
 The client will be sent the IDs of the leader cards they can choose from, and will send back a subset of them.  
 To confirm the success of the operation, the server will echo back the chosen indices. Else, the player will be notified with an error message.
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  offer_leader                  |
-               | <----------------------------- |
-/------------\ |                                |
-| user input |-|                                |
-\------------/ |                                |
-               |             req_leader_choice  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  res_leader_choice             |
-               | <----------------------------- |
-               |                                |
-               |  err_leader_choice             |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  offer_leader                  ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊
+╰────────────╯ ┊                                ┊
+               │             req_leader_choice  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  res_leader_choice             ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_leader_choice             ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **offer_leader (server)**
 ```json
@@ -295,30 +298,31 @@ To confirm the success of the operation, the server will echo back the chosen in
 The players who haven't been given the inkwell have to choose their bonus starting resources.  
 The server will notify the player of the event, signaling the amount of resources the player can choose and which resource types they can choose from.  
 The client will respond by specifying the resource types and the respective amounts.
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  offer_resources               |
-               | <----------------------------- |
-/------------\ |                                |
-| user input |-|                                |
-\------------/ |                                |
-               |          req_resources_choice  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  res_resources_choice          |
-               | <----------------------------- |
-               |                                |
-               |  err_resources_choice          |
-               | <----------------------------- |
-               |                                |
-               |  err_shelf_choice              |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  offer_resources               ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊
+╰────────────╯ ┊                                ┊
+               │          req_resources_choice  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  res_resources_choice          ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_resources_choice          ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_shelf_choice              ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **offer_resources (server)**
 ```json
@@ -375,14 +379,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 
 
 ## Updating the current player
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_cur_player             |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_cur_player             ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_cur_player (server)**
 ```json
@@ -393,14 +398,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Updating the market
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_market                 |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┆                                ┆
+               ┊  update_market                 ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_market (server)**
 ```json
@@ -416,14 +422,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Updating the player's shelves
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_shelves                |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_shelves                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_shelves (server)**
 ```json
@@ -444,14 +451,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Updating the player's leader cards
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_leaders                |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_leaders                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_leaders (server)**
 ```json
@@ -465,14 +473,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Updating the development card grid
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_dev_grid               |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_dev_grid               ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_dev_grid (server)**
 ```json
@@ -487,14 +496,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Updating the player's development card slots
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_dev_card_slot          |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_dev_card_slot          ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_dev_card_slot (server)**
 ```json
@@ -508,14 +518,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Updating the player's position on the faith track
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_faith_track            |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_faith_track            ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
 ```
 **update_faith_track (server)**
 ```json
@@ -529,14 +540,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Sending the activated solo action token
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_solo_token             |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_solo_token             ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_solo_token (server)**
 ```json
@@ -549,14 +561,15 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```
 
 ## Declaring a winner
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-               |  update_winner                 |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+               ┊  update_winner                 ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **update_winner (server)**
 ```json
@@ -583,25 +596,26 @@ Secondary moves can be performed as often as the player wants and at any point o
 During their turn, the player can decide to reorder the warehouse (the leader cards' depots are thought as a part of it).
 
 This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |              req_swap_shelves  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  update_shelves                |
-               | <----------------------------- |
-               |                                |
-               |  err_shelf_swap                |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊ 
+╰────────────╯ ┊                                ┊
+               ┊              req_swap_shelves  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  update_shelves                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_shelf_swap                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_swap_shelves (client)**
 ```json
@@ -624,22 +638,23 @@ During their turn, in addition to one of the main three actions, a player can ch
 To activate or discard a leader the server needs to know which card(s) the player wants to act on.
 
 Leader activation:
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |           req_activate_leader  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  update_leaders                |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊ 
+╰────────────╯ ┊                                ┊
+               ┊           req_activate_leader  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  update_leaders                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_activate_leader (client)**
 ```json
@@ -651,24 +666,26 @@ Leader activation:
 If a leader is already active no error is raised, since it's not a critical event.
 
 Discarding a leader:
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |            req_discard_leader  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  update_leaders                |
-               | <----------------------------- |
-               |                                |
-               |  err_leader_discard            |
-               | <----------------------------- |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊ 
+╰────────────╯ ┊                                ┊
+               ┊            req_discard_leader  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  update_leaders                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_leader_discard            ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_discard_leader (client)**
 ```json
@@ -706,34 +723,35 @@ Discarding is simply handled by diminishing the amount of resources assigned to 
 The `replacements` field specifies how the resource conversion should be handled. Since the player knows what type of resource the leader convert to, they can easily select them by specifying, for each type of resource they want as output, how many replaceable resources (of the available ones) to use.
 
 Errors may arise from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding enough resources.
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |                req_get_market  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  update_market                 |
-               | <----------------------------- |
-               |                                |
-               |  update_shelves                |
-               | <----------------------------- |
-               |                                |
-               |  update_leaders                |
-               | <----------------------------- |
-               |                                |
-               |  err_shelves_choice            |
-               | <----------------------------- |
-               |                                |
-               |  err_replacement_choice        |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊ 
+╰────────────╯ ┊                                ┊
+               ┊                req_get_market  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  update_market                 ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  update_shelves                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  update_leaders                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_shelves_choice            ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_replacement_choice        ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_get_market (client)**
 ```json
@@ -783,31 +801,32 @@ Possible errors include:
 2. Not identifying a valid slot index
 3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
 4. Not specifying correctly where to take the resources from/how many to take
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |              req_buy_dev_card  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  update_dev_grid               |
-               | <----------------------------- |
-               |                                |
-               |  err_dev_card_choice           |
-               | <----------------------------- |
-               |                                |
-               |  err_payment_shelf_choice      |
-               | <----------------------------- |
-               |                                |
-               |  err_slot_choice               |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊ 
+╰────────────╯ ┊                                ┊
+               ┊              req_buy_dev_card  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  update_dev_grid               ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_dev_card_choice           ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_payment_shelf_choice      ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_slot_choice               ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_buy_dev_card (client)**
 ```json
@@ -824,7 +843,7 @@ Possible errors include:
         "amount": 2
       }, {
         "res_type": "Coin",
-        "shelf_index": 4, // two warehouse shelves cannot have the same resource -> one of them refers to the strongbox
+        "shelf_index": 4, // two warehouse shelves cannot have the same resource ─► one of them refers to the strongbox
         "amount": 1
       }
     ]
@@ -865,31 +884,32 @@ Possible errors include:
 1. Specifying nonexistent productions
 2. Incomplete/wrong specification of resource-shelf mappings
 3. Incomplete/wrong specification of replaceable resources
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |             req_activate_prod  |
-               | -----------------------------> |
-               |                                | /--------------------------\
-               |                                |-| try exec / check choices |
-               |                                | \--------------------------/
-               |  update_shelves                |
-               | <----------------------------- |
-               |                                |
-               |  err_prod_choice               |
-               | <----------------------------- |
-               |                                |
-               |  err_shelf_map_choice          |
-               | <----------------------------- |
-               |                                |
-               |  err_replacement_choice        |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊ 
+╰────────────╯ ┊                                ┊
+               ┊             req_activate_prod  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────────────────────────╮
+               ┊                                ├─┤ try exec / check choices │
+               ┊                                ┊ ╰──────────────────────────╯
+               ┊  update_shelves                ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_prod_choice               ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_shelf_map_choice          ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┊                                ┊
+               ┊  err_replacement_choice        ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_activate_prod (client)**
 ```json
@@ -924,7 +944,7 @@ Possible errors include:
         "inputShelves": [
             { "res": "Stone", "shelf": 0, "amount": 2 }
           ],
-        "outputShelves": [ ] // prod 3 has faithpoints in output -> no shelf mapping required
+        "outputShelves": [ ] // prod 3 has faithpoints in output ─► no shelf mapping required
       }
     ]
   }
@@ -954,22 +974,23 @@ Possible errors include:
 
 ## Ending the turn
 Since the server cannot at any point assume that the player has finished choosing their moves (see [secondary actions](#secondary-actions)), an explicit message has to be sent.
+
 ```
-          +---------+                      +---------+ 
-          | Client  |                      | Server  |
-          +---------+                      +---------+
-               |                                |
-/------------\ |                                |
-| user input |-|                                | 
-\------------/ |                                |
-               |                  req_turn_end  |
-               | -----------------------------> |
-               |                                | /------\
-               |                                |-| exec |
-               |                                | \------/
-               |  res_turn_end                  |
-               | <----------------------------- |
-               |                                |
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               ┊                                ┊
+╭────────────╮ ┊                                ┊
+│ user input ├─┤                                ┊ 
+╰────────────╯ ┊                                ┊
+               ┊                  req_turn_end  ┊
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►┊
+               ┊                                ┊ ╭──────╮
+               ┊                                ├─┤ exec │
+               ┊                                ┊ ╰──────╯
+               ┊  res_turn_end                  ┊
+               ┊◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
 ```
 **req_turn_end (client)**
 ```json
