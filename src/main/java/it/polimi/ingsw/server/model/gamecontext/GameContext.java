@@ -66,14 +66,12 @@ public class GameContext {
     /**
      * Chooses the initial resources to take as a player.
      *
-     * @param player          the player
-     * @param chosenResources the chosen resources
-     * @param shelves         the destination shelves
+     * @param player  the player
+     * @param shelves the destination shelves
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
-    public void chooseResources(Player player, Map<ResourceType, Integer> chosenResources,
-                                Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
-        state.chooseResources(this, player, chosenResources, shelves);
+    public void chooseResources(Player player, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
+        state.chooseResources(this, player, shelves);
     }
 
     /**

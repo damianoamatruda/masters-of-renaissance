@@ -43,13 +43,12 @@ abstract public class GameState {
     /**
      * Chooses the initial resources to take as a player.
      *
-     * @param context         the context
-     * @param player          the player
-     * @param chosenResources the chosen resources
-     * @param shelves         the destination shelves
+     * @param context the context
+     * @param player  the player
+     * @param shelves the destination shelves
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
-    public void chooseResources(GameContext context, Player player, Map<ResourceType, Integer> chosenResources,
+    public void chooseResources(GameContext context, Player player,
                                 Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
         throw new IllegalActionException();
     }
