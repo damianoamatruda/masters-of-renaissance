@@ -143,7 +143,7 @@ public class GameContext {
      * @param leader the leader card to discard
      * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
-    public void discardLeader(Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, AlreadyActiveException {
+    public void discardLeader(Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, ActiveLeaderDiscardException {
         state.discardLeader(this, player, leader);
     }
 

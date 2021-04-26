@@ -178,12 +178,12 @@ public class Player {
      *
      * @param game   the game the player is playing in
      * @param leader the leader card to discard
-     * @throws AlreadyActiveException leader is already active
+     * @throws ActiveLeaderDiscardException leader is already active
      */
-    public void discardLeader(Game game, LeaderCard leader) throws IllegalActivationException, AlreadyActiveException {
+    public void discardLeader(Game game, LeaderCard leader) throws IllegalActivationException, ActiveLeaderDiscardException {
         if (!leaders.contains(leader))
             throw new IllegalActivationException("The leader card cannot be discarded");
-        if (leader.isActive()) throw new AlreadyActiveException();
+        if (leader.isActive()) throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
         game.onDiscardLeader(this);
         leaders.remove(leader);
     }

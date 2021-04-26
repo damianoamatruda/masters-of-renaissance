@@ -76,7 +76,7 @@ public class SoloGameTest {
     @Test
     void discardActiveDevCard() throws IllegalActivationException {
         player.getLeaders().get(0).activate(player);
-        assertThrows(AlreadyActiveException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
+        assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
     }
 
     /**
