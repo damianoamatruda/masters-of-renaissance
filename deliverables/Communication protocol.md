@@ -9,7 +9,15 @@
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
 5. [Game phase - Turns](#game-phase---turns)
-    1. [State messages](#state-messages)
+    1. [Main actions](#main-actions)
+        1. [Getting resources from the market](#getting-resources-from-the-market)
+        2. [Buying a development card](#buying-a-development-card)
+        3. [Activating productions](#activating-productions)
+        4. [Ending the turn](#ending-the-turn)
+    2. [Secondary actions](#secondary-actions)
+        1. [Swapping two shelves' content](#swapping-two-shelves'-content)
+        2. [Leader Actions](#leader-actions)
+    3. [State messages](#state-messages)
         1. [Updating the current player](#updating-the-current-player)
         2. [Updating the market](#updating-the-market)
         3. [Updating the player's shelves](#updating-the-player's-shelves)
@@ -19,14 +27,6 @@
         7. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
         8. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
         9. [Declaring a winner](#declaring-a-winner)
-    2. [Secondary actions](#secondary-actions)
-        1. [Swapping two shelves' content](#swapping-two-shelves'-content)
-        2. [Leader Actions](#leader-actions)
-    3. [Main actions](#main-actions)
-        1. [Getting resources from the market](#getting-resources-from-the-market)
-        2. [Buying a development card](#buying-a-development-card)
-        3. [Activating productions](#activating-productions)
-        4. [Ending the turn](#ending-the-turn)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -49,7 +49,7 @@ Messages that generate an error of the second kind will receive an answer of typ
 ```json
 {
   "type": "err_illegal_message",
-  "msg": "wrong message type"
+  "msg": "wrong message type."
 }
 ```
 Only the server is able to generate this type of message.
@@ -58,7 +58,7 @@ Unparsable messages will receive an answer of type `err_unparsable_message`:
 ```json
 {
   "type": "err_unparsable_message",
-  "msg": "received unparsable message"
+  "msg": "received unparsable message."
 }
 ```
 This kind of message can originate from clients and server alike.
@@ -82,7 +82,7 @@ The following specification for the additional feature "Multiple Games" is taken
 Given those requirements, the communication has been modeled in the following way.
 
 ## Connecting/choosing a nickname
-The player, when starting the client in multiplayer mode, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted. Else, the player will be notified of the need to change it, restarting the process.
+The player, when starting the client, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted. Else, the player will be notified of the need to change it, restarting the process.
 
 The information of whether the player is the first of the match is included in the response given to the client. This is necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
 ```
@@ -119,7 +119,7 @@ The information of whether the player is the first of the match is included in t
 ```json
 {
   "type": "err_nickname",
-  "msg": "username already taken"
+  "msg": "username already taken."
 }
 ```
 
@@ -154,14 +154,14 @@ When a player is chosen by the server as the first of a new game, they have to d
 ```json
 {
   "type": "res_players_count",
-  "msg": "the number of players has been set to 3"
+  "msg": "the number of players has been set to 3."
 }
 ```
 **err_players_count (server)**
 ```json
 {
   "type": "err_players_count",
-  "msg": "illegal number of players: 0"
+  "msg": "illegal number of players: 0."
 }
 ```
 
@@ -171,8 +171,7 @@ As the game starts, the server notifies all players of the event.
 ### Caching
 At the same time, it sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
 For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game to be shown the objects status. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
-Caching also allows partial checks to be preemptively (but not exclusively) done client side.  
-For example, if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
+Caching also allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
 
 ### Parameters and indices
 The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
@@ -201,7 +200,7 @@ After reordering the cached objects to match the server's state, all indices sen
 {
   "type": "game_started",
   "init_state": {
-    "nicknames": ["X", "Y", "Z"],
+    "nicknames": [ "X", "Y", "Z" ],
     "market": {
       "grid": [
         [ "Coin", "Shield", "Coin" ],
@@ -276,22 +275,21 @@ To confirm the success of the operation, the server will echo back the chosen in
 **res_leader_choice (server)**
 ```json
 {
-  "type": "res_leader_choice",
-  "choice": [ 3, 15 ]
+  "type": "res_leader_choice"
 }
 ```
 **err_leader_choice (server)**
 ```json
 {
   "type": "err_leader_choice",
-  "msg": "invalid leader cards chosen: 3, 25"
+  "msg": "invalid leader cards chosen: 3, 25."
 }
 ```
 
 ## Choosing starting resources
 The players who haven't been given the inkwell have to choose their bonus starting resources.  
 The server will notify the player of the event, signaling the amount of resources the player can choose and which resource types they can choose from.  
-The client will respond by specifying the resource types and the respective amounts.
+The client will respond by specifying the resource types and the respective quantities.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -329,8 +327,8 @@ The client will respond by specifying the resource types and the respective amou
 {
   "type": "req_resources_choice",
   "choice": [
-    { "res": "Coin", "amount": 1, "shelf": 1 },
-    { "res": "Shield", "amount": 1, "shelf": 0 }
+    { "res": "Coin", "quantity": 1, "shelf": 1 },
+    { "res": "Shield", "quantity": 1, "shelf": 0 }
   ]
 }
 ```
@@ -338,14 +336,14 @@ The client will respond by specifying the resource types and the respective amou
 ```json
 {
   "type": "err_resources_choice",
-  "msg": "wrong starting resource choice: cannot choose 2 resources"
+  "msg": "wrong starting resource choice: cannot choose 2 resources."
 }
 ```
 **err_shelf_choice (client)**
 ```json
 {
   "type": "err_shelf_choice",
-  "msg": "cannot place 3 resources of type Coin on shelf 0: not enough space"
+  "msg": "cannot place 3 resources of type Coin on shelf 0: not enough space."
 }
 ```
 
@@ -353,16 +351,410 @@ The client will respond by specifying the resource types and the respective amou
 After all players have gone through the setup phase, the server will start the turn loop.
 
 The messages in this section can be differentiated into:
-1. [State messages](#state-messages), which update the local caches' state to match the server's
+1. [Main actions](#main-actions), of which the player has to choose only one during the turn
 2. [Secondary actions](#secondary-actions), which can be repeated within the player's turn
-3. [Main actions](#main-actions), of which the player has to choose only one during the turn
+3. [State messages](#state-messages), which update the local caches' state to match the server's
+
+
+# Main actions
+During their turn, the player has to choose among three main actions to carry out:
+1. Getting resources from the market
+2. Buying a development card
+3. Activating the production
+
+Since the player may want to make a secondary move after the main action, the server waits for a `turn_end` message to switch to the next player (timeouts are used in case the player takes too long to make a move/is AFK).
+
+## Getting resources from the market
+The following needs to be specified:
+1. Which row/column the player wants to take the resources from
+2. For each replaceable resource, which leader to use (if applicable)
+3. For each resource (its type considered after the leader's processing), which shelf to use to store it
+4. What resources, among the ones taken from the market, to discard
+
+Discarding is simply handled by specifying a lower quantity of resources to add to a shelf. This also easily matches the rule for which only the resources given by the market can be discarded.
+
+The `replacements` field specifies how the resource conversion should be handled. Since the player knows what type of resource the leader convert to, they can easily select them by specifying, for each type of resource they want as output, how many replaceable resources (of the available ones) to use.
+
+Errors may arise from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding enough resources.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │                 req_get_market │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_market                  │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_shelves                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_leaders                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_shelves_choice             │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_replacement_choice         │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
+```
+**req_get_market (client)**
+```json
+{
+  "type": "req_get_market",
+  "choice": {
+    "market_index": 0,
+    "isRow": true,
+    "replacements": [ { "res": "Coin", "quantity": 2 } ],
+    "shelf_choice": [
+      {
+        "shelf_index": 1,
+        "res_quantity": 2,
+        "res_type": "Coin"
+      }, {
+        "shelf_index": 3,
+        "res_quantity": 2,
+        "res_type": "Shield"
+      }
+    ]
+  }
+}
+```
+**err_shelves_choice (server)**
+```json
+{
+  "type": "err_shelves_choice",
+  "msg": "cannot fit the resources in the shelves as chosen: no space left in shelf 3."
+}
+```
+**err_replacement_choice (server)**
+```json
+{
+  "type": "err_replacement_choice",
+  "msg": "cannot convert 4 resources: only 3 allowed."
+}
+```
+
+## Buying a development card
+The following information is needed when buying a development card:
+1. The row and column of the card to identify it in the grid
+2. The slot to place the card into
+3. For each resource that has to be paid, the shelf (or strongbox) to take it from
+
+Possible errors include:
+1. Not identifying a valid card (invalid row/col choice)
+2. Not identifying a valid slot index
+3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
+4. Not specifying correctly where to take the resources from/how many to take
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │               req_buy_dev_card │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_dev_grid                │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_dev_card_choice            │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_payment_shelf_choice       │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_slot_choice                │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
+```
+**req_buy_dev_card (client)**
+```json
+{
+  "type": "req_buy_dev_card",
+  "choice": {
+    "level": 1,
+    "color": "Blue",
+    "slot_index": 2,
+    "res_choice": [
+      {
+        "res_type": "Coin",
+        "shelf_index": 1,
+        "quantity": 2
+      }, {
+        "res_type": "Coin",
+        "shelf_index": 4, // two warehouse shelves cannot have the same resource ─► one of them refers to the strongbox
+        "quantity": 1
+      }
+    ]
+  }
+}
+```
+**err_dev_card_choice (server)**
+```json
+{
+  "type": "err_dev_card_choice",
+  "msg": "cannot choose dev card in row 0 column 5: column 5 does not exist."
+}
+```
+**err_payment_shelf_choice (server)**
+```json
+{
+  "type": "err_payment_shelf_choice",
+  "msg": "cannot take 3 resource Coin from shelf 1: not enough resources."
+}
+```
+**err_slot_choice (server)**
+```json
+{
+  "type": "err_slot_choice",
+  "msg": "cannot assign dev card to slot 3: card level constraints not satisfied: required card of level 1 not present."
+}
+```
+
+## Activating productions
+The following information is needed when activating a production:
+1. What productions to activate
+2. For each resource of each production, the shelf (or strongbox) to take it from/put it into
+3. For each replaceable resource slot in each production, the resource to replace it with
+
+Possible errors include:
+1. Specifying nonexistent productions
+2. Incomplete/wrong specification of resource-shelf mappings
+3. Incomplete/wrong specification of replaceable resources
+
+In the example below, the production with ID 3 does not specify its output: this correlates with the presence of only faith points as the output (faith points are not assignable to shelves).
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │              req_activate_prod │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_shelves                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_prod_choice                │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_shelf_map_choice           │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_replacement_choice         │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
+```
+**req_activate_prod (client)**
+```json
+{
+  "type": "req_activate_prod",
+  "choice": {
+    "productions": [
+      {
+        "id": 0,
+        "inputBlanksRepl": [
+          {
+            "res": "Coin",
+            "quantity": 2
+          }, {
+            "res": "Shield",
+            "quantity": 1
+          }
+        ],
+        "outputBlanksRepl": [ { "res": "Shield", "quantity": 1 } ],
+        "inputShelves": [
+            { "res": "Coin", "shelf": 1, "quantity": 1 },
+            { "res": "Coin", "shelf": 2, "quantity": 2 },
+            { "res": "Shield", "shelf": 0, "quantity": 2 }
+          ],
+        "outputShelves": [
+          { "res": "Stone", "shelf": 2, "quantity": 1 }
+        ]
+      }, {
+        "id": 3,
+        "inputBlanksRepl": [ { "res": "Stone", "quantity": 1 } ],
+        "outputBlanksRepl": [],
+        "inputShelves": [
+            { "res": "Stone", "shelf": 0, "quantity": 2 }
+          ],
+        "outputShelves": []
+      }
+    ]
+  }
+}
+```
+**err_prod_choice (server)**
+```json
+{
+  "type": "err_prod_choice",
+  "msg": "cannot activate production 17: production 17 does not exist."
+}
+```
+**err_shelf_map_choice (server)**
+```json
+{
+  "type": "err_shelf_map_choice",
+  "msg": "cannot place 3 resource Coin in shelf 2: wrong resource type, shelf 2 is bound to Shield."
+}
+```
+**err_replacement_choice (server)**
+```json
+{
+  "type": "err_replacement_choice",
+  "msg": "replacements incomplete: production 3 requires 3 replacements, only 2 specified."
+}
+```
+
+## Ending the turn
+Since the server cannot at any point assume that the player has finished choosing their moves (see [secondary actions](#secondary-actions)), an explicit message has to be sent.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │                   req_turn_end │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────╮
+               │                                ├─┤ exec │
+               │ res_turn_end                   │ ╰──────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
+```
+**req_turn_end (client)**
+```json
+{ "type": "req_turn_end" }
+```
+**res_turn_end (server)**
+```json
+{ "type": "res_turn_end" }
+```
+
+
+# Secondary actions
+Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
+1. Swapping the content of the warehouse's shelves (the leader cards' depots can be included in the choice)
+2. Activating/discarding a leader card
+
+## Swapping two shelves' content
+During their turn, the player can decide to reorder the warehouse.
+
+This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │               req_swap_shelves │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_shelves                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_shelf_swap                 │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
+```
+**req_swap_shelves (client)**
+```json
+{
+  "type": "req_swap_shelves",
+  "choice": [ 0, 3 ]
+}
+```
+**shelf_swap_choice_err (server)**
+```json
+{
+  "type": "err_shelf_swap",
+  "msg": "shelves 0 and 3 cannot be swapped: too many resources in shelf 3."
+}
+```
+
+## Leader actions
+During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
+
+To activate or discard a leader the server needs to know which card(s) the player wants to act on.
+
+Leader activation:
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │            req_activate_leader │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_leaders                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
+```
+**req_activate_leader (client)**
+```json
+{
+  "type": "req_activate_leader",
+  "choice": 0
+}
+```
+If a leader is already active no error is raised, since it's not a critical event.
+
+Discarding a leader:
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │             req_discard_leader │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────────────╮
+               │                                ├─┤ try exec / check choices │
+               │ update_leaders                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ err_leader_discard             │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               ┆                                ┆
+```
+**req_discard_leader (client)**
+```json
+{
+  "type": "req_discard_leader",
+  "choice": [ 0 ]
+}
+```
+**err_leader_discard (server)**
+```json
+{
+  "type": "err_leader_discard",
+  "msg": "leader 0 cannot be discarded: leader 0 is active."
+}
+```
+
 
 # State messages
 These messages are used to update the clients' caches so that the data is synchronized with the server's.
 
 The server automatically sends incremental updates to the player whenever an object changes.  
 With that said, in order to carry out a choice-heavy move, the player may want to see objects that were updated long before. On the GUI side, the player can glance at the entire board, but when playing from the CLI finding the last update of an object would be unoptimal.  
-In those cases the player can request a fresh view of the objects via commands, which, instead of reaching the server, will be served by the local cache. This allows for improved responsiveness and cuts back on the amount of data transferred, simplifying somewhat the communication protocol as well.  
+In those cases the player can request a fresh view of the objects via commands, which, instead of reaching the server, will be served by the local cache. This allows for improved responsiveness and cuts back on the amount of data transferred, simplifying the communication protocol as well.  
 This solution allows every player to prepare their moves before their turn comes, speeding up the gameplay and improving the experience.
 
 Indices reference the data given in [game start](#game-start).
@@ -432,11 +824,11 @@ All messages are broadcast to all players, as the game rules don't specify that 
     {
       "index": 0,
       "bound_res": "Coin",
-      "amount": 1
+      "quantity": 1
     }, {
       "index": 1,
       "bound_res": null,
-      "amount": 0
+      "quantity": 0
     }
   ]
 }
@@ -570,404 +962,10 @@ All messages are broadcast to all players, as the game rules don't specify that 
   "update": {
     "msg": "Player X wins!",
     "victory_points": [
-      { "nickname": "X", "amount": 20 },
-      { "nickname": "Y", "amount": 16 },
-      { "nickname": "Z", "amount": 12 }
+      { "nickname": "X", "quantity": 20 },
+      { "nickname": "Y", "quantity": 16 },
+      { "nickname": "Z", "quantity": 12 }
     ]
   }
 }
-```
-
-
-# Secondary actions
-Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
-1. Swapping the content of the warehouse's shelves (the leader cards' depots count as such too)
-2. Activating/discarding a leader card
-
-## Swapping two shelves' content
-During their turn, the player can decide to reorder the warehouse (the leader cards' depots are thought as a part of it).
-
-This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │               req_swap_shelves │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ update_shelves                 │ ╰──────────────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_shelf_swap                 │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┆                                ┆
-```
-**req_swap_shelves (client)**
-```json
-{
-  "type": "req_swap_shelves",
-  "choice": [ 0, 3 ]
-}
-```
-**shelf_swap_choice_err (server)**
-```json
-{
-  "type": "err_shelf_swap",
-  "msg": "shelves 0 and 3 cannot be swapped: too many resources in shelf 3"
-}
-```
-
-## Leader actions
-During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
-
-To activate or discard a leader the server needs to know which card(s) the player wants to act on.
-
-Leader activation:
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │            req_activate_leader │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ update_leaders                 │ ╰──────────────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┆                                ┆
-```
-**req_activate_leader (client)**
-```json
-{
-  "type": "req_activate_leader",
-  "choice": [ 0 ]
-}
-```
-If a leader is already active no error is raised, since it's not a critical event.
-
-Discarding a leader:
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │             req_discard_leader │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ update_leaders                 │ ╰──────────────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_leader_discard             │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┆                                ┆
-```
-**req_discard_leader (client)**
-```json
-{
-  "type": "req_discard_leader",
-  "choice": [ 0 ]
-}
-```
-**err_leader_discard (server)**
-```json
-{
-  "type": "err_leader_discard",
-  "msg": "leader 0 cannot be discarded: leader 0 is active"
-}
-```
-
-
-# Main actions
-During their turn, the player has to choose among three main actions to carry out:
-1. Getting resources from the market
-2. Buying a development card
-3. Activating the production
-
-Since the player may want to make a secondary move after the main action, the server waits for a `turn_end` message to switch to the next player (timeouts are used in case the player takes too long to make a move/is AFK).
-
-## Getting resources from the market
-The following needs to be specified:
-1. Which row/column the player wants to take the resources from
-2. For each replaceable resource, which leader to use (if applicable)
-3. For each resource (its type considered after the leader's processing), which shelf to use to store it
-4. What resources, among the ones taken from the market, to discard
-
-Discarding is simply handled by diminishing the amount of resources assigned to a shelf. This also easily matches the rule for which only the resources given by the market can be discarded.
-
-The `replacements` field specifies how the resource conversion should be handled. Since the player knows what type of resource the leader convert to, they can easily select them by specifying, for each type of resource they want as output, how many replaceable resources (of the available ones) to use.
-
-Errors may arise from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding enough resources.
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │                 req_get_market │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ update_market                  │ ╰──────────────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ update_shelves                 │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ update_leaders                 │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_shelves_choice             │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_replacement_choice         │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┆                                ┆
-```
-**req_get_market (client)**
-```json
-{
-  "type": "req_get_market",
-  "choice": {
-    "market_index": 0,
-    "isRow": true,
-    "replacements": [ { "res": "Coin", "amount": 2 } ],
-    "shelf_choice": [
-      {
-        "shelf_index": 1,
-        "res_amount": 2,
-        "res_type": "Coin"
-      }, {
-        "shelf_index": 3,
-        "res_amount": 2,
-        "res_type": "Shield"
-      }
-    ]
-  }
-}
-```
-**err_shelves_choice (server)**
-```json
-{
-  "type": "err_shelves_choice",
-  "msg": "cannot fit the resources in the shelves as chosen: no space left in shelf 3"
-}
-```
-**err_replacement_choice (server)**
-```json
-{
-  "type": "err_replacement_choice",
-  "msg": "cannot convert 4 resources: only 3 allowed"
-}
-```
-
-## Buying a development card
-The following information is needed when buying a development card:
-1. The row and column of the card to identify it in the grid
-2. The slot to place the card into
-3. For each resource that has to be paid, the shelf (or strongbox) to take it from
-
-Possible errors include:
-1. Not identifying a valid card (invalid row/col choice)
-2. Not identifying a valid slot index
-3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
-4. Not specifying correctly where to take the resources from/how many to take
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │               req_buy_dev_card │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ update_dev_grid                │ ╰──────────────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_dev_card_choice            │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_payment_shelf_choice       │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_slot_choice                │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┆                                ┆
-```
-**req_buy_dev_card (client)**
-```json
-{
-  "type": "req_buy_dev_card",
-  "choice": {
-    "level": 1,
-    "color": "Blue",
-    "slot_index": 2,
-    "res_choice": [
-      {
-        "res_type": "Coin",
-        "shelf_index": 1,
-        "amount": 2
-      }, {
-        "res_type": "Coin",
-        "shelf_index": 4, // two warehouse shelves cannot have the same resource ─► one of them refers to the strongbox
-        "amount": 1
-      }
-    ]
-  }
-}
-```
-**err_dev_card_choice (server)**
-```json
-{
-  "type": "err_dev_card_choice",
-  "msg": "cannot choose dev card in row 0 column 5: column 5 does not exist"
-}
-```
-**err_payment_shelf_choice (server)**
-```json
-{
-  "type": "err_payment_shelf_choice",
-  "msg": "cannot take 3 resource Coin from shelf 1: not enough resources"
-}
-```
-**err_slot_choice (server)**
-```json
-{
-  "type": "err_slot_choice",
-  "msg": "cannot assign dev card to slot 3: card level constraints not satisfied: required card of level 1 not present"
-}
-```
-
-## Activating productions
-The following information is needed when activating a production:
-1. What productions to activate
-2. For each resource of each production, the shelf (or strongbox) to take it from/put it into
-3. For each replaceable resource slot in each production, the resource to replace it with
-
-The `replacing_res` field of the activation request holds the type of resource to substitute to the blank in the same order as they appear: it is therefore not required to specify the amount of resources associated with the replacement, since it's bound by the production's definition.
-
-Possible errors include:
-1. Specifying nonexistent productions
-2. Incomplete/wrong specification of resource-shelf mappings
-3. Incomplete/wrong specification of replaceable resources
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │              req_activate_prod │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ update_shelves                 │ ╰──────────────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_prod_choice                │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_shelf_map_choice           │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_replacement_choice         │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┆                                ┆
-```
-**req_activate_prod (client)**
-```json
-{
-  "type": "req_activate_prod",
-  "choice": {
-    "productions": [
-      {
-        "id": 0,
-        "inputBlanksRepl": [
-          {
-            "res": "Coin",
-            "amount": 2
-          }, {
-            "res": "Shield",
-            "amount": 1
-          }
-        ],
-        "outputBlanksRepl": [ { "res": "Shield", "amount": 1 } ],
-        "inputShelves": [
-            { "res": "Coin", "shelf": 1, "amount": 1 },
-            { "res": "Coin", "shelf": 2, "amount": 2 },
-            { "res": "Shield", "shelf": 0, "amount": 2 }
-          ],
-        "outputShelves": [
-          { "res": "Stone", "shelf": 2, "amount": 1 }
-        ]
-      }, {
-        "id": 3,
-        "inputBlanksRepl": [ { "res": "Stone", "amount": 1 } ],
-        "outputBlanksRepl": [ ], // no output blanks
-        "inputShelves": [
-            { "res": "Stone", "shelf": 0, "amount": 2 }
-          ],
-        "outputShelves": [ ] // prod 3 has faithpoints in output ─► no shelf mapping required
-      }
-    ]
-  }
-}
-```
-**err_prod_choice (server)**
-```json
-{
-  "type": "err_prod_choice",
-  "msg": "cannot activate production 17: production 17 does not exist"
-}
-```
-**err_shelf_map_choice (server)**
-```json
-{
-  "type": "err_shelf_map_choice",
-  "msg": "cannot place 3 resource Coin in shelf 2: wrong resource type, shelf 2 is bound to Shield"
-}
-```
-**err_replacement_choice (server)**
-```json
-{
-  "type": "err_replacement_choice",
-  "msg": "replacements incomplete: production 3 requires 3 replacements, only 2 specified"
-}
-```
-
-## Ending the turn
-Since the server cannot at any point assume that the player has finished choosing their moves (see [secondary actions](#secondary-actions)), an explicit message has to be sent.
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │                   req_turn_end │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────╮
-               │                                ├─┤ exec │
-               │ res_turn_end                   │ ╰──────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               ┆                                ┆
-```
-**req_turn_end (client)**
-```json
-{ "type": "req_turn_end" }
-```
-**res_turn_end (server)**
-```json
-{ "type": "res_turn_end" }
 ```
