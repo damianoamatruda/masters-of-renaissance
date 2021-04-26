@@ -29,7 +29,7 @@
         4. [Ending the turn](#ending-the-turn)
 
 # Communication protocol documentation
-This document describes the client-server communication protocol used by the implementation of the Masters of Reneissance game written by group AM49.
+This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
 
 All messages are encoded using the GSON library and follow therefore the JSON specification, language-wise.  
 Every value shown in the messages is to be taken as an example, having been written only to show the messages' structure.  
@@ -173,18 +173,18 @@ As the game starts, the server notifies all players of the event.
 
 ### Caching
 At the same time, it sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
-For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game to be shown the objects's status. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
+For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game to be shown the objects status. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
 Caching also allows partial checks to be preemptively (but not exclusively) done client side.  
 For example, if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
 
 ### Parameters and indices
 The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
-This file is avalable to both clients and server, which will use it to instantiate the game objects. It is therefore **extremely important** for both parties to have matching files.  
-The matching and ordering properties of the objects in the configuration file are used to identify game objects and syncronize the game state at the start of the match, eliminating the need for a more complex ID system (this system was chosen over a more proper solution as a compromise to allow the developers to focus on other features, the lack of time being the main driver of the decision).
+This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore **extremely important** for both parties to have matching files.  
+The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system (this system was chosen over a more proper solution as a compromise to allow the developers to focus on other features, the lack of time being the main driver of the decision).
 
-This implies that every ID/index specified in this document has been syncronised at game start either by being taken from the configuration file or by being specified in the `game_started` message.
+This implies that every ID/index specified in this document has been synchronized at game start either by being taken from the configuration file or by being specified in the `game_started` message.
 
-The market's resources are placed randomly at creation, therefore needing to be syncronized: the entire market's state needs to be sent.  
+The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
 The leader cards will be shuffled before they can be chosen by the players: the `leader_cards` field of the `game_started` message contains the original placements (in the config file) of the leader cards in the order the server shuffled them (`leader_cards[0] = 2` means that the config file's third card is the first in the server's list).  
 The same principle applies to the development cards grid's stacks, sent as a list of objects, mapping colors with a list (levels) of lists (the deck of cards matching that level and color), and the solo action tokens.
 
@@ -362,7 +362,7 @@ The messages in this section can be differentiated into:
 3. [Main actions](#main-actions), of which the player has to choose only one during the turn
 
 # State messages
-These messages are used to update the clients' caches so that the data is syncronized with the server's.
+These messages are used to update the clients' caches so that the data is synchronized with the server's.
 
 The server automatically sends incremental updates to the player whenever an object changes.  
 With that said, in order to carry out a choice-heavy move, the player may want to see objects that were updated long before. On the GUI side, the player can glance at the entire board, but when playing from the CLI finding the last update of an object would be unoptimal.  
