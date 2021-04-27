@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private int port;
+    private final int port;
 
     public Server(int port){
         this.port = port;
@@ -24,7 +24,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            System.err.println(e.getMessage()); // Porta non disponibile
+            System.err.println(e.getMessage()); /* Port unavailable */
             return;
         }
         System.out.println("Server ready");
