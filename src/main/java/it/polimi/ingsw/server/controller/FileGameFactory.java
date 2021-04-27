@@ -106,19 +106,34 @@ public class FileGameFactory implements GameFactory {
         developmentCardLists = new HashMap<>();
     }
 
+    private void checkNumberOfPlayers(List<String> nicknames) throws IllegalArgumentException {
+        String baseMsg = "Invalid number of players chosen";
+        if (nicknames == null)
+            throw new IllegalArgumentException(String.format("%s: %s", baseMsg, "null"));
+        else if (nicknames.size() > maxPlayers)
+            throw new IllegalArgumentException(
+                String.format("%s %d: maximum allowed is %d", baseMsg, nicknames.size(), maxPlayers));
+        else if (nicknames.size() == 0)
+            throw new IllegalArgumentException(String.format("%s: 0", baseMsg));
+    }
+
     @Override
     public Game getMultiGame(List<String> nicknames) {
-        if (nicknames == null || nicknames.size() > maxPlayers || nicknames.size() == 0)
-            throw new IllegalArgumentException();
+        checkNumberOfPlayers(nicknames);
 
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
 
+        // TODO remove and use integer floor division
         if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                String.format("Cannot subdivide cleanly %d leadercards between %d players",
+                    leaderCards.size(), nicknames.size()));
 
         if (playerLeadersCount > 0 && nicknames.size() > leaderCards.size() / playerLeadersCount)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                String.format("Cannot assign %d leader cards to %d players: not enough cards (%d available)",
+                    playerLeadersCount, nicknames.size(), leaderCards.size()));
 
         /* Shuffle the leader cards */
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
@@ -165,13 +180,15 @@ public class FileGameFactory implements GameFactory {
     @Override
     public SoloGame getSoloGame(String nickname) {
         if (nickname == null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Nickname not specified");
 
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
 
-        if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
-            throw new IllegalArgumentException();
+        if (leaderCards.size() < playerLeadersCount)
+            throw new IllegalArgumentException(
+                String.format("Not enough leader cards available to be assigned to the player: %d available, %d needed.", 
+                    leaderCards.size(), playerLeadersCount));
 
         /* Shuffle the leader cards */
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);

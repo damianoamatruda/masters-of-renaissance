@@ -128,7 +128,7 @@ abstract public class GameState {
      * @param leader  the leader card to discard
      * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
-    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, AlreadyActiveException {
+    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, ActiveLeaderDiscardException {
         throw new IllegalActionException();
     }
 
@@ -140,10 +140,10 @@ abstract public class GameState {
      *
      * @param context the context
      * @param player  the player
-     * @throws AllInactiveException   all players are set to inactive
+     * @throws NoActivePlayersException   all players are set to inactive
      * @throws IllegalActionException if the player cannot end the turn in the current state
      */
-    public void endTurn(GameContext context, Player player) throws IllegalActionException, AllInactiveException {
+    public void endTurn(GameContext context, Player player) throws IllegalActionException, NoActivePlayersException {
         throw new IllegalActionException();
     }
 

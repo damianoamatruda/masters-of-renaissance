@@ -52,10 +52,10 @@ public class SoloGame extends Game {
     /**
      * Triggered after the player concludes a turn. This is Lorenzo's turn: a token will be activated.
      *
-     * @throws AllInactiveException all players are inactive
+     * @throws NoActivePlayersException all players are inactive
      */
     @Override
-    public void onTurnEnd() throws AllInactiveException {
+    public void onTurnEnd() throws NoActivePlayersException {
         ActionToken token = actionTokens.remove(0);
         token.trigger(this);
         actionTokens.add(token);

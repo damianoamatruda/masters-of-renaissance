@@ -355,7 +355,7 @@ public class GameTest {
          * Checks the functioning of player switch with one (out of three) inactive player.
          */
         @Test
-        void onTurnEndWithOneInactivePlayer() throws AllInactiveException {
+        void onTurnEndWithOneInactivePlayer() throws NoActivePlayersException {
             String next = game.getPlayers().get(2).getNickname();
             game.getPlayers().get(1).setActive(false);
             game.onTurnEnd();
@@ -366,7 +366,7 @@ public class GameTest {
          * Checks the functioning of player switch with two (out of three) inactive players.
          */
         @Test
-        void onTurnEndWithTwoInactivePlayers() throws AllInactiveException {
+        void onTurnEndWithTwoInactivePlayers() throws NoActivePlayersException {
             game.getPlayers().get(1).setActive(false);
             game.getPlayers().get(2).setActive(false);
             String next = game.getPlayers().get(0).getNickname();
@@ -380,7 +380,7 @@ public class GameTest {
          * Checks the Game behavior if current player disconnects before ending their own turn.
          */
         @Test
-        void currentPlayerDisconnects() throws AllInactiveException {
+        void currentPlayerDisconnects() throws NoActivePlayersException {
             Player expected = game.getPlayers().get(1);
             game.getPlayers().get(0).setActive(false);
             game.onTurnEnd();
@@ -396,7 +396,7 @@ public class GameTest {
             game.getPlayers().get(0).setActive(false);
             game.getPlayers().get(1).setActive(false);
             game.getPlayers().get(2).setActive(false);
-            assertThrows(AllInactiveException.class, () -> game.onTurnEnd());
+            assertThrows(NoActivePlayersException.class, () -> game.onTurnEnd());
         }
 
     }

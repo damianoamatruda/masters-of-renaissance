@@ -64,7 +64,7 @@ public class SoloGameTest {
      * Test for onTurnEnd method.
      */
     @Test
-    void onTurnEnd() throws AllInactiveException {
+    void onTurnEnd() throws NoActivePlayersException {
         player = game.getPlayers().get(0);
         game.onTurnEnd();
         assertEquals(player, game.getCurrentPlayer());
@@ -76,7 +76,7 @@ public class SoloGameTest {
     @Test
     void discardActiveDevCard() throws IllegalActivationException {
         player.getLeaders().get(0).activate(player);
-        assertThrows(AlreadyActiveException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
+        assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
     }
 
     /**
