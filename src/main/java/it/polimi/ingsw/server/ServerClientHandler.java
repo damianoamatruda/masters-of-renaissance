@@ -1,5 +1,10 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.controller.Controller;
+import it.polimi.ingsw.server.controller.FileGameFactory;
+import it.polimi.ingsw.server.model.GameFactory;
+import it.polimi.ingsw.server.model.Lobby;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,17 +13,23 @@ import java.net.Socket;
 
 public class ServerClientHandler implements Runnable {
     private final Socket socket;
-//    private final int timeout;
+    private final GameProtocol gp;
+    // private final int timeout;
 
     public ServerClientHandler(Socket socket) {
         this.socket = socket;
-//        this.timeout = 10;
+        // this.timeout = 10;
+
+        GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
+        Lobby model = new Lobby(gameFactory);
+        Controller controller = new Controller(model);
+        this.gp = new GameProtocol(controller);
     }
 
-//    public ServerClientHandler(Socket socket, int timeout) {
-//        this.socket = socket;
-//        this.timeout = timeout;
-//    }
+      /* public ServerClientHandler(Socket socket, int timeout) {
+          this.socket = socket;
+          this.timeout = timeout;
+      } */
 
     public void run() {
         try {
@@ -26,7 +37,6 @@ public class ServerClientHandler implements Runnable {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String inputLine, outputLine;
 
-            GameProtocol gp = new GameProtocol();
             outputLine = gp.processInput(null);
             out.println(outputLine);
 

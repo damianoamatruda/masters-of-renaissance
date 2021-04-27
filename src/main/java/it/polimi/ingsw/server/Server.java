@@ -41,7 +41,7 @@ public class Server {
 
     public static void main(String[] args) {
         Server server;
-        if(args.length == 1)
+        if (args.length == 1)
             server = new Server(Integer.parseInt(args[0]));
         else
             server = new Gson().fromJson(
