@@ -6,8 +6,8 @@ package it.polimi.ingsw.server.model;
 public class ActiveLeaderDiscardException extends Exception {
     /**
      * Class constructor.
-     * 
-     * @param leader the leader card that is trying to be discarded while already active.
+     *
+     * @param leaderIndex the index of the leader card that is trying to be discarded while already active.
      */
     public ActiveLeaderDiscardException(int leaderIndex) {
         super(String.format("Cannot discard leader %d: leader card is active", leaderIndex));
