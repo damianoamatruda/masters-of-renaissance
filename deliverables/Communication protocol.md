@@ -49,7 +49,7 @@ Messages that generate an error of the second kind will receive an answer of typ
 ```json
 {
   "type": "err_illegal_message",
-  "msg": "wrong message type."
+  "msg": "Wrong message type."
 }
 ```
 Only the server is able to generate this type of message.
@@ -58,7 +58,7 @@ Unparsable messages will receive an answer of type `err_unparsable_message`:
 ```json
 {
   "type": "err_unparsable_message",
-  "msg": "received unparsable message."
+  "msg": "Received unparsable message."
 }
 ```
 This kind of message can originate from clients and server alike.
@@ -119,7 +119,7 @@ The information of whether the player is the first of the match is included in t
 ```json
 {
   "type": "err_nickname",
-  "msg": "username already taken."
+  "msg": "Username already taken."
 }
 ```
 
@@ -154,14 +154,14 @@ When a player is chosen by the server as the first of a new game, they have to d
 ```json
 {
   "type": "res_players_count",
-  "msg": "the number of players has been set to 3."
+  "msg": "The number of players has been set to 3."
 }
 ```
 **err_players_count (server)**
 ```json
 {
   "type": "err_players_count",
-  "msg": "illegal number of players: 0."
+  "msg": "Illegal number of players: 0."
 }
 ```
 
@@ -198,34 +198,32 @@ After reordering the cached objects to match the server's state, all indices sen
 **game_started (server)**
 ```json
 {
-  "type": "game_started",
-  "init_state": {
-    "nicknames": [ "X", "Y", "Z" ],
-    "market": {
-      "grid": [
-        [ "Coin", "Shield", "Coin" ],
-        [ "Coin", "Shield", "Stone" ]
-      ],
-      "slide": "Shield"
-    },
-    "leader_cards": [ 4, 2, 0, 1, 3 ],
-    "dev_card_grid": [
-      {
-        "color": "Blue",
-        "stacks": [
-          [ 2, 0, 1 ],
-          [ 3, 4, 5 ]
-        ]
-      }, {
-        "color": "Green",
-        "stacks": [
-          [ 8, 7, 6 ],
-          [ 9, 11, 10 ]
-        ]
-      }
+"type": "game_started",
+  "nicknames": [ "X", "Y", "Z" ],
+  "market": {
+    "grid": [
+      [ "Coin", "Shield", "Coin" ],
+      [ "Coin", "Shield", "Stone" ]
     ],
-    "solo_action_tokens": [ 4, 3, 0, 1, 2 ]
-  }
+    "slide": "Shield"
+  },
+  "leader_cards": [ 4, 2, 0, 1, 3 ],
+  "dev_card_grid": [
+    {
+      "color": "Blue",
+      "stacks": [
+        [ 2, 0, 1 ],
+        [ 3, 4, 5 ]
+      ]
+    }, {
+      "color": "Green",
+      "stacks": [
+        [ 8, 7, 6 ],
+        [ 9, 11, 10 ]
+      ]
+    }
+  ],
+  "solo_action_tokens": [ 4, 3, 0, 1, 2 ]
 }
 ```
 
@@ -269,7 +267,7 @@ To confirm the success of the operation, the server will echo back the chosen in
 ```json
 {
   "type": "req_leader_choice",
-  "choice": [ 3, 15 ]
+  "leaders_id": [ 3, 15 ]
 }
 ```
 **res_leader_choice (server)**
@@ -282,7 +280,7 @@ To confirm the success of the operation, the server will echo back the chosen in
 ```json
 {
   "type": "err_leader_choice",
-  "msg": "invalid leader cards chosen: 3, 25."
+  "msg": "Invalid leader cards chosen: 3, 25."
 }
 ```
 
@@ -304,7 +302,10 @@ The client will respond by specifying the resource types and the respective quan
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────────────╮
                │                                ├─┤ try exec / check choices │
-               │ res_resources_choice           │ ╰──────────────────────────╯
+               │ update_shelves                 │ ╰──────────────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ update_faith_track             │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ err_resources_choice           │
@@ -318,17 +319,16 @@ The client will respond by specifying the resource types and the respective quan
 ```json
 {
   "type": "offer_resources",
-  "count": 1,
-  "res_type": [ "Coin", "Shield" ]
+  "storable_count": 1
 }
 ```
 **req_resources_choice (client)**
 ```json
 {
   "type": "req_resources_choice",
-  "choice": [
-    { "res": "Coin", "quantity": 1, "shelf": 1 },
-    { "res": "Shield", "quantity": 1, "shelf": 0 }
+  "init_res": [
+    { "shelf": 1, "res": { "type": "Coin", "quantity": 1 } },
+    { "shelf": 0, "res": { "type": "Shield", "quantity": 1 } }
   ]
 }
 ```
@@ -336,14 +336,14 @@ The client will respond by specifying the resource types and the respective quan
 ```json
 {
   "type": "err_resources_choice",
-  "msg": "wrong starting resource choice: cannot choose 2 resources."
+  "msg": "Cannot choose 2 starting resources, only 1 available."
 }
 ```
 **err_shelf_choice (client)**
 ```json
 {
   "type": "err_shelf_choice",
-  "msg": "cannot place 3 resources of type Coin on shelf 0: not enough space."
+  "msg": "Cannot place 3 resources of type Coin on shelf 0: not enough space."
 }
 ```
 
@@ -398,45 +398,33 @@ Errors may arise from fitting the resources in the shelves, either by specifying
                │                                │
                │ err_shelves_choice             │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │ err_replacement_choice         │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                ┆                                ┆
 ```
 **req_get_market (client)**
 ```json
 {
   "type": "req_get_market",
-  "choice": {
-    "market_index": 0,
-    "isRow": true,
-    "replacements": [ { "res": "Coin", "quantity": 2 } ],
-    "shelf_choice": [
-      {
-        "shelf_index": 1,
-        "res_quantity": 2,
-        "res_type": "Coin"
-      }, {
-        "shelf_index": 3,
-        "res_quantity": 2,
-        "res_type": "Shield"
-      }
-    ]
-  }
+  "market_index": 0,
+  "isRow": true,
+  "replacements": [ { "res": "Coin", "quantity": 2 } ],
+  "shelf_choice": [
+    {
+      "shelf_index": 1,
+      "res_quantity": 2,
+      "res_type": "Coin"
+    }, {
+      "shelf_index": 3,
+      "res_quantity": 2,
+      "res_type": "Shield"
+    }
+  ]
 }
 ```
 **err_shelves_choice (server)**
 ```json
 {
   "type": "err_shelves_choice",
-  "msg": "cannot fit the resources in the shelves as chosen: no space left in shelf 3."
-}
-```
-**err_replacement_choice (server)**
-```json
-{
-  "type": "err_replacement_choice",
-  "msg": "cannot convert 4 resources: only 3 allowed."
+  "msg": "Cannot fit the resources in the shelves as chosen: no space left in shelf 3."
 }
 ```
 
@@ -479,43 +467,41 @@ Possible errors include:
 ```json
 {
   "type": "req_buy_dev_card",
-  "choice": {
-    "level": 1,
-    "color": "Blue",
-    "slot_index": 2,
-    "res_choice": [
-      {
-        "res_type": "Coin",
-        "shelf_index": 1,
-        "quantity": 2
-      }, {
-        "res_type": "Coin",
-        "shelf_index": 4, // two warehouse shelves cannot have the same resource ─► one of them refers to the strongbox
-        "quantity": 1
-      }
-    ]
-  }
+  "level": 1,
+  "color": "Blue",
+  "slot_index": 2,
+  "res_choice": [
+    {
+      "res_type": "Coin",
+      "shelf_index": 1,
+      "quantity": 2
+    }, {
+      "res_type": "Coin",
+      "shelf_index": 4, // two warehouse shelves cannot have the same resource ─► one of them refers to the strongbox
+      "quantity": 1
+    }
+  ]
 }
 ```
 **err_dev_card_choice (server)**
 ```json
 {
   "type": "err_dev_card_choice",
-  "msg": "cannot choose dev card in row 0 column 5: column 5 does not exist."
+  "msg": "Cannot choose dev card in row 0 column 5: column 5 does not exist."
 }
 ```
 **err_payment_shelf_choice (server)**
 ```json
 {
   "type": "err_payment_shelf_choice",
-  "msg": "cannot take 3 resource Coin from shelf 1: not enough resources."
+  "msg": "Cannot take 3 resource Coin from shelf 1: not enough resources."
 }
 ```
 **err_slot_choice (server)**
 ```json
 {
   "type": "err_slot_choice",
-  "msg": "cannot assign dev card to slot 3: card level constraints not satisfied: required card of level 1 not present."
+  "msg": "Cannot assign dev card to slot 3: card level constraints not satisfied: required card of level 1 not present."
 }
 ```
 
@@ -558,60 +544,58 @@ In the example below, the production with ID 3 does not specify its output: this
 ```json
 {
   "type": "req_activate_prod",
-  "choice": {
-    "productions": [
-      {
-        "id": 0,
-        "inputBlanksRepl": [
-          {
-            "res": "Coin",
-            "quantity": 2
-          }, {
-            "res": "Shield",
-            "quantity": 1
-          }
+  "productions": [
+    {
+      "id": 0,
+      "inputBlanksRepl": [
+        {
+          "res": "Coin",
+          "quantity": 2
+        }, {
+          "res": "Shield",
+          "quantity": 1
+        }
+      ],
+      "outputBlanksRepl": [ { "res": "Shield", "quantity": 1 } ],
+      "inputShelves": [
+          { "shelf": 1, "res": { "type": "Coin", "quantity": 1 } },
+          { "shelf": 2, "res": { "type": "Coin", "quantity": 2 } },
+          { "shelf": 0, "res": { "type": "Shield", "quantity": 2 } }
         ],
-        "outputBlanksRepl": [ { "res": "Shield", "quantity": 1 } ],
-        "inputShelves": [
-            { "res": "Coin", "shelf": 1, "quantity": 1 },
-            { "res": "Coin", "shelf": 2, "quantity": 2 },
-            { "res": "Shield", "shelf": 0, "quantity": 2 }
-          ],
-        "outputShelves": [
-          { "res": "Stone", "shelf": 2, "quantity": 1 }
-        ]
-      }, {
-        "id": 3,
-        "inputBlanksRepl": [ { "res": "Stone", "quantity": 1 } ],
-        "outputBlanksRepl": [],
-        "inputShelves": [
-            { "res": "Stone", "shelf": 0, "quantity": 2 }
-          ],
-        "outputShelves": []
-      }
-    ]
-  }
+      "outputShelves": [
+        { "shelf": 2, "res": { "type": "Stone", "quantity": 1 } }
+      ]
+    }, {
+      "id": 3,
+      "inputBlanksRepl": [ { "res": "Stone", "quantity": 1 } ],
+      "outputBlanksRepl": [],
+      "inputShelves": [
+          { "shelf": 0, "res": { "type": "Stone", "quantity": 2 } }
+        ],
+      "outputShelves": []
+    }
+  ]
 }
 ```
 **err_prod_choice (server)**
 ```json
 {
   "type": "err_prod_choice",
-  "msg": "cannot activate production 17: production 17 does not exist."
+  "msg": "Cannot activate production 17: production 17 does not exist."
 }
 ```
 **err_shelf_map_choice (server)**
 ```json
 {
   "type": "err_shelf_map_choice",
-  "msg": "cannot place 3 resource Coin in shelf 2: wrong resource type, shelf 2 is bound to Shield."
+  "msg": "Cannot place 3 resource Coin in shelf 2: wrong resource type, shelf 2 is bound to Shield."
 }
 ```
 **err_replacement_choice (server)**
 ```json
 {
   "type": "err_replacement_choice",
-  "msg": "replacements incomplete: production 3 requires 3 replacements, only 2 specified."
+  "msg": "Replacements incomplete: production 3 requires 3 replacements, only 2 specified."
 }
 ```
 
@@ -673,14 +657,14 @@ This is technically only useful when taking resources from the market, as no oth
 ```json
 {
   "type": "req_swap_shelves",
-  "choice": [ 0, 3 ]
+  "shelves": [ 0, 3 ]
 }
 ```
 **shelf_swap_choice_err (server)**
 ```json
 {
   "type": "err_shelf_swap",
-  "msg": "shelves 0 and 3 cannot be swapped: too many resources in shelf 3."
+  "msg": "Shelves 0 and 3 cannot be swapped: too many resources in shelf 3."
 }
 ```
 
@@ -709,7 +693,7 @@ Leader activation:
 ```json
 {
   "type": "req_activate_leader",
-  "choice": 0
+  "leader_id": 0
 }
 ```
 If a leader is already active no error is raised, since it's not a critical event.
@@ -737,14 +721,14 @@ Discarding a leader:
 ```json
 {
   "type": "req_discard_leader",
-  "choice": [ 0 ]
+  "leader_id": 0
 }
 ```
 **err_leader_discard (server)**
 ```json
 {
   "type": "err_leader_discard",
-  "msg": "leader 0 cannot be discarded: leader 0 is active."
+  "msg": "Leader 0 cannot be discarded: leader 0 is active."
 }
 ```
 
@@ -777,7 +761,7 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_cur_player",
-  "update": "Y"
+  "nickname": "Y"
 }
 ```
 
@@ -796,12 +780,10 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_market",
-  "update": {
-    "isRow": true,
-    "index": 1,
-    "resources": [ "Coin", "Shield", "Stone" ],
-    "slide_res": "Shield"
-  }
+  "isRow": true,
+  "index": 1,
+  "resources": [ "Coin", "Shield", "Stone" ],
+  "slide_res": "Shield"
 }
 ```
 
@@ -820,7 +802,7 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_shelves",
-  "update": [
+  "shelves": [
     {
       "index": 0,
       "bound_res": "Coin",
@@ -849,10 +831,8 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_leaders",
-  "update": {
-    "index": 1,
-    "isActive": true
-  }
+  "index": 1,
+  "isActive": true
 }
 ```
 
@@ -871,11 +851,9 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_dev_grid",
-  "update": {
-    "row_index": 1,
-    "col_index": 2,
-    "card_index": 4
-  }
+  "row_index": 1,
+  "col_index": 2,
+  "card_index": 4
 }
 ```
 
@@ -894,10 +872,8 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_dev_card_slot",
-  "update": {
-    "slot_index": 0,
-    "card_index": 7
-  }
+  "slot_index": 0,
+  "card_index": 7
 }
 ```
 
@@ -916,10 +892,8 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_faith_track",
-  "update": {
-    "isLiM": false,
-    "position": 14
-  }
+  "isLiM": false,
+  "position": 14
 }
 ```
 
@@ -938,9 +912,7 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_solo_token",
-  "update": {
-    "index": 6
-  }
+  "index": 6
 }
 ```
 
@@ -959,13 +931,11 @@ All messages are broadcast to all players, as the game rules don't specify that 
 ```json
 {
   "type": "update_winner",
-  "update": {
-    "msg": "Player X wins!",
-    "victory_points": [
-      { "nickname": "X", "quantity": 20 },
-      { "nickname": "Y", "quantity": 16 },
-      { "nickname": "Z", "quantity": 12 }
-    ]
-  }
+  "msg": "Player X wins!",
+  "victory_points": [
+    { "nickname": "X", "quantity": 20 },
+    { "nickname": "Y", "quantity": 16 },
+    { "nickname": "Z", "quantity": 12 }
+  ]
 }
 ```
