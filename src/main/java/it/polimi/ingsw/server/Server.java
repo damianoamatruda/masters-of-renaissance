@@ -1,6 +1,10 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.server.controller.Controller;
+import it.polimi.ingsw.server.controller.FileGameFactory;
+import it.polimi.ingsw.server.model.GameFactory;
+import it.polimi.ingsw.server.model.Lobby;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,12 +31,18 @@ public class Server {
             System.err.println(e.getMessage()); /* Port unavailable */
             return;
         }
+
+        GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
+        Lobby model = new Lobby(gameFactory);
+        Controller controller = new Controller(model);
+        GameProtocol gp = new GameProtocol(controller);
+
         System.out.println("Server ready");
         while (true) {
             try {
-                Socket socket = serverSocket.accept();
-                executor.submit(new ServerClientHandler(socket));
-            } catch(IOException e) {
+                Socket clientSocket = serverSocket.accept();
+                executor.submit(new ServerClientHandler(clientSocket, gp));
+            } catch (IOException e) {
                 break;
             }
         }

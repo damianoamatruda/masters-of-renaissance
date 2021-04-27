@@ -8,4 +8,10 @@ public class Controller {
     public Controller(Lobby model) {
         this.model = model;
     }
+
+    // public void handle(MessageFirstType m, Socket c) {
+    // }
+
+    // public void handle(MessageSecondType m, Socket c) {
+    // }
 }
