@@ -117,7 +117,7 @@ public class PlayerTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {0, 7, 16, 23})
-    void discardLeaderTest(int marker) throws IllegalActivationException, AlreadyActiveException {
+    void discardLeaderTest(int marker) throws IllegalActivationException, ActiveLeaderDiscardException {
         for (int i = 0; i < marker; i++)
             player.incrementFaithPoints(game);
 
@@ -135,7 +135,7 @@ public class PlayerTest {
     void invalidLeaderDiscard() throws IllegalActivationException {
         player.getLeaders().get(0).activate(player);
 
-        assertThrows(AlreadyActiveException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
+        assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
 
     }
 
