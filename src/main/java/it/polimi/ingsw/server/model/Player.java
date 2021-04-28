@@ -175,9 +175,10 @@ public class Player {
      * @param leader the leader card to discard
      * @throws ActiveLeaderDiscardException leader is already active
      */
-    public void discardLeader(Game game, LeaderCard leader) throws IllegalActivationException, ActiveLeaderDiscardException {
+    public void discardLeader(Game game, LeaderCard leader) throws IndexOutOfBoundsException, ActiveLeaderDiscardException {
         if (!leaders.contains(leader))
-            throw new IllegalActivationException("The leader card cannot be discarded");
+            throw new IndexOutOfBoundsException(
+                String.format("Leader %d cannot be discarded: inexistent leader, max index allowed %d", leaders.indexOf(leader), leaders.size()));
         if (leader.isActive()) throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
         game.onDiscardLeader(this);
         leaders.remove(leader);

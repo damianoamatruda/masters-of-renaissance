@@ -150,7 +150,7 @@ abstract public class GameState {
      * @param leader  the leader card to discard
      * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
-    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, ActiveLeaderDiscardException {
+    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IndexOutOfBoundsException, ActiveLeaderDiscardException {
         throw new IllegalActionException();
     }
 
