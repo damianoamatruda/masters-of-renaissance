@@ -28,8 +28,7 @@ public class ServerClientHandler implements Runnable {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String inputLine, outputLine;
 
-            outputLine = gp.processInput(null, null);
-            out.println(outputLine);
+            out.println("Welcome.");
 
             while ((inputLine = in.readLine()) != null) {
                 outputLine = gp.processInput(inputLine, socket);
@@ -37,7 +36,6 @@ public class ServerClientHandler implements Runnable {
                 if (outputLine.equals("Bye.")){
                     break;
                 }
-
             }
             in.close();
             out.close();
