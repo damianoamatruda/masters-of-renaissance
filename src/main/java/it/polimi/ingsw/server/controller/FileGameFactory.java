@@ -289,7 +289,9 @@ public class FileGameFactory implements GameFactory {
         for (JsonObject o : protoResources) {
             JsonElement subtype = o.get("subtype");
             try {
-                resources.add(subtype == null ? customGson.fromJson(o, ResourceType.class) : customGson.fromJson(o, (Class<? extends ResourceType>) Class.forName(subtype.getAsString())));
+                resources.add(subtype == null ? customGson.fromJson(o, ResourceType.class) :
+                        customGson.fromJson(o,
+                                (Class<? extends ResourceType>) Class.forName("it.polimi.ingsw.server.model.resourcetypes." + subtype.getAsString())));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -314,7 +316,8 @@ public class FileGameFactory implements GameFactory {
         }.getType());
         for (JsonObject o : prototypes) {
             try {
-                leaders.add(customGson.fromJson(o, (Class<? extends LeaderCard>) Class.forName(o.get("type").getAsString())));
+                leaders.add(customGson.fromJson(o,
+                        (Class<? extends LeaderCard>) Class.forName("it.polimi.ingsw.server.model.leadercards." + o.get("type").getAsString())));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -367,7 +370,8 @@ public class FileGameFactory implements GameFactory {
         }.getType());
         for (JsonObject o : prototypes) {
             try {
-                tokens.add(gson.fromJson(o, (Class<? extends ActionToken>) Class.forName(o.get("type").getAsString())));
+                tokens.add(gson.fromJson(o,
+                        (Class<? extends ActionToken>) Class.forName("it.polimi.ingsw.server.model.actiontokens." + o.get("type").getAsString())));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -395,7 +399,8 @@ public class FileGameFactory implements GameFactory {
                     .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
                     .create();
             try {
-                return customGson.fromJson(jsonElement, (Class<? extends CardRequirement>) Class.forName(jsonElement.getAsJsonObject().get("type").getAsString()));
+                return customGson.fromJson(jsonElement,
+                        (Class<? extends CardRequirement>) Class.forName("it.polimi.ingsw.server.model.cardrequirements." + jsonElement.getAsJsonObject().get("type").getAsString()));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

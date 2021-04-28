@@ -24,7 +24,7 @@
 
   "resourceTypes": [
     {
-      "subtype": "it.polimi.ingsw.server.model.resourcetypes.IncrementFaithPointsResType",
+      "subtype": "IncrementFaithPointsResType",
       "name": "Faith",
       "storable": false
     },
@@ -1281,11 +1281,11 @@
 
   "leaderCards": [
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+      "type": "DiscountLeader",
       "discount": 1,
       "resource": "Servant",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Yellow",
@@ -1303,11 +1303,11 @@
       "victoryPoints": 2
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+      "type": "DiscountLeader",
       "discount": 1,
       "resource": "Shield",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Purple",
@@ -1325,11 +1325,11 @@
       "victoryPoints": 2
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+      "type": "DiscountLeader",
       "discount": 1,
       "resource": "Stone",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Green",
@@ -1347,11 +1347,11 @@
       "victoryPoints": 2
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DiscountLeader",
+      "type": "DiscountLeader",
       "discount": 1,
       "resource": "Coin",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Yellow",
@@ -1369,14 +1369,14 @@
       "victoryPoints": 2
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+      "type": "DepotLeader",
       "shelf": {
         "boundedResType": "Stone",
         "size": 2
       },
       "resource": "Stone",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+        "type": "ResourceRequirement",
         "resources": {
           "Coin": 5
         }
@@ -1385,14 +1385,14 @@
       "victoryPoints": 3
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+      "type": "DepotLeader",
       "shelf": {
         "boundedResType": "Servant",
         "size": 2
       },
       "resource": "Servant",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+        "type": "ResourceRequirement",
         "resources": {
           "Stone": 5
         }
@@ -1401,14 +1401,14 @@
       "victoryPoints": 3
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+      "type": "DepotLeader",
       "shelf": {
         "boundedResType": "Shield",
         "size": 2
       },
       "resource": "Shield",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+        "type": "ResourceRequirement",
         "resources": {
           "Servant": 5
         }
@@ -1417,14 +1417,14 @@
       "victoryPoints": 3
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.DepotLeader",
+      "type": "DepotLeader",
       "shelf": {
         "boundedResType": "Coin",
         "size": 2
       },
       "resource": "Coin",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement",
+        "type": "ResourceRequirement",
         "resources": {
           "Shield": 5
         }
@@ -1433,10 +1433,10 @@
       "victoryPoints": 3
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+      "type": "ZeroLeader",
       "resource": "Servant",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Blue",
@@ -1454,10 +1454,10 @@
       "victoryPoints": 5
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+      "type": "ZeroLeader",
       "resource": "Shield",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Purple",
@@ -1475,10 +1475,10 @@
       "victoryPoints": 5
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+      "type": "ZeroLeader",
       "resource": "Stone",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Yellow",
@@ -1496,10 +1496,10 @@
       "victoryPoints": 5
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ZeroLeader",
+      "type": "ZeroLeader",
       "resource": "Coin",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Green",
@@ -1517,7 +1517,7 @@
       "victoryPoints": 5
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+      "type": "ProductionLeader",
       "production": {
         "input": {
           "Shield": 1
@@ -1533,7 +1533,7 @@
       },
       "resource": "Shield",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Yellow",
@@ -1546,7 +1546,7 @@
       "victoryPoints": 4
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+      "type": "ProductionLeader",
       "production": {
         "input": {
           "Servant": 1
@@ -1562,7 +1562,7 @@
       },
       "resource": "Servant",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Blue",
@@ -1575,7 +1575,7 @@
       "victoryPoints": 4
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+      "type": "ProductionLeader",
       "production": {
         "input": {
           "Stone": 1
@@ -1591,7 +1591,7 @@
       },
       "resource": "Stone",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Purple",
@@ -1604,7 +1604,7 @@
       "victoryPoints": 4
     },
     {
-      "type": "it.polimi.ingsw.server.model.leadercards.ProductionLeader",
+      "type": "ProductionLeader",
       "production": {
         "input": {
           "Coin": 1
@@ -1620,7 +1620,7 @@
       },
       "resource": "Coin",
       "requirement": {
-        "type": "it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement",
+        "type": "DevCardRequirement",
         "entryList": [
           {
             "color": "Green",
@@ -1693,28 +1693,28 @@
 
   "actionTokens": [
     {
-      "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenBlackMoveOneShuffle"
+      "type": "ActionTokenBlackMoveOneShuffle"
     },
     {
-      "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenBlackMoveTwo"
+      "type": "ActionTokenBlackMoveTwo"
     },
     {
-      "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenBlackMoveTwo"
+      "type": "ActionTokenBlackMoveTwo"
     },
     {
-      "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
+      "type": "ActionTokenDiscardTwo",
       "discardedColor": "Blue"
     },
     {
-      "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
+      "type": "ActionTokenDiscardTwo",
       "discardedColor": "Green"
     },
     {
-      "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
+      "type": "ActionTokenDiscardTwo",
       "discardedColor": "Purple"
     },
     {
-      "type": "it.polimi.ingsw.server.model.actiontokens.ActionTokenDiscardTwo",
+      "type": "ActionTokenDiscardTwo",
       "discardedColor": "Yellow"
     }
   ]
