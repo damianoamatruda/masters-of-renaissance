@@ -318,7 +318,7 @@ public class Player {
                              Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException, IllegalCardDepositException {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if ((slot.isEmpty() && devCard.getLevel() != 1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel() - 1))
-            throw new IllegalCardDepositException();
+            throw new IllegalCardDepositException(devCard, slot, index);
 
         devCard.takeFromPlayer(game, this, resContainers);
 
