@@ -23,7 +23,7 @@ public class GameProtocol {
 
         String example = "{\n" +
                 "  \"type\": \"ReqDiscardLeader\",\n" +
-                "  \"leader_id\": 0\n" +
+                "  \"leaderId\": 1\n" +
                 "}";
 
         Gson gson = new Gson();
