@@ -21,16 +21,12 @@ public class Controller {
         players.put(client, player);
     }
 
-    public Player getPlayer(Socket client) {
-        return players.get(client);
-    }
-
     public void joinLobby(Socket client) {
-        model.joinLobby(getPlayer(client));
+        model.joinLobby(players.get(client));
     }
 
     public void handle(Message message, Socket client) {
-        Player player = getPlayer(client);
+        Player player = players.get(client);
         message.handle(model.getJoinedGame(player).orElseThrow(), player);
     }
 
