@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Controller {
     private final Lobby model;
-    final private Map<Socket, Player> players;
+    private final Map<Socket, Player> players;
 
     public Controller(Lobby model) {
         this.model = model;

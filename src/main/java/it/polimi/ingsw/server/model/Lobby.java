@@ -5,9 +5,9 @@ import it.polimi.ingsw.server.model.gamecontext.GameContext;
 import java.util.*;
 
 public class Lobby {
-    final private GameFactory gameFactory;
-    final private List<GameContext> games;
-    final private Map<Player, GameContext> joined;
+    private final GameFactory gameFactory;
+    private final List<GameContext> games;
+    private final Map<Player, GameContext> joined;
 
     public Lobby(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
