@@ -279,7 +279,7 @@ public class PlayerTest {
         void fourthPlayerTwoResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+            assertAll(() -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
                     game, Map.of(shelf, Map.of(coin, 3))
                     )),
                     () -> assertDoesNotThrow(() -> fourth.chooseResources(
@@ -291,10 +291,10 @@ public class PlayerTest {
         void illegalResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+            assertAll(() -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
                     game, Map.of(shelf, Map.of(zero, 1))
                     )),
-                    () -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+                    () -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
                             game, Map.of(shelf, Map.of(faith, 1))
                     )));
         }

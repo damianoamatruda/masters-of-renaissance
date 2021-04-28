@@ -71,7 +71,7 @@ abstract public class GameState {
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
     public void chooseResources(GameContext context, Player player,
-                                Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
+                                Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalProductionActivationException, CannotChooseException {
         throw new IllegalActionException();
     }
 

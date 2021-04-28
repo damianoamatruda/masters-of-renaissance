@@ -126,11 +126,10 @@ public class Player {
      *
      * @param game    the game the player is playing in
      * @param shelves the destination shelves
-     * @throws CannotChooseException            all the allowed initial resources have already been chosen
-     * @throws InvalidChoiceException           the resource cannot be given
-     * @throws IllegalResourceTransferException invalid container
+     * @throws CannotChooseException                all the allowed initial resources have already been chosen
+     * @throws IllegalProductionActivationException invalid container
      */
-    public void chooseResources(Game game, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+    public void chooseResources(Game game, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalProductionActivationException {
         // TODO: Exclude resource type "Faith" from shelves
         // TODO: Make sure that shelves are of type Shelf
 
@@ -142,15 +141,11 @@ public class Player {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
 
-        try {
-            new ProductionGroup(List.of(
-                    new ProductionGroup.ProductionRequest(
-                            new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, Set.of(), false),
-                            Map.of(), chosenResources, Map.of(), shelves)
-            )).activate(game, this);
-        } catch (IllegalProductionActivationException e) {
-            throw new InvalidChoiceException();
-        }
+        new ProductionGroup(List.of(
+                new ProductionGroup.ProductionRequest(
+                        new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, Set.of(), false),
+                        Map.of(), chosenResources, Map.of(), shelves)
+        )).activate(game, this);
 
         hasChosenResources = true;
     }
