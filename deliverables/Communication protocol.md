@@ -18,15 +18,16 @@
         1. [Swapping two shelves' content](#swapping-two-shelves'-content)
         2. [Leader Actions](#leader-actions)
     3. [State messages](#state-messages)
-        1. [Updating the current player](#updating-the-current-player)
-        2. [Updating the market](#updating-the-market)
-        3. [Updating the player's shelves](#updating-the-player's-shelves)
-        4. [Updating the player's leader cards](#updating-the-player's-leader-cards)
-        5. [Updating the development card grid](#updating-the-development-card-grid)
-        6. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
-        7. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
-        8. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
-        9. [Declaring a winner](#declaring-a-winner)
+        1. [Updating the players list](#updating-the-players-list)
+        2. [Updating the current player](#updating-the-current-player)
+        3. [Updating the market](#updating-the-market)
+        4. [Updating the player's shelves](#updating-the-player's-shelves)
+        5. [Updating the player's leader cards](#updating-the-player's-leader-cards)
+        6. [Updating the development card grid](#updating-the-development-card-grid)
+        7. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
+        8. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
+        9. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+        10. [Declaring a winner](#declaring-a-winner)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -125,7 +126,7 @@ The information of whether the player is the first of the match is included in t
 ```
 
 ## Choosing the number of players
-When a player is chosen by the server as the first of a new game, they have to decide the number of players required to start it.
+When a player is assigned by the server as the first of a new game, they have to decide the number of players required to start it.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -750,6 +751,38 @@ Indices reference the data given in [game start](#game-start).
 
 All messages are broadcast to all players, as the game rules don't specify that some objects should remain hidden.
 
+
+## Updating the players list
+Notifications about players connecting/disconnecting from a match will be sent.
+
+When the match is waiting for players to join before its start, sending notifications allows the players who already joined to know how many empty seats are left, therefore getting a sense for how much waiting time there's left.
+
+```
+ ┌────────┒                      ┌────────┒ 
+ │ Client ┃                      │ Server ┃
+ ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+     │                                │
+     │ UpdatePlayerConnect            │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+     │ UpdatePlayerDisonnect          │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+```
+**UpdatePlayerConnect (server)**
+```json
+{
+  "type": "UpdatePlayerConnect",
+  "nickname": "X"
+}
+```
+**UpdatePlayerDisonnect (server)**
+```json
+{
+  "type": "UpdatePlayerDisonnect",
+  "nickname": "X"
+}
+```
 
 ## Updating the current player
 
