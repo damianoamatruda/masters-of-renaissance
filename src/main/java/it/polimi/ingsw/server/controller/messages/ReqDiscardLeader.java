@@ -5,9 +5,10 @@ import it.polimi.ingsw.server.controller.Controller;
 import java.net.Socket;
 
 public class ReqDiscardLeader implements Message {
+    private int leaderId;
 
     @Override
     public void handle(Controller controller, Socket client) {
-
+        System.out.println("Discarding leader of index " + leaderId + "...");
     }
 }
