@@ -7,11 +7,10 @@ public class IllegalMarketTransferException extends Exception {
     /**
      * Constructs a new exception with the specified detail message and cause.
      *
-     * @param message the detail message
      * @param cause   the cause
      * @see Exception
      */
-    public IllegalMarketTransferException(String message, Throwable cause) {
-        super(message, cause);
+    public IllegalMarketTransferException(Throwable cause) {
+        super("Cannot take the market's resources: ", cause);
     }
 }

@@ -101,7 +101,7 @@ public class Market {
                             Map.of(), Map.of(), Map.of(), shelves)
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
-            throw new IllegalMarketTransferException("The resources from the market cannot be taken with the given options.", e);
+            throw new IllegalMarketTransferException(e);
         }
 
         shift(isRow, index);
