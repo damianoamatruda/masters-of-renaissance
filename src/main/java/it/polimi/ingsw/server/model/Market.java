@@ -34,14 +34,16 @@ public class Market {
         resources.forEach((r, q) -> IntStream.range(0, q).forEach(i -> resourcesList.add(r)));
 
         if (colsCount <= 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Cannot create market: illegal number of columns: 0");
 
         if (resourcesList.size() == 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Cannot create market: illegal number of resources: 0");
 
         /* Check that the resulting grid is full. */
         if (colsCount > 1 && resourcesList.size() % colsCount != 1)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                String.format("Cannot create market: %d resources cannot be cleanly divided into %d columns + slide",
+                    resourcesList.size(), colsCount));
 
         Collections.shuffle(resourcesList);
 
@@ -79,7 +81,9 @@ public class Market {
         // TODO: Make sure that shelves are of type Shelf
 
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                String.format("Cannot take resources: %s %d does not exist, limit is %d",
+                    isRow ? "row" : "column", index, isRow ? grid.get(0).size() : grid.size()));
 
         Map<ResourceType, Integer> output = IntStream
                 .range(0, isRow ? getColsCount() : getRowsCount())
