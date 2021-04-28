@@ -24,21 +24,20 @@ public class GameProtocol {
 
         /* Interprets command string and calls an action from the model */
 
-        String example = "{\n" +
-                "  \"type\": \"ReqDiscardLeader\",\n" +
-                "  \"leaderId\": 1\n" +
-                "}";
+        String example = """
+                {
+                  "type": "ReqDiscardLeader",
+                  "leaderId": 1
+                }""";
 
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(/*input*/example, JsonObject.class);
         try {
-            Message command = gson.fromJson(jsonObject,
-                    (Class<? extends Message>) Class.forName("it.polimi.ingsw.server.controller.messages." + jsonObject.get("type").getAsString()));
+            Message command = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + jsonObject.get("type").getAsString()).asSubclass(Message.class));
             controller.handle(command, client);
             // Prepare response
-
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return input + "!";
