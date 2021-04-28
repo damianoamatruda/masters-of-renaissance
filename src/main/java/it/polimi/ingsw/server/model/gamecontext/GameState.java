@@ -18,6 +18,28 @@ import java.util.Optional;
  */
 abstract public class GameState {
     /**
+     * Returns the leader cards.
+     *
+     * @param context the context
+     * @return the list of leader cards
+     * @throws IllegalActionException if the list of leader cards cannot be requested in the current state
+     */
+    public List<LeaderCard> getLeaderCards(GameContext context) throws IllegalActionException {
+        throw new IllegalActionException();
+    }
+
+    /**
+     * Returns the development cards.
+     *
+     * @param context the context
+     * @return the list of development cards
+     * @throws IllegalActionException if the list of development cards cannot be requested in the current state
+     */
+    public List<DevelopmentCard> getDevelopmentCards(GameContext context) throws IllegalActionException {
+        throw new IllegalActionException();
+    }
+
+    /**
      * Returns the game market.
      *
      * @param context the context

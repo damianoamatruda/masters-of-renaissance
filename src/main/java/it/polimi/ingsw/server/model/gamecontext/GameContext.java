@@ -43,6 +43,26 @@ public class GameContext {
     }
 
     /**
+     * Returns the leader cards.
+     *
+     * @return the list of leader cards
+     * @throws IllegalActionException if the list of leader cards cannot be requested in the current state
+     */
+    public List<LeaderCard> getLeaderCards() throws IllegalActionException {
+        return state.getLeaderCards(this);
+    }
+
+    /**
+     * Returns the development cards.
+     *
+     * @return the list of development cards
+     * @throws IllegalActionException if the list of development cards cannot be requested in the current state
+     */
+    public List<DevelopmentCard> getDevelopmentCards() throws IllegalActionException {
+        return state.getDevelopmentCards(this);
+    }
+
+    /**
      * Returns the game market.
      *
      * @return the market

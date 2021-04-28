@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.leadercards.LeaderCard;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +11,15 @@ import java.util.Optional;
  * as some attributes shared by the players that can be easily accessed from the outside.
  */
 public class Game {
+    /** Reference to the collection from which all the player's data can be accessed. */
+    protected final List<Player> players;
+
+    /** The leader cards used in the game. */
+    private final List<LeaderCard> leaderCards;
+
+    /** The development cards used in the game. */
+    private final List<DevelopmentCard> developmentCards;
+
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
 
@@ -17,9 +28,6 @@ public class Game {
 
     /** The "Faith Track", where vatican sections can be activated. */
     protected final FaithTrack faithTrack;
-
-    /** Reference to the collection from which all the player's data can be accessed. */
-    protected final List<Player> players;
 
     /** Number of the last reachable faith track tile by a player. */
     protected final int maxFaithPointsCount;
@@ -40,16 +48,20 @@ public class Game {
      * Constructor of Game instances.
      *
      * @param players               the list of nicknames of players who joined
+     * @param leaderCards           the list of leader cards
+     * @param developmentCards      the list of development cards
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
-     *                              game
      */
-    public Game(List<Player> players, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
-                int maxFaithPointsCount, int maxObtainableDevCards) {
+    public Game(List<Player> players, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+                DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxFaithPointsCount,
+                int maxObtainableDevCards) {
         this.players = new ArrayList<>(players);
+        this.leaderCards = List.copyOf(leaderCards);
+        this.developmentCards = List.copyOf(developmentCards);
         this.devCardGrid = devCardGrid;
         this.market = market;
         this.faithTrack = faithTrack;
@@ -246,6 +258,24 @@ public class Game {
      */
     public boolean isBlackWinner() {
         return false;
+    }
+
+    /**
+     * Getter of the leader cards used in the game.
+     *
+     * @return the leader cards
+     */
+    public List<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+
+    /**
+     * Getter of the development cards used in the game.
+     *
+     * @return the development cards
+     */
+    public List<DevelopmentCard> getDevelopmentCards() {
+        return developmentCards;
     }
 
     /**

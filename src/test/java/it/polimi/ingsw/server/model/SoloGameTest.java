@@ -44,7 +44,7 @@ public class SoloGameTest {
                 new FaithTrack.YellowTile(24, 20)
         ));
 
-        game = new SoloGame(player, new DevCardGrid(List.of(), 0, 0), null, track, List.of(
+        game = new SoloGame(player, List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), null, track, List.of(
                 new ActionTokenBlackMoveTwo()
         ), 24, 7);
 

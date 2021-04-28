@@ -53,11 +53,13 @@ public class DevCardGridTest {
                 0, 0, 0);
         game = new Game(
                 List.of(buyer),
+                List.of(),
+                devCards,
                 devCardGrid,
                 new Market(Map.of(r1, 1), 1, r1),
-                new FaithTrack(Set.of(), Set.of()), 0,
-                2
-        );
+                new FaithTrack(Set.of(), Set.of()),
+                0,
+                2);
     }
 
 

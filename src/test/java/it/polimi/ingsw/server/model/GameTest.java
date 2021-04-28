@@ -43,8 +43,9 @@ public class GameTest {
 
         game = new Game(
                 players,
-                new DevCardGrid(List.of(), 3, 4),
-                market,
+                List.of(),
+                List.of(),
+                new DevCardGrid(List.of(), 3, 4), market,
                 new FaithTrack(Set.of(
                         new FaithTrack.VaticanSection(5, 8, 2),
                         new FaithTrack.VaticanSection(12, 16, 3),
@@ -53,9 +54,8 @@ public class GameTest {
                         new FaithTrack.YellowTile(15, 9),
                         new FaithTrack.YellowTile(18, 12),
                         new FaithTrack.YellowTile(24, 20)
-                )), 24,
-                7
-        );
+                )),
+                24, 7);
 
         initialOrder = game.getPlayers();
     }

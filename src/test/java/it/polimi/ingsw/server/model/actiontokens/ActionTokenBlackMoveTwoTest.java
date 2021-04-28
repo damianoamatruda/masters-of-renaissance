@@ -22,7 +22,7 @@ class ActionTokenBlackMoveTwoTest {
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo();
         Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0);
-        SoloGame game = new SoloGame(player, new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), List.of(), 0, 0);
+        SoloGame game = new SoloGame(player, List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), List.of(), 0, 0);
 
         token.trigger(game);
 

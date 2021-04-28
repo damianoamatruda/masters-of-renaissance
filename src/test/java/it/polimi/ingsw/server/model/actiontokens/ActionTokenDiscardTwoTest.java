@@ -50,18 +50,19 @@ class ActionTokenDiscardTwoTest {
 
         player = new Player(
                 "",
-                true, List.of(),
+                true,
+                List.of(),
                 new Warehouse(0), new Strongbox(),
                 new Production(Map.of(), 0, Map.of(), 0), 1,
                 0, 0, 0);
         game = new SoloGame(
                 player,
-                devCardGrid,
+                List.of(),
+                devCards, devCardGrid,
                 null,
                 new FaithTrack(Set.of(), Set.of()),
-                List.of(),
-                0, 2
-        );
+                List.of(), 0,
+                2);
     }
 
     /**

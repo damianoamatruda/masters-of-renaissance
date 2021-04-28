@@ -1,9 +1,6 @@
 package it.polimi.ingsw.server.model.gamecontext;
 
-import it.polimi.ingsw.server.model.CannotChooseException;
-import it.polimi.ingsw.server.model.InvalidChoiceException;
-import it.polimi.ingsw.server.model.Market;
-import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -16,6 +13,16 @@ import java.util.Map;
  * This class represents the setup state of a game.
  */
 public class GameSetupState extends GameState {
+    @Override
+    public List<LeaderCard> getLeaderCards(GameContext context) {
+        return context.game.getLeaderCards();
+    }
+
+    @Override
+    public List<DevelopmentCard> getDevelopmentCards(GameContext context) {
+        return context.game.getDevelopmentCards();
+    }
+
     @Override
     public Market getMarket(GameContext context) {
         return context.game.getMarket();

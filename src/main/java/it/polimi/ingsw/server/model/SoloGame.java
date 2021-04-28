@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
+import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,17 +24,19 @@ public class SoloGame extends Game {
      * Initializes the solo game with the following parameters.
      *
      * @param player                the nickname of the player who joined
+     * @param leaderCards           the list of leader cards
+     * @param developmentCards      the list of development cards
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
      * @param actionTokens          the deck of tokens, of which the top token is activated after each round
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
-     *                              game
      */
-    public SoloGame(Player player, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
-                    List<ActionToken> actionTokens, int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(List.of(player), devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
+    public SoloGame(Player player, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+                    DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, List<ActionToken> actionTokens,
+                    int maxFaithPointsCount, int maxObtainableDevCards) {
+        super(List.of(player), leaderCards, developmentCards, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;

@@ -66,17 +66,11 @@ public class FileGameFactory implements GameFactory {
     /** The boosts. */
     private final List<Boost> initialResources;
 
-    /** The leader cards. */
-    private final Map<Game, List<LeaderCard>> leaderCardLists;
-
-    /** The development cards. */
-    private final Map<Game, List<DevelopmentCard>> developmentCardLists;
-
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
      * file.
      *
-     * @param inputStream the input stream to be parsed
+     * @param inputStream the input stream to parse
      */
     public FileGameFactory(InputStream inputStream) {
         gson = new GsonBuilder()
@@ -109,20 +103,6 @@ public class FileGameFactory implements GameFactory {
         baseProduction = gson.fromJson(parserObject.get("baseProduction"), Production.class);
         initialResources = gson.fromJson(parserObject.get("initialResources"), new TypeToken<ArrayList<Boost>>() {
         }.getType());
-
-        leaderCardLists = new HashMap<>();
-        developmentCardLists = new HashMap<>();
-    }
-
-    private void checkNumberOfPlayers(List<String> nicknames) throws IllegalArgumentException {
-        String baseMsg = "Invalid number of players chosen";
-        if (nicknames == null)
-            throw new IllegalArgumentException(String.format("%s: %s", baseMsg, "null"));
-        else if (nicknames.size() > maxPlayers)
-            throw new IllegalArgumentException(
-                String.format("%s %d: maximum allowed is %d", baseMsg, nicknames.size(), maxPlayers));
-        else if (nicknames.size() == 0)
-            throw new IllegalArgumentException(String.format("%s: 0", baseMsg));
     }
 
     @Override
@@ -132,19 +112,16 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
 
-        Game game = new Game(
+        return new Game(
                 getPlayers(nicknames, leaderCards),
+                leaderCards,
+                developmentCards,
                 new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
                 maxFaith,
                 maxDevCards
         );
-
-        leaderCardLists.put(game, leaderCards);
-        developmentCardLists.put(game, developmentCards);
-
-        return game;
     }
 
     @Override
@@ -152,8 +129,10 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
 
-        SoloGame game = new SoloGame(
+        return new SoloGame(
                 getPlayers(List.of(nickname), leaderCards).get(0),
+                leaderCards,
+                developmentCards,
                 new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
@@ -161,11 +140,6 @@ public class FileGameFactory implements GameFactory {
                 maxFaith,
                 maxDevCards
         );
-
-        leaderCardLists.put(game, leaderCards);
-        developmentCardLists.put(game, developmentCards);
-
-        return game;
     }
 
     /**
@@ -189,23 +163,19 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
-     * Getter of leader cards used in a game.
+     * Checks the number of given players.
      *
-     * @param game the game
-     * @return the leader card list
+     * @param nicknames the list of nicknames
      */
-    public Optional<List<LeaderCard>> getLeaderCards(Game game) {
-        return Optional.ofNullable(leaderCardLists.get(game));
-    }
-
-    /**
-     * Getter of development cards used in a game.
-     *
-     * @param game the game
-     * @return the development card list
-     */
-    public Optional<List<DevelopmentCard>> getDevelopmentCards(Game game) {
-        return Optional.ofNullable(developmentCardLists.get(game));
+    private void checkNumberOfPlayers(List<String> nicknames) {
+        String baseMsg = "Invalid number of players chosen";
+        if (nicknames == null)
+            throw new IllegalArgumentException(String.format("%s: %s", baseMsg, "null"));
+        else if (nicknames.size() > maxPlayers)
+            throw new IllegalArgumentException(
+                    String.format("%s %d: maximum allowed is %d", baseMsg, nicknames.size(), maxPlayers));
+        else if (nicknames.size() == 0)
+            throw new IllegalArgumentException(String.format("%s: 0", baseMsg));
     }
 
     /**
