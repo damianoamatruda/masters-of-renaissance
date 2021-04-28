@@ -21,7 +21,6 @@
       "name": "Blue"
     }
   ],
-
   "resourceTypes": [
     {
       "subtype": "IncrementFaithPointsResType",
@@ -49,7 +48,6 @@
       "storable": true
     }
   ],
-
   "baseProduction": {
     "input": {},
     "inputBlanks": 2,
@@ -61,7 +59,6 @@
     ],
     "discardableOutput": false
   },
-
   "initialResources": [
     {
       "numStorable": 0,
@@ -80,7 +77,6 @@
       "faith": 1
     }
   ],
-
   "marketResources": {
     "Coin": 2,
     "Faith": 1,
@@ -91,7 +87,6 @@
   },
   "marketColumns": 4,
   "marketReplaceableResource": "Zero",
-
   "developmentCards": [
     {
       "color": "Green",
@@ -1278,7 +1273,6 @@
       "victoryPoints": 12
     }
   ],
-
   "leaderCards": [
     {
       "type": "DiscountLeader",
@@ -1633,7 +1627,6 @@
       "victoryPoints": 4
     }
   ],
-
   "faithTrack": {
     "vaticanSections": [
       {
@@ -1690,7 +1683,6 @@
       }
     ]
   },
-
   "actionTokens": [
     {
       "type": "ActionTokenBlackMoveOneShuffle"

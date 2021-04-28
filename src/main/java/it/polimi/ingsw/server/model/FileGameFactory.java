@@ -1,8 +1,7 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.model;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
@@ -61,6 +60,12 @@ public class FileGameFactory implements GameFactory {
     /** The resource types. */
     private final Map<String, ResourceType> resTypeMap;
 
+    /** The base production shared by all players. */
+    private final Production baseProduction;
+
+    /** The boosts. */
+    private final List<Boost> initialResources;
+
     /** The leader cards. */
     private final Map<Game, List<LeaderCard>> leaderCardLists;
 
@@ -101,8 +106,11 @@ public class FileGameFactory implements GameFactory {
         resTypeMap = generateResourceTypes().stream()
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
 
-        leaderCardLists = new HashMap<>();
+        baseProduction = gson.fromJson(parserObject.get("baseProduction"), Production.class);
+        initialResources = gson.fromJson(parserObject.get("initialResources"), new TypeToken<ArrayList<Boost>>() {
+        }.getType());
 
+        leaderCardLists = new HashMap<>();
         developmentCardLists = new HashMap<>();
     }
 
@@ -124,46 +132,8 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
 
-        // TODO remove and use integer floor division
-        if (playerLeadersCount > 0 && leaderCards.size() % playerLeadersCount != 0)
-            throw new IllegalArgumentException(
-                String.format("Cannot subdivide cleanly %d leadercards between %d players",
-                    leaderCards.size(), nicknames.size()));
-
-        if (playerLeadersCount > 0 && nicknames.size() > leaderCards.size() / playerLeadersCount)
-            throw new IllegalArgumentException(
-                String.format("Cannot assign %d leader cards to %d players: not enough cards (%d available)",
-                    playerLeadersCount, nicknames.size(), leaderCards.size()));
-
-        /* Shuffle the leader cards */
-        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
-        Collections.shuffle(shuffledLeaderCards);
-
-        /* Shuffle the nicknames */
-        List<String> shuffledNicknames = new ArrayList<>(nicknames);
-        Collections.shuffle(shuffledNicknames);
-
-        List<Boost> initialResources = gson.fromJson(parserObject.get("initialResources"), new TypeToken<ArrayList<Boost>>() {
-        }.getType());
-
-        List<Player> players = new ArrayList<>();
-        Production baseProduction = gson.fromJson(parserObject.get("baseProduction"), Production.class);
-        for (int i = 0; i < shuffledNicknames.size(); i++)
-            players.add(new Player(
-                    shuffledNicknames.get(i),
-                    i == 0,
-                    shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
-                    new Warehouse(warehouseShelvesCount),
-                    new Strongbox(),
-                    baseProduction,
-                    slotsCount,
-                    chosenLeadersCount,
-                    initialResources.get(i).numStorable,
-                    initialResources.get(i).faith
-            ));
-
         Game game = new Game(
-                players,
+                getPlayers(nicknames, leaderCards),
                 new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
@@ -179,38 +149,11 @@ public class FileGameFactory implements GameFactory {
 
     @Override
     public SoloGame getSoloGame(String nickname) {
-        if (nickname == null)
-            throw new IllegalArgumentException("Nickname not specified");
-
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
 
-        if (leaderCards.size() < playerLeadersCount)
-            throw new IllegalArgumentException(
-                String.format("Not enough leader cards available to be assigned to the player: %d available, %d needed.", 
-                    leaderCards.size(), playerLeadersCount));
-
-        /* Shuffle the leader cards */
-        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
-        Collections.shuffle(shuffledLeaderCards);
-
-        List<Boost> initialResources = gson.fromJson(parserObject.get("initialResources"), new TypeToken<ArrayList<Boost>>() {
-        }.getType());
-
-        Player player = new Player(
-                nickname,
-                true,
-                shuffledLeaderCards.subList(0, playerLeadersCount),
-                new Warehouse(warehouseShelvesCount),
-                new Strongbox(),
-                gson.fromJson(parserObject.get("baseProduction"), Production.class),
-                slotsCount,
-                chosenLeadersCount, initialResources.get(0).numStorable,
-                initialResources.get(0).faith
-        );
-
         SoloGame game = new SoloGame(
-                player,
+                getPlayers(List.of(nickname), leaderCards).get(0),
                 new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
@@ -263,6 +206,41 @@ public class FileGameFactory implements GameFactory {
      */
     public Optional<List<DevelopmentCard>> getDevelopmentCards(Game game) {
         return Optional.ofNullable(developmentCardLists.get(game));
+    }
+
+    /**
+     * Returns a list of players.
+     *
+     * @param nicknames   the list of nicknames
+     * @param leaderCards the list of leader cards
+     * @return the players
+     */
+    private List<Player> getPlayers(List<String> nicknames, List<LeaderCard> leaderCards) {
+        List<Player> players = new ArrayList<>();
+
+        /* Shuffle the nicknames */
+        List<String> shuffledNicknames = new ArrayList<>(nicknames);
+        Collections.shuffle(shuffledNicknames);
+
+        /* Shuffle the leader cards */
+        List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
+        Collections.shuffle(shuffledLeaderCards);
+
+        for (int i = 0; i < shuffledNicknames.size(); i++)
+            players.add(new Player(
+                    shuffledNicknames.get(i),
+                    i == 0,
+                    shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
+                    new Warehouse(warehouseShelvesCount),
+                    new Strongbox(),
+                    baseProduction,
+                    slotsCount,
+                    chosenLeadersCount,
+                    initialResources.get(i).numStorable,
+                    initialResources.get(i).faith
+            ));
+
+        return players;
     }
 
     /**
@@ -322,6 +300,12 @@ public class FileGameFactory implements GameFactory {
                 throw new RuntimeException(e);
             }
         }
+
+        if (leaders.size() < maxPlayers * playerLeadersCount)
+            throw new IllegalArgumentException(
+                    String.format("Not enough leader cards available to be assigned to %d players: %d available, %d needed.",
+                            maxPlayers, leaders.size(), maxPlayers * playerLeadersCount));
+
         return leaders;
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.server.controller.FileGameFactory;
+import it.polimi.ingsw.server.model.FileGameFactory;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameFactory;
 import it.polimi.ingsw.server.model.Player;

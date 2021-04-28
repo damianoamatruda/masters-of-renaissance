@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.server.model;
 
 import org.junit.jupiter.api.Test;
 
@@ -50,6 +50,5 @@ public class FileGameFactoryTest {
     @Test
     void testGetSoloGame() {
         assertDoesNotThrow(() -> f.getSoloGame(""));
-        assertThrows(IllegalArgumentException.class, () -> f.getSoloGame(null));
     }
 }
