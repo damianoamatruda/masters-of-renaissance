@@ -12,4 +12,8 @@ public class ReqPlayersCount implements Message {
     public void handle(Controller controller, Socket client, PrintWriter out) {
         controller.handle(this, client, out);
     }
+
+    public int getCount() {
+        return count;
+    }
 }

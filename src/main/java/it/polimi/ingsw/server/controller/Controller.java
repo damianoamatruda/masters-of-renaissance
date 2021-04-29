@@ -24,7 +24,7 @@ public class Controller {
             throw new RuntimeException("Nickname \"" + message.getNickname() + "\" already in use. Choose another one.");
         out.println("Setting nickname...");
         nicknames.put(client, message.getNickname());
-        // model.joinLobby(nicknames.get(client));
+        model.joinLobby(nicknames.get(client));
     }
 
     public void handle(ReqActivateLeader message, Socket client, PrintWriter out) {
@@ -59,10 +59,13 @@ public class Controller {
 
     public void handle(ReqPlayersCount message, Socket client, PrintWriter out) {
         checkClient(client);
+        if (!model.isPlayerFirst(nicknames.get(client)))
+            throw new RuntimeException("Command unavailable. You are not the first player who joined.");
         out.println("Counting players...");
+        model.setCountToNewGame(message.getCount());
     }
 
-    public void handle(ReqResourceChoice message, Socket client, PrintWriter out) {
+    public void handle(ReqResourcesChoice message, Socket client, PrintWriter out) {
         checkClient(client);
         out.println("Choosing initial resources...");
     }
