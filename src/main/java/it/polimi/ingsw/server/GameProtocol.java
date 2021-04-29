@@ -31,8 +31,8 @@ public class GameProtocol {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(input, JsonObject.class);
         try {
-            Message command = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + jsonObject.get("type").getAsString()).asSubclass(Message.class));
-            controller.handle(command, client);
+            Message message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + jsonObject.get("type").getAsString()).asSubclass(Message.class));
+            message.handle(controller, client);
             // Prepare response
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

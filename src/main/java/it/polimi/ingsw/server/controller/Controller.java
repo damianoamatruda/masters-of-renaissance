@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.server.controller.messages.Message;
+import it.polimi.ingsw.server.controller.messages.*;
 import it.polimi.ingsw.server.model.Lobby;
 import it.polimi.ingsw.server.model.Player;
 
@@ -25,14 +25,47 @@ public class Controller {
         model.joinLobby(players.get(client));
     }
 
-    public void handle(Message message, Socket client) {
-        Player player = players.get(client);
-        message.handle(model.getJoinedGame(player).orElseThrow(), player);
+    public void handle(ReqActivateLeader message, Socket client) {
+
     }
 
-    // public void handle(MessageFirstType m, Socket c) {
-    // }
+    public void handle(ReqActivateProduction message, Socket client) {
 
-    // public void handle(MessageSecondType m, Socket c) {
-    // }
+    }
+
+    public void handle(ReqBuyDevCard message, Socket client) {
+
+    }
+
+    public void handle(ReqDiscardLeader message, Socket client) {
+        System.out.println("Discarding leader of index " + message.getLeaderId() + "...");
+    }
+
+    public void handle(ReqGetMarket message, Socket client) {
+
+    }
+
+    public void handle(ReqLeaderChoice message, Socket client) {
+
+    }
+
+    public void handle(ReqNickname message, Socket client) {
+
+    }
+
+    public void handle(ReqPlayersCount message, Socket client) {
+
+    }
+
+    public void handle(ReqResourceChoice message, Socket client) {
+
+    }
+
+    public void handle(ReqSwapShelves message, Socket client) {
+
+    }
+
+    public void handle(ReqTurnEnd message, Socket client) {
+
+    }
 }

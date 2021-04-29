@@ -1,15 +1,15 @@
 package it.polimi.ingsw.server.controller.messages;
 
-import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.model.gamecontext.GameContext;
+import it.polimi.ingsw.server.controller.Controller;
 
+import java.net.Socket;
 import java.util.List;
 
 public class ReqLeaderChoice implements Message {
     private List<Integer> leadersId;
 
     @Override
-    public void handle(GameContext context, Player player) {
-
+    public void handle(Controller controller, Socket client) {
+        controller.handle(this, client);
     }
 }
