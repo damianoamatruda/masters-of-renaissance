@@ -23,7 +23,7 @@
   ],
   "resourceTypes": [
     {
-      "subtype": "IncrementFaithPointsResType",
+      "type": "IncrementFaithPointsResType",
       "name": "Faith",
       "storable": false
     },

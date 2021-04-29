@@ -235,9 +235,9 @@ public class FileGameFactory implements GameFactory {
         }.getType());
         Set<ResourceType> resources = new HashSet<>();
         for (JsonObject o : protoResources) {
-            JsonElement subtype = o.get("subtype");
+            JsonElement type = o.get("type");
             try {
-                resources.add(subtype == null ? customGson.fromJson(o, ResourceType.class) : customGson.fromJson(o, Class.forName("it.polimi.ingsw.server.model.resourcetypes." + subtype.getAsString()).asSubclass(ResourceType.class)));
+                resources.add(type == null ? customGson.fromJson(o, ResourceType.class) : customGson.fromJson(o, Class.forName("it.polimi.ingsw.server.model.resourcetypes." + type.getAsString()).asSubclass(ResourceType.class)));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
