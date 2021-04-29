@@ -7,7 +7,7 @@ import java.util.*;
 public class Lobby {
     private final GameFactory gameFactory;
     private final List<GameContext> games;
-    private final Map<Player, GameContext> joined;
+    private final Map<String, GameContext> joined;
 
     public Lobby(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
@@ -15,11 +15,11 @@ public class Lobby {
         this.joined = new HashMap<>();
     }
 
-    public void joinLobby(Player player) {
-        joined.put(player, new GameContext(gameFactory.getSoloGame("")));
+    public void joinLobby(String nickname) {
+        joined.put(nickname, new GameContext(gameFactory.getSoloGame(nickname)));
     }
 
-    public Optional<GameContext> getJoinedGame(Player player) {
-        return Optional.ofNullable(joined.get(player));
+    public Optional<GameContext> getJoinedGame(String nickname) {
+        return Optional.ofNullable(joined.get(nickname));
     }
 }

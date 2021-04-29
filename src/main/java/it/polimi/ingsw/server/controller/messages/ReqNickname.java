@@ -11,4 +11,8 @@ public class ReqNickname implements Message {
     public void handle(Controller controller, Socket client) {
         controller.handle(this, client);
     }
+
+    public String getNickname() {
+        return nickname;
+    }
 }

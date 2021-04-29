@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.server.controller.messages.*;
 import it.polimi.ingsw.server.model.Lobby;
-import it.polimi.ingsw.server.model.Player;
 
 import java.net.Socket;
 import java.util.HashMap;
@@ -10,19 +9,16 @@ import java.util.Map;
 
 public class Controller {
     private final Lobby model;
-    private final Map<Socket, Player> players;
+    private final Map<Socket, String> nicknames;
 
     public Controller(Lobby model) {
         this.model = model;
-        this.players = new HashMap<>();
+        this.nicknames = new HashMap<>();
     }
 
-    public void assignPlayer(Socket client, Player player) {
-        players.put(client, player);
-    }
-
-    public void joinLobby(Socket client) {
-        model.joinLobby(players.get(client));
+    public void handle(ReqNickname message, Socket client) {
+        nicknames.put(client, message.getNickname());
+        // model.joinLobby(nicknames.get(client));
     }
 
     public void handle(ReqActivateLeader message, Socket client) {
@@ -46,10 +42,6 @@ public class Controller {
     }
 
     public void handle(ReqLeaderChoice message, Socket client) {
-
-    }
-
-    public void handle(ReqNickname message, Socket client) {
 
     }
 
