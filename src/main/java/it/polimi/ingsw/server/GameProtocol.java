@@ -1,11 +1,13 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.messages.Message;
 
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class GameProtocol {
@@ -15,17 +17,15 @@ public class GameProtocol {
         this.controller = controller;
     }
 
-    public String processInput(String input, Socket client) {
+    /* Interprets command string and calls an action from the model. */
+    public String processInput(String input, Socket client, PrintWriter out) {
         /*input = """
-                {
-                  "type": "ReqDiscardLeader",
-                  "leaderId": 1
-                }""";*/
+                {"type":"ReqNickname","nickname":"X"}""";*/
 
         System.out.println("Received: \"" + input + "\"");
-        if (input.equals("quit")) return "Bye.";
 
-        /* Interprets command string and calls an action from the model */
+        if (input.equals("quit"))
+            return "Bye.";
 
         Gson gson = new Gson();
         JsonObject jsonObject;
@@ -33,18 +33,33 @@ public class GameProtocol {
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonParseException e) {
-            System.err.println("Invalid input.");
-            return input + "?";
+            System.err.println("Invalid syntax.");
+            return "Invalid syntax.";
+        }
+
+        JsonElement type = jsonObject.get("type");
+        if (type == null) {
+            System.err.println("Field \"type\" not found.");
+            return "Field \"type\" not found.";
+        }
+
+        Message message;
+
+        try {
+            message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + type.getAsString()).asSubclass(Message.class));
+        } catch (ClassNotFoundException e) {
+            System.err.println("Invalid message.");
+            return "Invalid message.";
         }
 
         try {
-            Message message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + jsonObject.get("type").getAsString()).asSubclass(Message.class));
-            message.handle(controller, client);
-            // Prepare response
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            message.handle(controller, client, out);
+        } catch (Exception e) {
+            System.err.println("Controller error.");
+            return "Controller error: " + e.getMessage();
         }
 
-        return input + "!";
+        System.out.println("Valid input.");
+        return null;
     }
 }

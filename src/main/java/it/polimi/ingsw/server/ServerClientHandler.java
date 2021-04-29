@@ -34,7 +34,7 @@ public class ServerClientHandler implements Runnable {
                 outputLine = null;
 
                 try {
-                    outputLine = gp.processInput(inputLine, socket);
+                    outputLine = gp.processInput(inputLine, socket, out);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
