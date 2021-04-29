@@ -48,8 +48,11 @@ public class GameProtocol {
         try {
             message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + type.getAsString()).asSubclass(Message.class));
         } catch (ClassNotFoundException e) {
-            System.err.println("Invalid message.");
-            return "Invalid message.";
+            System.err.println("Message type \"" + type.getAsString() + "\" does not exist.");
+            return "Invalid message type.";
+        } catch (JsonParseException e) {
+            System.err.println("Invalid attribute types.");
+            return "Invalid attribute types.";
         }
 
         try {
