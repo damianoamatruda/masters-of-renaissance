@@ -22,9 +22,7 @@ public class Lobby {
         waiting.add(nickname);
         if(waiting.size() == countToNewGame) {
             startNewGame();
-            countToNewGame = 0;
         }
-//        return waiting.size() == 1;
     }
 
     public Optional<GameContext> getJoinedGame(String nickname) {
@@ -42,9 +40,14 @@ public class Lobby {
         games.add(newContext);
         waiting.subList(0,countToNewGame).forEach(p -> joined.put(p, newContext));
         waiting.subList(0,countToNewGame).clear();
+        countToNewGame = 0;
     }
 
     public boolean isPlayerFirst(String nickname) {
         return waiting.indexOf(nickname) == 0;
+    }
+
+    public Optional<Player> getPlayer(String nickname) {
+        return joined.get(nickname).getPlayer(nickname);
     }
 }

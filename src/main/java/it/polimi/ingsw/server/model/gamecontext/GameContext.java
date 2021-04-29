@@ -196,4 +196,8 @@ public class GameContext {
     public boolean isBlackWinner() throws IllegalActionException {
         return state.isBlackWinner(this);
     }
+
+    public Optional<Player> getPlayer(String nickname) {
+        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findFirst();
+    }
 }
