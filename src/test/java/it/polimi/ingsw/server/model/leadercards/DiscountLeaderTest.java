@@ -9,10 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,7 +52,7 @@ public class DiscountLeaderTest {
     @MethodSource("provideParameters")
     void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {
         DiscountLeader leader = new DiscountLeader(discount, coin, null, 0);
-        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0);
+        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
 
         assertDoesNotThrow(() -> leader.activate(p));
 

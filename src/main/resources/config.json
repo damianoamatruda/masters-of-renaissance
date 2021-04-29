@@ -59,22 +59,34 @@
     ],
     "discardableOutput": false
   },
-  "initialResources": [
+  "boosts": [
     {
-      "numStorable": 0,
-      "faith": 0
+      "initialResources": 0,
+      "initialFaith": 0,
+      "initialExcludedResources": [
+        "Faith"
+      ]
     },
     {
-      "numStorable": 1,
-      "faith": 0
+      "initialResources": 1,
+      "initialFaith": 0,
+      "initialExcludedResources": [
+        "Faith"
+      ]
     },
     {
-      "numStorable": 1,
-      "faith": 1
+      "initialResources": 1,
+      "initialFaith": 1,
+      "initialExcludedResources": [
+        "Faith"
+      ]
     },
     {
-      "numStorable": 2,
-      "faith": 1
+      "initialResources": 2,
+      "initialFaith": 1,
+      "initialExcludedResources": [
+        "Faith"
+      ]
     }
   ],
   "marketResources": {

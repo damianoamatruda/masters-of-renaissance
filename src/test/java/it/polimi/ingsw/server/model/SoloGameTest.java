@@ -32,7 +32,7 @@ public class SoloGameTest {
         player = new Player("Alessandro", true, List.of(
                 new DepotLeader(2, coin, null, 0),
                 new DepotLeader(2, coin, null, 0)
-        ), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0, 0);
+        ), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0, 0, Set.of());
 
         track = new FaithTrack(Set.of(
                 new FaithTrack.VaticanSection(5, 8, 2),

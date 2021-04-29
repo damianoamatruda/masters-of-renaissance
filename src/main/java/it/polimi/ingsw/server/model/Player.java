@@ -37,8 +37,11 @@ public class Player {
     /** The number of leader cards that must be discarded in the early game. */
     private final int chosenLeadersCount;
 
-    /** The number of (storable) resources the player can still choose at the beginning */
+    /** The number of resources the player can still choose at the beginning. */
     private final int initialResources;
+
+    /** The resources the player cannot choose at the beginning. */
+    private final Set<ResourceType> initialExcludedResources;
 
     /** <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise. */
     private boolean hasChosenResources;
@@ -58,20 +61,21 @@ public class Player {
     /**
      * Initializes player's attributes.
      *
-     * @param nickname           the player's nickname to be seen by all the players
-     * @param inkwell            received only by the first player
-     * @param leaders            the leader cards in the player's hand
-     * @param warehouse          the player's warehouse
-     * @param strongbox          the player's strongbox
-     * @param baseProduction     the player's base production
-     * @param devSlotsCount      number of possible production slots that can be occupied by development cards
-     * @param chosenLeadersCount number of leader cards that must be discarded in the early game
-     * @param initialResources   number of storable resources the player can choose at the beginning
-     * @param initialFaith       initial faith points
+     * @param nickname                 the player's nickname to be seen by all the players
+     * @param inkwell                  received only by the first player
+     * @param leaders                  the leader cards in the player's hand
+     * @param warehouse                the player's warehouse
+     * @param strongbox                the player's strongbox
+     * @param baseProduction           the player's base production
+     * @param devSlotsCount            number of possible production slots that can be occupied by development cards
+     * @param chosenLeadersCount       number of leader cards that must be discarded in the early game
+     * @param initialResources         number of resources the player can choose at the beginning
+     * @param initialFaith             initial faith points
+     * @param initialExcludedResources resources the player cannot choose at the beginning
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
                   Production baseProduction, int devSlotsCount, int chosenLeadersCount, int initialResources,
-                  int initialFaith) {
+                  int initialFaith, Set<ResourceType> initialExcludedResources) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = new ArrayList<>(leaders);
@@ -85,6 +89,7 @@ public class Player {
         this.baseProduction = baseProduction;
         this.chosenLeadersCount = chosenLeadersCount;
         this.initialResources = initialResources;
+        this.initialExcludedResources = Set.copyOf(initialExcludedResources);
         this.hasChosenResources = initialResources == 0;
         this.faithPoints = initialFaith; /* This does not trigger game.onIncrement(initialFaith); */
         this.victoryPoints = 0;
@@ -131,7 +136,6 @@ public class Player {
      * @throws IllegalResourceTransferException invalid container
      */
     public void chooseResources(Game game, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
-        // TODO: Exclude resource type "Faith" from shelves
         // TODO: Make sure that shelves are of type Shelf
 
         if (hasChosenResources)
@@ -145,7 +149,7 @@ public class Player {
         try {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(
-                            new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, Set.of(), false),
+                            new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
                             Map.of(), chosenResources, Map.of(), shelves)
             )).activate(game, this);
         } catch (IllegalProductionActivationException e) {
