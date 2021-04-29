@@ -28,16 +28,23 @@ public class ServerClientHandler implements Runnable {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String inputLine, outputLine;
 
-            outputLine = gp.processInput(null, null);
-            out.println(outputLine);
+            out.println("Welcome.");
 
             while ((inputLine = in.readLine()) != null) {
-                outputLine = gp.processInput(inputLine, socket);
-                out.println(outputLine);
-                if (outputLine.equals("Bye.")){
-                    break;
+                outputLine = null;
+
+                try {
+                    outputLine = gp.processInput(inputLine, socket, out);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
+                if (outputLine != null) {
+                    out.println(outputLine);
+                    if (outputLine.equals("Bye.")) {
+                        break;
+                    }
+                }
             }
             in.close();
             out.close();

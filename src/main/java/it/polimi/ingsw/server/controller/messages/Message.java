@@ -1,9 +1,11 @@
 package it.polimi.ingsw.server.controller.messages;
 
-import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.model.gamecontext.GameContext;
+import it.polimi.ingsw.server.controller.Controller;
+
+import java.io.PrintWriter;
+import java.net.Socket;
 
 @FunctionalInterface
 public interface Message {
-    void handle(GameContext context, Player player);
+    void handle(Controller controller, Socket client, PrintWriter out);
 }

@@ -54,7 +54,7 @@ class ActionTokenDiscardTwoTest {
                 List.of(),
                 new Warehouse(0), new Strongbox(),
                 new Production(Map.of(), 0, Map.of(), 0), 1,
-                0, 0, 0);
+                0, 0, 0, Set.of());
         game = new SoloGame(
                 player,
                 List.of(),

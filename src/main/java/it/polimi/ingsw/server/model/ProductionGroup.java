@@ -195,9 +195,11 @@ public class ProductionGroup {
         /**
          * Returns whether the production request is valid, i.e.:
          * <ol>
+         *     <li>maps of input and output replacement resources do not contain respectively takeable-only and
+         *         giveable-only resources</li>
+         *     <li>maps of input and output replacement resources do not contain excluded resources</li>
          *     <li>maps of input and output replacement resources have the same number of resources as input and output
          *         blanks</li>
-         *     <li>maps of input and output replacement resources do not contain excluded resources</li>
          *     <li>maps of input and output resource containers are given for respectively all non-storable resources in
          *         input and output</li>
          * </ol>
@@ -205,14 +207,19 @@ public class ProductionGroup {
          * @return <code>true</code> if the production request is valid; <code>false</code> otherwise.
          */
         public boolean isValid() {
-            if (!inputBlanksRep.isEmpty() && inputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getInputBlanks())
+            if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
                 return false;
-            if (!outputBlanksRep.isEmpty() && outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
+            if (outputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isGiveableToPlayer()))
                 return false;
 
             if (inputBlanksRep.keySet().stream().anyMatch(resType -> production.getInputBlanksExclusions().contains(resType)))
                 return false;
             if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
+                return false;
+
+            if (!inputBlanksRep.isEmpty() && inputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getInputBlanks())
+                return false;
+            if (!outputBlanksRep.isEmpty() && outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
                 return false;
 
             return checkContainers(getReplacedInput(), inputContainers) && checkContainers(getReplacedOutput(), outputContainers);

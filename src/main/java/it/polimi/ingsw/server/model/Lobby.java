@@ -2,40 +2,49 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.gamecontext.GameContext;
 
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Lobby {
-    final private GameFactory gameFactory;
-    final private List<GameContext> games;
-    final private Map<Socket, GameContext> joined;
-    final private Map<Socket, Player> players;
+    private final GameFactory gameFactory;
+    private final List<GameContext> games;
+    private final Map<String, GameContext> joined;
+    private final List<String> waiting;
+    private int countToNewGame;
 
     public Lobby(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
         this.games = new ArrayList<>();
         this.joined = new HashMap<>();
-        this.players = new HashMap<>();
+        this.waiting = new ArrayList<>();
     }
 
-    public void joinLobby(Socket client) {
-        joined.put(client, new GameContext(gameFactory.getSoloGame("")));
+    public void joinLobby(String nickname) {
+        waiting.add(nickname);
+        if(waiting.size() == countToNewGame) {
+            startNewGame();
+            countToNewGame = 0;
+        }
+//        return waiting.size() == 1;
     }
 
-    public GameContext getJoinedGame(Socket c) {
-        return joined.get(c);
+    public Optional<GameContext> getJoinedGame(String nickname) {
+        return Optional.ofNullable(joined.get(nickname));
     }
 
-    public void assignPlayer(Socket c, Player p) {
-        players.put(c, p);
+    public void setCountToNewGame(int count) {
+        this.countToNewGame = count;
+        if (waiting.size() == countToNewGame) startNewGame();
     }
 
-    public Player getPlayer(Socket c) {
-        return players.get(c);
+    public void startNewGame() {
+        Game newGame = countToNewGame == 1 ? gameFactory.getSoloGame(waiting.get(0)) : gameFactory.getMultiGame(waiting.subList(0,countToNewGame));
+        GameContext newContext = new GameContext(newGame);
+        games.add(newContext);
+        waiting.subList(0,countToNewGame).forEach(p -> joined.put(p, newContext));
+        waiting.subList(0,countToNewGame).clear();
     }
 
-
+    public boolean isPlayerFirst(String nickname) {
+        return waiting.indexOf(nickname) == 0;
+    }
 }

@@ -64,7 +64,7 @@ public class FileGameFactory implements GameFactory {
     private final Production baseProduction;
 
     /** The boosts. */
-    private final List<Boost> initialResources;
+    private final List<Boost> boosts;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
@@ -75,8 +75,8 @@ public class FileGameFactory implements GameFactory {
     public FileGameFactory(InputStream inputStream) {
         gson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
-                .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
-                .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
+                .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
+                .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                 .create();
 
         parserObject = gson.fromJson(new InputStreamReader(inputStream), JsonObject.class);
@@ -101,7 +101,7 @@ public class FileGameFactory implements GameFactory {
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
 
         baseProduction = gson.fromJson(parserObject.get("baseProduction"), Production.class);
-        initialResources = gson.fromJson(parserObject.get("initialResources"), new TypeToken<ArrayList<Boost>>() {
+        boosts = gson.fromJson(parserObject.get("boosts"), new TypeToken<ArrayList<Boost>>() {
         }.getType());
     }
 
@@ -206,9 +206,9 @@ public class FileGameFactory implements GameFactory {
                     baseProduction,
                     slotsCount,
                     chosenLeadersCount,
-                    initialResources.get(i).numStorable,
-                    initialResources.get(i).faith
-            ));
+                    boosts.get(i).initialResources,
+                    boosts.get(i).initialFaith,
+                    boosts.get(i).initialExcludedResources));
 
         return players;
     }
@@ -235,11 +235,9 @@ public class FileGameFactory implements GameFactory {
         }.getType());
         Set<ResourceType> resources = new HashSet<>();
         for (JsonObject o : protoResources) {
-            JsonElement subtype = o.get("subtype");
+            JsonElement type = o.get("type");
             try {
-                resources.add(subtype == null ? customGson.fromJson(o, ResourceType.class) :
-                        customGson.fromJson(o,
-                                (Class<? extends ResourceType>) Class.forName("it.polimi.ingsw.server.model.resourcetypes." + subtype.getAsString())));
+                resources.add(type == null ? customGson.fromJson(o, ResourceType.class) : customGson.fromJson(o, Class.forName("it.polimi.ingsw.server.model.resourcetypes." + type.getAsString()).asSubclass(ResourceType.class)));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -255,17 +253,16 @@ public class FileGameFactory implements GameFactory {
     private List<LeaderCard> generateLeaderCards() {
         Gson customGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
-                .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
-                .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
-                .registerTypeHierarchyAdapter(CardRequirement.class, new RequirementDeserializer())
+                .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
+                .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
+                .registerTypeAdapter(CardRequirement.class, new RequirementDeserializer())
                 .create();
         List<LeaderCard> leaders = new ArrayList<>();
         List<JsonObject> prototypes = customGson.fromJson(parserObject.get("leaderCards"), new TypeToken<ArrayList<JsonObject>>() {
         }.getType());
         for (JsonObject o : prototypes) {
             try {
-                leaders.add(customGson.fromJson(o,
-                        (Class<? extends LeaderCard>) Class.forName("it.polimi.ingsw.server.model.leadercards." + o.get("type").getAsString())));
+                leaders.add(customGson.fromJson(o, Class.forName("it.polimi.ingsw.server.model.leadercards." + o.get("type").getAsString()).asSubclass(LeaderCard.class)));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -324,8 +321,7 @@ public class FileGameFactory implements GameFactory {
         }.getType());
         for (JsonObject o : prototypes) {
             try {
-                tokens.add(gson.fromJson(o,
-                        (Class<? extends ActionToken>) Class.forName("it.polimi.ingsw.server.model.actiontokens." + o.get("type").getAsString())));
+                tokens.add(gson.fromJson(o, Class.forName("it.polimi.ingsw.server.model.actiontokens." + o.get("type").getAsString()).asSubclass(ActionToken.class)));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -336,10 +332,13 @@ public class FileGameFactory implements GameFactory {
     /** Private class representing the early game boost in resources. */
     private static class Boost {
         /** Number of choosable resources obtained at the beginning. */
-        private int numStorable;
+        private int initialResources;
 
         /** Starting faith points. */
-        private int faith;
+        private int initialFaith;
+
+        /** Resources that cannot be chosen. */
+        private Set<ResourceType> initialExcludedResources;
     }
 
     /** Custom deserializer for leader card requirements. */
@@ -349,12 +348,11 @@ public class FileGameFactory implements GameFactory {
         public CardRequirement deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             Gson customGson = new GsonBuilder()
                     .enableComplexMapKeySerialization().setPrettyPrinting()
-                    .registerTypeHierarchyAdapter(ResourceType.class, new ResourceDeserializer())
-                    .registerTypeHierarchyAdapter(DevCardColor.class, new ColorDeserializer())
+                    .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
+                    .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                     .create();
             try {
-                return customGson.fromJson(jsonElement,
-                        (Class<? extends CardRequirement>) Class.forName("it.polimi.ingsw.server.model.cardrequirements." + jsonElement.getAsJsonObject().get("type").getAsString()));
+                return customGson.fromJson(jsonElement, Class.forName("it.polimi.ingsw.server.model.cardrequirements." + jsonElement.getAsJsonObject().get("type").getAsString()).asSubclass(CardRequirement.class));
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

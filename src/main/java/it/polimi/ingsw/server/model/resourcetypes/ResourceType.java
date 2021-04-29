@@ -29,21 +29,40 @@ public class ResourceType {
     }
 
     /**
-     * Returns whether the resource type is storable.
-     *
-     * @return <code>true</code> if the resources of this type can be stored in a resource container; <code>false</code> otherwise.
-     */
-    public boolean isStorable() {
-        return storable;
-    }
-
-    /**
      * Returns the name of the resource type.
      *
      * @return the name of the resource type
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Returns whether the resource type is storable.
+     *
+     * @return <code>true</code> if the resources of this type can be stored in a resource container; <code>false</code>
+     * otherwise.
+     */
+    public final boolean isStorable() {
+        return storable;
+    }
+
+    /**
+     * Returns whether the resources of this type are giveable to a player.
+     *
+     * @return <code>true</code> if the resources of this type can be given to a player; <code>false</code> otherwise.
+     */
+    public boolean isGiveableToPlayer() {
+        return false;
+    }
+
+    /**
+     * Returns whether the resources of this type are takeable from a player.
+     *
+     * @return <code>true</code> if the resources of this type can be taken from a player; <code>false</code> otherwise.
+     */
+    public boolean isTakeableFromPlayer() {
+        return false;
     }
 
     /**
