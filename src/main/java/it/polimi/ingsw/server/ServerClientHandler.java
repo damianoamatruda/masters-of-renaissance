@@ -31,10 +31,19 @@ public class ServerClientHandler implements Runnable {
             out.println("Welcome.");
 
             while ((inputLine = in.readLine()) != null) {
-                outputLine = gp.processInput(inputLine, socket);
-                out.println(outputLine);
-                if (outputLine.equals("Bye.")){
-                    break;
+                outputLine = null;
+
+                try {
+                    outputLine = gp.processInput(inputLine, socket);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (outputLine != null) {
+                    out.println(outputLine);
+                    if (outputLine.equals("Bye.")) {
+                        break;
+                    }
                 }
             }
             in.close();
