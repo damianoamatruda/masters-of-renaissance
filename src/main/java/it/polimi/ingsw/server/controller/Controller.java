@@ -15,7 +15,7 @@ public class Controller {
 
     public void handle(ReqNickname message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
         nicknameRegister.registerNickname(message.getNickname());
-        out.println("Setting nickname...");
+        out.println("Setting nickname \"" + message.getNickname() + "\"...");
         model.joinLobby(message.getNickname());
     }
 

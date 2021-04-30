@@ -44,6 +44,8 @@ public class Server {
     }
 
     public void registerNickname(Socket client, String nickname) {
+        if (nickname == null || nickname.isBlank())
+            throw new RuntimeException("Given nickname is empty.");
         if (nicknames.containsKey(client))
             throw new RuntimeException("Client already has nickname \"" + nicknames.get(client) + "\".");
         if (nicknames.containsValue(nickname))
