@@ -5,7 +5,6 @@
     1. [Connecting - choosing a nickname](#connecting---choosing-a-nickname)
     2. [Choosing the number of players](#choosing-the-number-of-players)
     3. [Quitting the game](#quitting-the-game)
-    4. [Game start](#game-start)
 4. [Game phase - Player setup](#game-phase---player-setup)
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
@@ -20,16 +19,17 @@
         2. [Leader Actions](#leader-actions)
     3. [State messages](#state-messages)
         1. [Heartbeat](#heartbeat)
-        2. [Updating the players list](#updating-the-players-list)
-        3. [Updating the current player](#updating-the-current-player)
-        4. [Updating the market](#updating-the-market)
-        5. [Updating the shelves](#updating-the-shelves)
-        6. [Updating the leader cards](#updating-the-leader-cards)
-        7. [Updating the development card grid](#updating-the-development-card-grid)
-        8. [Updating the development card slots](#updating-the-development-card-slots)
-        9. [Updating the position on the faith track](#updating-the-position-on-the-faith-track)
-        10. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
-        11. [Declaring a winner](#declaring-a-winner)
+        2. [Game start](#game-start)
+        3. [Updating the players list](#updating-the-players-list)
+        4. [Updating the current player](#updating-the-current-player)
+        5. [Updating the market](#updating-the-market)
+        6. [Updating the shelves](#updating-the-shelves)
+        7. [Updating the leader cards](#updating-the-leader-cards)
+        8. [Updating the development card grid](#updating-the-development-card-grid)
+        9. [Updating the development card slots](#updating-the-development-card-slots)
+        10. [Updating the position on the faith track](#updating-the-position-on-the-faith-track)
+        11. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+        12. [Declaring a winner](#declaring-a-winner)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -177,66 +177,6 @@ The quit message is defined as:
 { "type": "GoodBye" }
 ```
 
-## Game start
-As the game starts, the server notifies all players of the event.
-
-### Caching
-At the same time, it sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
-For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game to be shown the objects status. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
-Caching also allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
-
-### Parameters and indices
-The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
-This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore extremely important for both parties to have matching ordering in the file's objects, since it will be used by the identification system.  
-The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
-
-This implies that every ID/index specified in this document has been synchronized at game start either by being taken from the configuration file or by being specified in the `GameStarted` message.
-
-The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
-The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they appear in the configuration file).
-The same principle applies to the solo action tokens.
-
-After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
-
-```
- ┌────────┒                      ┌────────┒ 
- │ Client ┃                      │ Server ┃
- ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-     │                                │
-     │ GameStarted                    │
-     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-     │                                │
-```
-**GameStarted (server)**
-```json
-{
-  "type": "GameStarted",
-  "nicknames": [ "X", "Y", "Z" ],
-  "market": {
-    "grid": [
-      [ "Coin", "Shield", "Coin" ],
-      [ "Coin", "Shield", "Stone" ]
-    ],
-    "slide": "Shield"
-  },
-  "devCardGrid": [
-    {
-      "color": "Blue",
-      "stacks": [
-        [ 2, 0, 1 ],
-        [ 3, 4, 5 ]
-      ]
-    }, {
-      "color": "Green",
-      "stacks": [
-        [ 8, 7, 6 ],
-        [ 9, 11, 10 ]
-      ]
-    }
-  ],
-  "soloActionTokens": [ 4, 3, 0, 1, 2 ]
-}
-```
 
 # Game phase - Player setup
 When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices. Those include which leader cards to keep and what resources to take, since the players following the first are entitled to receive bonus resources and faith points.
@@ -811,6 +751,67 @@ Heartbeat messages will be sent at the expiry of a timer of 30s. The timer will 
 A heartbeat message is defined as:
 ```json
 { "type": "HeartBeat" }
+```
+
+## Game start
+As the game starts, the server notifies all players of the event.
+
+### Caching
+At the same time, it sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
+For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game to be shown the objects status. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
+Caching also allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
+
+### Parameters and indices
+The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
+This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore extremely important for both parties to have matching ordering in the file's objects, since it will be used by the identification system.  
+The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
+
+This implies that every ID/index specified in this document has been synchronized at game start either by being taken from the configuration file or by being specified in the `GameStarted` message.
+
+The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
+The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they appear in the configuration file).
+The same principle applies to the solo action tokens.
+
+After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
+
+```
+ ┌────────┒                      ┌────────┒ 
+ │ Client ┃                      │ Server ┃
+ ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+     │                                │
+     │ GameStarted                    │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+```
+**GameStarted (server)**
+```json
+{
+  "type": "GameStarted",
+  "nicknames": [ "X", "Y", "Z" ],
+  "market": {
+    "grid": [
+      [ "Coin", "Shield", "Coin" ],
+      [ "Coin", "Shield", "Stone" ]
+    ],
+    "slide": "Shield"
+  },
+  "devCardGrid": [
+    {
+      "color": "Blue",
+      "stacks": [
+        [ 2, 0, 1 ],
+        [ 3, 4, 5 ]
+      ]
+    }, {
+      "color": "Green",
+      "stacks": [
+        [ 8, 7, 6 ],
+        [ 9, 11, 10 ]
+      ]
+    }
+  ],
+  "soloActionTokens": [ 4, 3, 0, 1, 2 ]
+}
 ```
 
 ## Updating the players list
