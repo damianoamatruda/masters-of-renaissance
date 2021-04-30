@@ -2,9 +2,8 @@
 1. [Communication protocol documentation](#communication-protocol-documentation)
 2. [Errors](#errors)
 3. [Client-server connection](#client-server-connection)
-    1. [Connecting/choosing a nickname](#connecting/choosing-a-nickname)
+    1. [Connecting - choosing a nickname](#connecting---choosing-a-nickname)
     2. [Choosing the number of players](#choosing-the-number-of-players)
-    3. [Game start](#game-start)
 4. [Game phase - Player setup](#game-phase---player-setup)
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
@@ -15,7 +14,7 @@
         3. [Activating productions](#activating-productions)
         4. [Ending the turn](#ending-the-turn)
     2. [Secondary actions](#secondary-actions)
-        1. [Swapping two shelves' content](#swapping-two-shelves'-content)
+        1. [Swapping two shelves](#swapping-two-shelves)
         2. [Leader Actions](#leader-actions)
     3. [State messages](#state-messages)
         1. [Updating the players list](#updating-the-players-list)
@@ -82,7 +81,7 @@ The following specification for the additional feature "Multiple Games" is taken
 
 Given those requirements, the communication has been modeled in the following way.
 
-## Connecting/choosing a nickname
+## Connecting - choosing a nickname
 The player, when starting the client, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted. Else, the player will be notified of the need to change it, restarting the process.
 
 The information of whether the player is the first of the match is included in the response given to the client. This is necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
@@ -177,14 +176,14 @@ Caching also allows partial checks to be preemptively (but not exclusively) done
 
 ### Parameters and indices
 The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
-This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore **extremely important** for both parties to have matching files.  
-The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system (this system was chosen over a more proper solution as a compromise to allow the developers to focus on other features, the lack of time being the main driver of the decision).
+This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore extremely important for both parties to have matching ordering in the file's objects, since it will be used by the identification system.  
+The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
 
 This implies that every ID/index specified in this document has been synchronized at game start either by being taken from the configuration file or by being specified in the `GameStarted` message.
 
 The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
-The leader cards will be shuffled before they can be chosen by the players: the `LeaderCards` field of the `GameStarted` message contains the original placements (in the config file) of the leader cards in the order the server shuffled them (`LeaderCards[0] = 2` means that the config file's third card is the first in the server's list).  
-The same principle applies to the development cards grid's stacks, sent as a list of objects, mapping colors with a list (levels) of lists (the deck of cards matching that level and color), and the solo action tokens.
+The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they appear in the configuration file).
+The same principle applies to the solo action tokens.
 
 After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
 
@@ -209,7 +208,6 @@ After reordering the cached objects to match the server's state, all indices sen
     ],
     "slide": "Shield"
   },
-  "leaderCards": [ 4, 2, 0, 1, 3 ],
   "devCardGrid": [
     {
       "color": "Blue",
@@ -410,7 +408,7 @@ Errors may arise from fitting the resources in the shelves, either by specifying
   "marketIndex": 0,
   "isRow": true,
   "replacements": [ { "res": "Coin", "quantity": 2 } ],
-  "shelfChoice": [
+  "shelves": [
     {
       "shelfIndex": 1,
       "resQuantity": 2,
@@ -492,7 +490,7 @@ If two `resType` fields have the same value, it means that one of the `shelfInde
 ```json
 {
   "type": "ErrDevCardChoice",
-  "msg": "Cannot choose dev card in row 0 column 5: column 5 does not exist."
+  "msg": "Cannot choose dev card in row 0 color Ylow: color Ylow does not exist."
 }
 ```
 **ErrPaymentShelfChoice (server)**
@@ -637,8 +635,8 @@ Secondary moves can be performed as often as the player wants and at any point o
 1. Swapping the content of the warehouse's shelves (the leader cards' depots can be included in the choice)
 2. Activating/discarding a leader card
 
-## Swapping two shelves' content
-During their turn, the player can decide to reorder the warehouse.
+## Swapping two shelves
+During their turn, the player can decide to reorder their warehouse.
 
 This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
 
@@ -663,10 +661,11 @@ This is technically only useful when taking resources from the market, as no oth
 ```json
 {
   "type": "ReqSwapShelves",
-  "shelves": [ 0, 3 ]
+  "first": 0,
+  "second": 3
 }
 ```
-**shelfSwapChoiceErr (server)**
+**ErrShelfSwap (server)**
 ```json
 {
   "type": "ErrShelfSwap",
@@ -765,7 +764,7 @@ When the match is waiting for players to join before its start, sending notifica
      │ UpdatePlayerConnect            │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
-     │ UpdatePlayerDisonnect          │
+     │ UpdatePlayerDisconnect         │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
@@ -776,10 +775,10 @@ When the match is waiting for players to join before its start, sending notifica
   "nickname": "X"
 }
 ```
-**UpdatePlayerDisonnect (server)**
+**UpdatePlayerDisconnect (server)**
 ```json
 {
-  "type": "UpdatePlayerDisonnect",
+  "type": "UpdatePlayerDisconnect",
   "nickname": "X"
 }
 ```
@@ -825,7 +824,7 @@ When the match is waiting for players to join before its start, sending notifica
 }
 ```
 
-## Updating the player's shelves
+## Updating the shelves
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -854,7 +853,7 @@ When the match is waiting for players to join before its start, sending notifica
 }
 ```
 
-## Updating the player's leader cards
+## Updating the leader cards
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -895,7 +894,7 @@ When the match is waiting for players to join before its start, sending notifica
 }
 ```
 
-## Updating the player's development card slots
+## Updating the development card slots
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -915,7 +914,7 @@ When the match is waiting for players to join before its start, sending notifica
 }
 ```
 
-## Updating the player's position on the faith track
+## Updating the position on the faith track
 
 ```
            ┌────────┒                      ┌────────┒ 
