@@ -4,6 +4,8 @@
 3. [Client-server connection](#client-server-connection)
     1. [Connecting - choosing a nickname](#connecting---choosing-a-nickname)
     2. [Choosing the number of players](#choosing-the-number-of-players)
+    3. [Quitting the game](#quitting-the-game)
+    4. [Game start](#game-start)
 4. [Game phase - Player setup](#game-phase---player-setup)
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
@@ -165,6 +167,14 @@ When a player is assigned by the server as the first of a new game, they have to
   "type": "ErrPlayersCount",
   "msg": "Illegal number of players: 0."
 }
+```
+
+## Quitting the game
+Quitting the client (soft quit, no errors) will send one final message to the server, allowing the server to distinguish the reason for the socket closing (which may be caused by the client crashing instead).
+
+The quit message is defined as:
+```json
+{ "type": "GoodBye" }
 ```
 
 ## Game start
