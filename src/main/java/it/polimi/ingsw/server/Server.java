@@ -15,13 +15,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    private final static String jsonConfigPath = "/server.json";
+
     private final int port;
 
-    public Server(int port){
+    public Server(int port) {
         this.port = port;
     }
 
-    public void startServer() {
+    public static void main(String[] args) {
+        Server server;
+
+        if (args.length >= 1)
+            server = new Server(Integer.parseInt(args[0]));
+        else
+            server = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(Server.class.getResourceAsStream(jsonConfigPath))), Server.class);
+
+        server.execute();
+    }
+
+    public void execute() {
         ExecutorService executor = Executors.newCachedThreadPool();
         ServerSocket serverSocket;
 
@@ -47,19 +60,5 @@ public class Server {
             }
         }
         executor.shutdown();
-    }
-
-    public static void main(String[] args) {
-        Server server;
-        if (args.length == 1)
-            server = new Server(Integer.parseInt(args[0]));
-        else
-            server = new Gson().fromJson(
-                    new InputStreamReader(
-                            Objects.requireNonNull(Server.class.getResourceAsStream("/server.json"))
-                    ), Server.class
-            );
-
-        server.startServer();
     }
 }
