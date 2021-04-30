@@ -17,16 +17,17 @@
         1. [Swapping two shelves](#swapping-two-shelves)
         2. [Leader Actions](#leader-actions)
     3. [State messages](#state-messages)
-        1. [Updating the players list](#updating-the-players-list)
-        2. [Updating the current player](#updating-the-current-player)
-        3. [Updating the market](#updating-the-market)
-        4. [Updating the player's shelves](#updating-the-player's-shelves)
-        5. [Updating the player's leader cards](#updating-the-player's-leader-cards)
-        6. [Updating the development card grid](#updating-the-development-card-grid)
-        7. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
-        8. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
-        9. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
-        10. [Declaring a winner](#declaring-a-winner)
+        1. [Heartbeat](#heartbeat)
+        2. [Updating the players list](#updating-the-players-list)
+        3. [Updating the current player](#updating-the-current-player)
+        4. [Updating the market](#updating-the-market)
+        5. [Updating the shelves](#updating-the-shelves)
+        6. [Updating the leader cards](#updating-the-leader-cards)
+        7. [Updating the development card grid](#updating-the-development-card-grid)
+        8. [Updating the development card slots](#updating-the-development-card-slots)
+        9. [Updating the position on the faith track](#updating-the-position-on-the-faith-track)
+        10. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+        11. [Declaring a winner](#declaring-a-winner)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -750,6 +751,15 @@ Indices reference the data given in [game start](#game-start).
 
 All messages are broadcast to all players, as the game rules don't specify that some objects should remain hidden.
 
+
+## Heartbeat
+The server checks whether the clients are still alive using both normal messages and heartbeat messages.  
+Heartbeat messages will be sent at the expiry of a timer of 30s. The timer will be reset when the server receives a message of any kind, hence the dual system.
+
+A heartbeat message is defined as:
+```json
+{ "type": "HeartBeat" }
+```
 
 ## Updating the players list
 Notifications about players connecting/disconnecting from a match will be sent.
