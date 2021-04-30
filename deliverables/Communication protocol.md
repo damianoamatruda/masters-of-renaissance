@@ -242,15 +242,20 @@ After reordering the cached objects to match the server's state, all indices sen
 When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices. Those include which leader cards to keep and what resources to take, since the players following the first are entitled to receive bonus resources and faith points.
 
 ## Choosing leader cards
-As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's duration: each player is sent a portion of the deck of leader cards, from which they can choose the cards to keep and discard.
+As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's duration.
 
 The client will be sent the IDs of the leader cards they can choose from, and will send back a subset of them.  
 To confirm the success of the operation, the server will echo back the chosen indices. Else, the player will be notified with an error message.
+
+The client is designed to go through this process after the game starts. If other clients don't do the same and the leaders remain to be chosen, the server will fail to process the move, sending an `ErrLeaderNotChosen` message.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │                 ReqOfferLeader │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │
                │ OfferLeader                    │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
@@ -266,6 +271,15 @@ To confirm the success of the operation, the server will echo back the chosen in
                │ ErrLeaderChoice                │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
+               │ ErrLeaderNotChosen             │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**ReqOfferLeader (client)**
+```json
+{
+  "type": "ReqOfferLeader"
+}
 ```
 **OfferLeader (server)**
 ```json
@@ -295,18 +309,30 @@ To confirm the success of the operation, the server will echo back the chosen in
   "msg": "Invalid leader cards chosen: 3, 25."
 }
 ```
+**ErrLeaderNotChosen (server)**
+```json
+{
+  "type": "ErrLeaderNotChosen",
+  "msg": "Invalid move: player needs to choose their leaders first."
+}
+```
 
 ## Choosing starting resources
 The players who haven't been given the inkwell have to choose their bonus starting resources.  
 The server will notify the player of the event, signaling the amount of resources the player can choose and which resource types they can choose from.  
 The client will respond by specifying the resource types and the respective quantities.
 
+As with the initial choice of leader cards, if the client doesn't go through the process of choosing the initial resources, every other move is negated.
+
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ offerResources                 │
+               │              ReqOfferResources │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │
+               │ OfferResources                 │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
@@ -326,6 +352,15 @@ The client will respond by specifying the resource types and the respective quan
                │ ErrShelfChoice                 │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
+               │ ErrResourcesNotChosen          │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**ReqOfferResources (client)**
+```json
+{
+  "type": "ReqOfferResources"
+}
 ```
 **OfferResources (server)**
 ```json
@@ -356,6 +391,13 @@ The client will respond by specifying the resource types and the respective quan
 {
   "type": "ErrShelfChoice",
   "msg": "Cannot place 3 resources of type Coin on shelf 0: not enough space."
+}
+```
+**ErrResourcesNotChosen (server)**
+```json
+{
+  "type": "ErrResourcesNotChosen",
+  "msg": "Invalid move: player needs to choose their starting resources first."
 }
 ```
 
