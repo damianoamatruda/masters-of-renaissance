@@ -19,8 +19,10 @@ public class GameProtocol {
 
     /* Interprets command string and calls an action from the model. */
     public String processInput(String input, Socket client, PrintWriter out) {
-        /*input = """
-                {"type":"ReqNickname","nickname":"X"}""";*/
+        if (input == null || input.isBlank()) {
+            System.err.println("Empty input.");
+            return "Empty input.";
+        }
 
         System.out.println("Received: \"" + input + "\"");
 
@@ -35,6 +37,11 @@ public class GameProtocol {
         } catch (JsonParseException e) {
             System.err.println("Invalid syntax.");
             return "Invalid syntax.";
+        }
+
+        if (jsonObject == null) {
+            System.err.println("Unknown parser error.");
+            return "Unknown parser error.";
         }
 
         JsonElement type = jsonObject.get("type");
