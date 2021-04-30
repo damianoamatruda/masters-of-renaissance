@@ -6,35 +6,38 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerClientHandler implements Runnable {
-    private final Socket socket;
+public class ServerClientHandler implements Runnable, NicknameRegister {
+    private final Server server;
+    private final Socket client;
     private final GameProtocol gp;
     // private final int timeout;
 
-    public ServerClientHandler(Socket socket, GameProtocol gp) {
-        this.socket = socket;
+    public ServerClientHandler(Server server, Socket client, GameProtocol gp) {
+        this.server = server;
+        this.client = client;
         // this.timeout = 10;
         this.gp = gp;
     }
 
-      /* public ServerClientHandler(Socket socket, int timeout) {
-          this.socket = socket;
-          this.timeout = timeout;
-      } */
+    public void registerNickname(String nickname) {
+        server.registerNickname(client, nickname);
+    }
 
     public void run() {
         try {
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             String inputLine, outputLine;
 
             out.println("Welcome.");
 
             while ((inputLine = in.readLine()) != null) {
+                String nickname = server.getNickname(client).orElse(null);
+
                 outputLine = null;
 
                 try {
-                    outputLine = gp.processInput(inputLine, socket, out);
+                    outputLine = gp.processInput(inputLine, this, nickname, out);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -48,7 +51,7 @@ public class ServerClientHandler implements Runnable {
             }
             in.close();
             out.close();
-            socket.close();
+            client.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

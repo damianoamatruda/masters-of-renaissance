@@ -8,7 +8,6 @@ import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.messages.Message;
 
 import java.io.PrintWriter;
-import java.net.Socket;
 
 public class GameProtocol {
     private final Controller controller;
@@ -18,7 +17,7 @@ public class GameProtocol {
     }
 
     /* Interprets command string and calls an action from the model. */
-    public String processInput(String input, Socket client, PrintWriter out) {
+    public String processInput(String input, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
         if (input == null || input.isBlank()) {
             System.err.println("Empty input.");
             return "Empty input.";
@@ -63,7 +62,7 @@ public class GameProtocol {
         }
 
         try {
-            message.handle(controller, client, out);
+            message.handle(controller, nicknameRegister, nickname, out);
         } catch (Exception e) {
             System.err.println("Controller error.");
             return "Controller error: " + e.getMessage();
