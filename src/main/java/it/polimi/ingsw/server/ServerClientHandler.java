@@ -34,20 +34,16 @@ public class ServerClientHandler implements Runnable, NicknameRegister {
             while ((inputLine = in.readLine()) != null) {
                 String nickname = server.getNickname(client).orElse(null);
 
-                outputLine = null;
+                boolean status = false;
 
                 try {
-                    outputLine = gp.processInput(inputLine, this, nickname, out);
+                    status = gp.processInput(inputLine, this, nickname, out);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                if (outputLine != null) {
-                    out.println(outputLine);
-                    if (outputLine.equals("Bye.")) {
-                        break;
-                    }
-                }
+                if (!status)
+                    break;
             }
             in.close();
             out.close();

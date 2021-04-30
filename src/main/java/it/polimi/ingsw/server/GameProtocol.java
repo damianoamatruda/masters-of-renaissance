@@ -3,7 +3,7 @@ package it.polimi.ingsw.server;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.messages.Message;
 
@@ -17,36 +17,34 @@ public class GameProtocol {
     }
 
     /* Interprets command string and calls an action from the model. */
-    public String processInput(String input, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
+    public boolean processInput(String input, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
         if (input == null || input.isBlank()) {
-            System.err.println("Empty input.");
-            return "Empty input.";
+            log(out, "Empty input.");
+            return true;
         }
 
         System.out.println("Received: \"" + input + "\"");
 
         if (input.equals("quit"))
-            return "Bye.";
+            return false;
 
         Gson gson = new Gson();
         JsonObject jsonObject;
-
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
-        } catch (JsonParseException e) {
-            System.err.println("Invalid syntax.");
-            return "Invalid syntax.";
+        } catch (JsonSyntaxException e) {
+            log(out, "Invalid syntax.");
+            return true;
         }
-
         if (jsonObject == null) {
-            System.err.println("Unknown parser error.");
-            return "Unknown parser error.";
+            log(out, "Unknown parser error.");
+            return true;
         }
 
         JsonElement type = jsonObject.get("type");
         if (type == null) {
-            System.err.println("Field \"type\" not found.");
-            return "Field \"type\" not found.";
+            log(out, "Field \"type\" not found.");
+            return true;
         }
 
         Message message;
@@ -54,21 +52,26 @@ public class GameProtocol {
         try {
             message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + type.getAsString()).asSubclass(Message.class));
         } catch (ClassNotFoundException e) {
-            System.err.println("Message type \"" + type.getAsString() + "\" does not exist.");
-            return "Invalid message type.";
-        } catch (JsonParseException e) {
-            System.err.println("Invalid attribute types.");
-            return "Invalid attribute types.";
+            log(out, "Message type \"" + type.getAsString() + "\" does not exist.");
+            return true;
+        } catch (JsonSyntaxException e) {
+            log(out, "Invalid attribute types.");
+            return true;
         }
 
         try {
             message.handle(controller, nicknameRegister, nickname, out);
         } catch (Exception e) {
-            System.err.println("Controller error.");
-            return "Controller error: " + e.getMessage();
+            log(out, "Controller error: " + e.getMessage());
+            return true;
         }
 
         System.out.println("Valid input.");
-        return null;
+        return true;
+    }
+
+    private void log(PrintWriter out, String message) {
+        System.err.println(message);
+        out.println(message);
     }
 }
