@@ -6,14 +6,14 @@ import it.polimi.ingsw.server.controller.Controller;
 import java.io.PrintWriter;
 
 public class ReqDiscardLeader implements Message {
-    private int leaderId;
+    private int leader;
 
     @Override
     public void handle(Controller controller, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
         controller.handle(this, nicknameRegister, nickname, out);
     }
 
-    public int getLeaderId() {
-        return leaderId;
+    public int getLeader() {
+        return leader;
     }
 }

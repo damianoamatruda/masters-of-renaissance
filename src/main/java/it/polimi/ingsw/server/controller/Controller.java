@@ -36,7 +36,7 @@ public class Controller {
 
     public void handle(ReqDiscardLeader message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
         checkClient(nickname);
-        out.println("Discarding leader of index " + message.getLeaderId() + "...");
+        out.println("Discarding leader of index " + message.getLeader() + "...");
     }
 
     public void handle(ReqGetMarket message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {

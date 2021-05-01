@@ -428,7 +428,7 @@ Errors may arise from fitting the resources in the shelves, either by specifying
 ```json
 {
   "type": "ReqTakeFromMarket",
-  "marketIndex": 0,
+  "index": 0,
   "isRow": true,
   "replacements": { "Coin": 2 },
   "shelves": [
@@ -456,8 +456,9 @@ The following information is needed when buying a development card:
 Possible errors include:
 
 1. Not identifying a valid card (invalid row/col)
-2. Not identifying a valid slot index
-3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
+2. Not identifying a valid slot
+3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed
+   onto)
 4. Not specifying correctly where to take the resources from/how many to take
 
 ```
@@ -490,7 +491,7 @@ Possible errors include:
   "type": "ReqBuyDevCard",
   "level": 1,
   "color": "Blue",
-  "slotIndex": 2,
+  "slot": 2,
   "resContainers": [
     [ 1, { "Coin": 2 } ],
     [ 4, { "Coin": 1 } ]
@@ -567,8 +568,8 @@ In the example below, the production with ID 3 does not specify its output: this
   "productions": [
     {
       "id": 0,
-      "inputBlanksRepl": { "Coin": 2, "Shield": 1 },
-      "outputBlanksRepl": { "Shield": 1 },
+      "inputBlanksRep": { "Coin": 2, "Shield": 1 },
+      "outputBlanksRep": { "Shield": 1 },
       "inputShelves": [
         [ 1, { "Coin": 1 } ],
         [ 2, { "Coin": 2 } ],
@@ -579,8 +580,8 @@ In the example below, the production with ID 3 does not specify its output: this
       ]
     }, {
       "id": 3,
-      "inputBlanksRepl": { "Stone": 1 },
-      "outputBlanksRepl": [],
+      "inputBlanksRep": { "Stone": 1 },
+      "outputBlanksRep": [],
       "inputShelves": [
         [ 0, { "Stone": 2 } ]
       ],
@@ -710,7 +711,7 @@ Leader activation:
 ```json
 {
   "type": "ReqActivateLeader",
-  "leaderId": 0
+  "leader": 0
 }
 ```
 If a leader is already active no error is raised, since it's not a critical event.
@@ -730,7 +731,7 @@ Discarding a leader:
                │ UpdateLeaders                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrLeaderDiscard               │
+               │ ErrDiscardLeader               │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -738,13 +739,14 @@ Discarding a leader:
 ```json
 {
   "type": "ReqDiscardLeader",
-  "leaderId": 0
+  "leader": 0
 }
 ```
-**ErrLeaderDiscard (server)**
+
+**ErrDiscardLeader (server)**
 ```json
 {
-  "type": "ErrLeaderDiscard",
+  "type": "ErrDiscardLeader",
   "msg": "Leader 0 cannot be discarded: leader 0 is active."
 }
 ```
@@ -944,7 +946,7 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateLeaders",
-  "index": 1,
+  "leader": 1,
   "isActive": true
 }
 ```
@@ -961,12 +963,13 @@ When the match is waiting for players to join before its start, sending notifica
                │                                │
 ```
 **UpdateDevGrid (server)**
+
 ```json
 {
   "type": "UpdateDevGrid",
-  "rowIndex": 1,
-  "colIndex": 2,
-  "cardIndex": 4
+  "row": 1,
+  "col": 2,
+  "card": 4
 }
 ```
 
@@ -982,11 +985,12 @@ When the match is waiting for players to join before its start, sending notifica
                │                                │
 ```
 **UpdateDevCardSlot (server)**
+
 ```json
 {
   "type": "UpdateDevCardSlot",
-  "slotIndex": 0,
-  "cardIndex": 7
+  "slot": 0,
+  "card": 7
 }
 ```
 
@@ -1017,15 +1021,17 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateSoloToken                │
+               │ UpdateActionToken              │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateSoloToken (server)**
+
+**UpdateActionToken (server)**
+
 ```json
 {
-  "type": "UpdateSoloToken",
-  "index": 6
+  "type": "UpdateActionToken",
+  "actionToken": 6
 }
 ```
 
@@ -1045,10 +1051,6 @@ When the match is waiting for players to join before its start, sending notifica
 {
   "type": "UpdateWinner",
   "msg": "Player X wins!",
-  "victoryPoints": [
-    { "nickname": "X", "quantity": 20 },
-    { "nickname": "Y", "quantity": 16 },
-    { "nickname": "Z", "quantity": 12 }
-  ]
+  "victoryPoints": { "X": 20, "Y": 16, "Z": 12 }
 }
 ```
