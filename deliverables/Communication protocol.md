@@ -109,7 +109,7 @@ The information of whether the player is the first of the match is included in t
 ```json
 {
   "type": "ReqNickname",
-  "nickname": "X"
+  "nickname": "NicknameA"
 }
 ```
 **ResNickname (server)**
@@ -808,7 +808,7 @@ After reordering the cached objects to match the server's state, all indices sen
 ```json
 {
   "type": "GameStarted",
-  "nicknames": [ "X", "Y", "Z" ],
+  "nicknames": [ "NicknameA", "NicknameB", "NicknameC" ],
   "market": {
     "grid": [
       [ "Coin", "Shield", "Coin" ],
@@ -856,14 +856,14 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdatePlayerConnect",
-  "nickname": "X"
+  "nickname": "NicknameA"
 }
 ```
 **UpdatePlayerDisconnect (server)**
 ```json
 {
   "type": "UpdatePlayerDisconnect",
-  "nickname": "X"
+  "nickname": "NicknameA"
 }
 ```
 
@@ -882,7 +882,7 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateCurPlayer",
-  "nickname": "Y"
+  "nickname": "NicknameB"
 }
 ```
 
@@ -1051,6 +1051,6 @@ When the match is waiting for players to join before its start, sending notifica
 {
   "type": "UpdateWinner",
   "msg": "Player X wins!",
-  "victoryPoints": { "X": 20, "Y": 16, "Z": 12 }
+  "victoryPoints": { "NicknameA": 20, "NicknameB": 16, "NicknameC": 12 }
 }
 ```
