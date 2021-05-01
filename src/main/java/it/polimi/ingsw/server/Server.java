@@ -2,7 +2,6 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.model.FileGameFactory;
 import it.polimi.ingsw.server.model.GameFactory;
@@ -38,7 +37,7 @@ public class Server {
         if (args.length >= 1)
             port = Integer.parseInt(args[0]);
         else {
-            JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(Client.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
+            JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(Server.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
             port = jsonConfig.get("port").getAsInt();
         }
 
