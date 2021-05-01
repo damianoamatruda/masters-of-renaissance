@@ -340,8 +340,8 @@ resources, every other move is negated.
 {
   "type": "ReqChooseResources",
   "initRes": [
-    { "shelf": 1, "res": { "type": "Coin", "quantity": 1 } },
-    { "shelf": 0, "res": { "type": "Shield", "quantity": 1 } }
+    { "shelf": 1, "resources": { "Coin": 1 } },
+    { "shelf": 0, "resources": { "Shield": 1 } }
   ]
 }
 ```
@@ -425,21 +425,24 @@ Errors may arise from fitting the resources in the shelves, either by specifying
 ```
 
 **ReqTakeFromMarket (client)**
+
 ```json
 {
   "type": "ReqTakeFromMarket",
   "marketIndex": 0,
   "isRow": true,
-  "replacements": [ { "res": "Coin", "quantity": 2 } ],
+  "replacements": { "Coin": 2 },
   "shelves": [
     {
       "shelfIndex": 1,
-      "resQuantity": 2,
-      "resType": "Coin"
+      "resources": {
+        "Coin": 2
+      }
     }, {
       "shelfIndex": 3,
-      "resQuantity": 2,
-      "resType": "Shield"
+      "resources": {
+        "Shield": 2
+      }
     }
   ]
 }
@@ -493,21 +496,24 @@ If two `resType` fields have the same value, it means that one of the `shelfInde
                │                                │
 ```
 **ReqBuyDevCard (client)**
+
 ```json
 {
   "type": "ReqBuyDevCard",
   "level": 1,
   "color": "Blue",
   "slotIndex": 2,
-  "res": [
+  "resContainers": [
     {
-      "resType": "Coin",
       "shelfIndex": 1,
-      "quantity": 2
+      "resources": {
+        "Coin": 2
+      }
     }, {
-      "resType": "Coin",
       "shelfIndex": 4,
-      "quantity": 1
+      "resources": {
+        "Coin": 1
+      }
     }
   ]
 }
@@ -575,36 +581,36 @@ In the example below, the production with ID 3 does not specify its output: this
                │                                │
 ```
 **ReqActivateProd (client)**
+
 ```json
 {
   "type": "ReqActivateProd",
   "productions": [
     {
       "id": 0,
-      "inputBlanksRepl": [
-        {
-          "res": "Coin",
-          "quantity": 2
-        }, {
-          "res": "Shield",
-          "quantity": 1
-        }
-      ],
-      "outputBlanksRepl": [ { "res": "Shield", "quantity": 1 } ],
+      "inputBlanksRepl": {
+        "Coin": 2,
+        "Shield": 1
+      },
+      "outputBlanksRepl": {
+        "Shield": 1
+      },
       "inputShelves": [
-          { "shelf": 1, "res": { "type": "Coin", "quantity": 1 } },
-          { "shelf": 2, "res": { "type": "Coin", "quantity": 2 } },
-          { "shelf": 0, "res": { "type": "Shield", "quantity": 2 } }
-        ],
+        { "shelf": 1, "resources": { "Coin": 1 } },
+        { "shelf": 2, "resources": { "Coin": 2 } },
+        { "shelf": 0, "resources": { "Shield": 2 } }
+      ],
       "outputShelves": [
-        { "shelf": 2, "res": { "type": "Stone", "quantity": 1 } }
+        { "shelf": 2, "resources": { "Stone": 1 } }
       ]
     }, {
       "id": 3,
-      "inputBlanksRepl": [ { "res": "Stone", "quantity": 1 } ],
+      "inputBlanksRepl": {
+        "Stone": 1
+      },
       "outputBlanksRepl": [],
       "inputShelves": [
-          { "shelf": 0, "res": { "type": "Stone", "quantity": 2 } }
+          { "shelf": 0, "resources": { "Stone": 2 } }
         ],
       "outputShelves": []
     }
