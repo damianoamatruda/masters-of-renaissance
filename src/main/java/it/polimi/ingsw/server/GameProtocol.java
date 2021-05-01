@@ -25,8 +25,10 @@ public class GameProtocol {
 
         System.out.println("Received: \"" + input + "\"");
 
-        if (input.equals("quit"))
+        if (input.equals("quit")) {
+            log(out, "Bye.");
             return false;
+        }
 
         Gson gson = new Gson();
         JsonObject jsonObject;
