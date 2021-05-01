@@ -24,10 +24,12 @@ public class Server {
 
     private final int port;
     private final Map<Socket, String> nicknames;
+    private volatile boolean listening;
 
     public Server(int port) {
         this.port = port;
         this.nicknames = new HashMap<>();
+        this.listening = false;
     }
 
     public static void main(String[] args) {
@@ -59,29 +61,23 @@ public class Server {
 
     public void execute() {
         ExecutorService executor = Executors.newCachedThreadPool();
-        ServerSocket serverSocket;
 
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            System.err.println(e.getMessage()); /* Port unavailable */
-            return;
-        }
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
+            Lobby model = new Lobby(gameFactory);
+            Controller controller = new Controller(model);
+            GameProtocol gp = new GameProtocol(controller);
 
-        GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
-        Lobby model = new Lobby(gameFactory);
-        Controller controller = new Controller(model);
-        GameProtocol gp = new GameProtocol(controller);
-
-        System.out.println("Server ready");
-        while (true) {
-            try {
+            System.out.println("Server ready");
+            listening = true;
+            while (listening) {
                 Socket clientSocket = serverSocket.accept();
                 executor.submit(new ServerClientHandler(this, clientSocket, gp));
-            } catch (IOException e) {
-                break;
             }
+            executor.shutdown();
+        } catch (IOException e) {
+            System.err.println("Exception caught when trying to listen on port " + port);
+            System.err.println(e.getMessage());
         }
-        executor.shutdown();
     }
 }
