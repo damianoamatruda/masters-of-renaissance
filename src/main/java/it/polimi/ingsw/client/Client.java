@@ -10,18 +10,25 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 public class Client {
     private final static String jsonConfigPath = "/server.json";
+    private final static String quitInput = "Bye.";
+    private final static String quitOutput = "quit";
 
     private final String host;
     private final int port;
+    private final ExecutorService executor;
     private Socket socket;
 
     public Client(String host, int port) {
         this.host = host;
         this.port = port;
+        this.executor = Executors.newFixedThreadPool(2);
+        this.socket = null;
     }
 
     public static void main(String[] args) {
@@ -42,18 +49,26 @@ public class Client {
         try {
             socket = new Socket(host, port);
         } catch (UnknownHostException e) {
-            hostError();
+            System.err.println("Don't know about host " + host);
             throw e;
         } catch (IOException e) {
-            ioError();
+            System.err.println("Couldn't get I/O for the connection to " + host + "when creating the socket");
             throw e;
         }
 
-        // TODO: End all threads when one ends
-        new Thread(this::receive).start();
-        new Thread(this::send).start();
+        executor.submit(this::receive);
+        executor.submit(this::send);
+    }
 
-        // socket.close();
+    public void stop() {
+        executor.shutdown();
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException ignored) {
+            }
+            socket = null;
+        }
     }
 
     private void receive() {
@@ -61,30 +76,27 @@ public class Client {
             String fromServer;
             while ((fromServer = in.readLine()) != null) {
                 System.out.println(fromServer);
-                if (fromServer.equals("Bye."))
+                if (fromServer.equals(quitInput))
                     break;
             }
         } catch (IOException e) {
-            ioError();
+            System.err.println("Couldn't get I/O for the connection to " + host + "when creating the input stream");
         }
+        stop();
     }
 
     private void send() {
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             String fromClient;
-            while ((fromClient = stdIn.readLine()) != null)
+            while ((fromClient = stdIn.readLine()) != null) {
                 out.println(fromClient);
+                if (fromClient.equals(quitOutput)) /* Necessary as stdIn::readLine is a blocking operation */
+                    break;
+            }
         } catch (IOException e) {
-            ioError();
+            System.err.println("Couldn't get I/O for the connection to " + host + "when creating the output stream");
         }
-    }
-
-    private void hostError() {
-        System.err.println("Don't know about host " + host);
-    }
-
-    private void ioError() {
-        System.err.println("Couldn't get I/O for the connection to " + host);
+        stop();
     }
 }
