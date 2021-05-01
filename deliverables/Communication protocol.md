@@ -179,157 +179,185 @@ The quit message is defined as:
 
 
 # Game phase - Player setup
-When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices. Those include which leader cards to keep and what resources to take, since the players following the first are entitled to receive bonus resources and faith points.
+When the game starts, the server instantiates its internal model. To set up the player objects, the clients will need to
+make choices. Those include which leader cards to keep and what resources to take, since the players are entitled to
+receive bonus resources and faith points.
 
 ## Choosing leader cards
-As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's duration.
+
+As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's
+duration.
 
 The client will be sent the IDs of the leader cards they can choose from, and will send back a subset of them.  
-To confirm the success of the operation, the server will echo back the chosen indices. Else, the player will be notified with an error message.
+To confirm the success of the operation, the server will echo back the indices. Else, the player will be notified with
+an error message.
 
-The client is designed to go through this process after the game starts. If other clients don't do the same and the leaders remain to be chosen, the server will fail to process the move, sending an `ErrLeaderNotChosen` message.
+The client is designed to go through this process after the game starts. If other clients don't do the same and the
+leaders remain to be chosen, the server will fail to process the move, sending an `ErrLeadersNotChosen` message.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                 ReqOfferLeader │
+               │                 ReqLeadersHand │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │
-               │ OfferLeader                    │
+               │ ResLeadersHand                 │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │                ReqLeaderChoice │
+╰────────────╯ │               ReqChooseLeaders │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ ResLeaderChoice                │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ ResChooseLeaders               │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrLeaderChoice                │
+               │ ErrChooseLeaders               │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrLeaderNotChosen             │
+               │ ErrLeadersNotChosen             │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqOfferLeader (client)**
+
+**ReqLeadersHand (client)**
 ```json
 {
-  "type": "ReqOfferLeader"
+  "type": "ReqLeadersHand"
 }
 ```
-**OfferLeader (server)**
+
+**ResLeadersHand (server)**
 ```json
 {
-  "type": "OfferLeader",
+  "type": "ResLeadersHand",
   "leadersId": [ 3, 7, 14, 15 ]
 }
 ```
-**ReqLeaderChoice (client)**
+
+**ReqChooseLeaders (client)**
 ```json
 {
-  "type": "ReqLeaderChoice",
+  "type": "ReqChooseLeaders",
   "leadersId": [ 3, 15 ]
 }
 ```
-**ResLeaderChoice (server)**
+
+**ResChooseLeaders (server)**
+
 ```json
 {
-  "type": "ResLeaderChoice",
-  "msg": "Leaders chosen: 3, 15"
+  "type": "ResChooseLeaders",
+  "msg": "Leader cards chosen: 3, 15"
 }
 ```
-**ErrLeaderChoice (server)**
+
+**ErrChooseLeaders (server)**
+
 ```json
 {
-  "type": "ErrLeaderChoice",
-  "msg": "Invalid leader cards chosen: 3, 25."
+  "type": "ErrChooseLeaders",
+  "msg": "Invalid leader cards: 3, 25."
 }
 ```
-**ErrLeaderNotChosen (server)**
+
+**ErrLeadersNotChosen (server)**
+
 ```json
 {
-  "type": "ErrLeaderNotChosen",
-  "msg": "Invalid move: player needs to choose their leaders first."
+  "type": "ErrLeadersNotChosen",
+  "msg": "Invalid move: player needs to choose their leader cards first."
 }
 ```
 
 ## Choosing starting resources
-The players who haven't been given the inkwell have to choose their bonus starting resources.  
-The server will notify the player of the event, signaling the amount of resources the player can choose and which resource types they can choose from.  
+
+The players have to choose their bonus starting resources.  
+The server will notify the player of the event, signaling the amount of resources the player can choose and which
+resource types they can choose from.  
 The client will respond by specifying the resource types and the respective quantities.
 
-As with the initial choice of leader cards, if the client doesn't go through the process of choosing the initial resources, every other move is negated.
+As with the initial choice of leader cards, if the client doesn't go through the process of choosing the initial
+resources, every other move is negated.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │              ReqOfferResources │
+               │                       ReqBoost │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │
-               │ OfferResources                 │
+               │ ResBoost                       │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │             ReqResourcesChoice │
+╰────────────╯ │             ReqChooseResources │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateShelves                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateShelves                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ UpdateFaithTrack               │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrResourcesChoice             │
+               │ ErrChooseResources             │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelfChoice                 │
+               │ ErrShelf                       │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ ErrResourcesNotChosen          │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqOfferResources (client)**
+
+**ReqBoost (client)**
 ```json
 {
-  "type": "ReqOfferResources"
+  "type": "ReqBoost"
 }
 ```
-**OfferResources (server)**
+
+**ResBoost (server)**
+
 ```json
 {
-  "type": "OfferResources",
-  "storableCount": 1
+  "type": "ResBoost",
+  "initialResources": 1,
+  "initialFaith": 1,
+  "initialExcludedResources": [
+    "Faith"
+  ]
 }
 ```
-**ReqResourcesChoice (client)**
+
+**ReqChooseResources (client)**
 ```json
 {
-  "type": "ReqResourcesChoice",
+  "type": "ReqChooseResources",
   "initRes": [
     { "shelf": 1, "res": { "type": "Coin", "quantity": 1 } },
     { "shelf": 0, "res": { "type": "Shield", "quantity": 1 } }
   ]
 }
 ```
-**ErrResourcesChoice (server)**
+
+**ErrChooseResources (server)**
 ```json
 {
-  "type": "ErrResourcesChoice",
+  "type": "ErrChooseResources",
   "msg": "Cannot choose 2 starting resources, only 1 available."
 }
 ```
-**ErrShelfChoice (server)**
+
+**ErrShelf (server)**
 ```json
 {
-  "type": "ErrShelfChoice",
+  "type": "ErrShelf",
   "msg": "Cannot place 3 resources of type Coin on shelf 0: not enough space."
 }
 ```
@@ -345,7 +373,8 @@ As with the initial choice of leader cards, if the client doesn't go through the
 After all players have gone through the setup phase, the server will start the turn loop.
 
 The messages in this section can be differentiated into:
-1. [Main actions](#main-actions), of which the player has to choose only one during the turn
+
+1. [Main actions](#main-actions), of which the player has to make only one during the turn
 2. [Secondary actions](#secondary-actions), which can be repeated within the player's turn
 3. [State messages](#state-messages), which update the local caches' state to match the server's
 
@@ -377,11 +406,11 @@ Errors may arise from fitting the resources in the shelves, either by specifying
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │                   ReqGetMarket │
+╰────────────╯ │              ReqTakeFromMarket │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateMarket                   │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateMarket                   │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ UpdateShelves                  │
@@ -390,14 +419,15 @@ Errors may arise from fitting the resources in the shelves, either by specifying
                │ UpdateLeaders                  │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelvesChoice               │
+               │ ErrShelves                     │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqGetMarket (client)**
+
+**ReqTakeFromMarket (client)**
 ```json
 {
-  "type": "ReqGetMarket",
+  "type": "ReqTakeFromMarket",
   "marketIndex": 0,
   "isRow": true,
   "replacements": [ { "res": "Coin", "quantity": 2 } ],
@@ -414,11 +444,13 @@ Errors may arise from fitting the resources in the shelves, either by specifying
   ]
 }
 ```
-**ErrShelvesChoice (server)**
+
+**ErrShelves (server)**
+
 ```json
 {
-  "type": "ErrShelvesChoice",
-  "msg": "Cannot fit the resources in the shelves as chosen: no space left in shelf 3."
+  "type": "ErrShelves",
+  "msg": "Cannot fit the resources in the shelves: no space left in shelf 3."
 }
 ```
 
@@ -429,7 +461,8 @@ The following information is needed when buying a development card:
 3. For each resource that has to be paid, the shelf (or strongbox) to take it from
 
 Possible errors include:
-1. Not identifying a valid card (invalid row/col choice)
+
+1. Not identifying a valid card (invalid row/col)
 2. Not identifying a valid slot index
 3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
 4. Not specifying correctly where to take the resources from/how many to take
@@ -444,18 +477,18 @@ If two `resType` fields have the same value, it means that one of the `shelfInde
 │ user input ├─┤                                │ 
 ╰────────────╯ │                  ReqBuyDevCard │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateDevGrid                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateDevGrid                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrDevCardChoice               │
+               │ ErrDevCard                     │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrPaymentShelfChoice          │
+               │ ErrPaymentShelf                │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrSlotChoice                  │
+               │ ErrSlot                        │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -466,7 +499,7 @@ If two `resType` fields have the same value, it means that one of the `shelfInde
   "level": 1,
   "color": "Blue",
   "slotIndex": 2,
-  "resChoice": [
+  "res": [
     {
       "resType": "Coin",
       "shelfIndex": 1,
@@ -479,24 +512,28 @@ If two `resType` fields have the same value, it means that one of the `shelfInde
   ]
 }
 ```
-**ErrDevCardChoice (server)**
+
+**ErrDevCard (server)**
+
 ```json
 {
-  "type": "ErrDevCardChoice",
-  "msg": "Cannot choose dev card in row 0 color Ylow: color Ylow does not exist."
+  "type": "ErrDevCard",
+  "msg": "Cannot buy dev card in row 0 color Yellow: color Yellow does not exist."
 }
 ```
-**ErrPaymentShelfChoice (server)**
+
+**ErrPaymentShelf (server)**
 ```json
 {
-  "type": "ErrPaymentShelfChoice",
+  "type": "ErrPaymentShelf",
   "msg": "Cannot take 3 resource Coin from shelf 1: not enough resources."
 }
 ```
-**ErrSlotChoice (server)**
+
+**ErrSlot (server)**
 ```json
 {
-  "type": "ErrSlotChoice",
+  "type": "ErrSlot",
   "msg": "Cannot assign dev card to slot 3: card level constraints not satisfied: required card of level 1 not present."
 }
 ```
@@ -522,18 +559,18 @@ In the example below, the production with ID 3 does not specify its output: this
 │ user input ├─┤                                │ 
 ╰────────────╯ │                ReqActivateProd │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateShelves                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateShelves                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrProdChoice                  │
+               │ ErrProd                        │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelfMapChoice              │
+               │ ErrShelfMap                    │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrReplacementChoice           │
+               │ ErrReplacement                 │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -574,24 +611,27 @@ In the example below, the production with ID 3 does not specify its output: this
   ]
 }
 ```
-**ErrProdChoice (server)**
+
+**ErrProd (server)**
 ```json
 {
-  "type": "ErrProdChoice",
+  "type": "ErrProd",
   "msg": "Cannot activate production 17: production 17 does not exist."
 }
 ```
-**ErrShelfMapChoice (server)**
+
+**ErrShelfMap (server)**
 ```json
 {
-  "type": "ErrShelfMapChoice",
+  "type": "ErrShelfMap",
   "msg": "Cannot place 3 resource Coin in shelf 2: wrong resource type, shelf 2 is bound to Shield."
 }
 ```
-**ErrReplacementChoice (server)**
+
+**ErrReplacement (server)**
 ```json
 {
-  "type": "ErrReplacementChoice",
+  "type": "ErrReplacement",
   "msg": "Replacements incomplete: production 3 requires 3 replacements, only 2 specified."
 }
 ```
@@ -625,7 +665,8 @@ Since the server cannot at any point assume that the player has finished choosin
 
 # Secondary actions
 Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
-1. Swapping the content of the warehouse's shelves (the leader cards' depots can be included in the choice)
+
+1. Swapping the content of the player's shelves
 2. Activating/discarding a leader card
 
 ## Swapping two shelves
@@ -641,9 +682,9 @@ This is technically only useful when taking resources from the market, as no oth
 │ user input ├─┤                                │ 
 ╰────────────╯ │                 ReqSwapShelves │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateShelves                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateShelves                  │ ╰─────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ ErrShelfSwap                   │
@@ -681,9 +722,9 @@ Leader activation:
 │ user input ├─┤                                │ 
 ╰────────────╯ │              ReqActivateLeader │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateLeaders                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateLeaders                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -706,9 +747,9 @@ Discarding a leader:
 │ user input ├─┤                                │ 
 ╰────────────╯ │               ReqDiscardLeader │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateLeaders                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateLeaders                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ ErrLeaderDiscard               │

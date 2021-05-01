@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.controller.Controller;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class ReqLeaderChoice implements Message {
+public class ReqChooseLeaders implements Message {
     private List<Integer> leadersId;
 
     @Override

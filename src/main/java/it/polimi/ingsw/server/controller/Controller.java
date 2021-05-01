@@ -44,7 +44,7 @@ public class Controller {
         out.println("Getting market...");
     }
 
-    public void handle(ReqLeaderChoice message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
+    public void handle(ReqChooseLeaders message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
         checkClient(nickname);
         out.println("Choosing leader...");
     }
@@ -65,6 +65,11 @@ public class Controller {
     public void handle(ReqSwapShelves message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
         checkClient(nickname);
         out.println("Swapping shelves...");
+    }
+
+    public void handle(ReqTakeFromMarket message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
+        checkClient(nickname);
+        out.println("Taking resources from market...");
     }
 
     public void handle(ReqTurnEnd message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
