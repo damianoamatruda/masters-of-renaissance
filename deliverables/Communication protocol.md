@@ -329,19 +329,18 @@ resources, every other move is negated.
   "type": "ResBoost",
   "initialResources": 1,
   "initialFaith": 1,
-  "initialExcludedResources": [
-    "Faith"
-  ]
+  "initialExcludedResources": [ "Faith" ]
 }
 ```
 
 **ReqChooseResources (client)**
+
 ```json
 {
   "type": "ReqChooseResources",
-  "initRes": [
-    { "shelf": 1, "resources": { "Coin": 1 } },
-    { "shelf": 0, "resources": { "Shield": 1 } }
+  "shelves": [
+    [ 1, { "Coin": 1 } ],
+    [ 0, { "Shield": 1 } ]
   ]
 }
 ```
@@ -433,17 +432,8 @@ Errors may arise from fitting the resources in the shelves, either by specifying
   "isRow": true,
   "replacements": { "Coin": 2 },
   "shelves": [
-    {
-      "shelfIndex": 1,
-      "resources": {
-        "Coin": 2
-      }
-    }, {
-      "shelfIndex": 3,
-      "resources": {
-        "Shield": 2
-      }
-    }
+    [ 1, { "Coin": 2 } ],
+    [ 3, { "Shield": 2 } ]
   ]
 }
 ```
@@ -469,8 +459,6 @@ Possible errors include:
 2. Not identifying a valid slot index
 3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
 4. Not specifying correctly where to take the resources from/how many to take
-
-If two `resType` fields have the same value, it means that one of the `shelfIndex` refers to the strongbox, since two warehouse shelves cannot have the same resource.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -504,17 +492,8 @@ If two `resType` fields have the same value, it means that one of the `shelfInde
   "color": "Blue",
   "slotIndex": 2,
   "resContainers": [
-    {
-      "shelfIndex": 1,
-      "resources": {
-        "Coin": 2
-      }
-    }, {
-      "shelfIndex": 4,
-      "resources": {
-        "Coin": 1
-      }
-    }
+    [ 1, { "Coin": 2 } ],
+    [ 4, { "Coin": 1 } ]
   ]
 }
 ```
@@ -588,30 +567,23 @@ In the example below, the production with ID 3 does not specify its output: this
   "productions": [
     {
       "id": 0,
-      "inputBlanksRepl": {
-        "Coin": 2,
-        "Shield": 1
-      },
-      "outputBlanksRepl": {
-        "Shield": 1
-      },
+      "inputBlanksRepl": { "Coin": 2, "Shield": 1 },
+      "outputBlanksRepl": { "Shield": 1 },
       "inputShelves": [
-        { "shelf": 1, "resources": { "Coin": 1 } },
-        { "shelf": 2, "resources": { "Coin": 2 } },
-        { "shelf": 0, "resources": { "Shield": 2 } }
+        [ 1, { "Coin": 1 } ],
+        [ 2, { "Coin": 2 } ],
+        [ 0, { "Shield": 2 } ]
       ],
       "outputShelves": [
-        { "shelf": 2, "resources": { "Stone": 1 } }
+        [ 2, { "Stone": 1 } ]
       ]
     }, {
       "id": 3,
-      "inputBlanksRepl": {
-        "Stone": 1
-      },
+      "inputBlanksRepl": { "Stone": 1 },
       "outputBlanksRepl": [],
       "inputShelves": [
-          { "shelf": 0, "resources": { "Stone": 2 } }
-        ],
+        [ 0, { "Stone": 2 } ]
+      ],
       "outputShelves": []
     }
   ]
@@ -946,19 +918,13 @@ When the match is waiting for players to join before its start, sending notifica
                │                                │
 ```
 **UpdateShelves (server)**
+
 ```json
 {
   "type": "UpdateShelves",
   "shelves": [
-    {
-      "index": 0,
-      "boundRes": "Coin",
-      "quantity": 1
-    }, {
-      "index": 1,
-      "boundRes": null,
-      "quantity": 0
-    }
+    [ 0, { "Coin": 1 } ],
+    [ 1, {} ]
   ]
 }
 ```
