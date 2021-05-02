@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.*;
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
@@ -134,7 +134,7 @@ abstract public class GameState {
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws IllegalActionException if the player cannot buy a development card in the current state
      */
-    public void buyDevCard(GameContext context, Player player, DevCardColor color, int level, int position, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, RequirementsNotMetException, IllegalCardDepositException {
+    public void buyDevCard(GameContext context, Player player, DevCardColor color, int level, int position, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, CardRequirementsNotMetException, IllegalCardDepositException {
         throw new IllegalActionException();
     }
 

@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.model.Card;
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceShelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
@@ -61,7 +61,7 @@ public abstract class LeaderCard extends Card {
         if (requirement != null) {
             try {
                 requirement.checkRequirements(player);
-            } catch (RequirementsNotMetException e) {
+            } catch (CardRequirementsNotMetException e) {
                 throw new IllegalActivationException(
                         String.format("\nThe leader card cannot be activated due to the following reason: %s", e.getMessage()));
             }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
@@ -116,18 +116,18 @@ public class DevCardGrid {
      * @param position      the position of the dev slot where to put the development card
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws IllegalCardDepositException Bought card cannot be placed in the chosen player slot
-     * @throws RequirementsNotMetException error while player was depositing the card
+     * @throws CardRequirementsNotMetException error while player was depositing the card
      * @throws EmptyStackException         No cards available with given color and level
      */
     public void buyDevCard(Game game, Player player, DevCardColor color, int level, int position,
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
-            throws RequirementsNotMetException, IllegalCardDepositException, EmptyStackException {
+            throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException {
 
         // TODO peek
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
             player.addToDevSlot(game, position, card, resContainers);
-        } catch (RequirementsNotMetException | IllegalCardDepositException e) {
+        } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
         }

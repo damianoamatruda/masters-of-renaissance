@@ -31,7 +31,7 @@ public class DevCardRequirement implements CardRequirement {
     }
 
     @Override
-    public void checkRequirements(Player player) throws RequirementsNotMetException {
+    public void checkRequirements(Player player) throws CardRequirementsNotMetException {
         /* gather all the player's dev cards
          * from them another set of entries will be extracted
          * then the two sets are compared to see if all required entries
@@ -72,11 +72,10 @@ public class DevCardRequirement implements CardRequirement {
             String msg = String.format("\nPlayer %s does not satisfy the following entries:", player.getNickname());
 
             for (Entry e : new ArrayList<>(missing)) {
-                msg = msg.concat(String.format("\nColor %s, level %s, missing %s", e.color.getName(), e.level, e.amount));
+                msg = msg.concat(String.format("\nColor %s, level %d, missing %s", e.color.getName(), e.level, e.amount));
             }
 
-            throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
-                    player.getNickname(), msg));
+            throw new CardRequirementsNotMetException("development card", msg);
         }
     }
 

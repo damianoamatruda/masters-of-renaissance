@@ -42,7 +42,7 @@ public class DevCardRequirementTest {
 
         DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(blue, 1, 1)));
 
-        assertThrows(RequirementsNotMetException.class, () -> req.checkRequirements(p));
+        assertThrows(CardRequirementsNotMetException.class, () -> req.checkRequirements(p));
     }
 
     /**
@@ -57,7 +57,7 @@ public class DevCardRequirementTest {
 
         DevCardRequirement req = new DevCardRequirement(Set.of(new DevCardRequirement.Entry(green, 2, 1)));
 
-        assertThrows(RequirementsNotMetException.class, () -> req.checkRequirements(p));
+        assertThrows(CardRequirementsNotMetException.class, () -> req.checkRequirements(p));
     }
 
     /**

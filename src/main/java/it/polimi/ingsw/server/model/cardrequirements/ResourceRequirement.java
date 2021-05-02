@@ -50,7 +50,7 @@ public class ResourceRequirement implements CardRequirement {
     }
 
     @Override
-    public void checkRequirements(Player player) throws RequirementsNotMetException {
+    public void checkRequirements(Player player) throws CardRequirementsNotMetException {
         /* in order for the player to be able to buy the devcard,
          * satisfying the discounted cost is enough
          * for each resource type in the requirement,
@@ -84,8 +84,7 @@ public class ResourceRequirement implements CardRequirement {
                 msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey().getName(), e.getValue()));
             }
 
-            throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
-                    player.getNickname(), msg));
+            throw new CardRequirementsNotMetException("resource", msg);
         }
     }
 
@@ -96,9 +95,9 @@ public class ResourceRequirement implements CardRequirement {
      * @param game          the game the player is playing in
      * @param player        the player the resources are taken from
      * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws RequirementsNotMetException if it is not possible
+     * @throws CardRequirementsNotMetException if it is not possible
      */
-    public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException {
+    public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException {
         try {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(
@@ -106,8 +105,7 @@ public class ResourceRequirement implements CardRequirement {
                             Map.of(), Map.of(), resContainers, Map.of())
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
-            throw new RequirementsNotMetException(String.format("\nThe ResourceRequirement was not satisfied by player %s due to the following reason: %s",
-                    player.getNickname(), e.getMessage()));
+            throw new CardRequirementsNotMetException("resource", e);
         }
     }
 }

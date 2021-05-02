@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.leadercards.DepotLeader;
 import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
@@ -161,7 +161,7 @@ public class PlayerTest {
          * Prepares stored resources and resources to pay.
          */
         @BeforeEach
-        void prepareResources() throws RequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
+        void prepareResources() throws CardRequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
                     player.getStrongbox(), Map.of(coin, 3),
                     player.getWarehouse().getShelves().get(1), Map.of(stone, 2)
