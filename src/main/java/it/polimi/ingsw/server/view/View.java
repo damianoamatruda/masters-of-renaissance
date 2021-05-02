@@ -131,9 +131,9 @@ public class View {
             messageSender.send(new ErrCommunication("Invalid attribute types."));
     }
 
-    public void updateControllerError(String message) {
+    public void updateControllerError(Exception e) {
         if (messageSender != null)
-            messageSender.send(new ErrCommunication("Controller error: " + message));
+            messageSender.send(new ErrController(e));
     }
 
     public void updateNickname(boolean isFirst) {

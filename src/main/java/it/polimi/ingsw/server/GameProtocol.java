@@ -52,7 +52,7 @@ public class GameProtocol {
         try {
             message.handle(view);
         } catch (Exception e) {
-            view.updateControllerError(e.getMessage());
+            view.updateControllerError(e);
         }
     }
 
