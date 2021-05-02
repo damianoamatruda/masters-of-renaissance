@@ -122,7 +122,7 @@ public class Player {
      */
     public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
         if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))
-            throw new CannotChooseException(false);
+            throw new CannotChooseException("leader cards");
         leaders.retainAll(chosenLeaders);
     }
 
@@ -140,7 +140,7 @@ public class Player {
         // TODO: IllegalResourceTransferException?
 
         if (hasChosenResources)
-            throw new CannotChooseException(true);
+            throw new CannotChooseException("resources");
 
         Map<ResourceType, Integer> chosenResources = shelves.values().stream()
                 .map(Map::entrySet)
