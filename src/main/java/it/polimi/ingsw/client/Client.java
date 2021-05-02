@@ -81,7 +81,7 @@ public class Client {
                 System.out.println(fromServer);
                 try {
                     jsonObject = gson.fromJson(fromServer, JsonObject.class);
-                    if (jsonObject.get("type").getAsString().equals(quitInputType)) {
+                    if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitInputType)) {
                         System.out.println("[Client] Goodbye message from server. Ending thread 'receive'...");
                         break;
                     }
@@ -104,7 +104,7 @@ public class Client {
                 out.println(fromClient);
                 try {
                     jsonObject = gson.fromJson(fromClient, JsonObject.class);
-                    if (jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
+                    if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
                         System.out.println("[Client] Quit message from client. Ending thread 'send'...");
                         break;
                     }
