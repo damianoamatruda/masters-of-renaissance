@@ -46,6 +46,7 @@ public class Server implements NicknameRegister {
         new Server(port).execute();
     }
 
+    @Override
     public void registerNickname(View view, String nickname) {
         if (nicknames.containsKey(view))
             throw new RuntimeException("Client already has nickname \"" + nicknames.get(view) + "\".");
@@ -75,7 +76,7 @@ public class Server implements NicknameRegister {
                 Socket clientSocket = serverSocket.accept();
                 View view = new View(controller);
                 // String nickname = getNickname(view).orElse(null);
-                executor.submit(new ServerClientHandler(this, clientSocket, view, gp));
+                executor.submit(new ServerClientHandler(clientSocket, view, gp));
             }
             executor.shutdown();
         } catch (IOException e) {

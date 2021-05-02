@@ -14,6 +14,10 @@ public class Controller {
         this.model = model;
     }
 
+    public void quit(View view) {
+        view.updateGoodbye();
+    }
+
     public void registerNickname(View view, String nickname) {
         nicknameRegister.registerNickname(view, nickname);
         System.out.println("Setting nickname \"" + nickname + "\"...");

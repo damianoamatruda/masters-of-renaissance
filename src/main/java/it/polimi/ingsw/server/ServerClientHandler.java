@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.controller.messages.Message;
 import it.polimi.ingsw.server.view.View;
 
 import java.io.BufferedReader;
@@ -8,46 +9,70 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerClientHandler implements Runnable {
-    private final Server server;
+public class ServerClientHandler implements Runnable, MessageSender {
     private final Socket clientSocket;
     private final View view;
     private final GameProtocol gp;
+    private PrintWriter out;
+    private BufferedReader in;
+    private volatile boolean listening;
     // private final int timeout;
 
-    public ServerClientHandler(Server server, Socket clientSocket, View view, GameProtocol gp) {
-        this.server = server;
+    public ServerClientHandler(Socket clientSocket, View view, GameProtocol gp) {
         this.clientSocket = clientSocket;
+
+        view.setMessageSender(this);
         this.view = view;
+
         // this.timeout = 10;
         this.gp = gp;
+
+        this.in = null;
+        this.out = null;
+        this.listening = false;
     }
 
     public void run() {
         try (
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(
-                                clientSocket.getInputStream()))
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
         ) {
+            this.out = out;
+            this.in = in;
             String inputLine;
 
-            out.println("Welcome.");
+            view.updateWelcome();
 
-            while ((inputLine = in.readLine()) != null) {
-                boolean status = false;
+            listening = true;
+            while (listening) {
+                if ((inputLine = in.readLine()) == null)
+                    break;
                 try {
-                    status = gp.processInput(inputLine, view, out);
+                    gp.processInput(inputLine, view);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (!status)
-                    break;
             }
             clientSocket.close();
         } catch (IOException e) {
             System.err.println("Exception caught when listening for a connection");
             System.err.println(e.getMessage());
         }
+        this.out = null;
+        this.in = null;
+    }
+
+    public void stop() {
+        listening = false;
+    }
+
+    public void send(String output) {
+        if (this.out != null)
+            out.println(output);
+    }
+
+    @Override
+    public void send(Message message) {
+        send(gp.processOutput(message));
     }
 }

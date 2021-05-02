@@ -1,46 +1,40 @@
 package it.polimi.ingsw.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import it.polimi.ingsw.server.controller.messages.Message;
 import it.polimi.ingsw.server.view.View;
 
-import java.io.PrintWriter;
-
 public class GameProtocol {
-    /* Interprets command string and calls an action from the model. */
-    public boolean processInput(String input, View view, PrintWriter out) {
+    /*
+     * Interprets command string and calls an action from the model.
+     */
+    public void processInput(String input, View view) {
         if (input == null || input.isBlank()) {
-            log(out, "Empty input.");
-            return true;
+            view.updateEmptyInput();
+            return;
         }
 
         System.out.println("Received: \"" + input + "\"");
 
-        if (input.equals("quit")) {
-            log(out, "Bye.");
-            return false;
-        }
-
         Gson gson = new Gson();
         JsonObject jsonObject;
+
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonSyntaxException e) {
-            log(out, "Invalid syntax.");
-            return true;
+            view.updateInvalidSyntax();
+            return;
         }
         if (jsonObject == null) {
-            log(out, "Unknown parser error.");
-            return true;
+            view.updateUnknownParserError();
+            return;
         }
 
         JsonElement type = jsonObject.get("type");
+
         if (type == null) {
-            log(out, "Field \"type\" not found.");
-            return true;
+            view.updateFieldTypeNotFound();
+            return;
         }
 
         Message message;
@@ -48,26 +42,32 @@ public class GameProtocol {
         try {
             message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + type.getAsString()).asSubclass(Message.class));
         } catch (ClassNotFoundException e) {
-            log(out, "Message type \"" + type.getAsString() + "\" does not exist.");
-            return true;
+            view.updateMessageTypeDoesNotExist(type.getAsString());
+            return;
         } catch (JsonSyntaxException e) {
-            log(out, "Invalid attribute types.");
-            return true;
+            view.updateInvalidAttributeTypes();
+            return;
         }
 
         try {
             message.handle(view);
         } catch (Exception e) {
-            log(out, "Controller error: " + e.getMessage());
-            return true;
+            view.updateControllerError(e.getMessage());
         }
-
-        System.out.println("Valid input.");
-        return true;
     }
 
-    private void log(PrintWriter out, String message) {
-        System.err.println(message);
-        out.println(message);
+    public String processOutput(Message message) {
+        Gson gson = new Gson().newBuilder()
+                .enableComplexMapKeySerialization()
+                .registerTypeHierarchyAdapter(Message.class, (JsonSerializer<Message>) (msg, type, jsonSerializationContext) -> {
+                    Gson customGson = new Gson().newBuilder()
+                            .enableComplexMapKeySerialization()
+                            .create();
+                    JsonElement jsonElement = customGson.toJsonTree(msg);
+                    jsonElement.getAsJsonObject().addProperty("type", ((Class<?>) type).getSimpleName());
+                    return jsonElement;
+                })
+                .create();
+        return gson.toJson(message);
     }
 }
