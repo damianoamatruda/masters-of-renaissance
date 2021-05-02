@@ -2,10 +2,10 @@ package it.polimi.ingsw.server.controller.messages;
 
 import it.polimi.ingsw.server.view.View;
 
-public class ResCommunicationError implements Message {
+public class ErrNickname implements Message {
     private final String message;
 
-    public ResCommunicationError(String message) {
+    public ErrNickname(String message) {
         this.message = message;
     }
 

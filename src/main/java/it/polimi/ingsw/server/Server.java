@@ -12,24 +12,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server implements NicknameRegister {
+public class Server {
     private final static String jsonConfigPath = "/server.json";
 
     private final int port;
     // private final Map<Socket, View> views;
-    private final Map<View, String> nicknames;
     private volatile boolean listening;
 
     public Server(int port) {
         this.port = port;
-        this.nicknames = new HashMap<>();
         this.listening = false;
     }
 
@@ -46,28 +41,13 @@ public class Server implements NicknameRegister {
         new Server(port).execute();
     }
 
-    @Override
-    public void registerNickname(View view, String nickname) {
-        if (nicknames.containsKey(view))
-            throw new RuntimeException("Client already has nickname \"" + nicknames.get(view) + "\".");
-        if (nickname == null || nickname.isBlank())
-            throw new RuntimeException("Given nickname is empty.");
-        if (nicknames.containsValue(nickname))
-            throw new RuntimeException("Nickname \"" + nickname + "\" already in use. Choose another one.");
-        nicknames.put(view, nickname);
-    }
-
-    public Optional<String> getNickname(View view) {
-        return Optional.ofNullable(nicknames.get(view));
-    }
-
     public void execute() {
         ExecutorService executor = Executors.newCachedThreadPool();
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
             Lobby model = new Lobby(gameFactory);
-            Controller controller = new Controller(this, model);
+            Controller controller = new Controller(model);
             GameProtocol gp = new GameProtocol();
 
             System.out.println("Server ready");

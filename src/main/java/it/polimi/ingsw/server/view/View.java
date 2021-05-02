@@ -69,7 +69,7 @@ public class View {
     }
 
     public void notify(ReqPlayersCount message) {
-        controller.setPlayersCount(this);
+        controller.setPlayersCount(this, message.getCount());
     }
 
     public void notify(ReqResourcesChoice message) {
@@ -95,7 +95,7 @@ public class View {
 
     public void updateEmptyInput() {
         if (messageSender != null)
-            messageSender.send(new ResCommunicationError("Empty input."));
+            messageSender.send(new ErrCommunication("Empty input."));
     }
 
     public void updateGoodbye() {
@@ -108,31 +108,46 @@ public class View {
 
     public void updateInvalidSyntax() {
         if (messageSender != null)
-            messageSender.send(new ResCommunicationError("Invalid syntax."));
+            messageSender.send(new ErrCommunication("Invalid syntax."));
     }
 
     public void updateUnknownParserError() {
         if (messageSender != null)
-            messageSender.send(new ResCommunicationError("Unknown parser error."));
+            messageSender.send(new ErrCommunication("Unknown parser error."));
     }
 
     public void updateFieldTypeNotFound() {
         if (messageSender != null)
-            messageSender.send(new ResCommunicationError("Field \"type\" not found."));
+            messageSender.send(new ErrCommunication("Field \"type\" not found."));
     }
 
     public void updateMessageTypeDoesNotExist(String type) {
         if (messageSender != null)
-            messageSender.send(new ResCommunicationError("Message type \"" + type + "\" does not exist."));
+            messageSender.send(new ErrCommunication("Message type \"" + type + "\" does not exist."));
     }
 
     public void updateInvalidAttributeTypes() {
         if (messageSender != null)
-            messageSender.send(new ResCommunicationError("Invalid attribute types."));
+            messageSender.send(new ErrCommunication("Invalid attribute types."));
     }
 
     public void updateControllerError(String message) {
         if (messageSender != null)
-            messageSender.send(new ResCommunicationError("Controller error: " + message));
+            messageSender.send(new ErrCommunication("Controller error: " + message));
+    }
+
+    public void updateNickname(boolean isFirst) {
+        if (messageSender != null)
+            messageSender.send(new ResNickname(isFirst));
+    }
+
+    public void updateNicknameError(String message) {
+        if (messageSender != null)
+            messageSender.send(new ErrNickname(message));
+    }
+
+    public void updateActionError(String message) {
+        if (messageSender != null)
+            messageSender.send(new ErrAction(message));
     }
 }
