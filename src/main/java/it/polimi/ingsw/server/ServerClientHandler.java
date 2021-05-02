@@ -6,50 +6,48 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerClientHandler implements Runnable {
-    private final Socket socket;
+public class ServerClientHandler implements Runnable, NicknameRegister {
+    private final Server server;
+    private final Socket clientSocket;
     private final GameProtocol gp;
     // private final int timeout;
 
-    public ServerClientHandler(Socket socket, GameProtocol gp) {
-        this.socket = socket;
+    public ServerClientHandler(Server server, Socket clientSocket, GameProtocol gp) {
+        this.server = server;
+        this.clientSocket = clientSocket;
         // this.timeout = 10;
         this.gp = gp;
     }
 
-      /* public ServerClientHandler(Socket socket, int timeout) {
-          this.socket = socket;
-          this.timeout = timeout;
-      } */
+    public void registerNickname(String nickname) {
+        server.registerNickname(clientSocket, nickname);
+    }
 
     public void run() {
-        try {
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String inputLine, outputLine;
+        try (
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(
+                                clientSocket.getInputStream()))
+        ) {
+            String inputLine;
 
             out.println("Welcome.");
 
             while ((inputLine = in.readLine()) != null) {
-                outputLine = null;
-
+                String nickname = server.getNickname(clientSocket).orElse(null);
+                boolean status = false;
                 try {
-                    outputLine = gp.processInput(inputLine, socket, out);
+                    status = gp.processInput(inputLine, this, nickname, out);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                if (outputLine != null) {
-                    out.println(outputLine);
-                    if (outputLine.equals("Bye.")) {
-                        break;
-                    }
-                }
+                if (!status)
+                    break;
             }
-            in.close();
-            out.close();
-            socket.close();
+            clientSocket.close();
         } catch (IOException e) {
+            System.err.println("Exception caught when listening for a connection");
             System.err.println(e.getMessage());
         }
     }

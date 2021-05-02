@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
+import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,12 @@ public class Game {
 
     /** The development cards used in the game. */
     private final List<DevelopmentCard> developmentCards;
+
+    /** The resource containers used in the game. */
+    private final List<ResourceContainer> resContainers;
+
+    /** The productions used in the game. */
+    private final List<Production> productions;
 
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
@@ -50,6 +57,8 @@ public class Game {
      * @param players               the list of nicknames of players who joined
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
+     * @param resContainers         the list of resource containers
+     * @param productions           the list of productions
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
@@ -57,11 +66,14 @@ public class Game {
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
     public Game(List<Player> players, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+                List<ResourceContainer> resContainers, List<Production> productions,
                 DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxFaithPointsCount,
                 int maxObtainableDevCards) {
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);
+        this.resContainers = List.copyOf(resContainers);
+        this.productions = List.copyOf(productions);
         this.devCardGrid = devCardGrid;
         this.market = market;
         this.faithTrack = faithTrack;
@@ -263,7 +275,7 @@ public class Game {
     /**
      * Getter of the leader cards used in the game.
      *
-     * @return the leader cards
+     * @return the list of leader cards
      */
     public List<LeaderCard> getLeaderCards() {
         return leaderCards;
@@ -272,10 +284,28 @@ public class Game {
     /**
      * Getter of the development cards used in the game.
      *
-     * @return the development cards
+     * @return the list of development cards
      */
     public List<DevelopmentCard> getDevelopmentCards() {
         return developmentCards;
+    }
+
+    /**
+     * Getter of the resource containers used in the game.
+     *
+     * @return the list of resource containers
+     */
+    public List<ResourceContainer> getResContainers() {
+        return resContainers;
+    }
+
+    /**
+     * Getter of the productions used in the game.
+     *
+     * @return the list of productions
+     */
+    public List<Production> getProductions() {
+        return productions;
     }
 
     /**

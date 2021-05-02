@@ -2,9 +2,9 @@
 1. [Communication protocol documentation](#communication-protocol-documentation)
 2. [Errors](#errors)
 3. [Client-server connection](#client-server-connection)
-    1. [Connecting/choosing a nickname](#connecting/choosing-a-nickname)
+    1. [Connecting - choosing a nickname](#connecting---choosing-a-nickname)
     2. [Choosing the number of players](#choosing-the-number-of-players)
-    3. [Game start](#game-start)
+    3. [Quitting the game](#quitting-the-game)
 4. [Game phase - Player setup](#game-phase---player-setup)
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
@@ -15,19 +15,21 @@
         3. [Activating productions](#activating-productions)
         4. [Ending the turn](#ending-the-turn)
     2. [Secondary actions](#secondary-actions)
-        1. [Swapping two shelves' content](#swapping-two-shelves'-content)
+        1. [Swapping two shelves](#swapping-two-shelves)
         2. [Leader Actions](#leader-actions)
     3. [State messages](#state-messages)
-        1. [Updating the players list](#updating-the-players-list)
-        2. [Updating the current player](#updating-the-current-player)
-        3. [Updating the market](#updating-the-market)
-        4. [Updating the player's shelves](#updating-the-player's-shelves)
-        5. [Updating the player's leader cards](#updating-the-player's-leader-cards)
-        6. [Updating the development card grid](#updating-the-development-card-grid)
-        7. [Updating the player's development card slots](#updating-the-player's-development-card-slots)
-        8. [Updating the player's position on the faith track](#updating-the-player's-position-on-the-faith-track)
-        9. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
-        10. [Declaring a winner](#declaring-a-winner)
+        1. [Heartbeat](#heartbeat)
+        2. [Game start](#game-start)
+        3. [Updating the players list](#updating-the-players-list)
+        4. [Updating the current player](#updating-the-current-player)
+        5. [Updating the market](#updating-the-market)
+        6. [Updating the shelves](#updating-the-shelves)
+        7. [Updating the leader cards](#updating-the-leader-cards)
+        8. [Updating the development card grid](#updating-the-development-card-grid)
+        9. [Updating the development card slots](#updating-the-development-card-slots)
+        10. [Updating the position on the faith track](#updating-the-position-on-the-faith-track)
+        11. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+        12. [Declaring a winner](#declaring-a-winner)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -82,7 +84,7 @@ The following specification for the additional feature "Multiple Games" is taken
 
 Given those requirements, the communication has been modeled in the following way.
 
-## Connecting/choosing a nickname
+## Connecting - choosing a nickname
 The player, when starting the client, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted. Else, the player will be notified of the need to change it, restarting the process.
 
 The information of whether the player is the first of the match is included in the response given to the client. This is necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
@@ -107,7 +109,7 @@ The information of whether the player is the first of the match is included in t
 ```json
 {
   "type": "ReqNickname",
-  "nickname": "X"
+  "nickname": "NicknameA"
 }
 ```
 **ResNickname (server)**
@@ -167,186 +169,202 @@ When a player is assigned by the server as the first of a new game, they have to
 }
 ```
 
-## Game start
-As the game starts, the server notifies all players of the event.
+## Quitting the game
+Quitting the client (soft quit, no errors) will send one final message to the server, allowing the server to distinguish the reason for the socket closing (which may be caused by the client crashing instead).
 
-### Caching
-At the same time, it sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
-For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game to be shown the objects status. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
-Caching also allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
-
-### Parameters and indices
-The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
-This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore **extremely important** for both parties to have matching files.  
-The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system (this system was chosen over a more proper solution as a compromise to allow the developers to focus on other features, the lack of time being the main driver of the decision).
-
-This implies that every ID/index specified in this document has been synchronized at game start either by being taken from the configuration file or by being specified in the `GameStarted` message.
-
-The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
-The leader cards will be shuffled before they can be chosen by the players: the `LeaderCards` field of the `GameStarted` message contains the original placements (in the config file) of the leader cards in the order the server shuffled them (`LeaderCards[0] = 2` means that the config file's third card is the first in the server's list).  
-The same principle applies to the development cards grid's stacks, sent as a list of objects, mapping colors with a list (levels) of lists (the deck of cards matching that level and color), and the solo action tokens.
-
-After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
-
-```
- ┌────────┒                      ┌────────┒ 
- │ Client ┃                      │ Server ┃
- ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-     │                                │
-     │ GameStarted                    │
-     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-     │                                │
-```
-**GameStarted (server)**
+The quit message is defined as:
 ```json
-{
-  "type": "GameStarted",
-  "nicknames": [ "X", "Y", "Z" ],
-  "market": {
-    "grid": [
-      [ "Coin", "Shield", "Coin" ],
-      [ "Coin", "Shield", "Stone" ]
-    ],
-    "slide": "Shield"
-  },
-  "leaderCards": [ 4, 2, 0, 1, 3 ],
-  "devCardGrid": [
-    {
-      "color": "Blue",
-      "stacks": [
-        [ 2, 0, 1 ],
-        [ 3, 4, 5 ]
-      ]
-    }, {
-      "color": "Green",
-      "stacks": [
-        [ 8, 7, 6 ],
-        [ 9, 11, 10 ]
-      ]
-    }
-  ],
-  "soloActionTokens": [ 4, 3, 0, 1, 2 ]
-}
+{ "type": "GoodBye" }
 ```
+
 
 # Game phase - Player setup
-When the game starts, the server instantiates its internal model. To set up the player objects, the clients will be asked for choices. Those include which leader cards to keep and what resources to take, since the players following the first are entitled to receive bonus resources and faith points.
+When the game starts, the server instantiates its internal model. To set up the player objects, the clients will need to
+make choices. Those include which leader cards to keep and what resources to take, since the players are entitled to
+receive bonus resources and faith points.
 
 ## Choosing leader cards
-As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's duration: each player is sent a portion of the deck of leader cards, from which they can choose the cards to keep and discard.
+
+As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's
+duration.
 
 The client will be sent the IDs of the leader cards they can choose from, and will send back a subset of them.  
-To confirm the success of the operation, the server will echo back the chosen indices. Else, the player will be notified with an error message.
+To confirm the success of the operation, the server will echo back the indices. Else, the player will be notified with
+an error message.
+
+The client is designed to go through this process after the game starts. If other clients don't do the same and the
+leaders remain to be chosen, the server will fail to process the move, sending an `ErrLeadersNotChosen` message.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ OfferLeader                    │
+               │                 ReqLeadersHand │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │
+               │ ResLeadersHand                 │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │                ReqLeaderChoice │
+╰────────────╯ │               ReqChooseLeaders │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ ResLeaderChoice                │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ ResChooseLeaders               │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrLeaderChoice                │
+               │ ErrChooseLeaders               │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ ErrLeadersNotChosen             │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**OfferLeader (server)**
+
+**ReqLeadersHand (client)**
 ```json
 {
-  "type": "OfferLeader",
+  "type": "ReqLeadersHand"
+}
+```
+
+**ResLeadersHand (server)**
+```json
+{
+  "type": "ResLeadersHand",
   "leadersId": [ 3, 7, 14, 15 ]
 }
 ```
-**ReqLeaderChoice (client)**
+
+**ReqChooseLeaders (client)**
 ```json
 {
-  "type": "ReqLeaderChoice",
+  "type": "ReqChooseLeaders",
   "leadersId": [ 3, 15 ]
 }
 ```
-**ResLeaderChoice (server)**
+
+**ResChooseLeaders (server)**
+
 ```json
 {
-  "type": "ResLeaderChoice",
-  "msg": "Leaders chosen: 3, 15"
+  "type": "ResChooseLeaders",
+  "msg": "Leader cards chosen: 3, 15"
 }
 ```
-**ErrLeaderChoice (server)**
+
+**ErrChooseLeaders (server)**
+
 ```json
 {
-  "type": "ErrLeaderChoice",
-  "msg": "Invalid leader cards chosen: 3, 25."
+  "type": "ErrChooseLeaders",
+  "msg": "Invalid leader cards: 3, 25."
+}
+```
+
+**ErrLeadersNotChosen (server)**
+
+```json
+{
+  "type": "ErrLeadersNotChosen",
+  "msg": "Invalid move: player needs to choose their leader cards first."
 }
 ```
 
 ## Choosing starting resources
-The players who haven't been given the inkwell have to choose their bonus starting resources.  
-The server will notify the player of the event, signaling the amount of resources the player can choose and which resource types they can choose from.  
+
+The players have to choose their bonus starting resources.  
+The server will notify the player of the event, signaling the amount of resources the player can choose and which
+resource types they can choose from.  
 The client will respond by specifying the resource types and the respective quantities.
+
+As with the initial choice of leader cards, if the client doesn't go through the process of choosing the initial
+resources, every other move is negated.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ offerResources                 │
+               │                       ReqBoost │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │
+               │ ResBoost                       │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │             ReqResourcesChoice │
+╰────────────╯ │             ReqChooseResources │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateShelves                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateShelves                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ UpdateFaithTrack               │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrResourcesChoice             │
+               │ ErrChooseResources             │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelfChoice                 │
+               │ ErrShelf                       │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │ ErrResourcesNotChosen          │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**OfferResources (server)**
+
+**ReqBoost (client)**
 ```json
 {
-  "type": "OfferResources",
-  "storableCount": 1
+  "type": "ReqBoost"
 }
 ```
-**ReqResourcesChoice (client)**
+
+**ResBoost (server)**
+
 ```json
 {
-  "type": "ReqResourcesChoice",
-  "initRes": [
-    { "shelf": 1, "res": { "type": "Coin", "quantity": 1 } },
-    { "shelf": 0, "res": { "type": "Shield", "quantity": 1 } }
+  "type": "ResBoost",
+  "initialResources": 1,
+  "initialFaith": 1,
+  "initialExcludedResources": [ "Faith" ]
+}
+```
+
+**ReqChooseResources (client)**
+
+```json
+{
+  "type": "ReqChooseResources",
+  "shelves": [
+    [ 1, { "Coin": 1 } ],
+    [ 0, { "Shield": 1 } ]
   ]
 }
 ```
-**ErrResourcesChoice (server)**
+
+**ErrChooseResources (server)**
 ```json
 {
-  "type": "ErrResourcesChoice",
+  "type": "ErrChooseResources",
   "msg": "Cannot choose 2 starting resources, only 1 available."
 }
 ```
-**ErrShelfChoice (server)**
+
+**ErrShelf (server)**
 ```json
 {
-  "type": "ErrShelfChoice",
+  "type": "ErrShelf",
   "msg": "Cannot place 3 resources of type Coin on shelf 0: not enough space."
+}
+```
+**ErrResourcesNotChosen (server)**
+```json
+{
+  "type": "ErrResourcesNotChosen",
+  "msg": "Invalid move: player needs to choose their starting resources first."
 }
 ```
 
@@ -354,7 +372,8 @@ The client will respond by specifying the resource types and the respective quan
 After all players have gone through the setup phase, the server will start the turn loop.
 
 The messages in this section can be differentiated into:
-1. [Main actions](#main-actions), of which the player has to choose only one during the turn
+
+1. [Main actions](#main-actions), of which the player has to make only one during the turn
 2. [Secondary actions](#secondary-actions), which can be repeated within the player's turn
 3. [State messages](#state-messages), which update the local caches' state to match the server's
 
@@ -386,11 +405,11 @@ Errors may arise from fitting the resources in the shelves, either by specifying
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │                   ReqGetMarket │
+╰────────────╯ │              ReqTakeFromMarket │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateMarket                   │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateMarket                   │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ UpdateShelves                  │
@@ -399,35 +418,32 @@ Errors may arise from fitting the resources in the shelves, either by specifying
                │ UpdateLeaders                  │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelvesChoice               │
+               │ ErrShelves                     │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqGetMarket (client)**
+
+**ReqTakeFromMarket (client)**
+
 ```json
 {
-  "type": "ReqGetMarket",
-  "marketIndex": 0,
+  "type": "ReqTakeFromMarket",
+  "index": 0,
   "isRow": true,
-  "replacements": [ { "res": "Coin", "quantity": 2 } ],
-  "shelfChoice": [
-    {
-      "shelfIndex": 1,
-      "resQuantity": 2,
-      "resType": "Coin"
-    }, {
-      "shelfIndex": 3,
-      "resQuantity": 2,
-      "resType": "Shield"
-    }
+  "replacements": { "Coin": 2 },
+  "shelves": [
+    [ 1, { "Coin": 2 } ],
+    [ 3, { "Shield": 2 } ]
   ]
 }
 ```
-**ErrShelvesChoice (server)**
+
+**ErrShelves (server)**
+
 ```json
 {
-  "type": "ErrShelvesChoice",
-  "msg": "Cannot fit the resources in the shelves as chosen: no space left in shelf 3."
+  "type": "ErrShelves",
+  "msg": "Cannot fit the resources in the shelves: no space left in shelf 3."
 }
 ```
 
@@ -438,12 +454,12 @@ The following information is needed when buying a development card:
 3. For each resource that has to be paid, the shelf (or strongbox) to take it from
 
 Possible errors include:
-1. Not identifying a valid card (invalid row/col choice)
-2. Not identifying a valid slot index
-3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto)
-4. Not specifying correctly where to take the resources from/how many to take
 
-If two `resType` fields have the same value, it means that one of the `shelfIndex` refers to the strongbox, since two warehouse shelves cannot have the same resource.
+1. Not identifying a valid card (invalid row/col)
+2. Not identifying a valid slot
+3. Not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed
+   onto)
+4. Not specifying correctly where to take the resources from/how many to take
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -453,59 +469,57 @@ If two `resType` fields have the same value, it means that one of the `shelfInde
 │ user input ├─┤                                │ 
 ╰────────────╯ │                  ReqBuyDevCard │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateDevGrid                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateDevGrid                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrDevCardChoice               │
+               │ ErrDevCard                     │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrPaymentShelfChoice          │
+               │ ErrPaymentShelf                │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrSlotChoice                  │
+               │ ErrSlot                        │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
 **ReqBuyDevCard (client)**
+
 ```json
 {
   "type": "ReqBuyDevCard",
   "level": 1,
   "color": "Blue",
-  "slotIndex": 2,
-  "resChoice": [
-    {
-      "resType": "Coin",
-      "shelfIndex": 1,
-      "quantity": 2
-    }, {
-      "resType": "Coin",
-      "shelfIndex": 4,
-      "quantity": 1
-    }
+  "slot": 2,
+  "resContainers": [
+    [ 1, { "Coin": 2 } ],
+    [ 4, { "Coin": 1 } ]
   ]
 }
 ```
-**ErrDevCardChoice (server)**
+
+**ErrDevCard (server)**
+
 ```json
 {
-  "type": "ErrDevCardChoice",
-  "msg": "Cannot choose dev card in row 0 column 5: column 5 does not exist."
+  "type": "ErrDevCard",
+  "msg": "Cannot buy dev card in row 0 color Yellow: color Yellow does not exist."
 }
 ```
-**ErrPaymentShelfChoice (server)**
+
+**ErrPaymentShelf (server)**
 ```json
 {
-  "type": "ErrPaymentShelfChoice",
+  "type": "ErrPaymentShelf",
   "msg": "Cannot take 3 resource Coin from shelf 1: not enough resources."
 }
 ```
-**ErrSlotChoice (server)**
+
+**ErrSlot (server)**
 ```json
 {
-  "type": "ErrSlotChoice",
+  "type": "ErrSlot",
   "msg": "Cannot assign dev card to slot 3: card level constraints not satisfied: required card of level 1 not present."
 }
 ```
@@ -531,76 +545,72 @@ In the example below, the production with ID 3 does not specify its output: this
 │ user input ├─┤                                │ 
 ╰────────────╯ │                ReqActivateProd │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateShelves                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateShelves                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrProdChoice                  │
+               │ ErrProd                        │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelfMapChoice              │
+               │ ErrShelfMap                    │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrReplacementChoice           │
+               │ ErrReplacement                 │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
 **ReqActivateProd (client)**
+
 ```json
 {
   "type": "ReqActivateProd",
   "productions": [
     {
       "id": 0,
-      "inputBlanksRepl": [
-        {
-          "res": "Coin",
-          "quantity": 2
-        }, {
-          "res": "Shield",
-          "quantity": 1
-        }
-      ],
-      "outputBlanksRepl": [ { "res": "Shield", "quantity": 1 } ],
+      "inputBlanksRep": { "Coin": 2, "Shield": 1 },
+      "outputBlanksRep": { "Shield": 1 },
       "inputShelves": [
-          { "shelf": 1, "res": { "type": "Coin", "quantity": 1 } },
-          { "shelf": 2, "res": { "type": "Coin", "quantity": 2 } },
-          { "shelf": 0, "res": { "type": "Shield", "quantity": 2 } }
-        ],
+        [ 1, { "Coin": 1 } ],
+        [ 2, { "Coin": 2 } ],
+        [ 0, { "Shield": 2 } ]
+      ],
       "outputShelves": [
-        { "shelf": 2, "res": { "type": "Stone", "quantity": 1 } }
+        [ 2, { "Stone": 1 } ]
       ]
     }, {
       "id": 3,
-      "inputBlanksRepl": [ { "res": "Stone", "quantity": 1 } ],
-      "outputBlanksRepl": [],
+      "inputBlanksRep": { "Stone": 1 },
+      "outputBlanksRep": [],
       "inputShelves": [
-          { "shelf": 0, "res": { "type": "Stone", "quantity": 2 } }
-        ],
+        [ 0, { "Stone": 2 } ]
+      ],
       "outputShelves": []
     }
   ]
 }
 ```
-**ErrProdChoice (server)**
+
+**ErrProd (server)**
 ```json
 {
-  "type": "ErrProdChoice",
+  "type": "ErrProd",
   "msg": "Cannot activate production 17: production 17 does not exist."
 }
 ```
-**ErrShelfMapChoice (server)**
+
+**ErrShelfMap (server)**
 ```json
 {
-  "type": "ErrShelfMapChoice",
+  "type": "ErrShelfMap",
   "msg": "Cannot place 3 resource Coin in shelf 2: wrong resource type, shelf 2 is bound to Shield."
 }
 ```
-**ErrReplacementChoice (server)**
+
+**ErrReplacement (server)**
 ```json
 {
-  "type": "ErrReplacementChoice",
+  "type": "ErrReplacement",
   "msg": "Replacements incomplete: production 3 requires 3 replacements, only 2 specified."
 }
 ```
@@ -634,11 +644,12 @@ Since the server cannot at any point assume that the player has finished choosin
 
 # Secondary actions
 Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
-1. Swapping the content of the warehouse's shelves (the leader cards' depots can be included in the choice)
+
+1. Swapping the content of the player's shelves
 2. Activating/discarding a leader card
 
-## Swapping two shelves' content
-During their turn, the player can decide to reorder the warehouse.
+## Swapping two shelves
+During their turn, the player can decide to reorder their warehouse.
 
 This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
 
@@ -650,9 +661,9 @@ This is technically only useful when taking resources from the market, as no oth
 │ user input ├─┤                                │ 
 ╰────────────╯ │                 ReqSwapShelves │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateShelves                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateShelves                  │ ╰─────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │ ErrShelfSwap                   │
@@ -663,10 +674,11 @@ This is technically only useful when taking resources from the market, as no oth
 ```json
 {
   "type": "ReqSwapShelves",
-  "shelves": [ 0, 3 ]
+  "first": 0,
+  "second": 3
 }
 ```
-**shelfSwapChoiceErr (server)**
+**ErrShelfSwap (server)**
 ```json
 {
   "type": "ErrShelfSwap",
@@ -689,9 +701,9 @@ Leader activation:
 │ user input ├─┤                                │ 
 ╰────────────╯ │              ReqActivateLeader │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateLeaders                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateLeaders                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -699,7 +711,7 @@ Leader activation:
 ```json
 {
   "type": "ReqActivateLeader",
-  "leaderId": 0
+  "leader": 0
 }
 ```
 If a leader is already active no error is raised, since it's not a critical event.
@@ -714,12 +726,12 @@ Discarding a leader:
 │ user input ├─┤                                │ 
 ╰────────────╯ │               ReqDiscardLeader │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────────────╮
-               │                                ├─┤ try exec / check choices │
-               │ UpdateLeaders                  │ ╰──────────────────────────╯
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │ UpdateLeaders                  │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrLeaderDiscard               │
+               │ ErrDiscardLeader               │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -727,13 +739,14 @@ Discarding a leader:
 ```json
 {
   "type": "ReqDiscardLeader",
-  "leaderId": 0
+  "leader": 0
 }
 ```
-**ErrLeaderDiscard (server)**
+
+**ErrDiscardLeader (server)**
 ```json
 {
-  "type": "ErrLeaderDiscard",
+  "type": "ErrDiscardLeader",
   "msg": "Leader 0 cannot be discarded: leader 0 is active."
 }
 ```
@@ -752,6 +765,76 @@ Indices reference the data given in [game start](#game-start).
 All messages are broadcast to all players, as the game rules don't specify that some objects should remain hidden.
 
 
+## Heartbeat
+The server checks whether the clients are still alive using both normal messages and heartbeat messages.  
+Heartbeat messages will be sent at the expiry of a timer of 30s. The timer will be reset when the server receives a message of any kind, hence the dual system.
+
+A heartbeat message is defined as:
+```json
+{ "type": "HeartBeat" }
+```
+
+## Game start
+As the game starts, the server notifies all players of the event.
+
+### Caching
+At the same time, it sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
+For example, when using the CLI, updates sent from the server would be logged to the user's console. If the player wanted to look at an old state update (e.g. something that happened 10 moves prior), they would have to scroll a lot to reach it. To avoid this, the player can query the game to be shown the objects status. Caching allows the clients to handle this kind of request, making the communication protocol and server loads lighter, while improving the game's interactivity and user experience.  
+Caching also allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
+
+### Parameters and indices
+The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
+This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore extremely important for both parties to have matching ordering in the file's objects, since it will be used by the identification system.  
+The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
+
+This implies that every ID/index specified in this document has been synchronized at game start either by being taken from the configuration file or by being specified in the `GameStarted` message.
+
+The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
+The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they appear in the configuration file).
+The same principle applies to the solo action tokens.
+
+After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
+
+```
+ ┌────────┒                      ┌────────┒ 
+ │ Client ┃                      │ Server ┃
+ ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+     │                                │
+     │ GameStarted                    │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+```
+**GameStarted (server)**
+```json
+{
+  "type": "GameStarted",
+  "nicknames": [ "NicknameA", "NicknameB", "NicknameC" ],
+  "market": {
+    "grid": [
+      [ "Coin", "Shield", "Coin" ],
+      [ "Coin", "Shield", "Stone" ]
+    ],
+    "slide": "Shield"
+  },
+  "devCardGrid": [
+    {
+      "color": "Blue",
+      "stacks": [
+        [ 2, 0, 1 ],
+        [ 3, 4, 5 ]
+      ]
+    }, {
+      "color": "Green",
+      "stacks": [
+        [ 8, 7, 6 ],
+        [ 9, 11, 10 ]
+      ]
+    }
+  ],
+  "soloActionTokens": [ 4, 3, 0, 1, 2 ]
+}
+```
+
 ## Updating the players list
 Notifications about players connecting/disconnecting from a match will be sent.
 
@@ -765,7 +848,7 @@ When the match is waiting for players to join before its start, sending notifica
      │ UpdatePlayerConnect            │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
-     │ UpdatePlayerDisonnect          │
+     │ UpdatePlayerDisconnect         │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
@@ -773,14 +856,14 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdatePlayerConnect",
-  "nickname": "X"
+  "nickname": "NicknameA"
 }
 ```
-**UpdatePlayerDisonnect (server)**
+**UpdatePlayerDisconnect (server)**
 ```json
 {
-  "type": "UpdatePlayerDisonnect",
-  "nickname": "X"
+  "type": "UpdatePlayerDisconnect",
+  "nickname": "NicknameA"
 }
 ```
 
@@ -799,7 +882,7 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateCurPlayer",
-  "nickname": "Y"
+  "nickname": "NicknameB"
 }
 ```
 
@@ -825,7 +908,7 @@ When the match is waiting for players to join before its start, sending notifica
 }
 ```
 
-## Updating the player's shelves
+## Updating the shelves
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -837,24 +920,18 @@ When the match is waiting for players to join before its start, sending notifica
                │                                │
 ```
 **UpdateShelves (server)**
+
 ```json
 {
   "type": "UpdateShelves",
   "shelves": [
-    {
-      "index": 0,
-      "boundRes": "Coin",
-      "quantity": 1
-    }, {
-      "index": 1,
-      "boundRes": null,
-      "quantity": 0
-    }
+    [ 0, { "Coin": 1 } ],
+    [ 1, {} ]
   ]
 }
 ```
 
-## Updating the player's leader cards
+## Updating the leader cards
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -869,7 +946,7 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateLeaders",
-  "index": 1,
+  "leader": 1,
   "isActive": true
 }
 ```
@@ -886,16 +963,17 @@ When the match is waiting for players to join before its start, sending notifica
                │                                │
 ```
 **UpdateDevGrid (server)**
+
 ```json
 {
   "type": "UpdateDevGrid",
-  "rowIndex": 1,
-  "colIndex": 2,
-  "cardIndex": 4
+  "row": 1,
+  "col": 2,
+  "card": 4
 }
 ```
 
-## Updating the player's development card slots
+## Updating the development card slots
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -907,15 +985,16 @@ When the match is waiting for players to join before its start, sending notifica
                │                                │
 ```
 **UpdateDevCardSlot (server)**
+
 ```json
 {
   "type": "UpdateDevCardSlot",
-  "slotIndex": 0,
-  "cardIndex": 7
+  "slot": 0,
+  "card": 7
 }
 ```
 
-## Updating the player's position on the faith track
+## Updating the position on the faith track
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -942,15 +1021,17 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateSoloToken                │
+               │ UpdateActionToken              │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateSoloToken (server)**
+
+**UpdateActionToken (server)**
+
 ```json
 {
-  "type": "UpdateSoloToken",
-  "index": 6
+  "type": "UpdateActionToken",
+  "actionToken": 6
 }
 ```
 
@@ -970,10 +1051,6 @@ When the match is waiting for players to join before its start, sending notifica
 {
   "type": "UpdateWinner",
   "msg": "Player X wins!",
-  "victoryPoints": [
-    { "nickname": "X", "quantity": 20 },
-    { "nickname": "Y", "quantity": 16 },
-    { "nickname": "Z", "quantity": 12 }
-  ]
+  "victoryPoints": { "NicknameA": 20, "NicknameB": 16, "NicknameC": 12 }
 }
 ```

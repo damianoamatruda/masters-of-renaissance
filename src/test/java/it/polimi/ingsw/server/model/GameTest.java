@@ -45,6 +45,8 @@ public class GameTest {
                 players,
                 List.of(),
                 List.of(),
+                List.of(),
+                List.of(),
                 new DevCardGrid(List.of(), 3, 4), market,
                 new FaithTrack(Set.of(
                         new FaithTrack.VaticanSection(5, 8, 2),

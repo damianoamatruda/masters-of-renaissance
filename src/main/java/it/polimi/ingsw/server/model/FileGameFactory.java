@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
+import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -111,11 +112,15 @@ public class FileGameFactory implements GameFactory {
 
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
+        List<ResourceContainer> resContainers = getResContainers(leaderCards);
+        List<Production> productions = getProductions(leaderCards, developmentCards);
 
         return new Game(
-                getPlayers(nicknames, leaderCards),
+                getPlayers(nicknames, leaderCards, resContainers),
                 leaderCards,
                 developmentCards,
+                resContainers,
+                productions,
                 new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
@@ -128,11 +133,15 @@ public class FileGameFactory implements GameFactory {
     public SoloGame getSoloGame(String nickname) {
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
+        List<ResourceContainer> resContainers = getResContainers(leaderCards);
+        List<Production> productions = getProductions(leaderCards, developmentCards);
 
         return new SoloGame(
-                getPlayers(List.of(nickname), leaderCards).get(0),
+                getPlayers(List.of(nickname), leaderCards, resContainers).get(0),
                 leaderCards,
                 developmentCards,
+                resContainers,
+                productions,
                 new DevCardGrid(developmentCards, levelsCount, colorsCount),
                 generateMarket(),
                 generateFaithTrack(),
@@ -185,7 +194,8 @@ public class FileGameFactory implements GameFactory {
      * @param leaderCards the list of leader cards
      * @return the players
      */
-    private List<Player> getPlayers(List<String> nicknames, List<LeaderCard> leaderCards) {
+    private List<Player> getPlayers(List<String> nicknames, List<LeaderCard> leaderCards,
+                                    List<ResourceContainer> resContainers) {
         List<Player> players = new ArrayList<>();
 
         /* Shuffle the nicknames */
@@ -196,21 +206,61 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
 
-        for (int i = 0; i < shuffledNicknames.size(); i++)
+        for (int i = 0; i < shuffledNicknames.size(); i++) {
+            Warehouse warehouse = new Warehouse(warehouseShelvesCount);
+            Strongbox strongbox = new Strongbox();
+
+            resContainers.addAll(warehouse.getShelves());
+            resContainers.add(strongbox);
+
             players.add(new Player(
                     shuffledNicknames.get(i),
                     i == 0,
                     shuffledLeaderCards.subList(playerLeadersCount * i, playerLeadersCount * (i + 1)),
-                    new Warehouse(warehouseShelvesCount),
-                    new Strongbox(),
+                    warehouse,
+                    strongbox,
                     baseProduction,
                     slotsCount,
                     chosenLeadersCount,
                     boosts.get(i).initialResources,
                     boosts.get(i).initialFaith,
                     boosts.get(i).initialExcludedResources));
+        }
 
         return players;
+    }
+
+    /**
+     * Returns a list of resource containers based on given leader cards.
+     *
+     * @param leaderCards the leader cards
+     * @return the resource contianers
+     */
+    private List<ResourceContainer> getResContainers(List<LeaderCard> leaderCards) {
+        return new ArrayList<>(leaderCards.stream()
+                .map(LeaderCard::getDepot)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList());
+    }
+
+    /**
+     * Returns a list of productions based on given leader cards and development cards.
+     *
+     * @param leaderCards      the leader cards
+     * @param developmentCards the development cards
+     * @return the productions
+     */
+    private List<Production> getProductions(List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards) {
+        List<Production> productions = new ArrayList<>(List.of(baseProduction));
+        productions.addAll(leaderCards.stream()
+                .map(LeaderCard::getProduction)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList());
+        productions.addAll(developmentCards.stream()
+                .map(DevelopmentCard::getProduction).toList());
+        return productions;
     }
 
     /**

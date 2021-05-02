@@ -31,8 +31,8 @@ jobs:
         with:
           name: Package
           path: |
-            target/*.jar
-            !target/original-*.jar
+            target/*-server.jar
+            target/*-client.jar
       - name: Upload Javadoc
         uses: actions/upload-artifact@v2
         with:

@@ -40,6 +40,26 @@ abstract public class GameState {
     }
 
     /**
+     * Getter of the resource containers used in the game.
+     *
+     * @param context the context
+     * @return the list of resource containers
+     */
+    public List<ResourceContainer> getResContainers(GameContext context) throws IllegalActionException {
+        throw new IllegalActionException();
+    }
+
+    /**
+     * Getter of the productions used in the game.
+     *
+     * @param context the context
+     * @return the list of productions
+     */
+    public List<Production> getProductions(GameContext context) throws IllegalActionException {
+        throw new IllegalActionException();
+    }
+
+    /**
      * Returns the game market.
      *
      * @param context the context
@@ -93,7 +113,7 @@ abstract public class GameState {
      *
      * @param context      the context
      * @param player       the player
-     * @param isRow        <code>true</code> if a row is selected; <code>false</code> if a column is selected
+     * @param isRow        <code>true</code> if a row is selected; <code>false</code> if a column is selected.
      * @param index        index of the selected row or column
      * @param replacements a map of the chosen resources to take, if choices are applicable
      * @param shelves      a map of the shelves where to add the taken resources, if possible

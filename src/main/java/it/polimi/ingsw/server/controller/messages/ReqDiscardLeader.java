@@ -1,19 +1,19 @@
 package it.polimi.ingsw.server.controller.messages;
 
+import it.polimi.ingsw.server.NicknameRegister;
 import it.polimi.ingsw.server.controller.Controller;
 
 import java.io.PrintWriter;
-import java.net.Socket;
 
 public class ReqDiscardLeader implements Message {
-    private int leaderId;
+    private int leader;
 
     @Override
-    public void handle(Controller controller, Socket client, PrintWriter out) {
-        controller.handle(this, client, out);
+    public void handle(Controller controller, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
+        controller.handle(this, nicknameRegister, nickname, out);
     }
 
-    public int getLeaderId() {
-        return leaderId;
+    public int getLeader() {
+        return leader;
     }
 }

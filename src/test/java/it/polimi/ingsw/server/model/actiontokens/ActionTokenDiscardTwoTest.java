@@ -58,7 +58,10 @@ class ActionTokenDiscardTwoTest {
         game = new SoloGame(
                 player,
                 List.of(),
-                devCards, devCardGrid,
+                devCards,
+                List.of(),
+                List.of(),
+                devCardGrid,
                 null,
                 new FaithTrack(Set.of(), Set.of()),
                 List.of(), 0,

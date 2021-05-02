@@ -70,7 +70,7 @@ public class Market {
      *
      * @param game         the game the player is playing in
      * @param player       the player on which to trigger the action of the resource, if applicable
-     * @param isRow        <code>true</code> if a row is selected; <code>false</code> if a column is selected
+     * @param isRow        <code>true</code> if a row is selected; <code>false</code> if a column is selected.
      * @param index        index of the selected row or column
      * @param replacements a map of the chosen resources to take, if choices are applicable
      * @param shelves      a map of the shelves where to add the taken resources, if possible
