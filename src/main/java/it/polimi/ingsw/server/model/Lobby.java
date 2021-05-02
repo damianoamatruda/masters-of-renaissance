@@ -6,23 +6,23 @@ import java.util.*;
 
 public class Lobby {
     private final GameFactory gameFactory;
+    // private final List<GameContext> games;
     private final Map<View, String> nicknames;
-    private final List<GameContext> games;
-    private final Map<String, GameContext> joined;
-    private final List<String> waiting;
+    private final Map<View, GameContext> joined;
+    private final List<View> waiting;
     private int countToNewGame;
 
     public Lobby(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
         this.nicknames = new HashMap<>();
-        this.games = new ArrayList<>();
+        // this.games = new ArrayList<>();
         this.joined = new HashMap<>();
         this.waiting = new ArrayList<>();
     }
 
     public void joinLobby(View view, String nickname) {
         if (nicknames.containsKey(view)) {
-            view.updateNicknameError("Client already has nickname \"" + nicknames.get(view) + "\".");
+            view.updateNicknameError("You already have nickname \"" + nicknames.get(view) + "\".");
             return;
         }
         if (nickname == null || nickname.isBlank()) {
@@ -33,52 +33,67 @@ public class Lobby {
             view.updateNicknameError("Nickname \"" + nickname + "\" already in use. Choose another one.");
             return;
         }
-        System.out.println("Setting nickname \"" + nickname + "\"...");
         nicknames.put(view, nickname);
+        System.out.println("Set nickname \"" + nickname + "\".");
 
-        waiting.add(nickname);
+        waiting.add(view);
         if (waiting.size() == countToNewGame)
             startNewGame();
 
         view.updateNickname(waiting.size() == 1);
     }
 
-    public Optional<GameContext> getJoinedGame(String nickname) {
-        return Optional.ofNullable(joined.get(nickname));
-    }
-
     public void setCountToNewGame(View view, int count) {
+        checkNickname(view);
         if (!isPlayerFirst(view)) {
             view.updateActionError("Command unavailable. You are not the first player who joined.");
             return;
         }
-        System.out.println("Setting count of players...");
+        System.out.println("Set count of players.");
         this.countToNewGame = count;
         if (waiting.size() == countToNewGame)
             startNewGame();
     }
 
     public void startNewGame() {
-        Game newGame = countToNewGame == 1 ? gameFactory.getSoloGame(waiting.get(0)) : gameFactory.getMultiGame(waiting.subList(0, countToNewGame));
+        Game newGame = countToNewGame == 1 ? gameFactory.getSoloGame(nicknames.get(waiting.get(0))) : gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList());
         GameContext newContext = new GameContext(newGame);
-        games.add(newContext);
+        // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(p -> joined.put(p, newContext));
         waiting.subList(0, countToNewGame).clear();
         countToNewGame = 0;
     }
 
     public boolean isPlayerFirst(View view) {
-        return waiting.indexOf(nicknames.get(view)) == 0;
+        return waiting.indexOf(view) == 0;
     }
 
-    public Optional<Player> getPlayer(View view) {
-        return joined.get(nicknames.get(view)).getPlayer(nicknames.get(view));
+    public Optional<GameContext> getJoinedGame(View view) {
+        checkJoined(view);
+        return Optional.ofNullable(joined.get(view));
     }
 
-    public boolean checkView(View view) {
-        boolean valid = nicknames.containsKey(view);
-        if (!valid)
-            view.updateActionError("Client must first request a nickname.");
-        return valid;
+    public Player getPlayer(View view) {
+        if (!checkJoined(view))
+            return null;
+        return joined.get(view).getPlayer(nicknames.get(view)).orElseThrow();
+    }
+
+    public boolean checkNickname(View view) {
+        if (!nicknames.containsKey(view)) {
+            view.updateActionError("You must first request a nickname.");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkJoined(View view) {
+        if (!checkNickname(view))
+            return false;
+        if (!joined.containsKey(view)) {
+            view.updateActionError("You must first join a game.");
+            return false;
+        }
+        return true;
     }
 }

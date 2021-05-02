@@ -183,13 +183,13 @@ public class GameContext {
      * @param shelves      a map of the shelves where to add the taken resources, if possible
      * @throws IllegalActionException if the player cannot take resources from the market in the current state
      */
-    public void takeMarketResources(GameContext context, Player player, boolean isRow, int index,
+    public void takeMarketResources(Player player, boolean isRow, int index,
                                     Map<ResourceType, Integer> replacements,
                                     Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalMarketTransferException {
         if (!setupDone || turnDone)
             throw new IllegalActionException();
         checkCurrentPlayer(player);
-        context.game.getMarket().takeResources(context.game, player, isRow, index, replacements, shelves);
+        game.getMarket().takeResources(game, player, isRow, index, replacements, shelves);
         turnDone = true;
     }
 
@@ -199,16 +199,16 @@ public class GameContext {
      * @param player        the player
      * @param color         the color of the card to be bought
      * @param level         the level of the card to be bought
-     * @param position      the position of the dev slot where to put the development card
+     * @param slotIndex     the index of the dev slot where to put the development card
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws IllegalActionException if the player cannot buy a development card in the current state
      */
-    public void buyDevCard(Player player, DevCardColor color, int level, int position,
+    public void buyDevCard(Player player, DevCardColor color, int level, int slotIndex,
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, CardRequirementsNotMetException, IllegalCardDepositException {
         if (!setupDone || turnDone)
             throw new IllegalActionException();
         checkCurrentPlayer(player);
-        game.getDevCardGrid().buyDevCard(game, player, color, level, position, resContainers);
+        game.getDevCardGrid().buyDevCard(game, player, color, level, slotIndex, resContainers);
         turnDone = true;
     }
 

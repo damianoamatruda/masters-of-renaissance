@@ -49,11 +49,11 @@ public class View {
     }
 
     public void notify(ReqActivateProduction message) {
-        controller.activateProduction(this);
+        controller.activateProductionGroup(this, message.getProductionGroup());
     }
 
     public void notify(ReqBuyDevCard message) {
-        controller.buyDevCard(this);
+        controller.buyDevCard(this, message.getColor(), message.getLevel(), message.getSlotIndex(), message.getResContainers());
     }
 
     public void notify(ReqDiscardLeader message) {
@@ -65,23 +65,23 @@ public class View {
     }
 
     public void notify(ReqChooseLeaders message) {
-        controller.chooseLeaders(this);
+        controller.chooseLeaders(this, message.getLeaders());
     }
 
     public void notify(ReqPlayersCount message) {
         controller.setPlayersCount(this, message.getCount());
     }
 
-    public void notify(ReqResourcesChoice message) {
-        controller.chooseResources(this);
+    public void notify(ReqChooseResources message) {
+        controller.chooseResources(this, message.getShelves());
     }
 
     public void notify(ReqSwapShelves message) {
-        controller.swapShelves(this);
+        controller.swapShelves(this, message.getS1(), message.getS2());
     }
 
     public void notify(ReqTakeFromMarket message) {
-        controller.takeFromMarket(this);
+        controller.takeMarketResources(this, message.isRow(), message.getIndex(), message.getReplacements(), message.getShelves());
     }
 
     public void notify(ReqTurnEnd message) {

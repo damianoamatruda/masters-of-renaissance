@@ -113,20 +113,20 @@ public class DevCardGrid {
      * @param player        the player that wants to buy a card
      * @param color         the color of the card to be bought
      * @param level         the level of the card to be bought
-     * @param position      the position of the dev slot where to put the development card
+     * @param slotIndex     the position of the dev slot where to put the development card
      * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws IllegalCardDepositException Bought card cannot be placed in the chosen player slot
+     * @throws IllegalCardDepositException     Bought card cannot be placed in the chosen player slot
      * @throws CardRequirementsNotMetException error while player was depositing the card
-     * @throws EmptyStackException         No cards available with given color and level
+     * @throws EmptyStackException             No cards available with given color and level
      */
-    public void buyDevCard(Game game, Player player, DevCardColor color, int level, int position,
+    public void buyDevCard(Game game, Player player, DevCardColor color, int level, int slotIndex,
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
             throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException {
 
         // TODO peek
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
-            player.addToDevSlot(game, position, card, resContainers);
+            player.addToDevSlot(game, slotIndex, card, resContainers);
         } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
