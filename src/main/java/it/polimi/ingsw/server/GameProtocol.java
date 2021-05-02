@@ -4,20 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.messages.Message;
+import it.polimi.ingsw.server.view.View;
 
 import java.io.PrintWriter;
 
 public class GameProtocol {
-    private final Controller controller;
-
-    public GameProtocol(Controller controller) {
-        this.controller = controller;
-    }
-
     /* Interprets command string and calls an action from the model. */
-    public boolean processInput(String input, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
+    public boolean processInput(String input, View view, PrintWriter out) {
         if (input == null || input.isBlank()) {
             log(out, "Empty input.");
             return true;
@@ -62,7 +56,7 @@ public class GameProtocol {
         }
 
         try {
-            message.handle(controller, nicknameRegister, nickname, out);
+            message.handle(view);
         } catch (Exception e) {
             log(out, "Controller error: " + e.getMessage());
             return true;

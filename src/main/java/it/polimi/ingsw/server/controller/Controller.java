@@ -1,84 +1,87 @@
 package it.polimi.ingsw.server.controller;
 
 import it.polimi.ingsw.server.NicknameRegister;
-import it.polimi.ingsw.server.controller.messages.*;
 import it.polimi.ingsw.server.model.Lobby;
-
-import java.io.PrintWriter;
+import it.polimi.ingsw.server.model.leadercards.LeaderCard;
+import it.polimi.ingsw.server.view.View;
 
 public class Controller {
+    private final NicknameRegister nicknameRegister;
     private final Lobby model;
 
-    public Controller(Lobby model) {
+    public Controller(NicknameRegister nicknameRegister, Lobby model) {
+        this.nicknameRegister = nicknameRegister;
         this.model = model;
     }
 
-    public void handle(ReqNickname message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        nicknameRegister.registerNickname(message.getNickname());
-        out.println("Setting nickname \"" + message.getNickname() + "\"...");
-        model.joinLobby(message.getNickname());
+    public void registerNickname(View view, String nickname) {
+        nicknameRegister.registerNickname(view, nickname);
+        System.out.println("Setting nickname \"" + nickname + "\"...");
+        model.joinLobby(nickname);
     }
 
-    public void handle(ReqActivateLeader message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Activating leader...");
+    public void activateLeader(View view, LeaderCard leader) {
+        checkView(view);
+        System.out.println("Activating leader...");
     }
 
-    public void handle(ReqActivateProduction message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Activating production...");
+    public void activateProduction(View view) {
+        checkView(view);
+        System.out.println("Activating production...");
     }
 
-    public void handle(ReqBuyDevCard message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Buying development card...");
+    public void buyDevCard(View view) {
+        checkView(view);
+        System.out.println("Buying development card...");
     }
 
-    public void handle(ReqDiscardLeader message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Discarding leader of index " + message.getLeader() + "...");
+    public void discardLeader(View view, LeaderCard leader) {
+        checkView(view);
+        System.out.println("Discarding leader...");
     }
 
-    public void handle(ReqGetMarket message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Getting market...");
+    public void getMarket(View view) {
+        checkView(view);
+        System.out.println("Getting market...");
     }
 
-    public void handle(ReqChooseLeaders message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Choosing leader...");
+    public void chooseLeaders(View view) {
+        checkView(view);
+        System.out.println("Choosing leaders...");
     }
 
-    public void handle(ReqPlayersCount message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        if (!model.isPlayerFirst(nickname))
+    public void setPlayersCount(View view) {
+        // TODO
+        checkView(view);
+        /*if (!model.isPlayerFirst(nickname))
             throw new RuntimeException("Command unavailable. You are not the first player who joined.");
-        out.println("Counting players...");
-        model.setCountToNewGame(message.getCount());
+        System.out.println("Setting count of players...");
+        model.setCountToNewGame(message.getCount());*/
     }
 
-    public void handle(ReqResourcesChoice message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Choosing initial resources...");
+    public void chooseResources(View view) {
+        checkView(view);
+        System.out.println("Choosing initial resources...");
     }
 
-    public void handle(ReqSwapShelves message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Swapping shelves...");
+    public void swapShelves(View view) {
+        checkView(view);
+        System.out.println("Swapping shelves...");
     }
 
-    public void handle(ReqTakeFromMarket message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Taking resources from market...");
+    public void takeFromMarket(View view) {
+        checkView(view);
+        System.out.println("Taking resources from market...");
     }
 
-    public void handle(ReqTurnEnd message, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        checkClient(nickname);
-        out.println("Ending turn...");
+    public void endTurn(View view) {
+        checkView(view);
+        System.out.println("Ending turn...");
     }
 
-    private void checkClient(String nickname) {
-        if (nickname == null)
-            throw new RuntimeException("Client must first request a nickname.");
+    private void checkView(View view) {
+        // TODO
+        /*if (nickname == null)
+            throw new RuntimeException("Client must first request a nickname.");*/
     }
 }

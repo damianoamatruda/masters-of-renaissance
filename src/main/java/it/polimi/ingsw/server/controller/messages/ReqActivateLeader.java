@@ -1,15 +1,17 @@
 package it.polimi.ingsw.server.controller.messages;
 
-import it.polimi.ingsw.server.NicknameRegister;
-import it.polimi.ingsw.server.controller.Controller;
-
-import java.io.PrintWriter;
+import it.polimi.ingsw.server.model.leadercards.LeaderCard;
+import it.polimi.ingsw.server.view.View;
 
 public class ReqActivateLeader implements Message {
-    private int leaderId;
+    private LeaderCard leader;
 
     @Override
-    public void handle(Controller controller, NicknameRegister nicknameRegister, String nickname, PrintWriter out) {
-        controller.handle(this, nicknameRegister, nickname, out);
+    public void handle(View view) {
+        view.notify(this);
+    }
+
+    public LeaderCard getLeader() {
+        return leader;
     }
 }
