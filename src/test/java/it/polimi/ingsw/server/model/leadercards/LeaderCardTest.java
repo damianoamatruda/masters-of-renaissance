@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.leadercards;
 
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Production;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
@@ -42,8 +43,9 @@ public class LeaderCardTest {
     @Test
     void activateNoRequirements() {
         leader = new ZeroLeader(coin, null, 0);
-
-        assertDoesNotThrow(() -> leader.activate(null));
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        
+        assertDoesNotThrow(() -> leader.activate(p));
         assertTrue(leader.isActive());
     }
 
@@ -52,7 +54,7 @@ public class LeaderCardTest {
      */
     @Test
     void activateWithRequirements() {
-        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         p.getStrongbox().addResource(coin);
 
         assertDoesNotThrow(() -> leader.activate(p));
@@ -64,10 +66,10 @@ public class LeaderCardTest {
      */
     @Test
     void activateWrongResources() {
-        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         p.getStrongbox().addResource(new ResourceType("Shield", true));
 
-        assertThrows(Exception.class, () -> leader.activate(p));
+        assertThrows(CardRequirementsNotMetException.class, () -> leader.activate(p));
         assertFalse(leader.isActive());
     }
 

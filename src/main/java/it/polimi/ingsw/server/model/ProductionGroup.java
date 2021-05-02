@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.model.IllegalProductionActivationException.IllegalProductionReplacementsException;
+import it.polimi.ingsw.server.model.IllegalProductionActivationException.IllegalProductionContainersException;
+
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -38,8 +41,11 @@ public class ProductionGroup {
      * @throws IllegalProductionActivationException if the transaction failed
      */
     public void activate(Game game, Player player) throws IllegalProductionActivationException {
-        if (!productionRequests.stream().allMatch(ProductionRequest::isValid))
-            throw new IllegalProductionActivationException("Not all production requests are valid.");
+        for (ProductionRequest productionReq : productionRequests) {
+            try { productionReq.validate(); }
+            catch (IllegalProductionReplacementsException | IllegalProductionContainersException e) {
+                throw new IllegalProductionActivationException("Invalid production request:", productionReq, e); }
+        }
 
         /* Get set of all resource containers, in input and in output */
         Set<ResourceContainer> allContainers = new HashSet<>();
@@ -65,7 +71,7 @@ public class ProductionGroup {
                         try {
                             clonedContainers.get(resContainer).removeResource(resType);
                         } catch (IllegalResourceTransferException e) {
-                            throw new IllegalProductionActivationException("Illegal input transfer.", e);
+                            throw new IllegalProductionActivationException("Illegal input transfer in production request:", productionReq, e);
                         }
 
             /* Try adding all output storable resources into cloned resource containers (with input removed) */
@@ -76,7 +82,7 @@ public class ProductionGroup {
                             clonedContainers.get(resContainer).addResource(resType);
                         } catch (IllegalResourceTransferException e) {
                             if (!productionReq.getProduction().hasDiscardableOutput())
-                                throw new IllegalProductionActivationException("Illegal output transfer.", e);
+                                throw new IllegalProductionActivationException("Illegal output transfer in production request:", productionReq, e);
                         }
         }
 
@@ -164,7 +170,7 @@ public class ProductionGroup {
          * @return <code>true</code> if the resources and the quantities match; <code>false</code> otherwise.
          */
         private static boolean checkContainers(Map<ResourceType, Integer> resourceMap,
-                                               Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) {
+                                               Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalProductionContainersException {
             /* Filter the storable resources */
             resourceMap = resourceMap.entrySet().stream()
                     .filter(e -> e.getKey().isStorable())
@@ -177,7 +183,9 @@ public class ProductionGroup {
                     .map(m -> m.values().stream().reduce(0, Integer::sum))
                     .reduce(0, Integer::sum);
             if (resContainersResourcesCount != resourceMapResourcesCount)
-                return false;
+                throw new IllegalProductionContainersException(
+                    String.format("Amount of resources specified in the shelves map (%d) does not match amount in replaced production (%d)",
+                        resContainersResourcesCount, resourceMapResourcesCount));
 
             /* Check that the quantity of each storable resource type in the map of resources is the same as in the map
                of resource containers */
@@ -186,7 +194,9 @@ public class ProductionGroup {
                 for (ResourceContainer resContainer : resContainers.keySet())
                     resourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
                 if (resourceCount != resourceMap.get(resType))
-                    return false;
+                    throw new IllegalProductionContainersException(
+                        String.format("Amount of %s specified in replaced production (%d) does not match amount specified in shelves (%d)",
+                            resType.getName(), resourceMap.get(resType), resourceCount));
             }
 
             return true;
@@ -205,22 +215,24 @@ public class ProductionGroup {
          * </ol>
          *
          * @return <code>true</code> if the production request is valid; <code>false</code> otherwise.
+         * @throws IllegalProductionReplacementsException if the request's replacements are invalid
+         * @throws IllegalProductionContainersException if the request's container-resource mappings are invalid
          */
-        public boolean isValid() {
+        public boolean validate() throws IllegalProductionReplacementsException, IllegalProductionContainersException {
             if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
-                return false;
+                throw new IllegalProductionReplacementsException("Input replacements contain non-storable and non-takeable resources", inputBlanksRep);
             if (outputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isGiveableToPlayer()))
-                return false;
+                throw new IllegalProductionReplacementsException("Output replacements contain non-storable and non-givable resources", outputBlanksRep);
 
             if (inputBlanksRep.keySet().stream().anyMatch(resType -> production.getInputBlanksExclusions().contains(resType)))
-                return false;
+                throw new IllegalProductionReplacementsException("Input replacements contain excluded resources", inputBlanksRep);
             if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
-                return false;
+                throw new IllegalProductionReplacementsException("Output replacements contain excluded resources", outputBlanksRep);
 
             if (!inputBlanksRep.isEmpty() && inputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getInputBlanks())
-                return false;
+                throw new IllegalProductionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", production.getInputBlanks()), inputBlanksRep);
             if (!outputBlanksRep.isEmpty() && outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
-                return false;
+                throw new IllegalProductionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", production.getInputBlanks()), inputBlanksRep);
 
             return checkContainers(getReplacedInput(), inputContainers) && checkContainers(getReplacedOutput(), outputContainers);
         }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement;
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -73,9 +73,9 @@ public class DevelopmentCard extends Card {
      * @param game          the game the player is playing in
      * @param player        the player to assign the card to and to take the resources from
      * @param resContainers selection map specifying where to take the resources from
-     * @throws RequirementsNotMetException if the player does not own the required resources
+     * @throws CardRequirementsNotMetException if the player does not own the required resources
      */
-    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException {
+    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException {
         cost.checkRequirements(player);
         cost.take(game, player, resContainers);
     }

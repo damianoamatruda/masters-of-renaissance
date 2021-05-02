@@ -75,7 +75,7 @@ public class Warehouse {
             if (warehouse.shelves.stream()
                     .filter(s -> !s.equals(this))
                     .anyMatch(s -> s.getResourceType().isPresent() && s.getResourceType().get().equals(resType)))
-                throw new IllegalResourceTransferException("Cannot add a resource of a type already present in another shelf of the warehouse.");
+                throw new IllegalResourceTransferException(resType, warehouse);
             super.addResource(resType);
         }
     }

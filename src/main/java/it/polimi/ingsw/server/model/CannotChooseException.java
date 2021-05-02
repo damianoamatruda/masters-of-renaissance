@@ -7,9 +7,9 @@ public class CannotChooseException extends Exception {
     /**
      * Class constructor.
      * 
-     * @param isResourceChoice whether the illegally repeated choice refers to resources or leader cards.
+     * @param choosenElement either "leader cards" or "resources"
      */
-    public CannotChooseException(boolean isResourceChoice) {
-        super(String.format("Cannot choose starting %s again, choice already made.", isResourceChoice ? "resources" : "leaders"));
+    public CannotChooseException(String choosenElement) {
+        super(String.format("Cannot choose starting %s again, choice already made.", choosenElement));
     }
 }

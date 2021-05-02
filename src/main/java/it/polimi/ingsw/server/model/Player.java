@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
-import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.*;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -119,10 +118,11 @@ public class Player {
      * Chooses leaders from the hand of the player.
      *
      * @param chosenLeaders the leader cards to choose
+     * @throws CannotChooseException if the leader cards have already been chosen
      */
     public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
         if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))
-            throw new CannotChooseException(false);
+            throw new CannotChooseException("leader cards");
         leaders.retainAll(chosenLeaders);
     }
 
@@ -131,31 +131,28 @@ public class Player {
      *
      * @param game    the game the player is playing in
      * @param shelves the destination shelves
-     * @throws CannotChooseException            all the allowed initial resources have already been chosen
-     * @throws InvalidChoiceException           the resource cannot be given
-     * @throws IllegalResourceTransferException invalid container
+     * @throws CannotChooseException                all the allowed initial resources have already been chosen
+     * @throws IllegalProductionActivationException invalid container
      */
-    public void chooseResources(Game game, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, InvalidChoiceException, IllegalResourceTransferException {
+    public void chooseResources(Game game, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalProductionActivationException {
+        // TODO: Exclude resource type "Faith" from shelves
         // TODO: Make sure that shelves are of type Shelf
+        // TODO: IllegalResourceTransferException?
 
         if (hasChosenResources)
-            throw new CannotChooseException(true);
+            throw new CannotChooseException("resources");
 
         Map<ResourceType, Integer> chosenResources = shelves.values().stream()
                 .map(Map::entrySet)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
 
-        try {
-            new ProductionGroup(List.of(
-                    new ProductionGroup.ProductionRequest(
-                            new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                            Map.of(), chosenResources, Map.of(), shelves)
-            )).activate(game, this);
-        } catch (IllegalProductionActivationException e) {
-            throw new InvalidChoiceException();
-        }
-
+        new ProductionGroup(List.of(
+                new ProductionGroup.ProductionRequest(
+                        new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
+                        Map.of(), chosenResources, Map.of(), shelves)
+        )).activate(game, this);
+        
         hasChosenResources = true;
     }
 
@@ -184,9 +181,10 @@ public class Player {
      * @param leader the leader card to discard
      * @throws ActiveLeaderDiscardException leader is already active
      */
-    public void discardLeader(Game game, LeaderCard leader) throws IllegalActivationException, ActiveLeaderDiscardException {
+    public void discardLeader(Game game, LeaderCard leader) throws IndexOutOfBoundsException, ActiveLeaderDiscardException {
         if (!leaders.contains(leader))
-            throw new IllegalActivationException("The leader card cannot be discarded");
+            throw new IndexOutOfBoundsException(
+                String.format("Leader %d cannot be discarded: inexistent leader, max index allowed %d", leaders.indexOf(leader), leaders.size()));
         if (leader.isActive()) throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
         game.onDiscardLeader(this);
         leaders.remove(leader);
@@ -321,13 +319,13 @@ public class Player {
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws IllegalCardDepositException blocks the action if the level of the previous top card of the slot is not
      *                                     equal to current level minus 1
-     * @throws RequirementsNotMetException requirements for card purchase are not satisfied
+     * @throws CardRequirementsNotMetException requirements for card purchase are not satisfied
      */
     public void addToDevSlot(Game game, int index, DevelopmentCard devCard,
-                             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws RequirementsNotMetException, IllegalCardDepositException {
+                             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalCardDepositException {
         Stack<DevelopmentCard> slot = devSlots.get(index);
         if ((slot.isEmpty() && devCard.getLevel() != 1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel() - 1))
-            throw new IllegalCardDepositException();
+            throw new IllegalCardDepositException(devCard, slot, index);
 
         devCard.takeFromPlayer(game, this, resContainers);
 

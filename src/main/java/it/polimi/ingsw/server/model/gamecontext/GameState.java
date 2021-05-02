@@ -1,8 +1,7 @@
 package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.*;
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
-import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -91,7 +90,7 @@ abstract public class GameState {
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
     public void chooseResources(GameContext context, Player player,
-                                Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalResourceTransferException, CannotChooseException, InvalidChoiceException {
+                                Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalProductionActivationException, CannotChooseException {
         throw new IllegalActionException();
     }
 
@@ -134,7 +133,7 @@ abstract public class GameState {
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws IllegalActionException if the player cannot buy a development card in the current state
      */
-    public void buyDevCard(GameContext context, Player player, DevCardColor color, int level, int position, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, RequirementsNotMetException, IllegalCardDepositException {
+    public void buyDevCard(GameContext context, Player player, DevCardColor color, int level, int position, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, CardRequirementsNotMetException, IllegalCardDepositException {
         throw new IllegalActionException();
     }
 
@@ -158,7 +157,7 @@ abstract public class GameState {
      * @param leader  the leader card to activate
      * @throws IllegalActionException if the player cannot activate a leader in the current state
      */
-    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException {
+    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalArgumentException, CardRequirementsNotMetException {
         throw new IllegalActionException();
     }
 
@@ -170,7 +169,7 @@ abstract public class GameState {
      * @param leader  the leader card to discard
      * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
-    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException, ActiveLeaderDiscardException {
+    public void discardLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IndexOutOfBoundsException, ActiveLeaderDiscardException {
         throw new IllegalActionException();
     }
 

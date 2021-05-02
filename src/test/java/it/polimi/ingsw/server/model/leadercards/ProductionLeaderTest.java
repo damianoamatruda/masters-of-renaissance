@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class ProductionLeaderTest {
     private final ResourceType coin = new ResourceType("Coin", true);
-    private final Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
 
     /**
      * Tests a production leader initialized with a non-null production.
@@ -28,6 +27,8 @@ public class ProductionLeaderTest {
         Production prod = new Production(Map.of(), 0, Map.of(), 0);
         ProductionLeader leader = new ProductionLeader(prod, coin, null, 0);
 
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        
         assertDoesNotThrow(() -> leader.activate(p));
 
         assertTrue(leader.getProduction().isPresent());

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.leadercards.DepotLeader;
-import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
@@ -119,7 +118,7 @@ public class PlayerTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {0, 7, 16, 23})
-    void discardLeaderTest(int marker) throws IllegalActivationException, ActiveLeaderDiscardException {
+    void discardLeaderTest(int marker) throws ActiveLeaderDiscardException {
         for (int i = 0; i < marker; i++)
             player.incrementFaithPoints(game);
 
@@ -130,11 +129,12 @@ public class PlayerTest {
 
     /**
      * Ensures that an exception is thrown when trying to discard an activated leader card.
+     * @throws CardRequirementsNotMetException
      *
      * @throws IllegalActivationException leader card cannot be activated
      */
     @Test
-    void invalidLeaderDiscard() throws IllegalActivationException {
+    void invalidLeaderDiscard() throws IllegalArgumentException, CardRequirementsNotMetException {
         player.getLeaders().get(0).activate(player);
 
         assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
@@ -161,7 +161,7 @@ public class PlayerTest {
          * Prepares stored resources and resources to pay.
          */
         @BeforeEach
-        void prepareResources() throws RequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
+        void prepareResources() throws CardRequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
                     player.getStrongbox(), Map.of(coin, 3),
                     player.getWarehouse().getShelves().get(1), Map.of(stone, 2)
@@ -281,7 +281,7 @@ public class PlayerTest {
         void fourthPlayerTwoResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+            assertAll(() -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
                     game, Map.of(shelf, Map.of(coin, 3))
                     )),
                     () -> assertDoesNotThrow(() -> fourth.chooseResources(
@@ -293,10 +293,10 @@ public class PlayerTest {
         void illegalResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+            assertAll(() -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
                     game, Map.of(shelf, Map.of(zero, 1))
                     )),
-                    () -> assertThrows(InvalidChoiceException.class, () -> fourth.chooseResources(
+                    () -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
                             game, Map.of(shelf, Map.of(faith, 1))
                     )));
         }

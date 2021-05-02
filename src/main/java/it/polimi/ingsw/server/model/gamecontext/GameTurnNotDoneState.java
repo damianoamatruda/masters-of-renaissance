@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.*;
-import it.polimi.ingsw.server.model.cardrequirements.RequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
@@ -22,7 +22,7 @@ public class GameTurnNotDoneState extends GameTurnState {
 
     @Override
     public void buyDevCard(GameContext context, Player player, DevCardColor color, int level, int position,
-                           Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, RequirementsNotMetException, IllegalCardDepositException {
+                           Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, CardRequirementsNotMetException, IllegalCardDepositException {
         checkCurrentPlayer(context, player);
         context.game.getDevCardGrid().buyDevCard(context.game, player, color, level, position, resContainers);
         context.setState(new GameTurnDoneState());
