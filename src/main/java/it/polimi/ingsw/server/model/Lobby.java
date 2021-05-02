@@ -59,7 +59,14 @@ public class Lobby {
         Game newGame = countToNewGame == 1 ? gameFactory.getSoloGame(nicknames.get(waiting.get(0))) : gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList());
         GameContext newContext = new GameContext(newGame);
         // games.add(newContext);
-        waiting.subList(0, countToNewGame).forEach(p -> joined.put(p, newContext));
+        waiting.subList(0, countToNewGame).forEach(v -> {
+            joined.put(v, newContext);
+            try {
+                v.updateGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions());
+            } catch (IllegalActionException e) {
+                throw new RuntimeException(e);
+            }
+        });
         waiting.subList(0, countToNewGame).clear();
         countToNewGame = 0;
     }

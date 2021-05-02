@@ -3,6 +3,12 @@ package it.polimi.ingsw.server.view;
 import it.polimi.ingsw.server.MessageSender;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.messages.*;
+import it.polimi.ingsw.server.model.DevelopmentCard;
+import it.polimi.ingsw.server.model.Production;
+import it.polimi.ingsw.server.model.leadercards.LeaderCard;
+import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+
+import java.util.List;
 
 /**
  * This class represents a virtual view.
@@ -144,6 +150,12 @@ public class View {
     public void updateNicknameError(String message) {
         if (messageSender != null)
             messageSender.send(new ErrNickname(message));
+    }
+
+    public void updateGameStarted(List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+                                  List<ResourceContainer> resContainers, List<Production> productions) {
+        if (messageSender != null)
+            messageSender.send(new ResGameStarted(leaderCards, developmentCards, resContainers, productions));
     }
 
     public void updateActionError(String message) {
