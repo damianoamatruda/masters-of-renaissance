@@ -109,11 +109,11 @@ public class Shelf implements ResourceContainer {
     @Override
     public void addResource(ResourceType resType) throws IllegalResourceTransferException {
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException("Cannot add a resource of a different type to that of the resources inside.");
+            throw new IllegalResourceTransferException(resType, true, this.getResourceType().get());
         if (!resType.isStorable())
-            throw new IllegalArgumentException("Cannot add a non-storable resource.");
+            throw new IllegalResourceTransferException(resType, true);
         if (quantity == size)
-            throw new IllegalResourceTransferException("Cannot add a resource into a full shelf.");
+            throw new IllegalResourceTransferException(resType, true, this);
         this.resType = resType;
         this.quantity++;
     }
@@ -121,11 +121,11 @@ public class Shelf implements ResourceContainer {
     @Override
     public void removeResource(ResourceType resType) throws IllegalResourceTransferException {
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException("Cannot remove a resource of a different type to that of the resources inside.");
-        if (quantity == 0)
-            throw new IllegalResourceTransferException("Cannot remove a resource from an empty shelf.");
+            throw new IllegalResourceTransferException(resType, false, this.getResourceType().get());
         if (!resType.isStorable())
-            throw new IllegalArgumentException("Cannot remove a non-storable resource.");
+                throw new IllegalResourceTransferException(resType, false);
+        if (quantity == 0)
+            throw new IllegalResourceTransferException(resType, false, this);
         if (quantity == 1)
             this.resType = null;
         this.quantity--;

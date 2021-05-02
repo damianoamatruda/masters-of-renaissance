@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.actiontokens.ActionTokenBlackMoveTwo;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.DepotLeader;
 import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
@@ -74,7 +75,7 @@ public class SoloGameTest {
      * Test the AlreadyActiveException when a Leader card is already active.
      */
     @Test
-    void discardActiveDevCard() throws IllegalActivationException {
+    void discardActiveDevCard() throws IllegalArgumentException, CardRequirementsNotMetException {
         player.getLeaders().get(0).activate(player);
         assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
     }
