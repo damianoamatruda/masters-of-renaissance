@@ -130,11 +130,12 @@ public class PlayerTest {
 
     /**
      * Ensures that an exception is thrown when trying to discard an activated leader card.
+     * @throws CardRequirementsNotMetException
      *
      * @throws IllegalActivationException leader card cannot be activated
      */
     @Test
-    void invalidLeaderDiscard() throws IllegalActivationException {
+    void invalidLeaderDiscard() throws IllegalArgumentException, CardRequirementsNotMetException {
         player.getLeaders().get(0).activate(player);
 
         assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));

@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
-import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -158,7 +157,7 @@ abstract public class GameState {
      * @param leader  the leader card to activate
      * @throws IllegalActionException if the player cannot activate a leader in the current state
      */
-    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException {
+    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalArgumentException, CardRequirementsNotMetException {
         throw new IllegalActionException();
     }
 

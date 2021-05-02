@@ -38,7 +38,7 @@ public class ResourceRequirementTest {
 
         ResourceRequirement req = new ResourceRequirement(Map.of(shield, 1));
 
-        assertThrows(RequirementsNotMetException.class, () -> req.checkRequirements(p));
+        assertThrows(CardRequirementsNotMetException.class, () -> req.checkRequirements(p));
     }
 
     /**

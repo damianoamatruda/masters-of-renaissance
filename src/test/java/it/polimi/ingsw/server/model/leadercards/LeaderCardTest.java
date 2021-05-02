@@ -2,6 +2,8 @@ package it.polimi.ingsw.server.model.leadercards;
 
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Production;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
@@ -67,7 +69,7 @@ public class LeaderCardTest {
         Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         p.getStrongbox().addResource(new ResourceType("Shield", true));
 
-        assertThrows(Exception.class, () -> leader.activate(p));
+        assertThrows(CardRequirementsNotMetException.class, () -> leader.activate(p));
         assertFalse(leader.isActive());
     }
 

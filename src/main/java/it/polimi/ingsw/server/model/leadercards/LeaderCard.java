@@ -54,18 +54,15 @@ public abstract class LeaderCard extends Card {
      * Activates the card, enabling its effects.
      *
      * @param player the player activating the card. The card's requirements will be checked on them.
-     * @throws IllegalActivationException if the player does not meet the card's requirements.
+     * @throws CardRequirementsNotMetException if the leader's requirements are not met when activating
      */
-    public void activate(Player player) throws IllegalActivationException {
-        // TODO: Check that this card is owned by the player
-        if (requirement != null) {
-            try {
-                requirement.checkRequirements(player);
-            } catch (CardRequirementsNotMetException e) {
-                throw new IllegalActivationException(
-                        String.format("\nThe leader card cannot be activated due to the following reason: %s", e.getMessage()));
-            }
-        }
+    public void activate(Player player) throws IllegalArgumentException, CardRequirementsNotMetException {
+        if (!player.getLeaders().contains(this))
+            throw new IllegalArgumentException(
+                String.format("Illegal leader choice: leader isn't owned by player %s", player.getNickname()));
+        if (requirement != null)
+            requirement.checkRequirements(player);
+        
         isActive = true;
     }
 

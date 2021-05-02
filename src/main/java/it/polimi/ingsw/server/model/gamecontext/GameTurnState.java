@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model.gamecontext;
 
 import it.polimi.ingsw.server.model.ActiveLeaderDiscardException;
 import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
+import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
@@ -18,7 +18,7 @@ abstract public class GameTurnState extends GameState {
     }
 
     @Override
-    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalActivationException {
+    public void activateLeader(GameContext context, Player player, LeaderCard leader) throws IllegalActionException, IllegalArgumentException, CardRequirementsNotMetException {
         checkCurrentPlayer(context, player);
         leader.activate(player);
     }
