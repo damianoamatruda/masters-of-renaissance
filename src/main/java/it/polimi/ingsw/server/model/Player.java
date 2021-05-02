@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
-import it.polimi.ingsw.server.model.leadercards.IllegalActivationException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.*;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -119,6 +118,7 @@ public class Player {
      * Chooses leaders from the hand of the player.
      *
      * @param chosenLeaders the leader cards to choose
+     * @throws CannotChooseException if the leader cards have already been chosen
      */
     public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
         if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))

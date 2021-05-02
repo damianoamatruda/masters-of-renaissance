@@ -144,13 +144,13 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
-    void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
+    void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)
             strongbox.addResource(r);
         for (int i = 0; i < resourcesCount; i++)
             strongbox.removeResource(r);
-        assertThrows(IllegalResourceTransferException.class, () -> strongbox.removeResource(r));
+        assertThrows(IllegalArgumentException.class, () -> strongbox.removeResource(r));
     }
 }

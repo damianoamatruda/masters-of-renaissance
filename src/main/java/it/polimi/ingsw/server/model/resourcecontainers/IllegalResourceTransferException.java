@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model.resourcecontainers;
 
+import java.util.stream.IntStream;
+
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 /**
@@ -7,7 +9,8 @@ import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
  */
 public class IllegalResourceTransferException extends Exception {
     /**
-     * Class constructor.
+     * Constructs an <code>IllegalResourceTransferException</code> that is thrown because
+     * a container is bound to a different resource type.
      * 
      * @param res the resource being added/removed.
      * @param isAdded whether the resource is being added to the container (false for removal).
@@ -19,7 +22,8 @@ public class IllegalResourceTransferException extends Exception {
     }
 
     /**
-     * Class constructor.
+     * Constructs an <code>IllegalResourceTransferException</code> that is thrown because
+     * a non-storable resource trying to be stored
      * 
      * @param nonStorable  the non-storable resource being added/removed.
      * @param isAdded whether the resource is being added to the container (false for removal).
@@ -30,7 +34,8 @@ public class IllegalResourceTransferException extends Exception {
     }
 
     /**
-     * Class constructor.
+     * Constructs an <code>IllegalResourceTransferException</code> that is thrown because
+     * a container's capacity is hitting a limit (empty/full).
      * 
      * @param res the resource being added/removed.
      * @param isAdded whether the resource is being added to the container (false for removal).
@@ -39,5 +44,25 @@ public class IllegalResourceTransferException extends Exception {
     public IllegalResourceTransferException(ResourceType res, boolean isAdded, ResourceContainer s) {
         super(String.format("Cannot %s resource of type %s: choosen container is %s",
             isAdded ? "add" : "remove", res.getName(), s.getResourceQuantity(res) == 0 ? "empty" : "full"));
+    }
+
+    /**
+     * Constructs an <code>IllegalResourceTransferException</code> that is thrown because
+     * a resource is trying to be added to an unboud warehouse shelf when
+     * there's another shelf already bound to that resource type. 
+     * 
+     * @param res the resource being added/removed.
+     * @param w the warehouse the shelves of which are conflicting.
+     */
+    public IllegalResourceTransferException(ResourceType res, Warehouse w) {
+        super(String.format("Cannot add resource of type %s: a warehouse shelf %d is already bound to that resource",
+            res.getName(), getConflictingShelfIndex(res, w)));
+    }
+
+    private static int getConflictingShelfIndex(ResourceType r, Warehouse w) {
+        return IntStream.range(0, w.getShelves().size())
+            .filter(i -> w.getShelves().get(i).getResourceType().isPresent() &&
+                         w.getShelves().get(i).getResourceType().get().equals(r))
+            .findFirst().orElse(-1);
     }
 }

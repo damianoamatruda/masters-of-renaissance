@@ -11,19 +11,10 @@ import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
  */
 public class IllegalProductionActivationException extends Exception {
     /**
-     * Constructs a new exception with the specified detail message.
-     *
-     * @param message the detail message
-     * @see Exception
-     */
-    public IllegalProductionActivationException(String message, ProductionRequest req) {
-        super(message);
-    }
-
-    /**
      * Constructs a new exception with the specified detail message and cause.
      *
      * @param message the detail message
+     * @param req     the invalid <code>ProductionRequest</code> that generated the exception
      * @param cause   the cause
      * @see Exception
      */

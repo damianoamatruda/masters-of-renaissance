@@ -10,6 +10,6 @@ public class CannotChooseException extends Exception {
      * @param choosenElement either "leader cards" or "resources"
      */
     public CannotChooseException(String choosenElement) {
-        super(String.format("Cannot choose starting %s again, choice already made.", choosenElement);
+        super(String.format("Cannot choose starting %s again, choice already made.", choosenElement));
     }
 }

@@ -215,6 +215,8 @@ public class ProductionGroup {
          * </ol>
          *
          * @return <code>true</code> if the production request is valid; <code>false</code> otherwise.
+         * @throws IllegalProductionReplacementsException if the request's replacements are invalid
+         * @throws IllegalProductionContainersException if the request's container-resource mappings are invalid
          */
         public boolean validate() throws IllegalProductionReplacementsException, IllegalProductionContainersException {
             if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
