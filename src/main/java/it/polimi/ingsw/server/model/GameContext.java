@@ -1,6 +1,5 @@
-package it.polimi.ingsw.server.model.gamecontext;
+package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
@@ -17,10 +16,13 @@ import java.util.Optional;
  */
 public class GameContext {
     /** The game. */
-    final Game game;
+    private final Game game;
 
-    /** The current state of the game. */
-    private GameState state;
+    /** This represents the setup state of a game. */
+    private boolean setupDone;
+
+    /** This represents the state of a game during the turn of a player that has not made the mandatory move yet. */
+    private boolean turnDone;
 
     /**
      * Initializes a context for the given game.
@@ -29,16 +31,17 @@ public class GameContext {
      */
     public GameContext(Game game) {
         this.game = game;
-        this.state = new GameSetupState();
+        this.setupDone = false;
+        this.turnDone = false;
     }
 
     /**
-     * Sets the state.
+     * Getter of all the players who joined the game at the beginning.
      *
-     * @param state the next state
+     * @return the list of players (including who disconnected after)
      */
-    void setState(GameState state) {
-        this.state = state;
+    public Optional<Player> getPlayer(String nickname) {
+        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findFirst();
     }
 
     /**
@@ -48,7 +51,9 @@ public class GameContext {
      * @throws IllegalActionException if the list of leader cards cannot be requested in the current state
      */
     public List<LeaderCard> getLeaderCards() throws IllegalActionException {
-        return state.getLeaderCards(this);
+        if (setupDone)
+            throw new IllegalActionException();
+        return game.getLeaderCards();
     }
 
     /**
@@ -58,7 +63,9 @@ public class GameContext {
      * @throws IllegalActionException if the list of development cards cannot be requested in the current state
      */
     public List<DevelopmentCard> getDevelopmentCards() throws IllegalActionException {
-        return state.getDevelopmentCards(this);
+        if (setupDone)
+            throw new IllegalActionException();
+        return game.getDevelopmentCards();
     }
 
     /**
@@ -67,7 +74,9 @@ public class GameContext {
      * @return the list of resource containers
      */
     public List<ResourceContainer> getResContainers() throws IllegalActionException {
-        return state.getResContainers(this);
+        if (setupDone)
+            throw new IllegalActionException();
+        return game.getResContainers();
     }
 
     /**
@@ -76,7 +85,9 @@ public class GameContext {
      * @return the list of productions
      */
     public List<Production> getProductions() throws IllegalActionException {
-        return state.getProductions(this);
+        if (setupDone)
+            throw new IllegalActionException();
+        return game.getProductions();
     }
 
     /**
@@ -86,7 +97,9 @@ public class GameContext {
      * @throws IllegalActionException if the game cannot be requested in the current state
      */
     public Market getMarket() throws IllegalActionException {
-        return state.getMarket(this);
+        if (setupDone)
+            throw new IllegalActionException();
+        return game.getMarket();
     }
 
     /**
@@ -97,7 +110,10 @@ public class GameContext {
      * @throws IllegalActionException if the player cannot choose the leaders in the current state
      */
     public void chooseLeaders(Player player, List<LeaderCard> leaders) throws IllegalActionException, CannotChooseException {
-        state.chooseLeaders(this, player, leaders);
+        if (setupDone)
+            throw new IllegalActionException();
+        player.chooseLeaders(leaders);
+        checkEndSetup();
     }
 
     /**
@@ -108,7 +124,10 @@ public class GameContext {
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
     public void chooseResources(Player player, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, CannotChooseException, IllegalProductionActivationException {
-        state.chooseResources(this, player, shelves);
+        if (setupDone)
+            throw new IllegalActionException();
+        player.chooseResources(game, shelves);
+        checkEndSetup();
     }
 
     /**
@@ -120,7 +139,38 @@ public class GameContext {
      * @throws IllegalActionException if the player cannot swap the contents of two shelves in the current state
      */
     public void swapShelves(Player player, Shelf s1, Shelf s2) throws IllegalActionException, IllegalResourceTransferException {
-        state.swapShelves(this, player, s1, s2);
+        if (!setupDone || game.hasEnded())
+            throw new IllegalActionException();
+        checkCurrentPlayer(player);
+        Shelf.swap(s1, s2);
+    }
+
+    /**
+     * Makes a player activate a leader card.
+     *
+     * @param player the player
+     * @param leader the leader card to activate
+     * @throws IllegalActionException if the player cannot activate a leader in the current state
+     */
+    public void activateLeader(Player player, LeaderCard leader) throws IllegalActionException, CardRequirementsNotMetException {
+        if (!setupDone || game.hasEnded())
+            throw new IllegalActionException();
+        checkCurrentPlayer(player);
+        leader.activate(player);
+    }
+
+    /**
+     * Makes a player discard a leader card.
+     *
+     * @param player the player
+     * @param leader the leader card to discard
+     * @throws IllegalActionException if the player cannot discard a leader in the current state
+     */
+    public void discardLeader(Player player, LeaderCard leader) throws IllegalActionException, ActiveLeaderDiscardException {
+        if (!setupDone || game.hasEnded())
+            throw new IllegalActionException();
+        checkCurrentPlayer(player);
+        player.discardLeader(game, leader);
     }
 
     /**
@@ -133,8 +183,14 @@ public class GameContext {
      * @param shelves      a map of the shelves where to add the taken resources, if possible
      * @throws IllegalActionException if the player cannot take resources from the market in the current state
      */
-    public void takeMarketResources(Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalMarketTransferException {
-        state.takeMarketResources(this, player, isRow, index, replacements, shelves);
+    public void takeMarketResources(GameContext context, Player player, boolean isRow, int index,
+                                    Map<ResourceType, Integer> replacements,
+                                    Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalMarketTransferException {
+        if (!setupDone || turnDone)
+            throw new IllegalActionException();
+        checkCurrentPlayer(player);
+        context.game.getMarket().takeResources(context.game, player, isRow, index, replacements, shelves);
+        turnDone = true;
     }
 
     /**
@@ -147,8 +203,13 @@ public class GameContext {
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws IllegalActionException if the player cannot buy a development card in the current state
      */
-    public void buyDevCard(Player player, DevCardColor color, int level, int position, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, CardRequirementsNotMetException, IllegalCardDepositException {
-        state.buyDevCard(this, player, color, level, position, resContainers);
+    public void buyDevCard(Player player, DevCardColor color, int level, int position,
+                           Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalActionException, CardRequirementsNotMetException, IllegalCardDepositException {
+        if (!setupDone || turnDone)
+            throw new IllegalActionException();
+        checkCurrentPlayer(player);
+        game.getDevCardGrid().buyDevCard(game, player, color, level, position, resContainers);
+        turnDone = true;
     }
 
     /**
@@ -159,29 +220,11 @@ public class GameContext {
      * @throws IllegalActionException if the player cannot activate a group of productions in the current state
      */
     public void activateProductionGroup(Player player, ProductionGroup productionGroup) throws IllegalActionException, IllegalProductionActivationException {
-        state.activateProductionGroup(this, player, productionGroup);
-    }
-
-    /**
-     * Makes a player activate a leader card.
-     *
-     * @param player the player
-     * @param leader the leader card to activate
-     * @throws IllegalActionException if the player cannot activate a leader in the current state
-     */
-    public void activateLeader(Player player, LeaderCard leader) throws IllegalActionException, IllegalArgumentException, CardRequirementsNotMetException {
-        state.activateLeader(this, player, leader);
-    }
-
-    /**
-     * Makes a player discard a leader card.
-     *
-     * @param player the player
-     * @param leader the leader card to discard
-     * @throws IllegalActionException if the player cannot discard a leader in the current state
-     */
-    public void discardLeader(Player player, LeaderCard leader) throws IllegalActionException, IndexOutOfBoundsException, ActiveLeaderDiscardException {
-        state.discardLeader(this, player, leader);
+        if (!setupDone || turnDone)
+            throw new IllegalActionException();
+        checkCurrentPlayer(player);
+        productionGroup.activate(game, player);
+        turnDone = true;
     }
 
     /**
@@ -190,8 +233,12 @@ public class GameContext {
      * @param player the player
      * @throws IllegalActionException if the player cannot end the turn in the current state
      */
-    public void endTurn(Player player) throws NoActivePlayersException, IllegalActionException {
-        state.endTurn(this, player);
+    public void endTurn(Player player) throws IllegalActionException, NoActivePlayersException {
+        if (!setupDone || !turnDone)
+            throw new IllegalActionException();
+        checkCurrentPlayer(player);
+        game.onTurnEnd();
+        turnDone = false;
     }
 
     /**
@@ -201,7 +248,9 @@ public class GameContext {
      * @throws IllegalActionException if the player who won cannot be requested in the current state
      */
     public Optional<Player> getWinnerPlayer() throws IllegalActionException {
-        return state.getWinnerPlayer(this);
+        if (!game.hasEnded())
+            throw new IllegalActionException();
+        return game.getWinnerPlayer();
     }
 
     /**
@@ -211,10 +260,27 @@ public class GameContext {
      * @throws IllegalActionException if this cannot be requested in the current state
      */
     public boolean isBlackWinner() throws IllegalActionException {
-        return state.isBlackWinner(this);
+        if (!game.hasEnded())
+            throw new IllegalActionException();
+        return game.isBlackWinner();
     }
 
-    public Optional<Player> getPlayer(String nickname) {
-        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findFirst();
+    /**
+     * Check if the last necessary setup move has been made.
+     */
+    private void checkEndSetup() {
+        if (game.getPlayers().stream().allMatch(p -> p.hasChosenLeaders() && p.hasChosenResources()))
+            setupDone = true;
+    }
+
+    /**
+     * Checks if the turn is of the given player.
+     *
+     * @param player the player to check
+     * @throws IllegalActionException if the player can play in this turn
+     */
+    private void checkCurrentPlayer(Player player) throws IllegalActionException {
+        if (!player.equals(game.getCurrentPlayer()))
+            throw new IllegalActionException();
     }
 }

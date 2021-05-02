@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.gamecontext.GameContext;
 import it.polimi.ingsw.server.view.View;
 
 import java.util.*;
