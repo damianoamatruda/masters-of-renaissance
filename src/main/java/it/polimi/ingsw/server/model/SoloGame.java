@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
+import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,8 @@ public class SoloGame extends Game {
      * @param player                the nickname of the player who joined
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
+     * @param resContainers         the list of resource containers
+     * @param productions           the list of productions
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
@@ -34,9 +37,10 @@ public class SoloGame extends Game {
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
     public SoloGame(Player player, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+                    List<ResourceContainer> resContainers, List<Production> productions,
                     DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, List<ActionToken> actionTokens,
                     int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(List.of(player), leaderCards, developmentCards, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
+        super(List.of(player), leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;

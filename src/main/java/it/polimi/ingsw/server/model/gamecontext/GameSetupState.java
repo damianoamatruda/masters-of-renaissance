@@ -24,6 +24,16 @@ public class GameSetupState extends GameState {
     }
 
     @Override
+    public List<ResourceContainer> getResContainers(GameContext context) throws IllegalActionException {
+        return context.game.getResContainers();
+    }
+
+    @Override
+    public List<Production> getProductions(GameContext context) throws IllegalActionException {
+        return context.game.getProductions();
+    }
+
+    @Override
     public Market getMarket(GameContext context) {
         return context.game.getMarket();
     }

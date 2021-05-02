@@ -55,6 +55,8 @@ public class DevCardGridTest {
                 List.of(buyer),
                 List.of(),
                 devCards,
+                List.of(),
+                List.of(),
                 devCardGrid,
                 new Market(Map.of(r1, 1), 1, r1),
                 new FaithTrack(Set.of(), Set.of()),

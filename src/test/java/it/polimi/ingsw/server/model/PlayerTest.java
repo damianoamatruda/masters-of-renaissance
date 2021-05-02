@@ -62,6 +62,8 @@ public class PlayerTest {
                 players,
                 List.of(),
                 List.of(),
+                List.of(),
+                List.of(),
                 new DevCardGrid(List.of(), 3, 4), new Market(Map.of(zero, 4, faith, 1, coin, 2, servant, 2, shield, 2, stone, 2), 4, zero),
                 new FaithTrack(Set.of(), Set.of()),
                 24, 7);
