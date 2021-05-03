@@ -66,7 +66,7 @@ public class Lobby {
         waiting.subList(0, countToNewGame).forEach(v -> {
             joined.put(v, newContext);
             try {
-                v.update(new ResGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions()));
+                v.update(new ResGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions(), newContext.getMarket(), newContext.getDevCardGrid()));
             } catch (IllegalActionException e) {
                 throw new RuntimeException(e);
             }

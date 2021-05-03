@@ -23,18 +23,6 @@ public class Controller {
         model.setCountToNewGame(view, message.getCount());
     }
 
-    public void update(View view, ReqGetMarket message) {
-        // TODO: This should be a response, integrated in ResGameStarted.
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.getMarket();
-                System.out.println("Got market.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
     public void update(View view, ReqChooseLeaders message) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
             try {

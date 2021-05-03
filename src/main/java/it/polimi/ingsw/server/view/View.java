@@ -60,10 +60,6 @@ public class View {
         controller.update(this, message);
     }
 
-    public void notify(ReqGetMarket message) {
-        controller.update(this, message);
-    }
-
     public void notify(ReqChooseLeaders message) {
         controller.update(this, message);
     }

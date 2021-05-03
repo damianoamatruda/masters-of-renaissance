@@ -103,6 +103,18 @@ public class GameContext {
     }
 
     /**
+     * Returns the game development card grid.
+     *
+     * @return the development card grid
+     * @throws IllegalActionException if the game cannot be requested in the current state
+     */
+    public DevCardGrid getDevCardGrid() throws IllegalActionException {
+        if (setupDone)
+            throw new IllegalActionException();
+        return game.getDevCardGrid();
+    }
+
+    /**
      * Choose leaders from the hand of a player.
      *
      * @param player  the player
