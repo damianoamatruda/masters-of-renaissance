@@ -1,6 +1,6 @@
-package it.polimi.ingsw.server.controller.events;
+package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.server.view.View;
+import it.polimi.ingsw.common.View;
 
 public class ReqQuit implements VCEvent {
     @Override

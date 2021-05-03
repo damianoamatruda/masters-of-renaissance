@@ -2,11 +2,9 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.model.FileGameFactory;
 import it.polimi.ingsw.server.model.GameFactory;
 import it.polimi.ingsw.server.model.Lobby;
-import it.polimi.ingsw.server.view.VirtualView;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

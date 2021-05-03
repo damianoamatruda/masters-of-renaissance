@@ -1,17 +1,8 @@
-package it.polimi.ingsw.server.controller.events;
-
-import it.polimi.ingsw.server.model.DevCardGrid;
-import it.polimi.ingsw.server.model.DevelopmentCard;
-import it.polimi.ingsw.server.model.Market;
-import it.polimi.ingsw.server.model.Production;
-import it.polimi.ingsw.server.model.leadercards.LeaderCard;
-import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
-
-import java.util.ArrayList;
-import java.util.List;
+package it.polimi.ingsw.common.events;
 
 public class ResGameStarted implements MVEvent {
-    private final List<LeaderCard> leaderCards;
+    // TODO
+    /* private final List<LeaderCard> leaderCards;
     private final List<DevelopmentCard> developmentCards;
     private final List<ResourceContainer> resContainers;
     private final List<Production> productions;
@@ -52,5 +43,5 @@ public class ResGameStarted implements MVEvent {
 
     public DevCardGrid getDevCardGrid() {
         return devCardGrid;
-    }
+    } */
 }

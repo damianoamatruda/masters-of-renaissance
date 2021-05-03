@@ -1,9 +1,13 @@
-package it.polimi.ingsw.server.controller.events;
+package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.server.view.View;
+import it.polimi.ingsw.common.View;
 
 public class ReqNickname implements VCEvent {
-    private String nickname;
+    private final String nickname;
+
+    public ReqNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     @Override
     public void handle(View view) {

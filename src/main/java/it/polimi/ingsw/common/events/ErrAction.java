@@ -1,9 +1,9 @@
-package it.polimi.ingsw.server.controller.events;
+package it.polimi.ingsw.common.events;
 
-public class ErrNickname implements MVEvent {
+public class ErrAction implements MVEvent {
     private final String message;
 
-    public ErrNickname(String message) {
+    public ErrAction(String message) {
         this.message = message;
     }
 

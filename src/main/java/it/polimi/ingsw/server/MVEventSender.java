@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.controller.events.MVEvent;
+import it.polimi.ingsw.common.events.MVEvent;
 
 public interface MVEventSender {
     void send(MVEvent event);

@@ -1,9 +1,13 @@
-package it.polimi.ingsw.server.controller.events;
+package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.server.view.View;
+import it.polimi.ingsw.common.View;
 
 public class ReqPlayersCount implements VCEvent {
-    private int count;
+    private final int count;
+
+    public ReqPlayersCount(int count) {
+        this.count = count;
+    }
 
     @Override
     public void handle(View view) {

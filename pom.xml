@@ -102,6 +102,7 @@
                   <artifact>it.polimi.ingsw:AM49</artifact>
                   <includes>
                     <include>it/polimi/ingsw/server/**</include>
+                    <include>it/polimi/ingsw/common/**</include>
                     <include>config.json</include>
                     <include>server.json</include>
                   </includes>
@@ -128,6 +129,7 @@
                   <artifact>it.polimi.ingsw:AM49</artifact>
                   <includes>
                     <include>it/polimi/ingsw/client/**</include>
+                    <include>it/polimi/ingsw/common/**</include>
                     <include>server.json</include>
                   </includes>
                 </filter>

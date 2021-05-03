@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.controller.events.*;
-import it.polimi.ingsw.server.view.View;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.*;
 
 import java.util.*;
 
@@ -62,11 +62,7 @@ public class Lobby {
         // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(v -> {
             joined.put(v, newContext);
-            try {
-                v.update(new ResGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions(), newContext.getMarket(), newContext.getDevCardGrid()));
-            } catch (IllegalActionException e) {
-                throw new RuntimeException(e);
-            }
+            v.update(new ResGameStarted()); // v.update(new ResGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions(), newContext.getMarket(), newContext.getDevCardGrid()));
         });
         waiting.subList(0, countToNewGame).clear();
         countToNewGame = 0;

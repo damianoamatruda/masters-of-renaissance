@@ -1,8 +1,7 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.controller.events.MVEvent;
-import it.polimi.ingsw.server.controller.events.ResWelcome;
-import it.polimi.ingsw.server.view.VirtualView;
+import it.polimi.ingsw.common.events.MVEvent;
+import it.polimi.ingsw.common.events.ResWelcome;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller.events;
+package it.polimi.ingsw.common.events;
 
 public class ErrController implements MVEvent {
     private final String message;

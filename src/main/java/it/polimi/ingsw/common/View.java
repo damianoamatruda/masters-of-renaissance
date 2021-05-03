@@ -1,6 +1,6 @@
-package it.polimi.ingsw.server.view;
+package it.polimi.ingsw.common;
 
-import it.polimi.ingsw.server.controller.events.*;
+import it.polimi.ingsw.common.events.*;
 
 public interface View {
     void notify(ReqQuit event);

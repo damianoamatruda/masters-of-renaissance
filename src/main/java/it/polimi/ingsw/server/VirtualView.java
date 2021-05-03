@@ -1,8 +1,7 @@
-package it.polimi.ingsw.server.view;
+package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.MVEventSender;
-import it.polimi.ingsw.server.controller.Controller;
-import it.polimi.ingsw.server.controller.events.*;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.*;
 
 /**
  * This class represents a virtual view.
