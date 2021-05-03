@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import it.polimi.ingsw.common.events.VCEvent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
-public class Client {
+public class Client implements VCEventSender {
     private final static String jsonConfigPath = "/server.json";
     private final static String quitInputType = "ResGoodbye";
     private final static String quitOutputType = "ReqQuit";
@@ -58,7 +59,7 @@ public class Client {
         }
 
         executor.submit(this::receive);
-        executor.submit(this::send);
+        executor.submit(this::sendT);
     }
 
     public void stop() {
@@ -94,7 +95,7 @@ public class Client {
         stop();
     }
 
-    private void send() {
+    private void sendT() {
         Gson gson = new Gson();
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -115,5 +116,10 @@ public class Client {
             System.err.println("Couldn't get I/O for the connection to " + host + " for output stream");
         }
         stop();
+    }
+
+    @Override
+    public void send(VCEvent event) {
+        // TODO: Implement this here or in another class similar to ServerClientHandler
     }
 }

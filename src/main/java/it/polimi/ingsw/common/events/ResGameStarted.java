@@ -1,6 +1,13 @@
 package it.polimi.ingsw.common.events;
 
+import it.polimi.ingsw.common.View;
+
 public class ResGameStarted implements MVEvent {
+    @Override
+    public void handle(View view) {
+        view.update(this);
+    }
+
     // TODO
     /* private final List<LeaderCard> leaderCards;
     private final List<DevelopmentCard> developmentCards;

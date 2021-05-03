@@ -8,6 +8,8 @@ import it.polimi.ingsw.common.events.MVEvent;
 import it.polimi.ingsw.common.events.VCEvent;
 
 public class GameProtocol {
+    // TODO: Evaluate whether to put this class into common
+
     /*
      * Interprets command string and calls an action from the model.
      */
