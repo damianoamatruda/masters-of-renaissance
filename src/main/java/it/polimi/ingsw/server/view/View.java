@@ -43,55 +43,55 @@ public class View {
     }
 
     public void notify(ReqQuit message) {
-        controller.quit(this);
+        controller.update(this, message);
     }
 
     public void notify(ReqNickname message) {
-        controller.registerNickname(this, message.getNickname());
+        controller.update(this, message);
     }
 
     public void notify(ReqActivateLeader message) {
-        controller.activateLeader(this, message.getLeader());
+        controller.update(this, message);
     }
 
     public void notify(ReqActivateProduction message) {
-        controller.activateProductionGroup(this, message.getProductionGroup());
+        controller.update(this, message);
     }
 
     public void notify(ReqBuyDevCard message) {
-        controller.buyDevCard(this, message.getColor(), message.getLevel(), message.getSlotIndex(), message.getResContainers());
+        controller.update(this, message);
     }
 
     public void notify(ReqDiscardLeader message) {
-        controller.discardLeader(this, message.getLeader());
+        controller.update(this, message);
     }
 
     public void notify(ReqGetMarket message) {
-        controller.getMarket(this);
+        controller.update(this, message);
     }
 
     public void notify(ReqChooseLeaders message) {
-        controller.chooseLeaders(this, message.getLeaders());
+        controller.update(this, message);
     }
 
     public void notify(ReqPlayersCount message) {
-        controller.setPlayersCount(this, message.getCount());
+        controller.update(this, message);
     }
 
     public void notify(ReqChooseResources message) {
-        controller.chooseResources(this, message.getShelves());
+        controller.update(this, message);
     }
 
     public void notify(ReqSwapShelves message) {
-        controller.swapShelves(this, message.getS1(), message.getS2());
+        controller.update(this, message);
     }
 
     public void notify(ReqTakeFromMarket message) {
-        controller.takeMarketResources(this, message.isRow(), message.getIndex(), message.getReplacements(), message.getShelves());
+        controller.update(this, message);
     }
 
     public void notify(ReqTurnEnd message) {
-        controller.endTurn(this);
+        controller.update(this, message);
     }
 
     public void updateWelcome() {
