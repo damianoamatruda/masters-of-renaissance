@@ -1,9 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.controller.messages.ErrAction;
-import it.polimi.ingsw.server.controller.messages.ErrNickname;
-import it.polimi.ingsw.server.controller.messages.ResGameStarted;
-import it.polimi.ingsw.server.controller.messages.ResNickname;
+import it.polimi.ingsw.server.controller.messages.*;
 import it.polimi.ingsw.server.view.View;
 
 import java.util.*;
@@ -73,6 +70,11 @@ public class Lobby {
         });
         waiting.subList(0, countToNewGame).clear();
         countToNewGame = 0;
+    }
+
+    public void exit(View view) {
+        // TODO: Manage the exit of a view
+        view.update(new ResGoodbye());
     }
 
     public boolean isPlayerFirst(View view) {
