@@ -135,7 +135,7 @@ public class GameContext {
      * @param shelves the destination shelves
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
-    public void chooseResources(Player player, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, CannotChooseException, IllegalProductionActivationException {
+    public void chooseResources(Player player, Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalActionException, CannotChooseException, IllegalProductionActivationException {
         if (setupDone)
             throw new IllegalActionException();
         player.chooseResources(game, shelves);
@@ -197,7 +197,7 @@ public class GameContext {
      */
     public void takeMarketResources(Player player, boolean isRow, int index,
                                     Map<ResourceType, Integer> replacements,
-                                    Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalMarketTransferException {
+                                    Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalActionException, IllegalMarketTransferException {
         if (!setupDone || turnDone)
             throw new IllegalActionException();
         checkCurrentPlayer(player);

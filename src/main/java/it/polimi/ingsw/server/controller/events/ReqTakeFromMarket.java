@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.controller.events;
 
-import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.server.view.View;
 
@@ -10,7 +10,7 @@ public class ReqTakeFromMarket implements VCEvent {
     private boolean isRow;
     private int index;
     private Map<ResourceType, Integer> replacements;
-    private Map<ResourceContainer, java.util.Map<ResourceType, Integer>> shelves;
+    private Map<Shelf, Map<ResourceType, Integer>> shelves;
 
     @Override
     public void handle(View view) {
@@ -29,7 +29,7 @@ public class ReqTakeFromMarket implements VCEvent {
         return replacements;
     }
 
-    public Map<ResourceContainer, Map<ResourceType, Integer>> getShelves() {
+    public Map<Shelf, Map<ResourceType, Integer>> getShelves() {
         return shelves;
     }
 }

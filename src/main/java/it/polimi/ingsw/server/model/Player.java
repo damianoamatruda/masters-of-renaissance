@@ -2,7 +2,10 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
-import it.polimi.ingsw.server.model.resourcecontainers.*;
+import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
+import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
@@ -134,9 +137,7 @@ public class Player {
      * @throws CannotChooseException                all the allowed initial resources have already been chosen
      * @throws IllegalProductionActivationException invalid container
      */
-    public void chooseResources(Game game, Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalProductionActivationException {
-        // TODO: Exclude resource type "Faith" from shelves
-        // TODO: Make sure that shelves are of type Shelf
+    public void chooseResources(Game game, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalProductionActivationException {
         // TODO: IllegalResourceTransferException?
 
         if (hasChosenResources)
@@ -150,7 +151,7 @@ public class Player {
         new ProductionGroup(List.of(
                 new ProductionGroup.ProductionRequest(
                         new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                        Map.of(), chosenResources, Map.of(), shelves)
+                        Map.of(), chosenResources, Map.of(), Map.copyOf(shelves))
         )).activate(game, this);
         
         hasChosenResources = true;

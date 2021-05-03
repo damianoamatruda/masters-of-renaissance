@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
-import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
@@ -77,13 +77,11 @@ public class Market {
      * @throws IllegalMarketTransferException if it is not possible
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
-                              Map<ResourceContainer, Map<ResourceType, Integer>> shelves) throws IllegalMarketTransferException {
-        // TODO: Make sure that shelves are of type Shelf
-
+                              Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalMarketTransferException {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
             throw new IllegalArgumentException(
-                String.format("Cannot take resources: %s %d does not exist, limit is %d",
-                    isRow ? "row" : "column", index, isRow ? grid.get(0).size() : grid.size()));
+                    String.format("Cannot take resources: %s %d does not exist, limit is %d",
+                            isRow ? "row" : "column", index, isRow ? grid.get(0).size() : grid.size()));
 
         Map<ResourceType, Integer> output = IntStream
                 .range(0, isRow ? getColsCount() : getRowsCount())
@@ -98,7 +96,7 @@ public class Market {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(
                             new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
-                            Map.of(), Map.of(), Map.of(), shelves)
+                            Map.of(), Map.of(), Map.of(), Map.copyOf(shelves))
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
             throw new IllegalMarketTransferException(e);

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
@@ -98,7 +97,7 @@ public class MarketTest {
                         output.merge(resType, 1, Integer::sum);
                 }
 
-                Map<ResourceContainer, Map<ResourceType, Integer>> outputShelves = output.entrySet().stream()
+                Map<Shelf, Map<ResourceType, Integer>> outputShelves = output.entrySet().stream()
                         .collect(Collectors.toMap(e -> shelves.get(e.getKey()), e -> Map.of(e.getKey(), e.getValue())));
 
                 market.takeResources(game, player, true, rowIndex, Map.of(), outputShelves);
