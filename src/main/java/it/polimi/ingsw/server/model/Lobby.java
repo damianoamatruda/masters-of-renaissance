@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.controller.messages.*;
+import it.polimi.ingsw.server.controller.events.*;
 import it.polimi.ingsw.server.view.View;
 
 import java.util.*;

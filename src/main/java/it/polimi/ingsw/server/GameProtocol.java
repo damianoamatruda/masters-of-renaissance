@@ -1,9 +1,10 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.*;
-import it.polimi.ingsw.server.controller.messages.ErrCommunication;
-import it.polimi.ingsw.server.controller.messages.ErrController;
-import it.polimi.ingsw.server.controller.messages.Message;
+import it.polimi.ingsw.server.controller.events.ErrCommunication;
+import it.polimi.ingsw.server.controller.events.ErrController;
+import it.polimi.ingsw.server.controller.events.MVEvent;
+import it.polimi.ingsw.server.controller.events.VCEvent;
 import it.polimi.ingsw.server.view.View;
 
 public class GameProtocol {
@@ -39,12 +40,12 @@ public class GameProtocol {
             return;
         }
 
-        Message message;
+        VCEvent event;
 
         try {
-            message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + type.getAsString()).asSubclass(Message.class));
+            event = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.events." + type.getAsString()).asSubclass(VCEvent.class));
         } catch (ClassNotFoundException e) {
-            view.update(new ErrCommunication("Message type \"" + type.getAsString() + "\" does not exist."));
+            view.update(new ErrCommunication("Event type \"" + type.getAsString() + "\" does not exist."));
             return;
         } catch (JsonSyntaxException e) {
             view.update(new ErrCommunication("Invalid attribute types."));
@@ -52,16 +53,16 @@ public class GameProtocol {
         }
 
         try {
-            message.handle(view);
+            event.handle(view);
         } catch (Exception e) {
             view.update(new ErrController(e));
         }
     }
 
-    public String processOutput(Message message) {
+    public String processOutput(MVEvent event) {
         Gson gson = new Gson().newBuilder()
                 .enableComplexMapKeySerialization()
-                .registerTypeHierarchyAdapter(Message.class, (JsonSerializer<Message>) (msg, type, jsonSerializationContext) -> {
+                .registerTypeHierarchyAdapter(MVEvent.class, (JsonSerializer<MVEvent>) (msg, type, jsonSerializationContext) -> {
                     Gson customGson = new Gson().newBuilder()
                             .enableComplexMapKeySerialization()
                             .create();
@@ -70,6 +71,6 @@ public class GameProtocol {
                     return jsonElement;
                 })
                 .create();
-        return gson.toJson(message);
+        return gson.toJson(event);
     }
 }

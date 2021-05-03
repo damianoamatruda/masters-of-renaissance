@@ -1,9 +1,9 @@
-package it.polimi.ingsw.server.controller.messages;
+package it.polimi.ingsw.server.controller.events;
 
 import it.polimi.ingsw.server.model.ProductionGroup;
 import it.polimi.ingsw.server.view.View;
 
-public class ReqActivateProduction implements Message {
+public class ReqActivateProduction implements VCEvent {
     ProductionGroup productionGroup;
 
     @Override

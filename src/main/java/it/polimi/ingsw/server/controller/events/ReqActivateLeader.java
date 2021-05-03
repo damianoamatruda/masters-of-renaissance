@@ -1,9 +1,9 @@
-package it.polimi.ingsw.server.controller.messages;
+package it.polimi.ingsw.server.controller.events;
 
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.view.View;
 
-public class ReqActivateLeader implements Message {
+public class ReqActivateLeader implements VCEvent {
     private LeaderCard leader;
 
     @Override

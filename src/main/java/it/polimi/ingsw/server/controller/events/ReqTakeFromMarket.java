@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller.messages;
+package it.polimi.ingsw.server.controller.events;
 
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.view.View;
 
 import java.util.Map;
 
-public class ReqTakeFromMarket implements Message {
+public class ReqTakeFromMarket implements VCEvent {
     private boolean isRow;
     private int index;
     private Map<ResourceType, Integer> replacements;

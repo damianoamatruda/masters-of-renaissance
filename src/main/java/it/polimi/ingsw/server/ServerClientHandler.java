@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.controller.messages.Message;
-import it.polimi.ingsw.server.controller.messages.ResWelcome;
+import it.polimi.ingsw.server.controller.events.MVEvent;
+import it.polimi.ingsw.server.controller.events.ResWelcome;
 import it.polimi.ingsw.server.view.View;
 
 import java.io.BufferedReader;
@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ServerClientHandler implements Runnable, MessageSender {
+public class ServerClientHandler implements Runnable, MVEventSender {
     private final Socket clientSocket;
     private final View view;
     private final GameProtocol gp;
@@ -73,7 +73,7 @@ public class ServerClientHandler implements Runnable, MessageSender {
     }
 
     @Override
-    public void send(Message message) {
-        send(gp.processOutput(message));
+    public void send(MVEvent event) {
+        send(gp.processOutput(event));
     }
 }

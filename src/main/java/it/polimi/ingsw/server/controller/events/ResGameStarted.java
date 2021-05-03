@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller.messages;
+package it.polimi.ingsw.server.controller.events;
 
 import it.polimi.ingsw.server.model.DevCardGrid;
 import it.polimi.ingsw.server.model.DevelopmentCard;
@@ -6,12 +6,11 @@ import it.polimi.ingsw.server.model.Market;
 import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.server.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResGameStarted implements Message {
+public class ResGameStarted implements MVEvent {
     private final List<LeaderCard> leaderCards;
     private final List<DevelopmentCard> developmentCards;
     private final List<ResourceContainer> resContainers;
@@ -29,10 +28,6 @@ public class ResGameStarted implements Message {
         this.productions = productions;
         this.market = market;
         this.devCardGrid = devCardGrid;
-    }
-
-    @Override
-    public void handle(View view) {
     }
 
     public List<LeaderCard> getLeaderCards() {

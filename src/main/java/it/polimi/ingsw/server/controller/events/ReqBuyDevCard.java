@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller.messages;
+package it.polimi.ingsw.server.controller.events;
 
 import it.polimi.ingsw.server.model.DevCardColor;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.view.View;
 
 import java.util.Map;
 
-public class ReqBuyDevCard implements Message {
+public class ReqBuyDevCard implements VCEvent {
     private DevCardColor color;
     private int level;
     private int slotIndex;

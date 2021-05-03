@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.view;
 
-import it.polimi.ingsw.server.MessageSender;
+import it.polimi.ingsw.server.MVEventSender;
 import it.polimi.ingsw.server.controller.Controller;
-import it.polimi.ingsw.server.controller.messages.*;
+import it.polimi.ingsw.server.controller.events.*;
 
 /**
  * This class represents a virtual view.
@@ -14,8 +14,8 @@ public class View {
     /** The controller observing the view. */
     private final Controller controller;
 
-    /** The message sender of the view. */
-    private MessageSender messageSender;
+    /** The event sender of the view. */
+    private MVEventSender eventSender;
 
     /**
      * Class constructor.
@@ -24,106 +24,106 @@ public class View {
      */
     public View(Controller controller) {
         this.controller = controller;
-        this.messageSender = null;
+        this.eventSender = null;
     }
 
     /**
-     * Sets the message sender.
+     * Sets the event sender.
      *
-     * @param messageSender the message sender
+     * @param eventSender the event sender
      */
-    public void setMessageSender(MessageSender messageSender) {
-        this.messageSender = messageSender;
+    public void setMessageSender(MVEventSender eventSender) {
+        this.eventSender = eventSender;
     }
 
-    public void notify(ReqQuit message) {
-        controller.update(this, message);
+    public void notify(ReqQuit event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqNickname message) {
-        controller.update(this, message);
+    public void notify(ReqNickname event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqActivateLeader message) {
-        controller.update(this, message);
+    public void notify(ReqActivateLeader event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqActivateProduction message) {
-        controller.update(this, message);
+    public void notify(ReqActivateProduction event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqBuyDevCard message) {
-        controller.update(this, message);
+    public void notify(ReqBuyDevCard event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqDiscardLeader message) {
-        controller.update(this, message);
+    public void notify(ReqDiscardLeader event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqChooseLeaders message) {
-        controller.update(this, message);
+    public void notify(ReqChooseLeaders event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqPlayersCount message) {
-        controller.update(this, message);
+    public void notify(ReqPlayersCount event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqChooseResources message) {
-        controller.update(this, message);
+    public void notify(ReqChooseResources event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqSwapShelves message) {
-        controller.update(this, message);
+    public void notify(ReqSwapShelves event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqTakeFromMarket message) {
-        controller.update(this, message);
+    public void notify(ReqTakeFromMarket event) {
+        controller.update(this, event);
     }
 
-    public void notify(ReqTurnEnd message) {
-        controller.update(this, message);
+    public void notify(ReqTurnEnd event) {
+        controller.update(this, event);
     }
 
-    public void update(ResWelcome message) {
-        if (messageSender != null)
-            messageSender.send(message);
+    public void update(ResWelcome event) {
+        if (eventSender != null)
+            eventSender.send(event);
     }
 
-    public void update(ResGoodbye message) {
-        if (messageSender != null) {
-            messageSender.send(message);
-            messageSender.stop();
-            messageSender = null;
+    public void update(ResGoodbye event) {
+        if (eventSender != null) {
+            eventSender.send(event);
+            eventSender.stop();
+            eventSender = null;
         }
     }
 
-    public void update(ErrCommunication message) {
-        if (messageSender != null)
-            messageSender.send(message);
+    public void update(ErrCommunication event) {
+        if (eventSender != null)
+            eventSender.send(event);
     }
 
-    public void update(ErrController message) {
-        if (messageSender != null)
-            messageSender.send(message);
+    public void update(ErrController event) {
+        if (eventSender != null)
+            eventSender.send(event);
     }
 
-    public void update(ResNickname message) {
-        if (messageSender != null)
-            messageSender.send(message);
+    public void update(ResNickname event) {
+        if (eventSender != null)
+            eventSender.send(event);
     }
 
-    public void update(ErrNickname message) {
-        if (messageSender != null)
-            messageSender.send(message);
+    public void update(ErrNickname event) {
+        if (eventSender != null)
+            eventSender.send(event);
     }
 
-    public void update(ResGameStarted message) {
-        if (messageSender != null)
-            messageSender.send(message);
+    public void update(ResGameStarted event) {
+        if (eventSender != null)
+            eventSender.send(event);
     }
 
-    public void update(ErrAction message) {
-        if (messageSender != null)
-            messageSender.send(message);
+    public void update(ErrAction event) {
+        if (eventSender != null)
+            eventSender.send(event);
     }
 }

@@ -1,8 +1,8 @@
-package it.polimi.ingsw.server.controller.messages;
+package it.polimi.ingsw.server.controller.events;
 
 import it.polimi.ingsw.server.view.View;
 
 @FunctionalInterface
-public interface Message {
+public interface VCEvent {
     void handle(View view);
 }
