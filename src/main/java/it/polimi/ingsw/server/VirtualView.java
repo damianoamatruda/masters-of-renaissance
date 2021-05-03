@@ -28,7 +28,7 @@ public class VirtualView implements View {
      *
      * @param eventSender the event sender
      */
-    public void setMessageSender(MVEventSender eventSender) {
+    public void setEventSender(MVEventSender eventSender) {
         this.eventSender = eventSender;
     }
 

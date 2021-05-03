@@ -21,7 +21,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
     public ServerClientHandler(Socket clientSocket, VirtualView view, GameProtocol gp) {
         this.clientSocket = clientSocket;
 
-        view.setMessageSender(this);
+        view.setEventSender(this);
         this.view = view;
 
         // this.timeout = 10;
