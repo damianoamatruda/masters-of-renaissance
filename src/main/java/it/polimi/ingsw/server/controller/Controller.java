@@ -12,7 +12,7 @@ public class Controller {
     }
 
     public void update(View view, ReqQuit message) {
-        view.updateGoodbye();
+        view.update(new ResGoodbye());
     }
 
     public void update(View view, ReqNickname message) {

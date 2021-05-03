@@ -3,12 +3,6 @@ package it.polimi.ingsw.server.view;
 import it.polimi.ingsw.server.MessageSender;
 import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.messages.*;
-import it.polimi.ingsw.server.model.DevelopmentCard;
-import it.polimi.ingsw.server.model.Production;
-import it.polimi.ingsw.server.model.leadercards.LeaderCard;
-import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
-
-import java.util.List;
 
 /**
  * This class represents a virtual view.
@@ -94,72 +88,46 @@ public class View {
         controller.update(this, message);
     }
 
-    public void updateWelcome() {
+    public void update(ResWelcome message) {
         if (messageSender != null)
-            messageSender.send(new ResWelcome());
+            messageSender.send(message);
     }
 
-    public void updateEmptyInput() {
-        if (messageSender != null)
-            messageSender.send(new ErrCommunication("Empty input."));
-    }
-
-    public void updateGoodbye() {
+    public void update(ResGoodbye message) {
         if (messageSender != null) {
-            messageSender.send(new ResGoodbye());
+            messageSender.send(message);
             messageSender.stop();
             messageSender = null;
         }
     }
 
-    public void updateInvalidSyntax() {
+    public void update(ErrCommunication message) {
         if (messageSender != null)
-            messageSender.send(new ErrCommunication("Invalid syntax."));
+            messageSender.send(message);
     }
 
-    public void updateUnknownParserError() {
+    public void update(ErrController message) {
         if (messageSender != null)
-            messageSender.send(new ErrCommunication("Unknown parser error."));
+            messageSender.send(message);
     }
 
-    public void updateFieldTypeNotFound() {
+    public void update(ResNickname message) {
         if (messageSender != null)
-            messageSender.send(new ErrCommunication("Field \"type\" not found."));
+            messageSender.send(message);
     }
 
-    public void updateMessageTypeDoesNotExist(String type) {
+    public void update(ErrNickname message) {
         if (messageSender != null)
-            messageSender.send(new ErrCommunication("Message type \"" + type + "\" does not exist."));
+            messageSender.send(message);
     }
 
-    public void updateInvalidAttributeTypes() {
+    public void update(ResGameStarted message) {
         if (messageSender != null)
-            messageSender.send(new ErrCommunication("Invalid attribute types."));
+            messageSender.send(message);
     }
 
-    public void updateControllerError(Exception e) {
+    public void update(ErrAction message) {
         if (messageSender != null)
-            messageSender.send(new ErrController(e));
-    }
-
-    public void updateNickname(boolean isFirst) {
-        if (messageSender != null)
-            messageSender.send(new ResNickname(isFirst));
-    }
-
-    public void updateNicknameError(String message) {
-        if (messageSender != null)
-            messageSender.send(new ErrNickname(message));
-    }
-
-    public void updateGameStarted(List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
-                                  List<ResourceContainer> resContainers, List<Production> productions) {
-        if (messageSender != null)
-            messageSender.send(new ResGameStarted(leaderCards, developmentCards, resContainers, productions));
-    }
-
-    public void updateActionError(String message) {
-        if (messageSender != null)
-            messageSender.send(new ErrAction(message));
+            messageSender.send(message);
     }
 }

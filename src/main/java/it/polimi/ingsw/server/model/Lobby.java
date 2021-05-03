@@ -1,5 +1,9 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.controller.messages.ErrAction;
+import it.polimi.ingsw.server.controller.messages.ErrNickname;
+import it.polimi.ingsw.server.controller.messages.ResGameStarted;
+import it.polimi.ingsw.server.controller.messages.ResNickname;
 import it.polimi.ingsw.server.view.View;
 
 import java.util.*;
@@ -22,15 +26,15 @@ public class Lobby {
 
     public void joinLobby(View view, String nickname) {
         if (nicknames.containsKey(view)) {
-            view.updateNicknameError("You already have nickname \"" + nicknames.get(view) + "\".");
+            view.update(new ErrNickname("You already have nickname \"" + nicknames.get(view) + "\"."));
             return;
         }
         if (nickname == null || nickname.isBlank()) {
-            view.updateNicknameError("Given nickname is empty.");
+            view.update(new ErrNickname("Given nickname is empty."));
             return;
         }
         if (nicknames.containsValue(nickname)) {
-            view.updateNicknameError("Nickname \"" + nickname + "\" already in use. Choose another one.");
+            view.update(new ErrNickname("Nickname \"" + nickname + "\" already in use. Choose another one."));
             return;
         }
         nicknames.put(view, nickname);
@@ -40,13 +44,13 @@ public class Lobby {
         if (waiting.size() == countToNewGame)
             startNewGame();
 
-        view.updateNickname(waiting.size() == 1);
+        view.update(new ResNickname(waiting.size() == 1));
     }
 
     public void setCountToNewGame(View view, int count) {
         checkNickname(view);
         if (!isPlayerFirst(view)) {
-            view.updateActionError("Command unavailable. You are not the first player who joined.");
+            view.update(new ErrAction("Command unavailable. You are not the first player who joined."));
             return;
         }
         System.out.println("Set count of players.");
@@ -62,7 +66,7 @@ public class Lobby {
         waiting.subList(0, countToNewGame).forEach(v -> {
             joined.put(v, newContext);
             try {
-                v.updateGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions());
+                v.update(new ResGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions()));
             } catch (IllegalActionException e) {
                 throw new RuntimeException(e);
             }
@@ -88,7 +92,7 @@ public class Lobby {
 
     public boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
-            view.updateActionError("You must first request a nickname.");
+            view.update(new ErrAction("You must first request a nickname."));
             return false;
         }
         return true;
@@ -98,7 +102,7 @@ public class Lobby {
         if (!checkNickname(view))
             return false;
         if (!joined.containsKey(view)) {
-            view.updateActionError("You must first join a game.");
+            view.update(new ErrAction("You must first join a game."));
             return false;
         }
         return true;

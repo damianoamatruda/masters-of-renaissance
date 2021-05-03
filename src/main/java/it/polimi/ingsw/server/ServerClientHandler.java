@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.controller.messages.Message;
+import it.polimi.ingsw.server.controller.messages.ResWelcome;
 import it.polimi.ingsw.server.view.View;
 
 import java.io.BufferedReader;
@@ -41,7 +42,7 @@ public class ServerClientHandler implements Runnable, MessageSender {
             this.in = in;
             String inputLine;
 
-            view.updateWelcome();
+            view.update(new ResWelcome());
 
             listening = true;
             while (listening) {

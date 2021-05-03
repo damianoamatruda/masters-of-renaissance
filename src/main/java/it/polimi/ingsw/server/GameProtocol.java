@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.*;
+import it.polimi.ingsw.server.controller.messages.ErrCommunication;
+import it.polimi.ingsw.server.controller.messages.ErrController;
 import it.polimi.ingsw.server.controller.messages.Message;
 import it.polimi.ingsw.server.view.View;
 
@@ -10,7 +12,7 @@ public class GameProtocol {
      */
     public void processInput(String input, View view) {
         if (input == null || input.isBlank()) {
-            view.updateEmptyInput();
+            view.update(new ErrCommunication("Empty input."));
             return;
         }
 
@@ -22,18 +24,18 @@ public class GameProtocol {
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonSyntaxException e) {
-            view.updateInvalidSyntax();
+            view.update(new ErrCommunication("Invalid syntax."));
             return;
         }
         if (jsonObject == null) {
-            view.updateUnknownParserError();
+            view.update(new ErrCommunication("Unknown parser error."));
             return;
         }
 
         JsonElement type = jsonObject.get("type");
 
         if (type == null) {
-            view.updateFieldTypeNotFound();
+            view.update(new ErrCommunication("Field \"type\" not found."));
             return;
         }
 
@@ -42,17 +44,17 @@ public class GameProtocol {
         try {
             message = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.server.controller.messages." + type.getAsString()).asSubclass(Message.class));
         } catch (ClassNotFoundException e) {
-            view.updateMessageTypeDoesNotExist(type.getAsString());
+            view.update(new ErrCommunication("Message type \"" + type.getAsString() + "\" does not exist."));
             return;
         } catch (JsonSyntaxException e) {
-            view.updateInvalidAttributeTypes();
+            view.update(new ErrCommunication("Invalid attribute types."));
             return;
         }
 
         try {
             message.handle(view);
         } catch (Exception e) {
-            view.updateControllerError(e);
+            view.update(new ErrController(e));
         }
     }
 
