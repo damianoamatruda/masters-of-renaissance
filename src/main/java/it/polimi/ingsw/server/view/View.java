@@ -1,129 +1,45 @@
 package it.polimi.ingsw.server.view;
 
-import it.polimi.ingsw.server.MVEventSender;
-import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.controller.events.*;
 
-/**
- * This class represents a virtual view.
- */
-public class View {
-    // /** The nickname of the user owning the view. */
-    // private final String nickname;
+public interface View {
+    void notify(ReqQuit event);
 
-    /** The controller observing the view. */
-    private final Controller controller;
+    void notify(ReqNickname event);
 
-    /** The event sender of the view. */
-    private MVEventSender eventSender;
+    void notify(ReqActivateLeader event);
 
-    /**
-     * Class constructor.
-     *
-     * @param controller the controller observing the view
-     */
-    public View(Controller controller) {
-        this.controller = controller;
-        this.eventSender = null;
-    }
+    void notify(ReqActivateProduction event);
 
-    /**
-     * Sets the event sender.
-     *
-     * @param eventSender the event sender
-     */
-    public void setMessageSender(MVEventSender eventSender) {
-        this.eventSender = eventSender;
-    }
+    void notify(ReqBuyDevCard event);
 
-    public void notify(ReqQuit event) {
-        controller.update(this, event);
-    }
+    void notify(ReqDiscardLeader event);
 
-    public void notify(ReqNickname event) {
-        controller.update(this, event);
-    }
+    void notify(ReqChooseLeaders event);
 
-    public void notify(ReqActivateLeader event) {
-        controller.update(this, event);
-    }
+    void notify(ReqPlayersCount event);
 
-    public void notify(ReqActivateProduction event) {
-        controller.update(this, event);
-    }
+    void notify(ReqChooseResources event);
 
-    public void notify(ReqBuyDevCard event) {
-        controller.update(this, event);
-    }
+    void notify(ReqSwapShelves event);
 
-    public void notify(ReqDiscardLeader event) {
-        controller.update(this, event);
-    }
+    void notify(ReqTakeFromMarket event);
 
-    public void notify(ReqChooseLeaders event) {
-        controller.update(this, event);
-    }
+    void notify(ReqTurnEnd event);
 
-    public void notify(ReqPlayersCount event) {
-        controller.update(this, event);
-    }
+    void update(ResWelcome event);
 
-    public void notify(ReqChooseResources event) {
-        controller.update(this, event);
-    }
+    void update(ResGoodbye event);
 
-    public void notify(ReqSwapShelves event) {
-        controller.update(this, event);
-    }
+    void update(ErrCommunication event);
 
-    public void notify(ReqTakeFromMarket event) {
-        controller.update(this, event);
-    }
+    void update(ErrController event);
 
-    public void notify(ReqTurnEnd event) {
-        controller.update(this, event);
-    }
+    void update(ResNickname event);
 
-    public void update(ResWelcome event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
+    void update(ErrNickname event);
 
-    public void update(ResGoodbye event) {
-        if (eventSender != null) {
-            eventSender.send(event);
-            eventSender.stop();
-            eventSender = null;
-        }
-    }
+    void update(ResGameStarted event);
 
-    public void update(ErrCommunication event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    public void update(ErrController event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    public void update(ResNickname event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    public void update(ErrNickname event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    public void update(ResGameStarted event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    public void update(ErrAction event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
+    void update(ErrAction event);
 }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.controller.events.MVEvent;
 import it.polimi.ingsw.server.controller.events.ResWelcome;
-import it.polimi.ingsw.server.view.View;
+import it.polimi.ingsw.server.view.VirtualView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,14 +12,14 @@ import java.net.Socket;
 
 public class ServerClientHandler implements Runnable, MVEventSender {
     private final Socket clientSocket;
-    private final View view;
+    private final VirtualView view;
     private final GameProtocol gp;
     private PrintWriter out;
     private BufferedReader in;
     private volatile boolean listening;
     // private final int timeout;
 
-    public ServerClientHandler(Socket clientSocket, View view, GameProtocol gp) {
+    public ServerClientHandler(Socket clientSocket, VirtualView view, GameProtocol gp) {
         this.clientSocket = clientSocket;
 
         view.setMessageSender(this);
@@ -63,6 +63,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
         this.in = null;
     }
 
+    @Override
     public void stop() {
         listening = false;
     }

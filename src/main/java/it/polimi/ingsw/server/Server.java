@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.controller.Controller;
 import it.polimi.ingsw.server.model.FileGameFactory;
 import it.polimi.ingsw.server.model.GameFactory;
 import it.polimi.ingsw.server.model.Lobby;
-import it.polimi.ingsw.server.view.View;
+import it.polimi.ingsw.server.view.VirtualView;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,7 +54,7 @@ public class Server {
             listening = true;
             while (listening) {
                 Socket clientSocket = serverSocket.accept();
-                View view = new View(controller);
+                VirtualView view = new VirtualView(controller);
                 // String nickname = getNickname(view).orElse(null);
                 executor.submit(new ServerClientHandler(clientSocket, view, gp));
             }
