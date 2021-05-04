@@ -94,14 +94,14 @@ The information of whether the player is the first of the match is included in t
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │                    ReqNickname │
+     │ ReqNickname                    │
      ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
      │                                │ ╭───────────────────────╮
      │                                ├─┤ check nickname unique │
-     │ ResNickname                    │ ╰───────────────────────╯
+     │                    ResNickname │ ╰───────────────────────╯
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
-     │ ErrNickname                    │
+     │                    ErrNickname │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
@@ -136,14 +136,14 @@ When a player is assigned by the server as the first of a new game, they have to
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │                ReqPlayersCount │
+╰────────────╯ │ ReqPlayersCount                │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭─────────────╮
                │                                ├─┤ try setting │
-               │ ResPlayersCount                │ ╰─────────────╯
+               │                ResPlayersCount │ ╰─────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrPlayersCount                │
+               │                ErrPlayersCount │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -200,24 +200,24 @@ leaders remain to be chosen, the server will fail to process the move, sending a
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                 ReqLeadersHand │
+               │ ReqLeadersHand                 │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │
-               │ ResLeadersHand                 │
+               │                 ResLeadersHand │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │               ReqChooseLeaders │
+╰────────────╯ │ ReqChooseLeaders               │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ ResChooseLeaders               │ ╰──────────────────╯
+               │               ResChooseLeaders │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrChooseLeaders               │
+               │               ErrChooseLeaders │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrLeadersNotChosen             │
+               │            ErrLeadersNotChosen │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -287,30 +287,30 @@ resources, every other move is negated.
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                       ReqBoost │
+               │ ReqBoost                       │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │
-               │ ResBoost                       │
+               │                       ResBoost │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │             ReqChooseResources │
+╰────────────╯ │ ReqChooseResources             │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ UpdateShelves                  │ ╰──────────────────╯
+               │                  UpdateShelves │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ UpdateFaithTrack               │
+               │               UpdateFaithTrack │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrChooseResources             │
+               │             ErrChooseResources │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelf                       │
+               │                       ErrShelf │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrResourcesNotChosen          │
+               │          ErrResourcesNotChosen │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -405,20 +405,20 @@ Errors may arise from fitting the resources in the shelves, either by specifying
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │              ReqTakeFromMarket │
+╰────────────╯ │ ReqTakeFromMarket              │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ UpdateMarket                   │ ╰──────────────────╯
+               │                   UpdateMarket │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ UpdateShelves                  │
+               │                  UpdateShelves │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ UpdateLeaders                  │
+               │                  UpdateLeaders │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelves                     │
+               │                     ErrShelves │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -467,20 +467,20 @@ Possible errors include:
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │                  ReqBuyDevCard │
+╰────────────╯ │ ReqBuyDevCard                  │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ UpdateDevGrid                  │ ╰──────────────────╯
+               │                  UpdateDevGrid │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrDevCard                     │
+               │                     ErrDevCard │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrPaymentShelf                │
+               │                ErrPaymentShelf │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrSlot                        │
+               │                        ErrSlot │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -543,20 +543,20 @@ In the example below, the production with ID 3 does not specify its output: this
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │                ReqActivateProd │
+╰────────────╯ │ ReqActivateProd                │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ UpdateShelves                  │ ╰──────────────────╯
+               │                  UpdateShelves │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrProd                        │
+               │                        ErrProd │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelfMap                    │
+               │                    ErrShelfMap │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrReplacement                 │
+               │                 ErrReplacement │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -624,11 +624,11 @@ Since the server cannot at any point assume that the player has finished choosin
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │                     ReqTurnEnd │
+╰────────────╯ │ ReqTurnEnd                     │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────╮
                │                                ├─┤ exec │
-               │ ResTurnEnd                     │ ╰──────╯
+               │                     ResTurnEnd │ ╰──────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -659,14 +659,14 @@ This is technically only useful when taking resources from the market, as no oth
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │                 ReqSwapShelves │
+╰────────────╯ │ ReqSwapShelves                 │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ UpdateShelves                  │ ╰─────────────────╯
+               │                  UpdateShelves │ ╰─────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrShelfSwap                   │
+               │                   ErrShelfSwap │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -699,11 +699,11 @@ Leader activation:
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │              ReqActivateLeader │
+╰────────────╯ │ ReqActivateLeader              │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ UpdateLeaders                  │ ╰──────────────────╯
+               │                  UpdateLeaders │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -724,14 +724,14 @@ Discarding a leader:
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │               ReqDiscardLeader │
+╰────────────╯ │ ReqDiscardLeader               │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │ UpdateLeaders                  │ ╰──────────────────╯
+               │                  UpdateLeaders │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │ ErrDiscardLeader               │
+               │               ErrDiscardLeader │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -800,7 +800,7 @@ After reordering the cached objects to match the server's state, all indices sen
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │ GameStarted                    │
+     │                    GameStarted │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
@@ -845,10 +845,10 @@ When the match is waiting for players to join before its start, sending notifica
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │ UpdatePlayerConnect            │
+     │            UpdatePlayerConnect │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
-     │ UpdatePlayerDisconnect         │
+     │         UpdatePlayerDisconnect │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
@@ -874,7 +874,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateCurPlayer                │
+               │                UpdateCurPlayer │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -893,7 +893,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateMarket                   │
+               │                   UpdateMarket │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -915,7 +915,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateShelves                  │
+               │                  UpdateShelves │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -938,7 +938,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateLeaders                  │
+               │                  UpdateLeaders │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -958,7 +958,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateDevGrid                  │
+               │                  UpdateDevGrid │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -980,7 +980,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateDevCardSlot              │
+               │              UpdateDevCardSlot │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -1001,7 +1001,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateFaithTrack               │
+               │               UpdateFaithTrack │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -1021,7 +1021,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateActionToken              │
+               │              UpdateActionToken │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -1042,7 +1042,7 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │ UpdateWinner                   │
+               │                   UpdateWinner │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
