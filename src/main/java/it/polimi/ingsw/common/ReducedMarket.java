@@ -1,5 +1,6 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.common;
 
+import it.polimi.ingsw.server.model.Market;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.ArrayList;

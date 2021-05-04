@@ -1,4 +1,7 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.common;
+
+import it.polimi.ingsw.server.model.DevCardGrid;
+import it.polimi.ingsw.server.model.DevelopmentCard;
 
 import java.util.HashMap;
 import java.util.List;
