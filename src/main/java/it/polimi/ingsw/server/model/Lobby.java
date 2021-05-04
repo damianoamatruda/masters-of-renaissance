@@ -58,7 +58,7 @@ public class Lobby {
 
     public void startNewGame() {
         Game newGame = countToNewGame == 1 ? gameFactory.getSoloGame(nicknames.get(waiting.get(0))) : gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList());
-        GameContext newContext = new GameContext(newGame);
+        GameContext newContext = new GameContext(newGame, gameFactory);
         // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(v -> {
             joined.put(v, newContext);
@@ -82,10 +82,11 @@ public class Lobby {
         return Optional.ofNullable(joined.get(view));
     }
 
-    public Player getPlayer(View view) {
+    public String getPlayer(View view) {
         if (!checkJoined(view))
             return null;
-        return joined.get(view).getPlayer(nicknames.get(view)).orElseThrow();
+//        return joined.get(view).getPlayer(nicknames.get(view)).orElseThrow();
+        return nicknames.get(view);
     }
 
     public boolean checkNickname(View view) {

@@ -20,6 +20,14 @@ public class DevCardGrid {
     /** All the cards that are still not bought by any player. */
     protected final Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
 
+    public Map<DevCardColor, List<Stack<DevelopmentCard>>> getGrid() {
+//        Map<DevCardColor, List<Stack<DevelopmentCard>>> res = new HashMap<>();
+//        for(DevCardColor c : grid.keySet()) {
+//            List<Stack<DevelopmentCard>>
+//        }
+        return grid;    //Not ok yet
+    }
+
     /**
      * Generates the grid.
      *

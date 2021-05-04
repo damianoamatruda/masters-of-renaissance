@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * This class represents an infinite container of resources.
  */
-public class Strongbox implements ResourceContainer {
+public class Strongbox extends ResourceContainer {
     /** The map of the contained resources. */
     private final Map<ResourceType, Integer> resources;
 

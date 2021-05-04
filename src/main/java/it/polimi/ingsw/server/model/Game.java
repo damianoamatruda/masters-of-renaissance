@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,16 @@ public class Game {
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
+    }
+
+    public Optional<LeaderCard> getLeaderById(int id) {
+        return leaderCards.stream().filter(l -> l.getId() == id).findFirst();
+    }
+    public Optional<ResourceContainer> getShelfById(int id) {
+        return resContainers.stream().filter(l -> l.getId() == id).findFirst();
+    }
+    public Optional<Production> getProductionById(int id) {
+        return productions.stream().filter(l -> l.getId() == id).findFirst();
     }
 
     /**

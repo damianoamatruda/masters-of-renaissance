@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.model.leadercards.LeaderCard;
  * @see LeaderCard
  */
 public abstract class Card {
+    private final int id;
     /** The amount of points the card gives to its owner. */
     private final int victoryPoints;
 
@@ -21,6 +22,11 @@ public abstract class Card {
      */
     public Card(int victoryPoints) {
         this.victoryPoints = victoryPoints;
+        id = 69;
+    }
+
+    public int getId() {
+        return id;
     }
 
     /**

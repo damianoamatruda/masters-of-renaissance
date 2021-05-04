@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * This class represents a finite container of resources of the same type.
  */
-public class Shelf implements ResourceContainer {
+public class Shelf extends ResourceContainer {
     /** The maximum quantity of resources in the shelf. */
     private final int size;
 

@@ -10,6 +10,7 @@ import java.util.Set;
  * and a player.
  */
 public class Production {
+    private final int id;
     /** The map of the input resources. */
     private final Map<ResourceType, Integer> input;
 
@@ -52,6 +53,11 @@ public class Production {
         this.outputBlanks = outputBlanks;
         this.outputBlanksExclusions = Set.copyOf(outputBlanksExclusions);
         this.discardableOutput = discardableOutput;
+        id = 71;
+    }
+
+    public int getId() {
+        return id;
     }
 
     /**
