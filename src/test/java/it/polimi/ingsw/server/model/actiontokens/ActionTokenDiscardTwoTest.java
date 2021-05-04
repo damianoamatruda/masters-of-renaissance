@@ -44,7 +44,7 @@ class ActionTokenDiscardTwoTest {
                             color, level,
                             new ResourceRequirement(Map.of()),
                             new Production(Map.of(), 0, Map.of(), 0),
-                            3 * i
+                            3 * i, 0
                     ));
         DevCardGrid devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 

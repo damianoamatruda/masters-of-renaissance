@@ -28,14 +28,14 @@ public abstract class LeaderCard extends Card {
 
     /**
      * Class constructor.
-     *
-     * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
+     *  @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied for card activation.
      * @param victoryPoints the victory points associated with the card.
+     * @param id
      */
-    public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints) {
-        super(victoryPoints);
+    public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints, int id) {
+        super(victoryPoints, id);
         this.resource = resource;
         this.requirement = requirement;
     }

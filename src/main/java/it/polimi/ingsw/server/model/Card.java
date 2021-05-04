@@ -20,9 +20,9 @@ public abstract class Card {
      * @see Game
      * @see Player
      */
-    public Card(int victoryPoints) {
+    public Card(int victoryPoints, int id) {
         this.victoryPoints = victoryPoints;
-        id = 69;
+        this.id = id;
     }
 
     public int getId() {

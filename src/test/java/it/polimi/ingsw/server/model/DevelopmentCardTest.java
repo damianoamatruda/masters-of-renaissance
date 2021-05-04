@@ -29,7 +29,7 @@ public class DevelopmentCardTest {
      */
     @BeforeEach
     void setup() {
-        card = new DevelopmentCard(blue, 1, new ResourceRequirement(Map.of(coin, 1)), null, 0);
+        card = new DevelopmentCard(blue, 1, new ResourceRequirement(Map.of(coin, 1)), null, 0, 0);
         player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(coin, 1), 1, coin), new FaithTrack(Set.of(), Set.of()), 0, 0);
     }

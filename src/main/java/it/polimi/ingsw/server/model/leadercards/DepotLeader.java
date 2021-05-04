@@ -17,14 +17,14 @@ public class DepotLeader extends LeaderCard {
 
     /**
      * Class constructor.
-     *
-     * @param shelfSize     the maximum amount of resources the card can store
+     *  @param shelfSize     the maximum amount of resources the card can store
      * @param resource      the resource that binds the card's shelf's contents
      * @param requirement   the requirement to be satisfied to activate the card
      * @param victoryPoints the victory points associated with the card
+     * @param id
      */
-    public DepotLeader(int shelfSize, ResourceType resource, CardRequirement requirement, int victoryPoints) {
-        super(resource, requirement, victoryPoints);
+    public DepotLeader(int shelfSize, ResourceType resource, CardRequirement requirement, int victoryPoints, int id) {
+        super(resource, requirement, victoryPoints, id);
         this.shelf = new ResourceShelf(resource, shelfSize);
     }
 

@@ -26,7 +26,7 @@ public class LeaderCardTest {
 
     @BeforeEach
     void setup() {
-        leader = new ZeroLeader(coin, new ResourceRequirement(Map.of(coin, 1)), 0);
+        leader = new ZeroLeader(coin, new ResourceRequirement(Map.of(coin, 1)), 0, 0);
     }
 
     /**
@@ -34,7 +34,7 @@ public class LeaderCardTest {
      */
     @Test
     void nullResourceCreation() {
-        assertDoesNotThrow(() -> new ZeroLeader(null, null, 0));
+        assertDoesNotThrow(() -> new ZeroLeader(null, null, 0, 0));
     }
 
     /**
@@ -42,7 +42,7 @@ public class LeaderCardTest {
      */
     @Test
     void activateNoRequirements() {
-        leader = new ZeroLeader(coin, null, 0);
+        leader = new ZeroLeader(coin, null, 0, 0);
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         
         assertDoesNotThrow(() -> leader.activate(p));
@@ -112,7 +112,7 @@ public class LeaderCardTest {
      */
     @Test
     void replaceMarketResources() {
-        leader = new DepotLeader(0, coin, new ResourceRequirement(Map.of(coin, 1)), 0);
+        leader = new DepotLeader(0, coin, new ResourceRequirement(Map.of(coin, 1)), 0, 0);
 
         Map<ResourceType, Integer> res = Map.of(new ResourceType("Zero", false), 1);
 

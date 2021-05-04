@@ -25,7 +25,7 @@ public class ProductionLeaderTest {
     @Test
     void production() {
         Production prod = new Production(Map.of(), 0, Map.of(), 0);
-        ProductionLeader leader = new ProductionLeader(prod, coin, null, 0);
+        ProductionLeader leader = new ProductionLeader(prod, coin, null, 0, 0);
 
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         

@@ -36,7 +36,7 @@ public class DevCardRequirementTest {
      */
     @Test
     void checkReqsWrongColor() {
-        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1, 0);
 
         assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 
@@ -51,7 +51,7 @@ public class DevCardRequirementTest {
      */
     @Test
     void checkReqsWrongLevel() {
-        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1, 0);
 
         assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 
@@ -66,7 +66,7 @@ public class DevCardRequirementTest {
      */
     @Test
     void checkReqsWrongAmount() {
-        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1, 0);
 
         assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 
@@ -80,7 +80,7 @@ public class DevCardRequirementTest {
      */
     @Test
     void checkRequirementsPass() {
-        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1);
+        DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1, 0);
 
         assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));
 

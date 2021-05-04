@@ -41,7 +41,7 @@ public class DevCardGridTest {
                             color, level,
                             new ResourceRequirement(Map.of(r1, 1)),
                             new Production(Map.of(), 0, Map.of(), 0),
-                            3 * i
+                            3 * i, 0
                     ));
         devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 

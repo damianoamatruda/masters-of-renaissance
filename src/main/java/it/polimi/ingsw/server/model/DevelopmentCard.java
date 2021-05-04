@@ -24,15 +24,15 @@ public class DevelopmentCard extends Card {
 
     /**
      * Class constructor.
-     *
-     * @param color         the color of the card
+     *  @param color        the color of the card
      * @param level         the level of the card
      * @param cost          the resources needed to buy the card
      * @param production    the production associated with the card
      * @param victoryPoints the victory points associated with the card
+     * @param id            the card id
      */
-    public DevelopmentCard(DevCardColor color, int level, ResourceRequirement cost, Production production, int victoryPoints) {
-        super(victoryPoints);
+    public DevelopmentCard(DevCardColor color, int level, ResourceRequirement cost, Production production, int victoryPoints, int id) {
+        super(victoryPoints, id);
         this.color = color;
         this.cost = cost;
         this.level = level;

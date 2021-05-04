@@ -26,7 +26,7 @@ public class DepotLeaderTest {
      */
     @Test
     void getZeroSizeDepot() {
-        leader = new DepotLeader(0, new ResourceType("Coin", true), null, 0);
+        leader = new DepotLeader(0, new ResourceType("Coin", true), null, 0, 0);
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
 
         assertDoesNotThrow(() -> leader.activate(p));
@@ -39,7 +39,7 @@ public class DepotLeaderTest {
      */
     @Test
     void getDepot() {
-        leader = new DepotLeader(1, new ResourceType("Coin", true), null, 0);
+        leader = new DepotLeader(1, new ResourceType("Coin", true), null, 0, 0);
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
 
         assertDoesNotThrow(() -> leader.activate(p));

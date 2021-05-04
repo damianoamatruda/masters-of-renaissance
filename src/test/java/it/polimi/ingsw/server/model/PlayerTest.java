@@ -50,7 +50,7 @@ public class PlayerTest {
         for (int i = 0; i < shuffledNicknames.size(); i++) {
             Player player = new Player(
                     shuffledNicknames.get(i),
-                    i == 0, new ArrayList<>(List.of(new DepotLeader(0, null, null, 0))),
+                    i == 0, new ArrayList<>(List.of(new DepotLeader(0, null, null, 0, 0))),
                     new Warehouse(3), new Strongbox(),
                     new Production(Map.of(), 2, Map.of(), 1), 3,
                     0, bonusResources.get(i), bonusFaith.get(i), Set.of());
@@ -148,7 +148,7 @@ public class PlayerTest {
     void cannotDepositNewCard() {
         assertThrows(IllegalCardDepositException.class, () -> player.addToDevSlot(game, 0, new DevelopmentCard(blue, 2,
                 new ResourceRequirement(
-                        Map.of()), null, 2), Map.of()));
+                        Map.of()), null, 2, 0), Map.of()));
     }
 
     /**
@@ -182,7 +182,7 @@ public class PlayerTest {
                                             coin, 3,
                                             stone, 2
                                     )
-                            ), null, 2),
+                            ), null, 2, 0),
                     resContainers);
 
         }
@@ -264,7 +264,7 @@ public class PlayerTest {
         void secondPlayerOneResource() {
             Player second = players.get(1);
             DevelopmentCard card = new DevelopmentCard(blue, 1,
-                    new ResourceRequirement(Map.of(coin, 1)), null, 0);
+                    new ResourceRequirement(Map.of(coin, 1)), null, 0, 0);
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
                     second.getWarehouse().getShelves().get(1), Map.of(coin, 1)
             );
