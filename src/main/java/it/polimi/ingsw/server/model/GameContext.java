@@ -106,7 +106,7 @@ public class GameContext {
     public ReducedMarket getMarket() throws IllegalActionException {
         if (setupDone)
             throw new IllegalActionException();
-        return new ReducedMarket(game.getMarket());
+        return game.getMarket().reduce();
     }
 
     /**
@@ -118,8 +118,7 @@ public class GameContext {
     public ReducedDevCardGrid getDevCardGrid() throws IllegalActionException {
         if (setupDone)
             throw new IllegalActionException();
-        DevCardGrid grid = game.getDevCardGrid();
-        return new ReducedDevCardGrid(grid);
+        return game.getDevCardGrid().reduce();
     }
 
     /**

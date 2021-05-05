@@ -76,6 +76,7 @@ public class FileGameFactory implements GameFactory {
     public FileGameFactory(InputStream inputStream) {
         gson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
+                .registerTypeAdapter(Production.class, new ProductionDeserializer())
                 .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                 .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                 .create();
@@ -303,6 +304,7 @@ public class FileGameFactory implements GameFactory {
     private List<LeaderCard> generateLeaderCards() {
         Gson customGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
+                .registerTypeAdapter(Production.class, new ProductionDeserializer())
                 .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                 .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                 .registerTypeAdapter(CardRequirement.class, new RequirementDeserializer())
@@ -422,6 +424,18 @@ public class FileGameFactory implements GameFactory {
         public ResourceType deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             return getResourceType(jsonElement.getAsString())
                     .orElseThrow(() -> new RuntimeException("The given resource type does not exist."));
+        }
+    }
+
+    private class ProductionDeserializer implements JsonDeserializer<Production> {
+        @Override
+        public Production deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            jsonElement.getAsJsonObject().addProperty("id", Production.generateId());
+            Gson customGson = new GsonBuilder()
+                    .enableComplexMapKeySerialization().setPrettyPrinting()
+                    .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
+                    .create();
+            return customGson.fromJson(jsonElement, Production.class);
         }
     }
 }

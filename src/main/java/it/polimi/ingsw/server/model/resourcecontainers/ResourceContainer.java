@@ -3,16 +3,20 @@ package it.polimi.ingsw.server.model.resourcecontainers;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This interface represents a container of storable resources.
  */
 public abstract class ResourceContainer {
+    private static AtomicInteger idCounter = new AtomicInteger();
+
     private final int id;
 
     public ResourceContainer() {
-        id = 70;
+        id = idCounter.getAndIncrement();
     }
+
     public int getId() {
         return id;
     }
