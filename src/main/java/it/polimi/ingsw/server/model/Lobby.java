@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common.ModelObserver;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.*;
 
 import java.util.*;
@@ -8,9 +8,9 @@ import java.util.*;
 public class Lobby {
     private final GameFactory gameFactory;
     // private final List<GameContext> games;
-    private final Map<ModelObserver, String> nicknames;
-    private final Map<ModelObserver, GameContext> joined;
-    private final List<ModelObserver> waiting;
+    private final Map<View, String> nicknames;
+    private final Map<View, GameContext> joined;
+    private final List<View> waiting;
     private int countToNewGame;
 
     public Lobby(GameFactory gameFactory) {
@@ -21,7 +21,7 @@ public class Lobby {
         this.waiting = new ArrayList<>();
     }
 
-    public void joinLobby(ModelObserver view, String nickname) {
+    public void joinLobby(View view, String nickname) {
         if (nicknames.containsKey(view)) {
             view.update(new ErrNickname("You already have nickname \"" + nicknames.get(view) + "\"."));
             return;
@@ -44,7 +44,7 @@ public class Lobby {
         view.update(new ResNickname(waiting.size() == 1));
     }
 
-    public void setCountToNewGame(ModelObserver view, int count) {
+    public void setCountToNewGame(View view, int count) {
         checkNickname(view);
         if (!isPlayerFirst(view)) {
             view.update(new ErrAction("Command unavailable. You are not the first player who joined."));
@@ -68,28 +68,28 @@ public class Lobby {
         countToNewGame = 0;
     }
 
-    public void exit(ModelObserver view) {
+    public void exit(View view) {
         // TODO: Manage the exit of a view
         view.update(new ResGoodbye());
     }
 
-    public boolean isPlayerFirst(ModelObserver view) {
+    public boolean isPlayerFirst(View view) {
         return waiting.indexOf(view) == 0;
     }
 
-    public Optional<GameContext> getJoinedGame(ModelObserver view) {
+    public Optional<GameContext> getJoinedGame(View view) {
         checkJoined(view);
         return Optional.ofNullable(joined.get(view));
     }
 
-    public String getPlayer(ModelObserver view) {
+    public String getPlayer(View view) {
         if (!checkJoined(view))
             return null;
 //        return joined.get(view).getPlayer(nicknames.get(view)).orElseThrow();
         return nicknames.get(view);
     }
 
-    public boolean checkNickname(ModelObserver view) {
+    public boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
             view.update(new ErrAction("You must first request a nickname."));
             return false;
@@ -97,7 +97,7 @@ public class Lobby {
         return true;
     }
 
-    public boolean checkJoined(ModelObserver view) {
+    public boolean checkJoined(View view) {
         if (!checkNickname(view))
             return false;
         if (!joined.containsKey(view)) {

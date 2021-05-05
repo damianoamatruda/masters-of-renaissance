@@ -2,8 +2,7 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.*;
 
-import it.polimi.ingsw.common.ControllerObservable;
-import it.polimi.ingsw.common.ModelObserver;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.ErrCommunication;
 import it.polimi.ingsw.common.events.ErrController;
 import it.polimi.ingsw.common.events.MVEvent;
@@ -15,7 +14,7 @@ public class GameProtocol {
     /*
      * Interprets command string and calls an action from the model.
      */
-    public void processInput(String input, ModelObserver view) {
+    public void processInput(String input, View view) {
         if (input == null || input.isBlank()) {
             view.update(new ErrCommunication("Empty input."));
             return;
@@ -57,7 +56,7 @@ public class GameProtocol {
         }
 
         try {
-            event.handle((ControllerObservable) view);
+            event.handle(view);
         } catch (Exception e) {
             view.update(new ErrController(e));
         }

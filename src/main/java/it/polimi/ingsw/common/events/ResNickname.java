@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.common.ModelObserver;
+import it.polimi.ingsw.common.View;
 
 public class ResNickname implements MVEvent {
     private final boolean isFirst;
@@ -10,7 +10,7 @@ public class ResNickname implements MVEvent {
     }
 
     @Override
-    public void handle(ModelObserver view) {
+    public void handle(View view) {
         view.update(this);
     }
 

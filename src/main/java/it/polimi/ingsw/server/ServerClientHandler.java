@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.common.ModelObserver;
 import it.polimi.ingsw.common.events.MVEvent;
 import it.polimi.ingsw.common.events.ResWelcome;
 
@@ -49,7 +48,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
                 if ((inputLine = in.readLine()) == null)
                     break;
                 try {
-                    gp.processInput(inputLine, (ModelObserver) view);
+                    gp.processInput(inputLine, view);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

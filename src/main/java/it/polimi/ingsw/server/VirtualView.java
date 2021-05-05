@@ -1,13 +1,15 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.common.ControllerObservable;
-import it.polimi.ingsw.common.ModelObserver;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.*;
 
 /**
  * This class represents a virtual view.
  */
-public class VirtualView extends ControllerObservable implements ModelObserver {
+public class VirtualView implements View {
+    /** The controller observing the view. */
+    private final Controller controller;
+
     /** The event sender of the view. */
     private MVEventSender eventSender;
 
@@ -17,7 +19,7 @@ public class VirtualView extends ControllerObservable implements ModelObserver {
      * @param controller the controller observing the view
      */
     public VirtualView(Controller controller) {
-        super(controller);
+        this.controller = controller;
         this.eventSender = null;
     }
 
@@ -28,6 +30,66 @@ public class VirtualView extends ControllerObservable implements ModelObserver {
      */
     public void setEventSender(MVEventSender eventSender) {
         this.eventSender = eventSender;
+    }
+
+    @Override
+    public void notify(ReqQuit event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqNickname event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqActivateLeader event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqActivateProduction event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqBuyDevCard event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqDiscardLeader event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqChooseLeaders event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqPlayersCount event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqChooseResources event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqSwapShelves event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqTakeFromMarket event) {
+        controller.update(this, event);
+    }
+
+    @Override
+    public void notify(ReqTurnEnd event) {
+        controller.update(this, event);
     }
 
     @Override

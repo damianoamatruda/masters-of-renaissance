@@ -1,60 +1,29 @@
 package it.polimi.ingsw.common;
 
 import it.polimi.ingsw.common.events.*;
-import it.polimi.ingsw.server.Controller;
 
-public class ControllerObservable {
-    /** The controller observing the view. */
-    private final Controller controller;
+public interface ControllerObservable {
+    void notify(ReqQuit event);
 
-    public ControllerObservable(Controller c) { this.controller = c; }
+    void notify(ReqNickname event);
 
-    public void notify(ReqQuit event) {
-        controller.update(this, event);
-    }
+    void notify(ReqActivateLeader event);
 
-    public void notify(ReqNickname event) {
-        controller.update(this, event);
-    }
+    void notify(ReqActivateProduction event);
 
-    public void notify(ReqActivateLeader event) {
-        controller.update(this, event);
-    }
+    void notify(ReqBuyDevCard event);
 
-    public void notify(ReqActivateProduction event) {
-        controller.update(this, event);
-    }
+    void notify(ReqDiscardLeader event);
 
-    public void notify(ReqBuyDevCard event) {
-        controller.update(this, event);
-    }
+    void notify(ReqChooseLeaders event);
 
-    public void notify(ReqDiscardLeader event) {
-        controller.update(this, event);
-    }
+    void notify(ReqPlayersCount event);
 
-    public void notify(ReqChooseLeaders event) {
-        controller.update(this, event);
-    }
+    void notify(ReqChooseResources event);
 
-    public void notify(ReqPlayersCount event) {
-        controller.update(this, event);
-    }
+    void notify(ReqSwapShelves event);
 
-    public void notify(ReqChooseResources event) {
-        controller.update(this, event);
-    }
+    void notify(ReqTakeFromMarket event);
 
-    public void notify(ReqSwapShelves event) {
-        controller.update(this, event);
-    }
-
-    public void notify(ReqTakeFromMarket event) {
-        controller.update(this, event);
-    }
-
-    public void notify(ReqTurnEnd event) {
-        controller.update(this, event);
-    }
-
+    void notify(ReqTurnEnd event);
 }
