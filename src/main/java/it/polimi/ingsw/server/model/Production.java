@@ -4,13 +4,20 @@ import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class represents a production, that is a transaction of transfers of resources from and to resource containers
  * and a player.
  */
 public class Production {
+    private static AtomicInteger idCounter = new AtomicInteger();
+
     private final int id;
+
+    public static int generateId() {
+        return idCounter.getAndIncrement();
+    }
     /** The map of the input resources. */
     private final Map<ResourceType, Integer> input;
 
@@ -53,7 +60,7 @@ public class Production {
         this.outputBlanks = outputBlanks;
         this.outputBlanksExclusions = Set.copyOf(outputBlanksExclusions);
         this.discardableOutput = discardableOutput;
-        id = 71;
+        this.id = 0;
     }
 
     public int getId() {
