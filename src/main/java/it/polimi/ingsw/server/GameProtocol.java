@@ -4,7 +4,6 @@ import com.google.gson.*;
 
 import it.polimi.ingsw.common.ControllerObservable;
 import it.polimi.ingsw.common.ModelObserver;
-import it.polimi.ingsw.common.ControllerObservable;
 import it.polimi.ingsw.common.events.ErrCommunication;
 import it.polimi.ingsw.common.events.ErrController;
 import it.polimi.ingsw.common.events.MVEvent;
