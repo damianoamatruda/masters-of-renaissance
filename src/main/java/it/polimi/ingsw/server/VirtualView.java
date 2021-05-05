@@ -93,12 +93,6 @@ public class VirtualView implements View {
     }
 
     @Override
-    public void update(ResWelcome event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    @Override
     public void update(ResGoodbye event) {
         if (eventSender != null) {
             eventSender.send(event);
@@ -108,38 +102,9 @@ public class VirtualView implements View {
     }
 
     @Override
-    public void update(ErrCommunication event) {
+    public void update(MVEvent event) {
         if (eventSender != null)
             eventSender.send(event);
-    }
-
-    @Override
-    public void update(ErrController event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    @Override
-    public void update(ResNickname event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    @Override
-    public void update(ErrNickname event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    @Override
-    public void update(ResGameStarted event) {
-        if (eventSender != null)
-            eventSender.send(event);
-    }
-
-    @Override
-    public void update(ErrAction event) {
-        if (eventSender != null)
-            eventSender.send(event);
+        else throw new RuntimeException("Cannot send MVEvent: no sender available");
     }
 }

@@ -1,4 +1,7 @@
 package it.polimi.ingsw.common.events;
 
-public interface VCEvent extends Event {
+import it.polimi.ingsw.common.ControllerObservable;
+
+public interface VCEvent {
+    void handle(ControllerObservable view);
 }

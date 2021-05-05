@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.ModelObserver;
 
 public class ErrController implements MVEvent {
     private final String message;
@@ -10,7 +10,7 @@ public class ErrController implements MVEvent {
     }
 
     @Override
-    public void handle(View view) {
+    public void handle(ModelObserver view) {
         view.update(this);
     }
 

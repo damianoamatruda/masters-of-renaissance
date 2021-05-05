@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.ControllerObservable;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class ReqChooseLeaders implements VCEvent {
     }
 
     @Override
-    public void handle(View view) {
+    public void handle(ControllerObservable view) {
         view.notify(this);
     }
 

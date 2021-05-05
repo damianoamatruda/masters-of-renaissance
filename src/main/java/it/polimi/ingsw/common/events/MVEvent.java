@@ -1,4 +1,7 @@
 package it.polimi.ingsw.common.events;
 
-public interface MVEvent extends Event {
+import it.polimi.ingsw.common.ModelObserver;
+
+public interface MVEvent {
+    void handle(ModelObserver view);
 }
