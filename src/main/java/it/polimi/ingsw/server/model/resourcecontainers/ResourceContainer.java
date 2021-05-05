@@ -8,11 +8,14 @@ import java.util.Set;
  * This interface represents a container of storable resources.
  */
 public abstract class ResourceContainer {
+    private static int idCounter = 0;
+
     private final int id;
 
     public ResourceContainer() {
-        id = 70;
+        id = idCounter++;
     }
+
     public int getId() {
         return id;
     }
