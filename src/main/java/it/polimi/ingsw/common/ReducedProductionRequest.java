@@ -1,8 +1,5 @@
 package it.polimi.ingsw.common;
 
-import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
-
 import java.util.Map;
 
 public class ReducedProductionRequest {

@@ -1,9 +1,5 @@
 package it.polimi.ingsw.common;
 
-import it.polimi.ingsw.server.model.Market;
-import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ReducedMarket {
@@ -13,14 +9,11 @@ public class ReducedMarket {
     private final String replaceableResType;
 
     /** The resource in the slide. */
-    private String slide;
+    private final String slide;
 
-    public ReducedMarket(Market m) {
-        grid = new ArrayList<>();
-        for(int i = 0; i < m.getGrid().size(); i++) {
-            grid.add(m.getGrid().get(i).stream().map(ResourceType::getName).toList());
-        }
-        slide = m.getSlide().getName();
-        replaceableResType = m.getReplaceableResType().getName();
+    public ReducedMarket(List<List<String>> grid, String replaceableResType, String slide) {
+        this.grid = grid;
+        this.replaceableResType = replaceableResType;
+        this.slide = slide;
     }
 }

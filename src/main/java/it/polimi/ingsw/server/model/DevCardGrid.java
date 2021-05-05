@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ReducedDevCardGrid;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -156,5 +157,20 @@ public class DevCardGrid {
             quantity--;
         }
         if (quantity > 0) grid.remove(color);
+    }
+
+    public ReducedDevCardGrid reduce() {
+        Map<String, List<Stack<Integer>>> reducedGrid = new HashMap<>();
+        grid.forEach((key, value) -> reducedGrid.put(key.getName(), value.stream().map(this::reduceDeck).toList()));
+
+        return new ReducedDevCardGrid(getLevelsCount(), getColorsCount(), reducedGrid);
+    }
+
+    private Stack<Integer> reduceDeck (Stack<DevelopmentCard> s) {
+        Stack<Integer> reducedDeck = new Stack<>();
+        for(int i = 0; i < s.size(); i++) {
+            reducedDeck.push(s.get(i).getId());
+        }
+        return reducedDeck;
     }
 }

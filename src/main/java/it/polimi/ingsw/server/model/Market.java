@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ReducedMarket;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -173,5 +174,16 @@ public class Market {
                 grid.get(i - 1).set(index, grid.get(i).get(index));
             grid.get(getRowsCount() - 1).set(index, oldSlide);
         }
+    }
+
+    public ReducedMarket reduce() {
+        List<List<String>> grid = new ArrayList<>();
+        for(int i = 0; i < getGrid().size(); i++) {
+            grid.add(getGrid().get(i).stream().map(ResourceType::getName).toList());
+        }
+        String slide = getSlide().getName();
+        String replaceableResType = getReplaceableResType().getName();
+
+        return new ReducedMarket(grid, replaceableResType, slide);
     }
 }
