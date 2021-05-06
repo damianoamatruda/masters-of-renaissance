@@ -7,8 +7,11 @@ import it.polimi.ingsw.common.events.MVEvent;
 /** Object of the model able to notify its observers of status changes. */
 public class ModelObservable {
     /** The observers of this object. */
-    private final List<View> observers;
+    private List<View> observers;
 
+    /** Class constructor. */
+    public ModelObservable() { }
+    
     /**
      * Class constructor.
      * 
@@ -36,15 +39,15 @@ public class ModelObservable {
      * @param msg the message containing the new data
      */
     public void notifyBroadcast(MVEvent msg) {
-        for (View l : observers)
-            notify(msg, l);
+        for (View o : observers)
+            notify(o, msg);
     }
     
     /**
      * Notifies the observer of a change in the object's data.
      * 
-     * @param msg the message containing the new data
      * @param observer the observer to update
+     * @param msg the message containing the new data
      */
-    public void notify(MVEvent msg, View observer) { observer.update(msg); }
+    public void notify(View observer, MVEvent msg) { observer.update(msg); }
 }
