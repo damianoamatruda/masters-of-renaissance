@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.common.ReducedDevCardGrid;
-import it.polimi.ingsw.common.ReducedMarket;
+import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.ReducedProductionRequest;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.*;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
@@ -10,15 +11,17 @@ import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
  * This class manages the states and actions of a game.
  */
-public class GameContext {
+public class GameContext extends ModelObservable {
     /** The game. */
     private final Game game;
 
@@ -43,242 +46,235 @@ public class GameContext {
     }
 
     /**
-     * Getter of all the players who joined the game at the beginning.
-     *
-     * @return the list of players (including who disconnected after)
-     */
-    public Optional<Player> getPlayer(String nickname) {
-        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findFirst();
-    }
-
-    /**
-     * Returns the leader cards.
-     *
-     * @return the list of leader cards
-     * @throws IllegalActionException if the list of leader cards cannot be requested in the current state
-     */
-    public List<Integer> getLeaderCards() throws IllegalActionException {
-        if (setupDone)
-            throw new IllegalActionException();
-        return game.getLeaderCards().stream().map(Card::getId).toList();
-    }
-
-    /**
-     * Returns the development cards.
-     *
-     * @return the list of development cards
-     * @throws IllegalActionException if the list of development cards cannot be requested in the current state
-     */
-    public List<Integer> getDevelopmentCards() throws IllegalActionException {
-        if (setupDone)
-            throw new IllegalActionException();
-        return game.getDevelopmentCards().stream().map(Card::getId).toList();
-    }
-
-    /**
-     * Getter of the resource containers used in the game.
-     *
-     * @return the list of resource containers
-     */
-    public List<Integer> getResContainers() throws IllegalActionException {
-        if (setupDone)
-            throw new IllegalActionException();
-        return game.getResContainers().stream().map(ResourceContainer::getId).toList();
-    }
-
-    /**
-     * Getter of the productions used in the game.
-     *
-     * @return the list of productions
-     */
-    public List<Integer> getProductions() throws IllegalActionException {
-        if (setupDone)
-            throw new IllegalActionException();
-        return game.getProductions().stream().map(Production::getId).toList();
-    }
-
-    /**
-     * Returns the game market.
-     *
-     * @return the market
-     * @throws IllegalActionException if the game cannot be requested in the current state
-     */
-    public ReducedMarket getMarket() throws IllegalActionException {
-        if (setupDone)
-            throw new IllegalActionException();
-        return game.getMarket().reduce();
-    }
-
-    /**
-     * Returns the game development card grid.
-     *
-     * @return the development card grid
-     * @throws IllegalActionException if the game cannot be requested in the current state
-     */
-    public ReducedDevCardGrid getDevCardGrid() throws IllegalActionException {
-        if (setupDone)
-            throw new IllegalActionException();
-        return game.getDevCardGrid().reduce();
-    }
-
-    /**
      * Choose leaders from the hand of a player.
      *
-     * @param nick  the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname the player
      * @param leaderIndexes the leader cards to choose
      * @throws IllegalActionException if the player cannot choose the leaders in the current state
      */
-    public void chooseLeaders(String nick, List<Integer> leaderIndexes) throws IllegalActionException, CannotChooseException {
+    public void chooseLeaders(View v, String nickname, List<Integer> leaderIndexes) {
         if (setupDone)
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
+            notify(v, new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
+        
+        Player player = getPlayerByNickname(nickname);
         List<LeaderCard> leaders = leaderIndexes.stream().map(l -> player.getLeaders().get(l)).toList();
-        player.chooseLeaders(leaders);
+        try {
+            player.chooseLeaders(leaders);
+        } catch (CannotChooseException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
         checkEndSetup();
     }
 
     /**
      * Chooses the initial resources to take as a player.
      *
-     * @param player  the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname  the player
      * @param reducedShelves the destination shelves
      * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
-    public void chooseResources(String player, Map<Integer, Map<String, Integer>> reducedShelves) throws IllegalActionException, CannotChooseException, IllegalProductionActivationException {
+    public void chooseResources(View v, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
         if (setupDone)
-            throw new IllegalActionException();
+            notify(v, new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
+        
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
         reducedShelves.forEach((key, value) -> shelves.put((Shelf) game.getShelfById(key).orElseThrow(), translateResources(value)));
-        Player current = game.getPlayers().stream().filter(p -> p.getNickname().equals(player)).findFirst().orElseThrow();
-        current.chooseResources(game, shelves);
+        Player current = getPlayerByNickname(nickname);
+        try {
+            current.chooseResources(game, shelves);
+        } catch (CannotChooseException | IllegalProductionActivationException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
         checkEndSetup();
     }
 
     /**
      * Swaps the content of two shelves of a player.
      *
-     * @param nick the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname the player
      * @param shelfId1     the first shelf
      * @param shelfId2     the second shelf
      * @throws IllegalActionException if the player cannot swap the contents of two shelves in the current state
      */
-    public void swapShelves(String nick, Integer shelfId1, Integer shelfId2) throws IllegalActionException, IllegalResourceTransferException {
-        if (!setupDone || game.hasEnded())
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
-        checkCurrentPlayer(player);
+    public void swapShelves(View v, String nickname, Integer shelfId1, Integer shelfId2) {
+        if (!preliminaryChecks(v, "Swap shelves")) return;
+
+        Player player = getPlayerByNickname(nickname);;
+        
+        if (!checkCurrentPlayer(v, player, "Swap shelves")) return;
+
         Shelf s1 = (Shelf) game.getShelfById(shelfId1).orElseThrow();
         Shelf s2 = (Shelf) game.getShelfById(shelfId2).orElseThrow();
-        Shelf.swap(s1, s2);
+        try {
+            Shelf.swap(s1, s2);
+        } catch (IllegalResourceTransferException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
     }
 
     /**
      * Makes a player activate a leader card.
      *
-     * @param nick the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname the player
      * @param leaderid the leader card to activate
      * @throws IllegalActionException if the player cannot activate a leader in the current state
      */
-    public void activateLeader(String nick, Integer leaderid) throws IllegalActionException, CardRequirementsNotMetException {
-        if (!setupDone || game.hasEnded())
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
-        checkCurrentPlayer(player);
+    public void activateLeader(View v, String nickname, Integer leaderid) {
+        if (!preliminaryChecks(v, "Activate leader")) return;
+
+        Player player = getPlayerByNickname(nickname);;
+        
+        if(!checkCurrentPlayer(v, player, "Activate leader")) return;
+
         LeaderCard leader = game.getLeaderById(leaderid).orElseThrow();
-        leader.activate(player);
+        try {
+            leader.activate(player);
+        } catch (CardRequirementsNotMetException | IllegalArgumentException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
     }
 
     /**
      * Makes a player discard a leader card.
      *
-     * @param nick the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname the player
      * @param leaderid the leader card to discard
      * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
-    public void discardLeader(String nick, Integer leaderid) throws IllegalActionException, ActiveLeaderDiscardException {
-        if (!setupDone || game.hasEnded())
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
-        checkCurrentPlayer(player);
+    public void discardLeader(View v, String nickname, Integer leaderid) {
+        if (!preliminaryChecks(v, "Discard leader")) return;
+
+        Player player = getPlayerByNickname(nickname);;
+        
+        if (!checkCurrentPlayer(v, player, "Discard leader")) return;
+
         LeaderCard leader = game.getLeaderById(leaderid).orElseThrow();
-        player.discardLeader(game, leader);
+        try {
+            player.discardLeader(game, leader);
+        } catch (IndexOutOfBoundsException | ActiveLeaderDiscardException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
     }
 
     /**
      * Takes resources from the market as a player.
      *
-     * @param nick       the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname       the player
      * @param isRow        <code>true</code> if a row is selected; <code>false</code> if a column is selected.
      * @param index        index of the selected row or column
      * @param replacements a map of the chosen resources to take, if choices are applicable
      * @param reducedShelves      a map of the shelves where to add the taken resources, if possible
      * @throws IllegalActionException if the player cannot take resources from the market in the current state
      */
-    public void takeMarketResources(String nick, boolean isRow, int index,
+    public void takeMarketResources(View v, String nickname, boolean isRow, int index,
                                     Map<ResourceType, Integer> replacements,
-                                    Map<Integer, Map<String, Integer>> reducedShelves) throws IllegalActionException, IllegalMarketTransferException {
-        if (!setupDone || turnDone)
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
-        checkCurrentPlayer(player);
+                                    Map<Integer, Map<String, Integer>> reducedShelves) {
+        if (!preliminaryChecks(v, "Take market resources")) return;
+
+        Player player = getPlayerByNickname(nickname);;
+        
+        if (!checkCurrentPlayer(v, player, "Take market resources")) return;
+
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
         reducedShelves.forEach((key, value) -> shelves.put((Shelf) game.getShelfById(key).orElseThrow(), translateResources(value)));
-        game.getMarket().takeResources(game, player, isRow, index, replacements, shelves);
+        try {
+            game.getMarket().takeResources(game, player, isRow, index, replacements, shelves);
+        } catch (IllegalMarketTransferException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
         turnDone = true;
     }
 
     /**
      * Makes a player buy a development card from the development card grid.
      *
-     * @param nick        the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname        the player
      * @param color         the color of the card to be bought
      * @param level         the level of the card to be bought
      * @param slotIndex     the index of the dev slot where to put the development card
      * @param reducedResContainers a map of the resource containers where to take the storable resources
      * @throws IllegalActionException if the player cannot buy a development card in the current state
      */
-    public void buyDevCard(String nick, String color, int level, int slotIndex,
-                           Map<Integer, Map<String, Integer>> reducedResContainers) throws IllegalActionException, CardRequirementsNotMetException, IllegalCardDepositException {
-        if (!setupDone || turnDone)
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
-        checkCurrentPlayer(player);
+    public void buyDevCard(View v, String nickname, String color, int level, int slotIndex,
+                           Map<Integer, Map<String, Integer>> reducedResContainers) {
+        if (!preliminaryChecks(v, "Buy development card")) return;
+
+        Player player = getPlayerByNickname(nickname);;
+        
+        if (!checkCurrentPlayer(v, player, "Buy development card")) return;
+        
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>();
         reducedResContainers.forEach((key, value) -> resContainers.put(game.getShelfById(key).orElseThrow(), translateResources(value)));
 
-        game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
+        try {
+            game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
+        } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
         turnDone = true;
     }
 
     /**
      * Makes a player activate a group of productions.
      *
-     * @param nick          the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname          the player
      * @param reducedProdGroup the group of requested contemporary productions
      * @throws IllegalActionException if the player cannot activate a group of productions in the current state
      */
-    public void activateProductionGroup(String nick, List<ReducedProductionRequest> reducedProdGroup) throws IllegalActionException, IllegalProductionActivationException {
-        if (!setupDone || turnDone)
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
-        checkCurrentPlayer(player);
+    public void activateProductionGroup(View v, String nickname, List<ReducedProductionRequest> reducedProdGroup) {
+        if (!preliminaryChecks(v, "Activate production")) return;
+
+        Player player = getPlayerByNickname(nickname);;
+        
+        if (!checkCurrentPlayer(v, player, "Activate production")) return;
+        
         ProductionGroup productionGroup = new ProductionGroup(reducedProdGroup.stream().map (this::translateToProductionRequest).toList());
-        productionGroup.activate(game, player);
+        try {
+            productionGroup.activate(game, player);
+        } catch (IllegalProductionActivationException e) {
+            notify(v, new ErrAction(e.getMessage()));
+        }
         turnDone = true;
     }
 
     /**
      * Makes a player end his turn.
      *
-     * @param nick the player
+     * @param v the view the action originates from.
+     *          Used to send back errors
+     * @param nickname the player
      * @throws IllegalActionException if the player cannot end the turn in the current state
      */
-    public void endTurn(String nick) throws IllegalActionException, NoActivePlayersException {
+    public void endTurn(View v, String nickname) {
         if (!setupDone || !turnDone)
-            throw new IllegalActionException();
-        Player player = game.getPlayers().stream().filter(p -> p.getNickname().equals(nick)).findFirst().orElseThrow();
-        checkCurrentPlayer(player);
-        game.onTurnEnd();
+            notify(v, new ErrAction(
+                new IllegalActionException("End turn", !setupDone ? "Setup is not done yet" : "No action executed in the turn").getMessage()));
+        
+        Player player = getPlayerByNickname(nickname);;
+        
+        if (!checkCurrentPlayer(v, player, "End turn")) return;
+        
+        try {
+            game.onTurnEnd();
+        } catch (NoActivePlayersException e) {
+            notify(v, new ErrAction(e.getMessage())); // TODO does this make sense?
+        }
         turnDone = false;
     }
 
@@ -288,11 +284,11 @@ public class GameContext {
      * @return the player who won
      * @throws IllegalActionException if the player who won cannot be requested in the current state
      */
-    public Optional<String> getWinnerPlayer() throws IllegalActionException {
-        if (!game.hasEnded())
-            throw new IllegalActionException();
-        return game.getWinnerPlayer().map(Player::getNickname);
-    }
+    // public Optional<String> getWinnerPlayer() {
+    //     if (!game.hasEnded())
+    //         notify(null, new ErrAction(new IllegalActionException("Get winner player", "Game has not ended yet").getMessage()));
+    //     return game.getWinnerPlayer().map(Player::getNickname);
+    // } TODO is this relevant?
 
     /**
      * Returns whether Lorenzo has won the game or not.
@@ -300,11 +296,11 @@ public class GameContext {
      * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
      * @throws IllegalActionException if this cannot be requested in the current state
      */
-    public boolean isBlackWinner() throws IllegalActionException {
-        if (!game.hasEnded())
-            throw new IllegalActionException();
-        return game.isBlackWinner();
-    }
+    // public boolean isBlackWinner() throws IllegalActionException {
+    //     if (!game.hasEnded())
+    //         throw new IllegalActionException();
+    //     return game.isBlackWinner();
+    // } TODO is this relevant?
 
     /**
      * Check if the last necessary setup move has been made.
@@ -315,14 +311,41 @@ public class GameContext {
     }
 
     /**
-     * Checks if the turn is of the given player.
+     * Checks if the given player is the current player in the turn.
      *
+     * @param v the view to send the error massage back with
      * @param player the player to check
-     * @throws IllegalActionException if the player can play in this turn
+     * @param action the action trying to be performed
+     * @return whether the ckeck passed
      */
-    private void checkCurrentPlayer(Player player) throws IllegalActionException {
-        if (!player.equals(game.getCurrentPlayer()))
-            throw new IllegalActionException();
+    private boolean checkCurrentPlayer(View v, Player player, String action) {
+        if (!player.equals(game.getCurrentPlayer())) {
+            notify(v, new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.").getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    private Player getPlayerByNickname(String nickname) throws NoSuchElementException {
+        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findFirst().orElseThrow();
+    }
+
+    /**
+     * Checks whether the setup still isn't finished or the game has already ended.
+     * Action methods can use these checks to confirm their legitimacy of execution, before starting.
+     * 
+     * @param v the view to use to send back the error, if the checks don't pass
+     * @param action the action trying to be performed.
+     *               Will be used as a reason when sending the error message to the client
+     *               trying to execute the action.
+     * @return whether the checks passed
+     */
+    private boolean preliminaryChecks(View v, String action) {
+        if (!setupDone || game.hasEnded()) {
+            notify(v, new ErrAction(new IllegalActionException(action, !setupDone ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+            return false;
+        }
+        return true;
     }
 
     private Map<ResourceType, Integer> translateResources(Map<String,Integer> r) {

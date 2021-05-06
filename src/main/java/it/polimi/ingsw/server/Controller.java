@@ -25,100 +25,55 @@ public class Controller {
 
     public void update(View view, ReqChooseLeaders event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.chooseLeaders(model.getPlayer(view), null);
-                System.out.println("Chose Leaders.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.chooseLeaders(view, model.getPlayer(view), null);
         });
     }
 
     public void update(View view, ReqChooseResources event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.chooseResources(model.getPlayer(view), null);
-                System.out.println("Chose initial resources.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.chooseResources(view, model.getPlayer(view), null);
         });
     }
 
     public void update(View view, ReqSwapShelves event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.swapShelves(model.getPlayer(view), null, null);
-                System.out.println("Swapped shelves.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.swapShelves(view, model.getPlayer(view), null, null);
         });
     }
 
     public void update(View view, ReqActivateLeader event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.activateLeader(model.getPlayer(view), null);
-                System.out.println("Activated Leader.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.activateLeader(view, model.getPlayer(view), null);
         });
     }
 
     public void update(View view, ReqDiscardLeader event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.discardLeader(model.getPlayer(view), null);
-                System.out.println("Discarded leader.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.discardLeader(view, model.getPlayer(view), null);
         });
     }
 
     public void update(View view, ReqTakeFromMarket event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.takeMarketResources(model.getPlayer(view), event.isRow(), event.getIndex(), null, null);
-                System.out.println("Took market resources.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.takeMarketResources(view, model.getPlayer(view), event.isRow(), event.getIndex(), null, null);
         });
     }
 
     public void update(View view, ReqBuyDevCard event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.buyDevCard(model.getPlayer(view), null, event.getLevel(), event.getSlotIndex(), null);
-                System.out.println("Bought development card.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.buyDevCard(view, model.getPlayer(view), null, event.getLevel(), event.getSlotIndex(), null);
         });
     }
 
     public void update(View view, ReqActivateProduction event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.activateProductionGroup(model.getPlayer(view), null);
-                System.out.println("Activated production.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.activateProductionGroup(view, model.getPlayer(view), null);
         });
     }
 
     public void update(View view, ReqTurnEnd event) {
         model.getJoinedGame(view).ifPresent(gameContext -> {
-            try {
-                gameContext.endTurn(model.getPlayer(view));
-                System.out.println("Ended turn.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            gameContext.endTurn(view, model.getPlayer(view));
         });
     }
 }
