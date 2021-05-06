@@ -1,11 +1,12 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.*;
 
 import java.util.*;
 
-public class Lobby {
+public class Lobby extends ModelObservable {
     private final GameFactory gameFactory;
     // private final List<GameContext> games;
     private final Map<View, String> nicknames;
@@ -23,15 +24,15 @@ public class Lobby {
 
     public void joinLobby(View view, String nickname) {
         if (nicknames.containsKey(view)) {
-            view.update(new ErrNickname("You already have nickname \"" + nicknames.get(view) + "\"."));
+            notify(view, new ErrNickname("You already have nickname \"" + nicknames.get(view) + "\"."));
             return;
         }
         if (nickname == null || nickname.isBlank()) {
-            view.update(new ErrNickname("Given nickname is empty."));
+            notify(view, new ErrNickname("Given nickname is empty."));
             return;
         }
         if (nicknames.containsValue(nickname)) {
-            view.update(new ErrNickname("Nickname \"" + nickname + "\" already in use. Choose another one."));
+            notify(view, new ErrNickname("Nickname \"" + nickname + "\" already in use. Choose another one."));
             return;
         }
         nicknames.put(view, nickname);
@@ -41,23 +42,25 @@ public class Lobby {
         if (waiting.size() == countToNewGame)
             startNewGame();
 
-        view.update(new ResNickname(waiting.size() == 1));
+        notify(view, new ResNickname(waiting.size() == 1));
     }
 
     public void setCountToNewGame(View view, int count) {
         checkNickname(view);
         if (!isPlayerFirst(view)) {
-            view.update(new ErrAction("Command unavailable. You are not the first player who joined."));
+            notify(view, new ErrAction("Command unavailable. You are not the first player who joined."));
             return;
         }
-        System.out.println("Set count of players.");
+        System.out.println(String.format("Setting players count to %d.", count));
         this.countToNewGame = count;
         if (waiting.size() == countToNewGame)
             startNewGame();
     }
 
     public void startNewGame() {
-        Game newGame = countToNewGame == 1 ? gameFactory.getSoloGame(nicknames.get(waiting.get(0))) : gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList());
+        Game newGame = countToNewGame == 1 ?
+            gameFactory.getSoloGame(nicknames.get(waiting.get(0)), waiting.get(0)) :
+            gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList(), waiting.subList(0, countToNewGame));
         GameContext newContext = new GameContext(newGame, gameFactory);
         // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(v -> {
@@ -70,7 +73,7 @@ public class Lobby {
 
     public void exit(View view) {
         // TODO: Manage the exit of a view
-        view.update(new ResGoodbye());
+        notify(view, new ResGoodbye());
     }
 
     public boolean isPlayerFirst(View view) {
@@ -91,7 +94,7 @@ public class Lobby {
 
     public boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
-            view.update(new ErrAction("You must first request a nickname."));
+            notify(view, new ErrAction("You must first request a nickname."));
             return false;
         }
         return true;
@@ -101,7 +104,7 @@ public class Lobby {
         if (!checkNickname(view))
             return false;
         if (!joined.containsKey(view)) {
-            view.update(new ErrAction("You must first join a game."));
+            notify(view, new ErrAction("You must first join a game."));
             return false;
         }
         return true;
