@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface GameFactory {
      * @param nicknames the list of nicknames of players who joined
      * @return the multiplayer game
      */
-    Game getMultiGame(List<String> nicknames);
+    Game getMultiGame(List<String> nicknames, List<View> observers);
 
     /**
      * Builder of a single-player game instance.
@@ -23,7 +24,7 @@ public interface GameFactory {
      * @param nickname the nickname of the only player
      * @return the single-player game
      */
-    SoloGame getSoloGame(String nickname);
+    SoloGame getSoloGame(String nickname, View observer);
 
     Optional<ResourceType> getResourceType(String name);
 
