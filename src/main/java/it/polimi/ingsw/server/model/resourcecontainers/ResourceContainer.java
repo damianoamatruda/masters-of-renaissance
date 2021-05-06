@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.resourcecontainers;
 
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This interface represents a container of storable resources.
  */
 public abstract class ResourceContainer {
-    private static AtomicInteger idCounter = new AtomicInteger();
+    private static final AtomicInteger idCounter = new AtomicInteger();
 
     private final int id;
 
@@ -51,12 +52,28 @@ public abstract class ResourceContainer {
     public abstract int getResourceQuantity(ResourceType resType);
 
     /**
+     * Adds resources.
+     *
+     * @param resMap the resources to add
+     * @throws IllegalResourceTransferException if the container is full
+     */
+    public abstract void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException;
+
+    /**
      * Adds a resource of the given type.
      *
      * @param resType the resource to add
      * @throws IllegalResourceTransferException if the container is full
      */
     public abstract void addResource(ResourceType resType) throws IllegalResourceTransferException;
+
+    /**
+     * Removes resources.
+     *
+     * @param resMap the resources to remove
+     * @throws IllegalResourceTransferException if the container is full
+     */
+    public abstract void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException;
 
     /**
      * Removes a resource of the given type.

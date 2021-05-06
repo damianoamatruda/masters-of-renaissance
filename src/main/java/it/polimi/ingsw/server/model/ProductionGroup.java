@@ -65,46 +65,38 @@ public class ProductionGroup {
         for (ProductionRequest productionReq : productionRequests) {
             /* Try removing all input storable resources from cloned resource containers */
             for (ResourceContainer resContainer : productionReq.getInputContainers().keySet())
-                for (ResourceType resType : productionReq.getInputContainers().get(resContainer).keySet())
-                    for (int i = 0; i < productionReq.getInputContainers().get(resContainer).get(resType); i++)
-                        try {
-                            clonedContainers.get(resContainer).removeResource(resType);
-                        } catch (IllegalResourceTransferException e) {
-                            throw new IllegalProductionActivationException("Illegal input transfer in production request:", productionReq, e);
-                        }
+                try {
+                    clonedContainers.get(resContainer).removeResources(productionReq.getInputContainers().get(resContainer));
+                } catch (IllegalResourceTransferException e) {
+                    throw new IllegalProductionActivationException("Illegal input transfer in production request:", productionReq, e);
+                }
 
             /* Try adding all output storable resources into cloned resource containers (with input removed) */
             for (ResourceContainer resContainer : productionReq.getOutputContainers().keySet())
-                for (ResourceType resType : productionReq.getOutputContainers().get(resContainer).keySet())
-                    for (int i = 0; i < productionReq.getOutputContainers().get(resContainer).get(resType); i++)
-                        try {
-                            clonedContainers.get(resContainer).addResource(resType);
-                        } catch (IllegalResourceTransferException e) {
-                            throw new IllegalProductionActivationException("Illegal output transfer in production request:", productionReq, e);
-                        }
+                try {
+                    clonedContainers.get(resContainer).addResources(productionReq.getOutputContainers().get(resContainer));
+                } catch (IllegalResourceTransferException e) {
+                    throw new IllegalProductionActivationException("Illegal output transfer in production request:", productionReq, e);
+                }
         }
 
         /* This should be possible, as it worked with cloned resource containers */
         for (ProductionRequest productionReq : productionRequests) {
             /* Remove all input storable resources from real resource containers */
             for (ResourceContainer resContainer : productionReq.getInputContainers().keySet())
-                for (ResourceType resType : productionReq.getInputContainers().get(resContainer).keySet())
-                    for (int i = 0; i < productionReq.getInputContainers().get(resContainer).get(resType); i++)
-                        try {
-                            resContainer.removeResource(resType);
-                        } catch (IllegalResourceTransferException e) {
-                            throw new RuntimeException("Implementation error when removing all input storable resources from real resource containers", e);
-                        }
+                try {
+                    resContainer.removeResources(productionReq.getInputContainers().get(resContainer));
+                } catch (IllegalResourceTransferException e) {
+                    throw new RuntimeException("Implementation error when removing all input storable resources from real resource containers", e);
+                }
 
             /* Add all output storable resources into real resource containers */
             for (ResourceContainer resContainer : productionReq.getOutputContainers().keySet())
-                for (ResourceType resType : productionReq.getOutputContainers().get(resContainer).keySet())
-                    for (int i = 0; i < productionReq.getOutputContainers().get(resContainer).get(resType); i++)
-                        try {
-                            resContainer.addResource(resType);
-                        } catch (IllegalResourceTransferException e) {
-                            throw new RuntimeException("Implementation error when adding all output storable resources into real resource containers.", e);
-                        }
+                try {
+                    resContainer.addResources(productionReq.getOutputContainers().get(resContainer));
+                } catch (IllegalResourceTransferException e) {
+                    throw new RuntimeException("Implementation error when adding all output storable resources into real resource containers.", e);
+                }
 
             /* Discard the chosen resources to be discarded */
             for (ResourceType resType : productionReq.getDiscardedOutput().keySet())

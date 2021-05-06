@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.resourcecontainers;
 
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -51,15 +52,11 @@ public class Shelf extends ResourceContainer {
         ResourceContainer clone1 = s1.copy();
         ResourceContainer clone2 = s2.copy();
 
-        for (int i = 0; i < s1.quantity; i++)
-            clone1.removeResource(s1.resType);
-        for (int i = 0; i < s2.quantity; i++)
-            clone2.removeResource(s2.resType);
+        clone1.removeResources(Map.of(s1.resType, s1.quantity));
+        clone2.removeResources(Map.of(s2.resType, s2.quantity));
 
-        for (int i = 0; i < s2.quantity; i++)
-            clone1.addResource(s2.resType);
-        for (int i = 0; i < s1.quantity; i++)
-            clone2.addResource(s1.resType);
+        clone1.addResources(Map.of(s2.resType, s2.quantity));
+        clone2.addResources(Map.of(s1.resType, s1.quantity));
 
         s1.resType = clone1.getResourceTypes().stream().findFirst().orElse(null);
         s1.quantity = clone1.getQuantity();
@@ -107,28 +104,53 @@ public class Shelf extends ResourceContainer {
     }
 
     @Override
-    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
+    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        // TODO: Share this portion with other methods
+        if (resMap.values().stream().noneMatch(v -> v > 0))
+            return;
+        if (resMap.values().stream().filter(v -> v > 0).count() != 1)
+            throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
+        ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
+
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, true, this.getResourceType().get());
+            throw new IllegalResourceTransferException(resType, true, this.resType);
         if (!resType.isStorable())
             throw new IllegalResourceTransferException(resType, true);
-        if (quantity == size)
+        if (this.quantity + resMap.get(resType) > size)
             throw new IllegalResourceTransferException(resType, true, this);
+
         this.resType = resType;
-        this.quantity++;
+        this.quantity += resMap.get(resType);
+    }
+
+    @Override
+    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
+        addResources(Map.of(resType, 1));
+    }
+
+    @Override
+    public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        if (resMap.values().stream().noneMatch(v -> v > 0))
+            return;
+        if (resMap.values().stream().filter(v -> v > 0).count() != 1)
+            throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
+        ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
+
+        if (this.resType != null && !resType.equals(this.resType))
+            throw new IllegalResourceTransferException(resType, false, this.resType);
+        if (!resType.isStorable())
+            throw new IllegalResourceTransferException(resType, false);
+
+        if (this.quantity < resMap.get(resType))
+            throw new IllegalResourceTransferException(resType, false, this);
+        if (this.quantity == resMap.get(resType))
+            this.resType = null;
+        this.quantity -= resMap.get(resType);
     }
 
     @Override
     public void removeResource(ResourceType resType) throws IllegalResourceTransferException {
-        if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, false, this.getResourceType().get());
-        if (!resType.isStorable())
-                throw new IllegalResourceTransferException(resType, false);
-        if (quantity == 0)
-            throw new IllegalResourceTransferException(resType, false, this);
-        if (quantity == 1)
-            this.resType = null;
-        this.quantity--;
+        removeResources(Map.of(resType, 1));
     }
 
     @Override

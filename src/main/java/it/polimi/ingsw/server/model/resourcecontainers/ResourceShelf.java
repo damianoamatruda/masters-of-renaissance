@@ -2,6 +2,8 @@ package it.polimi.ingsw.server.model.resourcecontainers;
 
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
+import java.util.Map;
+
 /**
  * This class represents a limited container of resources of a specific type.
  */
@@ -36,10 +38,16 @@ public class ResourceShelf extends Shelf {
     }
 
     @Override
-    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
+    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        if (resMap.values().stream().noneMatch(v -> v > 0))
+            return;
+        if (resMap.values().stream().filter(v -> v > 0).count() != 1)
+            throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
+        ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
+
         if (!resType.equals(this.boundedResType))
             throw new IllegalResourceTransferException(resType, true, this.getBoundedResType());
-        super.addResource(resType);
+        super.addResources(resMap);
     }
 
     /**
