@@ -32,6 +32,28 @@ public class VirtualView implements View {
         this.eventSender = eventSender;
     }
 
+
+    // ModelObserver section
+
+    @Override
+    public void update(ResGoodbye event) {
+        if (eventSender != null) {
+            eventSender.send(event);
+            eventSender.stop();
+            eventSender = null;
+        }
+    }
+
+    @Override
+    public void update(MVEvent event) {
+        if (eventSender != null)
+            eventSender.send(event);
+        else throw new RuntimeException("Cannot send MVEvent: no sender available");
+    }
+
+
+    // ControllerObservable section
+
     @Override
     public void notify(ReqQuit event) {
         controller.update(this, event);
@@ -90,21 +112,5 @@ public class VirtualView implements View {
     @Override
     public void notify(ReqTurnEnd event) {
         controller.update(this, event);
-    }
-
-    @Override
-    public void update(ResGoodbye event) {
-        if (eventSender != null) {
-            eventSender.send(event);
-            eventSender.stop();
-            eventSender = null;
-        }
-    }
-
-    @Override
-    public void update(MVEvent event) {
-        if (eventSender != null)
-            eventSender.send(event);
-        else throw new RuntimeException("Cannot send MVEvent: no sender available");
     }
 }
