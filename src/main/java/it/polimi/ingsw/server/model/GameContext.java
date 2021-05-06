@@ -337,6 +337,6 @@ public class GameContext {
         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers = new HashMap<>();
         r.getInputContainers().forEach((key, value) -> outputContainers.put(game.getShelfById(key).orElseThrow(), translateResources(value)));
         return new ProductionGroup.ProductionRequest(game.getProductionById(r.getProductionId()).orElseThrow(), translateResources(r.getInputBlanksRep()), translateResources(r.getOutputBlanksRep()),
-                inputContainers, outputContainers);
+                Map.of(), inputContainers, outputContainers);
     }
 }

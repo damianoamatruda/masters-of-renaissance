@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents a container of shelves of growing size.
@@ -71,12 +72,18 @@ public class Warehouse {
         }
 
         @Override
-        public void addResource(ResourceType resType) throws IllegalResourceTransferException {
+        public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+            if (resMap.values().stream().noneMatch(v -> v > 0))
+                return;
+            if (resMap.values().stream().filter(v -> v > 0).count() != 1)
+                throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
+            ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
+
             if (warehouse.shelves.stream()
                     .filter(s -> !s.equals(this))
                     .anyMatch(s -> s.getResourceType().isPresent() && s.getResourceType().get().equals(resType)))
                 throw new IllegalResourceTransferException(resType, warehouse);
-            super.addResource(resType);
+            super.addResources(resMap);
         }
     }
 }

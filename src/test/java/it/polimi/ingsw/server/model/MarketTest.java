@@ -79,18 +79,19 @@ public class MarketTest {
         Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         Map<ResourceType, Shelf> shelves = Map.of(
-                r1, new Shelf(12),
-                r2, new Shelf(12),     /* Ignored */
-                r3, new Shelf(12),
-                r4, new Shelf(12),
-                r5, new Shelf(12),
-                r6, new Shelf(12));    /* Ignored */
+                r1, new Shelf(48),     /* market.getRowsCount() * (market.getColsCount() + 1) * market.getColsCount() */
+                r2, new Shelf(48),     /* Ignored */
+                r3, new Shelf(48),
+                r4, new Shelf(48),
+                r5, new Shelf(48),
+                r6, new Shelf(48));    /* Ignored */
 
         for (int rowIndex = 0; rowIndex < market.getRowsCount(); rowIndex++) {
             List<ResourceType> rowBefore = new ArrayList<>(market.getGrid().get(rowIndex));
 
             for (int shiftNum = 0; shiftNum < market.getColsCount() + 1; shiftNum++) {
                 Map<ResourceType, Integer> output = new HashMap<>();
+
                 for (int i = 0; i < market.getColsCount(); i++) {
                     ResourceType resType = market.getGrid().get(rowIndex).get(i);
                     if (resType.isStorable())

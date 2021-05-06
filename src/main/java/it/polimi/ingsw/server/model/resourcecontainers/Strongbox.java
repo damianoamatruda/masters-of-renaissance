@@ -50,19 +50,40 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
+    public void addResources(Map<ResourceType, Integer> resMap) {
+        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
+            ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
+            throw new IllegalArgumentException(new IllegalResourceTransferException(nonStorable, true));
+        }
+        for (ResourceType resType : resMap.keySet())
+            resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
+    }
+
+    @Override
     public void addResource(ResourceType resType) {
-        if (!resType.isStorable())
-            throw new IllegalArgumentException(new IllegalResourceTransferException(resType, true));
-        resources.compute(resType, (r, q) -> (q == null) ? 1 : q + 1);
+        addResources(Map.of(resType, 1));
+    }
+
+    @Override
+    public void removeResources(Map<ResourceType, Integer> resMap) {
+        if (!resMap.keySet().stream().allMatch(resources::containsKey)) {
+            ResourceType resType = resMap.keySet().stream().filter(r -> !resources.containsKey(r)).findAny().orElseThrow();
+            throw new IllegalArgumentException(new IllegalResourceTransferException(resType, false, this));
+        }
+        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
+            ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
+            throw new IllegalArgumentException(new IllegalResourceTransferException(nonStorable, false));
+        }
+        for (ResourceType resType : resMap.keySet())
+            if (resources.get(resType) < resMap.get(resType))
+                throw new IllegalArgumentException(new IllegalResourceTransferException(resType, false, this));
+        for (ResourceType resType : resMap.keySet())
+            resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
     }
 
     @Override
     public void removeResource(ResourceType resType) {
-        if (!resources.containsKey(resType))
-            throw new IllegalArgumentException(new IllegalResourceTransferException(resType, false, this));
-        if (!resType.isStorable())
-            throw new IllegalArgumentException(new IllegalResourceTransferException(resType, false));
-        resources.computeIfPresent(resType, (r, q) -> (q == 1) ? null : q - 1);
+        removeResources(Map.of(resType, 1));
     }
 
     @Override
