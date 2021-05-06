@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * and a player.
  */
 public class Production {
-    private static AtomicInteger idCounter = new AtomicInteger();
+    private static final AtomicInteger idCounter = new AtomicInteger();
 
     private final int id;
 
@@ -53,6 +53,8 @@ public class Production {
     public Production(Map<ResourceType, Integer> input, int inputBlanks, Set<ResourceType> inputBlanksExclusions,
                       Map<ResourceType, Integer> output, int outputBlanks, Set<ResourceType> outputBlanksExclusions,
                       boolean discardableOutput) {
+        // TODO: Check that the given maps have values >= 0
+
         this.input = Map.copyOf(input);
         this.inputBlanks = inputBlanks;
         this.inputBlanksExclusions = Set.copyOf(inputBlanksExclusions);

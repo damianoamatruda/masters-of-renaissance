@@ -97,7 +97,7 @@ public class Market {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(
                             new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
-                            Map.of(), Map.of(), Map.of(), Map.copyOf(shelves))
+                            Map.of(), Map.of(), Map.of(), Map.of(), Map.copyOf(shelves))
             )).activate(game, player);
         } catch (IllegalProductionActivationException e) {
             throw new IllegalMarketTransferException(e);

@@ -39,6 +39,7 @@ public class ProductionGroupTest {
                 prod,
                 Map.of(),
                 Map.of(),
+                Map.of(),
                 Map.of(player.getStrongbox(), Map.of(r1, 2)),
                 Map.of(player.getStrongbox(), Map.of(r2, 3))
         );
@@ -69,6 +70,7 @@ public class ProductionGroupTest {
                 prod,
                 Map.of(r1, 1, r3, 2),
                 Map.of(),
+                Map.of(),
                 Map.of(player.getStrongbox(), Map.of(r1, 3, r3, 2)),
                 Map.of(player.getStrongbox(), Map.of(r2, 3))
         );
@@ -97,6 +99,7 @@ public class ProductionGroupTest {
                 prod,
                 Map.of(),
                 Map.of(r2, 2, r3, 1),
+                Map.of(),
                 Map.of(player.getStrongbox(), Map.of(r1, 2)),
                 Map.of(player.getStrongbox(), Map.of(r2, 5, r3, 1))
         );

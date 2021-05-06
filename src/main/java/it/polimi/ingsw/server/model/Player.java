@@ -151,7 +151,7 @@ public class Player {
         new ProductionGroup(List.of(
                 new ProductionGroup.ProductionRequest(
                         new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                        Map.of(), chosenResources, Map.of(), Map.copyOf(shelves))
+                        Map.of(), chosenResources, Map.of(), Map.of(), Map.copyOf(shelves))
         )).activate(game, this);
         
         hasChosenResources = true;
