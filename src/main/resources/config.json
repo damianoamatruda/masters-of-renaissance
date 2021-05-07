@@ -1706,18 +1706,21 @@
   "faithTrack": {
     "vaticanSections": [
       {
+        "id": 65,
         "faithPointsBeginning": 5,
         "faithPointsEnd": 8,
         "victoryPoints": 2,
         "activated": false
       },
       {
+        "id": 66,
         "faithPointsBeginning": 19,
         "faithPointsEnd": 24,
         "victoryPoints": 4,
         "activated": false
       },
       {
+        "id": 67,
         "faithPointsBeginning": 12,
         "faithPointsEnd": 16,
         "victoryPoints": 3,

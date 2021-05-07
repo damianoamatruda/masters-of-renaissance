@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import it.polimi.ingsw.common.ModelObservable;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.UpdateActivatedVatSection;
+
 /**
  * This class represents the Faith Track of a game.
  *
@@ -72,9 +76,21 @@ public class FaithTrack {
     }
 
     /**
+     * Adds observers to the faith track's vatican sections,
+     * which can be activated. Therefore, views need to be notified of such event.
+     * 
+     * @param o the observer of the vatican section to be added
+     */
+    public void addObserver(View o) {
+        this.vaticanSectionsMap.values().forEach(s -> s.addObserver(o));
+    }
+
+    /**
      * This class represents a Vatican Section in the Faith Track.
      */
-    public static class VaticanSection {
+    public static class VaticanSection extends ModelObservable {
+        private final int id;
+
         /** The first tile of the Vatican Section, which needs to be reached in order to earn bonus points. */
         private final int faithPointsBeginning;
 
@@ -98,7 +114,8 @@ public class FaithTrack {
          *                             after the Report is over
          * @see VaticanSection
          */
-        public VaticanSection(int faithPointsBeginning, int faithPointsEnd, int victoryPoints) {
+        public VaticanSection(int id, int faithPointsBeginning, int faithPointsEnd, int victoryPoints) {
+            this.id = id;
             this.faithPointsBeginning = faithPointsBeginning;
             this.faithPointsEnd = faithPointsEnd;
             this.victoryPoints = victoryPoints;
@@ -145,11 +162,10 @@ public class FaithTrack {
 
         /**
          * Sets the state of activation of the Vatican Section.
-         *
-         * @param activated <code>true</code> if the Vatican Section is activated; <code>false</code> otherwise.
          */
-        public void setActivated(boolean activated) {
-            this.activated = activated;
+        public void activate() {
+            this.activated = true;
+            notifyBroadcast(new UpdateActivatedVatSection(id));
         }
     }
 
