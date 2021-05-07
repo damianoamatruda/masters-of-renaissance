@@ -28,8 +28,9 @@
         8. [Updating the development card grid](#updating-the-development-card-grid)
         9. [Updating the development card slots](#updating-the-development-card-slots)
         10. [Updating the position on the faith track](#updating-the-position-on-the-faith-track)
-        11. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
-        12. [Declaring a winner](#declaring-a-winner)
+        11. [Updating the vatican sections](#updating-the-vatican-sections)
+        12. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+        13. [Declaring a winner](#declaring-a-winner)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -1011,6 +1012,25 @@ When the match is waiting for players to join before its start, sending notifica
   "type": "UpdateFaithTrack",
   "isLiM": false,
   "position": 14
+}
+```
+
+## Updating the vatican sections
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │      UpdateActivatedVatSection │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateActivatedVatSection (server)**
+```json
+{
+  "type": "UpdateActivatedVatSection",
+  "id": 66
 }
 ```
 
