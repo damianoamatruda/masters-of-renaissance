@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.ReducedDevCardGrid;
+import it.polimi.ingsw.common.events.UpdateDevGrid;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -11,7 +13,7 @@ import java.util.stream.IntStream;
 /**
  * This class represents a grid of decks of development cards.
  */
-public class DevCardGrid {
+public class DevCardGrid extends ModelObservable {
     /** Number of rows of separate decks that represent different development card levels. */
     protected final int levelsCount;
 
@@ -20,14 +22,6 @@ public class DevCardGrid {
 
     /** All the cards that are still not bought by any player. */
     protected final Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
-
-    public Map<DevCardColor, List<Stack<DevelopmentCard>>> getGrid() {
-//        Map<DevCardColor, List<Stack<DevelopmentCard>>> res = new HashMap<>();
-//        for(DevCardColor c : grid.keySet()) {
-//            List<Stack<DevelopmentCard>>
-//        }
-        return grid;    //Not ok yet
-    }
 
     /**
      * Generates the grid.
@@ -132,10 +126,11 @@ public class DevCardGrid {
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
             throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException {
 
-        // TODO peek
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
             player.addToDevSlot(game, slotIndex, card, resContainers);
+            notifyBroadcast(
+                new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(c -> c.getId()).toList()).toList()));
         } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
