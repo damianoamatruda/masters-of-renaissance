@@ -89,7 +89,7 @@ public class Game extends ModelObservable {
         this.observers.add(o);
         this.players.forEach(obj -> obj.addObserver(o));
         this.leaderCards.forEach(obj -> obj.addObserver(o));
-        this.developmentCards.forEach(obj -> obj.addObserver(o));
+        // this.developmentCards.forEach(obj -> obj.addObserver(o)); // technically unneded
         this.resContainers.forEach(obj -> obj.addObserver(o));
         this.devCardGrid.addObserver(o);
         this.market.addObserver(o);

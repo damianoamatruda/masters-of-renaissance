@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 
 /**
@@ -8,7 +9,7 @@ import it.polimi.ingsw.server.model.leadercards.LeaderCard;
  * @see DevelopmentCard
  * @see LeaderCard
  */
-public abstract class Card {
+public abstract class Card extends ModelObservable {
     private final int id;
     /** The amount of points the card gives to its owner. */
     private final int victoryPoints;
