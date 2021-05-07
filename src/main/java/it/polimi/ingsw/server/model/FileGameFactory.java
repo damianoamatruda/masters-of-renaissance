@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.model;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
-import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
@@ -110,7 +109,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public Game getMultiGame(List<String> nicknames, List<View> observers) {
+    public Game getMultiGame(List<String> nicknames) {
         checkNumberOfPlayers(nicknames);
 
         List<LeaderCard> leaderCards = generateLeaderCards();
@@ -133,7 +132,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public SoloGame getSoloGame(String nickname, View observer) {
+    public SoloGame getSoloGame(String nickname) {
         List<LeaderCard> leaderCards = generateLeaderCards();
         List<DevelopmentCard> developmentCards = generateDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
@@ -326,7 +325,7 @@ public class FileGameFactory implements GameFactory {
             throw new IllegalArgumentException(
                     String.format("Not enough leader cards available to be assigned to %d players: %d available, %d needed.",
                             maxPlayers, leaders.size(), maxPlayers * playerLeadersCount));
-
+        
         return leaders;
     }
 

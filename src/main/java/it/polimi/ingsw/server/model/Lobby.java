@@ -59,11 +59,13 @@ public class Lobby extends ModelObservable {
 
     public void startNewGame() {
         Game newGame = countToNewGame == 1 ?
-            gameFactory.getSoloGame(nicknames.get(waiting.get(0)), waiting.get(0)) :
-            gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList(), waiting.subList(0, countToNewGame));
+            gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
+            gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList());
+
         GameContext newContext = new GameContext(newGame, gameFactory);
         // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(v -> {
+            newGame.addObserver(v);
             joined.put(v, newContext);
             v.update(new ResGameStarted()); // v.update(new ResGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions(), newContext.getMarket(), newContext.getDevCardGrid()));
         });
