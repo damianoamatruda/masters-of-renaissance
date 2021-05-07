@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ModelObservable;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Optional;
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
  * as some attributes shared by the players that can be easily accessed from the outside.
  */
-public class Game {
+public class Game extends ModelObservable {
     /** Reference to the collection from which all the player's data can be accessed. */
     protected final List<Player> players;
 
@@ -83,6 +84,18 @@ public class Game {
         this.ended = false;
     }
 
+    @Override
+    public void addObserver(View o) {
+        this.observers.add(o);
+        this.players.forEach(obj -> obj.addObserver(o));
+        this.leaderCards.forEach(obj -> obj.addObserver(o));
+        this.developmentCards.forEach(obj -> obj.addObserver(o));
+        this.resContainers.forEach(obj -> obj.addObserver(o));
+        this.devCardGrid.addObserver(o);
+        this.market.addObserver(o);
+        this.faithTrack.addObserver(o);
+    }
+
     public Optional<LeaderCard> getLeaderById(int id) {
         return leaderCards.stream().filter(l -> l.getId() == id).findFirst();
     }
@@ -131,7 +144,7 @@ public class Game {
             for (Player p : players)
                 if (p.getFaithPoints() >= vaticanSection.getFaithPointsBeginning())
                     p.incrementVictoryPoints(vaticanSection.getVictoryPoints());
-            vaticanSection.setActivated(true);
+            vaticanSection.activate();
         }
 
         if (faithPoints == maxFaithPointsCount)
