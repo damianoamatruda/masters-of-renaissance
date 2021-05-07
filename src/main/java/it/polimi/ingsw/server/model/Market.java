@@ -17,7 +17,10 @@ import java.util.stream.IntStream;
  * resources together with a slide containing a single resource.
  */
 public class Market extends ModelObservable {
-    /** The resources in the grid. */
+    /** 
+     * The resources in the grid.
+     * Columns of rows.
+     */
     private final List<List<ResourceType>> grid;
 
     /** The type of the resources that can be replaced. */
@@ -123,10 +126,11 @@ public class Market extends ModelObservable {
 
         shift(isRow, index);
 
-        List<List<String>> reducedGrid = new ArrayList<>();
-        grid.forEach(l -> reducedGrid.add(l.stream().map(res -> res.getName()).collect(Collectors.toList())));
-
-        notifyBroadcast(new UpdateMarket(new ReducedMarket(reducedGrid, replaceableResType.getName(), slide.getName())));
+        notifyBroadcast(
+            new UpdateMarket(isRow, index,
+                IntStream.range(0, isRow ? getColsCount() : getRowsCount())
+                    .mapToObj(i -> isRow ? grid.get(index).get(i).getName() : grid.get(i).get(index).getName()).toList(),
+                slide.getName()));
     }
 
     /**
