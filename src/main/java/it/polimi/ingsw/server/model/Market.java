@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.ReducedMarket;
+import it.polimi.ingsw.common.events.UpdateMarket;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -14,7 +16,7 @@ import java.util.stream.IntStream;
  * This class represents a special container of resources that can be taken from the player. It consists of a grid of
  * resources together with a slide containing a single resource.
  */
-public class Market {
+public class Market extends ModelObservable {
     /** The resources in the grid. */
     private final List<List<ResourceType>> grid;
 
@@ -120,6 +122,11 @@ public class Market {
         }
 
         shift(isRow, index);
+
+        List<List<String>> reducedGrid = new ArrayList<>();
+        grid.forEach(l -> reducedGrid.add(l.stream().map(res -> res.getName()).collect(Collectors.toList())));
+
+        notifyBroadcast(new UpdateMarket(new ReducedMarket(reducedGrid, replaceableResType.getName(), slide.getName())));
     }
 
     /**
