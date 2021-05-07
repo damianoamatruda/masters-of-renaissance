@@ -24,56 +24,47 @@ public class Controller {
     }
 
     public void update(View view, ReqChooseLeaders event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.chooseLeaders(view, model.getPlayer(view), null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.chooseLeaders(view, nickname, null));
     }
 
     public void update(View view, ReqChooseResources event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.chooseResources(view, model.getPlayer(view), null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.chooseResources(view, nickname, null));
     }
 
     public void update(View view, ReqSwapShelves event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.swapShelves(view, model.getPlayer(view), null, null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.swapShelves(view, nickname, null, null));
     }
 
     public void update(View view, ReqActivateLeader event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.activateLeader(view, model.getPlayer(view), null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.activateLeader(view, nickname, null));
     }
 
     public void update(View view, ReqDiscardLeader event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.discardLeader(view, model.getPlayer(view), null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.discardLeader(view, nickname, null));
     }
 
     public void update(View view, ReqTakeFromMarket event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.takeMarketResources(view, model.getPlayer(view), event.isRow(), event.getIndex(), null, null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.takeMarketResources(view, nickname, event.isRow(), event.getIndex(), null, null));
     }
 
     public void update(View view, ReqBuyDevCard event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.buyDevCard(view, model.getPlayer(view), null, event.getLevel(), event.getSlotIndex(), null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.buyDevCard(view, nickname, null, event.getLevel(), event.getSlotIndex(), null));
     }
 
     public void update(View view, ReqActivateProduction event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.activateProductionGroup(view, model.getPlayer(view), null);
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.activateProductionGroup(view, nickname, null));
     }
 
     public void update(View view, ReqTurnEnd event) {
-        model.getJoinedGame(view).ifPresent(gameContext -> {
-            gameContext.endTurn(view, model.getPlayer(view));
-        });
+        model.checkJoinedThen(view, (gameContext, nickname) ->
+                gameContext.endTurn(view, nickname));
     }
 }

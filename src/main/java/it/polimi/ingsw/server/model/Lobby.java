@@ -4,7 +4,11 @@ import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class Lobby extends ModelObservable {
     private final GameFactory gameFactory;
@@ -82,19 +86,12 @@ public class Lobby extends ModelObservable {
         return waiting.indexOf(view) == 0;
     }
 
-    public Optional<GameContext> getJoinedGame(View view) {
-        checkJoined(view);
-        return Optional.ofNullable(joined.get(view));
+    public void checkJoinedThen(View view, BiConsumer<GameContext, String> then) {
+        if (checkJoined(view))
+            then.accept(joined.get(view), nicknames.get(view));
     }
 
-    public String getPlayer(View view) {
-        if (!checkJoined(view))
-            return null;
-//        return joined.get(view).getPlayer(nicknames.get(view)).orElseThrow();
-        return nicknames.get(view);
-    }
-
-    public boolean checkNickname(View view) {
+    private boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
             notify(view, new ErrAction("You must first request a nickname."));
             return false;
@@ -102,7 +99,7 @@ public class Lobby extends ModelObservable {
         return true;
     }
 
-    public boolean checkJoined(View view) {
+    private boolean checkJoined(View view) {
         if (!checkNickname(view))
             return false;
         if (!joined.containsKey(view)) {
