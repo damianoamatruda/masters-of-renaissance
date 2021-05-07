@@ -968,9 +968,7 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateDevGrid",
-  "row": 1,
-  "col": 2,
-  "card": 4
+  "topCards": [ [ 3, 4, 5 ], [ 6, 8, 7 ] ]
 }
 ```
 
