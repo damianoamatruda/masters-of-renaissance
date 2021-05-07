@@ -353,9 +353,8 @@ public class Game {
      */
     private void sumPointsFromYellowTiles() {
         for (Player p : players) {
-            FaithTrack.YellowTile lastReachedYellowTile = faithTrack.getLastReachedYellowTile(p.getFaithPoints());
-            if (lastReachedYellowTile != null)
-                p.incrementVictoryPoints(lastReachedYellowTile.getVictoryPoints());
+            faithTrack.getLastReachedYellowTile(p.getFaithPoints())
+                .ifPresent(lastReachedYellowTile -> p.incrementVictoryPoints(lastReachedYellowTile.getVictoryPoints()));
         }
     }
 }

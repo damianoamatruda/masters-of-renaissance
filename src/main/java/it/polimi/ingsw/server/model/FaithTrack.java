@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -50,11 +51,10 @@ public class FaithTrack {
      * @param faithPoints the faith points
      * @return the last Yellow Tile reached
      */
-    public YellowTile getLastReachedYellowTile(int faithPoints) {
+    public Optional<YellowTile> getLastReachedYellowTile(int faithPoints) {
         return yellowTiles.stream()
                 .filter(yellowTile -> yellowTile.getFaithPoints() <= faithPoints)
-                .max(Comparator.comparingInt(YellowTile::getFaithPoints))
-                .orElse(null);
+                .max(Comparator.comparingInt(YellowTile::getFaithPoints));
     }
 
     /**
