@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -93,6 +94,21 @@ public class Market {
             output = leader.replaceMarketResources(replaceableResType, output, replacements);
         output.remove(replaceableResType);
 
+        Map<ResourceType, Integer> toBeDiscarded = new HashMap<ResourceType, Integer>(),
+                                   shelvesValues = shelves.values().stream().flatMap(m -> m.entrySet().stream())
+                                        .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)));
+                                        
+        for (Entry<ResourceType, Integer> e : output.entrySet()) {
+            int amount = e.getValue() - shelvesValues.getOrDefault(e.getKey(), 0);
+            if (amount < 0) {
+                throw new IllegalMarketTransferException(
+                    new IllegalProductionActivationException.IllegalProductionContainersException(
+                        String.format("Cannot discard %d %s: negative amount computed. Check shelves mapping for the resource.",
+                            amount, e.getKey())));
+            } // TODO maybe move this in the production
+            toBeDiscarded.put(e.getKey(), amount);
+        };
+        
         try {
             new ProductionGroup(List.of(
                     new ProductionGroup.ProductionRequest(
