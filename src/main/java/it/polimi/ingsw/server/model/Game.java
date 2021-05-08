@@ -366,7 +366,7 @@ public class Game extends ModelObservable {
                 .toList();
 
         winners.stream().findFirst().ifPresent(p -> {
-            p.setWinner(true);
+            p.setWinner();
             notifyBroadcast(new UpdateWinner(p.getNickname(), computeVictoryPointsMap(players)));
         });
     }

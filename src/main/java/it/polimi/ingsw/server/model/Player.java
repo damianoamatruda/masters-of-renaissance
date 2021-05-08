@@ -315,10 +315,10 @@ public class Player extends ModelObservable {
      *
      * @param winner <code>true</code> if this player is to be declared as winner; <code>false</code> otherwise.
      */
-    public void setWinner(boolean winner) {
+    public void setWinner() {
         // notification is sent one above in the call stack,
         // as the other players' VP have to be sent too
-        this.winner = winner;
+        this.winner = true;
     }
 
     /**
