@@ -142,7 +142,7 @@ When a player is assigned by the server as the first of a new game, they have to
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭─────────────╮
                │                                ├─┤ try setting │
-               │                ResPlayersCount │ ╰─────────────╯
+               │                     ResNewGame │ ╰─────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                ErrPlayersCount │
@@ -156,11 +156,11 @@ When a player is assigned by the server as the first of a new game, they have to
   "count": 3
 }
 ```
-**ResPlayersCount (server)**
+**ResNewGame (server)**
 ```json
 {
-  "type": "ResPlayersCount",
-  "msg": "The number of players has been set to 3."
+  "type": "ResNewGame",
+  "count": 3
 }
 ```
 **ErrPlayersCount (server)**

@@ -56,6 +56,9 @@ public class Lobby extends ModelObservable {
             return;
         }
         System.out.println(String.format("Setting players count to %d.", count));
+        
+        notify(view, new ResNewGame(count));
+        
         this.countToNewGame = count;
         if (waiting.size() == countToNewGame)
             startNewGame();
