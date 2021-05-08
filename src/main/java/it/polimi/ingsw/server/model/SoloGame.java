@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.common.events.UpdateActionToken;
+import it.polimi.ingsw.common.events.UpdateFaithTrack;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -112,12 +113,14 @@ public class SoloGame extends Game {
     public void incrementBlackPoints() {
         blackPoints += 1;
         super.onIncrement(blackPoints);
+
+        notifyBroadcast(new UpdateFaithTrack(blackPoints, true));
     }
 
     /**
      * Declares Lorenzo as winner.
      */
     public void setBlackWinner() {
-        this.blackWinner = true;
+        this.blackWinner = true; // TODO notify
     }
 }
