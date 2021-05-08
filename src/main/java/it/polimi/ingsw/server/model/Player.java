@@ -343,6 +343,8 @@ public class Player extends ModelObservable {
         game.onAddToDevSlot(this.devSlots.stream().mapToInt(Vector::size).sum());
 
         slot.push(devCard);
+
+        notifyBroadcast(new UpdateDevCardSlot(devCard.getId(), index));
     }
 
     /**
