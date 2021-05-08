@@ -278,7 +278,7 @@ public class Player extends ModelObservable {
      * @param points the quantity to be added to the score
      */
     public void incrementVictoryPoints(int points) {
-        this.victoryPoints += points; // TODO consider sending update but not really
+        this.victoryPoints += points;
     }
 
     /**

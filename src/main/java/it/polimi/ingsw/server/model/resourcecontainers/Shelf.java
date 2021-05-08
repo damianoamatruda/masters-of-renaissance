@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.model.resourcecontainers;
 import it.polimi.ingsw.common.events.UpdateShelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;

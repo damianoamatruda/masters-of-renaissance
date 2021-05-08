@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.resourcecontainers;
 
-import it.polimi.ingsw.common.events.UpdateShelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.Map;
