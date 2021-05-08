@@ -2,7 +2,7 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
-public class ResNickname implements MVEvent {
+public class ResJoin implements MVEvent {
     private final boolean isFirst;
 
     /**
@@ -10,7 +10,7 @@ public class ResNickname implements MVEvent {
      * 
      * @param isFirst whether the player joining is the first of the match
      */
-    public ResNickname(boolean isFirst) {
+    public ResJoin(boolean isFirst) {
         this.isFirst = isFirst;
     }
 

@@ -46,7 +46,7 @@ public class Lobby extends ModelObservable {
         if (waiting.size() == countToNewGame)
             startNewGame();
 
-        notify(view, new ResNickname(waiting.size() == 1));
+        notify(view, new ResJoin(waiting.size() == 1));
     }
 
     public void setCountToNewGame(View view, int count) {

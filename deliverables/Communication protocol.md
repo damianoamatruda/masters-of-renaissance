@@ -100,7 +100,7 @@ The information of whether the player is the first of the match is included in t
      ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
      │                                │ ╭───────────────────────╮
      │                                ├─┤ check nickname unique │
-     │                    ResNickname │ ╰───────────────────────╯
+     │                        ResJoin │ ╰───────────────────────╯
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
      │                    ErrNickname │
@@ -114,10 +114,10 @@ The information of whether the player is the first of the match is included in t
   "nickname": "NicknameA"
 }
 ```
-**ResNickname (server)**
+**ResJoin (server)**
 ```json
 {
-  "type": "ResNickname",
+  "type": "ResJoin",
   "isFirst": false
 }
 ```
