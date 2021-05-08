@@ -34,7 +34,7 @@ public interface View /*extends ModelObserver, ControllerObservable, Communicati
 
     void notify(ReqChooseLeaders event);
 
-    void notify(ReqPlayersCount event);
+    void notify(ReqNewGame event);
 
     void notify(ReqChooseResources event);
 

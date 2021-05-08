@@ -90,7 +90,7 @@ public class VirtualView implements View {
     }
 
     @Override
-    public void notify(ReqPlayersCount event) {
+    public void notify(ReqNewGame event) {
         controller.update(this, event);
     }
 

@@ -2,10 +2,10 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
-public class ReqPlayersCount implements VCEvent {
+public class ReqNewGame implements VCEvent {
     private final int count;
 
-    public ReqPlayersCount(int count) {
+    public ReqNewGame(int count) {
         this.count = count;
     }
 

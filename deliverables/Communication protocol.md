@@ -138,7 +138,7 @@ When a player is assigned by the server as the first of a new game, they have to
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │
-╰────────────╯ │ ReqPlayersCount                │
+╰────────────╯ │ ReqNewGame                     │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭─────────────╮
                │                                ├─┤ try setting │
@@ -149,10 +149,10 @@ When a player is assigned by the server as the first of a new game, they have to
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqPlayersCount (client)**
+**ReqNewGame (client)**
 ```json
 {
-  "type": "ReqPlayersCount",
+  "type": "ReqNewGame",
   "count": 3
 }
 ```

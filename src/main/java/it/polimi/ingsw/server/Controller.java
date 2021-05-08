@@ -19,7 +19,7 @@ public class Controller {
         model.joinLobby(view, event.getNickname());
     }
 
-    public void update(View view, ReqPlayersCount event) {
+    public void update(View view, ReqNewGame event) {
         model.setCountToNewGame(view, event.getCount());
     }
 
