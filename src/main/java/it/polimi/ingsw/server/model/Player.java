@@ -142,8 +142,6 @@ public class Player extends ModelObservable {
      * @throws IllegalProductionActivationException invalid container
      */
     public void chooseResources(Game game, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalProductionActivationException {
-        // TODO: IllegalResourceTransferException?
-
         if (hasChosenResources)
             throw new CannotChooseException("resources");
 
@@ -280,7 +278,7 @@ public class Player extends ModelObservable {
      * @param points the quantity to be added to the score
      */
     public void incrementVictoryPoints(int points) {
-        this.victoryPoints += points;
+        this.victoryPoints += points; // TODO consider sending update but not really
     }
 
     /**
@@ -316,6 +314,8 @@ public class Player extends ModelObservable {
      * @param winner <code>true</code> if this player is to be declared as winner; <code>false</code> otherwise.
      */
     public void setWinner(boolean winner) {
+        // notification is sent one above in the call stack,
+        // as the other players' VP have to be sent too
         this.winner = winner;
     }
 

@@ -279,30 +279,6 @@ public class GameContext extends ModelObservable {
     }
 
     /**
-     * Returns the player who won the game, if the winner is a player.
-     *
-     * @return the player who won
-     * @throws IllegalActionException if the player who won cannot be requested in the current state
-     */
-    // public Optional<String> getWinnerPlayer() {
-    //     if (!game.hasEnded())
-    //         notify(null, new ErrAction(new IllegalActionException("Get winner player", "Game has not ended yet").getMessage()));
-    //     return game.getWinnerPlayer().map(Player::getNickname);
-    // } TODO is this relevant?
-
-    /**
-     * Returns whether Lorenzo has won the game or not.
-     *
-     * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
-     * @throws IllegalActionException if this cannot be requested in the current state
-     */
-    // public boolean isBlackWinner() throws IllegalActionException {
-    //     if (!game.hasEnded())
-    //         throw new IllegalActionException();
-    //     return game.isBlackWinner();
-    // } TODO is this relevant?
-
-    /**
      * Check if the last necessary setup move has been made.
      */
     private void checkEndSetup() {

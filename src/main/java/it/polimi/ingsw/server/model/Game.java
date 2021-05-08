@@ -150,7 +150,7 @@ public class Game extends ModelObservable {
         }
 
         if (faithPoints == maxFaithPointsCount)
-            lastRound = true;
+            lastRound = true; // TODO send message?
     }
 
     /**
@@ -180,7 +180,7 @@ public class Game extends ModelObservable {
      */
     public void onAddToDevSlot(int obtainedDevCards) {
         if (obtainedDevCards == maxObtainableDevCards)
-            lastRound = true;
+            lastRound = true; // TODO send message?
     }
 
     /**
@@ -207,7 +207,7 @@ public class Game extends ModelObservable {
             rounds++;
 
         if (lastRound)
-            end();
+            end(); // TODO it's deprecated? Notifying players of who won?
     }
 
     /**
@@ -279,7 +279,7 @@ public class Game extends ModelObservable {
      * @return number of tile reached by Lorenzo
      */
     public int getBlackPoints() {
-        return 0;
+        return 0; // TODO what is this
     }
 
     /**
@@ -297,7 +297,7 @@ public class Game extends ModelObservable {
      * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
      */
     public boolean isBlackWinner() {
-        return false;
+        return false; // TODO what is this
     }
 
     /**

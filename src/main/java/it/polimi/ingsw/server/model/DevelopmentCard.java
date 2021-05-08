@@ -68,7 +68,7 @@ public class DevelopmentCard extends Card {
     }
 
     /**
-     * Gives the card to the specified player, paying the necessary resources.
+     * Takes the resources specified in the card's cost from the player's.
      *
      * @param game          the game the player is playing in
      * @param player        the player to assign the card to and to take the resources from
