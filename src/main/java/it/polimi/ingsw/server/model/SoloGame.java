@@ -96,7 +96,6 @@ public class SoloGame extends Game {
     private void checkBlackWin() {
         if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
             setBlackWinner();
-            end();
         }
     }
 

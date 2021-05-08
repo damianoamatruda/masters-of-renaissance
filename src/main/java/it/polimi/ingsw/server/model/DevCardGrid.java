@@ -103,7 +103,7 @@ public class DevCardGrid extends ModelObservable {
             top.add(grid.get(color)
                     .stream()
                     .filter(Objects::nonNull)
-                    .map(Stack::peek)
+                    .map(s -> s.empty() ? null : s.peek())
                     .toList());
         }
         return List.copyOf(top);
@@ -154,7 +154,7 @@ public class DevCardGrid extends ModelObservable {
         if (quantity > 0) grid.remove(color);
 
         notifyBroadcast(
-            new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(c -> c.getId()).toList()).toList()));
+            new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(c -> c == null ? 0 : c.getId()).toList()).toList()));
     }
 
     public ReducedDevCardGrid reduce() {

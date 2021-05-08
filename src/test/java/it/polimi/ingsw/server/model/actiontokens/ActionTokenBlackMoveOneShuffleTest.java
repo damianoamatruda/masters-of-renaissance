@@ -23,7 +23,7 @@ class ActionTokenBlackMoveOneShuffleTest {
     @Test
     @DisplayName("Move one and shuffle")
     void testBlackAdvancement() {
-        ActionToken token = new ActionTokenBlackMoveOneShuffle();
+        ActionToken token = new ActionTokenBlackMoveOneShuffle(0);
         List<ActionToken> deck = new ArrayList<>();
         deck.add(token);
         Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());

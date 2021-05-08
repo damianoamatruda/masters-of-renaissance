@@ -49,9 +49,9 @@ public class GameTest {
                 List.of(),
                 new DevCardGrid(List.of(), 3, 4), market,
                 new FaithTrack(Set.of(
-                        new FaithTrack.VaticanSection(5, 8, 2),
-                        new FaithTrack.VaticanSection(12, 16, 3),
-                        new FaithTrack.VaticanSection(19, 24, 4)
+                        new FaithTrack.VaticanSection(0, 5, 8, 2),
+                        new FaithTrack.VaticanSection(0, 12, 16, 3),
+                        new FaithTrack.VaticanSection(0, 19, 24, 4)
                 ), Set.of(
                         new FaithTrack.YellowTile(15, 9),
                         new FaithTrack.YellowTile(18, 12),

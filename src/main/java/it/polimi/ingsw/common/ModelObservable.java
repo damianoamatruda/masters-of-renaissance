@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.common.events.MVEvent;
@@ -10,7 +11,7 @@ public class ModelObservable {
     protected List<View> observers;
 
     /** Class constructor. */
-    public ModelObservable() { }
+    public ModelObservable() { observers = new ArrayList<>(); }
     
     /**
      * Class constructor.

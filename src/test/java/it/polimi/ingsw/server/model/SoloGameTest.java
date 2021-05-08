@@ -35,9 +35,9 @@ public class SoloGameTest {
         ), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0, 0, Set.of());
 
         track = new FaithTrack(Set.of(
-                new FaithTrack.VaticanSection(5, 8, 2),
-                new FaithTrack.VaticanSection(12, 16, 3),
-                new FaithTrack.VaticanSection(19, 24, 4)
+                new FaithTrack.VaticanSection(0, 5, 8, 2),
+                new FaithTrack.VaticanSection(0, 12, 16, 3),
+                new FaithTrack.VaticanSection(0, 19, 24, 4)
         ), Set.of(
                 new FaithTrack.YellowTile(15, 9),
                 new FaithTrack.YellowTile(18, 12),
@@ -45,7 +45,7 @@ public class SoloGameTest {
         ));
 
         game = new SoloGame(player, List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), null, track, List.of(
-                new ActionTokenBlackMoveTwo()
+                new ActionTokenBlackMoveTwo(0)
         ), 24, 7);
 
     }

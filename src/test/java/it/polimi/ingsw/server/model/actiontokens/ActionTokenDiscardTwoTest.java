@@ -73,7 +73,7 @@ class ActionTokenDiscardTwoTest {
      */
     @Test
     void triggerFirstTurn() {
-        ActionToken token = new ActionTokenDiscardTwo(blue);
+        ActionToken token = new ActionTokenDiscardTwo(0, blue);
         DevCardGrid grid = game.getDevCardGrid();
         boolean foundTheChange = false;
         List<List<DevelopmentCard>> top = grid.peekDevCards();
@@ -108,7 +108,7 @@ class ActionTokenDiscardTwoTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
     void discardDifferentLevels(DevCardColor color) {
-        ActionToken token = new ActionTokenDiscardTwo(color);
+        ActionToken token = new ActionTokenDiscardTwo(0, color);
         DevCardGrid grid = game.getDevCardGrid();
         int initialSize = grid.getDeck(color, 2).size();
 
@@ -130,7 +130,7 @@ class ActionTokenDiscardTwoTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
     void discardEndOfGame(DevCardColor color) {
-        ActionToken token = new ActionTokenDiscardTwo(color);
+        ActionToken token = new ActionTokenDiscardTwo(0, color);
         DevCardGrid grid = game.getDevCardGrid();
         int level;
 

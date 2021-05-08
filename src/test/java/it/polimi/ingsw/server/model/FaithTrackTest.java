@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for FaithTrack.
@@ -45,6 +45,6 @@ class FaithTrackTest {
      */
     @Test
     void playerBeforeYellowTile() {
-        assertNull(track.getLastReachedYellowTile(2));
+        assertTrue(track.getLastReachedYellowTile(2).isEmpty());
     }
 }
