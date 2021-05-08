@@ -1000,7 +1000,7 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateFaithTrack",
-  "isLiM": false,
+  "isBlackCross": false,
   "position": 14
 }
 ```
