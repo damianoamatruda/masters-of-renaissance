@@ -130,7 +130,7 @@ public class Player extends ModelObservable {
             throw new CannotChooseException("leader cards");
         leaders.retainAll(chosenLeaders);
 
-        notifyBroadcast(new ResChooseLeaders(ResChooseLeaders.extractLeadersIDs(leaders)));
+        notifyBroadcast(new ResChooseLeaders(extractLeadersIDs(leaders)));
     }
 
     /**
@@ -386,6 +386,15 @@ public class Player extends ModelObservable {
                 .sum();
 
         this.victoryPoints += toSum;
+    }
+
+    public List<Integer> extractLeadersIDs(List<LeaderCard> leaders) {
+        List<Integer> ids = new ArrayList<>();
+
+        for (LeaderCard l : leaders)
+            ids.add(l.getId());
+        
+        return ids;
     }
 
     @Override

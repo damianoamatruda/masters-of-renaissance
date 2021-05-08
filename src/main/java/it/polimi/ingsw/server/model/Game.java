@@ -8,7 +8,9 @@ import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -356,7 +358,7 @@ public class Game extends ModelObservable {
 
         winners.stream().findFirst().ifPresent(p -> {
             p.setWinner(true);
-            notifyBroadcast(new UpdateWinner(p.getNickname(), UpdateWinner.computeVictoryPointsMap(players)));
+            notifyBroadcast(new UpdateWinner(p.getNickname(), computeVictoryPointsMap(players)));
         });
     }
 
@@ -376,5 +378,14 @@ public class Game extends ModelObservable {
             faithTrack.getLastReachedYellowTile(p.getFaithPoints())
                 .ifPresent(lastReachedYellowTile -> p.incrementVictoryPoints(lastReachedYellowTile.getVictoryPoints()));
         }
+    }
+
+    public Map<String, Integer> computeVictoryPointsMap(List<Player> players) {
+        Map<String, Integer> vp = new HashMap<>();
+        
+        for (Player p : players)
+        vp.put(p.getNickname(), p.getVictoryPoints());
+        
+        return vp;
     }
 }
