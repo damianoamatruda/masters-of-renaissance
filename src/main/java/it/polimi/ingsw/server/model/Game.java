@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.UpdateCurPlayer;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 
@@ -198,6 +199,8 @@ public class Game extends ModelObservable {
             players.add(players.remove(0));
             nextPlayer = players.get(0);
         } while (!nextPlayer.isActive());
+
+        notifyBroadcast(new UpdateCurPlayer(getCurrentPlayer().getNickname()));
 
         if (nextPlayer.equals(getFirstPlayer()))
             rounds++;
