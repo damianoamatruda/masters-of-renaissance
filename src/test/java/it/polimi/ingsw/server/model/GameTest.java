@@ -87,10 +87,10 @@ public class GameTest {
      * yellow tile bonus points.
      */
     @Test
-    void noYellowTilesEndOfGame() {
+    void noYellowTilesEndOfGame() throws NoActivePlayersException {
         for (int i = 0; i < 24; i++)
             game.getPlayers().get(0).incrementFaithPoints(game);
-        game.end();
+        game.onTurnEnd();
         assertAll(() -> assertTrue(game.hasEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
@@ -284,7 +284,7 @@ public class GameTest {
         }
 
         /**
-         * Nested class for 3rd Vatican section tests after calling isLastRound().
+         * Nested class for 3rd Vatican section tests after choosing winner.
          */
         @Nested
         @DisplayName("Last Vatican Report tests after deciding winner")
@@ -293,8 +293,11 @@ public class GameTest {
              * Closes the Game (and does the last calcs to determine winner) before the following tests.
              */
             @BeforeEach
-            void endGame() {
-                game.end();
+            void endGame() throws NoActivePlayersException {
+                game.onAddToDevSlot(7);
+                game.getPlayers().get(1).setActive(false);
+                game.getPlayers().get(2).setActive(false);
+                game.onTurnEnd();
             }
 
             /**
