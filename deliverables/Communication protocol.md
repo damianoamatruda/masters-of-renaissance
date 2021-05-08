@@ -846,25 +846,16 @@ When the match is waiting for players to join before its start, sending notifica
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │            UpdatePlayerConnect │
-     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-     │                                │
-     │         UpdatePlayerDisconnect │
+     │   UpdatePlayerConnectionStatus │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
-**UpdatePlayerConnect (server)**
+**UpdatePlayerConnectionStatus (server)**
 ```json
 {
   "type": "UpdatePlayerConnect",
-  "nickname": "NicknameA"
-}
-```
-**UpdatePlayerDisconnect (server)**
-```json
-{
-  "type": "UpdatePlayerDisconnect",
-  "nickname": "NicknameA"
+  "nickname": "NicknameA",
+  "isActive": true
 }
 ```
 

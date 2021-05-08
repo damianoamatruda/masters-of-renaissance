@@ -297,6 +297,8 @@ public class Player extends ModelObservable {
      */
     public void setActive(boolean active) {
         this.active = active;
+
+        notifyBroadcast(new UpdatePlayerConnectionStatus(getNickname(), active));
     }
 
     /**
