@@ -1,4 +1,4 @@
-module it.polimi.ingsw {
+open module it.polimi.ingsw {
     requires com.google.gson;
     requires javafx.controls;
 
