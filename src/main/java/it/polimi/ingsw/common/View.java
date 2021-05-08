@@ -22,7 +22,7 @@ public interface View /*extends ModelObserver, ControllerObservable, Communicati
     
     void notify(ReqQuit event);
 
-    void notify(ReqNickname event);
+    void notify(ReqJoin event);
 
     void notify(ReqActivateLeader event);
 

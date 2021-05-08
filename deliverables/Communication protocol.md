@@ -96,7 +96,7 @@ The information of whether the player is the first of the match is included in t
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │ ReqNickname                    │
+     │ ReqJoin                        │
      ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
      │                                │ ╭───────────────────────╮
      │                                ├─┤ check nickname unique │
@@ -107,10 +107,10 @@ The information of whether the player is the first of the match is included in t
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
-**ReqNickname (client)**
+**ReqJoin (client)**
 ```json
 {
-  "type": "ReqNickname",
+  "type": "ReqJoin",
   "nickname": "NicknameA"
 }
 ```

@@ -2,10 +2,10 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
-public class ReqNickname implements VCEvent {
+public class ReqJoin implements VCEvent {
     private final String nickname;
 
-    public ReqNickname(String nickname) {
+    public ReqJoin(String nickname) {
         this.nickname = nickname;
     }
 

@@ -15,7 +15,7 @@ public class Controller {
         model.exit(view);
     }
 
-    public void update(View view, ReqNickname event) {
+    public void update(View view, ReqJoin event) {
         model.joinLobby(view, event.getNickname());
     }
 

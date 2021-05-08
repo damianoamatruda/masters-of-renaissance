@@ -60,7 +60,7 @@ public class VirtualView implements View {
     }
 
     @Override
-    public void notify(ReqNickname event) {
+    public void notify(ReqJoin event) {
         controller.update(this, event);
     }
 
