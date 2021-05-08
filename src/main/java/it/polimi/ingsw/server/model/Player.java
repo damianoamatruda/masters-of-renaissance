@@ -193,6 +193,8 @@ public class Player extends ModelObservable {
         if (leader.isActive()) throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
         game.onDiscardLeader(this);
         leaders.remove(leader);
+
+        notifyBroadcast(new UpdateLeaders(leader.getId(), false, true));
     }
 
     /**

@@ -948,7 +948,8 @@ When the match is waiting for players to join before its start, sending notifica
 {
   "type": "UpdateLeaders",
   "leader": 1,
-  "isActive": true
+  "isActive": true,
+  "isDiscarded": false
 }
 ```
 
