@@ -29,11 +29,6 @@
       <version>2.8.6</version>
     </dependency>
     <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-base</artifactId>
-        <version>16</version>
-    </dependency>
-    <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>16</version>
@@ -139,6 +134,12 @@
                     <include>config.json</include>
                     <include>server.json</include>
                   </includes>
+                </filter>
+                <filter>
+                  <artifact>org.openjfx:*</artifact>
+                  <excludes>
+                    <exclude>**</exclude>
+                  </excludes>
                 </filter>
               </filters>
               <shadedArtifactAttached>true</shadedArtifactAttached>
