@@ -1068,7 +1068,7 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateWinner",
-  "msg": "Player X wins!",
+  "winner": "NicknameB",
   "victoryPoints": { "NicknameA": 20, "NicknameB": 16, "NicknameC": 12 }
 }
 ```

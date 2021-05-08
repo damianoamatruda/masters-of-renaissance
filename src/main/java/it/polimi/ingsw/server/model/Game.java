@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.UpdateCurPlayer;
+import it.polimi.ingsw.common.events.UpdateWinner;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 
@@ -353,7 +354,10 @@ public class Game extends ModelObservable {
                 .filter(p -> p.getVictoryPoints() == maxPts)
                 .toList();
 
-        winners.stream().findFirst().ifPresent(p -> p.setWinner(true));
+        winners.stream().findFirst().ifPresent(p -> {
+            p.setWinner(true);
+            notifyBroadcast(new UpdateWinner(p.getNickname(), UpdateWinner.computeVictoryPointsMap(players)));
+        });
     }
 
     /**
