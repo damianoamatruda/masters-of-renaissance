@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.ModelObservable;
+import it.polimi.ingsw.common.events.*;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Class dedicated to the storage of the player's data and available operations.
  */
-public class Player {
+public class Player extends ModelObservable {
     /** The player's nickname. */
     private final String nickname;
 
