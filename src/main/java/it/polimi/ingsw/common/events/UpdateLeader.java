@@ -2,11 +2,11 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
-public class UpdateLeaders implements MVEvent{
+public class UpdateLeader implements MVEvent{
     private final boolean isActive, isDiscarded;
     private final int leader;
 
-    public UpdateLeaders(int leader, boolean isActive, boolean isDiscarded) {
+    public UpdateLeader(int leader, boolean isActive, boolean isDiscarded) {
         this.leader = leader;
         this.isActive = isActive;
         this.isDiscarded = isDiscarded;

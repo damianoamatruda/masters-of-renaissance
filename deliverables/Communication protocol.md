@@ -417,7 +417,7 @@ Errors may arise from fitting the resources in the shelves, either by specifying
                │                  UpdateShelves │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │                  UpdateLeaders │
+               │                   UpdateLeader │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                     ErrShelves │
@@ -705,7 +705,7 @@ Leader activation:
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                  UpdateLeaders │ ╰──────────────────╯
+               │                   UpdateLeader │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -730,7 +730,7 @@ Discarding a leader:
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                  UpdateLeaders │ ╰──────────────────╯
+               │                   UpdateLeader │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │               ErrDiscardLeader │
@@ -932,14 +932,14 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                  UpdateLeaders │
+               │                   UpdateLeader │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateLeaders (server)**
+**UpdateLeader (server)**
 ```json
 {
-  "type": "UpdateLeaders",
+  "type": "UpdateLeader",
   "leader": 1,
   "isActive": true,
   "isDiscarded": false

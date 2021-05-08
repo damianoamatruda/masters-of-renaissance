@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.leadercards;
 
-import it.polimi.ingsw.common.events.UpdateLeaders;
+import it.polimi.ingsw.common.events.UpdateLeader;
 import it.polimi.ingsw.server.model.Card;
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Production;
@@ -66,7 +66,7 @@ public abstract class LeaderCard extends Card {
         
         isActive = true;
 
-        notifyBroadcast(new UpdateLeaders(getId(), isActive, false));
+        notifyBroadcast(new UpdateLeader(getId(), isActive, false));
     }
 
     /**
