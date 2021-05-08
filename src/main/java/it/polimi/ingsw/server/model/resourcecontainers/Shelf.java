@@ -1,7 +1,9 @@
 package it.polimi.ingsw.server.model.resourcecontainers;
 
+import it.polimi.ingsw.common.events.UpdateShelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -121,6 +123,8 @@ public class Shelf extends ResourceContainer {
 
         this.resType = resType;
         this.quantity += resMap.get(resType);
+
+        notifyBroadcast(new UpdateShelf(getId(), toMap()));
     }
 
     @Override
@@ -146,6 +150,8 @@ public class Shelf extends ResourceContainer {
         if (this.quantity == resMap.get(resType))
             this.resType = null;
         this.quantity -= resMap.get(resType);
+
+        notifyBroadcast(new UpdateShelf(getId(), toMap()));
     }
 
     @Override
@@ -165,5 +171,10 @@ public class Shelf extends ResourceContainer {
      */
     public boolean isFull() {
         return quantity == size;
+    }
+
+    @Override
+    public Map<String, Integer> toMap() {
+        return Map.of(resType == null ? "" : resType.getName(), getQuantity());
     }
 }

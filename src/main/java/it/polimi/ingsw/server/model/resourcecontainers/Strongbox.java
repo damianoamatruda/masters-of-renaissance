@@ -1,10 +1,12 @@
 package it.polimi.ingsw.server.model.resourcecontainers;
 
+import it.polimi.ingsw.common.events.UpdateShelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class represents an infinite container of resources.
@@ -57,6 +59,8 @@ public class Strongbox extends ResourceContainer {
         }
         for (ResourceType resType : resMap.keySet())
             resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
+
+        notifyBroadcast(new UpdateShelf(getId(), toMap()));
     }
 
     @Override
@@ -79,6 +83,8 @@ public class Strongbox extends ResourceContainer {
                 throw new IllegalArgumentException(new IllegalResourceTransferException(resType, false, this));
         for (ResourceType resType : resMap.keySet())
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
+        
+        notifyBroadcast(new UpdateShelf(getId(), toMap()));
     }
 
     @Override
@@ -89,5 +95,10 @@ public class Strongbox extends ResourceContainer {
     @Override
     public boolean isEmpty() {
         return resources.isEmpty();
+    }
+
+    @Override
+    public Map<String, Integer> toMap() {
+        return resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), e -> e.getValue()));
     }
 }

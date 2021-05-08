@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.resourcecontainers;
 
+import it.polimi.ingsw.common.events.UpdateShelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.Map;
@@ -57,5 +58,10 @@ public class ResourceShelf extends Shelf {
      */
     public ResourceType getBoundedResType() {
         return boundedResType;
+    }
+
+    @Override
+    public Map<String, Integer> toMap() {
+        return Map.of(boundedResType == null ? "" : boundedResType.getName(), getQuantity());
     }
 }

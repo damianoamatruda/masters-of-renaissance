@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.resourcecontainers;
 
+import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * This interface represents a container of storable resources.
  */
-public abstract class ResourceContainer {
+public abstract class ResourceContainer extends ModelObservable {
     private static final AtomicInteger idCounter = new AtomicInteger();
 
     private final int id;
@@ -89,4 +90,11 @@ public abstract class ResourceContainer {
      * @return <code>true</code> if the resource container contains no resources; <code>false</code> otherwise.
      */
     public abstract boolean isEmpty();
+
+    /**
+     * Converts the container to a map.
+     * 
+     * @return a map representing the container
+     */
+    public abstract Map<String, Integer> toMap();
 }

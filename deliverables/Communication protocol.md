@@ -908,18 +908,19 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                  UpdateShelves │
+               │                    UpdateShelf │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateShelves (server)**
+**UpdateShelf (server)**
 
 ```json
 {
-  "type": "UpdateShelves",
-  "shelves": [
-    [ 0, { "Coin": 1 } ],
-    [ 1, {} ]
+  "type": "UpdateShelf",
+  "id": 3,
+  "content": [
+    { "res": "Coin", "amount": 3 },
+    { "res": "Shield", "amount": 1 }
   ]
 }
 ```
