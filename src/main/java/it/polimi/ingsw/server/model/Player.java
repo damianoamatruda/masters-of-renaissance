@@ -129,6 +129,8 @@ public class Player extends ModelObservable {
         if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))
             throw new CannotChooseException("leader cards");
         leaders.retainAll(chosenLeaders);
+
+        notifyBroadcast(new ResChooseLeaders(ResChooseLeaders.extractLeadersIDs(leaders)));
     }
 
     /**

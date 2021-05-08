@@ -251,7 +251,7 @@ leaders remain to be chosen, the server will fail to process the move, sending a
 ```json
 {
   "type": "ResChooseLeaders",
-  "msg": "Leader cards chosen: 3, 15"
+  "leadersId": [ 3, 15 ]
 }
 ```
 
