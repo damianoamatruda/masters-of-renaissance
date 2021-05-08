@@ -281,7 +281,8 @@ public class Game extends ModelObservable {
      * @return number of tile reached by Lorenzo
      */
     public int getBlackPoints() {
-        return 0; // TODO what is this
+        // return 0;
+        throw new RuntimeException("getBlackPoints called on a mutiplayer game: method not implemented.");
     }
 
     /**
@@ -299,7 +300,8 @@ public class Game extends ModelObservable {
      * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
      */
     public boolean isBlackWinner() {
-        return false; // TODO what is this
+        // return false;
+        throw new RuntimeException("isBlackWinner called on a mutiplayer game: method not implemented.");
     }
 
     /**
