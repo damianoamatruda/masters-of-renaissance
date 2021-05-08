@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.leadercards;
 
+import it.polimi.ingsw.common.events.UpdateLeaders;
 import it.polimi.ingsw.server.model.Card;
 import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.Production;
@@ -28,7 +29,7 @@ public abstract class LeaderCard extends Card {
 
     /**
      * Class constructor.
-     *  @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
+     * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied for card activation.
      * @param victoryPoints the victory points associated with the card.
@@ -64,6 +65,8 @@ public abstract class LeaderCard extends Card {
             requirement.checkRequirements(player);
         
         isActive = true;
+
+        notifyBroadcast(new UpdateLeaders(getId(), isActive, false));
     }
 
     /**
