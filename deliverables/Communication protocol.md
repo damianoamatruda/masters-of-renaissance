@@ -30,6 +30,7 @@
         10. [Updating the position on the faith track](#updating-the-position-on-the-faith-track)
         11. [Updating the vatican sections](#updating-the-vatican-sections)
         12. [Sending the activated solo action token](#sending-the-activated-solo-action-token)
+        12. [Notifying the last round](#notifying-the-last-round)
         13. [Declaring a winner](#declaring-a-winner)
 
 # Communication protocol documentation
@@ -1045,6 +1046,25 @@ When the match is waiting for players to join before its start, sending notifica
 }
 ```
 
+## Notifying the last round
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │                UpdateLastRound │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+
+**UpdateLastRound (server)**
+
+```json
+{
+  "type": "UpdateLastRound"
+}
+```
 ## Declaring a winner
 
 ```

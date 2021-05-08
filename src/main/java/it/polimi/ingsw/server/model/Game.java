@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.UpdateCurPlayer;
+import it.polimi.ingsw.common.events.UpdateLastRound;
 import it.polimi.ingsw.common.events.UpdateWinner;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -152,7 +153,7 @@ public class Game extends ModelObservable {
         }
 
         if (faithPoints == maxFaithPointsCount)
-            lastRound = true; // TODO send message?
+            setLastRound();
     }
 
     /**
@@ -182,7 +183,13 @@ public class Game extends ModelObservable {
      */
     public void onAddToDevSlot(int obtainedDevCards) {
         if (obtainedDevCards == maxObtainableDevCards)
-            lastRound = true; // TODO send message?
+            setLastRound();
+    }
+
+    private void setLastRound() {
+        lastRound = true;
+
+        notifyBroadcast(new UpdateLastRound());
     }
 
     /**
