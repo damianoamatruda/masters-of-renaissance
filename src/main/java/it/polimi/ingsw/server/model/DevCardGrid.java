@@ -152,6 +152,9 @@ public class DevCardGrid extends ModelObservable {
             quantity--;
         }
         if (quantity > 0) grid.remove(color);
+
+        notifyBroadcast(
+            new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(c -> c.getId()).toList()).toList()));
     }
 
     public ReducedDevCardGrid reduce() {
