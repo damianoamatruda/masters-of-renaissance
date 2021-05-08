@@ -1764,27 +1764,34 @@
   },
   "actionTokens": [
     {
+      "id": 68,
       "type": "ActionTokenBlackMoveOneShuffle"
     },
     {
+      "id": 69,
       "type": "ActionTokenBlackMoveTwo"
     },
     {
+      "id": 70,
       "type": "ActionTokenBlackMoveTwo"
     },
     {
+      "id": 71,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Blue"
     },
     {
+      "id": 72,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Green"
     },
     {
+      "id": 73,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Purple"
     },
     {
+      "id": 74,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Yellow"
     }

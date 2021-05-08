@@ -7,16 +7,25 @@ import it.polimi.ingsw.server.model.SoloGame;
  * Implements one of the possible effects which a token can trigger.
  */
 public class ActionTokenDiscardTwo implements ActionToken {
+    private final int id;
+
     /** The specific color of the cards to be discarded after activation (target color). */
     private final DevCardColor discardedColor;
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
     /**
-     * Initializes class and member.
+     * Class constructor.
      *
+     * @param id the id of this token
      * @param color color to be assigned as the "target color"
      */
-    public ActionTokenDiscardTwo(DevCardColor color) {
+    public ActionTokenDiscardTwo(int id, DevCardColor color) {
         discardedColor = color;
+        this.id = id;
     }
 
     /**

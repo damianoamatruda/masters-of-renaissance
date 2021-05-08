@@ -1042,7 +1042,8 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateActionToken",
-  "actionToken": 6
+  "actionToken": 6,
+  "stack": [ 3, 5, 1, 2, 4, 6, 0 ]
 }
 ```
 

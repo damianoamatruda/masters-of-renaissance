@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.common.events.UpdateActionToken;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
@@ -53,6 +54,10 @@ public class SoloGame extends Game {
 
         if (!isBlackWinner())
             super.end();
+        
+        // end() already notifies of the winner,
+        // so there's no need to send another message to inform that the game has ended
+        // this is only used internally
         ended = true;
     }
 
@@ -66,6 +71,8 @@ public class SoloGame extends Game {
         ActionToken token = actionTokens.remove(0);
         token.trigger(this);
         actionTokens.add(token);
+
+        notifyBroadcast(new UpdateActionToken(token.getId(), actionTokens.stream().map(ActionToken::getId).toList()));
 
         checkBlackWin();
 
