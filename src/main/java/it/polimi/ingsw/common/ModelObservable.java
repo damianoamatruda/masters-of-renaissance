@@ -8,7 +8,7 @@ import it.polimi.ingsw.common.events.MVEvent;
 /** Object of the model able to notify its observers of status changes. */
 public class ModelObservable {
     /** The observers of this object. */
-    protected List<View> observers;
+    transient protected List<View> observers;
 
     /** Class constructor. */
     public ModelObservable() {

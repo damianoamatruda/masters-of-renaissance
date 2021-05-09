@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.ResGameStarted;
 import it.polimi.ingsw.common.events.UpdateCurPlayer;
 import it.polimi.ingsw.common.events.UpdateLastRound;
 import it.polimi.ingsw.common.events.UpdateWinner;
@@ -54,6 +55,8 @@ public class Game extends ModelObservable {
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
+    private final ResGameStarted initialInfo;
+
     /**
      * Constructor of Game instances.
      *
@@ -83,6 +86,14 @@ public class Game extends ModelObservable {
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
+
+        initialInfo = new ResGameStarted(
+            market.reduce(),
+            devCardGrid.reduce(),
+            leaderCards,
+            developmentCards,
+            resContainers,
+            productions);
     }
 
     @Override
@@ -95,6 +106,8 @@ public class Game extends ModelObservable {
         this.devCardGrid.addObserver(o);
         this.market.addObserver(o);
         this.faithTrack.addObserver(o);
+
+        notify(o, initialInfo);
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {

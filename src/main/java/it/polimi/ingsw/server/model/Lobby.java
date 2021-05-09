@@ -74,7 +74,6 @@ public class Lobby extends ModelObservable {
         waiting.subList(0, countToNewGame).forEach(v -> {
             newGame.addObserver(v);
             joined.put(v, newContext);
-            v.update(new ResGameStarted()); // v.update(new ResGameStarted(newContext.getLeaderCards(), newContext.getDevelopmentCards(), newContext.getResContainers(), newContext.getProductions(), newContext.getMarket(), newContext.getDevCardGrid()));
         });
         waiting.subList(0, countToNewGame).clear();
         countToNewGame = 0;

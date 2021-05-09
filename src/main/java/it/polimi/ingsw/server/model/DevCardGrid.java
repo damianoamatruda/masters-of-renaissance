@@ -165,6 +165,8 @@ public class DevCardGrid extends ModelObservable {
     }
 
     private Stack<Integer> reduceDeck (Stack<DevelopmentCard> s) {
+        if (s == null) return null;
+
         Stack<Integer> reducedDeck = new Stack<>();
         for(int i = 0; i < s.size(); i++) {
             reducedDeck.push(s.get(i).getId());

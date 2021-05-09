@@ -16,4 +16,25 @@ public class ReducedMarket {
         this.replaceableResType = replaceableResType;
         this.slide = slide;
     }
+
+    /**
+     * @return the slide's resource
+     */
+    public String getSlide() {
+        return slide;
+    }
+
+    /**
+     * @return the replaceable resource type
+     */
+    public String getReplaceableResType() {
+        return replaceableResType;
+    }
+
+    /**
+     * @return the grid
+     */
+    public List<List<String>> getGrid() {
+        return grid;
+    }
 }
