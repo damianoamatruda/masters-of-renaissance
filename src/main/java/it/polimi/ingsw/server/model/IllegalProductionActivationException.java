@@ -19,6 +19,17 @@ public class IllegalProductionActivationException extends Exception {
      * Constructs a new exception with the specified detail message and cause.
      *
      * @param message the detail message
+     * @param cause   the cause
+     * @see Exception
+     */
+    public IllegalProductionActivationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message the detail message
      * @param req     the invalid <code>ProductionRequest</code> that generated the exception
      * @param cause   the cause
      * @see Exception

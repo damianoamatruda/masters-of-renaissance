@@ -40,81 +40,89 @@ public class ProductionGroup {
      * @throws IllegalProductionActivationException if the transaction failed
      */
     public void activate(Game game, Player player) throws IllegalProductionActivationException {
+        Map<ResourceType, Integer> inputNonStorable = new HashMap<>();
+        Map<ResourceType, Integer> outputNonStorable = new HashMap<>();
+        Map<ResourceType, Integer> discardedOutput = new HashMap<>();
+        Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
+        Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers = new HashMap<>();
+
+        for (ProductionRequest prodRequest : productionRequests) {
+            prodRequest.getReplacedInput().entrySet().stream()
+                    .filter(e -> !e.getKey().isStorable())
+                    .forEach(e -> inputNonStorable.merge(e.getKey(), e.getValue(), Integer::sum));
+
+            prodRequest.getReplacedOutput().entrySet().stream()
+                    .filter(e -> !e.getKey().isStorable())
+                    .forEach(e -> outputNonStorable.merge(e.getKey(), e.getValue(), Integer::sum));
+
+            prodRequest.getDiscardedOutput().forEach((r, q) -> discardedOutput.merge(r, q, Integer::sum));
+
+            prodRequest.getInputContainers().forEach((c, oldResMap) -> inputContainers.merge(c, oldResMap, (r1, r2) -> {
+                r2.forEach((r, q) -> r1.merge(r, q, Integer::sum));
+                return r1;
+            }));
+
+            prodRequest.getOutputContainers().forEach((c, oldResMap) -> outputContainers.merge(c, oldResMap, (r1, r2) -> {
+                r2.forEach((r, q) -> r1.merge(r, q, Integer::sum));
+                return r1;
+            }));
+        }
+
         /* Get set of all resource containers, in input and in output */
         Set<ResourceContainer> allContainers = new HashSet<>();
-        productionRequests.stream()
-                .map(ProductionRequest::getInputContainers)
-                .map(Map::keySet)
-                .forEach(allContainers::addAll);
-        productionRequests.stream()
-                .map(ProductionRequest::getOutputContainers)
-                .map(Map::keySet)
-                .forEach(allContainers::addAll);
+        allContainers.addAll(inputContainers.keySet());
+        allContainers.addAll(outputContainers.keySet());
 
         /* Make map of clones of all resource containers */
         Map<ResourceContainer, ResourceContainer> clonedContainers = allContainers.stream()
                 .collect(Collectors.toMap(Function.identity(), ResourceContainer::copy));
 
-        /* If a resource transfer exception is thrown inside this block, the requested activation is not possible */
-        for (ProductionRequest productionReq : productionRequests) {
-            /* Try removing all input storable resources from cloned resource containers */
-            for (ResourceContainer resContainer : productionReq.getInputContainers().keySet())
-                try {
-                    clonedContainers.get(resContainer).removeResources(productionReq.getInputContainers().get(resContainer));
-                } catch (IllegalResourceTransferException e) {
-                    throw new IllegalProductionActivationException("Illegal input transfer in production request:", productionReq, e);
-                }
+        /* Try removing all input storable resources from cloned resource containers.
+         * If a resource transfer exception is thrown, the requested activation is not possible. */
+        for (ResourceContainer resContainer : inputContainers.keySet())
+            try {
+                clonedContainers.get(resContainer).removeResources(inputContainers.get(resContainer));
+            } catch (IllegalResourceTransferException e) {
+                throw new IllegalProductionActivationException("Illegal input transfer.", e);
+            }
 
-            /* Try adding all output storable resources into cloned resource containers (with input removed) */
-            for (ResourceContainer resContainer : productionReq.getOutputContainers().keySet())
-                try {
-                    clonedContainers.get(resContainer).addResources(productionReq.getOutputContainers().get(resContainer));
-                } catch (IllegalResourceTransferException e) {
-                    throw new IllegalProductionActivationException("Illegal output transfer in production request:", productionReq, e);
-                }
-        }
+        /* Try adding all output storable resources into cloned resource containers (with input removed).
+         * If a resource transfer exception is thrown, the requested activation is not possible. */
+        for (ResourceContainer resContainer : outputContainers.keySet())
+            try {
+                clonedContainers.get(resContainer).addResources(outputContainers.get(resContainer));
+            } catch (IllegalResourceTransferException e) {
+                throw new IllegalProductionActivationException("Illegal output transfer.", e);
+            }
 
-        /* This should be possible, as it worked with cloned resource containers */
-        for (ProductionRequest productionReq : productionRequests) {
-            /* Remove all input storable resources from real resource containers */
-            for (ResourceContainer resContainer : productionReq.getInputContainers().keySet())
-                try {
-                    resContainer.removeResources(productionReq.getInputContainers().get(resContainer));
-                } catch (IllegalResourceTransferException e) {
-                    throw new RuntimeException("Implementation error when removing all input storable resources from real resource containers", e);
-                }
+        /* Remove all input storable resources from real resource containers.
+         * This should be possible, as it worked with cloned resource containers */
+        for (ResourceContainer resContainer : inputContainers.keySet())
+            try {
+                resContainer.removeResources(inputContainers.get(resContainer));
+            } catch (IllegalResourceTransferException e) {
+                throw new RuntimeException("Implementation error when removing all input storable resources from real resource containers", e);
+            }
 
-            /* Add all output storable resources into real resource containers */
-            for (ResourceContainer resContainer : productionReq.getOutputContainers().keySet())
-                try {
-                    resContainer.addResources(productionReq.getOutputContainers().get(resContainer));
-                } catch (IllegalResourceTransferException e) {
-                    throw new RuntimeException("Implementation error when adding all output storable resources into real resource containers.", e);
-                }
+        /* Add all output storable resources into real resource containers.
+         * This should be possible, as it worked with cloned resource containers. */
+        for (ResourceContainer resContainer : outputContainers.keySet())
+            try {
+                resContainer.addResources(outputContainers.get(resContainer));
+            } catch (IllegalResourceTransferException e) {
+                throw new RuntimeException("Implementation error when adding all output storable resources into real resource containers.", e);
+            }
 
-            /* Discard the chosen resources to be discarded */
-            for (ResourceType resType : productionReq.getDiscardedOutput().keySet())
-                for (int i = 0; i < productionReq.getDiscardedOutput().get(resType); i++)
-                    player.discardResources(game, 1);
+        /* Discard the chosen resources to be discarded */
+        player.discardResources(game, discardedOutput.values().stream().reduce(0, Integer::sum));
 
-            /* Filter the non-storable resources */
-            Map<ResourceType, Integer> nonStorableReplacedInput = productionReq.getReplacedInput().entrySet().stream()
-                    .filter(e -> !e.getKey().isStorable())
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            Map<ResourceType, Integer> nonStorableReplacedOutput = productionReq.getReplacedOutput().entrySet().stream()
-                    .filter(e -> !e.getKey().isStorable())
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        /* Take all input non-storable resources from player; this is always possible */
+        for (ResourceType resType : inputNonStorable.keySet())
+            resType.takeFromPlayer(game, player, inputNonStorable.get(resType));
 
-            /* Take all input non-storable resources from player; this is always possible */
-            for (ResourceType resType : nonStorableReplacedInput.keySet())
-                for (int i = 0; i < nonStorableReplacedInput.get(resType); i++)
-                    resType.takeFromPlayer(game, player, 1);
-
-            /* Give all output non-storable resources to player; this is always possible */
-            for (ResourceType resType : nonStorableReplacedOutput.keySet())
-                for (int i = 0; i < nonStorableReplacedOutput.get(resType); i++)
-                    resType.giveToPlayer(game, player, 1);
-        }
+        /* Give all output non-storable resources to player; this is always possible */
+        for (ResourceType resType : outputNonStorable.keySet())
+            resType.giveToPlayer(game, player, outputNonStorable.get(resType));
     }
 
     /**
