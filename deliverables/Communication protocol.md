@@ -925,8 +925,8 @@ When the match is waiting for players to join before its start, sending notifica
   "type": "UpdateShelf",
   "id": 3,
   "content": [
-    { "res": "Coin", "amount": 3 },
-    { "res": "Shield", "amount": 1 }
+    { "Coin": 3 },
+    { "Shield": 1 }
   ]
 }
 ```

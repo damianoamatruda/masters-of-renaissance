@@ -13,7 +13,9 @@ public class ActionTokenBlackMoveTwo implements ActionToken {
      * 
      * @param id the ID of the token
      */
-    public ActionTokenBlackMoveTwo(int id) { this.id = id; }
+    public ActionTokenBlackMoveTwo(int id) {
+        this.id = id;
+    }
 
     @Override
     public int getId() {

@@ -13,7 +13,9 @@ public class ActionTokenBlackMoveOneShuffle implements ActionToken {
      * 
      * @param id the ID of the token
      */
-    public ActionTokenBlackMoveOneShuffle(int id) { this.id = id; }
+    public ActionTokenBlackMoveOneShuffle(int id) {
+        this.id = id;
+    }
 
     @Override
     public int getId() {

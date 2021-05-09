@@ -11,28 +11,36 @@ public class ModelObservable {
     protected List<View> observers;
 
     /** Class constructor. */
-    public ModelObservable() { observers = new ArrayList<>(); }
+    public ModelObservable() {
+        observers = new ArrayList<>();
+    }
     
     /**
      * Class constructor.
      * 
      * @param observers a list of observers.
      */
-    public ModelObservable(List<View> observers) { this.observers = observers; }
+    public ModelObservable(List<View> observers) {
+        this.observers = observers;
+    }
 
     /**
      * Registers an observer to the object, allowing it to receive update events.
      * 
      * @param o the observer to register
      */
-    public void addObserver(View o) { observers.add(o); }
+    public void addObserver(View o) {
+        observers.add(o);
+    }
 
     /**
      * Deregisters the observer, preventing events from propagating to it.
      * 
      * @param o the observer to deregister
      */
-    public void removeObserver(View o) { observers.remove(o); }
+    public void removeObserver(View o) {
+        observers.remove(o);
+    }
     
     /**
      * Notifies every observer of a change in the object data.
@@ -50,5 +58,7 @@ public class ModelObservable {
      * @param observer the observer to update
      * @param msg the message containing the new data
      */
-    public void notify(View observer, MVEvent msg) { observer.update(msg); }
+    public void notify(View observer, MVEvent msg) {
+        observer.update(msg);
+    }
 }

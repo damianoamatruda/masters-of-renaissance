@@ -10,7 +10,9 @@ public class ResNewGame implements MVEvent {
      * 
      * @param count the number of players the new game is set to
      */
-    public ResNewGame(int count) { this.count = count; }
+    public ResNewGame(int count) {
+        this.count = count;
+    }
 
     /**
      * @return the new game's players' count
