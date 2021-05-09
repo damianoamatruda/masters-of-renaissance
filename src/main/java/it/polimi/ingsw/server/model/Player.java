@@ -95,7 +95,7 @@ public class Player extends ModelObservable {
         this.initialResources = initialResources;
         this.initialExcludedResources = Set.copyOf(initialExcludedResources);
         this.hasChosenResources = initialResources == 0;
-        this.faithPoints = initialFaith; /* This does not trigger game.onIncrement(initialFaith); */
+        this.faithPoints = initialFaith; /* This does not trigger game.onIncrementFaithPoints(initialFaith); */
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
@@ -150,12 +150,18 @@ public class Player extends ModelObservable {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
 
-        new ProductionGroup(List.of(
-                new ProductionGroup.ProductionRequest(
-                        new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                        Map.of(), chosenResources, Map.of(), Map.of(), Map.copyOf(shelves))
-        )).activate(game, this);
-        
+        ProductionGroup.ProductionRequest productionRequest;
+
+        try {
+            productionRequest = new ProductionGroup.ProductionRequest(
+                    new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
+                    Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
+        } catch (IllegalProductionActivationException.IllegalProductionReplacementsException | IllegalProductionActivationException.IllegalProductionContainersException e) {
+            throw new IllegalProductionActivationException(e); // TODO: Add more specific exception
+        }
+
+        new ProductionGroup(List.of(productionRequest)).activate(game, this);
+
         hasChosenResources = true;
     }
 
@@ -197,25 +203,26 @@ public class Player extends ModelObservable {
 
     /**
      * Advances the faith marker by one on the board's faith track, then proceeds to call a checker for Vatican report
-     * tiles "onIncrement".
+     * tiles "onIncrementFaithPoints".
      *
-     * @param game the game the player is playing in
+     * @param game   the game the player is playing in
+     * @param points the quantity to be added to the faith points
      */
-    public void incrementFaithPoints(Game game) {
-        faithPoints += 1;
-        game.onIncrement(faithPoints);
+    public void incrementFaithPoints(Game game, int points) {
+        faithPoints += points;
+        game.onIncrementFaithPoints(faithPoints);
 
         notifyBroadcast(new UpdateFaithTrack(faithPoints, false));
     }
 
     /**
-     * Discards a resource.
+     * Discards resources.
      *
      * @param game     the game the player is playing in
-     * @param resource the type of the resource to discard
+     * @param quantity the quantity of resources to discard
      */
-    public void discardResource(Game game, ResourceType resource) {
-        game.onDiscardResource(this);
+    public void discardResources(Game game, int quantity) {
+        game.onDiscardResources(this, quantity);
     }
 
     /**
@@ -312,8 +319,6 @@ public class Player extends ModelObservable {
 
     /**
      * Declares the winner, by setting the winner flag.
-     *
-     * @param winner <code>true</code> if this player is to be declared as winner; <code>false</code> otherwise.
      */
     public void setWinner() {
         // notification is sent one above in the call stack,

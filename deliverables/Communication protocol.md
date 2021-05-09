@@ -785,11 +785,17 @@ For example, when using the CLI, updates sent from the server would be logged to
 Caching also allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
 
 ### Parameters and indices
-The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
-This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore extremely important for both parties to have matching ordering in the file's objects, since it will be used by the identification system.  
-The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
+The game's model has been parameterized to allow for flexibility. The parameters are set via
+a [configuration file](../src/main/resources/config/config.json), which also contains serialized game data (e.g. cards,
+resources, etc...).  
+This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore
+extremely important for both parties to have matching ordering in the file's objects, since it will be used by the
+identification system.  
+The matching and ordering properties of the objects in the configuration file are used to identify game objects and
+synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
 
-This implies that every ID/index specified in this document has been synchronized at game start either by being taken from the configuration file or by being specified in the `GameStarted` message.
+This implies that every ID/index specified in this document has been synchronized at game start either by being taken
+from the configuration file or by being specified in the `GameStarted` message.
 
 The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
 The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they appear in the configuration file).

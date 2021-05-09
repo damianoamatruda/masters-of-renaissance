@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.actiontokens.ActionTokenBlackMoveTwo;
+import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.DepotLeader;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
@@ -45,7 +45,16 @@ public class SoloGameTest {
         ));
 
         game = new SoloGame(player, List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), null, track, List.of(
-                new ActionTokenBlackMoveTwo(0)
+                new ActionToken() {
+                    @Override
+                    public void trigger(SoloGame game) {
+                    }
+
+                    @Override
+                    public int getId() {
+                        return 0;
+                    }
+                }
         ), 24, 7);
 
     }
@@ -92,7 +101,7 @@ public class SoloGameTest {
         @BeforeEach
         void setup() {
             for (int i = 0; i < 7; i++)
-                player.incrementFaithPoints(game);
+                player.incrementFaithPoints(game, 1);
             for (int i = 0; i < 8; i++)
                 game.incrementBlackPoints();
         }
@@ -110,10 +119,10 @@ public class SoloGameTest {
          * Ensures that if Lorenzo arrives first the player has lost.
          */
         @Test
-        void losingGame() {
+        void losingGame() throws NoActivePlayersException {
             for (int i = 0; i < 16; i++)
                 game.incrementBlackPoints();
-            game.end();
+            game.onTurnEnd();
             assertAll(() -> assertEquals(2, player.getVictoryPoints()),
                     () -> assertFalse(player.isWinner()),
                     () -> assertTrue(game.isBlackWinner()));

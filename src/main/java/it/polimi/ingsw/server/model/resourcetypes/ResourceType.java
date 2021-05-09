@@ -66,22 +66,24 @@ public class ResourceType {
     }
 
     /**
-     * Routine for giving a non-storable resource of this type to the player.
+     * Routine for giving non-storable resources of this type to the player.
      *
-     * @param game   the game the player is playing in
-     * @param player the player the resource is given to
+     * @param game     the game the player is playing in
+     * @param player   the player the resource is given to
+     * @param quantity the quantity of resources to give
      */
-    public void giveToPlayer(Game game, Player player) {
+    public void giveToPlayer(Game game, Player player, int quantity) {
     }
 
     /**
-     * Routine for taking a non-storable resource of this type from the player.
+     * Routine for taking non-storable resources of this type from the player.
      *
-     * @param game   the game the player is playing in
-     * @param player the player the resource is taken from
+     * @param game     the game the player is playing in
+     * @param player   the player the resource is taken from
+     * @param quantity the quantity of resources to take
      */
     @SuppressWarnings({"EmptyMethod", "unused"})
-    public void takeFromPlayer(Game game, Player player) {
+    public void takeFromPlayer(Game game, Player player, int quantity) {
     }
 
     @Override

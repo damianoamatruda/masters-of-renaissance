@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.ReducedProductionRequest;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.*;
+import it.polimi.ingsw.common.events.ErrAction;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
@@ -11,11 +11,7 @@ import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
-import java.util.EmptyStackException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * This class manages the states and actions of a game.
@@ -104,8 +100,8 @@ public class GameContext extends ModelObservable {
     public void swapShelves(View v, String nickname, Integer shelfId1, Integer shelfId2) {
         if (!preliminaryChecks(v, "Swap shelves")) return;
 
-        Player player = getPlayerByNickname(nickname);;
-        
+        Player player = getPlayerByNickname(nickname);
+
         if (!checkCurrentPlayer(v, player, "Swap shelves")) return;
 
         Shelf s1 = (Shelf) game.getShelfById(shelfId1).orElseThrow();
@@ -129,9 +125,9 @@ public class GameContext extends ModelObservable {
     public void activateLeader(View v, String nickname, Integer leaderid) {
         if (!preliminaryChecks(v, "Activate leader")) return;
 
-        Player player = getPlayerByNickname(nickname);;
-        
-        if(!checkCurrentPlayer(v, player, "Activate leader")) return;
+        Player player = getPlayerByNickname(nickname);
+
+        if (!checkCurrentPlayer(v, player, "Activate leader")) return;
 
         LeaderCard leader = game.getLeaderById(leaderid).orElseThrow();
         try {
@@ -153,8 +149,8 @@ public class GameContext extends ModelObservable {
     public void discardLeader(View v, String nickname, Integer leaderid) {
         if (!preliminaryChecks(v, "Discard leader")) return;
 
-        Player player = getPlayerByNickname(nickname);;
-        
+        Player player = getPlayerByNickname(nickname);
+
         if (!checkCurrentPlayer(v, player, "Discard leader")) return;
 
         LeaderCard leader = game.getLeaderById(leaderid).orElseThrow();
@@ -182,8 +178,8 @@ public class GameContext extends ModelObservable {
                                     Map<Integer, Map<String, Integer>> reducedShelves) {
         if (!preliminaryChecks(v, "Take market resources")) return;
 
-        Player player = getPlayerByNickname(nickname);;
-        
+        Player player = getPlayerByNickname(nickname);
+
         if (!checkCurrentPlayer(v, player, "Take market resources")) return;
 
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
@@ -212,10 +208,10 @@ public class GameContext extends ModelObservable {
                            Map<Integer, Map<String, Integer>> reducedResContainers) {
         if (!preliminaryChecks(v, "Buy development card")) return;
 
-        Player player = getPlayerByNickname(nickname);;
-        
+        Player player = getPlayerByNickname(nickname);
+
         if (!checkCurrentPlayer(v, player, "Buy development card")) return;
-        
+
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>();
         reducedResContainers.forEach((key, value) -> resContainers.put(game.getShelfById(key).orElseThrow(), translateResources(value)));
 
@@ -239,11 +235,11 @@ public class GameContext extends ModelObservable {
     public void activateProductionGroup(View v, String nickname, List<ReducedProductionRequest> reducedProdGroup) {
         if (!preliminaryChecks(v, "Activate production")) return;
 
-        Player player = getPlayerByNickname(nickname);;
-        
+        Player player = getPlayerByNickname(nickname);
+
         if (!checkCurrentPlayer(v, player, "Activate production")) return;
-        
-        ProductionGroup productionGroup = new ProductionGroup(reducedProdGroup.stream().map (this::translateToProductionRequest).toList());
+
+        ProductionGroup productionGroup = new ProductionGroup(reducedProdGroup.stream().map(this::translateToProductionRequest).toList());
         try {
             productionGroup.activate(game, player);
         } catch (IllegalProductionActivationException e) {
@@ -263,12 +259,12 @@ public class GameContext extends ModelObservable {
     public void endTurn(View v, String nickname) {
         if (!setupDone || !turnDone)
             notify(v, new ErrAction(
-                new IllegalActionException("End turn", !setupDone ? "Setup is not done yet" : "No action executed in the turn").getMessage()));
-        
-        Player player = getPlayerByNickname(nickname);;
-        
+                    new IllegalActionException("End turn", !setupDone ? "Setup is not done yet" : "No action executed in the turn").getMessage()));
+
+        Player player = getPlayerByNickname(nickname);
+
         if (!checkCurrentPlayer(v, player, "End turn")) return;
-        
+
         try {
             game.onTurnEnd();
         } catch (NoActivePlayersException e) {
@@ -335,6 +331,6 @@ public class GameContext extends ModelObservable {
         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers = new HashMap<>();
         r.getInputContainers().forEach((key, value) -> outputContainers.put(game.getShelfById(key).orElseThrow(), translateResources(value)));
         return new ProductionGroup.ProductionRequest(game.getProductionById(r.getProductionId()).orElseThrow(), translateResources(r.getInputBlanksRep()), translateResources(r.getOutputBlanksRep()),
-                Map.of(), inputContainers, outputContainers);
+                inputContainers, outputContainers);
     }
 }

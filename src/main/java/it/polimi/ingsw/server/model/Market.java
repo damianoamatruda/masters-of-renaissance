@@ -8,7 +8,6 @@ import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -99,27 +98,18 @@ public class Market extends ModelObservable {
             output = leader.replaceMarketResources(replaceableResType, output, replacements);
         output.remove(replaceableResType);
 
-        Map<ResourceType, Integer> toBeDiscarded = new HashMap<ResourceType, Integer>(),
-                                   shelvesValues = shelves.values().stream().flatMap(m -> m.entrySet().stream())
-                                        .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)));
-                                        
-        for (Entry<ResourceType, Integer> e : output.entrySet()) {
-            int amount = e.getValue() - shelvesValues.getOrDefault(e.getKey(), 0);
-            if (amount < 0) {
-                throw new IllegalMarketTransferException(
-                    new IllegalProductionActivationException.IllegalProductionContainersException(
-                        String.format("Cannot discard %d %s: negative amount computed. Check shelves mapping for the resource.",
-                            amount, e.getKey())));
-            } // TODO maybe move this in the production
-            toBeDiscarded.put(e.getKey(), amount);
-        };
-        
+        ProductionGroup.ProductionRequest productionRequest;
+
         try {
-            new ProductionGroup(List.of(
-                    new ProductionGroup.ProductionRequest(
-                            new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
-                            Map.of(), Map.of(), Map.of(), Map.of(), Map.copyOf(shelves))
-            )).activate(game, player);
+            productionRequest = new ProductionGroup.ProductionRequest(
+                    new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
+                    Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
+        } catch (IllegalProductionActivationException.IllegalProductionReplacementsException | IllegalProductionActivationException.IllegalProductionContainersException e) {
+            throw new IllegalMarketTransferException(e);
+        }
+
+        try {
+            new ProductionGroup(List.of(productionRequest)).activate(game, player);
         } catch (IllegalProductionActivationException e) {
             throw new IllegalMarketTransferException(e);
         }
@@ -127,9 +117,9 @@ public class Market extends ModelObservable {
         shift(isRow, index);
 
         notifyBroadcast(
-            new UpdateMarket(isRow, index,
-                IntStream.range(0, isRow ? getColsCount() : getRowsCount())
-                    .mapToObj(i -> isRow ? grid.get(index).get(i).getName() : grid.get(i).get(index).getName()).toList(),
+                new UpdateMarket(isRow, index,
+                        IntStream.range(0, isRow ? getColsCount() : getRowsCount())
+                                .mapToObj(i -> isRow ? grid.get(index).get(i).getName() : grid.get(i).get(index).getName()).toList(),
                 slide.getName()));
     }
 

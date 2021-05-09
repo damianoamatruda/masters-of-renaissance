@@ -8,11 +8,7 @@ import it.polimi.ingsw.common.events.UpdateWinner;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -123,8 +119,7 @@ public class Game extends ModelObservable {
     /**
      * Proceeds to sum the remaining points, decide a winner and end the game.
      */
-    @Deprecated
-    public void end() {
+    private void end() {
         setWinnerPlayer();
         ended = true;
     }
@@ -143,7 +138,7 @@ public class Game extends ModelObservable {
      *
      * @param faithPoints the faith marker (points) of whoever has just moved ahead
      */
-    public void onIncrement(int faithPoints) {
+    public void onIncrementFaithPoints(int faithPoints) {
         FaithTrack.VaticanSection vaticanSection = faithTrack.getVaticanSectionReport(faithPoints);
         if (vaticanSection != null && !vaticanSection.isActivated()) {
             for (Player p : players)
@@ -157,14 +152,15 @@ public class Game extends ModelObservable {
     }
 
     /**
-     * Method called after a resource has been discarded by a player.
+     * Method called after resources have been discarded by a player.
      *
-     * @param player the player who has discarded the resource
+     * @param player   the player who has discarded resources
+     * @param quantity the quantity of discarded resources
      */
-    public void onDiscardResource(Player player) {
+    public void onDiscardResources(Player player, int quantity) {
         players.stream()
                 .filter(p -> !p.equals(player))
-                .forEach(p -> p.incrementFaithPoints(this));
+                .forEach(p -> p.incrementFaithPoints(this, quantity));
     }
 
     /**
@@ -173,7 +169,7 @@ public class Game extends ModelObservable {
      * @param player the player who has discarded the leader card
      */
     public void onDiscardLeader(Player player) {
-        player.incrementFaithPoints(this);
+        player.incrementFaithPoints(this, 1);
     }
 
     /**

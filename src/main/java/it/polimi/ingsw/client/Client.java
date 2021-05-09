@@ -3,6 +3,8 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import it.polimi.ingsw.client.cli.Cli;
+import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.VCEvent;
 
 import java.io.BufferedReader;
@@ -17,18 +19,20 @@ import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 public class Client implements VCEventSender {
-    private final static String jsonConfigPath = "/server.json";
+    private final static String jsonConfigPath = "/config/server.json";
     private final static String quitInputType = "ResGoodbye";
     private final static String quitOutputType = "ReqQuit";
 
     private final String host;
     private final int port;
+    private final boolean useGui;
     private final ExecutorService executor;
     private Socket socket;
 
-    public Client(String host, int port) {
+    public Client(String host, int port, boolean useGui) {
         this.host = host;
         this.port = port;
+        this.useGui = useGui;
         this.executor = Executors.newFixedThreadPool(2);
         this.socket = null;
     }
@@ -39,15 +43,20 @@ public class Client implements VCEventSender {
 
         String host = args.length >= 1 ? args[0] : (jsonConfig = parseConfig.get()).get("host").getAsString();
         int port = args.length >= 2 ? Integer.parseInt(args[1]) : (jsonConfig != null ? jsonConfig : parseConfig.get()).get("port").getAsInt();
+        boolean useGui = args.length < 3 || !args[2].equals("cli");
 
         try {
-            new Client(host, port).start();
+            new Client(host, port, useGui).start();
         } catch (IOException e) {
-            System.exit(1);
+            // System.exit(1);
         }
     }
 
     public void start() throws IOException {
+        System.out.println(useGui ? "Launching GUI..." : "Launching CLI...");
+        Ui ui = useGui ? new Gui() : new Cli();
+        executor.submit(ui::execute);
+
         try {
             socket = new Socket(host, port);
         } catch (UnknownHostException e) {

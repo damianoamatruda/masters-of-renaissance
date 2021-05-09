@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Unit test for FileGameFactory.
  */
 public class FileGameFactoryTest {
-    final FileGameFactory f = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
+    final FileGameFactory f = new FileGameFactory(getClass().getResourceAsStream("/config/config.json"));
 
     /**
      * Tests that the resource factory works properly.

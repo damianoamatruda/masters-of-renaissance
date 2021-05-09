@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.model;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
@@ -77,7 +76,7 @@ public class FileGameFactory implements GameFactory {
     public FileGameFactory(InputStream inputStream) {
         gson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
-                .registerTypeAdapter(Production.class, new ProductionDeserializer())
+                .registerTypeAdapter(Production.class, new ProductionDeserializer(null))
                 .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                 .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                 .create();
@@ -112,10 +111,11 @@ public class FileGameFactory implements GameFactory {
     public Game getMultiGame(List<String> nicknames) {
         checkNumberOfPlayers(nicknames);
 
-        List<LeaderCard> leaderCards = generateLeaderCards();
+        List<Production> productions = new ArrayList<>(List.of(baseProduction));
+        List<LeaderCard> leaderCards = generateLeaderCards(productions);
         List<DevelopmentCard> developmentCards = generateDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
-        List<Production> productions = getProductions(leaderCards, developmentCards);
+        addDevCardProductions(productions, developmentCards);
 
         return new Game(
                 getPlayers(nicknames, leaderCards, resContainers),
@@ -133,10 +133,11 @@ public class FileGameFactory implements GameFactory {
 
     @Override
     public SoloGame getSoloGame(String nickname) {
-        List<LeaderCard> leaderCards = generateLeaderCards();
+        List<Production> productions = new ArrayList<>(List.of(baseProduction));
+        List<LeaderCard> leaderCards = generateLeaderCards(productions);
         List<DevelopmentCard> developmentCards = generateDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
-        List<Production> productions = getProductions(leaderCards, developmentCards);
+        addDevCardProductions(productions, developmentCards);
 
         return new SoloGame(
                 getPlayers(List.of(nickname), leaderCards, resContainers).get(0),
@@ -236,7 +237,7 @@ public class FileGameFactory implements GameFactory {
      * Returns a list of resource containers based on given leader cards.
      *
      * @param leaderCards the leader cards
-     * @return the resource contianers
+     * @return the resource containers
      */
     private List<ResourceContainer> getResContainers(List<LeaderCard> leaderCards) {
         return new ArrayList<>(leaderCards.stream()
@@ -247,22 +248,14 @@ public class FileGameFactory implements GameFactory {
     }
 
     /**
-     * Returns a list of productions based on given leader cards and development cards.
+     * Extracts all productions from the development cards and saves them in the production list.
      *
-     * @param leaderCards      the leader cards
+     * @param productions      the existing list of productions
      * @param developmentCards the development cards
-     * @return the productions
      */
-    private List<Production> getProductions(List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards) {
-        List<Production> productions = new ArrayList<>(List.of(baseProduction));
-        productions.addAll(leaderCards.stream()
-                .map(LeaderCard::getProduction)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList());
+    private void addDevCardProductions(List<Production> productions, List<DevelopmentCard> developmentCards) {
         productions.addAll(developmentCards.stream()
                 .map(DevelopmentCard::getProduction).toList());
-        return productions;
     }
 
     /**
@@ -302,10 +295,10 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of leader cards
      */
-    private List<LeaderCard> generateLeaderCards() {
+    private List<LeaderCard> generateLeaderCards(List<Production> productions) {
         Gson customGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
-                .registerTypeAdapter(Production.class, new ProductionDeserializer())
+                .registerTypeAdapter(Production.class, new ProductionDeserializer(productions))
                 .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                 .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                 .registerTypeAdapter(CardRequirement.class, new RequirementDeserializer())
@@ -429,6 +422,12 @@ public class FileGameFactory implements GameFactory {
     }
 
     private class ProductionDeserializer implements JsonDeserializer<Production> {
+        private final List<Production> productions;
+
+        public ProductionDeserializer(List<Production> productions) {
+            this.productions = productions;
+        }
+
         @Override
         public Production deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             jsonElement.getAsJsonObject().addProperty("id", Production.generateId());
@@ -436,7 +435,10 @@ public class FileGameFactory implements GameFactory {
                     .enableComplexMapKeySerialization().setPrettyPrinting()
                     .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                     .create();
-            return customGson.fromJson(jsonElement, Production.class);
+            Production res = customGson.fromJson(jsonElement, Production.class);
+            if (productions != null)
+                productions.add(res);
+            return res;
         }
     }
 }

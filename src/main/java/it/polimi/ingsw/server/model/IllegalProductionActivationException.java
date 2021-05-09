@@ -1,15 +1,31 @@
 package it.polimi.ingsw.server.model;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import it.polimi.ingsw.server.model.ProductionGroup.ProductionRequest;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Exception thrown when a production cannot be activated with the given options.
  */
 public class IllegalProductionActivationException extends Exception {
+    // TODO: Delete
+    public IllegalProductionActivationException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * Constructs a new exception with the specified detail message and cause.
+     *
+     * @param message the detail message
+     * @param cause   the cause
+     * @see Exception
+     */
+    public IllegalProductionActivationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     /**
      * Constructs a new exception with the specified detail message and cause.
      *
@@ -34,18 +50,18 @@ public class IllegalProductionActivationException extends Exception {
 
     private static String stringifyMap(Map<ResourceType, Integer> map) {
         return map.keySet().stream()
-            .map(key -> key.getName() + "=" + String.valueOf(map.get(key)))
+                .map(key -> key.getName() + "=" + map.get(key))
             .collect(Collectors.joining(", ", "{", "}"));
     }
 
     /**
      * Exception used in validating production requests' replacements.
      */
-    public static class IllegalProductionReplacementsException extends Exception {
+    public static class IllegalProductionReplacementsException extends RuntimeException {
         /**
          * Class constructor.
-         * 
-         * @param reason the reason why the replacements are incorrect.
+         *
+         * @param reason       the reason why the replacements are incorrect.
          * @param replacements the invalid map of replacements choosen in the production request.
          */
         public IllegalProductionReplacementsException(String reason, Map<ResourceType, Integer> replacements) {
@@ -56,10 +72,10 @@ public class IllegalProductionActivationException extends Exception {
     /**
      * Exception used in validating production requests' containers.
      */
-    public static class IllegalProductionContainersException extends Exception { // not used for checks, instances could be replaced by superclass
+    public static class IllegalProductionContainersException extends RuntimeException { // not used for checks, instances could be replaced by superclass
         /**
          * Class constructor.
-         * 
+         *
          * @param msg the reason for this exception.
          */
         public IllegalProductionContainersException(String msg) {
