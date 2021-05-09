@@ -78,7 +78,7 @@ public class GameTest {
      */
     @Test
     void firstAdvanceNoPts() {
-        game.getPlayers().get(0).incrementFaithPoints(game);
+        game.getPlayers().get(0).incrementFaithPoints(game, 1);
         assertEquals(0, game.getPlayers().get(0).getVictoryPoints());
     }
 
@@ -89,14 +89,14 @@ public class GameTest {
     @Test
     void noYellowTilesEndOfGame() throws NoActivePlayersException {
         for (int i = 0; i < 24; i++)
-            game.getPlayers().get(0).incrementFaithPoints(game);
+            game.getPlayers().get(0).incrementFaithPoints(game, 1);
         game.onTurnEnd();
         assertAll(() -> assertTrue(game.hasEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
 
     /**
-     * Nested class for onIncrement method - first Vatican Report related tests.
+     * Nested class for onIncrementFaithPoints method - first Vatican Report related tests.
      */
     @Nested
     @DisplayName("First Vatican Report Tests")
@@ -112,9 +112,9 @@ public class GameTest {
         @BeforeEach
         void advancePlayers() {
             for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game);
+                game.getPlayers().get(0).incrementFaithPoints(game, 1);
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game);
+                game.getPlayers().get(1).incrementFaithPoints(game, 1);
         }
 
         /**
@@ -143,7 +143,7 @@ public class GameTest {
     }
 
     /**
-     * Nested class for onIncrement method - second Vatican Report related tests.
+     * Nested class for onIncrementFaithPoints method - second Vatican Report related tests.
      */
     @Nested
 
@@ -160,12 +160,12 @@ public class GameTest {
         @BeforeEach
         void advancePlayers() {
             for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game);
+                game.getPlayers().get(0).incrementFaithPoints(game, 1);
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints(game);
+                game.getPlayers().get(2).incrementFaithPoints(game, 1);
 
             for (int i = 0; i < 16; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game);
+                game.getPlayers().get(1).incrementFaithPoints(game, 1);
         }
 
         /**
@@ -212,19 +212,19 @@ public class GameTest {
         @BeforeEach
         void advancePlayers() {
             for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game);
+                game.getPlayers().get(0).incrementFaithPoints(game, 1);
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints(game);
+                game.getPlayers().get(2).incrementFaithPoints(game, 1);
 
             for (int i = 0; i < 16; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game);
+                game.getPlayers().get(1).incrementFaithPoints(game, 1);
 
             for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints(game);
+                game.getPlayers().get(2).incrementFaithPoints(game, 1);
             for (int i = 0; i < 4; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game);
+                game.getPlayers().get(1).incrementFaithPoints(game, 1);
             for (int i = 0; i < 19; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game);
+                game.getPlayers().get(0).incrementFaithPoints(game, 1);
         }
 
         /**
@@ -250,7 +250,7 @@ public class GameTest {
         }
 
         /**
-         * Nested class for onIncrement method - 3rd Vatican section tests before calling isLastRound().
+         * Nested class for onIncrementFaithPoints method - 3rd Vatican section tests before calling isLastRound().
          */
         @Nested
         @DisplayName("Last Vatican Report tests before deciding winner")

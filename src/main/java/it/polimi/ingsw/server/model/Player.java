@@ -93,7 +93,7 @@ public class Player {
         this.initialResources = initialResources;
         this.initialExcludedResources = Set.copyOf(initialExcludedResources);
         this.hasChosenResources = initialResources == 0;
-        this.faithPoints = initialFaith; /* This does not trigger game.onIncrement(initialFaith); */
+        this.faithPoints = initialFaith; /* This does not trigger game.onIncrementFaithPoints(initialFaith); */
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
@@ -199,13 +199,14 @@ public class Player {
 
     /**
      * Advances the faith marker by one on the board's faith track, then proceeds to call a checker for Vatican report
-     * tiles "onIncrement".
+     * tiles "onIncrementFaithPoints".
      *
-     * @param game the game the player is playing in
+     * @param game   the game the player is playing in
+     * @param points the quantity to be added to the faith points
      */
-    public void incrementFaithPoints(Game game) {
-        faithPoints += 1;
-        game.onIncrement(faithPoints);
+    public void incrementFaithPoints(Game game, int points) {
+        faithPoints += points;
+        game.onIncrementFaithPoints(faithPoints);
     }
 
     /**

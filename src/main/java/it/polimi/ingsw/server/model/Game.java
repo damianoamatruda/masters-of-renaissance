@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +123,7 @@ public class Game {
      *
      * @param faithPoints the faith marker (points) of whoever has just moved ahead
      */
-    public void onIncrement(int faithPoints) {
+    public void onIncrementFaithPoints(int faithPoints) {
         FaithTrack.VaticanSection vaticanSection = faithTrack.getVaticanSectionReport(faithPoints);
         if (vaticanSection != null && !vaticanSection.isActivated()) {
             for (Player p : players)
@@ -145,7 +144,7 @@ public class Game {
     public void onDiscardResource(Player player) {
         players.stream()
                 .filter(p -> !p.equals(player))
-                .forEach(p -> p.incrementFaithPoints(this));
+                .forEach(p -> p.incrementFaithPoints(this, 1));
     }
 
     /**
@@ -154,7 +153,7 @@ public class Game {
      * @param player the player who has discarded the leader card
      */
     public void onDiscardLeader(Player player) {
-        player.incrementFaithPoints(this);
+        player.incrementFaithPoints(this, 1);
     }
 
     /**
