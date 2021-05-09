@@ -108,12 +108,12 @@ public class ProductionGroup {
             /* Take all input non-storable resources from player; this is always possible */
             for (ResourceType resType : nonStorableReplacedInput.keySet())
                 for (int i = 0; i < nonStorableReplacedInput.get(resType); i++)
-                    resType.takeFromPlayer(game, player);
+                    resType.takeFromPlayer(game, player, 1);
 
             /* Give all output non-storable resources to player; this is always possible */
             for (ResourceType resType : nonStorableReplacedOutput.keySet())
                 for (int i = 0; i < nonStorableReplacedOutput.get(resType); i++)
-                    resType.giveToPlayer(game, player);
+                    resType.giveToPlayer(game, player, 1);
         }
     }
 

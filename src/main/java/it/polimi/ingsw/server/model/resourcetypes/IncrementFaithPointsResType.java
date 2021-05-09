@@ -24,7 +24,7 @@ public class IncrementFaithPointsResType extends ResourceType {
     }
 
     @Override
-    public void giveToPlayer(Game game, Player player) {
-        player.incrementFaithPoints(game, 1);
+    public void giveToPlayer(Game game, Player player, int quantity) {
+        player.incrementFaithPoints(game, quantity);
     }
 }
