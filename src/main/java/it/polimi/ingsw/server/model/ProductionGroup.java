@@ -124,7 +124,6 @@ public class ProductionGroup {
         private final Production production;
         private final Map<ResourceType, Integer> inputBlanksRep;
         private final Map<ResourceType, Integer> outputBlanksRep;
-        private final Map<ResourceType, Integer> discardedOutput;
         private final Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers;
         private final Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers;
 
@@ -134,7 +133,6 @@ public class ProductionGroup {
          * @param production       the production to use
          * @param inputBlanksRep   the map of the resources chosen as replacement for blanks in input
          * @param outputBlanksRep  the map of the resources chosen as replacement for blanks in output
-         * @param discardedOutput  the map of the storable resources chosen to be discarded in output
          * @param inputContainers  the map of the resource containers from which to remove the input storable resources
          * @param outputContainers the map of the resource containers into which to add the output storable resources
          * @throws IllegalProductionReplacementsException if the request's replacements are invalid
@@ -143,16 +141,59 @@ public class ProductionGroup {
         public ProductionRequest(Production production,
                                  Map<ResourceType, Integer> inputBlanksRep,
                                  Map<ResourceType, Integer> outputBlanksRep,
-                                 Map<ResourceType, Integer> discardedOutput,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) {
-            validate(production, inputBlanksRep, outputBlanksRep, discardedOutput, inputContainers, outputContainers);
+            validate(production, inputBlanksRep, outputBlanksRep, inputContainers, outputContainers);
             this.production = production;
             this.inputBlanksRep = Map.copyOf(inputBlanksRep);
             this.outputBlanksRep = Map.copyOf(outputBlanksRep);
-            this.discardedOutput = Map.copyOf(discardedOutput);
             this.inputContainers = Map.copyOf(inputContainers);
             this.outputContainers = Map.copyOf(outputContainers);
+        }
+
+        /**
+         * Returns whether the production request is valid, i.e.:
+         * <ol>
+         *     <li>maps of input and output replacement resources do not contain respectively takeable-only and
+         *         giveable-only resources</li>
+         *     <li>maps of input and output replacement resources do not contain excluded resources</li>
+         *     <li>maps of input and output replacement resources have the same number of resources as input and output
+         *         blanks</li>
+         *     <li>maps of discarded output resources are given only if production has discardable output</li>
+         *     <li>maps of input and output resource containers are given for respectively all non-storable resources in
+         *         input and output</li>
+         * </ol>
+         *
+         * @throws IllegalProductionReplacementsException if the request's replacements are invalid
+         * @throws IllegalProductionContainersException   if the request's container-resource mappings are invalid
+         */
+        private static void validate(Production production,
+                                     Map<ResourceType, Integer> inputBlanksRep,
+                                     Map<ResourceType, Integer> outputBlanksRep,
+                                     Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
+                                     Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalProductionReplacementsException, IllegalProductionContainersException {
+            // TODO: Check that the given maps have values >= 0
+
+            if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
+                throw new IllegalProductionReplacementsException("Input replacements contain non-storable and non-takeable resources", inputBlanksRep);
+            if (outputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isGiveableToPlayer()))
+                throw new IllegalProductionReplacementsException("Output replacements contain non-storable and non-giveable resources", outputBlanksRep);
+
+            if (inputBlanksRep.keySet().stream().anyMatch(resType -> production.getInputBlanksExclusions().contains(resType)))
+                throw new IllegalProductionReplacementsException("Input replacements contain excluded resources", inputBlanksRep);
+            if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
+                throw new IllegalProductionReplacementsException("Output replacements contain excluded resources", outputBlanksRep);
+
+            if (inputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getInputBlanks())
+                throw new IllegalProductionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", production.getInputBlanks()), inputBlanksRep);
+            if (outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
+                throw new IllegalProductionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", production.getInputBlanks()), inputBlanksRep);
+
+            if (!production.hasDiscardableOutput() && !getDiscardedOutput(production.getOutput(), outputBlanksRep, outputContainers).isEmpty())
+                throw new RuntimeException(); // TODO: Add more specific exception
+
+            checkContainers(getReplacedInput(production.getInput(), inputBlanksRep), inputContainers);
+            checkContainers(getReplacedOutput(production.getOutput(), outputBlanksRep), outputContainers);
         }
 
         /**
@@ -194,64 +235,6 @@ public class ProductionGroup {
         }
 
         /**
-         * Returns whether the production request is valid, i.e.:
-         * <ol>
-         *     <li>maps of input and output replacement resources do not contain respectively takeable-only and
-         *         giveable-only resources</li>
-         *     <li>maps of input and output replacement resources do not contain excluded resources</li>
-         *     <li>maps of input and output replacement resources have the same number of resources as input and output
-         *         blanks</li>
-         *     <li>maps of discarded output resources are given only if production has discardable output</li>
-         *     <li>maps of discarded output resources contain only storable resources</li>
-         *     <li>maps of discarded output resources have not more resources than input and output</li>
-         *     <li>maps of input and output resource containers are given for respectively all non-storable resources in
-         *         input and output</li>
-         * </ol>
-         *
-         * @return <code>true</code> if the production request is valid; <code>false</code> otherwise.
-         * @throws IllegalProductionReplacementsException if the request's replacements are invalid
-         * @throws IllegalProductionContainersException   if the request's container-resource mappings are invalid
-         */
-        private static void validate(Production production,
-                                     Map<ResourceType, Integer> inputBlanksRep,
-                                     Map<ResourceType, Integer> outputBlanksRep,
-                                     Map<ResourceType, Integer> discardedOutput,
-                                     Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                                     Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalProductionReplacementsException, IllegalProductionContainersException {
-            // TODO: Check that the given maps have values >= 0
-
-            if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
-                throw new IllegalProductionReplacementsException("Input replacements contain non-storable and non-takeable resources", inputBlanksRep);
-            if (outputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isGiveableToPlayer()))
-                throw new IllegalProductionReplacementsException("Output replacements contain non-storable and non-giveable resources", outputBlanksRep);
-
-            if (inputBlanksRep.keySet().stream().anyMatch(resType -> production.getInputBlanksExclusions().contains(resType)))
-                throw new IllegalProductionReplacementsException("Input replacements contain excluded resources", inputBlanksRep);
-            if (outputBlanksRep.keySet().stream().anyMatch(resType -> production.getOutputBlanksExclusions().contains(resType)))
-                throw new IllegalProductionReplacementsException("Output replacements contain excluded resources", outputBlanksRep);
-
-            if (inputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getInputBlanks())
-                throw new IllegalProductionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", production.getInputBlanks()), inputBlanksRep);
-            if (outputBlanksRep.values().stream().reduce(0, Integer::sum) != production.getOutputBlanks())
-                throw new IllegalProductionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", production.getInputBlanks()), inputBlanksRep);
-
-            if (discardedOutput.values().stream().anyMatch(v -> v > 0) && !production.hasDiscardableOutput())
-                throw new RuntimeException(); // TODO: Add more specific exception
-
-            if (!discardedOutput.keySet().stream().allMatch(ResourceType::isStorable))
-                throw new RuntimeException(); // TODO: Add more specific exception
-
-            Map<ResourceType, Integer> chosenOutput = new HashMap<>(production.getOutput());
-            outputBlanksRep.forEach((r, q) -> chosenOutput.merge(r, q, Integer::sum));
-            for (ResourceType resType : chosenOutput.keySet())
-                if (discardedOutput.containsKey(resType) && chosenOutput.get(resType) < discardedOutput.get(resType))
-                    throw new RuntimeException(); // TODO: Add more specific exception
-
-            checkContainers(getReplacedInput(production.getInput(), inputBlanksRep), inputContainers);
-            checkContainers(getReplacedOutput(production.getOutput(), outputBlanksRep, discardedOutput), outputContainers);
-        }
-
-        /**
          * Returns the requested production.
          *
          * @return the production
@@ -278,11 +261,9 @@ public class ProductionGroup {
          * @return a map of chosen resources including replaced blanks
          */
         public static Map<ResourceType, Integer> getReplacedOutput(Map<ResourceType, Integer> productionOutput,
-                                                                   Map<ResourceType, Integer> outputBlanksRep,
-                                                                   Map<ResourceType, Integer> discardedOutput) {
+                                                                   Map<ResourceType, Integer> outputBlanksRep) {
             Map<ResourceType, Integer> replacedOutput = new HashMap<>(productionOutput);
             outputBlanksRep.forEach((r, q) -> replacedOutput.merge(r, q, Integer::sum));
-            discardedOutput.forEach((r, q) -> replacedOutput.merge(r, q, (q1, q2) -> q1 - q2));
             return Map.copyOf(replacedOutput);
         }
 
@@ -296,12 +277,32 @@ public class ProductionGroup {
         }
 
         /**
+         * Returns the requested output storable resources to be discarded.
+         *
+         * @return the output storable resources to be discarded
+         */
+        public static Map<ResourceType, Integer> getDiscardedOutput(Map<ResourceType, Integer> productionOutput,
+                                                                    Map<ResourceType, Integer> outputBlanksRep,
+                                                                    Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) {
+            Map<ResourceType, Integer> chosenOutput = new HashMap<>(productionOutput);
+            outputBlanksRep.forEach((r, q) -> chosenOutput.merge(r, q, Integer::sum));
+            Map<ResourceType, Integer> chosenOutputStorable = chosenOutput.entrySet().stream()
+                    .filter(e -> e.getKey().isStorable())
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            Map<ResourceType, Integer> discardedResources = new HashMap<>(chosenOutputStorable);
+            for (ResourceContainer resContainer : outputContainers.keySet())
+                for (ResourceType resType : outputContainers.get(resContainer).keySet())
+                    discardedResources.computeIfPresent(resType, (r, q) -> q.equals(outputContainers.get(resContainer).get(resType)) ? null : q - outputContainers.get(resContainer).get(resType));
+            return discardedResources;
+        }
+
+        /**
          * Builds an output resource map with replaced blanks and without discarded resources.
          *
          * @return a map of chosen resources including replaced blanks
          */
         public Map<ResourceType, Integer> getReplacedOutput() {
-            return getReplacedOutput(production.getOutput(), outputBlanksRep, discardedOutput);
+            return getReplacedOutput(production.getOutput(), outputBlanksRep);
         }
 
         /**
@@ -310,7 +311,7 @@ public class ProductionGroup {
          * @return the output storable resources to be discarded
          */
         public Map<ResourceType, Integer> getDiscardedOutput() {
-            return discardedOutput;
+            return getDiscardedOutput(production.getOutput(), outputBlanksRep, outputContainers);
         }
 
         /**

@@ -98,7 +98,7 @@ public class Market {
         try {
             productionRequest = new ProductionGroup.ProductionRequest(
                     new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
-                    Map.of(), Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
+                    Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
         } catch (IllegalProductionActivationException.IllegalProductionReplacementsException | IllegalProductionActivationException.IllegalProductionContainersException e) {
             throw new IllegalMarketTransferException(e);
         }
