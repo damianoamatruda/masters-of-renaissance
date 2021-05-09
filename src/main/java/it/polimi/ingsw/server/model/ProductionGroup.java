@@ -95,7 +95,7 @@ public class ProductionGroup {
             /* Discard the chosen resources to be discarded */
             for (ResourceType resType : productionReq.getDiscardedOutput().keySet())
                 for (int i = 0; i < productionReq.getDiscardedOutput().get(resType); i++)
-                    player.discardResource(game, resType);
+                    player.discardResources(game, 1);
 
             /* Filter the non-storable resources */
             Map<ResourceType, Integer> nonStorableReplacedInput = productionReq.getReplacedInput().entrySet().stream()

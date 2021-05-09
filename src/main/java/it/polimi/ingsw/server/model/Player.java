@@ -210,13 +210,13 @@ public class Player {
     }
 
     /**
-     * Discards a resource.
+     * Discards resources.
      *
      * @param game     the game the player is playing in
-     * @param resource the type of the resource to discard
+     * @param quantity the quantity of resources to discard
      */
-    public void discardResource(Game game, ResourceType resource) {
-        game.onDiscardResource(this);
+    public void discardResources(Game game, int quantity) {
+        game.onDiscardResources(this, quantity);
     }
 
     /**

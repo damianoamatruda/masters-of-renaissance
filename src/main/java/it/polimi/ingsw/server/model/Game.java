@@ -137,14 +137,15 @@ public class Game {
     }
 
     /**
-     * Method called after a resource has been discarded by a player.
+     * Method called after resources have been discarded by a player.
      *
-     * @param player the player who has discarded the resource
+     * @param player   the player who has discarded resources
+     * @param quantity the quantity of discarded resources
      */
-    public void onDiscardResource(Player player) {
+    public void onDiscardResources(Player player, int quantity) {
         players.stream()
                 .filter(p -> !p.equals(player))
-                .forEach(p -> p.incrementFaithPoints(this, 1));
+                .forEach(p -> p.incrementFaithPoints(this, quantity));
     }
 
     /**
