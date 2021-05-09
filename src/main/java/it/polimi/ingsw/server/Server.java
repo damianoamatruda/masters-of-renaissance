@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private final static String jsonConfigPath = "/server.json";
+    private final static String jsonConfigPath = "/config/server.json";
 
     private final int port;
     // private final Map<Socket, View> views;
@@ -43,7 +43,7 @@ public class Server {
         ExecutorService executor = Executors.newCachedThreadPool();
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config.json"));
+            GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config/config.json"));
             Lobby model = new Lobby(gameFactory);
             Controller controller = new Controller(model);
             GameProtocol gp = new GameProtocol();

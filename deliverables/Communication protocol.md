@@ -783,7 +783,7 @@ For example, when using the CLI, updates sent from the server would be logged to
 Caching also allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, again reducing network and server loads.
 
 ### Parameters and indices
-The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
+The game's model has been parameterized to allow for flexibility. The parameters are set via a [configuration file](../src/main/resources/config/config.json), which also contains serialized game data (e.g. cards, resources, etc...).  
 This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore extremely important for both parties to have matching ordering in the file's objects, since it will be used by the identification system.  
 The matching and ordering properties of the objects in the configuration file are used to identify game objects and synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
 

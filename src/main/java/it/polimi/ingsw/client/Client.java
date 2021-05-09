@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
 public class Client implements VCEventSender {
-    private final static String jsonConfigPath = "/server.json";
+    private final static String jsonConfigPath = "/config/server.json";
     private final static String quitInputType = "ResGoodbye";
     private final static String quitOutputType = "ReqQuit";
 
