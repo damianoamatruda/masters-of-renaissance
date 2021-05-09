@@ -30,6 +30,12 @@ public class ModelObservable {
      * @param o the observer to register
      */
     public void addObserver(View o) {
+        // leadercards get created through GSON
+        // GSON does not call the class constructor to instantiate objs
+        // therefore, the list can't be created before adding observers to the cards
+        if (observers == null)
+            observers = new ArrayList<>();
+
         observers.add(o);
     }
 
