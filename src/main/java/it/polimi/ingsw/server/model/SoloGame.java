@@ -46,16 +46,6 @@ public class SoloGame extends Game {
         this.blackWinner = false;
     }
 
-    @Override
-    public void end() {
-        // TODO: Remove this check, as this method is to be called only by 'onTurnEnd'
-        checkBlackWin();
-
-        if (!isBlackWinner())
-            super.end();
-        ended = true;
-    }
-
     /**
      * Triggered after the player concludes a turn. This is Lorenzo's turn: a token will be activated.
      *
@@ -69,7 +59,9 @@ public class SoloGame extends Game {
 
         checkBlackWin();
 
-        super.onTurnEnd();
+        if (!isBlackWinner())
+            super.onTurnEnd();
+        else ended = true;
     }
 
     @Override

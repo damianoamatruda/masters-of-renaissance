@@ -64,7 +64,7 @@ class ActionTokenDiscardTwoTest {
                 devCardGrid,
                 null,
                 new FaithTrack(Set.of(), Set.of()),
-                List.of(), 0,
+                List.of( game -> {} ), 0,
                 2);
     }
 
@@ -129,7 +129,7 @@ class ActionTokenDiscardTwoTest {
      */
     @ParameterizedTest
     @MethodSource("provideParameters")
-    void discardEndOfGame(DevCardColor color) {
+    void discardEndOfGame(DevCardColor color) throws NoActivePlayersException {
         ActionToken token = new ActionTokenDiscardTwo(color);
         DevCardGrid grid = game.getDevCardGrid();
         int level;
@@ -144,7 +144,7 @@ class ActionTokenDiscardTwoTest {
         if (grid.getDeck(color, level).size() % 2 == 0) grid.getDeck(color, 1).pop();
 
         token.trigger(game);
-        game.end();
+        game.onTurnEnd();
         assertAll(() -> assertTrue(game.hasEnded()),
                 () -> assertTrue(game.isBlackWinner()),
                 () -> assertFalse(player.isWinner()));

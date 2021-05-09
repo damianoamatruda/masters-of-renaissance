@@ -105,8 +105,7 @@ public class Game {
     /**
      * Proceeds to sum the remaining points, decide a winner and end the game.
      */
-    @Deprecated
-    public void end() {
+    private void end() {
         setWinnerPlayer();
         ended = true;
     }
