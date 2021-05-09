@@ -148,12 +148,18 @@ public class Player {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
 
-        new ProductionGroup(List.of(
-                new ProductionGroup.ProductionRequest(
-                        new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                        Map.of(), chosenResources, Map.of(), Map.of(), Map.copyOf(shelves))
-        )).activate(game, this);
-        
+        ProductionGroup.ProductionRequest productionRequest;
+
+        try {
+            productionRequest = new ProductionGroup.ProductionRequest(
+                    new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
+                    Map.of(), chosenResources, Map.of(), Map.of(), Map.copyOf(shelves));
+        } catch (IllegalProductionActivationException.IllegalProductionReplacementsException | IllegalProductionActivationException.IllegalProductionContainersException e) {
+            throw new IllegalProductionActivationException(e); // TODO: Add more specific exception
+        }
+
+        new ProductionGroup(List.of(productionRequest)).activate(game, this);
+
         hasChosenResources = true;
     }
 

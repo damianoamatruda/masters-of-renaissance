@@ -93,12 +93,18 @@ public class Market {
             output = leader.replaceMarketResources(replaceableResType, output, replacements);
         output.remove(replaceableResType);
 
+        ProductionGroup.ProductionRequest productionRequest;
+
         try {
-            new ProductionGroup(List.of(
-                    new ProductionGroup.ProductionRequest(
-                            new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
-                            Map.of(), Map.of(), Map.of(), Map.of(), Map.copyOf(shelves))
-            )).activate(game, player);
+            productionRequest = new ProductionGroup.ProductionRequest(
+                    new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
+                    Map.of(), Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
+        } catch (IllegalProductionActivationException.IllegalProductionReplacementsException | IllegalProductionActivationException.IllegalProductionContainersException e) {
+            throw new IllegalMarketTransferException(e);
+        }
+
+        try {
+            new ProductionGroup(List.of(productionRequest)).activate(game, player);
         } catch (IllegalProductionActivationException e) {
             throw new IllegalMarketTransferException(e);
         }

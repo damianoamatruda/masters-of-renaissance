@@ -40,12 +40,6 @@ public class ProductionGroup {
      * @throws IllegalProductionActivationException if the transaction failed
      */
     public void activate(Game game, Player player) throws IllegalProductionActivationException {
-        for (ProductionRequest productionReq : productionRequests) {
-            try { productionReq.validate(); }
-            catch (IllegalProductionReplacementsException | IllegalProductionContainersException e) {
-                throw new IllegalProductionActivationException("Invalid production request:", productionReq, e); }
-        }
-
         /* Get set of all resource containers, in input and in output */
         Set<ResourceContainer> allContainers = new HashSet<>();
         productionRequests.stream()
@@ -143,6 +137,8 @@ public class ProductionGroup {
          * @param discardedOutput  the map of the storable resources chosen to be discarded in output
          * @param inputContainers  the map of the resource containers from which to remove the input storable resources
          * @param outputContainers the map of the resource containers into which to add the output storable resources
+         * @throws IllegalProductionReplacementsException if the request's replacements are invalid
+         * @throws IllegalProductionContainersException   if the request's container-resource mappings are invalid
          */
         public ProductionRequest(Production production,
                                  Map<ResourceType, Integer> inputBlanksRep,
@@ -150,6 +146,7 @@ public class ProductionGroup {
                                  Map<ResourceType, Integer> discardedOutput,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) {
+            validate(production, inputBlanksRep, outputBlanksRep, discardedOutput, inputContainers, outputContainers);
             this.production = production;
             this.inputBlanksRep = Map.copyOf(inputBlanksRep);
             this.outputBlanksRep = Map.copyOf(outputBlanksRep);
@@ -163,12 +160,10 @@ public class ProductionGroup {
          *
          * @param resourceMap   the map of resources
          * @param resContainers the map of the resource containers to use for all the resources
-         * @return <code>true</code> if the resources and the quantities match; <code>false</code> otherwise.
+         * @throws IllegalProductionContainersException if the request's container-resource mappings are invalid
          */
-        private static boolean checkContainers(Map<ResourceType, Integer> resourceMap,
-                                               Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalProductionContainersException {
-            // TODO: Make this throw an exception instead of returning a boolean
-
+        private static void checkContainers(Map<ResourceType, Integer> resourceMap,
+                                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalProductionContainersException {
             /* Filter the storable resources */
             resourceMap = resourceMap.entrySet().stream()
                     .filter(e -> e.getKey().isStorable())
@@ -196,8 +191,6 @@ public class ProductionGroup {
                         String.format("Amount of %s specified in replaced production (%d) does not match amount specified in shelves (%d)",
                             resType.getName(), resourceMap.get(resType), resourceCount));
             }
-
-            return true;
         }
 
         /**
@@ -219,9 +212,13 @@ public class ProductionGroup {
          * @throws IllegalProductionReplacementsException if the request's replacements are invalid
          * @throws IllegalProductionContainersException   if the request's container-resource mappings are invalid
          */
-        public boolean validate() throws IllegalProductionReplacementsException, IllegalProductionContainersException {
+        private static void validate(Production production,
+                                     Map<ResourceType, Integer> inputBlanksRep,
+                                     Map<ResourceType, Integer> outputBlanksRep,
+                                     Map<ResourceType, Integer> discardedOutput,
+                                     Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
+                                     Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalProductionReplacementsException, IllegalProductionContainersException {
             // TODO: Check that the given maps have values >= 0
-            // TODO: Make this not return anything
 
             if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
                 throw new IllegalProductionReplacementsException("Input replacements contain non-storable and non-takeable resources", inputBlanksRep);
@@ -250,7 +247,8 @@ public class ProductionGroup {
                 if (discardedOutput.containsKey(resType) && chosenOutput.get(resType) < discardedOutput.get(resType))
                     throw new RuntimeException(); // TODO: Add more specific exception
 
-            return checkContainers(getReplacedInput(), inputContainers) && checkContainers(getReplacedOutput(), outputContainers);
+            checkContainers(getReplacedInput(production.getInput(), inputBlanksRep), inputContainers);
+            checkContainers(getReplacedOutput(production.getOutput(), outputBlanksRep, discardedOutput), outputContainers);
         }
 
         /**
@@ -267,8 +265,9 @@ public class ProductionGroup {
          *
          * @return a map of chosen resources including replaced blanks
          */
-        public Map<ResourceType, Integer> getReplacedInput() {
-            Map<ResourceType, Integer> replacedInput = new HashMap<>(production.getInput());
+        public static Map<ResourceType, Integer> getReplacedInput(Map<ResourceType, Integer> productionInput,
+                                                                  Map<ResourceType, Integer> inputBlanksRep) {
+            Map<ResourceType, Integer> replacedInput = new HashMap<>(productionInput);
             inputBlanksRep.forEach((r, q) -> replacedInput.merge(r, q, Integer::sum));
             return Map.copyOf(replacedInput);
         }
@@ -278,11 +277,31 @@ public class ProductionGroup {
          *
          * @return a map of chosen resources including replaced blanks
          */
-        public Map<ResourceType, Integer> getReplacedOutput() {
-            Map<ResourceType, Integer> replacedOutput = new HashMap<>(production.getOutput());
+        public static Map<ResourceType, Integer> getReplacedOutput(Map<ResourceType, Integer> productionOutput,
+                                                                   Map<ResourceType, Integer> outputBlanksRep,
+                                                                   Map<ResourceType, Integer> discardedOutput) {
+            Map<ResourceType, Integer> replacedOutput = new HashMap<>(productionOutput);
             outputBlanksRep.forEach((r, q) -> replacedOutput.merge(r, q, Integer::sum));
             discardedOutput.forEach((r, q) -> replacedOutput.merge(r, q, (q1, q2) -> q1 - q2));
             return Map.copyOf(replacedOutput);
+        }
+
+        /**
+         * Builds an input resource map with replaced blanks.
+         *
+         * @return a map of chosen resources including replaced blanks
+         */
+        public Map<ResourceType, Integer> getReplacedInput() {
+            return getReplacedInput(production.getInput(), inputBlanksRep);
+        }
+
+        /**
+         * Builds an output resource map with replaced blanks and without discarded resources.
+         *
+         * @return a map of chosen resources including replaced blanks
+         */
+        public Map<ResourceType, Integer> getReplacedOutput() {
+            return getReplacedOutput(production.getOutput(), outputBlanksRep, discardedOutput);
         }
 
         /**
