@@ -35,6 +35,7 @@ public class VirtualView implements View {
 
     // ModelObserver section
 
+    // TODO it won't pass through here
     @Override
     public void update(ResGoodbye event) {
         if (eventSender != null) {
