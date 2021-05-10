@@ -2,9 +2,16 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
+/** Client request for a new game. */
 public class ReqNewGame implements VCEvent {
+    /** The number of players needed to start the game. */
     private final int count;
 
+    /**
+     * Class constructor.
+     * 
+     * @param count the number of players needed to start the game
+     */
     public ReqNewGame(int count) {
         this.count = count;
     }
@@ -14,6 +21,9 @@ public class ReqNewGame implements VCEvent {
         view.notify(this);
     }
 
+    /**
+     * @return the number of players needed to start the game
+     */
     public int getCount() {
         return count;
     }

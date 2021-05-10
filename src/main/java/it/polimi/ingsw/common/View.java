@@ -20,7 +20,7 @@ public interface View /*extends ModelObserver, ControllerObservable, Communicati
     
     // ControllerObservable section
     
-    void notify(ReqQuit event);
+    void notify(GoodBye event);
 
     void notify(ReqJoin event);
 

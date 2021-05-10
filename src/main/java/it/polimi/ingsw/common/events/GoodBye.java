@@ -2,7 +2,8 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
-public class ReqQuit implements VCEvent {
+/** Client request to completely disconnect from the server. */
+public class GoodBye implements VCEvent {
     @Override
     public void handle(View view) {
         view.notify(this);

@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
+/** Server response to a request to join the lobby. */
 public class ResJoin implements MVEvent {
+    /** Whether the player joining is the first of the match. */
     private final boolean isFirst;
 
     /**
@@ -19,6 +21,9 @@ public class ResJoin implements MVEvent {
         view.update(this);
     }
 
+    /**
+     * @return whether the player joining is the first of the match
+     */
     public boolean isFirst() {
         return isFirst;
     }

@@ -1,36 +1,28 @@
 package it.polimi.ingsw.common.events;
 
-import java.util.List;
-
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
+/** Market's state update. */
 public class UpdateMarket implements MVEvent {
-    private final boolean isRow;
-    private final int index;
-    private final List<String> resources;
-    private final String slideRes;
+    // TODO commsproto docs
+    /** The reducedmarket containing the new market status. */
+    private final ReducedMarket market;
 
-    public UpdateMarket(boolean isRow, int index, List<String> resources, String slideRes) {
-        this.isRow = isRow;
-        this.index = index;
-        this.resources = resources;
-        this.slideRes = slideRes;
-    }
-
-    public boolean isRow() {
-        return isRow;
+    /**
+     * Class constructor.
+     * 
+     * @param market the reducedmarket containing the new market status
+     */
+    public UpdateMarket(ReducedMarket market) {
+        this.market = market;
     }
     
-    public int getIndex() {
-        return index;
-    }
-    
-    public List<String> getResources() {
-        return resources;
-    }
-    
-    public String getSlideRes() {
-        return slideRes;
+    /**
+     * @return the reducedmarket containing the new market status
+     */
+    public ReducedMarket getMarket() {
+        return this.market;
     }
 
     @Override

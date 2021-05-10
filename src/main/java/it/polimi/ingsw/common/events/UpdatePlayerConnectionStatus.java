@@ -2,10 +2,19 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
+/** Player connection status update. */
 public class UpdatePlayerConnectionStatus implements MVEvent {
+    /** The player the new status refers to. */
     private final String nickname;
+    /** Whether the player is now active. */
     private final boolean isActive;
 
+    /**
+     * Class constructor.
+     * 
+     * @param nickname the player the new status refers to
+     * @param isActive whether the player is now active
+     */
     public UpdatePlayerConnectionStatus(String nickname, boolean isActive) {
         this.nickname = nickname;
         this.isActive = isActive;
@@ -19,7 +28,7 @@ public class UpdatePlayerConnectionStatus implements MVEvent {
     }
 
     /**
-     * @return the nickname of the player who disconnected
+     * @return the nickname of the player the status of whom changed
      */
     public String getNickname() {
         return nickname;

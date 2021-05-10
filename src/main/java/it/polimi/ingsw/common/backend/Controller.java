@@ -11,7 +11,7 @@ public class Controller {
         this.model = model;
     }
 
-    public void update(View view, ReqQuit event) {
+    public void update(View view, GoodBye event) {
         model.exit(view);
     }
 

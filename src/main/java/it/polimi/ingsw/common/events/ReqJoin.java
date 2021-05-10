@@ -2,9 +2,16 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
+/** Client request to connect to the server's lobby. */
 public class ReqJoin implements VCEvent {
+    /** The nickname to connect with. */
     private final String nickname;
 
+    /**
+     * Class constructor.
+     * 
+     * @param nickname the chosen nickname to connect to the lobby with
+     */
     public ReqJoin(String nickname) {
         this.nickname = nickname;
     }
@@ -14,6 +21,9 @@ public class ReqJoin implements VCEvent {
         view.notify(this);
     }
 
+    /**
+     * @return the nickname to connect with
+     */
     public String getNickname() {
         return nickname;
     }

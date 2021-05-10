@@ -117,11 +117,7 @@ public class Market extends ModelObservable {
 
         shift(isRow, index);
 
-        notifyBroadcast(
-                new UpdateMarket(isRow, index,
-                        IntStream.range(0, isRow ? getColsCount() : getRowsCount())
-                                .mapToObj(i -> isRow ? grid.get(index).get(i).getName() : grid.get(i).get(index).getName()).toList(),
-                slide.getName()));
+        notifyBroadcast(new UpdateMarket(reduce()));
     }
 
     /**

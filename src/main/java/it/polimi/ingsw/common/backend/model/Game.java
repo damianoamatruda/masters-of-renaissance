@@ -232,7 +232,7 @@ public class Game extends ModelObservable {
             rounds++;
 
         if (lastRound)
-            end(); // TODO it's deprecated? Notifying players of who won?
+            end();
     }
 
     /**

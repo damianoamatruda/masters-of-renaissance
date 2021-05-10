@@ -57,7 +57,7 @@ public class VirtualView implements View {
     // ControllerObservable section
 
     @Override
-    public void notify(ReqQuit event) {
+    public void notify(GoodBye event) {
         controller.update(this, event);
     }
 

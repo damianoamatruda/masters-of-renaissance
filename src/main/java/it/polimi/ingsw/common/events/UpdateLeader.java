@@ -2,10 +2,22 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
-public class UpdateLeader implements MVEvent{
-    private final boolean isActive, isDiscarded;
+/** Leader card state update. */
+public class UpdateLeader implements MVEvent {
+    /** Whether the card is now active. */
+    private final boolean isActive;
+    /** Whether the card is now discarded. */
+    private final boolean isDiscarded;
+    /** The ID of the card the action was called upon. */
     private final int leader;
 
+    /**
+     * Class constructor.
+     * 
+     * @param leader      whether the card is now active
+     * @param isActive    whether the card is now discarded
+     * @param isDiscarded the ID of the card the action was called upon
+     */
     public UpdateLeader(int leader, boolean isActive, boolean isDiscarded) {
         this.leader = leader;
         this.isActive = isActive;
@@ -13,7 +25,7 @@ public class UpdateLeader implements MVEvent{
     }
 
     /**
-     * @return the leader
+     * @return the leader card's ID
      */
     public int getLeader() {
         return leader;

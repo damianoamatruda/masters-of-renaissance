@@ -11,13 +11,14 @@ import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import java.util.List;
 
 public class UpdateGameStart implements MVEvent {
+    // TODO nicknames, actiontokens, commproto docs
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
     private final List<LeaderCard> leaderCards;
     private final List<DevelopmentCard> developmentCards;
     private final List<ResourceContainer> resContainers;
     private final List<ResourceTransactionRecipe> productions;
-    private final List<Integer> leaders, shelves;
+    private final List<Integer> leaders, shelves; // TODO rename warehouseshelves
     private final int strongbox;
 
     /**

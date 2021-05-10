@@ -2,8 +2,10 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 
+/** Server response to a new game request. */
 public class ResNewGame implements MVEvent {
-    private final int count;
+    /** The number of players the new game is set to. */
+    private final int count; // TODO remove
 
     /**
      * Class constructor.
