@@ -67,8 +67,8 @@ public class Client implements VCEventSender {
             throw e;
         }
 
-        executor.submit(this::receive);
-        executor.submit(this::sendT);
+        executor.submit(this::runReceive);
+        executor.submit(this::runSend);
     }
 
     public void stop() {
@@ -82,7 +82,7 @@ public class Client implements VCEventSender {
         }
     }
 
-    private void receive() {
+    private void runReceive() {
         Gson gson = new Gson();
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
             String fromServer;
@@ -92,7 +92,7 @@ public class Client implements VCEventSender {
                 try {
                     jsonObject = gson.fromJson(fromServer, JsonObject.class);
                     if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitInputType)) {
-                        System.out.println("[Client] Goodbye message from server. Ending thread 'receive'...");
+                        System.out.println("[Client] Goodbye message from server. Ending thread 'runReceive'...");
                         break;
                     }
                 } catch (JsonSyntaxException ignored) {
@@ -104,7 +104,7 @@ public class Client implements VCEventSender {
         stop();
     }
 
-    private void sendT() {
+    private void runSend() {
         Gson gson = new Gson();
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
@@ -115,7 +115,7 @@ public class Client implements VCEventSender {
                 try {
                     jsonObject = gson.fromJson(fromClient, JsonObject.class);
                     if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
-                        System.out.println("[Client] Quit message from client. Ending thread 'send'...");
+                        System.out.println("[Client] Quit message from client. Ending thread 'runSend'...");
                         break;
                     }
                 } catch (JsonSyntaxException ignored) {
