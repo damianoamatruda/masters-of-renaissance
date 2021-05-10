@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class ResourceShelf extends Shelf {
     }
 
     @Override
-    public Map<String, Integer> toMap() {
-        return Map.of(boundedResType == null ? "" : boundedResType.getName(), getQuantity());
+    public ReducedResourceContainer reduce() {
+        return new ReducedResourceContainer(getId(), Map.of(boundedResType == null ? "" : boundedResType.getName(), getQuantity()), this.boundedResType.getName());
     }
 }

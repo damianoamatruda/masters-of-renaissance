@@ -277,7 +277,7 @@ resources, every other move is negated.
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                  UpdateShelves │ ╰──────────────────╯
+               │        UpdateResourceContainer │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │               UpdateFaithTrack │
@@ -350,7 +350,7 @@ Errors may arise from fitting the resources in the shelves, either by specifying
                │                   UpdateMarket │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │                  UpdateShelves │
+               │        UpdateResourceContainer │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                   UpdateLeader │
@@ -456,7 +456,7 @@ In the example below, the production with ID 3 does not specify its output: this
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                  UpdateShelves │ ╰──────────────────╯
+               │        UpdateResourceContainer │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
@@ -548,7 +548,7 @@ This is technically only useful when taking resources from the market, as no oth
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                  UpdateShelves │ ╰──────────────────╯
+               │        UpdateResourceContainer │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
@@ -809,20 +809,23 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                    UpdateShelf │
+               │        UpdateResourceContainer │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateShelf (server)**
+**UpdateResourceContainer (server)**
 
 ```json
 {
-  "type": "UpdateShelf",
-  "id": 3,
-  "content": [
-    { "Coin": 3 },
-    { "Shield": 1 }
-  ]
+  "type": "UpdateResourceContainer",
+  "container": {
+    "id": 3,
+    "content": [
+      { "Coin": 3 },
+      { "Shield": 1 }
+    ],
+    "bindingResource": null
+  }
 }
 ```
 

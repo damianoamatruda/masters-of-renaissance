@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.Map;
 import java.util.Set;
@@ -96,5 +97,5 @@ public abstract class ResourceContainer extends ModelObservable {
      * 
      * @return a map representing the container
      */
-    public abstract Map<String, Integer> toMap();
+    public abstract ReducedResourceContainer reduce();
 }

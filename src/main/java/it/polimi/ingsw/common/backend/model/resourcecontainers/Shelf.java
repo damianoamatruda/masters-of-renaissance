@@ -1,7 +1,8 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateShelf;
+import it.polimi.ingsw.common.events.UpdateResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.Map;
 import java.util.Optional;
@@ -123,7 +124,7 @@ public class Shelf extends ResourceContainer {
         this.resType = resType;
         this.quantity += resMap.get(resType);
 
-        notifyBroadcast(new UpdateShelf(getId(), toMap()));
+        notifyBroadcast(new UpdateResourceContainer(reduce()));
     }
 
     @Override
@@ -150,7 +151,7 @@ public class Shelf extends ResourceContainer {
             this.resType = null;
         this.quantity -= resMap.get(resType);
 
-        notifyBroadcast(new UpdateShelf(getId(), toMap()));
+        notifyBroadcast(new UpdateResourceContainer(reduce()));
     }
 
     @Override
@@ -173,7 +174,7 @@ public class Shelf extends ResourceContainer {
     }
 
     @Override
-    public Map<String, Integer> toMap() {
-        return Map.of(resType == null ? "" : resType.getName(), getQuantity());
+    public ReducedResourceContainer reduce() {
+        return new ReducedResourceContainer(getId(), Map.of(resType == null ? "" : resType.getName(), getQuantity()), this.resType.getName());
     }
 }

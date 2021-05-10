@@ -1,7 +1,8 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateShelf;
+import it.polimi.ingsw.common.events.UpdateResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class Strongbox extends ResourceContainer {
         for (ResourceType resType : resMap.keySet())
             resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
 
-        notifyBroadcast(new UpdateShelf(getId(), toMap()));
+        notifyBroadcast(new UpdateResourceContainer(reduce()));
     }
 
     @Override
@@ -84,7 +85,7 @@ public class Strongbox extends ResourceContainer {
         for (ResourceType resType : resMap.keySet())
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
         
-        notifyBroadcast(new UpdateShelf(getId(), toMap()));
+        notifyBroadcast(new UpdateResourceContainer(reduce()));
     }
 
     @Override
@@ -98,7 +99,7 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
-    public Map<String, Integer> toMap() {
-        return resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue));
+    public ReducedResourceContainer reduce() {
+        return new ReducedResourceContainer(getId(), resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)), null);
     }
 }
