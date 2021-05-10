@@ -1,23 +1,20 @@
 package it.polimi.ingsw.server;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSerializer;
+import it.polimi.ingsw.common.backend.Controller;
+import it.polimi.ingsw.common.backend.model.FileGameFactory;
+import it.polimi.ingsw.common.backend.model.GameFactory;
+import it.polimi.ingsw.common.backend.model.Lobby;
+import it.polimi.ingsw.common.events.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSerializer;
-import com.google.gson.JsonElement;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-
-import it.polimi.ingsw.common.events.MVEvent;
-import it.polimi.ingsw.common.events.*;
-import it.polimi.ingsw.server.model.FileGameFactory;
-import it.polimi.ingsw.server.model.GameFactory;
-import it.polimi.ingsw.server.model.Lobby;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -52,16 +49,17 @@ public class ServerPipelineTest {
     private Lobby m;
     private Controller c;
     private DummyView v;
-    private Gson gson = new Gson().newBuilder()
-        .enableComplexMapKeySerialization()
-        .registerTypeHierarchyAdapter(MVEvent.class, (JsonSerializer<MVEvent>) (msg, type, jsonSerializationContext) -> {
-            Gson customGson = new Gson().newBuilder()
-                    .enableComplexMapKeySerialization().setPrettyPrinting()
-                    .create();
-            JsonElement jsonElement = customGson.toJsonTree(msg);
-            jsonElement.getAsJsonObject().addProperty("type", ((Class<?>) type).getSimpleName());
-            return jsonElement; })
-        .setPrettyPrinting().create();
+    private final Gson gson = new Gson().newBuilder()
+            .enableComplexMapKeySerialization()
+            .registerTypeHierarchyAdapter(MVEvent.class, (JsonSerializer<MVEvent>) (msg, type, jsonSerializationContext) -> {
+                Gson customGson = new Gson().newBuilder()
+                        .enableComplexMapKeySerialization().setPrettyPrinting()
+                        .create();
+                JsonElement jsonElement = customGson.toJsonTree(msg);
+                jsonElement.getAsJsonObject().addProperty("type", ((Class<?>) type).getSimpleName());
+                return jsonElement;
+            })
+            .setPrettyPrinting().create();
     /**
      * Sets up a "clean server" scenario.
      */

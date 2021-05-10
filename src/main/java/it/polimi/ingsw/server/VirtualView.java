@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.events.*;
 
 /**
