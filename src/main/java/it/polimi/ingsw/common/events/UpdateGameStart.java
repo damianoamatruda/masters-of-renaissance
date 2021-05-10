@@ -2,24 +2,28 @@ package it.polimi.ingsw.common.events;
 
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.DevelopmentCard;
+import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.List;
 
 public class UpdateGameStart implements MVEvent {
-    // TODO nicknames, actiontokens, commproto docs
+    // TODO reduce, commproto docs
+    private final List<String> nicknames;
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
     private final List<LeaderCard> leaderCards;
     private final List<DevelopmentCard> developmentCards;
-    private final List<ResourceContainer> resContainers;
+    private final List<ReducedResourceContainer> resContainers;
     private final List<ResourceTransactionRecipe> productions;
-    private final List<Integer> leaders, shelves; // TODO rename warehouseshelves
+    private final List<Integer> leaders, warehouseShelves;
     private final int strongbox;
+    private final List<ActionToken> actionTokens;
 
     /**
      * Class constructor.
@@ -31,19 +35,23 @@ public class UpdateGameStart implements MVEvent {
      * @param resContainers         resource containers available at play time
      * @param productions           productions available at play time
      * @param leaders               player's leaders' IDs
-     * @param shelves               player's shelves' IDs
+     * @param warehouseShelves      player's warehouseShelves' IDs
      * @param strongbox             player's strongbox's ID
      */
     public UpdateGameStart(
+            List<String> nicknames,
             ReducedMarket market,
             ReducedDevCardGrid developmentCardGrid,
             List<LeaderCard> leaderCards,
             List<DevelopmentCard> developmentCards,
-            List<ResourceContainer> resContainers,
+            List<ReducedResourceContainer> resContainers,
             List<ResourceTransactionRecipe> productions,
             List<Integer> leaders,
-            List<Integer> shelves,
-            int strongbox) {
+            List<Integer> warehouseShelves,
+            int strongbox,
+            List<ActionToken> actionTokens) {
+        
+        this.nicknames = nicknames;
         this.market = market;
         this.developmentCardGrid = developmentCardGrid;
         this.leaderCards = leaderCards;
@@ -51,8 +59,16 @@ public class UpdateGameStart implements MVEvent {
         this.resContainers = resContainers;
         this.productions = productions;
         this.leaders = leaders;
-        this.shelves = shelves;
+        this.warehouseShelves = warehouseShelves;
         this.strongbox = strongbox;
+        this.actionTokens = actionTokens;
+    }
+
+    /**
+     * @return the players' nicknames
+     */
+    public List<String> getNicknames() {
+        return nicknames;
     }
 
     /**
@@ -65,7 +81,7 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the resource containers
      */
-    public List<ResourceContainer> getResContainers() {
+    public List<ReducedResourceContainer> getResContainers() {
         return resContainers;
     }
 
@@ -107,8 +123,8 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the player's shelves' IDs
      */
-    public List<Integer> getShelves() {
-        return shelves;
+    public List<Integer> getWarehouseShelves() {
+        return warehouseShelves;
     }
 
     /**
@@ -117,6 +133,15 @@ public class UpdateGameStart implements MVEvent {
     public List<Integer> getLeaders() {
         return leaders;
     }
+
+
+    /**
+     * @return the action tokens
+     */
+    public List<ActionToken> getActionTokens() {
+        return actionTokens;
+    }
+
 
     @Override
     public void handle(View view) {

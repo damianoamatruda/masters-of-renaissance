@@ -21,16 +21,16 @@ public class Game extends ModelObservable {
     protected final List<Player> players;
 
     /** The leader cards used in the game. */
-    private final List<LeaderCard> leaderCards;
+    protected final List<LeaderCard> leaderCards;
 
     /** The development cards used in the game. */
-    private final List<DevelopmentCard> developmentCards;
+    protected final List<DevelopmentCard> developmentCards;
 
     /** The resource containers used in the game. */
-    private final List<ResourceContainer> resContainers;
+    protected final List<ResourceContainer> resContainers;
 
     /** The productions used in the game. */
-    private final List<ResourceTransactionRecipe> productions;
+    protected final List<ResourceTransactionRecipe> productions;
 
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
@@ -104,15 +104,17 @@ public class Game extends ModelObservable {
         int strongbox = p.getStrongbox().getId();
 
         notify(o, new UpdateGameStart(
+            players.stream().map(pl -> pl.getNickname()).toList(),
             market.reduce(),
             devCardGrid.reduce(),
             leaderCards,
             developmentCards,
-            resContainers,
+            resContainers.stream().map(c -> c.reduce()).toList(),
             productions,
             leaders,
             shelves,
-            strongbox));
+            strongbox,
+            null));
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {

@@ -1,11 +1,13 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.events.UpdateActionToken;
 import it.polimi.ingsw.common.events.UpdateFaithTrack;
+import it.polimi.ingsw.common.events.UpdateGameStart;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +49,36 @@ public class SoloGame extends Game {
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;
+    }
+
+    public void addObserver(View o, String nickname) {
+        this.observers.add(o);
+        this.players.forEach(obj -> obj.addObserver(o));
+        this.leaderCards.forEach(obj -> obj.addObserver(o));
+        // this.developmentCards.forEach(obj -> obj.addObserver(o)); // technically unneded
+        this.resContainers.forEach(obj -> obj.addObserver(o));
+        this.devCardGrid.addObserver(o);
+        this.market.addObserver(o);
+        this.faithTrack.addObserver(o);
+
+        Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
+
+        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
+        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
+        int strongbox = p.getStrongbox().getId();
+
+        notify(o, new UpdateGameStart(
+            players.stream().map(pl -> pl.getNickname()).toList(),
+            market.reduce(),
+            devCardGrid.reduce(),
+            leaderCards,
+            developmentCards,
+            resContainers.stream().map(c -> c.reduce()).toList(),
+            productions,
+            leaders,
+            shelves,
+            strongbox,
+            actionTokens));
     }
 
     /**
