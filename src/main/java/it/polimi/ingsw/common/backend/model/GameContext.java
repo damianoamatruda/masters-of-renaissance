@@ -13,6 +13,7 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.ProductionReque
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransaction;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.ErrAction;
+import it.polimi.ingsw.common.events.UpdateSetupDone;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -37,7 +38,8 @@ public class GameContext extends ModelObservable {
      *
      * @param game the game
      */
-    public GameContext(Game game, GameFactory gameFactory) {
+    public GameContext(Game game, GameFactory gameFactory, List<View> observers) {
+        super(observers);
         this.game = game;
         this.setupDone = false;
         this.turnDone = false;
@@ -272,8 +274,10 @@ public class GameContext extends ModelObservable {
      * Check if the last necessary setup move has been made.
      */
     private void checkEndSetup() {
-        if (game.getPlayers().stream().allMatch(p -> p.hasChosenLeaders() && p.hasChosenResources()))
+        if (game.getPlayers().stream().allMatch(p -> p.hasChosenLeaders() && p.hasChosenResources())) {
             setupDone = true;
+            notifyBroadcast(new UpdateSetupDone());
+        }
     }
 
     /**

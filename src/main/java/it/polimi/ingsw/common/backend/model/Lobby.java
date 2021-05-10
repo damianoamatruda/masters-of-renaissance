@@ -69,7 +69,7 @@ public class Lobby extends ModelObservable {
             gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
             gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList());
 
-        GameContext newContext = new GameContext(newGame, gameFactory);
+        GameContext newContext = new GameContext(newGame, gameFactory, waiting.subList(0, countToNewGame));
         // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(v -> {
             newGame.addObserver(v, nicknames.get(v));
