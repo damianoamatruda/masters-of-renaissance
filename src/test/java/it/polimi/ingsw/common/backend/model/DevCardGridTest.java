@@ -46,6 +46,8 @@ public class DevCardGridTest {
                     ));
         devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 
+        ResourceType r1 = new ResourceType("r1", true);
+
         buyer = new Player(
                 "",
                 true, List.of(),

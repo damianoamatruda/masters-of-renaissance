@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.backend.model.cardrequirements.ResourceRequirement
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
+import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -49,6 +50,8 @@ class ActionTokenDiscardTwoTest {
                     ));
         DevCardGrid devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 
+        ResourceType r1 = new ResourceType("r1", true);
+
         player = new Player(
                 "",
                 true,
@@ -63,7 +66,7 @@ class ActionTokenDiscardTwoTest {
                 List.of(),
                 List.of(),
                 devCardGrid,
-                null,
+                new Market(Map.of(r1, 1), 1, r1),
                 new FaithTrack(Set.of(), Set.of()),
                 List.of(new ActionToken() {
                     @Override
