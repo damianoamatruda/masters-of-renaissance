@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.common.ModelObservable;
-import it.polimi.ingsw.common.ReducedDevCardGrid;
 import it.polimi.ingsw.common.events.UpdateDevGrid;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;

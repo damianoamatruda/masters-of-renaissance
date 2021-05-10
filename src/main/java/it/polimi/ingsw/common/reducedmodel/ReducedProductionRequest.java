@@ -1,4 +1,4 @@
-package it.polimi.ingsw.common;
+package it.polimi.ingsw.common.reducedmodel;
 
 import java.util.Map;
 

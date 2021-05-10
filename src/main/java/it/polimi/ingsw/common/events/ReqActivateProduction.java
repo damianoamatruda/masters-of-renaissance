@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.common.ReducedProductionRequest;
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.List;
 

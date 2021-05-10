@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.common.ModelObservable;
-import it.polimi.ingsw.common.ReducedProductionRequest;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.ErrAction;
+import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.common.events;
 
-import it.polimi.ingsw.common.ReducedDevCardGrid;
-import it.polimi.ingsw.common.ReducedMarket;
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
+import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import it.polimi.ingsw.server.model.DevelopmentCard;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;

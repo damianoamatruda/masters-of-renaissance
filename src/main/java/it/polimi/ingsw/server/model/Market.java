@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.common.ModelObservable;
-import it.polimi.ingsw.common.ReducedMarket;
 import it.polimi.ingsw.common.events.UpdateMarket;
+import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcetransactions.*;
