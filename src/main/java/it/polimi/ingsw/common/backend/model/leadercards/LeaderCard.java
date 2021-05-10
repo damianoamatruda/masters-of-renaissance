@@ -33,7 +33,7 @@ public abstract class LeaderCard extends Card {
      *                      type only.
      * @param requirement   the requirement to be satisfied for card activation.
      * @param victoryPoints the victory points associated with the card.
-     * @param id
+     * @param id            the card identifier number
      */
     public LeaderCard(ResourceType resource, CardRequirement requirement, int victoryPoints, int id) {
         super(victoryPoints, id);
@@ -56,6 +56,7 @@ public abstract class LeaderCard extends Card {
      *
      * @param player the player activating the card. The card's requirements will be checked on them.
      * @throws CardRequirementsNotMetException if the leader's requirements are not met when activating
+     * @throws IllegalArgumentException        player does not own this card
      */
     public void activate(Player player) throws IllegalArgumentException, CardRequirementsNotMetException {
         if (!player.getLeaders().contains(this))

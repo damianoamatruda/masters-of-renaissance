@@ -55,7 +55,7 @@ public class Lobby extends ModelObservable {
             notify(view, new ErrAction("Command unavailable. You are not the first player who joined."));
             return;
         }
-        System.out.println(String.format("Setting players count to %d.", count));
+        System.out.printf("Setting players count to %d.%n", count);
         
         notify(view, new ResNewGame(count));
         

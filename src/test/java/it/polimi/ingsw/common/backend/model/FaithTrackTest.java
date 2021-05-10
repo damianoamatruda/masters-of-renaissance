@@ -29,7 +29,7 @@ class FaithTrackTest {
      */
     @Test
     void playerOnYellowTile() {
-        assertEquals(track.getLastReachedYellowTile(3).get().getFaithPoints(), 3);
+        assertEquals(track.getLastReachedYellowTile(3).orElseThrow().getFaithPoints(), 3);
     }
 
     /**
@@ -37,7 +37,7 @@ class FaithTrackTest {
      */
     @Test
     void playerAfterYellowTile() {
-        assertEquals(track.getLastReachedYellowTile(4).get().getFaithPoints(), 3);
+        assertEquals(track.getLastReachedYellowTile(4).orElseThrow().getFaithPoints(), 3);
     }
 
     /**

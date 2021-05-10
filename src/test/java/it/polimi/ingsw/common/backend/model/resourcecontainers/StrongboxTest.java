@@ -110,7 +110,7 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
-    void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
+    void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)
@@ -121,7 +121,7 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
-    void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
+    void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)
@@ -132,7 +132,7 @@ class StrongboxTest {
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
-    void clearedStrongboxShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
+    void clearedStrongboxShouldBeEmpty(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         for (int i = 0; i < resourcesCount; i++)

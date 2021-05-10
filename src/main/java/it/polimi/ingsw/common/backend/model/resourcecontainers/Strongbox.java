@@ -99,6 +99,6 @@ public class Strongbox extends ResourceContainer {
 
     @Override
     public Map<String, Integer> toMap() {
-        return resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), e -> e.getValue()));
+        return resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue));
     }
 }

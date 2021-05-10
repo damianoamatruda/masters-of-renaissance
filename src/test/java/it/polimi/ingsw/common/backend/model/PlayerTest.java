@@ -131,9 +131,9 @@ public class PlayerTest {
 
     /**
      * Ensures that an exception is thrown when trying to discard an activated leader card.
-     * @throws CardRequirementsNotMetException
      *
-     * @throws IllegalActivationException leader card cannot be activated
+     * @throws CardRequirementsNotMetException  leader cannot be activated due to requirements not met.
+     * @throws IllegalArgumentException         player does not own the given card
      */
     @Test
     void invalidLeaderDiscard() throws IllegalArgumentException, CardRequirementsNotMetException {

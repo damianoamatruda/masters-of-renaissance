@@ -14,11 +14,11 @@ import java.util.Map;
 public class ZeroLeader extends LeaderCard {
     /**
      * Class constructor.
-     *  @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
+     * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied for card activation
      * @param victoryPoints the victory points associated with the card
-     * @param id
+     * @param id            the card identifier number
      */
     public ZeroLeader(ResourceType resource, CardRequirement requirement, int victoryPoints, int id) {
         super(resource, requirement, victoryPoints, id);

@@ -130,7 +130,7 @@ public class DevCardGrid extends ModelObservable {
         try {
             player.addToDevSlot(game, slotIndex, card, resContainers);
             notifyBroadcast(
-                new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(c -> c.getId()).toList()).toList()));
+                new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(Card::getId).toList()).toList()));
         } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
@@ -168,8 +168,8 @@ public class DevCardGrid extends ModelObservable {
         if (s == null) return null;
 
         Stack<Integer> reducedDeck = new Stack<>();
-        for(int i = 0; i < s.size(); i++) {
-            reducedDeck.push(s.get(i).getId());
+        for (DevelopmentCard developmentCard : s) {
+            reducedDeck.push(developmentCard.getId());
         }
         return reducedDeck;
     }

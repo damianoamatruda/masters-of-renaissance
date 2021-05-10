@@ -97,10 +97,10 @@ public class Game extends ModelObservable {
         this.market.addObserver(o);
         this.faithTrack.addObserver(o);
 
-        Player p = players.stream().filter(pl -> pl.getNickname() == nickname).findFirst().get();
+        Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
 
-        List<Integer> leaders = p.getLeaders().stream().map(l -> l.getId()).toList();
-        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(s -> s.getId()).toList();
+        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
+        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
         int strongbox = p.getStrongbox().getId();
 
         notify(o, new UpdateGameStart(
