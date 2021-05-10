@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
 import java.util.List;
+import java.util.Map;
 
 public class UpdateGameStart implements MVEvent {
     private final ReducedMarket market;
@@ -17,6 +18,7 @@ public class UpdateGameStart implements MVEvent {
     List<DevelopmentCard> developmentCards;
     List<ResourceContainer> resContainers;
     List<ResourceTransactionRecipe> productions;
+    Map<String, List<Integer>> leaderHands;
 
     public UpdateGameStart(
             ReducedMarket market,
@@ -24,13 +26,15 @@ public class UpdateGameStart implements MVEvent {
             List<LeaderCard> leaderCards,
             List<DevelopmentCard> developmentCards,
             List<ResourceContainer> resContainers,
-            List<ResourceTransactionRecipe> productions) {
+            List<ResourceTransactionRecipe> productions,
+            Map<String, List<Integer>> leaderHands) {
         this.market = market;
         this.developmentCardGrid = developmentCardGrid;
         this.leaderCards = leaderCards;
         this.developmentCards = developmentCards;
         this.resContainers = resContainers;
         this.productions = productions;
+        this.leaderHands = leaderHands;
     }
 
     /**

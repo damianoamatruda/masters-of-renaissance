@@ -11,6 +11,7 @@ import it.polimi.ingsw.common.events.UpdateLastRound;
 import it.polimi.ingsw.common.events.UpdateWinner;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -56,8 +57,6 @@ public class Game extends ModelObservable {
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
-    private final UpdateGameStart initialInfo;
-
     /**
      * Constructor of Game instances.
      *
@@ -87,14 +86,6 @@ public class Game extends ModelObservable {
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
-
-        initialInfo = new UpdateGameStart(
-                market.reduce(),
-                devCardGrid.reduce(),
-                leaderCards,
-                developmentCards,
-                resContainers,
-                productions);
     }
 
     @Override
@@ -108,7 +99,18 @@ public class Game extends ModelObservable {
         this.market.addObserver(o);
         this.faithTrack.addObserver(o);
 
-        notify(o, initialInfo);
+        Map<String, List<Integer>> leaderHands = players.stream()
+            .filter(p -> !p.hasChosenLeaders())
+            .collect(Collectors.toMap(Player::getNickname, p -> p.getLeaders().stream().map(l -> l.getId()).toList()));
+
+        notify(o, new UpdateGameStart(
+            market.reduce(),
+            devCardGrid.reduce(),
+            leaderCards,
+            developmentCards,
+            resContainers,
+            productions,
+            leaderHands));
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {
