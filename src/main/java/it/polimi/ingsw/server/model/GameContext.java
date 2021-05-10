@@ -174,7 +174,7 @@ public class GameContext extends ModelObservable {
      * @throws IllegalActionException if the player cannot take resources from the market in the current state
      */
     public void takeMarketResources(View v, String nickname, boolean isRow, int index,
-                                    Map<ResourceType, Integer> replacements,
+                                    Map<String, Integer> replacements,
                                     Map<Integer, Map<String, Integer>> reducedShelves) {
         if (!preliminaryChecks(v, "Take market resources")) return;
 
@@ -184,8 +184,9 @@ public class GameContext extends ModelObservable {
 
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
         reducedShelves.forEach((key, value) -> shelves.put((Shelf) game.getShelfById(key).orElseThrow(), translateResources(value)));
+
         try {
-            game.getMarket().takeResources(game, player, isRow, index, replacements, shelves);
+            game.getMarket().takeResources(game, player, isRow, index, translateResources(replacements), shelves);
         } catch (IllegalMarketTransferException e) {
             notify(v, new ErrAction(e.getMessage()));
         }

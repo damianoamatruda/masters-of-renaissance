@@ -1,13 +1,14 @@
 package it.polimi.ingsw.common.events;
 
+import it.polimi.ingsw.common.ReducedProductionRequest;
 import it.polimi.ingsw.common.View;
 
 import java.util.List;
 
 public class ReqActivateProduction implements VCEvent {
-    private final List<Object> productionGroup;
+    private final List<ReducedProductionRequest> productionGroup;
 
-    public ReqActivateProduction(List<Object> productionGroup) {
+    public ReqActivateProduction(List<ReducedProductionRequest> productionGroup) {
         this.productionGroup = productionGroup;
     }
 
@@ -16,7 +17,7 @@ public class ReqActivateProduction implements VCEvent {
         view.notify(this);
     }
 
-    public Object getProductionGroup() {
+    public List<ReducedProductionRequest> getProductionGroup() {
         return productionGroup;
     }
 }
