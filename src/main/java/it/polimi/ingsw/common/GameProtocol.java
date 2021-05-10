@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common;
 
 import com.google.gson.*;
-import it.polimi.ingsw.common.events.ErrCommunication;
+import it.polimi.ingsw.common.events.ErrUnparsableMessage;
 import it.polimi.ingsw.common.events.ErrController;
 import it.polimi.ingsw.common.events.MVEvent;
 import it.polimi.ingsw.common.events.VCEvent;
@@ -12,7 +12,7 @@ public class GameProtocol {
      */
     public void processInput(String input, View view) {
         if (input == null || input.isBlank()) {
-            view.update(new ErrCommunication("Empty input."));
+            view.update(new ErrUnparsableMessage("Empty input."));
             return;
         }
 
@@ -24,18 +24,18 @@ public class GameProtocol {
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonSyntaxException e) {
-            view.update(new ErrCommunication("Invalid syntax."));
+            view.update(new ErrUnparsableMessage("Invalid syntax."));
             return;
         }
         if (jsonObject == null) {
-            view.update(new ErrCommunication("Unknown parser error."));
+            view.update(new ErrUnparsableMessage("Unknown parser error."));
             return;
         }
 
         JsonElement type = jsonObject.get("type");
 
         if (type == null) {
-            view.update(new ErrCommunication("Field \"type\" not found."));
+            view.update(new ErrUnparsableMessage("Field \"type\" not found."));
             return;
         }
 
@@ -44,10 +44,10 @@ public class GameProtocol {
         try {
             event = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.common.events." + type.getAsString()).asSubclass(VCEvent.class));
         } catch (ClassNotFoundException e) {
-            view.update(new ErrCommunication("Event type \"" + type.getAsString() + "\" does not exist."));
+            view.update(new ErrUnparsableMessage("Event type \"" + type.getAsString() + "\" does not exist."));
             return;
         } catch (JsonSyntaxException e) {
-            view.update(new ErrCommunication("Invalid attribute types."));
+            view.update(new ErrUnparsableMessage("Invalid attribute types."));
             return;
         }
 
