@@ -17,6 +17,7 @@ import it.polimi.ingsw.common.events.UpdateSetupDone;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * This class manages the states and actions of a game.
@@ -49,17 +50,19 @@ public class GameContext extends ModelObservable {
     /**
      * Choose leaders from the hand of a player.
      *
-     * @param v the view the action originates from.
-     *          Used to send back errors
-     * @param nickname the player
-     * @param leaderIndexes the leader cards to choose
+     * @param v         the view the action originates from. Used to send back errors
+     * @param nickname  the player
+     * @param leaderIds the leader cards to choose
      */
-    public void chooseLeaders(View v, String nickname, List<Integer> leaderIndexes) {
+    public void chooseLeaders(View v, String nickname, List<Integer> leaderIds) {
         if (setupDone)
             notify(v, new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
-        
+
         Player player = getPlayerByNickname(nickname);
-        List<LeaderCard> leaders = leaderIndexes.stream().map(l -> player.getLeaders().get(l)).toList();
+        Stream<Optional<LeaderCard>> leaderStream = leaderIds.stream().map(game::getLeaderById);
+        if (leaderStream.anyMatch(Optional::isEmpty))
+            notify(v, new ErrAction("Leader not found.")); // TODO: This is a PoC exception
+        List<LeaderCard> leaders = leaderStream.filter(Optional::isPresent).map(Optional::get).toList();
         try {
             player.chooseLeaders(leaders);
         } catch (CannotChooseException e) {
