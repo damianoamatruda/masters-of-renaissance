@@ -55,19 +55,25 @@ public class GameContext extends ModelObservable {
      * @param leaderIds the leader cards to choose
      */
     public void chooseLeaders(View v, String nickname, List<Integer> leaderIds) {
-        if (setupDone)
+        if (setupDone) {
             notify(v, new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
+            return;
+        }
 
         Player player = getPlayerByNickname(nickname);
         Stream<Optional<LeaderCard>> leaderStream = leaderIds.stream().map(game::getLeaderById);
-        if (leaderStream.anyMatch(Optional::isEmpty))
+        if (leaderStream.anyMatch(Optional::isEmpty)) {
             notify(v, new ErrAction("Leader not found.")); // TODO: This is a PoC exception
+            return;
+        }
         List<LeaderCard> leaders = leaderStream.filter(Optional::isPresent).map(Optional::get).toList();
         try {
             player.chooseLeaders(leaders);
         } catch (CannotChooseException e) {
             notify(v, new ErrAction(e.getMessage()));
+            return;
         }
+
         checkEndSetup();
     }
 
@@ -80,8 +86,10 @@ public class GameContext extends ModelObservable {
      * @param reducedShelves the destination shelves
      */
     public void chooseResources(View v, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
-        if (setupDone)
+        if (setupDone) {
             notify(v, new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
+            return;
+        }
         
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
         reducedShelves.forEach((key, value) -> shelves.put((Shelf) game.getShelfById(key).orElseThrow(), translateResources(value)));
@@ -90,7 +98,9 @@ public class GameContext extends ModelObservable {
             current.chooseResources(game, shelves);
         } catch (CannotChooseException | IllegalResourceTransactionActivationException e) {
             notify(v, new ErrAction(e.getMessage()));
+            return;
         }
+
         checkEndSetup();
     }
 
@@ -192,6 +202,7 @@ public class GameContext extends ModelObservable {
             game.getMarket().takeResources(game, player, isRow, index, translateResources(replacements), shelves);
         } catch (IllegalMarketTransferException e) {
             notify(v, new ErrAction(e.getMessage()));
+            return;
         }
         turnDone = true;
     }
@@ -222,6 +233,7 @@ public class GameContext extends ModelObservable {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
         } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException e) {
             notify(v, new ErrAction(e.getMessage()));
+            return;
         }
         turnDone = true;
     }
@@ -245,6 +257,7 @@ public class GameContext extends ModelObservable {
             transaction.activate(game, player);
         } catch (IllegalResourceTransactionActivationException e) {
             notify(v, new ErrAction(e.getMessage()));
+            return;
         }
         turnDone = true;
     }
@@ -257,9 +270,11 @@ public class GameContext extends ModelObservable {
      * @param nickname the player
      */
     public void endTurn(View v, String nickname) {
-        if (!setupDone || !turnDone)
+        if (!setupDone || !turnDone) {
             notify(v, new ErrAction(
                     new IllegalActionException("End turn", !setupDone ? "Setup is not done yet" : "No action executed in the turn").getMessage()));
+            return;
+        }
 
         Player player = getPlayerByNickname(nickname);
 
@@ -269,7 +284,9 @@ public class GameContext extends ModelObservable {
             game.onTurnEnd();
         } catch (NoActivePlayersException e) {
             notify(v, new ErrAction(e.getMessage())); // TODO does this make sense?
+            return;
         }
+
         turnDone = false;
     }
 
