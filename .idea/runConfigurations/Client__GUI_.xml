@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Client" type="Application" factoryName="Application" singleton="false">
+  <configuration default="false" name="Client (GUI)" type="Application" factoryName="Application" singleton="false">
     <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.client.Client" />
     <module name="AM49" />
     <method v="2">
