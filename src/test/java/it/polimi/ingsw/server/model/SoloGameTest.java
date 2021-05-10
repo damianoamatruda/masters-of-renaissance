@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetExcep
 import it.polimi.ingsw.server.model.leadercards.DepotLeader;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -32,7 +33,7 @@ public class SoloGameTest {
         player = new Player("Alessandro", true, List.of(
                 new DepotLeader(2, coin, null, 0, 0),
                 new DepotLeader(2, coin, null, 0, 0)
-        ), new Warehouse(3), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 3, 0, 0, 0, Set.of());
+        ), new Warehouse(3), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 3, 0, 0, 0, Set.of());
 
         track = new FaithTrack(Set.of(
                 new FaithTrack.VaticanSection(0, 5, 8, 2),

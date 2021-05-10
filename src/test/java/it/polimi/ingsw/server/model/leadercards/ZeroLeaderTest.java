@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.leadercards;
 
 import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class ZeroLeaderTest {
     @BeforeEach
     void setup() {
         leader = new ZeroLeader(coin, null, 0, 0);
-        p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
     }
 
     /**

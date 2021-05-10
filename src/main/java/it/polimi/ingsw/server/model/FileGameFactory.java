@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.io.InputStream;
@@ -62,7 +63,7 @@ public class FileGameFactory implements GameFactory {
     private final Map<String, ResourceType> resTypeMap;
 
     /** The base production shared by all players. */
-    private final Production baseProduction;
+    private final ResourceTransactionRecipe baseProduction;
 
     /** The boosts. */
     private final List<Boost> boosts;
@@ -76,7 +77,7 @@ public class FileGameFactory implements GameFactory {
     public FileGameFactory(InputStream inputStream) {
         gson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
-                .registerTypeAdapter(Production.class, new ProductionDeserializer(null))
+                .registerTypeAdapter(ResourceTransactionRecipe.class, new ProductionDeserializer(null))
                 .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                 .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                 .create();
@@ -102,7 +103,7 @@ public class FileGameFactory implements GameFactory {
         resTypeMap = generateResourceTypes().stream()
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
 
-        baseProduction = gson.fromJson(parserObject.get("baseProduction"), Production.class);
+        baseProduction = gson.fromJson(parserObject.get("baseProduction"), ResourceTransactionRecipe.class);
         boosts = gson.fromJson(parserObject.get("boosts"), new TypeToken<ArrayList<Boost>>() {
         }.getType());
     }
@@ -111,7 +112,7 @@ public class FileGameFactory implements GameFactory {
     public Game getMultiGame(List<String> nicknames) {
         checkNumberOfPlayers(nicknames);
 
-        List<Production> productions = new ArrayList<>(List.of(baseProduction));
+        List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
         List<LeaderCard> leaderCards = generateLeaderCards(productions);
         List<DevelopmentCard> developmentCards = generateDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
@@ -133,7 +134,7 @@ public class FileGameFactory implements GameFactory {
 
     @Override
     public SoloGame getSoloGame(String nickname) {
-        List<Production> productions = new ArrayList<>(List.of(baseProduction));
+        List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
         List<LeaderCard> leaderCards = generateLeaderCards(productions);
         List<DevelopmentCard> developmentCards = generateDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
@@ -253,7 +254,7 @@ public class FileGameFactory implements GameFactory {
      * @param productions      the existing list of productions
      * @param developmentCards the development cards
      */
-    private void addDevCardProductions(List<Production> productions, List<DevelopmentCard> developmentCards) {
+    private void addDevCardProductions(List<ResourceTransactionRecipe> productions, List<DevelopmentCard> developmentCards) {
         productions.addAll(developmentCards.stream()
                 .map(DevelopmentCard::getProduction).toList());
     }
@@ -295,10 +296,10 @@ public class FileGameFactory implements GameFactory {
      *
      * @return list of leader cards
      */
-    private List<LeaderCard> generateLeaderCards(List<Production> productions) {
+    private List<LeaderCard> generateLeaderCards(List<ResourceTransactionRecipe> productions) {
         Gson customGson = new GsonBuilder()
                 .enableComplexMapKeySerialization().setPrettyPrinting()
-                .registerTypeAdapter(Production.class, new ProductionDeserializer(productions))
+                .registerTypeAdapter(ResourceTransactionRecipe.class, new ProductionDeserializer(productions))
                 .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                 .registerTypeAdapter(DevCardColor.class, new ColorDeserializer())
                 .registerTypeAdapter(CardRequirement.class, new RequirementDeserializer())
@@ -421,21 +422,22 @@ public class FileGameFactory implements GameFactory {
         }
     }
 
-    private class ProductionDeserializer implements JsonDeserializer<Production> {
-        private final List<Production> productions;
+    private class ProductionDeserializer implements JsonDeserializer<ResourceTransactionRecipe> {
+        private final List<ResourceTransactionRecipe> productions;
 
-        public ProductionDeserializer(List<Production> productions) {
+        public ProductionDeserializer(List<ResourceTransactionRecipe> productions) {
             this.productions = productions;
         }
 
         @Override
-        public Production deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-            jsonElement.getAsJsonObject().addProperty("id", Production.generateId());
+        public ResourceTransactionRecipe deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            jsonElement.getAsJsonObject().addProperty("id", ResourceTransactionRecipe.generateId());
+            // jsonElement.getAsJsonObject().addProperty("discardableOutput", false);
             Gson customGson = new GsonBuilder()
                     .enableComplexMapKeySerialization().setPrettyPrinting()
                     .registerTypeAdapter(ResourceType.class, new ResourceDeserializer())
                     .create();
-            Production res = customGson.fromJson(jsonElement, Production.class);
+            ResourceTransactionRecipe res = customGson.fromJson(jsonElement, ResourceTransactionRecipe.class);
             if (productions != null)
                 productions.add(res);
             return res;

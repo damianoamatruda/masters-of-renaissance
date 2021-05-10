@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -43,7 +44,7 @@ class ActionTokenDiscardTwoTest {
                     devCards.add(new DevelopmentCard(
                             color, level,
                             new ResourceRequirement(Map.of()),
-                            new Production(Map.of(), 0, Map.of(), 0),
+                            new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0),
                             3 * i, 0
                     ));
         DevCardGrid devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
@@ -53,7 +54,7 @@ class ActionTokenDiscardTwoTest {
                 true,
                 List.of(),
                 new Warehouse(0), new Strongbox(),
-                new Production(Map.of(), 0, Map.of(), 0), 1,
+                new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 1,
                 0, 0, 0, Set.of());
         game = new SoloGame(
                 player,

@@ -6,10 +6,10 @@ import it.polimi.ingsw.common.View;
 import java.util.List;
 
 public class ReqActivateProduction implements VCEvent {
-    private final List<ReducedProductionRequest> productionGroup;
+    private final List<ReducedProductionRequest> transactionRequests;
 
-    public ReqActivateProduction(List<ReducedProductionRequest> productionGroup) {
-        this.productionGroup = productionGroup;
+    public ReqActivateProduction(List<ReducedProductionRequest> transactionRequests) {
+        this.transactionRequests = transactionRequests;
     }
 
     @Override
@@ -17,7 +17,7 @@ public class ReqActivateProduction implements VCEvent {
         view.notify(this);
     }
 
-    public List<ReducedProductionRequest> getProductionGroup() {
-        return productionGroup;
+    public List<ReducedProductionRequest> getProductionRequests() {
+        return transactionRequests;
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.*;
 
@@ -32,7 +33,7 @@ public class GameTest {
                     shuffledNicknames.get(i),
                     i == 0, List.of(),
                     new Warehouse(3), new Strongbox(),
-                    new Production(Map.of(), 2, Map.of(), 1), 3
+                    new ResourceTransactionRecipe(Map.of(), 2, Map.of(), 1), 3
                     , 0, 0, 0, Set.of());
             players.add(player);
         }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
@@ -75,7 +76,7 @@ public class MarketTest {
         Market market = new Market(
                 Map.of(r1, 1, r2, 1, r3, 2, r4, 2, r5, 3, r6, 4), 4, r6);
 
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         Map<ResourceType, Shelf> shelves = Map.of(

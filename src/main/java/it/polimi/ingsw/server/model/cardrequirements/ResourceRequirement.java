@@ -1,9 +1,14 @@
 package it.polimi.ingsw.server.model.cardrequirements;
 
-import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.Player;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
+import it.polimi.ingsw.server.model.resourcetransactions.IllegalResourceTransactionActivationException;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransaction;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRequest;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.ArrayList;
@@ -99,12 +104,12 @@ public class ResourceRequirement implements CardRequirement {
      */
     public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException {
         try {
-            new ProductionGroup(List.of(
-                    new ProductionGroup.ProductionRequest(
-                            new Production(getDiscountedCost(player), 0, Map.of(), 0),
+            new ResourceTransaction(List.of(
+                    new ResourceTransactionRequest(
+                            new ResourceTransactionRecipe(getDiscountedCost(player), 0, Map.of(), 0),
                             Map.of(), Map.of(), resContainers, Map.of())
             )).activate(game, player);
-        } catch (IllegalProductionActivationException e) {
+        } catch (IllegalResourceTransactionActivationException e) {
             throw new CardRequirementsNotMetException("resource", e);
         }
     }

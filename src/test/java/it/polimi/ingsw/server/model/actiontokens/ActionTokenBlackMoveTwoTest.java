@@ -1,8 +1,12 @@
 package it.polimi.ingsw.server.model.actiontokens;
 
-import it.polimi.ingsw.server.model.*;
+import it.polimi.ingsw.server.model.DevCardGrid;
+import it.polimi.ingsw.server.model.FaithTrack;
+import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.SoloGame;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -21,7 +25,7 @@ class ActionTokenBlackMoveTwoTest {
     @Test
     void trigger() {
         ActionToken token = new ActionTokenBlackMoveTwo(0);
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         SoloGame game = new SoloGame(player, List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), null, new FaithTrack(Set.of(), Set.of()), List.of(), 0, 0);
 
         token.trigger(game);

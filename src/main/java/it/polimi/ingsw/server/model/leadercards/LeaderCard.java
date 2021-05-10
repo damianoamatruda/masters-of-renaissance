@@ -3,10 +3,10 @@ package it.polimi.ingsw.server.model.leadercards;
 import it.polimi.ingsw.common.events.UpdateLeader;
 import it.polimi.ingsw.server.model.Card;
 import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceShelf;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.Map;
@@ -96,7 +96,7 @@ public abstract class LeaderCard extends Card {
     /**
      * @return the Production object of the leader card.
      */
-    public Optional<Production> getProduction() {
+    public Optional<ResourceTransactionRecipe> getProduction() {
         return Optional.empty();
     }
 

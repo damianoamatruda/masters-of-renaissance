@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.ReducedMarket;
 import it.polimi.ingsw.common.events.UpdateMarket;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
+import it.polimi.ingsw.server.model.resourcetransactions.*;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
@@ -98,19 +99,19 @@ public class Market extends ModelObservable {
             output = leader.replaceMarketResources(replaceableResType, output, replacements);
         output.remove(replaceableResType);
 
-        ProductionGroup.ProductionRequest productionRequest;
+        ResourceTransactionRequest transactionRequest;
 
         try {
-            productionRequest = new ProductionGroup.ProductionRequest(
-                    new Production(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
+            transactionRequest = new ResourceTransactionRequest(
+                    new ResourceTransactionRecipe(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
                     Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
-        } catch (IllegalProductionActivationException.IllegalProductionReplacementsException | IllegalProductionActivationException.IllegalProductionContainersException e) {
+        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
             throw new IllegalMarketTransferException(e);
         }
 
         try {
-            new ProductionGroup(List.of(productionRequest)).activate(game, player);
-        } catch (IllegalProductionActivationException e) {
+            new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
+        } catch (IllegalResourceTransactionActivationException e) {
             throw new IllegalMarketTransferException(e);
         }
 

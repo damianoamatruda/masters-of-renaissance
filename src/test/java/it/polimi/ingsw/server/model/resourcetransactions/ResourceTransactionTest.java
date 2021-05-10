@@ -1,5 +1,6 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.server.model.resourcetransactions;
 
+import it.polimi.ingsw.server.model.*;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
@@ -13,16 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test class for ProductionGroup.
+ * Test class for ResourceTransaction.
  */
-public class ProductionGroupTest {
+public class ResourceTransactionTest {
     @Test
-    void singleProductionWithoutBlanks() throws IllegalProductionActivationException {
+    void singleRequestWithoutBlanks() throws IllegalResourceTransactionActivationException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
-        Production prod = new Production(
+        ResourceTransactionRecipe prod = new ResourceTransactionRecipe(
                 Map.of(r1, 2),
                 0,
                 Set.of(),
@@ -35,15 +36,15 @@ public class ProductionGroupTest {
         for (int i = 0; i < 6; i++)
             player.getStrongbox().addResource(r1);
 
-        ProductionGroup.ProductionRequest pr1 = new ProductionGroup.ProductionRequest(
+        ResourceTransactionRequest pr1 = new ResourceTransactionRequest(
                 prod,
                 Map.of(),
                 Map.of(),
                 Map.of(player.getStrongbox(), Map.of(r1, 2)),
                 Map.of(player.getStrongbox(), Map.of(r2, 3))
         );
-        ProductionGroup productionGroup = new ProductionGroup(List.of(pr1));
-        productionGroup.activate(game, player);
+        ResourceTransaction transaction = new ResourceTransaction(List.of(pr1));
+        transaction.activate(game, player);
 
         assertAll("getResourceQuantity",
                 () -> assertEquals(4, player.getStrongbox().getResourceQuantity(r1)),
@@ -52,28 +53,28 @@ public class ProductionGroupTest {
     }
 
     @Test
-    void singleProductionWithInputBlanks() throws IllegalProductionActivationException {
+    void singleRequestWithInputBlanks() throws IllegalResourceTransactionActivationException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
-        Production prod = new Production(Map.of(r1, 2), 3, Set.of(), Map.of(r2, 3), 0, Set.of(), false);
+        ResourceTransactionRecipe prod = new ResourceTransactionRecipe(Map.of(r1, 2), 3, Set.of(), Map.of(r2, 3), 0, Set.of(), false);
 
         for (int i = 0; i < 6; i++)
             player.getStrongbox().addResource(r1);
         for (int i = 0; i < 2; i++)
             player.getStrongbox().addResource(r3);
 
-        ProductionGroup.ProductionRequest productionRequest = new ProductionGroup.ProductionRequest(
+        ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
                 prod,
                 Map.of(r1, 1, r3, 2),
                 Map.of(),
                 Map.of(player.getStrongbox(), Map.of(r1, 3, r3, 2)),
                 Map.of(player.getStrongbox(), Map.of(r2, 3))
         );
-        ProductionGroup productionGroup = new ProductionGroup(List.of(productionRequest));
-        productionGroup.activate(game, player);
+        ResourceTransaction transaction = new ResourceTransaction(List.of(transactionRequest));
+        transaction.activate(game, player);
 
         assertAll("getResourceQuantity",
                 () -> assertEquals(3, player.getStrongbox().getResourceQuantity(r1)),
@@ -82,26 +83,26 @@ public class ProductionGroupTest {
     }
 
     @Test
-    void singleProductionWithOutputBlanks() throws IllegalProductionActivationException {
+    void singleRequestWithOutputBlanks() throws IllegalResourceTransactionActivationException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
-        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
-        Production prod = new Production(Map.of(r1, 2), 0, Set.of(), Map.of(r2, 3), 3, Set.of(), false);
+        ResourceTransactionRecipe prod = new ResourceTransactionRecipe(Map.of(r1, 2), 0, Set.of(), Map.of(r2, 3), 3, Set.of(), false);
 
         for (int i = 0; i < 6; i++)
             player.getStrongbox().addResource(r1);
 
-        ProductionGroup.ProductionRequest productionRequest = new ProductionGroup.ProductionRequest(
+        ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
                 prod,
                 Map.of(),
                 Map.of(r2, 2, r3, 1),
                 Map.of(player.getStrongbox(), Map.of(r1, 2)),
                 Map.of(player.getStrongbox(), Map.of(r2, 5, r3, 1))
         );
-        ProductionGroup productionGroup = new ProductionGroup(List.of(productionRequest));
-        productionGroup.activate(game, player);
+        ResourceTransaction transaction = new ResourceTransaction(List.of(transactionRequest));
+        transaction.activate(game, player);
 
         assertAll("getResourceQuantity",
                 () -> assertEquals(4, player.getStrongbox().getResourceQuantity(r1)),

@@ -9,6 +9,10 @@ import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
+import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
+import it.polimi.ingsw.server.model.resourcetransactions.IllegalResourceTransactionActivationException;
+import it.polimi.ingsw.server.model.resourcetransactions.ProductionRequest;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransaction;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
@@ -47,7 +51,6 @@ public class GameContext extends ModelObservable {
      *          Used to send back errors
      * @param nickname the player
      * @param leaderIndexes the leader cards to choose
-     * @throws IllegalActionException if the player cannot choose the leaders in the current state
      */
     public void chooseLeaders(View v, String nickname, List<Integer> leaderIndexes) {
         if (setupDone)
@@ -70,7 +73,6 @@ public class GameContext extends ModelObservable {
      *          Used to send back errors
      * @param nickname  the player
      * @param reducedShelves the destination shelves
-     * @throws IllegalActionException if the player cannot choose initial resources in the current state
      */
     public void chooseResources(View v, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
         if (setupDone)
@@ -81,7 +83,7 @@ public class GameContext extends ModelObservable {
         Player current = getPlayerByNickname(nickname);
         try {
             current.chooseResources(game, shelves);
-        } catch (CannotChooseException | IllegalProductionActivationException e) {
+        } catch (CannotChooseException | IllegalResourceTransactionActivationException e) {
             notify(v, new ErrAction(e.getMessage()));
         }
         checkEndSetup();
@@ -95,7 +97,6 @@ public class GameContext extends ModelObservable {
      * @param nickname the player
      * @param shelfId1     the first shelf
      * @param shelfId2     the second shelf
-     * @throws IllegalActionException if the player cannot swap the contents of two shelves in the current state
      */
     public void swapShelves(View v, String nickname, Integer shelfId1, Integer shelfId2) {
         if (!preliminaryChecks(v, "Swap shelves")) return;
@@ -120,7 +121,6 @@ public class GameContext extends ModelObservable {
      *          Used to send back errors
      * @param nickname the player
      * @param leaderid the leader card to activate
-     * @throws IllegalActionException if the player cannot activate a leader in the current state
      */
     public void activateLeader(View v, String nickname, Integer leaderid) {
         if (!preliminaryChecks(v, "Activate leader")) return;
@@ -144,7 +144,6 @@ public class GameContext extends ModelObservable {
      *          Used to send back errors
      * @param nickname the player
      * @param leaderid the leader card to discard
-     * @throws IllegalActionException if the player cannot discard a leader in the current state
      */
     public void discardLeader(View v, String nickname, Integer leaderid) {
         if (!preliminaryChecks(v, "Discard leader")) return;
@@ -171,7 +170,6 @@ public class GameContext extends ModelObservable {
      * @param index        index of the selected row or column
      * @param replacements a map of the chosen resources to take, if choices are applicable
      * @param reducedShelves      a map of the shelves where to add the taken resources, if possible
-     * @throws IllegalActionException if the player cannot take resources from the market in the current state
      */
     public void takeMarketResources(View v, String nickname, boolean isRow, int index,
                                     Map<String, Integer> replacements,
@@ -203,7 +201,6 @@ public class GameContext extends ModelObservable {
      * @param level         the level of the card to be bought
      * @param slotIndex     the index of the dev slot where to put the development card
      * @param reducedResContainers a map of the resource containers where to take the storable resources
-     * @throws IllegalActionException if the player cannot buy a development card in the current state
      */
     public void buyDevCard(View v, String nickname, String color, int level, int slotIndex,
                            Map<Integer, Map<String, Integer>> reducedResContainers) {
@@ -227,23 +224,21 @@ public class GameContext extends ModelObservable {
     /**
      * Makes a player activate a group of productions.
      *
-     * @param v the view the action originates from.
-     *          Used to send back errors
-     * @param nickname          the player
+     * @param v                the view the action originates from. Used to send back errors
+     * @param nickname         the player
      * @param reducedProdGroup the group of requested contemporary productions
-     * @throws IllegalActionException if the player cannot activate a group of productions in the current state
      */
-    public void activateProductionGroup(View v, String nickname, List<ReducedProductionRequest> reducedProdGroup) {
+    public void activateProductionRequests(View v, String nickname, List<ReducedProductionRequest> reducedProdGroup) {
         if (!preliminaryChecks(v, "Activate production")) return;
 
         Player player = getPlayerByNickname(nickname);
 
         if (!checkCurrentPlayer(v, player, "Activate production")) return;
 
-        ProductionGroup productionGroup = new ProductionGroup(reducedProdGroup.stream().map(this::translateToProductionRequest).toList());
+        ResourceTransaction transaction = new ResourceTransaction(List.copyOf(reducedProdGroup.stream().map(this::translateToProductionRequest).toList()));
         try {
-            productionGroup.activate(game, player);
-        } catch (IllegalProductionActivationException e) {
+            transaction.activate(game, player);
+        } catch (IllegalResourceTransactionActivationException e) {
             notify(v, new ErrAction(e.getMessage()));
         }
         turnDone = true;
@@ -255,7 +250,6 @@ public class GameContext extends ModelObservable {
      * @param v the view the action originates from.
      *          Used to send back errors
      * @param nickname the player
-     * @throws IllegalActionException if the player cannot end the turn in the current state
      */
     public void endTurn(View v, String nickname) {
         if (!setupDone || !turnDone)
@@ -326,12 +320,14 @@ public class GameContext extends ModelObservable {
         return res;
     }
 
-    private ProductionGroup.ProductionRequest translateToProductionRequest(ReducedProductionRequest r) {
+    private ProductionRequest translateToProductionRequest(ReducedProductionRequest r) {
         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
         r.getInputContainers().forEach((key, value) -> inputContainers.put(game.getShelfById(key).orElseThrow(), translateResources(value)));
-        Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers = new HashMap<>();
-        r.getInputContainers().forEach((key, value) -> outputContainers.put(game.getShelfById(key).orElseThrow(), translateResources(value)));
-        return new ProductionGroup.ProductionRequest(game.getProductionById(r.getProductionId()).orElseThrow(), translateResources(r.getInputBlanksRep()), translateResources(r.getOutputBlanksRep()),
+        Map<Strongbox, Map<ResourceType, Integer>> outputContainers = new HashMap<>();
+        // TODO: Do not cast to Strongbox
+        r.getInputContainers().forEach((key, value) -> outputContainers.put((Strongbox) game.getShelfById(key).orElseThrow(), translateResources(value)));
+        // TODO: This should check runtime validation exception in constructor
+        return new ProductionRequest(game.getProductionById(r.getProductionId()).orElseThrow(), translateResources(r.getInputBlanksRep()), translateResources(r.getOutputBlanksRep()),
                 inputContainers, outputContainers);
     }
 }

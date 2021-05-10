@@ -1,14 +1,14 @@
 package it.polimi.ingsw.common.events;
 
-import java.util.List;
-
 import it.polimi.ingsw.common.ReducedDevCardGrid;
 import it.polimi.ingsw.common.ReducedMarket;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.server.model.DevelopmentCard;
-import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
+
+import java.util.List;
 
 public class ResGameStarted implements MVEvent {
     private final ReducedMarket market;
@@ -16,15 +16,15 @@ public class ResGameStarted implements MVEvent {
     List<LeaderCard> leaderCards;
     List<DevelopmentCard> developmentCards;
     List<ResourceContainer> resContainers;
-    List<Production> productions;
+    List<ResourceTransactionRecipe> productions;
 
     public ResGameStarted(
-        ReducedMarket market,
-        ReducedDevCardGrid developmentCardGrid,
-        List<LeaderCard> leaderCards,
-        List<DevelopmentCard> developmentCards,
-        List<ResourceContainer> resContainers,
-        List<Production> productions) {
+            ReducedMarket market,
+            ReducedDevCardGrid developmentCardGrid,
+            List<LeaderCard> leaderCards,
+            List<DevelopmentCard> developmentCards,
+            List<ResourceContainer> resContainers,
+            List<ResourceTransactionRecipe> productions) {
         this.market = market;
         this.developmentCardGrid = developmentCardGrid;
         this.leaderCards = leaderCards;

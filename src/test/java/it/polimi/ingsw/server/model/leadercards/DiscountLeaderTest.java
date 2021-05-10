@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.leadercards;
 
 import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -52,7 +52,7 @@ public class DiscountLeaderTest {
     @MethodSource("provideParameters")
     void getDevCardCost(int discount, Map<ResourceType, Integer> ogCost) {
         DiscountLeader leader = new DiscountLeader(discount, coin, null, 0, 0);
-        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
 
         assertDoesNotThrow(() -> leader.activate(p));
 

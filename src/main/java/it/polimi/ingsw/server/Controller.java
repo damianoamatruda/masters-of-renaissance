@@ -60,7 +60,7 @@ public class Controller {
 
     public void update(View view, ReqActivateProduction event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
-                gameContext.activateProductionGroup(view, nickname, event.getProductionGroup()));
+                gameContext.activateProductionRequests(view, nickname, event.getProductionRequests()));
     }
 
     public void update(View view, ReqTurnEnd event) {

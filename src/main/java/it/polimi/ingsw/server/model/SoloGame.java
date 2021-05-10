@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.events.UpdateFaithTrack;
 import it.polimi.ingsw.server.model.actiontokens.ActionToken;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ public class SoloGame extends Game {
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
     public SoloGame(Player player, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
-                    List<ResourceContainer> resContainers, List<Production> productions,
+                    List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                     DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, List<ActionToken> actionTokens,
                     int maxFaithPointsCount, int maxObtainableDevCards) {
         super(List.of(player), leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);

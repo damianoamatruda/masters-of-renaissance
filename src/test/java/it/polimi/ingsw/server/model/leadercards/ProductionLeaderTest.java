@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.leadercards;
 
 import it.polimi.ingsw.server.model.Player;
-import it.polimi.ingsw.server.model.Production;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
@@ -24,10 +24,10 @@ public class ProductionLeaderTest {
      */
     @Test
     void production() {
-        Production prod = new Production(Map.of(), 0, Map.of(), 0);
+        ResourceTransactionRecipe prod = new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0);
         ProductionLeader leader = new ProductionLeader(prod, coin, null, 0, 0);
 
-        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new Production(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
         
         assertDoesNotThrow(() -> leader.activate(p));
 

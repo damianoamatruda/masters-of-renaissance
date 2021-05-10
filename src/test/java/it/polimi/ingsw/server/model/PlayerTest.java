@@ -7,6 +7,8 @@ import it.polimi.ingsw.server.model.resourcecontainers.IllegalResourceTransferEx
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.IllegalResourceTransactionActivationException;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +54,7 @@ public class PlayerTest {
                     shuffledNicknames.get(i),
                     i == 0, new ArrayList<>(List.of(new DepotLeader(0, null, null, 0, 0))),
                     new Warehouse(3), new Strongbox(),
-                    new Production(Map.of(), 2, Map.of(), 1), 3,
+                    new ResourceTransactionRecipe(Map.of(), 2, Map.of(), 1), 3,
                     0, bonusResources.get(i), bonusFaith.get(i), Set.of());
             players.add(player);
         }
@@ -281,7 +283,7 @@ public class PlayerTest {
         void fourthPlayerTwoResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
+            assertAll(() -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.chooseResources(
                     game, Map.of(shelf, Map.of(coin, 3))
                     )),
                     () -> assertDoesNotThrow(() -> fourth.chooseResources(
@@ -293,10 +295,10 @@ public class PlayerTest {
         void illegalResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
+            assertAll(() -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.chooseResources(
                     game, Map.of(shelf, Map.of(zero, 1))
                     )),
-                    () -> assertThrows(IllegalProductionActivationException.class, () -> fourth.chooseResources(
+                    () -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.chooseResources(
                             game, Map.of(shelf, Map.of(faith, 1))
                     )));
         }

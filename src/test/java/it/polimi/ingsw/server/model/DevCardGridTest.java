@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class DevCardGridTest {
                     devCards.add(new DevelopmentCard(
                             color, level,
                             new ResourceRequirement(Map.of(r1, 1)),
-                            new Production(Map.of(), 0, Map.of(), 0),
+                            new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0),
                             3 * i, 0
                     ));
         devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
@@ -49,7 +50,7 @@ public class DevCardGridTest {
                 "",
                 true, List.of(),
                 new Warehouse(0), new Strongbox(),
-                new Production(Map.of(), 0, Map.of(), 0), 1,
+                new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 1,
                 0, 0, 0, Set.of());
         game = new Game(
                 List.of(buyer),

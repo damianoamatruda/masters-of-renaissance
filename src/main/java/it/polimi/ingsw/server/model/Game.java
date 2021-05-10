@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.events.UpdateLastRound;
 import it.polimi.ingsw.common.events.UpdateWinner;
 import it.polimi.ingsw.server.model.leadercards.LeaderCard;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 
 import java.util.*;
 
@@ -29,7 +30,7 @@ public class Game extends ModelObservable {
     private final List<ResourceContainer> resContainers;
 
     /** The productions used in the game. */
-    private final List<Production> productions;
+    private final List<ResourceTransactionRecipe> productions;
 
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
@@ -72,7 +73,7 @@ public class Game extends ModelObservable {
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
     public Game(List<Player> players, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
-                List<ResourceContainer> resContainers, List<Production> productions,
+                List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxFaithPointsCount,
                 int maxObtainableDevCards) {
         this.players = new ArrayList<>(players);
@@ -113,10 +114,12 @@ public class Game extends ModelObservable {
     public Optional<LeaderCard> getLeaderById(int id) {
         return leaderCards.stream().filter(l -> l.getId() == id).findFirst();
     }
+
     public Optional<ResourceContainer> getShelfById(int id) {
         return resContainers.stream().filter(l -> l.getId() == id).findFirst();
     }
-    public Optional<Production> getProductionById(int id) {
+
+    public Optional<ResourceTransactionRecipe> getProductionById(int id) {
         return productions.stream().filter(l -> l.getId() == id).findFirst();
     }
 
@@ -352,7 +355,7 @@ public class Game extends ModelObservable {
      *
      * @return the list of productions
      */
-    public List<Production> getProductions() {
+    public List<ResourceTransactionRecipe> getProductions() {
         return productions;
     }
 

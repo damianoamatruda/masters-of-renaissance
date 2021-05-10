@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.server.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.server.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.server.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.server.model.resourcetransactions.*;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.*;
@@ -33,7 +34,7 @@ public class Player extends ModelObservable {
     private final List<Stack<DevelopmentCard>> devSlots;
 
     /** The base production "recipe". */
-    private final Production baseProduction;
+    private final ResourceTransactionRecipe baseProduction;
 
     /** Visible to the view, this indicates whether the player starts first each round. */
     private final boolean inkwell;
@@ -78,7 +79,7 @@ public class Player extends ModelObservable {
      * @param initialExcludedResources resources the player cannot choose at the beginning
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  Production baseProduction, int devSlotsCount, int chosenLeadersCount, int initialResources,
+                  ResourceTransactionRecipe baseProduction, int devSlotsCount, int chosenLeadersCount, int initialResources,
                   int initialFaith, Set<ResourceType> initialExcludedResources) {
         this.nickname = nickname;
         this.inkwell = inkwell;
@@ -138,10 +139,10 @@ public class Player extends ModelObservable {
      *
      * @param game    the game the player is playing in
      * @param shelves the destination shelves
-     * @throws CannotChooseException                all the allowed initial resources have already been chosen
-     * @throws IllegalProductionActivationException invalid container
+     * @throws CannotChooseException                         all the allowed initial resources have already been chosen
+     * @throws IllegalResourceTransactionActivationException invalid container
      */
-    public void chooseResources(Game game, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalProductionActivationException {
+    public void chooseResources(Game game, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalResourceTransactionActivationException {
         if (hasChosenResources)
             throw new CannotChooseException("resources");
 
@@ -150,17 +151,17 @@ public class Player extends ModelObservable {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
 
-        ProductionGroup.ProductionRequest productionRequest;
+        ResourceTransactionRequest transactionRequest;
 
         try {
-            productionRequest = new ProductionGroup.ProductionRequest(
-                    new Production(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
+            transactionRequest = new ResourceTransactionRequest(
+                    new ResourceTransactionRecipe(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
                     Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
-        } catch (IllegalProductionActivationException.IllegalProductionReplacementsException | IllegalProductionActivationException.IllegalProductionContainersException e) {
-            throw new IllegalProductionActivationException(e); // TODO: Add more specific exception
+        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
+            throw new IllegalResourceTransactionActivationException(e); // TODO: Add more specific exception
         }
 
-        new ProductionGroup(List.of(productionRequest)).activate(game, this);
+        new ResourceTransaction(List.of(transactionRequest)).activate(game, this);
 
         hasChosenResources = true;
     }
@@ -357,7 +358,7 @@ public class Player extends ModelObservable {
      *
      * @return the required base production recipe
      */
-    public Production getBaseProduction() {
+    public ResourceTransactionRecipe getBaseProduction() {
         return baseProduction;
     }
 

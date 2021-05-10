@@ -1,9 +1,10 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.server.model.cardrequirements.CardRequirementsNotMetException;
+import it.polimi.ingsw.server.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.server.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.server.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.server.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.server.model.resourcetypes.ResourceType;
 
 import java.util.Map;
@@ -14,24 +15,25 @@ import java.util.Map;
  *
  * @see Card
  * @see DevCardRequirement
- * @see Production
+ * @see ResourceTransactionRecipe
  */
 public class DevelopmentCard extends Card {
     private final DevCardColor color;
     private final ResourceRequirement cost;
     private final int level;
-    private final Production production;
+    private final ResourceTransactionRecipe production;
 
     /**
      * Class constructor.
-     *  @param color        the color of the card
+     *
+     * @param color         the color of the card
      * @param level         the level of the card
      * @param cost          the resources needed to buy the card
      * @param production    the production associated with the card
      * @param victoryPoints the victory points associated with the card
      * @param id            the card id
      */
-    public DevelopmentCard(DevCardColor color, int level, ResourceRequirement cost, Production production, int victoryPoints, int id) {
+    public DevelopmentCard(DevCardColor color, int level, ResourceRequirement cost, ResourceTransactionRecipe production, int victoryPoints, int id) {
         super(victoryPoints, id);
         this.color = color;
         this.cost = cost;
@@ -63,7 +65,7 @@ public class DevelopmentCard extends Card {
     /**
      * @return the card's production
      */
-    public Production getProduction() {
+    public ResourceTransactionRecipe getProduction() {
         return production;
     }
 
