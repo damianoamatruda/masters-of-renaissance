@@ -5,8 +5,8 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
-import it.polimi.ingsw.common.events.ResGameStarted;
 import it.polimi.ingsw.common.events.UpdateCurPlayer;
+import it.polimi.ingsw.common.events.UpdateGameStart;
 import it.polimi.ingsw.common.events.UpdateLastRound;
 import it.polimi.ingsw.common.events.UpdateWinner;
 
@@ -56,7 +56,7 @@ public class Game extends ModelObservable {
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
-    private final ResGameStarted initialInfo;
+    private final UpdateGameStart initialInfo;
 
     /**
      * Constructor of Game instances.
@@ -88,13 +88,13 @@ public class Game extends ModelObservable {
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
 
-        initialInfo = new ResGameStarted(
-            market.reduce(),
-            devCardGrid.reduce(),
-            leaderCards,
-            developmentCards,
-            resContainers,
-            productions);
+        initialInfo = new UpdateGameStart(
+                market.reduce(),
+                devCardGrid.reduce(),
+                leaderCards,
+                developmentCards,
+                resContainers,
+                productions);
     }
 
     @Override

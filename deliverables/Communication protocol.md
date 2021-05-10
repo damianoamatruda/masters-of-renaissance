@@ -795,11 +795,14 @@ The matching and ordering properties of the objects in the configuration file ar
 synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
 
 This implies that every ID/index specified in this document has been synchronized at game start either by being taken
-from the configuration file or by being specified in the `GameStarted` message.
+from the configuration file or by being specified in the `UpdateGameStart` message.
 
-The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state needs to be sent.  
-The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they appear in the configuration file).
-The same principle applies to the solo action tokens.
+The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state
+needs to be sent.  
+The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to
+each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the
+configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they
+appear in the configuration file). The same principle applies to the solo action tokens.
 
 After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
 
@@ -808,14 +811,15 @@ After reordering the cached objects to match the server's state, all indices sen
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │                    GameStarted │
+     │                UpdateGameStart │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
-**GameStarted (server)**
+
+**UpdateGameStart (server)**
 ```json
 {
-  "type": "GameStarted",
+  "type": "UpdateGameStart",
   "nicknames": [ "NicknameA", "NicknameB", "NicknameC" ],
   "market": {
     "grid": [

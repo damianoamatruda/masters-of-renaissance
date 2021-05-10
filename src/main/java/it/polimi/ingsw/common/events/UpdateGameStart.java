@@ -10,7 +10,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
 import java.util.List;
 
-public class ResGameStarted implements MVEvent {
+public class UpdateGameStart implements MVEvent {
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
     List<LeaderCard> leaderCards;
@@ -18,7 +18,7 @@ public class ResGameStarted implements MVEvent {
     List<ResourceContainer> resContainers;
     List<ResourceTransactionRecipe> productions;
 
-    public ResGameStarted(
+    public UpdateGameStart(
             ReducedMarket market,
             ReducedDevCardGrid developmentCardGrid,
             List<LeaderCard> leaderCards,
