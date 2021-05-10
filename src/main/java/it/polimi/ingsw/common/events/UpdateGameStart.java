@@ -4,7 +4,6 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.DevelopmentCard;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
@@ -13,7 +12,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import java.util.List;
 
 public class UpdateGameStart implements MVEvent {
-    // TODO reduce, commproto docs
+    // TODO reduce, boosts, commproto docs
     private final List<String> nicknames;
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;

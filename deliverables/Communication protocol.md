@@ -193,6 +193,12 @@ The quit message is defined as:
 ```json
 { "type": "GoodBye" }
 ```
+A `ResGoodBye` message will be sent by the server as an acknowledgement:
+```json
+{
+  "type": "ResGoodBye"
+}
+```
 
 
 # Game phase - Player setup
