@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.common.GameProtocol;
 import it.polimi.ingsw.common.events.MVEvent;
 import it.polimi.ingsw.common.events.ResWelcome;
 

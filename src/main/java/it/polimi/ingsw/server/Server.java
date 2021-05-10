@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.common.GameProtocol;
 import it.polimi.ingsw.server.model.FileGameFactory;
 import it.polimi.ingsw.server.model.GameFactory;
 import it.polimi.ingsw.server.model.Lobby;

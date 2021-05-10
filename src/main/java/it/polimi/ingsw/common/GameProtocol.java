@@ -1,16 +1,12 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.common;
 
 import com.google.gson.*;
-
-import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.ErrCommunication;
 import it.polimi.ingsw.common.events.ErrController;
 import it.polimi.ingsw.common.events.MVEvent;
 import it.polimi.ingsw.common.events.VCEvent;
 
 public class GameProtocol {
-    // TODO: Evaluate whether to put this class into common
-
     /*
      * Interprets command string and calls an action from the model.
      */
