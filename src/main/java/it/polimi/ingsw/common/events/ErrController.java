@@ -6,7 +6,10 @@ public class ErrController implements MVEvent {
     private final String message;
 
     public ErrController(Exception e) {
-        this.message = e.getMessage();
+        StringBuilder stringBuilder = new StringBuilder(e.getClass().getName());
+        if (e.getMessage() != null)
+            stringBuilder.append(": ").append(e.getMessage());
+        this.message = stringBuilder.toString();
     }
 
     @Override
