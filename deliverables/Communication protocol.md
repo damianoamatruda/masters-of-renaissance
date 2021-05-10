@@ -795,10 +795,12 @@ When the match is waiting for players to join before its start, sending notifica
 ```json
 {
   "type": "UpdateMarket",
-  "isRow": true,
-  "index": 1,
-  "resources": [ "Coin", "Shield", "Stone" ],
-  "slideRes": "Shield"
+  "market": {
+    "isRow": true,
+    "index": 1,
+    "resources": [ "Coin", "Shield", "Stone" ],
+    "slideRes": "Shield"
+  }
 }
 ```
 

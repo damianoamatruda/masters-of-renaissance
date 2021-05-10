@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
 /** Market's state update. */
 public class UpdateMarket implements MVEvent {
-    // TODO commsproto docs
     /** The reducedmarket containing the new market status. */
     private final ReducedMarket market;
 
