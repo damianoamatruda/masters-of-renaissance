@@ -28,15 +28,15 @@ public class Lobby extends ModelObservable {
 
     public void joinLobby(View view, String nickname) {
         if (nicknames.containsKey(view)) {
-            notify(view, new ErrNickname("You already have nickname \"" + nicknames.get(view) + "\"."));
+            notify(view, new ErrAction("You already have nickname \"" + nicknames.get(view) + "\"."));
             return;
         }
         if (nickname == null || nickname.isBlank()) {
-            notify(view, new ErrNickname("Given nickname is empty."));
+            notify(view, new ErrAction("Given nickname is empty."));
             return;
         }
         if (nicknames.containsValue(nickname)) {
-            notify(view, new ErrNickname("Nickname \"" + nickname + "\" already in use. Choose another one."));
+            notify(view, new ErrAction("Nickname \"" + nickname + "\" already in use. Choose another one."));
             return;
         }
         nicknames.put(view, nickname);
