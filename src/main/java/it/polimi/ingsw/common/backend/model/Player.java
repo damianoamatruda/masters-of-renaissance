@@ -394,12 +394,47 @@ public class Player extends ModelObservable {
         this.victoryPoints += toSum;
     }
 
+    public Optional<Strongbox> getStrongboxById(int id) {
+        return strongbox.getId() == id ? Optional.of(strongbox) : Optional.empty();
+    }
+
+    public Optional<Shelf> getShelfById(int id) {
+        Optional<Shelf> shelf = Optional.ofNullable(warehouse.getShelves().stream().filter(s -> s.getId() == id).findAny().orElse(null));
+        if (shelf.isEmpty())
+            shelf = Optional.ofNullable(leaders.stream().map(LeaderCard::getDepot).filter(Optional::isPresent).map(Optional::get).filter(d -> d.getId() == id).findAny().orElse(null));
+        return shelf;
+    }
+
+    public Optional<ResourceContainer> getResourceContainerById(int id) {
+        Optional<ResourceContainer> resContainer = Optional.ofNullable(getStrongboxById(id).orElse(null));
+        if (resContainer.isEmpty())
+            resContainer = Optional.ofNullable(getShelfById(id).orElse(null));
+        return resContainer;
+    }
+
+    public Optional<LeaderCard> getLeaderById(int id) {
+        return leaders.stream().filter(l -> l.getId() == id).findAny();
+    }
+
+    public Optional<DevelopmentCard> getDevCardById(int id) {
+        return devSlots.stream().flatMap(Collection::stream).filter(d -> d.getId() == id).findAny();
+    }
+
+    public Optional<ResourceTransactionRecipe> getProductionById(int id) {
+        Optional<ResourceTransactionRecipe> production = baseProduction.getId() == id ? Optional.of(baseProduction) : Optional.empty();
+        if (production.isEmpty())
+            production = leaders.stream().map(LeaderCard::getProduction).filter(Optional::isPresent).map(Optional::get).filter(p -> p.getId() == id).findAny();
+        if (production.isEmpty())
+            production = devSlots.stream().flatMap(Collection::stream).map(DevelopmentCard::getProduction).filter(p -> p.getId() == id).findAny();
+        return production;
+    }
+
     public List<Integer> extractLeadersIDs(List<LeaderCard> leaders) {
         List<Integer> ids = new ArrayList<>();
 
         for (LeaderCard l : leaders)
             ids.add(l.getId());
-        
+
         return ids;
     }
 

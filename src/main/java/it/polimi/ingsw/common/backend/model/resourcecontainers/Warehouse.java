@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class represents a container of shelves of growing size.
@@ -81,7 +82,10 @@ public class Warehouse {
 
             if (warehouse.shelves.stream()
                     .filter(s -> !s.equals(this))
-                    .anyMatch(s -> s.getResourceType().isPresent() && s.getResourceType().get().equals(resType)))
+                    .map(Shelf::getResourceType)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .anyMatch(r -> r.equals(resType)))
                 throw new IllegalResourceTransferException(resType, warehouse);
             super.addResources(resMap);
         }

@@ -15,7 +15,7 @@ public class ProductionRequest extends ResourceTransactionRequest {
                              Map<ResourceType, Integer> inputBlanksRep,
                              Map<ResourceType, Integer> outputBlanksRep,
                              Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                             Map<Strongbox, Map<ResourceType, Integer>> outputContainers) {
-        super(recipe, inputBlanksRep, outputBlanksRep, inputContainers, Map.copyOf(outputContainers));
+                             Map<Strongbox, Map<ResourceType, Integer>> outputStrongboxes) {
+        super(recipe, inputBlanksRep, outputBlanksRep, inputContainers, Map.copyOf(outputStrongboxes));
     }
 }
