@@ -11,7 +11,6 @@ import it.polimi.ingsw.common.events.UpdateLastRound;
 import it.polimi.ingsw.common.events.UpdateWinner;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -88,8 +87,7 @@ public class Game extends ModelObservable {
         this.ended = false;
     }
 
-    @Override
-    public void addObserver(View o) {
+    public void addObserver(View o, String nickname) {
         this.observers.add(o);
         this.players.forEach(obj -> obj.addObserver(o));
         this.leaderCards.forEach(obj -> obj.addObserver(o));
@@ -99,9 +97,11 @@ public class Game extends ModelObservable {
         this.market.addObserver(o);
         this.faithTrack.addObserver(o);
 
-        Map<String, List<Integer>> leaderHands = players.stream()
-            .filter(p -> !p.hasChosenLeaders())
-            .collect(Collectors.toMap(Player::getNickname, p -> p.getLeaders().stream().map(l -> l.getId()).toList()));
+        Player p = players.stream().filter(pl -> pl.getNickname() == nickname).findFirst().get();
+
+        List<Integer> leaders = p.getLeaders().stream().map(l -> l.getId()).toList();
+        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(s -> s.getId()).toList();
+        int strongbox = p.getStrongbox().getId();
 
         notify(o, new UpdateGameStart(
             market.reduce(),
@@ -110,7 +110,9 @@ public class Game extends ModelObservable {
             developmentCards,
             resContainers,
             productions,
-            leaderHands));
+            leaders,
+            shelves,
+            strongbox));
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {

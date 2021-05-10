@@ -72,7 +72,7 @@ public class Lobby extends ModelObservable {
         GameContext newContext = new GameContext(newGame, gameFactory);
         // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(v -> {
-            newGame.addObserver(v);
+            newGame.addObserver(v, nicknames.get(v));
             joined.put(v, newContext);
         });
         waiting.subList(0, countToNewGame).clear();

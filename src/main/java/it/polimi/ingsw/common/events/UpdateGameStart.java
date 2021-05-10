@@ -9,17 +9,30 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
 import java.util.List;
-import java.util.Map;
 
 public class UpdateGameStart implements MVEvent {
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
-    List<LeaderCard> leaderCards;
-    List<DevelopmentCard> developmentCards;
-    List<ResourceContainer> resContainers;
-    List<ResourceTransactionRecipe> productions;
-    Map<String, List<Integer>> leaderHands;
+    private final List<LeaderCard> leaderCards;
+    private final List<DevelopmentCard> developmentCards;
+    private final List<ResourceContainer> resContainers;
+    private final List<ResourceTransactionRecipe> productions;
+    private final List<Integer> leaders, shelves;
+    private final int strongbox;
 
+    /**
+     * Class constructor.
+     * 
+     * @param market                market state
+     * @param developmentCardGrid   development card grid state
+     * @param leaderCards           leader cards available at play time
+     * @param developmentCards      development cards available at play time
+     * @param resContainers         resource containers available at play time
+     * @param productions           productions available at play time
+     * @param leaders               player's leaders' IDs
+     * @param shelves               player's shelves' IDs
+     * @param strongbox             player's strongbox's ID
+     */
     public UpdateGameStart(
             ReducedMarket market,
             ReducedDevCardGrid developmentCardGrid,
@@ -27,14 +40,46 @@ public class UpdateGameStart implements MVEvent {
             List<DevelopmentCard> developmentCards,
             List<ResourceContainer> resContainers,
             List<ResourceTransactionRecipe> productions,
-            Map<String, List<Integer>> leaderHands) {
+            List<Integer> leaders,
+            List<Integer> shelves,
+            int strongbox) {
         this.market = market;
         this.developmentCardGrid = developmentCardGrid;
         this.leaderCards = leaderCards;
         this.developmentCards = developmentCards;
         this.resContainers = resContainers;
         this.productions = productions;
-        this.leaderHands = leaderHands;
+        this.leaders = leaders;
+        this.shelves = shelves;
+        this.strongbox = strongbox;
+    }
+
+    /**
+     * @return the productions
+     */
+    public List<ResourceTransactionRecipe> getProductions() {
+        return productions;
+    }
+
+    /**
+     * @return the resource containers
+     */
+    public List<ResourceContainer> getResContainers() {
+        return resContainers;
+    }
+
+    /**
+     * @return the development cards
+     */
+    public List<DevelopmentCard> getDevelopmentCards() {
+        return developmentCards;
+    }
+
+    /**
+     * @return the leader cards
+     */
+    public List<LeaderCard> getLeaderCards() {
+        return leaderCards;
     }
 
     /**
@@ -51,52 +96,31 @@ public class UpdateGameStart implements MVEvent {
         return market;
     }
 
+    /**
+     * @return the player's strongbox ID
+     */
+    public int getStrongbox() {
+        return strongbox;
+    }
+
+    /**
+     * @return the player's shelves' IDs
+     */
+    public List<Integer> getShelves() {
+        return shelves;
+    }
+
+    /**
+     * @return the player's leaders' IDs
+     */
+    public List<Integer> getLeaders() {
+        return leaders;
+    }
+
     @Override
     public void handle(View view) {
         view.update(this);
     }
 
-    // TODO
-    /* private final List<LeaderCard> leaderCards;
-    private final List<DevelopmentCard> developmentCards;
-    private final List<ResourceContainer> resContainers;
-    private final List<Production> productions;
-    private final Market market;
-    private final DevCardGrid devCardGrid;
-
-    public ResGameStarted(List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
-                          List<ResourceContainer> resContainers, List<Production> productions, Market market,
-                          DevCardGrid devCardGrid) {
-        this.leaderCards = leaderCards;
-        this.developmentCards = developmentCards;
-        this.resContainers = new ArrayList<>();
-        // this.resContainers = resContainers; // TODO: Fix crash during parsing
-        this.productions = productions;
-        this.market = market;
-        this.devCardGrid = devCardGrid;
-    }
-
-    public List<LeaderCard> getLeaderCards() {
-        return leaderCards;
-    }
-
-    public List<DevelopmentCard> getDevelopmentCards() {
-        return developmentCards;
-    }
-
-    public List<ResourceContainer> getResContainers() {
-        return resContainers;
-    }
-
-    public List<Production> getProductions() {
-        return productions;
-    }
-
-    public Market getMarket() {
-        return market;
-    }
-
-    public DevCardGrid getDevCardGrid() {
-        return devCardGrid;
-    } */
+    
 }
