@@ -95,7 +95,14 @@ The following specification for the additional feature "Multiple Games" is taken
 Given those requirements, the communication has been modeled in the following way.
 
 ## Connecting - choosing a nickname
-The player, when starting the client, will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted. Else, the player will be notified of the need to change it, restarting the process.
+The player, when starting the client, can choose whether to connect to the server.  
+If they choose to do so, upon successful connection, a `ResWelcome` message will be sent by the server:
+```json
+{
+  "type": "ResWelcome"
+}
+```
+Then, the player will be asked to input a nickname of their choice. The entry will be sent to the server, and, if unique among the connected players, will be accepted. Else, the player will be notified of the need to change it, restarting the process.
 
 The information of whether the player is the first of the match is included in the response given to the client. This is necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
 
