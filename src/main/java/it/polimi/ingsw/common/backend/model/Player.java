@@ -288,6 +288,7 @@ public class Player extends ModelObservable {
      */
     public void incrementVictoryPoints(int points) {
         this.victoryPoints += points;
+        notifyBroadcast(new UpdateVictoryPoints(nickname, victoryPoints));
     }
 
     /**
