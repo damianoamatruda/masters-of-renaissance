@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.ResJoin;
-import it.polimi.ingsw.common.events.mvevents.ResNewGame;
+import it.polimi.ingsw.common.events.mvevents.UpdateFreeSeats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class Lobby extends ModelObservable {
             return;
         }
         nicknames.put(view, nickname);
-        if(disconnected.contains(nickname)) {
+        if (disconnected.contains(nickname)) {
             System.out.println("Player \"" + nickname + "\" rejoined");
             notify(view, new ResJoin(false));
 
@@ -65,7 +65,7 @@ public class Lobby extends ModelObservable {
             notify(view, new ResJoin(waiting.size() == 1));
 
             if (countToNewGame != 0)
-                notify(view, new ResNewGame(countToNewGame, countToNewGame - waiting.size()));
+                notify(view, new UpdateFreeSeats(countToNewGame, countToNewGame - waiting.size()));
 
             if (waiting.size() == countToNewGame)
                 startNewGame();
@@ -82,7 +82,7 @@ public class Lobby extends ModelObservable {
 
         this.countToNewGame = playersCount;
 
-        notify(view, new ResNewGame(countToNewGame, countToNewGame - waiting.size()));
+        notify(view, new UpdateFreeSeats(countToNewGame, countToNewGame - waiting.size()));
         
         if (waiting.size() == countToNewGame)
             startNewGame();

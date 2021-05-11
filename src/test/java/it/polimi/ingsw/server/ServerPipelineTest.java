@@ -10,7 +10,7 @@ import it.polimi.ingsw.common.backend.model.Lobby;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.ResJoin;
-import it.polimi.ingsw.common.events.mvevents.ResNewGame;
+import it.polimi.ingsw.common.events.mvevents.UpdateFreeSeats;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -89,12 +90,12 @@ public class ServerPipelineTest {
         gameJoin();
         v.notify(new ReqNewGame(1));
 
-        MVEvent lboMsg = v.replies.get(v.replies.size()-2);
-        assertTrue(lboMsg instanceof ResNewGame);
-        assertTrue(((ResNewGame)lboMsg).getCount() == 1);
+        MVEvent lboMsg = v.replies.get(v.replies.size() - 2);
+        assertTrue(lboMsg instanceof UpdateFreeSeats);
+        assertEquals(1, ((UpdateFreeSeats) lboMsg).getCountToNewGame());
+        assertEquals(0, ((UpdateFreeSeats) lboMsg).getFreeSeats());
 
         String resGameStarted = gson.toJson(v.getLastMsg());
         int x = 0;
     }
-
 }
