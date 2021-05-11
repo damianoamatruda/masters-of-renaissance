@@ -2,7 +2,7 @@ package it.polimi.ingsw.common.backend;
 
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.Lobby;
-import it.polimi.ingsw.common.events.*;
+import it.polimi.ingsw.common.events.vcevents.*;
 
 public class Controller {
     private final Lobby model;

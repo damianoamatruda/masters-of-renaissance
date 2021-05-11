@@ -1,0 +1,1 @@
+package it.polimi.ingsw.common.events.vcevents;

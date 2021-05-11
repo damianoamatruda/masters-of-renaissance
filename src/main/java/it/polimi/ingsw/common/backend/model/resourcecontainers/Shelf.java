@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateResourceContainer;
+import it.polimi.ingsw.common.events.mvevents.UpdateResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.Map;
@@ -46,30 +46,30 @@ public class Shelf extends ResourceContainer {
     /**
      * Swaps the content of two shelves.
      *
-     * @param s1 the first shelf
-     * @param s2 the second shelf
+     * @param shelf1 the first shelf
+     * @param shelf2 the second shelf
      * @throws IllegalResourceTransferException if the shelves cannot be swapped
      */
-    public static void swap(Shelf s1, Shelf s2) throws IllegalResourceTransferException {
-        ResourceContainer clone1 = s1.copy();
-        ResourceContainer clone2 = s2.copy();
+    public static void swap(Shelf shelf1, Shelf shelf2) throws IllegalResourceTransferException {
+        ResourceContainer clone1 = shelf1.copy();
+        ResourceContainer clone2 = shelf2.copy();
 
         // TODO: Make checks of null resource types in resource maps also in other methods using resource maps
-        if (s1.resType != null)
-            clone1.removeResources(Map.of(s1.resType, s1.quantity));
-        if (s2.resType != null)
-            clone2.removeResources(Map.of(s2.resType, s2.quantity));
+        if (shelf1.resType != null)
+            clone1.removeResources(Map.of(shelf1.resType, shelf1.quantity));
+        if (shelf2.resType != null)
+            clone2.removeResources(Map.of(shelf2.resType, shelf2.quantity));
 
-        if (s2.resType != null)
-            clone1.addResources(Map.of(s2.resType, s2.quantity));
-        if (s1.resType != null)
-            clone2.addResources(Map.of(s1.resType, s1.quantity));
+        if (shelf2.resType != null)
+            clone1.addResources(Map.of(shelf2.resType, shelf2.quantity));
+        if (shelf1.resType != null)
+            clone2.addResources(Map.of(shelf1.resType, shelf1.quantity));
 
-        s1.resType = clone1.getResourceTypes().stream().findFirst().orElse(null);
-        s1.quantity = clone1.getQuantity();
+        shelf1.resType = clone1.getResourceTypes().stream().findFirst().orElse(null);
+        shelf1.quantity = clone1.getQuantity();
 
-        s2.resType = clone2.getResourceTypes().stream().findFirst().orElse(null);
-        s2.quantity = clone2.getQuantity();
+        shelf2.resType = clone2.getResourceTypes().stream().findFirst().orElse(null);
+        shelf2.quantity = clone2.getQuantity();
     }
 
     @Override

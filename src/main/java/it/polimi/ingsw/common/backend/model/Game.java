@@ -5,10 +5,10 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
-import it.polimi.ingsw.common.events.UpdateCurPlayer;
-import it.polimi.ingsw.common.events.UpdateGameStart;
-import it.polimi.ingsw.common.events.UpdateLastRound;
-import it.polimi.ingsw.common.events.UpdateWinner;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
+import it.polimi.ingsw.common.events.mvevents.UpdateGameStart;
+import it.polimi.ingsw.common.events.mvevents.UpdateLastRound;
+import it.polimi.ingsw.common.events.mvevents.UpdateGameEnd;
 
 import java.util.*;
 
@@ -228,7 +228,7 @@ public class Game extends ModelObservable {
             nextPlayer = players.get(0);
         } while (!nextPlayer.isActive());
 
-        notifyBroadcast(new UpdateCurPlayer(getCurrentPlayer().getNickname()));
+        notifyBroadcast(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
 
         if (nextPlayer.equals(getFirstPlayer()))
             rounds++;
@@ -385,7 +385,7 @@ public class Game extends ModelObservable {
 
         winners.stream().findFirst().ifPresent(p -> {
             p.setWinner();
-            notifyBroadcast(new UpdateWinner(p.getNickname(), computeVictoryPointsMap(players)));
+            notifyBroadcast(new UpdateGameEnd(p.getNickname(), computeVictoryPointsMap(players)));
         });
     }
 

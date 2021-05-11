@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateResourceContainer;
+import it.polimi.ingsw.common.events.mvevents.UpdateResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.HashMap;

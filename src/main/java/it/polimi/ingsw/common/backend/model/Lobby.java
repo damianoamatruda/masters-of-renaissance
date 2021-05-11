@@ -2,7 +2,10 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.*;
+import it.polimi.ingsw.common.events.mvevents.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
+import it.polimi.ingsw.common.events.mvevents.ResJoin;
+import it.polimi.ingsw.common.events.mvevents.ResNewGame;
 
 import java.util.ArrayList;
 import java.util.HashMap;

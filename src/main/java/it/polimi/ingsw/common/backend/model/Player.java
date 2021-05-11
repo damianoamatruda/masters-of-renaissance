@@ -9,7 +9,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.*;
+import it.polimi.ingsw.common.events.mvevents.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -306,7 +306,7 @@ public class Player extends ModelObservable {
     public void setActive(boolean active) {
         this.active = active;
 
-        notifyBroadcast(new UpdatePlayerConnectionStatus(getNickname(), active));
+        notifyBroadcast(new UpdatePlayerStatus(getNickname(), active));
     }
 
     /**

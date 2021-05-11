@@ -7,7 +7,12 @@ import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
 import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
-import it.polimi.ingsw.common.events.*;
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
+import it.polimi.ingsw.common.events.mvevents.ResJoin;
+import it.polimi.ingsw.common.events.mvevents.ResNewGame;
+import it.polimi.ingsw.common.events.vcevents.ReqJoin;
+import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

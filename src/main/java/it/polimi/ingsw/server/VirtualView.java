@@ -2,7 +2,9 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.Controller;
-import it.polimi.ingsw.common.events.*;
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
+import it.polimi.ingsw.common.events.vcevents.*;
 
 /**
  * This class represents a virtual view.

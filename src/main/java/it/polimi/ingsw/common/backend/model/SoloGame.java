@@ -5,10 +5,10 @@ import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
-import it.polimi.ingsw.common.events.UpdateActionToken;
-import it.polimi.ingsw.common.events.UpdateFaithTrack;
-import it.polimi.ingsw.common.events.UpdateGameStart;
-import it.polimi.ingsw.common.events.UpdateWinner;
+import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
+import it.polimi.ingsw.common.events.mvevents.UpdateFaithTrack;
+import it.polimi.ingsw.common.events.mvevents.UpdateGameStart;
+import it.polimi.ingsw.common.events.mvevents.UpdateGameEnd;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,7 +101,7 @@ public class SoloGame extends Game {
             super.onTurnEnd();
         else {
             ended = true;
-            notifyBroadcast(new UpdateWinner(null, computeVictoryPointsMap(players)));
+            notifyBroadcast(new UpdateGameEnd(null, computeVictoryPointsMap(players)));
         }
     }
 

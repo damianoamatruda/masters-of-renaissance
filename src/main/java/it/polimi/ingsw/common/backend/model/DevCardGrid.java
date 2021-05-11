@@ -4,7 +4,7 @@ import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateDevCardGrid;
+import it.polimi.ingsw.common.events.mvevents.UpdateDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
 import java.util.*;

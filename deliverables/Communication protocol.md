@@ -519,7 +519,7 @@ Since the server cannot at any point assume that the player has finished choosin
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────╮
                │                                ├─┤ exec │
-               │                UpdateCurPlayer │ ╰──────╯
+               │            UpdateCurrentPlayer │ ╰──────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -529,7 +529,7 @@ Since the server cannot at any point assume that the player has finished choosin
 ```
 **ResTurnEnd (server)**
 ```json
-{ "type": "UpdateCurPlayer" }
+{ "type": "UpdateCurrentPlayer" }
 ```
 
 
@@ -565,8 +565,8 @@ This is technically only useful when taking resources from the market, as no oth
 ```json
 {
   "type": "ReqSwapShelves",
-  "s1": 0,
-  "s2": 3
+  "shelf1": 0,
+  "shelf2": 3
 }
 ```
 **ErrAction (server)**
@@ -772,14 +772,14 @@ When the match is waiting for players to join before its start, sending notifica
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │   UpdatePlayerConnectionStatus │
+     │   UpdatePlayerStatus │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
-**UpdatePlayerConnectionStatus (server)**
+**UpdatePlayerStatus (server)**
 ```json
 {
-  "type": "UpdatePlayerConnectionStatus",
+  "type": "UpdatePlayerStatus",
   "nickname": "NicknameA",
   "isActive": true
 }
@@ -792,14 +792,14 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                UpdateCurPlayer │
+               │                UpdateCurrentPlayer │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateCurPlayer (server)**
+**UpdateCurrentPlayer (server)**
 ```json
 {
-  "type": "UpdateCurPlayer",
+  "type": "UpdateCurrentPlayer",
   "nickname": "NicknameB"
 }
 ```

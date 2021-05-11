@@ -3,7 +3,7 @@ package it.polimi.ingsw.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.common.events.MVEvent;
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Object of the model able to notify its observers of status changes. */
 public class ModelObservable {

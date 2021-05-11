@@ -2,7 +2,7 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.UpdateActivatedVatSection;
+import it.polimi.ingsw.common.events.mvevents.UpdateActivatedVatSection;
 
 import java.util.Comparator;
 import java.util.Map;

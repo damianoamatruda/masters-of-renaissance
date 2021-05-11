@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNot
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceShelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateLeader;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeader;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.Map;

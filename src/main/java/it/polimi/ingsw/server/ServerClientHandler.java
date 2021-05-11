@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.common.GameProtocol;
-import it.polimi.ingsw.common.events.MVEvent;
-import it.polimi.ingsw.common.events.ResWelcome;
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.mvevents.ResWelcome;
 
 import java.io.BufferedReader;
 import java.io.IOException;

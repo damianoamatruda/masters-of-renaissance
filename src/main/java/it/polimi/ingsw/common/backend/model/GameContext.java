@@ -10,8 +10,8 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.ErrAction;
-import it.polimi.ingsw.common.events.UpdateSetupDone;
+import it.polimi.ingsw.common.events.mvevents.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -129,19 +129,19 @@ public class GameContext extends ModelObservable {
         if (!checkCurrentPlayer(v, player, "Swap shelves"))
             return;
 
-        Shelf s1;
-        Shelf s2;
+        Shelf shelf1;
+        Shelf shelf2;
 
         try {
-            s1 = player.getShelfById(shelfId1).orElseThrow(() -> new Exception("Shelf 1 not owned.")); // TODO: This is a PoC exception
-            s2 = player.getShelfById(shelfId2).orElseThrow(() -> new Exception("Shelf 2 not owned.")); // TODO: This is a PoC exception
+            shelf1 = player.getShelfById(shelfId1).orElseThrow(() -> new Exception("Shelf 1 not owned.")); // TODO: This is a PoC exception
+            shelf2 = player.getShelfById(shelfId2).orElseThrow(() -> new Exception("Shelf 2 not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
             notify(v, new ErrAction(e.getMessage()));
             return;
         }
 
         try {
-            Shelf.swap(s1, s2);
+            Shelf.swap(shelf1, shelf2);
         } catch (IllegalResourceTransferException e) {
             notify(v, new ErrAction(e.getMessage()));
         }

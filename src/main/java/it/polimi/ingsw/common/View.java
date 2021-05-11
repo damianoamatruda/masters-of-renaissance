@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common;
 
-import it.polimi.ingsw.common.events.*;
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
+import it.polimi.ingsw.common.events.vcevents.*;
 
 /** Interface defining the 'View' role in the MVC architecture. */
 public interface View /*extends ModelObserver, ControllerObservable, CommunicationObserver*/ {

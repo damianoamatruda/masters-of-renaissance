@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateMarket;
+import it.polimi.ingsw.common.events.mvevents.UpdateMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
 import java.util.*;

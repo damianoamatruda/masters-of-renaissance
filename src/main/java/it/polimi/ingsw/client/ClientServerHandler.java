@@ -3,7 +3,7 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.common.events.VCEvent;
+import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
