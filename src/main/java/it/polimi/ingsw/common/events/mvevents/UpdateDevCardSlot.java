@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Development card slot state update. */
 public class UpdateDevCardSlot implements MVEvent {

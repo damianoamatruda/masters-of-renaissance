@@ -3,7 +3,6 @@ package it.polimi.ingsw.common.events.mvevents;
 import java.util.List;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Action token state update. */
 public class UpdateActionToken implements MVEvent {

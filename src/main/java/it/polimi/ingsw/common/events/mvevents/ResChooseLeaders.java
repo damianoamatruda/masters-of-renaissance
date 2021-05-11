@@ -3,7 +3,6 @@ package it.polimi.ingsw.common.events.mvevents;
 import java.util.List;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Server confirmation to the leader choice request during player setup. */
 public class ResChooseLeaders implements MVEvent {

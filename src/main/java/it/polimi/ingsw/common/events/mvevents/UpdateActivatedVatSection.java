@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Vatican section activation state update. */
 public class UpdateActivatedVatSection implements MVEvent {

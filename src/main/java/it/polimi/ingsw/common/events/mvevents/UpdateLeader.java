@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Leader card state update. */
 public class UpdateLeader implements MVEvent {

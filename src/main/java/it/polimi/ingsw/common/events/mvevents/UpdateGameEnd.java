@@ -3,7 +3,6 @@ package it.polimi.ingsw.common.events.mvevents;
 import java.util.Map;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Winner player and victory points state update. */
 public class UpdateGameEnd implements MVEvent {

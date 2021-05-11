@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Error generated upon unsuccessful parsing of a message. */
 public class ErrUnparsableMessage implements MVEvent {

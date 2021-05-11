@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** Error message sent by the server that originates from errors in client requests. */
 public class ErrAction implements MVEvent {

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.events.vcevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 /** Client request to discard a leader card. */
 public class ReqDiscardLeader implements VCEvent {

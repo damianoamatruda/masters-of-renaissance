@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.events.vcevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.util.Map;
 
