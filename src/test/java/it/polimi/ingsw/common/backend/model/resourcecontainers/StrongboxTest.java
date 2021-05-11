@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,8 +25,7 @@ class StrongboxTest {
     void resourceTypesOfShelfWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(r), strongbox.getResourceTypes());
     }
 
@@ -34,8 +34,7 @@ class StrongboxTest {
     void quantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, strongbox.getQuantity());
     }
 
@@ -44,8 +43,7 @@ class StrongboxTest {
     void resourceQuantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, strongbox.getResourceQuantity(r));
     }
 
@@ -54,8 +52,7 @@ class StrongboxTest {
     void strongboxWithResourcesOfSameTypeShouldNotBeEmpty(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
         assertFalse(strongbox.isEmpty());
     }
 
@@ -65,12 +62,7 @@ class StrongboxTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
-        for (int i = 0; i < 2; i++)
-            strongbox.addResource(r1);
-        for (int i = 0; i < 3; i++)
-            strongbox.addResource(r2);
-        for (int i = 0; i < 5; i++)
-            strongbox.addResource(r3);
+        strongbox.addResources(Map.of(r1, 2, r2, 3, r3, 5));
         assertEquals(Set.of(r1, r2, r3), strongbox.getResourceTypes());
     }
 
@@ -80,12 +72,7 @@ class StrongboxTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
-        for (int i = 0; i < 2; i++)
-            strongbox.addResource(r1);
-        for (int i = 0; i < 3; i++)
-            strongbox.addResource(r2);
-        for (int i = 0; i < 5; i++)
-            strongbox.addResource(r3);
+        strongbox.addResources(Map.of(r1, 2, r2, 3, r3, 5));
         assertEquals(10, strongbox.getQuantity());
     }
 
@@ -95,12 +82,7 @@ class StrongboxTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
-        for (int i = 0; i < 2; i++)
-            strongbox.addResource(r1);
-        for (int i = 0; i < 3; i++)
-            strongbox.addResource(r2);
-        for (int i = 0; i < 5; i++)
-            strongbox.addResource(r3);
+        strongbox.addResources(Map.of(r1, 2, r2, 3, r3, 5));
         assertAll("getResourceQuantity",
                 () -> assertEquals(2, strongbox.getResourceQuantity(r1)),
                 () -> assertEquals(3, strongbox.getResourceQuantity(r2)),
@@ -113,8 +95,7 @@ class StrongboxTest {
     void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
         strongbox.removeResource(r);
         assertEquals(resourcesCount - 1, strongbox.getQuantity());
     }
@@ -124,8 +105,7 @@ class StrongboxTest {
     void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
         strongbox.removeResource(r);
         assertEquals(resourcesCount - 1, strongbox.getResourceQuantity(r));
     }
@@ -135,10 +115,8 @@ class StrongboxTest {
     void clearedStrongboxShouldBeEmpty(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.removeResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
+        strongbox.removeResources(Map.of(r, resourcesCount));
         assertTrue(strongbox.isEmpty());
     }
 
@@ -147,10 +125,8 @@ class StrongboxTest {
     void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            strongbox.removeResource(r);
+        strongbox.addResources(Map.of(r, resourcesCount));
+        strongbox.removeResources(Map.of(r, resourcesCount));
         assertThrows(IllegalArgumentException.class, () -> strongbox.removeResource(r));
     }
 }

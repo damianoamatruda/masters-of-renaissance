@@ -76,11 +76,7 @@ public class PlayerTest {
      */
     @Test
     void getNumOfResourcesTestStrongboxOnly() {
-        for (int i = 0; i < 4; i++)
-            player.getStrongbox().addResource(coin);
-        for (int i = 0; i < 7; i++)
-            player.getStrongbox().addResource(servant);
-        player.getStrongbox().addResource(shield);
+        player.getStrongbox().addResources(Map.of(coin, 4, servant, 7, shield, 1));
         assertEquals(12, player.getResourcesCount());
     }
 
@@ -89,12 +85,8 @@ public class PlayerTest {
      */
     @Test
     void getNumOfResourcesTestAnyStorage() throws IllegalResourceTransferException {
-        for (int i = 0; i < 4; i++)
-            player.getStrongbox().addResource(coin);
-        for (int i = 0; i < 7; i++)
-            player.getStrongbox().addResource(servant);
-        for (int i = 0; i < 2; i++)
-            player.getWarehouse().getShelves().get(1).addResource(stone);
+        player.getStrongbox().addResources(Map.of(coin, 4, servant, 7));
+        player.getWarehouse().getShelves().get(1).addResources(Map.of(stone, 2));
 
         player.getWarehouse().getShelves().get(0).addResource(shield);
         assertEquals(14, player.getResourcesCount());
@@ -167,12 +159,8 @@ public class PlayerTest {
                     player.getWarehouse().getShelves().get(1), Map.of(stone, 2)
             );
 
-            for (int i = 0; i < 4; i++)
-                player.getStrongbox().addResource(coin);
-            for (int i = 0; i < 7; i++)
-                player.getStrongbox().addResource(servant);
-            for (int i = 0; i < 2; i++)
-                player.getWarehouse().getShelves().get(1).addResource(stone);
+            player.getStrongbox().addResources(Map.of(coin, 4, servant, 7));
+            player.getWarehouse().getShelves().get(1).addResources(Map.of(stone, 2));
 
             player.getWarehouse().getShelves().get(0).addResource(shield);
 

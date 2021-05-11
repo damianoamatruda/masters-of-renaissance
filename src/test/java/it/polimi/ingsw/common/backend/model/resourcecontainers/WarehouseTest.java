@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -77,8 +78,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(r), warehouseShelf.getResourceTypes());
     }
 
@@ -88,8 +88,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, warehouseShelf.getQuantity());
     }
 
@@ -99,8 +98,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, warehouseShelf.getResourceQuantity(r));
     }
 
@@ -110,8 +108,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertFalse(warehouseShelf.isEmpty());
     }
 
@@ -121,8 +118,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(resourcesCount + 1);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertFalse(warehouseShelf.isFull());
     }
 
@@ -132,8 +128,7 @@ public class WarehouseTest {
         Warehouse warehouse = new Warehouse(resourcesCount);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount - 1);
         ResourceType r = new ResourceType("r", true);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertTrue(warehouseShelf.isFull());
     }
 
@@ -143,8 +138,7 @@ public class WarehouseTest {
         ResourceType r2 = new ResourceType("r2", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < 2; i++)
-            warehouseShelf.addResource(r1);
+        warehouseShelf.addResources(Map.of(r1, 2));
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.addResource(r2));
     }
 
@@ -166,8 +160,7 @@ public class WarehouseTest {
         ResourceType r2 = new ResourceType("r2", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < 3; i++)
-            warehouseShelf.addResource(r1);
+        warehouseShelf.addResources(Map.of(r1, 3));
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResource(r2));
     }
 
@@ -185,8 +178,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResource(r);
         assertEquals(resourcesCount - 1, warehouseShelf.getQuantity());
     }
@@ -197,8 +189,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResource(r);
         assertEquals(resourcesCount - 1, warehouseShelf.getResourceQuantity(r));
     }
@@ -209,10 +200,8 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.removeResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
+        warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(), warehouseShelf.getResourceTypes());
     }
 
@@ -222,10 +211,8 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.removeResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
+        warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(0, warehouseShelf.getQuantity());
     }
 
@@ -235,10 +222,8 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.removeResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
+        warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(0, warehouseShelf.getResourceQuantity(r));
     }
 
@@ -248,10 +233,8 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.removeResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
+        warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertTrue(warehouseShelf.getResourceType().isEmpty());
     }
 
@@ -261,10 +244,8 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.removeResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
+        warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertTrue(warehouseShelf.isEmpty());
     }
 
@@ -274,10 +255,8 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.removeResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
+        warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertFalse(warehouseShelf.isFull());
     }
 
@@ -287,10 +266,8 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            warehouseShelf.removeResource(r);
+        warehouseShelf.addResources(Map.of(r, resourcesCount));
+        warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResource(r));
     }
 
@@ -302,13 +279,11 @@ public class WarehouseTest {
 
         Warehouse warehouse1 = new Warehouse(7);
         Warehouse.WarehouseShelf warehouseShelf1 = warehouse1.getShelves().get(6);
-        for (int i = 0; i < 3; i++)
-            warehouseShelf1.addResource(r1);
+        warehouseShelf1.addResources(Map.of(r1, 3));
 
         Warehouse warehouse2 = new Warehouse(13);
         Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
-        for (int i = 0; i < 5; i++)
-            warehouseShelf2.addResource(r2);
+        warehouseShelf2.addResources(Map.of(r2, 5));
 
         if (direct)
             Shelf.swap(warehouseShelf1, warehouseShelf2);
@@ -336,12 +311,10 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
 
         ResourceShelf warehouseShelf1 = new ResourceShelf(r, 3);
-        for (int i = 0; i < 3; i++)
-            warehouseShelf1.addResource(r);
+        warehouseShelf1.addResources(Map.of(r, 3));
 
         ResourceShelf warehouseShelf2 = new ResourceShelf(r, 5);
-        for (int i = 0; i < 5; i++)
-            warehouseShelf2.addResource(r);
+        warehouseShelf2.addResources(Map.of(r, 5));
 
         assertThrows(IllegalResourceTransferException.class, () -> Shelf.swap(warehouseShelf1, warehouseShelf2));
     }
@@ -353,16 +326,13 @@ public class WarehouseTest {
 
         Warehouse warehouse1 = new Warehouse(7);
         Warehouse.WarehouseShelf warehouseShelf1a = warehouse1.getShelves().get(5);
-        for (int i = 0; i < 2; i++)
-            warehouseShelf1a.addResource(r2);
+        warehouseShelf1a.addResources(Map.of(r2, 2));
         Warehouse.WarehouseShelf warehouseShelf1b = warehouse1.getShelves().get(6);
-        for (int i = 0; i < 3; i++)
-            warehouseShelf1b.addResource(r1);
+        warehouseShelf1b.addResources(Map.of(r1, 3));
 
         Warehouse warehouse2 = new Warehouse(13);
         Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
-        for (int i = 0; i < 5; i++)
-            warehouseShelf2.addResource(r2);
+        warehouseShelf2.addResources(Map.of(r2, 5));
 
         assertThrows(IllegalResourceTransferException.class, () -> Shelf.swap(warehouseShelf1b, warehouseShelf2));
     }
@@ -374,13 +344,11 @@ public class WarehouseTest {
 
         Warehouse warehouse1 = new Warehouse(7);
         Warehouse.WarehouseShelf warehouseShelf1 = warehouse1.getShelves().get(6);
-        for (int i = 0; i < 3; i++)
-            warehouseShelf1.addResource(r1);
+        warehouseShelf1.addResources(Map.of(r1, 3));
 
         Warehouse warehouse2 = new Warehouse(13);
         Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
-        for (int i = 0; i < 5; i++)
-            warehouseShelf2.addResource(r2);
+        warehouseShelf2.addResources(Map.of(r2, 5));
 
         Shelf.swap(warehouseShelf1, warehouseShelf2);
         Shelf.swap(warehouseShelf1, warehouseShelf2);

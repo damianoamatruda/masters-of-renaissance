@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,8 +56,7 @@ public class ShelfTest {
     void resourceTypesOfShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(r), shelf.getResourceTypes());
     }
 
@@ -65,8 +65,7 @@ public class ShelfTest {
     void quantityOfShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, shelf.getQuantity());
     }
 
@@ -75,8 +74,7 @@ public class ShelfTest {
     void resourceQuantityOfShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, shelf.getResourceQuantity(r));
     }
 
@@ -85,8 +83,7 @@ public class ShelfTest {
     void shelfShouldNotBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         assertFalse(shelf.isEmpty());
     }
 
@@ -95,8 +92,7 @@ public class ShelfTest {
     void shelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(resourcesCount + 1);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         assertFalse(shelf.isFull());
     }
 
@@ -105,8 +101,7 @@ public class ShelfTest {
     void shelfShouldBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(resourcesCount);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         assertTrue(shelf.isFull());
     }
 
@@ -115,8 +110,7 @@ public class ShelfTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < 2; i++)
-            shelf.addResource(r1);
+        shelf.addResources(Map.of(r1, 2));
         assertThrows(IllegalResourceTransferException.class, () -> shelf.addResource(r2));
     }
 
@@ -125,8 +119,7 @@ public class ShelfTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < 3; i++)
-            shelf.addResource(r1);
+        shelf.addResources(Map.of(r1, 3));
         assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r2));
     }
 
@@ -142,8 +135,7 @@ public class ShelfTest {
     void quantityOfShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         shelf.removeResource(r);
         assertEquals(resourcesCount - 1, shelf.getQuantity());
     }
@@ -153,8 +145,7 @@ public class ShelfTest {
     void resourceQuantityOfShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
         shelf.removeResource(r);
         assertEquals(resourcesCount - 1, shelf.getResourceQuantity(r));
     }
@@ -164,10 +155,8 @@ public class ShelfTest {
     void resourceTypesOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.removeResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
+        shelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(), shelf.getResourceTypes());
     }
 
@@ -176,10 +165,8 @@ public class ShelfTest {
     void quantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.removeResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
+        shelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(0, shelf.getQuantity());
     }
 
@@ -188,10 +175,8 @@ public class ShelfTest {
     void resourceQuantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.removeResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
+        shelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(0, shelf.getResourceQuantity(r));
     }
 
@@ -200,10 +185,8 @@ public class ShelfTest {
     void resourceTypeOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.removeResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
+        shelf.removeResources(Map.of(r, resourcesCount));
         assertTrue(shelf.getResourceType().isEmpty());
     }
 
@@ -212,10 +195,8 @@ public class ShelfTest {
     void clearedShelfShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.removeResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
+        shelf.removeResources(Map.of(r, resourcesCount));
         assertTrue(shelf.isEmpty());
     }
 
@@ -224,10 +205,8 @@ public class ShelfTest {
     void clearedShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(3);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.removeResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
+        shelf.removeResources(Map.of(r, resourcesCount));
         assertFalse(shelf.isFull());
     }
 
@@ -236,10 +215,8 @@ public class ShelfTest {
     void clearedShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.addResource(r);
-        for (int i = 0; i < resourcesCount; i++)
-            shelf.removeResource(r);
+        shelf.addResources(Map.of(r, resourcesCount));
+        shelf.removeResources(Map.of(r, resourcesCount));
         assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r));
     }
 
@@ -250,12 +227,10 @@ public class ShelfTest {
         ResourceType r2 = new ResourceType("r2", true);
 
         Shelf shelf1 = new Shelf(7);
-        for (int i = 0; i < 3; i++)
-            shelf1.addResource(r1);
+        shelf1.addResources(Map.of(r1, 3));
 
         Shelf shelf2 = new Shelf(13);
-        for (int i = 0; i < 5; i++)
-            shelf2.addResource(r2);
+        shelf2.addResources(Map.of(r2, 5));
 
         if (direct)
             Shelf.swap(shelf1, shelf2);
@@ -283,12 +258,10 @@ public class ShelfTest {
         ResourceType r = new ResourceType("r", true);
 
         Shelf shelf1 = new Shelf(3);
-        for (int i = 0; i < 3; i++)
-            shelf1.addResource(r);
+        shelf1.addResources(Map.of(r, 3));
 
         Shelf shelf2 = new Shelf(5);
-        for (int i = 0; i < 5; i++)
-            shelf2.addResource(r);
+        shelf2.addResources(Map.of(r, 5));
 
         assertThrows(IllegalResourceTransferException.class, () -> Shelf.swap(shelf1, shelf2));
     }
@@ -299,12 +272,10 @@ public class ShelfTest {
         ResourceType r2 = new ResourceType("r2", true);
 
         Shelf shelf1 = new Shelf(7);
-        for (int i = 0; i < 3; i++)
-            shelf1.addResource(r1);
+        shelf1.addResources(Map.of(r1, 3));
 
         Shelf shelf2 = new Shelf(13);
-        for (int i = 0; i < 5; i++)
-            shelf2.addResource(r2);
+        shelf2.addResources(Map.of(r2, 5));
 
         Shelf.swap(shelf1, shelf2);
         Shelf.swap(shelf1, shelf2);

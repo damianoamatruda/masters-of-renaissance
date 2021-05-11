@@ -33,8 +33,7 @@ public class ResourceTransactionTest {
                 false
         );
 
-        for (int i = 0; i < 6; i++)
-            player.getStrongbox().addResource(r1);
+        player.getStrongbox().addResources(Map.of(r1, 6));
 
         ResourceTransactionRequest pr1 = new ResourceTransactionRequest(
                 prod,
@@ -61,10 +60,7 @@ public class ResourceTransactionTest {
         Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
         ResourceTransactionRecipe prod = new ResourceTransactionRecipe(Map.of(r1, 2), 3, Set.of(), Map.of(r2, 3), 0, Set.of(), false);
 
-        for (int i = 0; i < 6; i++)
-            player.getStrongbox().addResource(r1);
-        for (int i = 0; i < 2; i++)
-            player.getStrongbox().addResource(r3);
+        player.getStrongbox().addResources(Map.of(r1, 6, r3, 2));
 
         ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
                 prod,
@@ -91,8 +87,7 @@ public class ResourceTransactionTest {
         Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of()), 0, 0);
         ResourceTransactionRecipe prod = new ResourceTransactionRecipe(Map.of(r1, 2), 0, Set.of(), Map.of(r2, 3), 3, Set.of(), false);
 
-        for (int i = 0; i < 6; i++)
-            player.getStrongbox().addResource(r1);
+        player.getStrongbox().addResources(Map.of(r1, 6));
 
         ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
                 prod,
