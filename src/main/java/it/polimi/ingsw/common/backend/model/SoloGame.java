@@ -72,7 +72,7 @@ public class SoloGame extends Game {
             players.stream().map(pl -> pl.getNickname()).toList(),
             market.reduce(),
             devCardGrid.reduce(),
-            leaderCards,
+            leaderCards.stream().map(c -> c.reduce()).toList(),
             developmentCards,
             resContainers.stream().map(c -> c.reduce()).toList(),
             productions,

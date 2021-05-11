@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceShelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.UpdateLeader;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.Map;
 import java.util.Optional;
@@ -22,7 +23,7 @@ import java.util.Optional;
  */
 public abstract class LeaderCard extends Card {
     private final ResourceType resource;
-    private final CardRequirement requirement;
+    protected final CardRequirement requirement;
 
     /** The card's status. If active, the ability can be triggered. */
     private boolean isActive = false;
@@ -119,4 +120,6 @@ public abstract class LeaderCard extends Card {
                                                              Map<ResourceType, Integer> replacements) {
         return toProcess;
     }
+
+    public abstract ReducedLeaderCard reduce();
 }

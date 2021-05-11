@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend.model.leadercards;
 
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,5 +53,10 @@ public class ZeroLeader extends LeaderCard {
         }
 
         return resCopy;
+    }
+
+    @Override
+    public ReducedLeaderCard reduce() {
+        return new ReducedLeaderCard(getId(), getVictoryPoints(), getResource().getName(), "ZeroLeader", isActive(), requirement.reduce());
     }
 }

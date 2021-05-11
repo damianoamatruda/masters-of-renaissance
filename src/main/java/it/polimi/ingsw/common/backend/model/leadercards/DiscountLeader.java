@@ -2,6 +2,8 @@ package it.polimi.ingsw.common.backend.model.leadercards;
 
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedDiscountLeaderCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,5 +42,10 @@ public class DiscountLeader extends LeaderCard {
         discountedCost.computeIfPresent(this.getResource(), (r, oldCost) -> oldCost - discount);
 
         return discountedCost;
+    }
+
+    @Override
+    public ReducedLeaderCard reduce() {
+        return new ReducedDiscountLeaderCard(getId(), getVictoryPoints(), getResource().getName(), isActive(), requirement.reduce(), discount);
     }
 }

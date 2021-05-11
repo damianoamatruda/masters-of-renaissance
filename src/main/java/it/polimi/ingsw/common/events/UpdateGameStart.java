@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
@@ -16,7 +17,7 @@ public class UpdateGameStart implements MVEvent {
     private final List<String> nicknames;
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
-    private final List<LeaderCard> leaderCards;
+    private final List<ReducedLeaderCard> leaderCards;
     private final List<DevelopmentCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
     private final List<ResourceTransactionRecipe> productions;
@@ -41,7 +42,7 @@ public class UpdateGameStart implements MVEvent {
             List<String> nicknames,
             ReducedMarket market,
             ReducedDevCardGrid developmentCardGrid,
-            List<LeaderCard> leaderCards,
+            List<ReducedLeaderCard> leaderCards,
             List<DevelopmentCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
             List<ResourceTransactionRecipe> productions,
@@ -94,7 +95,7 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the leader cards
      */
-    public List<LeaderCard> getLeaderCards() {
+    public List<ReducedLeaderCard> getLeaderCards() {
         return leaderCards;
     }
 

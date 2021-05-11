@@ -3,6 +3,8 @@ package it.polimi.ingsw.common.backend.model.leadercards;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceShelf;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedDepotLeaderCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.Optional;
 
@@ -31,5 +33,10 @@ public class DepotLeader extends LeaderCard {
     @Override
     public Optional<ResourceShelf> getDepot() {
         return isActive() ? Optional.of(shelf) : super.getDepot();
+    }
+
+    @Override
+    public ReducedLeaderCard reduce() {
+        return new ReducedDepotLeaderCard(getId(), getVictoryPoints(), getResource().getName(), "DepotLeader", isActive(), requirement.reduce(), getDepot().get().getId());
     }
 }

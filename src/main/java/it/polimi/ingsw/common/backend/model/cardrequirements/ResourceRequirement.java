@@ -10,11 +10,14 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransac
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRequest;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedCardRequirement;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A concrete requirement for leader card activation.
@@ -112,5 +115,11 @@ public class ResourceRequirement implements CardRequirement {
         } catch (IllegalResourceTransactionActivationException e) {
             throw new CardRequirementsNotMetException("resource", e);
         }
+    }
+
+    @Override
+    public ReducedCardRequirement reduce() {
+        return new ReducedResourceRequirement(
+            resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)));
     }
 }

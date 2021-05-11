@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.backend.model.DevelopmentCard;
 import it.polimi.ingsw.common.backend.model.Player;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedCardRequirement;
 
 /**
  * Leader cards can be activated only if the player owns enough of either:
@@ -24,4 +25,6 @@ public interface CardRequirement {
      * @throws CardRequirementsNotMetException if the player does not meet the requirements.
      */
     void checkRequirements(Player player) throws CardRequirementsNotMetException;
+
+    ReducedCardRequirement reduce();
 }
