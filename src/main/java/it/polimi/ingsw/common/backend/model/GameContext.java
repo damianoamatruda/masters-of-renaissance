@@ -24,9 +24,6 @@ public class GameContext extends ModelObservable {
 
     private final GameFactory gameFactory;
 
-    /** This represents the setup state of a game. */
-    private boolean setupDone;
-
     /** This represents the state of a game during the turn of a player that has not made the mandatory move yet. */
     private boolean turnDone;
 
@@ -38,7 +35,6 @@ public class GameContext extends ModelObservable {
     public GameContext(Game game, GameFactory gameFactory, List<View> observers) {
         super(observers);
         this.game = game;
-        this.setupDone = false;
         this.turnDone = false;
         this.gameFactory = gameFactory;
     }
@@ -51,12 +47,12 @@ public class GameContext extends ModelObservable {
      * @param leaderIds the leader cards to choose
      */
     public void chooseLeaders(View v, String nickname, List<Integer> leaderIds) {
-        if (setupDone) {
+        Player player = getPlayerByNickname(nickname);
+
+        if (player.hasDoneSetup()) {
             notify(v, new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
             return;
         }
-
-        Player player = getPlayerByNickname(nickname);
 
         if (leaderIds.stream().map(player::getLeaderById).anyMatch(Optional::isEmpty)) {
             notify(v, new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
@@ -84,12 +80,12 @@ public class GameContext extends ModelObservable {
      * @param reducedShelves the destination shelves
      */
     public void chooseResources(View v, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
-        if (setupDone) {
+        Player player = getPlayerByNickname(nickname);
+
+        if (player.hasDoneSetup()) {
             notify(v, new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
             return;
         }
-
-        Player player = getPlayerByNickname(nickname);
 
         // TODO: Use stream to do this
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
@@ -120,10 +116,10 @@ public class GameContext extends ModelObservable {
      * @param shelfId2 the second shelf
      */
     public void swapShelves(View v, String nickname, Integer shelfId1, Integer shelfId2) {
-        if (!preliminaryChecks(v, "Swap shelves"))
-            return;
-
         Player player = getPlayerByNickname(nickname);
+
+        if (!preliminaryChecks(v, player, "Swap shelves"))
+            return;
 
         if (!checkCurrentPlayer(v, player, "Swap shelves"))
             return;
@@ -154,10 +150,10 @@ public class GameContext extends ModelObservable {
      * @param leaderid the leader card to activate
      */
     public void activateLeader(View v, String nickname, Integer leaderid) {
-        if (!preliminaryChecks(v, "Activate leader"))
-            return;
-
         Player player = getPlayerByNickname(nickname);
+
+        if (!preliminaryChecks(v, player, "Activate leader"))
+            return;
 
         if (!checkCurrentPlayer(v, player, "Activate leader"))
             return;
@@ -186,15 +182,16 @@ public class GameContext extends ModelObservable {
      * @param leaderid the leader card to discard
      */
     public void discardLeader(View v, String nickname, Integer leaderid) {
-        if (!preliminaryChecks(v, "Discard leader"))
-            return;
-
         Player player = getPlayerByNickname(nickname);
+
+        if (!preliminaryChecks(v, player, "Discard leader"))
+            return;
 
         if (!checkCurrentPlayer(v, player, "Discard leader"))
             return;
 
         LeaderCard leader = game.getLeaderById(leaderid).orElseThrow();
+
         try {
             player.discardLeader(game, leader);
         } catch (IndexOutOfBoundsException | ActiveLeaderDiscardException e) {
@@ -215,10 +212,10 @@ public class GameContext extends ModelObservable {
     public void takeMarketResources(View v, String nickname, boolean isRow, int index,
                                     Map<String, Integer> replacements,
                                     Map<Integer, Map<String, Integer>> reducedShelves) {
-        if (!preliminaryChecks(v, "Take market resources"))
-            return;
-
         Player player = getPlayerByNickname(nickname);
+
+        if (!preliminaryChecks(v, player, "Take market resources"))
+            return;
 
         if (!checkCurrentPlayer(v, player, "Take market resources"))
             return;
@@ -255,10 +252,10 @@ public class GameContext extends ModelObservable {
      */
     public void buyDevCard(View v, String nickname, String color, int level, int slotIndex,
                            Map<Integer, Map<String, Integer>> reducedResContainers) {
-        if (!preliminaryChecks(v, "Buy development card"))
-            return;
-
         Player player = getPlayerByNickname(nickname);
+
+        if (!preliminaryChecks(v, player, "Buy development card"))
+            return;
 
         if (!checkCurrentPlayer(v, player, "Buy development card"))
             return;
@@ -293,10 +290,10 @@ public class GameContext extends ModelObservable {
      * @param reducedProdRequests the group of requested contemporary productions
      */
     public void activateProductionRequests(View v, String nickname, List<ReducedProductionRequest> reducedProdRequests) {
-        if (!preliminaryChecks(v, "Activate production"))
-            return;
-
         Player player = getPlayerByNickname(nickname);
+
+        if (!preliminaryChecks(v, player, "Activate production"))
+            return;
 
         if (!checkCurrentPlayer(v, player, "Activate production"))
             return;
@@ -334,13 +331,12 @@ public class GameContext extends ModelObservable {
      * @param nickname the player
      */
     public void endTurn(View v, String nickname) {
-        if (!setupDone || !turnDone) {
-            notify(v, new ErrAction(
-                    new IllegalActionException("End turn", !setupDone ? "Setup is not done yet" : "No action executed in the turn").getMessage()));
+        Player player = getPlayerByNickname(nickname);
+
+        if (!player.hasDoneSetup() || !turnDone) {
+            notify(v, new ErrAction(new IllegalActionException("End turn", !player.hasDoneSetup() ? "Setup is not done yet" : "No action executed in the turn").getMessage()));
             return;
         }
-
-        Player player = getPlayerByNickname(nickname);
 
         if (!checkCurrentPlayer(v, player, "End turn"))
             return;
@@ -359,10 +355,8 @@ public class GameContext extends ModelObservable {
      * Check if the last necessary setup move has been made.
      */
     private void checkEndSetup() {
-        if (game.getPlayers().stream().allMatch(p -> p.hasChosenLeaders() && p.hasChosenResources())) {
-            setupDone = true;
-            notifyBroadcast(new UpdateSetupDone());
-        }
+        if (game.getPlayers().stream().allMatch(Player::hasDoneSetup))
+            notifyBroadcast(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
     }
 
     /**
@@ -394,9 +388,9 @@ public class GameContext extends ModelObservable {
      *               client trying to execute the action.
      * @return whether the checks passed
      */
-    private boolean preliminaryChecks(View v, String action) {
-        if (!setupDone || game.hasEnded()) {
-            notify(v, new ErrAction(new IllegalActionException(action, !setupDone ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+    private boolean preliminaryChecks(View v, Player player, String action) {
+        if (!player.hasDoneSetup() || game.hasEnded()) {
+            notify(v, new ErrAction(new IllegalActionException(action, !player.hasDoneSetup() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
             return false;
         }
         return true;
@@ -427,13 +421,11 @@ public class GameContext extends ModelObservable {
     public void setActive(String nickname, boolean active) throws NoActivePlayersException {
         Player player = getPlayerByNickname(nickname);
         player.setActive(active);
-        if(!active && player.equals(game.getCurrentPlayer())) {
+        if (!active && player.equals(game.getCurrentPlayer()))
             game.onTurnEnd();
-        }
     }
 
     public Game getGame() {
         return game;
     }
-
 }

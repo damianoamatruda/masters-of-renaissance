@@ -185,6 +185,15 @@ public class Player extends ModelObservable {
     }
 
     /**
+     * Returns whether the player has done the setup.
+     *
+     * @return <code>true</code> if the player has done the setup; <code>false</code> otherwise.
+     */
+    public boolean hasDoneSetup() {
+        return hasChosenLeaders() && hasChosenResources();
+    }
+
+    /**
      * Action performed when the player discards a leader card.
      *
      * @param game   the game the player is playing in
@@ -194,7 +203,7 @@ public class Player extends ModelObservable {
     public void discardLeader(Game game, LeaderCard leader) throws IndexOutOfBoundsException, ActiveLeaderDiscardException {
         if (!leaders.contains(leader))
             throw new IndexOutOfBoundsException(
-                String.format("Leader %d cannot be discarded: inexistent leader, max index allowed %d", leaders.indexOf(leader), leaders.size()));
+                    String.format("Leader %d cannot be discarded: inexistent leader, max index allowed %d", leaders.indexOf(leader), leaders.size()));
         if (leader.isActive()) throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
         game.onDiscardLeader(this);
         leaders.remove(leader);
