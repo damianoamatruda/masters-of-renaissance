@@ -271,6 +271,7 @@ public class GameContext extends ModelObservable {
             } catch (Exception e) {
                 // TODO: Specify resource container that is not owned
                 notify(v, new ErrAction(e.getMessage()));
+                throw new RuntimeException();
             }
         });
 
@@ -416,6 +417,7 @@ public class GameContext extends ModelObservable {
             } catch (Exception e) {
                 notify(v, new ErrAction(e.getMessage()));
                 // TODO: Specify resource container that is not owned
+                throw new RuntimeException();
             }
         });
         return new ProductionRequest(game.getProductionById(r.getProduction()).orElseThrow(), translateResMap(r.getInputBlanksRep()), translateResMap(r.getOutputBlanksRep()),
