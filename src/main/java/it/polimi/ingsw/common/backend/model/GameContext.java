@@ -300,7 +300,7 @@ public class GameContext extends ModelObservable {
         if (!checkCurrentPlayer(v, player, "Activate production"))
             return;
 
-        if (reducedProdRequests.stream().map(ReducedProductionRequest::getProductionId).map(player::getProductionById).anyMatch(Optional::isEmpty)) {
+        if (reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).map(player::getProductionById).anyMatch(Optional::isEmpty)) {
             notify(v, new ErrAction("Production not owned.")); // TODO: This is a PoC exception
             // TODO: Specify production that is not owned
             return;
@@ -413,7 +413,7 @@ public class GameContext extends ModelObservable {
         r.getInputContainers().forEach((id, resMap) -> inputContainers.put(player.getResourceContainerById(id).orElseThrow(), translateResMap(resMap)));
         Map<Strongbox, Map<ResourceType, Integer>> outputStrongboxes = new HashMap<>();
         r.getInputContainers().forEach((id, resMap) -> outputStrongboxes.put(player.getStrongboxById(id).orElseThrow(), translateResMap(resMap)));
-        return new ProductionRequest(game.getProductionById(r.getProductionId()).orElseThrow(), translateResMap(r.getInputBlanksRep()), translateResMap(r.getOutputBlanksRep()),
+        return new ProductionRequest(game.getProductionById(r.getProduction()).orElseThrow(), translateResMap(r.getInputBlanksRep()), translateResMap(r.getOutputBlanksRep()),
                 inputContainers, outputStrongboxes);
     }
 }
