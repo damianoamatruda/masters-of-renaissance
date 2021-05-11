@@ -67,8 +67,7 @@ public class SoloGameTest {
      */
     @Test
     void blackPointsGetterTest() {
-        game.incrementBlackPoints();
-        game.incrementBlackPoints();
+        game.incrementBlackPoints(2);
         assertEquals(2, game.getBlackPoints());
     }
 
@@ -103,10 +102,8 @@ public class SoloGameTest {
          */
         @BeforeEach
         void setup() {
-            for (int i = 0; i < 7; i++)
-                player.incrementFaithPoints(game, 1);
-            for (int i = 0; i < 8; i++)
-                game.incrementBlackPoints();
+            player.incrementFaithPoints(game, 7);
+            game.incrementBlackPoints(8);
         }
 
         /**
@@ -123,8 +120,7 @@ public class SoloGameTest {
          */
         @Test
         void losingGame() throws NoActivePlayersException {
-            for (int i = 0; i < 16; i++)
-                game.incrementBlackPoints();
+            game.incrementBlackPoints(16);
             game.onTurnEnd();
             assertAll(() -> assertEquals(2, player.getVictoryPoints()),
                     () -> assertFalse(player.isWinner()),

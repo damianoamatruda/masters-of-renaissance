@@ -133,18 +133,20 @@ public class SoloGame extends Game {
 
     /**
      * Advances Lorenzo's marker on the faith track by one, then checks for Vatican Report.
+     *
+     * @param points the quantity to be added to the black points
      */
-    public void incrementBlackPoints() {
-        blackPoints += 1;
+    public void incrementBlackPoints(int points) {
+        blackPoints += points;
 
         onIncrementFaithPoints(blackPoints);
-        
+
         notifyBroadcast(new UpdateFaithTrack(null, blackPoints, true));
     }
 
     @Override
     public void onDiscardResources(Player player, int quantity) {
-        incrementBlackPoints();
+        incrementBlackPoints(quantity);
     }
 
     /**
