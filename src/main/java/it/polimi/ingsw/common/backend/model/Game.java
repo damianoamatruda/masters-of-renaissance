@@ -173,6 +173,16 @@ public class Game extends ModelObservable {
             setLastRound();
     }
 
+    public void updatePtsFromYellowTiles(Player player, int advancement) {
+        Optional<FaithTrack.YellowTile> reached = faithTrack.getLastReachedYellowTile(player.getFaithPoints());
+        Optional<FaithTrack.YellowTile> last = faithTrack.getLastReachedYellowTile(player.getFaithPoints() - advancement);
+        if(!reached.equals(last)) {
+            int newPts = reached.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
+            int oldPts = last.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
+            player.incrementVictoryPoints(newPts - oldPts);
+        }
+    }
+
     /**
      * Method called after resources have been discarded by a player.
      *
@@ -369,7 +379,6 @@ public class Game extends ModelObservable {
      * Proceeds to calculate the remaining points and chooses a winner.
      */
     private void setWinnerPlayer() {
-        sumPointsFromYellowTiles();
         sumResourcesVictoryPoints();
 
         int maxPts = players.stream()

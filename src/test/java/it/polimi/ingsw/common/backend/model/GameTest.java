@@ -176,7 +176,7 @@ public class GameTest {
          */
         @Test
         void secondVaticanReportPtsDamiano() {
-            assertEquals(3, game.getPlayers().get(1).getVictoryPoints());
+            assertEquals(12, game.getPlayers().get(1).getVictoryPoints());
         }
 
         /**
@@ -250,7 +250,7 @@ public class GameTest {
              */
             @Test
             void lastVaticanReportPtsObtained() {
-                assertEquals(7, game.getPlayers().get(1).getVictoryPoints());
+                assertEquals(19, game.getPlayers().get(1).getVictoryPoints());
             }
 
             /**
@@ -259,7 +259,7 @@ public class GameTest {
              */
             @Test
             void lastVaticanReportPtsObtainedLead() {
-                assertEquals(6, game.getPlayers().get(0).getVictoryPoints());
+                assertEquals(26, game.getPlayers().get(0).getVictoryPoints());
             }
 
             /**
@@ -268,7 +268,7 @@ public class GameTest {
              */
             @Test
             void lastVaticanReportPtsNotObtained() {
-                assertEquals(2, game.getPlayers().get(2).getVictoryPoints());
+                assertEquals(11, game.getPlayers().get(2).getVictoryPoints());
             }
         }
 
