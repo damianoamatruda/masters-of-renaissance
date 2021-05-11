@@ -10,9 +10,8 @@ public class UpdateResourceContainer implements MVEvent {
 
     /**
      * Class constructor.
-     * 
-     * @param id      the ID of the container
-     * @param content the new state of the container
+     *
+     * @param container the ID of the container
      */
     public UpdateResourceContainer(ReducedResourceContainer container) {
         this.container = container;
