@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.backend.model.cardrequirements.ResourceRequirement
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 
 import java.util.Map;
 
@@ -80,5 +81,9 @@ public class DevelopmentCard extends Card {
     public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException {
         cost.checkRequirements(player);
         cost.take(game, player, resContainers);
+    }
+
+    public ReducedDevCard reduce() {
+        return new ReducedDevCard(getColor().getName(), getCost().reduce(), getProduction().getId(), getLevel());
     }
 }

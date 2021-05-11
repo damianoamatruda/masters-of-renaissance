@@ -1,9 +1,9 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.backend.model.DevelopmentCard;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
@@ -17,7 +17,7 @@ public class UpdateGameStart implements MVEvent {
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
     private final List<ReducedLeaderCard> leaderCards;
-    private final List<DevelopmentCard> developmentCards;
+    private final List<ReducedDevCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
     private final List<ResourceTransactionRecipe> productions;
     private final List<Integer> leaders, warehouseShelves;
@@ -42,7 +42,7 @@ public class UpdateGameStart implements MVEvent {
             ReducedMarket market,
             ReducedDevCardGrid developmentCardGrid,
             List<ReducedLeaderCard> leaderCards,
-            List<DevelopmentCard> developmentCards,
+            List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
             List<ResourceTransactionRecipe> productions,
             List<Integer> leaders,
@@ -87,7 +87,7 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the development cards
      */
-    public List<DevelopmentCard> getDevelopmentCards() {
+    public List<ReducedDevCard> getDevelopmentCards() {
         return developmentCards;
     }
 

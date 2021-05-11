@@ -109,7 +109,7 @@ public class Game extends ModelObservable {
             market.reduce(),
             devCardGrid.reduce(),
             leaderCards.stream().map(LeaderCard::reduce).toList(),
-            developmentCards,
+            developmentCards.stream().map(DevelopmentCard::reduce).toList(),
             resContainers.stream().map(ResourceContainer::reduce).toList(),
             productions,
             leaders,
@@ -132,7 +132,7 @@ public class Game extends ModelObservable {
                 market.reduce(),
                 devCardGrid.reduce(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
-                developmentCards,
+                developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions,
                 leaders,
@@ -443,7 +443,7 @@ public class Game extends ModelObservable {
     /**
      * Sums the points earned based on the last yellow tile that has been reached.
      */
-    private void sumPointsFromYellowTiles() {
+    private void sumPointsFromYellowTiles() { // TODO never used locally
         for (Player p : players) {
             faithTrack.getLastReachedYellowTile(p.getFaithPoints())
                 .ifPresent(lastReachedYellowTile -> p.incrementVictoryPoints(lastReachedYellowTile.getVictoryPoints()));

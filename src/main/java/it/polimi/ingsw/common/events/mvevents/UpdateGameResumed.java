@@ -1,8 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.backend.model.DevelopmentCard;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
@@ -18,7 +18,7 @@ public class UpdateGameResumed extends UpdateGameStart {
             ReducedMarket market,
             ReducedDevCardGrid developmentCardGrid,
             List<ReducedLeaderCard> leaderCards,
-            List<DevelopmentCard> developmentCards,
+            List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
             List<ResourceTransactionRecipe> productions,
             List<Integer> leaders,
