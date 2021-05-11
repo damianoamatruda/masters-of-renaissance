@@ -43,10 +43,15 @@ public class Lobby extends ModelObservable {
         System.out.println("Set nickname \"" + nickname + "\".");
 
         waiting.add(view);
+
+        notify(view, new ResJoin(waiting.size() == 1));
+
+        if (countToNewGame != 0)
+            notify(view, new ResNewGame(countToNewGame, countToNewGame - waiting.size()));
+
         if (waiting.size() == countToNewGame)
             startNewGame();
 
-        notify(view, new ResJoin(waiting.size() == 1));
     }
 
     public void setCountToNewGame(View view, int count) {
@@ -57,9 +62,10 @@ public class Lobby extends ModelObservable {
         }
         System.out.printf("Setting players count to %d.%n", count);
         
-        notify(view, new ResNewGame(count));
-        
         this.countToNewGame = count;
+
+        notify(view, new ResNewGame(countToNewGame, countToNewGame - waiting.size()));
+        
         if (waiting.size() == countToNewGame)
             startNewGame();
     }

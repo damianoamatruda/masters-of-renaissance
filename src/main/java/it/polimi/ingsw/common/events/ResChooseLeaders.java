@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.View;
 /** Server confirmation to the leader choice request during player setup. */
 public class ResChooseLeaders implements MVEvent {
     /** The IDs of the chosen leader cards. */
-    private final List<Integer> leadersId;// TODO remove
+    private final List<Integer> leadersId;
 
     /**
      * Class constructor.

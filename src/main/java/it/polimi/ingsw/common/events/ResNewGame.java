@@ -5,15 +5,26 @@ import it.polimi.ingsw.common.View;
 /** Server response to a new game request. */
 public class ResNewGame implements MVEvent {
     /** The number of players the new game is set to. */
-    private final int count; // TODO remove
+    private final int count;
+    /** The number of players that still need to join before the game can start. */
+    private final int emptySeats;
 
     /**
      * Class constructor.
      * 
      * @param count the number of players the new game is set to
+     * @param emptySeats the number of players that still need to join before the game can start
      */
-    public ResNewGame(int count) {
+    public ResNewGame(int count, int emptySeats) {
         this.count = count;
+        this.emptySeats = emptySeats;
+    }
+
+    /**
+     * @return the number of players that still need to join before the game can start
+     */
+    public int getEmptySeats() {
+        return emptySeats;
     }
 
     /**
