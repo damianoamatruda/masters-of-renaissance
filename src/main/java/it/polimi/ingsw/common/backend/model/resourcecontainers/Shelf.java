@@ -54,11 +54,16 @@ public class Shelf extends ResourceContainer {
         ResourceContainer clone1 = s1.copy();
         ResourceContainer clone2 = s2.copy();
 
-        clone1.removeResources(Map.of(s1.resType, s1.quantity));
-        clone2.removeResources(Map.of(s2.resType, s2.quantity));
+        // TODO: Make checks of null resource types in resource maps also in other methods using resource maps
+        if (s1.resType != null)
+            clone1.removeResources(Map.of(s1.resType, s1.quantity));
+        if (s2.resType != null)
+            clone2.removeResources(Map.of(s2.resType, s2.quantity));
 
-        clone1.addResources(Map.of(s2.resType, s2.quantity));
-        clone2.addResources(Map.of(s1.resType, s1.quantity));
+        if (s2.resType != null)
+            clone1.addResources(Map.of(s2.resType, s2.quantity));
+        if (s1.resType != null)
+            clone2.addResources(Map.of(s1.resType, s1.quantity));
 
         s1.resType = clone1.getResourceTypes().stream().findFirst().orElse(null);
         s1.quantity = clone1.getQuantity();
