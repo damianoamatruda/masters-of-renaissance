@@ -85,6 +85,10 @@ public class FaithTrack {
         this.vaticanSectionsMap.values().forEach(s -> s.addObserver(o));
     }
 
+    public void removeObserver(View o) {
+        this.vaticanSectionsMap.values().forEach(s -> s.removeObserver(o));
+    }
+
     /**
      * This class represents a Vatican Section in the Faith Track.
      */

@@ -53,14 +53,7 @@ public class SoloGame extends Game {
     }
 
     public void addObserver(View o, String nickname) {
-        this.observers.add(o);
-        this.players.forEach(obj -> obj.addObserver(o));
-        this.leaderCards.forEach(obj -> obj.addObserver(o));
-        // this.developmentCards.forEach(obj -> obj.addObserver(o)); // technically unneded
-        this.resContainers.forEach(obj -> obj.addObserver(o));
-        this.devCardGrid.addObserver(o);
-        this.market.addObserver(o);
-        this.faithTrack.addObserver(o);
+        register(o);
 
         Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
 
@@ -69,12 +62,12 @@ public class SoloGame extends Game {
         int strongbox = p.getStrongbox().getId();
 
         notify(o, new UpdateGameStart(
-            players.stream().map(pl -> pl.getNickname()).toList(),
+            players.stream().map(Player::getNickname).toList(),
             market.reduce(),
             devCardGrid.reduce(),
-            leaderCards.stream().map(c -> c.reduce()).toList(),
+            leaderCards.stream().map(LeaderCard::reduce).toList(),
             developmentCards,
-            resContainers.stream().map(c -> c.reduce()).toList(),
+            resContainers.stream().map(ResourceContainer::reduce).toList(),
             productions,
             leaders,
             shelves,

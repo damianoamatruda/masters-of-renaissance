@@ -5,10 +5,7 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateGameStart;
-import it.polimi.ingsw.common.events.mvevents.UpdateLastRound;
-import it.polimi.ingsw.common.events.mvevents.UpdateGameEnd;
+import it.polimi.ingsw.common.events.mvevents.*;
 
 import java.util.*;
 
@@ -87,15 +84,19 @@ public class Game extends ModelObservable {
         this.ended = false;
     }
 
-    public void addObserver(View o, String nickname) {
+    public void register(View o) {
         this.observers.add(o);
         this.players.forEach(obj -> obj.addObserver(o));
         this.leaderCards.forEach(obj -> obj.addObserver(o));
-        // this.developmentCards.forEach(obj -> obj.addObserver(o)); // technically unneded
+        // this.developmentCards.forEach(obj -> obj.addObserver(o)); // technically unneeded
         this.resContainers.forEach(obj -> obj.addObserver(o));
         this.devCardGrid.addObserver(o);
         this.market.addObserver(o);
         this.faithTrack.addObserver(o);
+    }
+
+    public void addObserver(View o, String nickname) {
+        register(o);
 
         Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
 
@@ -104,17 +105,52 @@ public class Game extends ModelObservable {
         int strongbox = p.getStrongbox().getId();
 
         notify(o, new UpdateGameStart(
-            players.stream().map(pl -> pl.getNickname()).toList(),
+            players.stream().map(Player::getNickname).toList(),
             market.reduce(),
             devCardGrid.reduce(),
-            leaderCards.stream().map(c -> c.reduce()).toList(),
+            leaderCards.stream().map(LeaderCard::reduce).toList(),
             developmentCards,
-            resContainers.stream().map(c -> c.reduce()).toList(),
+            resContainers.stream().map(ResourceContainer::reduce).toList(),
             productions,
             leaders,
             shelves,
             strongbox,
             null));
+    }
+
+    public void resume(View o, String nickname) {
+        register(o);
+
+        Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
+
+        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
+        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
+        int strongbox = p.getStrongbox().getId();
+
+        notify(o, new UpdateGameResumed(
+                players.stream().map(Player::getNickname).toList(),
+                market.reduce(),
+                devCardGrid.reduce(),
+                leaderCards.stream().map(LeaderCard::reduce).toList(),
+                developmentCards,
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions,
+                leaders,
+                shelves,
+                strongbox,
+                null,
+                p.hasChosenLeaders(), p.hasChosenResources()
+        ));
+    }
+
+    public void removeObserver(View o) {
+        this.observers.remove(o);
+        this.players.forEach(obj -> obj.removeObserver(o));
+        this.leaderCards.forEach(obj -> obj.removeObserver(o));
+        this.resContainers.forEach(obj -> obj.removeObserver(o));
+        this.devCardGrid.removeObserver(o);
+        this.market.removeObserver(o);
+        this.faithTrack.removeObserver(o);
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {

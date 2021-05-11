@@ -18,6 +18,7 @@ public class Lobby extends ModelObservable {
     // private final List<GameContext> games;
     private final Map<View, String> nicknames;
     private final Map<View, GameContext> joined;
+    private final List<String> disconnected;
     private final List<View> waiting;
     private int countToNewGame;
 
@@ -27,6 +28,7 @@ public class Lobby extends ModelObservable {
         // this.games = new ArrayList<>();
         this.joined = new HashMap<>();
         this.waiting = new ArrayList<>();
+        this.disconnected = new ArrayList<>();
     }
 
     public void joinLobby(View view, String nickname) {
@@ -43,17 +45,31 @@ public class Lobby extends ModelObservable {
             return;
         }
         nicknames.put(view, nickname);
-        System.out.println("Set nickname \"" + nickname + "\".");
+        if(disconnected.contains(nickname)) {
+            System.out.println("Player \"" + nickname + "\" rejoined");
+            notify(view, new ResJoin(false));
 
-        waiting.add(view);
+            disconnected.remove(nickname);
+            try {
+                joined.get(view).setActive(nickname, true);
+            } catch (NoActivePlayersException e) {
+                notify(view, new ErrAction(e.getMessage())); // TODO does this make sense?
+            }
+            joined.get(view).getGame().resume(view, nicknames.get(view));
+        }
+        else {
+            System.out.println("Set nickname \"" + nickname + "\".");
 
-        notify(view, new ResJoin(waiting.size() == 1));
+            waiting.add(view);
 
-        if (countToNewGame != 0)
-            notify(view, new ResNewGame(countToNewGame, countToNewGame - waiting.size()));
+            notify(view, new ResJoin(waiting.size() == 1));
 
-        if (waiting.size() == countToNewGame)
-            startNewGame();
+            if (countToNewGame != 0)
+                notify(view, new ResNewGame(countToNewGame, countToNewGame - waiting.size()));
+
+            if (waiting.size() == countToNewGame)
+                startNewGame();
+        }
     }
 
     public void prepareNewGame(View view, int playersCount) {
@@ -89,6 +105,15 @@ public class Lobby extends ModelObservable {
 
     public void exit(View view) {
         // TODO: Manage the exit of a view
+        String nickname = nicknames.get(view);
+        joined.get(view).getGame().removeObserver(view);
+        try {
+            joined.get(view).setActive(nickname, false);
+        } catch (NoActivePlayersException e) {
+            joined.remove(view);
+        }
+        disconnected.add(nickname);
+        nicknames.remove(view);
         notify(view, new ResGoodbye());
     }
 

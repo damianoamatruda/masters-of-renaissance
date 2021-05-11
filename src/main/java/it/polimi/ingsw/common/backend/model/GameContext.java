@@ -371,7 +371,7 @@ public class GameContext extends ModelObservable {
      * @param v      the view to send the error massage back with
      * @param player the player to check
      * @param action the action trying to be performed
-     * @return whether the ckeck passed
+     * @return whether the check passed
      */
     private boolean checkCurrentPlayer(View v, Player player, String action) {
         if (!player.equals(game.getCurrentPlayer())) {
@@ -423,4 +423,17 @@ public class GameContext extends ModelObservable {
         return new ProductionRequest(game.getProductionById(r.getProduction()).orElseThrow(), translateResMap(r.getInputBlanksRep()), translateResMap(r.getOutputBlanksRep()),
                 inputContainers, player.getStrongbox());
     }
+
+    public void setActive(String nickname, boolean active) throws NoActivePlayersException {
+        Player player = getPlayerByNickname(nickname);
+        player.setActive(active);
+        if(!active && player.equals(game.getCurrentPlayer())) {
+            game.onTurnEnd();
+        }
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
 }
