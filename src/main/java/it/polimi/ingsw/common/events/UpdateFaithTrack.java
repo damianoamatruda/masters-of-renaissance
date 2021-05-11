@@ -4,7 +4,8 @@ import it.polimi.ingsw.common.View;
 
 /** Faith track state update. */
 public class UpdateFaithTrack implements MVEvent {
-    // TODO nickname and docs
+    /** The player whose faith points increased. */
+    private final String nickname;
     /** Whether the new position refers to the black cross marker. */
     private final boolean isBlackCross;
     /** The new marker position. */
@@ -13,12 +14,21 @@ public class UpdateFaithTrack implements MVEvent {
     /**
      * Class constructor.
      * 
+     * @param nickname     the nickname of the player whose faith points increased
      * @param newPos       whether the new position refers to the black cross marker
      * @param isBlackCross the new marker position
      */
-    public UpdateFaithTrack(int newPos, boolean isBlackCross) {
+    public UpdateFaithTrack(String nickname, int newPos, boolean isBlackCross) {
+        this.nickname = nickname;
         this.position = newPos;
         this.isBlackCross = isBlackCross;
+    }
+
+    /**
+     * @return the nickname of the player whose faith points increased
+     */
+    public String getNickname() {
+        return nickname;
     }
 
     /**

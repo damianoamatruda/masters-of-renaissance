@@ -213,7 +213,7 @@ public class Player extends ModelObservable {
         faithPoints += points;
         game.onIncrementFaithPoints(faithPoints);
 
-        notifyBroadcast(new UpdateFaithTrack(faithPoints, false));
+        notifyBroadcast(new UpdateFaithTrack(getNickname(), faithPoints, false));
     }
 
     /**

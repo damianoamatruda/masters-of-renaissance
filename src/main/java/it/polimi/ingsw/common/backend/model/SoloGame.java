@@ -134,7 +134,7 @@ public class SoloGame extends Game {
         blackPoints += 1;
         super.onIncrementFaithPoints(blackPoints);
 
-        notifyBroadcast(new UpdateFaithTrack(blackPoints, true));
+        notifyBroadcast(new UpdateFaithTrack(null, blackPoints, true));
     }
 
     /**
