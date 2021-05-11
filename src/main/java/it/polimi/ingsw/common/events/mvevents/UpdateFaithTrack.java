@@ -6,22 +6,30 @@ import it.polimi.ingsw.common.View;
 public class UpdateFaithTrack implements MVEvent {
     /** The player whose faith points increased. */
     private final String nickname;
-    /** Whether the new position refers to the black cross marker. */
+
+    /** <code>true</code> if the new position refers to the black cross marker; <code>false</code> otherwise. */
     private final boolean isBlackCross;
+
     /** The new marker position. */
     private final int position;
 
     /**
      * Class constructor.
-     * 
+     *
      * @param nickname     the nickname of the player whose faith points increased
-     * @param newPos       whether the new position refers to the black cross marker
+     * @param newPos       <code>true</code> if the new position refers to the black cross marker; <code>false</code>
+     *                     otherwise.
      * @param isBlackCross the new marker position
      */
     public UpdateFaithTrack(String nickname, int newPos, boolean isBlackCross) {
         this.nickname = nickname;
         this.position = newPos;
         this.isBlackCross = isBlackCross;
+    }
+
+    @Override
+    public void handle(View view) {
+        view.update(this);
     }
 
     /**
@@ -39,15 +47,9 @@ public class UpdateFaithTrack implements MVEvent {
     }
 
     /**
-     * @return whether the new position refers to the black cross marker
+     * @return <code>true</code> if the new position refers to the black cross marker; <code>false</code> otherwise.
      */
     public boolean isBlackCross() {
         return isBlackCross;
-    }
-
-    @Override
-    public void handle(View view) {
-        // TODO Auto-generated method stub
-        
     }
 }

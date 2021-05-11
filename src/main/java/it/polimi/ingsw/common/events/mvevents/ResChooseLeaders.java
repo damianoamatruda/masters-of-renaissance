@@ -1,8 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import java.util.List;
-
 import it.polimi.ingsw.common.View;
+
+import java.util.List;
 
 /** Server confirmation to the leader choice request during player setup. */
 public class ResChooseLeaders implements MVEvent {
@@ -11,11 +11,16 @@ public class ResChooseLeaders implements MVEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param leadersId the IDs of the chosen leader cards
      */
     public ResChooseLeaders(List<Integer> leadersId) {
         this.leadersId = leadersId;
+    }
+
+    @Override
+    public void handle(View view) {
+        view.update(this);
     }
 
     /**
@@ -23,11 +28,5 @@ public class ResChooseLeaders implements MVEvent {
      */
     public List<Integer> getLeadersId() {
         return leadersId;
-    }
-
-    @Override
-    public void handle(View view) {
-        // TODO Auto-generated method stub
-        
     }
 }

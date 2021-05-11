@@ -1,19 +1,14 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.List;
 
-public class UpdateGameResumed extends UpdateGameStart {
+public class UpdateGameResume extends UpdateGameStart {
     private final boolean hasChosenLeaders, hasChosenResources;
 
-    public UpdateGameResumed(
+    public UpdateGameResume(
             List<String> nicknames,
             ReducedMarket market,
             ReducedDevCardGrid developmentCardGrid,

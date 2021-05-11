@@ -2,7 +2,7 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.UpdateActivatedVatSection;
+import it.polimi.ingsw.common.events.mvevents.UpdateVaticanSectionActivated;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -169,7 +169,7 @@ public class FaithTrack {
          */
         public void activate() {
             this.activated = true;
-            notifyBroadcast(new UpdateActivatedVatSection(id));
+            notifyBroadcast(new UpdateVaticanSectionActivated(id));
         }
     }
 

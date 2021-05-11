@@ -2,12 +2,7 @@ package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.List;
 
@@ -61,6 +56,11 @@ public class UpdateGameStart implements MVEvent {
         this.warehouseShelves = warehouseShelves;
         this.strongbox = strongbox;
         this.actionTokens = actionTokens;
+    }
+
+    @Override
+    public void handle(View view) {
+        view.update(this);
     }
 
     /**
@@ -140,12 +140,4 @@ public class UpdateGameStart implements MVEvent {
     public List<ActionToken> getActionTokens() {
         return actionTokens;
     }
-
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
-    }
-
-    
 }

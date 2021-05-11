@@ -10,23 +10,22 @@ public class UpdateMarket implements MVEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param market the reducedmarket containing the new market status
      */
     public UpdateMarket(ReducedMarket market) {
         this.market = market;
     }
-    
+
+    @Override
+    public void handle(View view) {
+        view.update(this);
+    }
+
     /**
      * @return the reducedmarket containing the new market status
      */
     public ReducedMarket getMarket() {
         return this.market;
-    }
-
-    @Override
-    public void handle(View view) {
-        // TODO Auto-generated method stub
-        
     }
 }

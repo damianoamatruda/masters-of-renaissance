@@ -127,7 +127,7 @@ public class Game extends ModelObservable {
         List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
         int strongbox = p.getStrongbox().getId();
 
-        notify(o, new UpdateGameResumed(
+        notify(o, new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 market.reduce(),
                 devCardGrid.reduce(),

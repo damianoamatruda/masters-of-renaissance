@@ -4,13 +4,13 @@ import it.polimi.ingsw.common.View;
 
 /** Server response to a request to join the lobby. */
 public class ResJoin implements MVEvent {
-    /** Whether the player joining is the first of the match. */
+    /** <code>true</code> if the player joining is the first of the match; <code>false</code> otherwise. */
     private final boolean isFirst;
 
     /**
      * Class constructor.
-     * 
-     * @param isFirst whether the player joining is the first of the match
+     *
+     * @param isFirst <code>true</code> if the player joining is the first of the match; <code>false</code> otherwise.
      */
     public ResJoin(boolean isFirst) {
         this.isFirst = isFirst;
@@ -22,7 +22,7 @@ public class ResJoin implements MVEvent {
     }
 
     /**
-     * @return whether the player joining is the first of the match
+     * @return <code>true</code> if the player joining is the first of the match; <code>false</code> otherwise.
      */
     public boolean isFirst() {
         return isFirst;

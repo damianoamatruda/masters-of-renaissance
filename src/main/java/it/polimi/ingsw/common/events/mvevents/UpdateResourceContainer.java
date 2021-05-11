@@ -17,16 +17,15 @@ public class UpdateResourceContainer implements MVEvent {
         this.container = container;
     }
 
+    @Override
+    public void handle(View view) {
+        view.update(this);
+    }
+
     /**
      * @return the new container state
      */
     public ReducedResourceContainer getContainer() {
         return container;
-    }
-
-    @Override
-    public void handle(View view) {
-        // TODO Auto-generated method stub
-        
     }
 }

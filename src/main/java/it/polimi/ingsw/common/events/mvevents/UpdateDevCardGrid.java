@@ -10,11 +10,16 @@ public class UpdateDevCardGrid implements MVEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param topCards the new development card grid state
      */
     public UpdateDevCardGrid(ReducedDevCardGrid topCards) {
         this.topCards = topCards;
+    }
+
+    @Override
+    public void handle(View view) {
+        view.update(this);
     }
 
     /**
@@ -22,11 +27,5 @@ public class UpdateDevCardGrid implements MVEvent {
      */
     public ReducedDevCardGrid getCards() {
         return topCards;
-    }
-
-    @Override
-    public void handle(View view) {
-        // TODO Auto-generated method stub
-        
     }
 }

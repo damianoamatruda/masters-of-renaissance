@@ -9,11 +9,16 @@ public class UpdateCurrentPlayer implements MVEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param nickname the nickname of the new current player
      */
     public UpdateCurrentPlayer(String nickname) {
         this.nickname = nickname;
+    }
+
+    @Override
+    public void handle(View view) {
+        view.update(this);
     }
 
     /**
@@ -21,11 +26,5 @@ public class UpdateCurrentPlayer implements MVEvent {
      */
     public String getNickname() {
         return nickname;
-    }
-
-    @Override
-    public void handle(View view) {
-        // TODO Auto-generated method stub
-        
     }
 }
