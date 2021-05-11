@@ -1,20 +1,19 @@
 package it.polimi.ingsw.common.events.vcevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 /** Client request for a new game. */
 public class ReqNewGame implements VCEvent {
     /** The number of players needed to start the game. */
-    private final int count;
+    private final int playersCount;
 
     /**
      * Class constructor.
-     * 
-     * @param count the number of players needed to start the game
+     *
+     * @param playersCount the number of players needed to start the game
      */
-    public ReqNewGame(int count) {
-        this.count = count;
+    public ReqNewGame(int playersCount) {
+        this.playersCount = playersCount;
     }
 
     @Override
@@ -25,7 +24,7 @@ public class ReqNewGame implements VCEvent {
     /**
      * @return the number of players needed to start the game
      */
-    public int getCount() {
-        return count;
+    public int getPlayersCount() {
+        return playersCount;
     }
 }

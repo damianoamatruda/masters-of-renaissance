@@ -20,7 +20,7 @@ public class Controller {
     }
 
     public void update(View view, ReqNewGame event) {
-        model.setCountToNewGame(view, event.getCount());
+        model.prepareNewGame(view, event.getPlayersCount());
     }
 
     public void update(View view, ReqChooseLeaders event) {

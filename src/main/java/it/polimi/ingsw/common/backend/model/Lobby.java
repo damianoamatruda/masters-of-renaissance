@@ -54,18 +54,17 @@ public class Lobby extends ModelObservable {
 
         if (waiting.size() == countToNewGame)
             startNewGame();
-
     }
 
-    public void setCountToNewGame(View view, int count) {
+    public void prepareNewGame(View view, int playersCount) {
         checkNickname(view);
         if (!isPlayerFirst(view)) {
             notify(view, new ErrAction("Command unavailable. You are not the first player who joined."));
             return;
         }
-        System.out.printf("Setting players count to %d.%n", count);
-        
-        this.countToNewGame = count;
+        System.out.printf("Setting players count to %d.%n", playersCount);
+
+        this.countToNewGame = playersCount;
 
         notify(view, new ResNewGame(countToNewGame, countToNewGame - waiting.size()));
         
