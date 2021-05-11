@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransac
 import it.polimi.ingsw.common.events.UpdateActionToken;
 import it.polimi.ingsw.common.events.UpdateFaithTrack;
 import it.polimi.ingsw.common.events.UpdateGameStart;
+import it.polimi.ingsw.common.events.UpdateWinner;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,7 +99,10 @@ public class SoloGame extends Game {
 
         if (!isBlackWinner())
             super.onTurnEnd();
-        else ended = true;
+        else {
+            ended = true;
+            notifyBroadcast(new UpdateWinner(null, computeVictoryPointsMap(players)));
+        }
     }
 
     @Override
@@ -141,6 +145,6 @@ public class SoloGame extends Game {
      * Declares Lorenzo as winner.
      */
     public void setBlackWinner() {
-        this.blackWinner = true; // TODO notify
+        this.blackWinner = true;
     }
 }
