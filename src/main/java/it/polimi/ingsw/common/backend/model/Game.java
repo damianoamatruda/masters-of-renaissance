@@ -371,8 +371,6 @@ public class Game extends ModelObservable {
     private void setWinnerPlayer() {
         sumPointsFromYellowTiles();
         sumResourcesVictoryPoints();
-        for (Player p : players)
-            p.sumCardsVictoryPoints();
 
         int maxPts = players.stream()
                 .mapToInt(Player::getVictoryPoints)

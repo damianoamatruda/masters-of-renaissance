@@ -350,6 +350,7 @@ public class Player extends ModelObservable {
 
         slot.push(devCard);
 
+        incrementVictoryPoints(devCard.getVictoryPoints());
         notifyBroadcast(new UpdateDevCardSlot(devCard.getId(), index));
     }
 
@@ -374,24 +375,6 @@ public class Player extends ModelObservable {
                 .mapToInt(Shelf::getQuantity)
                 .sum();
         return quantity;
-    }
-
-    /**
-     * Sums points earned from all development cards collected and from activated leader cards.
-     */
-    public void sumCardsVictoryPoints() {
-        int toSum = devSlots.stream()
-                .mapToInt(slot -> slot.stream()
-                        .mapToInt(Card::getVictoryPoints)
-                        .sum())
-                .sum();
-
-        toSum += leaders.stream()
-                .filter(LeaderCard::isActive)
-                .mapToInt(Card::getVictoryPoints)
-                .sum();
-
-        this.victoryPoints += toSum;
     }
 
     public Optional<Strongbox> getStrongboxById(int id) {
