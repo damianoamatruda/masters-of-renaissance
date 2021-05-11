@@ -411,7 +411,7 @@ Possible errors include:
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                  UpdateDevGrid │ ╰──────────────────╯
+               │              UpdateDevCardGrid │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
@@ -865,16 +865,29 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                  UpdateDevGrid │
+               │              UpdateDevCardGrid │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateDevGrid (server)**
+**UpdateDevCardGrid (server)**
 
 ```json
 {
-  "type": "UpdateDevGrid",
-  "topCards": [ [ 3, 4, 5 ], [ 6, 8, 7 ] ]
+  "type": "UpdateDevCardGrid",
+  "topCards": {
+    "levelsCount": 3,
+    "colorsCount": 4,
+    "grid": {
+      "Purple": [
+        [ 2, 0, 1 ],
+        [ 3, 4, 5 ]
+      ],
+      "Green": [
+        [ 8, 7, 6 ],
+        [ 9, 11, 10 ]
+      ]
+    }
+  }
 }
 ```
 

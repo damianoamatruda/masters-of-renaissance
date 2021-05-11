@@ -4,7 +4,7 @@ import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.UpdateDevGrid;
+import it.polimi.ingsw.common.events.UpdateDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
 import java.util.*;
@@ -129,8 +129,7 @@ public class DevCardGrid extends ModelObservable {
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
             player.addToDevSlot(game, slotIndex, card, resContainers);
-            notifyBroadcast(
-                new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(Card::getId).toList()).toList()));
+            notifyBroadcast(new UpdateDevCardGrid(reduce()));
         } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
@@ -154,7 +153,7 @@ public class DevCardGrid extends ModelObservable {
         if (quantity > 0) grid.remove(color);
 
         notifyBroadcast(
-            new UpdateDevGrid(peekDevCards().stream().map(l -> l.stream().map(c -> c == null ? 0 : c.getId()).toList()).toList()));
+            new UpdateDevCardGrid(reduce()));
     }
 
     public ReducedDevCardGrid reduce() {
