@@ -37,6 +37,6 @@ public class DepotLeader extends LeaderCard {
 
     @Override
     public ReducedLeaderCard reduce() {
-        return new ReducedDepotLeaderCard(getId(), getVictoryPoints(), getResource().getName(), "DepotLeader", isActive(), requirement.reduce(), getDepot().get().getId());
+        return new ReducedDepotLeaderCard(getId(), getVictoryPoints(), getResource().getName(), "DepotLeader", isActive(), requirement.reduce(), shelf.getId());
     }
 }
