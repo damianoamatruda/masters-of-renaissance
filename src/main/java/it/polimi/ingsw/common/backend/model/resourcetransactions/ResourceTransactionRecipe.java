@@ -1,10 +1,12 @@
 package it.polimi.ingsw.common.backend.model.resourcetransactions;
 
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a recipe of a transaction of transfers of resources from and to resource containers and a
@@ -144,5 +146,17 @@ public class ResourceTransactionRecipe {
      */
     public boolean hasDiscardableOutput() {
         return discardableOutput;
+    }
+
+    public ReducedResourceTransactionRecipe reduce() {
+        return new ReducedResourceTransactionRecipe(
+            getId(),
+            getInput().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)),
+            getInputBlanks(),
+            getInputBlanksExclusions().stream().map(ResourceType::getName).toList(),
+            getOutput().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)),
+            getOutputBlanks(),
+            getOutputBlanksExclusions().stream().map(ResourceType::getName).toList(),
+            hasDiscardableOutput());
     }
 }

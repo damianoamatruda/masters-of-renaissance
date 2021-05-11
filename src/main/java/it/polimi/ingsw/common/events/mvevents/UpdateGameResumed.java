@@ -1,12 +1,12 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class UpdateGameResumed extends UpdateGameStart {
             List<ReducedLeaderCard> leaderCards,
             List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
-            List<ResourceTransactionRecipe> productions,
+            List<ReducedResourceTransactionRecipe> productions,
             List<Integer> leaders,
             List<Integer> warehouseShelves,
             int strongbox,

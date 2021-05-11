@@ -68,7 +68,7 @@ public class SoloGame extends Game {
             leaderCards.stream().map(LeaderCard::reduce).toList(),
             developmentCards.stream().map(DevelopmentCard::reduce).toList(),
             resContainers.stream().map(ResourceContainer::reduce).toList(),
-            productions,
+            productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
             leaders,
             shelves,
             strongbox,

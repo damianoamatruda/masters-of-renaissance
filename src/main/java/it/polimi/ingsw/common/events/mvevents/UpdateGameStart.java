@@ -2,12 +2,12 @@ package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class UpdateGameStart implements MVEvent {
     private final List<ReducedLeaderCard> leaderCards;
     private final List<ReducedDevCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
-    private final List<ResourceTransactionRecipe> productions;
+    private final List<ReducedResourceTransactionRecipe> productions;
     private final List<Integer> leaders, warehouseShelves;
     private final int strongbox;
     private final List<ActionToken> actionTokens;
@@ -44,7 +44,7 @@ public class UpdateGameStart implements MVEvent {
             List<ReducedLeaderCard> leaderCards,
             List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
-            List<ResourceTransactionRecipe> productions,
+            List<ReducedResourceTransactionRecipe> productions,
             List<Integer> leaders,
             List<Integer> warehouseShelves,
             int strongbox,
@@ -73,7 +73,7 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the productions
      */
-    public List<ResourceTransactionRecipe> getProductions() {
+    public List<ReducedResourceTransactionRecipe> getProductions() {
         return productions;
     }
 
