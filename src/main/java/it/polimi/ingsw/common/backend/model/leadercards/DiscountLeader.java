@@ -46,6 +46,6 @@ public class DiscountLeader extends LeaderCard {
 
     @Override
     public ReducedLeaderCard reduce() {
-        return new ReducedDiscountLeaderCard(getId(), getVictoryPoints(), getResource().getName(), isActive(), requirement.reduce(), discount);
+        return new ReducedDiscountLeaderCard(getId(), getVictoryPoints(), getResource().getName(), "DiscountLeader", isActive(), requirement.reduce(), discount);
     }
 }
