@@ -89,8 +89,7 @@ public class GameTest {
      */
     @Test
     void noYellowTilesEndOfGame() throws NoActivePlayersException {
-        for (int i = 0; i < 24; i++)
-            game.getPlayers().get(0).incrementFaithPoints(game, 1);
+        game.getPlayers().get(0).incrementFaithPoints(game, 24);
         game.onTurnEnd();
         assertAll(() -> assertTrue(game.hasEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
@@ -112,10 +111,8 @@ public class GameTest {
          */
         @BeforeEach
         void advancePlayers() {
-            for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game, 1);
-            for (int i = 0; i < 8; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game, 1);
+            game.getPlayers().get(0).incrementFaithPoints(game, 5);
+            game.getPlayers().get(1).incrementFaithPoints(game, 8);
         }
 
         /**
@@ -160,13 +157,10 @@ public class GameTest {
          */
         @BeforeEach
         void advancePlayers() {
-            for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game, 1);
-            for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints(game, 1);
+            game.getPlayers().get(0).incrementFaithPoints(game, 5);
+            game.getPlayers().get(2).incrementFaithPoints(game, 8);
 
-            for (int i = 0; i < 16; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game, 1);
+            game.getPlayers().get(1).incrementFaithPoints(game, 16);
         }
 
         /**
@@ -212,20 +206,14 @@ public class GameTest {
          */
         @BeforeEach
         void advancePlayers() {
-            for (int i = 0; i < 5; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game, 1);
-            for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints(game, 1);
+            game.getPlayers().get(0).incrementFaithPoints(game, 5);
+            game.getPlayers().get(2).incrementFaithPoints(game, 8);
 
-            for (int i = 0; i < 16; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game, 1);
+            game.getPlayers().get(1).incrementFaithPoints(game, 16);
 
-            for (int i = 0; i < 8; i++)
-                game.getPlayers().get(2).incrementFaithPoints(game, 1);
-            for (int i = 0; i < 4; i++)
-                game.getPlayers().get(1).incrementFaithPoints(game, 1);
-            for (int i = 0; i < 19; i++)
-                game.getPlayers().get(0).incrementFaithPoints(game, 1);
+            game.getPlayers().get(2).incrementFaithPoints(game, 8);
+            game.getPlayers().get(1).incrementFaithPoints(game, 4);
+            game.getPlayers().get(0).incrementFaithPoints(game, 19);
         }
 
         /**
