@@ -1,8 +1,8 @@
 package it.polimi.ingsw.common;
 
 import com.google.gson.*;
-import it.polimi.ingsw.common.events.mvevents.ErrUnparsableMessage;
 import it.polimi.ingsw.common.events.mvevents.ErrController;
+import it.polimi.ingsw.common.events.mvevents.ErrUnparsableMessage;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
@@ -42,7 +42,7 @@ public class GameProtocol {
         VCEvent event;
 
         try {
-            event = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.common.events." + type.getAsString()).asSubclass(VCEvent.class));
+            event = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.common.events.vcevents." + type.getAsString()).asSubclass(VCEvent.class));
         } catch (ClassNotFoundException e) {
             view.update(new ErrUnparsableMessage("Event type \"" + type.getAsString() + "\" does not exist."));
             return;
