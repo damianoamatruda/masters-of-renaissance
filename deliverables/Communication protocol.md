@@ -744,6 +744,24 @@ After reordering the cached objects to match the server's state, all indices sen
 ```
 <!-- TODO update this to reflect actual message -->
 
+## Setup done
+When every player has chosen their leader cards and starting resources, the conclusion of the setup phase will be notified to the clients.
+```
+ ┌────────┒                      ┌────────┒ 
+ │ Client ┃                      │ Server ┃
+ ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+     │                                │
+     │                UpdateSetupDone │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
+```
+**UpdateSetupDone (server)**
+```json
+{
+  "type": "UpdateSetupDone"
+}
+```
+
 ## Updating the players list
 Notifications about players connecting/disconnecting from a match will be sent.
 

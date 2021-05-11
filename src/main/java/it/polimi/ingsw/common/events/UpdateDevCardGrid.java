@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
 /** Development card grid state update. */
 public class UpdateDevCardGrid implements MVEvent {
-    // TODO reduced and docs
     /** The new development card grid state. */
     private final ReducedDevCardGrid topCards; // ID == 0 means the card was null -> stack was empty
 
