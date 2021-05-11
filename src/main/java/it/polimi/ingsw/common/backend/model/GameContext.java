@@ -7,7 +7,6 @@ import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
@@ -270,6 +269,7 @@ public class GameContext extends ModelObservable {
             try {
                 resContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
+                // TODO: Specify resource container that is not owned
                 notify(v, new ErrAction(e.getMessage()));
             }
         });
@@ -309,7 +309,7 @@ public class GameContext extends ModelObservable {
         List<ProductionRequest> prodRequests;
 
         try {
-            prodRequests = reducedProdRequests.stream().map(r -> translateToProductionRequest(player, r)).toList();
+            prodRequests = reducedProdRequests.stream().map(r -> translateToProductionRequest(v, player, r)).toList();
         } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
             notify(v, new ErrAction(e.getMessage()));
             return;
@@ -408,12 +408,17 @@ public class GameContext extends ModelObservable {
         return res;
     }
 
-    private ProductionRequest translateToProductionRequest(Player player, ReducedProductionRequest r) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
+    private ProductionRequest translateToProductionRequest(View v, Player player, ReducedProductionRequest r) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
-        r.getInputContainers().forEach((id, resMap) -> inputContainers.put(player.getResourceContainerById(id).orElseThrow(), translateResMap(resMap)));
-        Map<Strongbox, Map<ResourceType, Integer>> outputStrongboxes = new HashMap<>();
-        r.getInputContainers().forEach((id, resMap) -> outputStrongboxes.put(player.getStrongboxById(id).orElseThrow(), translateResMap(resMap)));
+        r.getInputContainers().forEach((id, resMap) -> {
+            try {
+                inputContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
+            } catch (Exception e) {
+                notify(v, new ErrAction(e.getMessage()));
+                // TODO: Specify resource container that is not owned
+            }
+        });
         return new ProductionRequest(game.getProductionById(r.getProduction()).orElseThrow(), translateResMap(r.getInputBlanksRep()), translateResMap(r.getOutputBlanksRep()),
-                inputContainers, outputStrongboxes);
+                inputContainers, player.getStrongbox());
     }
 }

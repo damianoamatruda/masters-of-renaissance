@@ -7,17 +7,14 @@ public class ReducedProductionRequest {
     private final Map<String, Integer> inputBlanksRep;
     private final Map<String, Integer> outputBlanksRep;
     private final Map<Integer, Map<String, Integer>> inputContainers;
-    private final Map<Integer, Map<String, Integer>> outputStrongboxes;
 
 
     public ReducedProductionRequest(int production, Map<String, Integer> inputBlanksRep, Map<String, Integer> outputBlanksRep,
-                                    Map<Integer, Map<String, Integer>> inputContainers,
-                                    Map<Integer, Map<String, Integer>> outputStrongboxes) {
+                                    Map<Integer, Map<String, Integer>> inputContainers) {
         this.production = production;
         this.inputBlanksRep = inputBlanksRep;
         this.outputBlanksRep = outputBlanksRep;
         this.inputContainers = inputContainers;
-        this.outputStrongboxes = outputStrongboxes;
     }
 
     public int getProduction() {
@@ -34,9 +31,5 @@ public class ReducedProductionRequest {
 
     public Map<Integer, Map<String, Integer>> getInputContainers() {
         return inputContainers;
-    }
-
-    public Map<Integer, Map<String, Integer>> getOutputStrongboxes() {
-        return outputStrongboxes;
     }
 }
