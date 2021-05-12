@@ -130,7 +130,7 @@ public class SoloGame extends Game {
      * @param points the quantity to be added to the black points
      */
     public void incrementBlackPoints(int points) {
-        if (points <= 1)
+        if (points <= 0)
             return;
 
         blackPoints += points;
