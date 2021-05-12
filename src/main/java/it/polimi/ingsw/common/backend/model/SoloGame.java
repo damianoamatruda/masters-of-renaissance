@@ -7,8 +7,8 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.mvevents.UpdateFaithTrack;
-import it.polimi.ingsw.common.events.mvevents.UpdateGameStart;
 import it.polimi.ingsw.common.events.mvevents.UpdateGameEnd;
+import it.polimi.ingsw.common.events.mvevents.UpdateGameStart;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,6 +130,9 @@ public class SoloGame extends Game {
      * @param points the quantity to be added to the black points
      */
     public void incrementBlackPoints(int points) {
+        if (points <= 1)
+            return;
+
         blackPoints += points;
 
         onIncrementFaithPoints(blackPoints);
