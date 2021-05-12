@@ -112,7 +112,7 @@ public class Lobby extends ModelObservable {
         } catch (NoActivePlayersException e) {
             joined.remove(view);
         }
-        disconnected.add(nickname);
+        // disconnected.add(nickname);
         nicknames.remove(view);
         notify(view, new ResGoodbye());
     }
