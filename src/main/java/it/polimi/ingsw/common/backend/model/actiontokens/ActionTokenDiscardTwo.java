@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend.model.actiontokens;
 
 import it.polimi.ingsw.common.backend.model.DevCardColor;
 import it.polimi.ingsw.common.backend.model.SoloGame;
+import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
 
 /**
  * Implements one of the possible effects which a token can trigger.
@@ -37,5 +38,10 @@ public class ActionTokenDiscardTwo implements ActionToken {
     @Override
     public void trigger(SoloGame game) {
         game.getDevCardGrid().discardDevCards(discardedColor, 2);
+    }
+
+    @Override
+    public ReducedActionToken reduce() {
+        return new ReducedActionToken(getId(), getClass().getSimpleName(), discardedColor.getName());
     }
 }

@@ -1,13 +1,12 @@
 package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.List;
 
 public class UpdateGameStart implements MVEvent {
-    // TODO reduce, commproto docs
+    // TODO commproto docs
     private final List<String> nicknames;
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
@@ -15,7 +14,7 @@ public class UpdateGameStart implements MVEvent {
     private final List<ReducedDevCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
     private final List<ReducedResourceTransactionRecipe> productions;
-    private final List<ActionToken> actionTokens;
+    private final List<ReducedActionToken> actionTokens;
     private final List<Integer> leaders, warehouseShelves;
     private final int strongbox;
     private final ReducedBoost boost;
@@ -41,7 +40,7 @@ public class UpdateGameStart implements MVEvent {
             List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
             List<ReducedResourceTransactionRecipe> productions,
-            List<ActionToken> actionTokens,
+            List<ReducedActionToken> actionTokens,
             List<Integer> leaders,
             List<Integer> warehouseShelves,
             int strongbox,
@@ -104,7 +103,7 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the action tokens
      */
-    public List<ActionToken> getActionTokens() {
+    public List<ReducedActionToken> getActionTokens() {
         return actionTokens;
     }
 

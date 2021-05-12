@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
+
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class UpdateGameResume extends UpdateGameStart {
             List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
             List<ReducedResourceTransactionRecipe> productions,
-            List<ActionToken> actionTokens,
+            List<ReducedActionToken> actionTokens,
             List<Integer> leaders,
             List<Integer> warehouseShelves,
             int strongbox,

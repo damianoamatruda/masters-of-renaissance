@@ -6,6 +6,8 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -76,6 +78,11 @@ class ActionTokenDiscardTwoTest {
                     @Override
                     public int getId() {
                         return 0;
+                    }
+
+                    @Override
+                    public ReducedActionToken reduce() {
+                        return null;
                     }
                 }), 0,
                 2);

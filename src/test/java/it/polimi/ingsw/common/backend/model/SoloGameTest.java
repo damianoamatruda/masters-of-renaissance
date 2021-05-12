@@ -7,6 +7,8 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -56,6 +58,11 @@ public class SoloGameTest {
                     @Override
                     public int getId() {
                         return 0;
+                    }
+
+                    @Override
+                    public ReducedActionToken reduce() {
+                        return null;
                     }
                 }
         ), 24, 7);

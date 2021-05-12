@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.actiontokens;
 
 import it.polimi.ingsw.common.backend.model.SoloGame;
+import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
 
 /**
  * Implements one of the possible effects which a token can trigger.
@@ -30,5 +31,10 @@ public class ActionTokenBlackMoveTwo implements ActionToken {
     @Override
     public void trigger(SoloGame game) {
         game.incrementBlackPoints(2);
+    }
+
+    @Override
+    public ReducedActionToken reduce() {
+        return new ReducedActionToken(getId(), getClass().getSimpleName(), null);
     }
 }

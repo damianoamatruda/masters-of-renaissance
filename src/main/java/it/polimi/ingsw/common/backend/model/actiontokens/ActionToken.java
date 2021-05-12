@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.actiontokens;
 
 import it.polimi.ingsw.common.backend.model.SoloGame;
+import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
 
 /**
  * This interface represents an action token, and will be used only in Solo games.
@@ -17,4 +18,6 @@ public interface ActionToken {
      * @return the ID of the token
      */
     int getId();
+
+    ReducedActionToken reduce();
 }
