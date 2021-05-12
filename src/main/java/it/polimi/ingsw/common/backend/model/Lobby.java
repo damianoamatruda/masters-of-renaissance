@@ -18,7 +18,7 @@ public class Lobby extends ModelObservable {
     // private final List<GameContext> games;
     private final Map<View, String> nicknames;
     private final Map<View, GameContext> joined;
-    private final List<String> disconnected;
+    private final Map<String, GameContext> disconnected;
     private final List<View> waiting;
     private int countToNewGame;
 
@@ -28,7 +28,7 @@ public class Lobby extends ModelObservable {
         // this.games = new ArrayList<>();
         this.joined = new HashMap<>();
         this.waiting = new ArrayList<>();
-        this.disconnected = new ArrayList<>();
+        this.disconnected = new HashMap<>();
     }
 
     public void joinLobby(View view, String nickname) {
@@ -45,17 +45,18 @@ public class Lobby extends ModelObservable {
             return;
         }
         nicknames.put(view, nickname);
-        if (disconnected.contains(nickname)) {
+        if (disconnected.containsKey(nickname)) {
             System.out.println("Player \"" + nickname + "\" rejoined");
             notify(view, new ResJoin(false));
-
-            disconnected.remove(nickname);
+            GameContext toResume = disconnected.get(nickname);
             try {
-                joined.get(view).setActive(nickname, true);
+                toResume.setActive(nickname, true);
             } catch (NoActivePlayersException e) {
                 notify(view, new ErrAction(e.getMessage())); // TODO does this make sense?
             }
-            joined.get(view).getGame().resume(view, nicknames.get(view));
+            toResume.getGame().resume(view, nicknames.get(view));
+            joined.put(view, toResume);
+            disconnected.remove(nickname);
         }
         else {
             System.out.println("Set nickname \"" + nickname + "\".");
@@ -109,10 +110,11 @@ public class Lobby extends ModelObservable {
         joined.get(view).getGame().removeObserver(view);
         try {
             joined.get(view).setActive(nickname, false);
+            disconnected.put(nickname, joined.get(view));
         } catch (NoActivePlayersException e) {
-            joined.remove(view);
+            disconnected.entrySet().removeIf(entry -> entry.getValue() == joined.get(view));
         }
-        // disconnected.add(nickname);
+        joined.remove(view);
         nicknames.remove(view);
         notify(view, new ResGoodbye());
     }
