@@ -219,6 +219,9 @@ public class Player extends ModelObservable {
      * @param points the quantity to be added to the faith points
      */
     public void incrementFaithPoints(Game game, int points) {
+        if (points <= 0)
+            return;
+
         faithPoints += points;
         game.updatePtsFromYellowTiles(this, points);
         game.onIncrementFaithPoints(faithPoints);
