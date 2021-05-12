@@ -28,6 +28,15 @@ public class Warehouse {
     }
 
     /**
+     * Initializes the warehouse based on the given warehouse shelves.
+     *
+     * @param shelves the warehouse shelves
+     */
+    public Warehouse(List<WarehouseShelf> shelves) {
+        this.shelves = new ArrayList<>(shelves);
+    }
+
+    /**
      * Returns the shelves inside the warehouse
      *
      * @return a list of the shelves
@@ -64,7 +73,11 @@ public class Warehouse {
          */
         public WarehouseShelf(WarehouseShelf warehouseShelf) {
             super(warehouseShelf);
-            warehouse = warehouseShelf.warehouse;
+            /* Create new Warehouse by replacing original shelf with its copy. This allows addResources to continue
+             * working using .equals() */
+            List<WarehouseShelf> shelves = new ArrayList<>(warehouseShelf.warehouse.shelves);
+            shelves.replaceAll(s -> s.equals(warehouseShelf) ? this : s);
+            warehouse = new Warehouse(shelves);
         }
 
         @Override
