@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class ServerClientHandler implements Runnable, MVEventSender {
     private final Socket clientSocket;
@@ -17,7 +18,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
     private PrintWriter out;
     private BufferedReader in;
     private volatile boolean listening;
-    // private final int timeout;
+    private final int timeout;
 
     public ServerClientHandler(Socket clientSocket, VirtualView view, GameProtocol gp) {
         this.clientSocket = clientSocket;
@@ -25,7 +26,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
         view.setEventSender(this);
         this.view = view;
 
-        // this.timeout = 10;
+        this.timeout = 20000;
         this.gp = gp;
 
         this.in = null;
@@ -41,17 +42,26 @@ public class ServerClientHandler implements Runnable, MVEventSender {
             this.out = out;
             this.in = in;
             String inputLine;
+            String goodBye = "{\"type\":\"GoodBye\"}";
 
             view.update(new ResWelcome());
 
             listening = true;
+            clientSocket.setSoTimeout(timeout);
             while (listening) {
-                if ((inputLine = in.readLine()) == null)
-                    break;
                 try {
-                    gp.processInput(inputLine, view);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    if ((inputLine = in.readLine()) == null)
+                        break;
+                    try {
+                        gp.processInput(inputLine, view);
+                        if(inputLine.equals(goodBye))
+                            break;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (SocketTimeoutException e) {
+                    gp.processInput(goodBye, view);
+                    break;
                 }
             }
             clientSocket.close();

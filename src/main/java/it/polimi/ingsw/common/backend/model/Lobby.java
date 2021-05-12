@@ -107,15 +107,20 @@ public class Lobby extends ModelObservable {
     public void exit(View view) {
         // TODO: Manage the exit of a view
         String nickname = nicknames.get(view);
-        joined.get(view).getGame().removeObserver(view);
-        try {
-            joined.get(view).setActive(nickname, false);
-            disconnected.put(nickname, joined.get(view));
-        } catch (NoActivePlayersException e) {
-            disconnected.entrySet().removeIf(entry -> entry.getValue() == joined.get(view));
+        if(nickname != null) {
+            GameContext context = joined.get(view);
+            if(context != null) {
+                context.getGame().removeObserver(view);
+                try {
+                    context.setActive(nickname, false);
+                    disconnected.put(nickname, context);
+                } catch (NoActivePlayersException e) {
+                    disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
+                }
+                joined.remove(view);
+            }
+            nicknames.remove(view);
         }
-        joined.remove(view);
-        nicknames.remove(view);
         notify(view, new ResGoodbye());
     }
 
