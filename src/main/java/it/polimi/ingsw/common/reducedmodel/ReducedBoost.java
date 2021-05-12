@@ -3,15 +3,15 @@ package it.polimi.ingsw.common.reducedmodel;
 import java.util.List;
 
 public class ReducedBoost {
-    /** Number of choosable resources obtained at the beginning. */
+    /** The number of choosable resources obtained at the beginning. */
     private final int initialResources;
-    /** Resources that cannot be chosen. */
+
+    /** The resources that cannot be chosen. */
     private final List<String> initialExcludedResources;
-    
+
     /**
-     * @param initialResources
-     * @param initialFaith
-     * @param initialExcludedResources
+     * @param initialResources         the number of choosable resources obtained at the beginning
+     * @param initialExcludedResources the resources that cannot be chosen
      */
     public ReducedBoost(int initialResources, List<String> initialExcludedResources) {
         this.initialResources = initialResources;
@@ -19,14 +19,14 @@ public class ReducedBoost {
     }
 
     /**
-     * @return the initialResources
+     * @return the number of choosable resources obtained at the beginning
      */
     public int getInitialResources() {
         return initialResources;
     }
 
     /**
-     * @return the initialExcludedResources
+     * @return the resources that cannot be chosen
      */
     public List<String> getInitialExcludedResources() {
         return initialExcludedResources;
