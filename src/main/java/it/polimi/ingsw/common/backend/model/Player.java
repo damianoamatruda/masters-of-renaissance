@@ -391,6 +391,14 @@ public class Player extends ModelObservable {
         return quantity;
     }
 
+    public List<String> getInitialExcludedResources() {
+        return initialExcludedResources.stream().map(ResourceType::getName).toList();
+    }
+
+    public int getInitialResources() {
+        return initialResources;
+    }
+
     public Optional<Strongbox> getStrongboxById(int id) {
         return strongbox.getId() == id ? Optional.of(strongbox) : Optional.empty();
     }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.events.mvevents.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 
 import java.util.*;
 
@@ -112,10 +113,11 @@ public class Game extends ModelObservable {
             developmentCards.stream().map(DevelopmentCard::reduce).toList(),
             resContainers.stream().map(ResourceContainer::reduce).toList(),
             productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+            null,
             leaders,
             shelves,
             strongbox,
-            null));
+            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
     }
 
     public void resume(View o, String nickname) {
@@ -135,11 +137,12 @@ public class Game extends ModelObservable {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                null,
                 leaders,
                 shelves,
                 strongbox,
-                null,
-                p.hasChosenLeaders(), p.hasChosenResources()
+                p.hasChosenLeaders(), p.hasChosenResources(),
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())
         ));
     }
 

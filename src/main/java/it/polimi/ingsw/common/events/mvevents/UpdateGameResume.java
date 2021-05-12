@@ -16,14 +16,15 @@ public class UpdateGameResume extends UpdateGameStart {
             List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
             List<ReducedResourceTransactionRecipe> productions,
+            List<ActionToken> actionTokens,
             List<Integer> leaders,
             List<Integer> warehouseShelves,
             int strongbox,
-            List<ActionToken> actionTokens,
             boolean hasChosenLeaders,
-            boolean hasChosenResources
+            boolean hasChosenResources,
+            ReducedBoost boost
     ) {
-        super(nicknames, market, developmentCardGrid, leaderCards, developmentCards, resContainers, productions, leaders, warehouseShelves, strongbox, actionTokens);
+        super(nicknames, market, developmentCardGrid, leaderCards, developmentCards, resContainers, productions, actionTokens, leaders, warehouseShelves, strongbox, boost);
         this.hasChosenLeaders = hasChosenLeaders;
         this.hasChosenResources = hasChosenResources;
     }

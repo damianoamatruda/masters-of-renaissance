@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.mvevents.UpdateFaithTrack;
 import it.polimi.ingsw.common.events.mvevents.UpdateGameEnd;
 import it.polimi.ingsw.common.events.mvevents.UpdateGameStart;
+import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,10 +70,11 @@ public class SoloGame extends Game {
             developmentCards.stream().map(DevelopmentCard::reduce).toList(),
             resContainers.stream().map(ResourceContainer::reduce).toList(),
             productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+            actionTokens,
             leaders,
             shelves,
             strongbox,
-            actionTokens));
+            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
     }
 
     /**

@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.reducedmodel.*;
 import java.util.List;
 
 public class UpdateGameStart implements MVEvent {
-    // TODO reduce, boosts, commproto docs
+    // TODO reduce, commproto docs
     private final List<String> nicknames;
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
@@ -15,10 +15,11 @@ public class UpdateGameStart implements MVEvent {
     private final List<ReducedDevCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
     private final List<ReducedResourceTransactionRecipe> productions;
+    private final List<ActionToken> actionTokens;
     private final List<Integer> leaders, warehouseShelves;
     private final int strongbox;
-    private final List<ActionToken> actionTokens;
-
+    private final ReducedBoost boost;
+    
     /**
      * Class constructor.
      * 
@@ -40,10 +41,11 @@ public class UpdateGameStart implements MVEvent {
             List<ReducedDevCard> developmentCards,
             List<ReducedResourceContainer> resContainers,
             List<ReducedResourceTransactionRecipe> productions,
+            List<ActionToken> actionTokens,
             List<Integer> leaders,
             List<Integer> warehouseShelves,
             int strongbox,
-            List<ActionToken> actionTokens) {
+            ReducedBoost boost) {
         
         this.nicknames = nicknames;
         this.market = market;
@@ -52,10 +54,11 @@ public class UpdateGameStart implements MVEvent {
         this.developmentCards = developmentCards;
         this.resContainers = resContainers;
         this.productions = productions;
+        this.actionTokens = actionTokens;
         this.leaders = leaders;
         this.warehouseShelves = warehouseShelves;
         this.strongbox = strongbox;
-        this.actionTokens = actionTokens;
+        this.boost = boost;
     }
 
     @Override
@@ -99,6 +102,13 @@ public class UpdateGameStart implements MVEvent {
     }
 
     /**
+     * @return the action tokens
+     */
+    public List<ActionToken> getActionTokens() {
+        return actionTokens;
+    }
+
+    /**
      * @return the reduced development card grid
      */
     public ReducedDevCardGrid getDevelopmentCardGrid() {
@@ -133,11 +143,11 @@ public class UpdateGameStart implements MVEvent {
         return leaders;
     }
 
-
     /**
-     * @return the action tokens
+     * @return the boost
      */
-    public List<ActionToken> getActionTokens() {
-        return actionTokens;
+    public ReducedBoost getBoost() {
+        return boost;
     }
+
 }
