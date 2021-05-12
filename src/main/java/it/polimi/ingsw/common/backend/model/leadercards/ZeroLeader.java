@@ -57,6 +57,6 @@ public class ZeroLeader extends LeaderCard {
 
     @Override
     public ReducedLeaderCard reduce() {
-        return new ReducedLeaderCard(getId(), getVictoryPoints(), getResource().getName(), "ZeroLeader", isActive(), requirement.reduce());
+        return new ReducedLeaderCard(getId(), getVictoryPoints(), getResource().getName(), getClass().getSimpleName(), isActive(), requirement.reduce());
     }
 }

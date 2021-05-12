@@ -40,6 +40,6 @@ public class ProductionLeader extends LeaderCard {
     @Override
     public ReducedLeaderCard reduce() {
         return new ReducedProductionLeaderCard(
-            getId(), getVictoryPoints(), getResource().getName(), "ProductionLeader", isActive(), requirement.reduce(), production.getId());
+            getId(), getVictoryPoints(), getResource().getName(), getClass().getSimpleName(), isActive(), requirement.reduce(), production.getId());
     }
 }
