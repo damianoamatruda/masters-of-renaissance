@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.ModelObservable;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
@@ -52,6 +53,12 @@ public class DevCardGrid extends ModelObservable {
                     Collections.shuffle(grid.get(column).get(cardLevel));
             }
         }
+    }
+
+    @Override
+    public void addObserver(View o) {
+        super.addObserver(o);
+        notifyBroadcast(new UpdateDevCardGrid(reduce()));
     }
 
     /**
@@ -152,8 +159,7 @@ public class DevCardGrid extends ModelObservable {
         }
         if (quantity > 0) grid.remove(color);
 
-        notifyBroadcast(
-            new UpdateDevCardGrid(reduce()));
+        notifyBroadcast(new UpdateDevCardGrid(reduce()));
     }
 
     public ReducedDevCardGrid reduce() {
@@ -163,7 +169,7 @@ public class DevCardGrid extends ModelObservable {
         return new ReducedDevCardGrid(getLevelsCount(), getColorsCount(), reducedGrid);
     }
 
-    private Stack<Integer> reduceDeck (Stack<DevelopmentCard> s) {
+    private Stack<Integer> reduceDeck(Stack<DevelopmentCard> s) {
         if (s == null) return null;
 
         Stack<Integer> reducedDeck = new Stack<>();

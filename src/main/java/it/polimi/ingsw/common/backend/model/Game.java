@@ -109,8 +109,6 @@ public class Game extends ModelObservable {
 
         notify(o, new UpdateGameStart(
             players.stream().map(Player::getNickname).toList(),
-            market.reduce(),
-            devCardGrid.reduce(),
             leaderCards.stream().map(LeaderCard::reduce).toList(),
             developmentCards.stream().map(DevelopmentCard::reduce).toList(),
             resContainers.stream().map(ResourceContainer::reduce).toList(),
@@ -133,8 +131,6 @@ public class Game extends ModelObservable {
 
         notify(o, new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
-                market.reduce(),
-                devCardGrid.reduce(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),

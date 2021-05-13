@@ -10,8 +10,6 @@ public class UpdateGameResume extends UpdateGameStart {
     private final boolean hasChosenResources;
 
     public UpdateGameResume(List<String> players,
-                            ReducedMarket market,
-                            ReducedDevCardGrid developmentCardGrid,
                             List<ReducedLeaderCard> leaderCards,
                             List<ReducedDevCard> developmentCards,
                             List<ReducedResourceContainer> resContainers,
@@ -23,7 +21,7 @@ public class UpdateGameResume extends UpdateGameStart {
                             boolean hasChosenLeaders,
                             boolean hasChosenResources,
                             ReducedBoost boost) {
-        super(players, market, developmentCardGrid, leaderCards, developmentCards, resContainers, productions, actionTokens, leaders, warehouseShelves, strongbox, boost);
+        super(players, leaderCards, developmentCards, resContainers, productions, actionTokens, leaders, warehouseShelves, strongbox, boost);
         this.hasChosenLeaders = hasChosenLeaders;
         this.hasChosenResources = hasChosenResources;
     }

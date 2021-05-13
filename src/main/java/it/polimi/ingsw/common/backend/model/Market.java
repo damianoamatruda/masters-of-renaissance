@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.ModelObservable;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
@@ -66,6 +67,12 @@ public class Market extends ModelObservable {
         }
 
         this.replaceableResType = replaceableResType;
+    }
+
+    @Override
+    public void addObserver(View o) {
+        super.addObserver(o);
+        notifyBroadcast(new UpdateMarket(reduce()));
     }
 
     /**

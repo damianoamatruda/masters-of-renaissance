@@ -8,8 +8,6 @@ import java.util.List;
 public class UpdateGameStart implements MVEvent {
     // TODO commproto docs
     private final List<String> players;
-    private final ReducedMarket market;
-    private final ReducedDevCardGrid developmentCardGrid;
     private final List<ReducedLeaderCard> leaderCards;
     private final List<ReducedDevCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
@@ -22,8 +20,6 @@ public class UpdateGameStart implements MVEvent {
     /**
      * Class constructor.
      *
-     * @param market                market state
-     * @param developmentCardGrid   development card grid state
      * @param leaderCards           leader cards available at play time
      * @param developmentCards      development cards available at play time
      * @param resContainers         resource containers available at play time
@@ -33,8 +29,6 @@ public class UpdateGameStart implements MVEvent {
      * @param strongbox             player's strongbox's ID
      */
     public UpdateGameStart(List<String> players,
-                           ReducedMarket market,
-                           ReducedDevCardGrid developmentCardGrid,
                            List<ReducedLeaderCard> leaderCards,
                            List<ReducedDevCard> developmentCards,
                            List<ReducedResourceContainer> resContainers,
@@ -45,8 +39,6 @@ public class UpdateGameStart implements MVEvent {
                            int strongbox,
                            ReducedBoost boost) {
         this.players = players;
-        this.market = market;
-        this.developmentCardGrid = developmentCardGrid;
         this.leaderCards = leaderCards;
         this.developmentCards = developmentCards;
         this.resContainers = resContainers;
@@ -103,20 +95,6 @@ public class UpdateGameStart implements MVEvent {
      */
     public List<ReducedActionToken> getActionTokens() {
         return actionTokens;
-    }
-
-    /**
-     * @return the reduced development card grid
-     */
-    public ReducedDevCardGrid getDevelopmentCardGrid() {
-        return developmentCardGrid;
-    }
-
-    /**
-     * @return the reduced market
-     */
-    public ReducedMarket getMarket() {
-        return market;
     }
 
     /**
