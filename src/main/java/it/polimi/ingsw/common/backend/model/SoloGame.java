@@ -74,7 +74,8 @@ public class SoloGame extends Game {
             leaders,
             shelves,
             strongbox,
-            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
+            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+            p.getChosenLeadersCount()));
     }
 
     /**

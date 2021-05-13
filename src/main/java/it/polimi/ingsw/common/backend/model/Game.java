@@ -117,7 +117,8 @@ public class Game extends ModelObservable {
             leaders,
             shelves,
             strongbox,
-            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
+            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+            p.getChosenLeadersCount()));
     }
 
     public void resume(View o, String nickname) {
@@ -142,7 +143,8 @@ public class Game extends ModelObservable {
                 shelves,
                 strongbox,
                 p.hasChosenLeaders(), p.hasChosenResources(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+                p.getChosenLeadersCount()
         ));
     }
 

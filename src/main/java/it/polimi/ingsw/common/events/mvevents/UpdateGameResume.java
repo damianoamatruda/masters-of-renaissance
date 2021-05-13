@@ -22,9 +22,11 @@ public class UpdateGameResume extends UpdateGameStart {
             int strongbox,
             boolean hasChosenLeaders,
             boolean hasChosenResources,
-            ReducedBoost boost
+            ReducedBoost boost,
+            int chosenLeadersCount
     ) {
-        super(nicknames, market, developmentCardGrid, leaderCards, developmentCards, resContainers, productions, actionTokens, leaders, warehouseShelves, strongbox, boost);
+        super(nicknames, market, developmentCardGrid, leaderCards, developmentCards, resContainers, productions,
+              actionTokens, leaders, warehouseShelves, strongbox, boost, chosenLeadersCount);
         this.hasChosenLeaders = hasChosenLeaders;
         this.hasChosenResources = hasChosenResources;
     }
