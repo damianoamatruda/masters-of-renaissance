@@ -67,8 +67,8 @@ public class Lobby extends ModelObservable {
 
             notify(view, new ResJoin(isFirst));
 
-            if (!isFirst)
-                notify(view, new UpdateFreeSeats(countToNewGame, countToNewGame - waiting.size()));
+            // Sort of notifyBroadcast
+            waiting.forEach(v -> notify(v, new UpdateFreeSeats(countToNewGame, countToNewGame - waiting.size())));
 
             if (waiting.size() == countToNewGame)
                 startNewGame();
