@@ -351,6 +351,28 @@ public class GameContext extends ModelObservable {
         turnDone = false;
     }
 
+    public void addObserver(View v, String nickname) {
+        addObserver(v);
+        game.addObserver(v, getPlayerByNickname(nickname));
+    }
+
+    @Override
+    public void removeObserver(View o) {
+        super.removeObserver(o);
+        game.removeObserver(o);
+    }
+
+    public void resume(View v, String nickname) {
+        game.resume(v, getPlayerByNickname(nickname));
+    }
+
+    public void setActive(String nickname, boolean active) throws NoActivePlayersException {
+        Player player = getPlayerByNickname(nickname);
+        player.setActive(active);
+        if (!active && player.equals(game.getCurrentPlayer()))
+            game.onTurnEnd();
+    }
+
     /**
      * Check if the last necessary setup move has been made.
      */
@@ -416,16 +438,5 @@ public class GameContext extends ModelObservable {
         });
         return new ProductionRequest(game.getProductionById(r.getProduction()).orElseThrow(), translateResMap(r.getInputBlanksRep()), translateResMap(r.getOutputBlanksRep()),
                 inputContainers, player.getStrongbox());
-    }
-
-    public void setActive(String nickname, boolean active) throws NoActivePlayersException {
-        Player player = getPlayerByNickname(nickname);
-        player.setActive(active);
-        if (!active && player.equals(game.getCurrentPlayer()))
-            game.onTurnEnd();
-    }
-
-    public Game getGame() {
-        return game;
     }
 }

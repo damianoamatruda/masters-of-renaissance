@@ -98,19 +98,17 @@ public class Game extends ModelObservable {
         this.faithTrack.addObserver(o);
     }
 
-    public void addObserver(View o, String nickname) {
+    public void addObserver(View o, Player p) {
         register(o);
-
-        Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
 
         List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
         List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
         int strongbox = p.getStrongbox().getId();
 
         notify(o, new UpdateGameStart(
-            players.stream().map(Player::getNickname).toList(),
-            leaderCards.stream().map(LeaderCard::reduce).toList(),
-            developmentCards.stream().map(DevelopmentCard::reduce).toList(),
+                players.stream().map(Player::getNickname).toList(),
+                leaderCards.stream().map(LeaderCard::reduce).toList(),
+                developmentCards.stream().map(DevelopmentCard::reduce).toList(),
             resContainers.stream().map(ResourceContainer::reduce).toList(),
             productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
             null,
@@ -120,10 +118,8 @@ public class Game extends ModelObservable {
             new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
     }
 
-    public void resume(View o, String nickname) {
+    public void resume(View o, Player p) {
         register(o);
-
-        Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
 
         List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
         List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
@@ -144,6 +140,7 @@ public class Game extends ModelObservable {
         ));
     }
 
+    @Override
     public void removeObserver(View o) {
         this.observers.remove(o);
         this.players.forEach(obj -> obj.removeObserver(o));

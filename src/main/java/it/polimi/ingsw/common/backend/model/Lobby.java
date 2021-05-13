@@ -54,7 +54,7 @@ public class Lobby extends ModelObservable {
             } catch (NoActivePlayersException e) {
                 notify(view, new ErrAction(e.getMessage())); // TODO does this make sense?
             }
-            toResume.getGame().resume(view, nicknames.get(view));
+            toResume.resume(view, nicknames.get(view));
             joined.put(view, toResume);
             disconnected.remove(nickname);
         }
@@ -99,7 +99,7 @@ public class Lobby extends ModelObservable {
         GameContext newContext = new GameContext(newGame, gameFactory, new ArrayList<>(waiting.subList(0, countToNewGame)));
         // games.add(newContext);
         waiting.subList(0, countToNewGame).forEach(v -> {
-            newGame.addObserver(v, nicknames.get(v));
+            newContext.addObserver(v, nicknames.get(v));
             joined.put(v, newContext);
         });
         waiting.subList(0, countToNewGame).clear();
@@ -112,7 +112,7 @@ public class Lobby extends ModelObservable {
         if(nickname != null) {
             GameContext context = joined.get(view);
             if(context != null) {
-                context.getGame().removeObserver(view);
+                context.removeObserver(view);
                 try {
                     context.setActive(nickname, false);
                     disconnected.put(nickname, context);
