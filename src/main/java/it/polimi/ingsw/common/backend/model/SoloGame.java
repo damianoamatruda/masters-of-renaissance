@@ -53,19 +53,17 @@ public class SoloGame extends Game {
         this.blackWinner = false;
     }
 
-    public void addObserver(View o, String nickname) {
+    public void addObserver(View o, Player p) {
         register(o);
-
-        Player p = players.stream().filter(pl -> pl.getNickname().equals(nickname)).findFirst().orElseThrow();
 
         List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
         List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
         int strongbox = p.getStrongbox().getId();
 
         notify(o, new UpdateGameStart(
-            players.stream().map(Player::getNickname).toList(),
-            leaderCards.stream().map(LeaderCard::reduce).toList(),
-            developmentCards.stream().map(DevelopmentCard::reduce).toList(),
+                players.stream().map(Player::getNickname).toList(),
+                leaderCards.stream().map(LeaderCard::reduce).toList(),
+                developmentCards.stream().map(DevelopmentCard::reduce).toList(),
             resContainers.stream().map(ResourceContainer::reduce).toList(),
             productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
             actionTokens.stream().map(ActionToken::reduce).toList(),
