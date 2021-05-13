@@ -5,15 +5,15 @@ import it.polimi.ingsw.common.View;
 /** Current player state update. */
 public class UpdateCurrentPlayer implements MVEvent {
     /** The nickname of the new current player. */
-    private final String nickname;
+    private final String player;
 
     /**
      * Class constructor.
      *
-     * @param nickname the nickname of the new current player
+     * @param player the nickname of the new current player
      */
-    public UpdateCurrentPlayer(String nickname) {
-        this.nickname = nickname;
+    public UpdateCurrentPlayer(String player) {
+        this.player = player;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class UpdateCurrentPlayer implements MVEvent {
     /**
      * @return the nickname of the new current player
      */
-    public String getNickname() {
-        return nickname;
+    public String getPlayer() {
+        return player;
     }
 }

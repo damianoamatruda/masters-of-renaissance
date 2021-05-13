@@ -5,8 +5,10 @@ import java.util.Map;
 public class ReducedResourceContainer {
     /** The ID of the modified container. */
     private final int id;
+
     /** The new state of the container. */
     private final Map<String, Integer> content;
+
     /** The resource binding the container's contents. */
     private final String bindingResource;
     

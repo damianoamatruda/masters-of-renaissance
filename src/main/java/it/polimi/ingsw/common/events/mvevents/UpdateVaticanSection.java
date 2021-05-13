@@ -3,17 +3,17 @@ package it.polimi.ingsw.common.events.mvevents;
 import it.polimi.ingsw.common.View;
 
 /** Vatican section activation state update. */
-public class UpdateVaticanSectionActivated implements MVEvent {
+public class UpdateVaticanSection implements MVEvent {
     /** The section's ID. */
-    private final int id;
+    private final int vaticanSection;
 
     /**
      * Class constructor.
      *
-     * @param id the section's ID
+     * @param vaticanSection the section's ID
      */
-    public UpdateVaticanSectionActivated(int id) {
-        this.id = id;
+    public UpdateVaticanSection(int vaticanSection) {
+        this.vaticanSection = vaticanSection;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class UpdateVaticanSectionActivated implements MVEvent {
     /**
      * @return the section's ID
      */
-    public int getId() {
-        return id;
+    public int getVaticanSection() {
+        return vaticanSection;
     }
 }

@@ -3,27 +3,27 @@ package it.polimi.ingsw.common.events.mvevents;
 import it.polimi.ingsw.common.View;
 
 /** Faith track state update. */
-public class UpdateFaithTrack implements MVEvent {
+public class UpdateFaithPoints implements MVEvent {
     /** The player whose faith points increased. */
-    private final String nickname;
+    private final String player;
 
     /** <code>true</code> if the new position refers to the black cross marker; <code>false</code> otherwise. */
     private final boolean isBlackCross;
 
     /** The new marker position. */
-    private final int position;
+    private final int faithPoints;
 
     /**
      * Class constructor.
      *
-     * @param nickname     the nickname of the player whose faith points increased
-     * @param newPos       <code>true</code> if the new position refers to the black cross marker; <code>false</code>
+     * @param player       the nickname of the player whose faith points increased
+     * @param faithPoints  <code>true</code> if the new position refers to the black cross marker; <code>false</code>
      *                     otherwise.
      * @param isBlackCross the new marker position
      */
-    public UpdateFaithTrack(String nickname, int newPos, boolean isBlackCross) {
-        this.nickname = nickname;
-        this.position = newPos;
+    public UpdateFaithPoints(String player, int faithPoints, boolean isBlackCross) {
+        this.player = player;
+        this.faithPoints = faithPoints;
         this.isBlackCross = isBlackCross;
     }
 
@@ -35,15 +35,15 @@ public class UpdateFaithTrack implements MVEvent {
     /**
      * @return the nickname of the player whose faith points increased
      */
-    public String getNickname() {
-        return nickname;
+    public String getPlayer() {
+        return player;
     }
 
     /**
      * @return the new marker position
      */
-    public int getPosition() {
-        return position;
+    public int getFaithPoints() {
+        return faithPoints;
     }
 
     /**

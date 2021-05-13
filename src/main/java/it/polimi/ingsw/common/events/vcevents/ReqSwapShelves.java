@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.View;
 public class ReqSwapShelves implements VCEvent {
     /** The first shelf. */
     private final int shelf1;
+
     /** The second shelf. */
     private final int shelf2;
 
@@ -28,14 +29,14 @@ public class ReqSwapShelves implements VCEvent {
     /**
      * @return the first shelf
      */
-    public int getS1() {
+    public int getShelf1() {
         return shelf1;
     }
 
     /**
      * @return the second shelf
      */
-    public int getS2() {
+    public int getShelf2() {
         return shelf2;
     }
 }

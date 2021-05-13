@@ -5,20 +5,20 @@ import it.polimi.ingsw.common.View;
 /** Victory points update. */
 public class UpdateVictoryPoints implements MVEvent {
     /** The player whose victory points increased. */
-    private final String nickname;
+    private final String player;
 
     /** The new marker position. */
-    private final int points;
+    private final int victoryPoints;
 
     /**
      * Class constructor.
      *
-     * @param nickname the nickname of the player whose victory points increased
-     * @param newPts   the updated victory points
+     * @param player        the nickname of the player whose victory points increased
+     * @param victoryPoints the updated victory points
      */
-    public UpdateVictoryPoints(String nickname, int newPts) {
-        this.nickname = nickname;
-        this.points = newPts;
+    public UpdateVictoryPoints(String player, int victoryPoints) {
+        this.player = player;
+        this.victoryPoints = victoryPoints;
     }
 
     @Override
@@ -29,14 +29,14 @@ public class UpdateVictoryPoints implements MVEvent {
     /**
      * @return the nickname of the player whose victory points increased
      */
-    public String getNickname() {
-        return nickname;
+    public String getPlayer() {
+        return player;
     }
 
     /**
      * @return the updated victory points
      */
-    public int getPoints() {
-        return points;
+    public int getVictoryPoints() {
+        return victoryPoints;
     }
 }

@@ -6,15 +6,15 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 /** Resource container state update. */
 public class UpdateResourceContainer implements MVEvent {
     /** The ID of the container. */
-    private final ReducedResourceContainer container;
+    private final ReducedResourceContainer resContainer;
 
     /**
      * Class constructor.
      *
-     * @param container the ID of the container
+     * @param resContainer the ID of the container
      */
-    public UpdateResourceContainer(ReducedResourceContainer container) {
-        this.container = container;
+    public UpdateResourceContainer(ReducedResourceContainer resContainer) {
+        this.resContainer = resContainer;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class UpdateResourceContainer implements MVEvent {
     /**
      * @return the new container state
      */
-    public ReducedResourceContainer getContainer() {
-        return container;
+    public ReducedResourceContainer getResContainer() {
+        return resContainer;
     }
 }

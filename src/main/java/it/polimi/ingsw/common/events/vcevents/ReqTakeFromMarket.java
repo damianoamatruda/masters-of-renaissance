@@ -8,10 +8,13 @@ import java.util.Map;
 public class ReqTakeFromMarket implements VCEvent {
     /** Whether the index refers to a row or a column. */
     private final boolean isRow;
+
     /** The index of the row/column to take resources from. */
     private final int index;
+
     /** The mapping detailing how to handle the replacement of the blank resources. */
     private final Map<String, Integer> replacements;
+
     /** The mapping detailing how to handle the positioning of the resources in the shelves. */
     private final Map<Integer, Map<String, Integer>> shelves;
 

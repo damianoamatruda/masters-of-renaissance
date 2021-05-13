@@ -7,19 +7,19 @@ import java.util.List;
 /** Action token state update. */
 public class UpdateActionToken implements MVEvent {
     /** The ID of the token being updated. */
-    private final int token;
+    private final int actionToken;
 
     /** The new stack of tokens. */
-    private final List<Integer> stack;
+    private final List<Integer> stack; // TODO: Is it to be sent?
 
     /**
      * Class constructor.
      *
-     * @param token the ID of the token being updated
-     * @param stack the new stack of tokens
+     * @param actionToken the ID of the token being updated
+     * @param stack       the new stack of tokens
      */
-    public UpdateActionToken(int token, List<Integer> stack) {
-        this.token = token;
+    public UpdateActionToken(int actionToken, List<Integer> stack) {
+        this.actionToken = actionToken;
         this.stack = stack;
     }
 
@@ -38,7 +38,7 @@ public class UpdateActionToken implements MVEvent {
     /**
      * @return the ID of the token being updated
      */
-    public int getToken() {
-        return token;
+    public int getActionToken() {
+        return actionToken;
     }
 }

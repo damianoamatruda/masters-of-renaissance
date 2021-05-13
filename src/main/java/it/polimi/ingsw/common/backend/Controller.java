@@ -35,7 +35,7 @@ public class Controller {
 
     public void update(View view, ReqSwapShelves event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
-                gameContext.swapShelves(view, nickname, event.getS1(), event.getS2()));
+                gameContext.swapShelves(view, nickname, event.getShelf1(), event.getShelf2()));
     }
 
     public void update(View view, ReqActivateLeader event) {
@@ -55,12 +55,12 @@ public class Controller {
 
     public void update(View view, ReqBuyDevCard event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
-                gameContext.buyDevCard(view, nickname, event.getColor(), event.getLevel(), event.getSlotIndex(), event.getResContainers()));
+                gameContext.buyDevCard(view, nickname, event.getColor(), event.getLevel(), event.getDevSlot(), event.getResContainers()));
     }
 
     public void update(View view, ReqActivateProduction event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
-                gameContext.activateProductionRequests(view, nickname, event.getProductionRequests()));
+                gameContext.activateProductionRequests(view, nickname, event.getProdRequests()));
     }
 
     public void update(View view, ReqEndTurn event) {

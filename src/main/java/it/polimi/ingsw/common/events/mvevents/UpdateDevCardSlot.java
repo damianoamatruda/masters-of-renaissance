@@ -5,20 +5,20 @@ import it.polimi.ingsw.common.View;
 /** Development card slot state update. */
 public class UpdateDevCardSlot implements MVEvent {
     /** The ID of the card added to the slot. */
-    private final int card;
+    private final int devCard;
 
     /** The ID of the slot the card was added to. */
-    private final int slot;
+    private final int devSlot;
 
     /**
      * Class constructor.
      *
-     * @param card the ID of the card added to the slot
-     * @param slot the ID of the slot the card was added to
+     * @param devCard the ID of the card added to the slot
+     * @param devSlot the ID of the slot the card was added to
      */
-    public UpdateDevCardSlot(int card, int slot) {
-        this.card = card;
-        this.slot = slot;
+    public UpdateDevCardSlot(int devCard, int devSlot) {
+        this.devCard = devCard;
+        this.devSlot = devSlot;
     }
 
     @Override
@@ -29,14 +29,14 @@ public class UpdateDevCardSlot implements MVEvent {
     /**
      * @return the ID of the slot the card was added to
      */
-    public int getSlot() {
-        return slot;
+    public int getDevSlot() {
+        return devSlot;
     }
 
     /**
      * @return the ID of the card added to the slot
      */
-    public int getCard() {
-        return card;
+    public int getDevCard() {
+        return devCard;
     }
 }

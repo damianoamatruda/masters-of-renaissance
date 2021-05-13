@@ -5,15 +5,15 @@ import it.polimi.ingsw.common.View;
 /** Error generated upon unsuccessful parsing of a message. */
 public class ErrProtocol implements MVEvent {
     /** The reason why the message was unparsable */
-    private final String message;
+    private final String msg;
 
     /**
      * Class constructor.
      *
-     * @param message the reason why the message was unparsable
+     * @param msg the reason why the message was unparsable
      */
-    public ErrProtocol(String message) {
-        this.message = message;
+    public ErrProtocol(String msg) {
+        this.msg = msg;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ErrProtocol implements MVEvent {
     /**
      * @return the reason why the message was unparsable
      */
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 }

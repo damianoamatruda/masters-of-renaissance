@@ -8,15 +8,15 @@ import java.util.List;
 /** Client request for production activation. */
 public class ReqActivateProduction implements VCEvent {
     /** The requests to be activated and the options of their activation. */
-    private final List<ReducedProductionRequest> transactionRequests;
+    private final List<ReducedProductionRequest> prodRequests;
 
     /**
      * Class constructor.
-     * 
-     * @param transactionRequests the requests to be activated and the options of their activation
+     *
+     * @param prodRequests the requests to be activated and the options of their activation
      */
-    public ReqActivateProduction(List<ReducedProductionRequest> transactionRequests) {
-        this.transactionRequests = transactionRequests;
+    public ReqActivateProduction(List<ReducedProductionRequest> prodRequests) {
+        this.prodRequests = prodRequests;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ReqActivateProduction implements VCEvent {
     /**
      * @return the requests to be activated and the options of their activation
      */
-    public List<ReducedProductionRequest> getProductionRequests() {
-        return transactionRequests;
+    public List<ReducedProductionRequest> getProdRequests() {
+        return prodRequests;
     }
 }

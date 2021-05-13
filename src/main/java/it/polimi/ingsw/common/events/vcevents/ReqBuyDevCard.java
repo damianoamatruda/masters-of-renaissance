@@ -8,26 +8,28 @@ import java.util.Map;
 public class ReqBuyDevCard implements VCEvent {
     /** The card's color. */
     private final String color;
+
     /** The card's level. */
     private final int level;
+
     /** The index of the development card slot to fit the card into. */
-    private final int slotIndex;
+    private final int devSlot;
+
     /** The details of how the resource payment should be handled. */
     private final Map<Integer, Map<String, Integer>> resContainers;
 
     /**
      * Class constructor.
-     * 
+     *
      * @param color         the card's color
      * @param level         the card's level
-     * @param slotIndex     the index of the development card slot to fit the card into
-     * @param resContainers the mapping container-resourcetype-amount
-     *                      that details how the payment should be handled
+     * @param devSlot       the index of the development card slot to fit the card into
+     * @param resContainers the mapping container-resourcetype-amount that details how the payment should be handled
      */
-    public ReqBuyDevCard(String color, int level, int slotIndex, Map<Integer, Map<String, Integer>> resContainers) {
+    public ReqBuyDevCard(String color, int level, int devSlot, Map<Integer, Map<String, Integer>> resContainers) {
         this.color = color;
         this.level = level;
-        this.slotIndex = slotIndex;
+        this.devSlot = devSlot;
         this.resContainers = resContainers;
     }
 
@@ -53,8 +55,8 @@ public class ReqBuyDevCard implements VCEvent {
     /**
      * @return the index of the development card slot to fit the card into
      */
-    public int getSlotIndex() {
-        return slotIndex;
+    public int getDevSlot() {
+        return devSlot;
     }
 
     /**

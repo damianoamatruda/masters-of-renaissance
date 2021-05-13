@@ -7,15 +7,15 @@ import java.util.List;
 /** Server confirmation to the leader choice request during player setup. */
 public class ResChooseLeaders implements MVEvent {
     /** The IDs of the chosen leader cards. */
-    private final List<Integer> leadersId;
+    private final List<Integer> leaders;
 
     /**
      * Class constructor.
      *
-     * @param leadersId the IDs of the chosen leader cards
+     * @param leaders the IDs of the chosen leader cards
      */
-    public ResChooseLeaders(List<Integer> leadersId) {
-        this.leadersId = leadersId;
+    public ResChooseLeaders(List<Integer> leaders) {
+        this.leaders = leaders;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ResChooseLeaders implements MVEvent {
     /**
      * @return the IDs of the chosen leader cards
      */
-    public List<Integer> getLeadersId() {
-        return leadersId;
+    public List<Integer> getLeaders() {
+        return leaders;
     }
 }

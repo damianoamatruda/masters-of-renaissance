@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.View;
 /** Player connection status update. */
 public class UpdatePlayerStatus implements MVEvent {
     /** The player the new status refers to. */
-    private final String nickname;
+    private final String player;
 
     /** <code>true</code> if the player is now active; <code>false</code> otherwise. */
     private final boolean isActive;
@@ -13,11 +13,11 @@ public class UpdatePlayerStatus implements MVEvent {
     /**
      * Class constructor.
      *
-     * @param nickname the player the new status refers to
+     * @param player   the player the new status refers to
      * @param isActive <code>true</code> if the player is now active; <code>false</code> otherwise.
      */
-    public UpdatePlayerStatus(String nickname, boolean isActive) {
-        this.nickname = nickname;
+    public UpdatePlayerStatus(String player, boolean isActive) {
+        this.player = player;
         this.isActive = isActive;
     }
 
@@ -36,7 +36,7 @@ public class UpdatePlayerStatus implements MVEvent {
     /**
      * @return the nickname of the player the status of whom changed
      */
-    public String getNickname() {
-        return nickname;
+    public String getPlayer() {
+        return player;
     }
 }

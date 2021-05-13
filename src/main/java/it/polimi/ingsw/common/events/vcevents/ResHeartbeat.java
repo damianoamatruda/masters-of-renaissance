@@ -6,6 +6,5 @@ import it.polimi.ingsw.common.events.mvevents.MVEvent;
 public class ResHeartbeat implements MVEvent, VCEvent {
     @Override
     public void handle(View view) {
-
     }
 }

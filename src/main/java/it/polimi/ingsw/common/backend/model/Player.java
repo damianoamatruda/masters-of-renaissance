@@ -226,7 +226,7 @@ public class Player extends ModelObservable {
         game.updatePtsFromYellowTiles(this, points);
         game.onIncrementFaithPoints(faithPoints);
 
-        notifyBroadcast(new UpdateFaithTrack(getNickname(), faithPoints, false));
+        notifyBroadcast(new UpdateFaithPoints(getNickname(), faithPoints, false));
     }
 
     /**
@@ -345,18 +345,18 @@ public class Player extends ModelObservable {
      * Places a new card on top of a given production slot and consume required resources.
      *
      * @param game          the game the player is playing in
-     * @param index         the destination production slot
+     * @param devSlotIndex  the destination production slot
      * @param devCard       the development card that has just been bought
      * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws IllegalCardDepositException blocks the action if the level of the previous top card of the slot is not
-     *                                     equal to current level minus 1
+     * @throws IllegalCardDepositException     blocks the action if the level of the previous top card of the slot is
+     *                                         not equal to current level minus 1
      * @throws CardRequirementsNotMetException requirements for card purchase are not satisfied
      */
-    public void addToDevSlot(Game game, int index, DevelopmentCard devCard,
+    public void addToDevSlot(Game game, int devSlotIndex, DevelopmentCard devCard,
                              Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalCardDepositException {
-        Stack<DevelopmentCard> slot = devSlots.get(index);
+        Stack<DevelopmentCard> slot = devSlots.get(devSlotIndex);
         if ((slot.isEmpty() && devCard.getLevel() != 1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel() - 1))
-            throw new IllegalCardDepositException(devCard, slot, index);
+            throw new IllegalCardDepositException(devCard, slot, devSlotIndex);
 
         devCard.takeFromPlayer(game, this, resContainers);
 
@@ -365,7 +365,7 @@ public class Player extends ModelObservable {
         slot.push(devCard);
 
         incrementVictoryPoints(devCard.getVictoryPoints());
-        notifyBroadcast(new UpdateDevCardSlot(devCard.getId(), index));
+        notifyBroadcast(new UpdateDevCardSlot(devCard.getId(), devSlotIndex));
     }
 
     /**

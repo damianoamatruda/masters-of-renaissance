@@ -8,7 +8,6 @@ public class ReducedProductionRequest {
     private final Map<String, Integer> outputBlanksRep;
     private final Map<Integer, Map<String, Integer>> inputContainers;
 
-
     public ReducedProductionRequest(int production, Map<String, Integer> inputBlanksRep, Map<String, Integer> outputBlanksRep,
                                     Map<Integer, Map<String, Integer>> inputContainers) {
         this.production = production;

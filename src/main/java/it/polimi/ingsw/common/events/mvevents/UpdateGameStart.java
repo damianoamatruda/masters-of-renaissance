@@ -21,7 +21,7 @@ public class UpdateGameStart implements MVEvent {
     
     /**
      * Class constructor.
-     * 
+     *
      * @param market                market state
      * @param developmentCardGrid   development card grid state
      * @param leaderCards           leader cards available at play time
@@ -32,20 +32,18 @@ public class UpdateGameStart implements MVEvent {
      * @param warehouseShelves      player's warehouseShelves' IDs
      * @param strongbox             player's strongbox's ID
      */
-    public UpdateGameStart(
-            List<String> nicknames,
-            ReducedMarket market,
-            ReducedDevCardGrid developmentCardGrid,
-            List<ReducedLeaderCard> leaderCards,
-            List<ReducedDevCard> developmentCards,
-            List<ReducedResourceContainer> resContainers,
-            List<ReducedResourceTransactionRecipe> productions,
-            List<ReducedActionToken> actionTokens,
-            List<Integer> leaders,
-            List<Integer> warehouseShelves,
-            int strongbox,
-            ReducedBoost boost) {
-        
+    public UpdateGameStart(List<String> nicknames,
+                           ReducedMarket market,
+                           ReducedDevCardGrid developmentCardGrid,
+                           List<ReducedLeaderCard> leaderCards,
+                           List<ReducedDevCard> developmentCards,
+                           List<ReducedResourceContainer> resContainers,
+                           List<ReducedResourceTransactionRecipe> productions,
+                           List<ReducedActionToken> actionTokens,
+                           List<Integer> leaders,
+                           List<Integer> warehouseShelves,
+                           int strongbox,
+                           ReducedBoost boost) {
         this.nicknames = nicknames;
         this.market = market;
         this.developmentCardGrid = developmentCardGrid;
