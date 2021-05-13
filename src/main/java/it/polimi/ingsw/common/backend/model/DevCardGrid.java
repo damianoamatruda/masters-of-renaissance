@@ -58,7 +58,9 @@ public class DevCardGrid extends ModelObservable {
     @Override
     public void addObserver(View o) {
         super.addObserver(o);
-        notifyBroadcast(new UpdateDevCardGrid(reduce()));
+
+        // Sort of notifyBroadcast
+        notify(o, new UpdateDevCardGrid(reduce()));
     }
 
     /**

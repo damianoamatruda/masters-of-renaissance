@@ -72,7 +72,9 @@ public class Market extends ModelObservable {
     @Override
     public void addObserver(View o) {
         super.addObserver(o);
-        notifyBroadcast(new UpdateMarket(reduce()));
+
+        // Sort of notifyBroadcast
+        notify(o, new UpdateMarket(reduce()));
     }
 
     /**
