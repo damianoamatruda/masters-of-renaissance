@@ -25,7 +25,7 @@ public class GameContext extends ModelObservable {
     private final GameFactory gameFactory;
 
     /** This represents the state of a game during the turn of a player that has not made the mandatory move yet. */
-    private boolean turnDone;
+    private boolean mandatoryActionDone;
 
     /**
      * Initializes a context for the given game.
@@ -34,8 +34,8 @@ public class GameContext extends ModelObservable {
      */
     public GameContext(Game game, GameFactory gameFactory) {
         this.game = game;
-        this.turnDone = false;
         this.gameFactory = gameFactory;
+        this.mandatoryActionDone = false;
     }
 
     /**
@@ -220,6 +220,9 @@ public class GameContext extends ModelObservable {
         if (!checkCurrentPlayer(v, player, "Take market resources"))
             return;
 
+        if (!checkMandatoryActionNotDone(v, "Take market resources"))
+            return;
+
         // TODO: Use stream to do this
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
         reducedShelves.forEach((id, resMap) -> {
@@ -237,7 +240,7 @@ public class GameContext extends ModelObservable {
             return;
         }
 
-        turnDone = true;
+        mandatoryActionDone = true;
     }
 
     /**
@@ -260,6 +263,9 @@ public class GameContext extends ModelObservable {
         if (!checkCurrentPlayer(v, player, "Buy development card"))
             return;
 
+        if (!checkMandatoryActionNotDone(v, "Buy development card"))
+            return;
+
         // TODO: Use stream to do this
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>();
         reducedResContainers.forEach((id, resMap) -> {
@@ -279,7 +285,7 @@ public class GameContext extends ModelObservable {
             return;
         }
 
-        turnDone = true;
+        mandatoryActionDone = true;
     }
 
     /**
@@ -296,6 +302,9 @@ public class GameContext extends ModelObservable {
             return;
 
         if (!checkCurrentPlayer(v, player, "Activate production"))
+            return;
+
+        if (!checkMandatoryActionNotDone(v, "Activate production"))
             return;
 
         if (reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).map(player::getProductionById).anyMatch(Optional::isEmpty)) {
@@ -321,7 +330,7 @@ public class GameContext extends ModelObservable {
             return;
         }
 
-        turnDone = true;
+        mandatoryActionDone = true;
     }
 
     /**
@@ -333,13 +342,16 @@ public class GameContext extends ModelObservable {
     public void endTurn(View v, String nickname) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!player.hasDoneSetup() || !turnDone) {
-            notify(v, new ErrAction(new IllegalActionException("End turn", !player.hasDoneSetup() ? "Setup is not done yet" : "No action executed in the turn").getMessage()));
+        if (!preliminaryChecks(v, player, "End turn"))
             return;
-        }
 
         if (!checkCurrentPlayer(v, player, "End turn"))
             return;
+
+        if (!mandatoryActionDone) {
+            notify(v, new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn").getMessage()));
+            return;
+        }
 
         try {
             game.onTurnEnd();
@@ -348,7 +360,7 @@ public class GameContext extends ModelObservable {
             return;
         }
 
-        turnDone = false;
+        mandatoryActionDone = false;
     }
 
     public void register(View v, String nickname) {
@@ -382,7 +394,24 @@ public class GameContext extends ModelObservable {
     }
 
     /**
-     * Checks if the given player is the current player in the turn.
+     * Ensures that the setup still isn't finished and the game has not ended yet. Action methods can use these checks
+     * to confirm their legitimacy of execution, before starting.
+     *
+     * @param v      the view to use to send back the error, if the checks don't pass
+     * @param action the action trying to be performed. Will be used as a reason when sending the error message to the
+     *               client trying to execute the action.
+     * @return whether the checks passed
+     */
+    private boolean preliminaryChecks(View v, Player player, String action) {
+        if (!player.hasDoneSetup() || game.hasEnded()) {
+            notify(v, new ErrAction(new IllegalActionException(action, !player.hasDoneSetup() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Ensures that the given player is the current player in the turn.
      *
      * @param v      the view to send the error massage back with
      * @param player the player to check
@@ -397,25 +426,23 @@ public class GameContext extends ModelObservable {
         return true;
     }
 
-    private Player getPlayerByNickname(String nickname) throws NoSuchElementException {
-        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findAny().orElseThrow();
-    }
-
     /**
-     * Checks whether the setup still isn't finished or the game has already ended. Action methods can use these checks
-     * to confirm their legitimacy of execution, before starting.
+     * Ensures that the current player has not done a mandatory action yet.
      *
-     * @param v      the view to use to send back the error, if the checks don't pass
-     * @param action the action trying to be performed. Will be used as a reason when sending the error message to the
-     *               client trying to execute the action.
-     * @return whether the checks passed
+     * @param v      the view to send the error massage back with
+     * @param action the action trying to be performed
+     * @return whether the check passed
      */
-    private boolean preliminaryChecks(View v, Player player, String action) {
-        if (!player.hasDoneSetup() || game.hasEnded()) {
-            notify(v, new ErrAction(new IllegalActionException(action, !player.hasDoneSetup() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+    private boolean checkMandatoryActionNotDone(View v, String action) {
+        if (mandatoryActionDone) {
+            notify(v, new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.").getMessage()));
             return false;
         }
         return true;
+    }
+
+    private Player getPlayerByNickname(String nickname) throws NoSuchElementException {
+        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findAny().orElseThrow();
     }
 
     private Map<ResourceType, Integer> translateResMap(Map<String, Integer> r) {
