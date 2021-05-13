@@ -114,6 +114,9 @@ public class Game extends ModelObservable {
                 p.getStrongbox().getId(),
                 new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
                 p.getChosenLeadersCount()));
+
+        // Sort of notifyBroadcast
+        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     public void resume(View o, Player p) {
@@ -134,6 +137,9 @@ public class Game extends ModelObservable {
                 p.hasChosenLeaders(),
                 p.hasChosenResources()
         ));
+
+        // Sort of notifyBroadcast
+        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
