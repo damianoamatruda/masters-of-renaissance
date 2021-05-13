@@ -368,14 +368,15 @@ public class GameContext extends ModelObservable {
         game.register(v, getPlayerByNickname(nickname));
     }
 
+    public void resume(View v, String nickname) {
+        addObserver(v);
+        game.resume(v, getPlayerByNickname(nickname));
+    }
+
     @Override
     public void removeObserver(View o) {
         super.removeObserver(o);
         game.removeObserver(o);
-    }
-
-    public void resume(View v, String nickname) {
-        game.resume(v, getPlayerByNickname(nickname));
     }
 
     public void setActive(String nickname, boolean active) throws NoActivePlayersException {
