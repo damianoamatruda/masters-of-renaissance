@@ -167,6 +167,13 @@ public class Player extends ModelObservable {
     }
 
     /**
+     * @return the number of leaders to be chosen during the setup.
+     */
+    public int getChosenLeadersCount() {
+        return chosenLeadersCount;
+    }
+
+    /**
      * Returns whether the player has chosen the leaders.
      *
      * @return <code>true</code> if the player has chosen the leaders; <code>false</code> otherwise.

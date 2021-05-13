@@ -64,7 +64,8 @@ public class SoloGame extends Game {
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+                p.getChosenLeadersCount()));
     }
 
     @Override
@@ -82,6 +83,7 @@ public class SoloGame extends Game {
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
                 new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+                p.getChosenLeadersCount(),
                 p.hasChosenLeaders(),
                 p.hasChosenResources()));
     }
@@ -102,7 +104,7 @@ public class SoloGame extends Game {
         token.trigger(this);
         actionTokens.add(token);
 
-        notifyBroadcast(new UpdateActionToken(token.getId(), actionTokens.stream().map(ActionToken::getId).toList()));
+        notifyBroadcast(new UpdateActionToken(token.getId()));
 
         /* Check if Lorenzo is winning */
         if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())

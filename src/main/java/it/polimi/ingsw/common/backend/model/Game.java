@@ -112,7 +112,8 @@ public class Game extends ModelObservable {
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+                p.getChosenLeadersCount()));
     }
 
     public void resume(View o, Player p) {
@@ -129,6 +130,7 @@ public class Game extends ModelObservable {
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
                 new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+                p.getChosenLeadersCount(),
                 p.hasChosenLeaders(),
                 p.hasChosenResources()
         ));

@@ -19,9 +19,10 @@ public class UpdateGameResume extends UpdateGameStart {
                             List<Integer> warehouseShelves,
                             int strongbox,
                             ReducedBoost boost,
+                            int chosenLeadersCount,
                             boolean hasChosenLeaders,
                             boolean hasChosenResources) {
-        super(players, leaderCards, developmentCards, resContainers, productions, actionTokens, leaders, warehouseShelves, strongbox, boost);
+        super(players, leaderCards, developmentCards, resContainers, productions, actionTokens, leaders, warehouseShelves, strongbox, boost, chosenLeadersCount);
         this.hasChosenLeaders = hasChosenLeaders;
         this.hasChosenResources = hasChosenResources;
     }

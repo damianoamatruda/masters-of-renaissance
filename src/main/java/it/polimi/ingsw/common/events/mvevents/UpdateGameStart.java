@@ -16,6 +16,7 @@ public class UpdateGameStart implements MVEvent {
     private final List<Integer> leaders, warehouseShelves;
     private final int strongbox;
     private final ReducedBoost boost;
+    private final int chosenLeadersCount;
     
     /**
      * Class constructor.
@@ -37,7 +38,8 @@ public class UpdateGameStart implements MVEvent {
                            List<Integer> leaders,
                            List<Integer> warehouseShelves,
                            int strongbox,
-                           ReducedBoost boost) {
+                           ReducedBoost boost,
+                           int chosenLeadersCount) {
         this.players = players;
         this.leaderCards = leaderCards;
         this.developmentCards = developmentCards;
@@ -48,6 +50,14 @@ public class UpdateGameStart implements MVEvent {
         this.warehouseShelves = warehouseShelves;
         this.strongbox = strongbox;
         this.boost = boost;
+        this.chosenLeadersCount = chosenLeadersCount;
+    }
+
+    /**
+     * @return the chosenLeadersCount
+     */
+    public int getChosenLeadersCount() {
+        return chosenLeadersCount;
     }
 
     @Override
