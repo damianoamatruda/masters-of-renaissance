@@ -47,12 +47,14 @@ public class ServerClientHandler implements Runnable, MVEventSender {
             view.update(new ResWelcome());
 
             listening = true;
-            clientSocket.setSoTimeout(timeout);
+            clientSocket.setSoTimeout(timeout / 2);
+            int halfTimeout = 0;
             while (listening) {
                 try {
                     if ((inputLine = in.readLine()) == null)
                         break;
                     try {
+                        halfTimeout = 0;
                         gp.processInput(inputLine, view);
                         if(inputLine.equals(goodBye))
                             break;
@@ -60,8 +62,14 @@ public class ServerClientHandler implements Runnable, MVEventSender {
                         e.printStackTrace();
                     }
                 } catch (SocketTimeoutException e) {
-                    gp.processInput(goodBye, view);
-                    break;
+                    if(halfTimeout < 1) {
+                        out.println("{\"type\":\"ReqHeartbeat\"}");
+                        halfTimeout++;
+                    }
+                    else {
+                        gp.processInput(goodBye, view);
+                        break;
+                    }
                 }
             }
             clientSocket.close();
