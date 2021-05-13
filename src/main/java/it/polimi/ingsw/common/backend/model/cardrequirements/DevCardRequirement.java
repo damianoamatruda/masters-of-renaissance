@@ -54,7 +54,7 @@ public class DevCardRequirement implements CardRequirement {
             if (!playerState.contains(currCard))
                 playerState.add(currCard.setAmount(1));
                 // else increment the amount available
-            else playerState.stream().filter(e -> e.equals(currCard)).findFirst().ifPresent(e -> e.amount++);
+            else playerState.stream().filter(e -> e.equals(currCard)).findAny().ifPresent(e -> e.amount++);
         });
 
         for (Entry entry : reqCopy) {
@@ -63,7 +63,7 @@ public class DevCardRequirement implements CardRequirement {
                 missing.add(entry);
                 // if the entry is found the amount of cards the player owns in that entry is subtracted from the requirements
             else {
-                playerState.stream().filter(e -> e.equals(entry)).findFirst().ifPresent(e -> {
+                playerState.stream().filter(e -> e.equals(entry)).findAny().ifPresent(e -> {
                     if (entry.amount - e.amount > 0)
                         missing.add(new Entry(entry.color, entry.level, entry.amount - e.amount));
                 });

@@ -61,8 +61,8 @@ public class IllegalResourceTransferException extends Exception {
 
     private static int getConflictingShelfIndex(ResourceType r, Warehouse w) {
         return IntStream.range(0, w.getShelves().size())
-            .filter(i -> w.getShelves().get(i).getResourceType().isPresent() &&
-                         w.getShelves().get(i).getResourceType().get().equals(r))
-            .findFirst().orElse(-1);
+                .filter(i -> w.getShelves().get(i).getResourceType().isPresent() &&
+                        w.getShelves().get(i).getResourceType().get().equals(r))
+                .findAny().orElse(-1);
     }
 }

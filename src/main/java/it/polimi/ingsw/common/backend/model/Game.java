@@ -152,15 +152,15 @@ public class Game extends ModelObservable {
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {
-        return leaderCards.stream().filter(l -> l.getId() == id).findFirst();
+        return leaderCards.stream().filter(l -> l.getId() == id).findAny();
     }
 
     public Optional<ResourceContainer> getShelfById(int id) {
-        return resContainers.stream().filter(l -> l.getId() == id).findFirst();
+        return resContainers.stream().filter(l -> l.getId() == id).findAny();
     }
 
     public Optional<ResourceTransactionRecipe> getProductionById(int id) {
-        return productions.stream().filter(l -> l.getId() == id).findFirst();
+        return productions.stream().filter(l -> l.getId() == id).findAny();
     }
 
     /**
@@ -287,7 +287,7 @@ public class Game extends ModelObservable {
      * @return the first player
      */
     public Player getFirstPlayer() {
-        return players.stream().filter(Player::hasInkwell).findFirst().orElseThrow();
+        return players.stream().filter(Player::hasInkwell).findAny().orElseThrow();
     }
 
     /**
@@ -424,6 +424,7 @@ public class Game extends ModelObservable {
                 .filter(p -> p.getVictoryPoints() == maxPts)
                 .toList();
 
+        /* In case of a draw, the first player in order becomes the winner */
         winners.stream().findFirst().ifPresent(p -> {
             p.setWinner();
             notifyBroadcast(new UpdateGameEnd(p.getNickname()));

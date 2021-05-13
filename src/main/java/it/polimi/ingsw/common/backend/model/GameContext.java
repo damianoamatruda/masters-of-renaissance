@@ -398,7 +398,7 @@ public class GameContext extends ModelObservable {
     }
 
     private Player getPlayerByNickname(String nickname) throws NoSuchElementException {
-        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findFirst().orElseThrow();
+        return game.getPlayers().stream().filter(p -> p.getNickname().equals(nickname)).findAny().orElseThrow();
     }
 
     /**

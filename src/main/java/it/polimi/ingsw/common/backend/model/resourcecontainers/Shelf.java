@@ -65,10 +65,10 @@ public class Shelf extends ResourceContainer {
         if (shelf1.resType != null)
             clone2.addResources(Map.of(shelf1.resType, shelf1.quantity));
 
-        shelf1.resType = clone1.getResourceTypes().stream().findFirst().orElse(null);
+        shelf1.resType = clone1.getResourceTypes().stream().findAny().orElse(null);
         shelf1.quantity = clone1.getQuantity();
 
-        shelf2.resType = clone2.getResourceTypes().stream().findFirst().orElse(null);
+        shelf2.resType = clone2.getResourceTypes().stream().findAny().orElse(null);
         shelf2.quantity = clone2.getQuantity();
     }
 
