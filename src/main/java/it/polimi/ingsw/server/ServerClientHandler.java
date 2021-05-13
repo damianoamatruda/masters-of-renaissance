@@ -26,7 +26,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
         view.setEventSender(this);
         this.view = view;
 
-        this.timeout = 20000;
+        this.timeout = 600000;
         this.gp = gp;
 
         this.in = null;
