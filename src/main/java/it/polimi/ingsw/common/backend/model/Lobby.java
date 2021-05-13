@@ -64,7 +64,7 @@ public class Lobby extends ModelObservable {
 
             if (!isFirst) {
                 waiting.add(view);
-                
+
                 // Sort of notifyBroadcast
                 waiting.forEach(v -> notify(v, new UpdateFreeSeats(playersCount, playersCount - waiting.size())));
 
@@ -98,7 +98,7 @@ public class Lobby extends ModelObservable {
                 gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
                 gameFactory.getMultiGame(waiting.subList(0, playersCount).stream().map(nicknames::get).toList());
 
-        GameContext newContext = new GameContext(newGame, gameFactory, new ArrayList<>(waiting.subList(0, playersCount)));
+        GameContext newContext = new GameContext(newGame, gameFactory);
         waiting.subList(0, playersCount).forEach(v -> {
             newContext.register(v, nicknames.get(v));
             joined.put(v, newContext);

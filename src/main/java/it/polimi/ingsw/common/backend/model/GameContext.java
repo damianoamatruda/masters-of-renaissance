@@ -32,8 +32,7 @@ public class GameContext extends ModelObservable {
      *
      * @param game the game
      */
-    public GameContext(Game game, GameFactory gameFactory, List<View> observers) {
-        super(observers);
+    public GameContext(Game game, GameFactory gameFactory) {
         this.game = game;
         this.turnDone = false;
         this.gameFactory = gameFactory;
