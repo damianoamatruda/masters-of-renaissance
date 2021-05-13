@@ -5,10 +5,7 @@ import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
-import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
-import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
-import it.polimi.ingsw.common.events.mvevents.UpdateGameEnd;
-import it.polimi.ingsw.common.events.mvevents.UpdateGameStart;
+import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 
 import java.util.ArrayList;
@@ -64,13 +61,35 @@ public class SoloGame extends Game {
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-            resContainers.stream().map(ResourceContainer::reduce).toList(),
-            productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-            actionTokens.stream().map(ActionToken::reduce).toList(),
-            leaders,
-            shelves,
-            strongbox,
-            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                actionTokens.stream().map(ActionToken::reduce).toList(),
+                leaders,
+                shelves,
+                strongbox,
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
+    }
+
+    public void resume(View o, Player p) {
+        register(o);
+
+        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
+        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
+        int strongbox = p.getStrongbox().getId();
+
+        notify(o, new UpdateGameResume(
+                players.stream().map(Player::getNickname).toList(),
+                leaderCards.stream().map(LeaderCard::reduce).toList(),
+                developmentCards.stream().map(DevelopmentCard::reduce).toList(),
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                actionTokens.stream().map(ActionToken::reduce).toList(),
+                leaders,
+                shelves,
+                strongbox,
+                p.hasChosenLeaders(), p.hasChosenResources(),
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())
+        ));
     }
 
     /**
