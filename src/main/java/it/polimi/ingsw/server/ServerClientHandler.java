@@ -42,7 +42,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
             this.out = out;
             this.in = in;
             String inputLine;
-            String goodBye = "{\"type\":\"GoodBye\"}";
+            String reqGoodbye = "{\"type\":\"ReqGoodbye\"}";
 
             view.update(new ResWelcome());
 
@@ -56,7 +56,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
                     try {
                         halfTimeout = 0;
                         gp.processInput(inputLine, view);
-                        if(inputLine.equals(goodBye))
+                        if (inputLine.equals(reqGoodbye))
                             break;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -67,7 +67,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
                         halfTimeout++;
                     }
                     else {
-                        gp.processInput(goodBye, view);
+                        gp.processInput(reqGoodbye, view);
                         break;
                     }
                 }

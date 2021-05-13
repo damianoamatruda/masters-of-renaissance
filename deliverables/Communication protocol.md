@@ -187,21 +187,26 @@ When a player is assigned by the server as the first of a new game, they have to
 ```
 
 ## Quitting the game
-Quitting the client (soft quit, no errors) will send one final message to the server, allowing the server to distinguish the reason for the socket closing (which may be caused by the client crashing instead).
+
+Quitting the client (soft quit, no errors) will send one final message to the server, allowing the server to distinguish
+the reason for the socket closing (which may be caused by the client crashing instead).
 
 The quit message is defined as:
+
 ```json
-{ "type": "GoodBye" }
+{ "type": "ReqGoodbye" }
 ```
-A `ResGoodBye` message will be sent by the server as an acknowledgement:
+
+A `ResGoodbye` message will be sent by the server as an acknowledgement:
+
 ```json
 {
-  "type": "ResGoodBye"
+  "type": "ResGoodbye"
 }
 ```
 
-
 # Game phase - Player setup
+
 When the game starts, the server instantiates its internal model. To set up the player objects, the clients will need to
 make choices. Those include which leader cards to keep and what resources to take, since the players are entitled to
 receive bonus resources and faith points.
