@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.View;
 /** Server response to a new game request. */
 public class UpdateFreeSeats implements MVEvent {
     /** The number of players the current game is set to. */
-    private final int countToNewGame;
+    private final int playersCount;
 
     /** The number of players that still need to join before the game can start. */
     private final int freeSeats;
@@ -13,11 +13,11 @@ public class UpdateFreeSeats implements MVEvent {
     /**
      * Class constructor.
      *
-     * @param countToNewGame the number of players the current game is set to
-     * @param freeSeats      the number of players that still need to join before the game can start
+     * @param playersCount the number of players the current game is set to
+     * @param freeSeats    the number of players that still need to join before the game can start
      */
-    public UpdateFreeSeats(int countToNewGame, int freeSeats) {
-        this.countToNewGame = countToNewGame;
+    public UpdateFreeSeats(int playersCount, int freeSeats) {
+        this.playersCount = playersCount;
         this.freeSeats = freeSeats;
     }
 
@@ -29,8 +29,8 @@ public class UpdateFreeSeats implements MVEvent {
     /**
      * @return the current game's players' count
      */
-    public int getCountToNewGame() {
-        return countToNewGame;
+    public int getPlayersCount() {
+        return playersCount;
     }
 
     /**

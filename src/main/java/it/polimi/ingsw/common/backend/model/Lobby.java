@@ -20,7 +20,7 @@ public class Lobby extends ModelObservable {
     private final Map<View, GameContext> joined;
     private final Map<String, GameContext> disconnected;
     private final List<View> waiting;
-    private int countToNewGame;
+    private int playersCount;
 
     public Lobby(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
@@ -68,9 +68,9 @@ public class Lobby extends ModelObservable {
             notify(view, new ResJoin(isFirst));
 
             // Sort of notifyBroadcast
-            waiting.forEach(v -> notify(v, new UpdateFreeSeats(countToNewGame, countToNewGame - waiting.size())));
+            waiting.forEach(v -> notify(v, new UpdateFreeSeats(playersCount, playersCount - waiting.size())));
 
-            if (waiting.size() == countToNewGame)
+            if (waiting.size() == playersCount)
                 startNewGame();
         }
     }
@@ -83,27 +83,27 @@ public class Lobby extends ModelObservable {
         }
         System.out.printf("Setting players count to %d.%n", playersCount);
 
-        this.countToNewGame = playersCount;
+        this.playersCount = playersCount;
 
-        notify(view, new UpdateFreeSeats(countToNewGame, countToNewGame - waiting.size()));
-        
-        if (waiting.size() == countToNewGame)
+        notify(view, new UpdateFreeSeats(this.playersCount, this.playersCount - waiting.size()));
+
+        if (waiting.size() == this.playersCount)
             startNewGame();
     }
 
     public void startNewGame() {
-        Game newGame = countToNewGame == 1 ?
-            gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
-            gameFactory.getMultiGame(waiting.subList(0, countToNewGame).stream().map(nicknames::get).toList());
+        Game newGame = playersCount == 1 ?
+                gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
+                gameFactory.getMultiGame(waiting.subList(0, playersCount).stream().map(nicknames::get).toList());
 
-        GameContext newContext = new GameContext(newGame, gameFactory, new ArrayList<>(waiting.subList(0, countToNewGame)));
+        GameContext newContext = new GameContext(newGame, gameFactory, new ArrayList<>(waiting.subList(0, playersCount)));
         // games.add(newContext);
-        waiting.subList(0, countToNewGame).forEach(v -> {
+        waiting.subList(0, playersCount).forEach(v -> {
             newContext.register(v, nicknames.get(v));
             joined.put(v, newContext);
         });
-        waiting.subList(0, countToNewGame).clear();
-        countToNewGame = 0;
+        waiting.subList(0, playersCount).clear();
+        playersCount = 0;
     }
 
     public void exit(View view) {
