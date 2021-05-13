@@ -2,7 +2,7 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.common.GameProtocol;
+import it.polimi.ingsw.common.Protocol;
 import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
 import it.polimi.ingsw.common.backend.model.GameFactory;
@@ -48,7 +48,7 @@ public class Server {
             GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config/config.json"));
             Lobby model = new Lobby(gameFactory);
             Controller controller = new Controller(model);
-            GameProtocol gp = new GameProtocol();
+            Protocol gp = new Protocol();
 
             System.out.println("Server ready");
             listening = true;

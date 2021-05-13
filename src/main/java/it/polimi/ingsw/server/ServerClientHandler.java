@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.common.GameProtocol;
+import it.polimi.ingsw.common.Protocol;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.mvevents.ResWelcome;
 
@@ -14,13 +14,13 @@ import java.net.SocketTimeoutException;
 public class ServerClientHandler implements Runnable, MVEventSender {
     private final Socket clientSocket;
     private final VirtualView view;
-    private final GameProtocol gp;
+    private final Protocol gp;
     private PrintWriter out;
     private BufferedReader in;
     private volatile boolean listening;
     private final int timeout;
 
-    public ServerClientHandler(Socket clientSocket, VirtualView view, GameProtocol gp) {
+    public ServerClientHandler(Socket clientSocket, VirtualView view, Protocol gp) {
         this.clientSocket = clientSocket;
 
         view.setEventSender(this);

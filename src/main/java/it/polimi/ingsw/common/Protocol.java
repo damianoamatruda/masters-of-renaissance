@@ -6,7 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
-public class GameProtocol {
+public class Protocol {
     /*
      * Interprets command string and calls an action from the model.
      */
