@@ -8,7 +8,9 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransac
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -431,7 +433,7 @@ public class Game extends ModelObservable {
 
         winners.stream().findFirst().ifPresent(p -> {
             p.setWinner();
-            notifyBroadcast(new UpdateGameEnd(p.getNickname(), computeVictoryPointsMap(players)));
+            notifyBroadcast(new UpdateGameEnd(p.getNickname()));
         });
     }
 
@@ -451,14 +453,5 @@ public class Game extends ModelObservable {
             faithTrack.getLastReachedYellowTile(p.getFaithPoints())
                 .ifPresent(lastReachedYellowTile -> p.incrementVictoryPoints(lastReachedYellowTile.getVictoryPoints()));
         }
-    }
-
-    public Map<String, Integer> computeVictoryPointsMap(List<Player> players) {
-        Map<String, Integer> vp = new HashMap<>();
-        
-        for (Player p : players)
-        vp.put(p.getNickname(), p.getVictoryPoints());
-        
-        return vp;
     }
 }

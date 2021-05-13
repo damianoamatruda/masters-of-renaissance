@@ -96,7 +96,7 @@ public class SoloGame extends Game {
             super.onTurnEnd();
         else {
             ended = true;
-            notifyBroadcast(new UpdateGameEnd(null, computeVictoryPointsMap(players)));
+            notifyBroadcast(new UpdateGameEnd(null));
         }
     }
 
