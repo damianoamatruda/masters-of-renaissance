@@ -8,19 +8,19 @@ public class ReducedResourceContainer {
     /** The new state of the container. */
     private final Map<String, Integer> content;
     /** The resource binding the container's contents. */
-    private final String bindingResource;
+    private final String boundedResType;
     
     /**
      * Class constructor.
      * 
      * @param id              the ID of the modified container
      * @param content         the new state of the container
-     * @param bindingResource the resource binding the container's contents
+     * @param boundedResType the resource binding the container's contents
      */
-    public ReducedResourceContainer(int id, Map<String, Integer> content, String bindingResource) {
+    public ReducedResourceContainer(int id, Map<String, Integer> content, String boundedResType) {
         this.id = id;
         this.content = content;
-        this.bindingResource = bindingResource;
+        this.boundedResType = boundedResType;
     }
 
     /**
@@ -40,7 +40,7 @@ public class ReducedResourceContainer {
     /**
      * @return the resource binding the container's contents
      */
-    public String getBindingResource() {
-        return bindingResource;
+    public String getboundedResType() {
+        return boundedResType;
     }
 }

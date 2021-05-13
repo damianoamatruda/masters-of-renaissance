@@ -57,6 +57,7 @@ public class GameContext extends ModelObservable {
         if (leaderIds.stream().map(player::getLeaderById).anyMatch(Optional::isEmpty)) {
             notify(v, new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
             // TODO: Specify leader that is not owned
+            // look at cannotchooseexception and chooseLeaders
             return;
         }
 
