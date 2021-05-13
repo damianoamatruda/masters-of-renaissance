@@ -66,6 +66,9 @@ public class SoloGame extends Game {
                 p.getStrongbox().getId(),
                 new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
                 p.getChosenLeadersCount()));
+
+        // Sort of notifyBroadcast
+        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
@@ -86,6 +89,9 @@ public class SoloGame extends Game {
                 p.getChosenLeadersCount(),
                 p.hasChosenLeaders(),
                 p.hasChosenResources()));
+
+        // Sort of notifyBroadcast
+        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
