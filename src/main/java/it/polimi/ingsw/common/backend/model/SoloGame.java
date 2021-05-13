@@ -105,9 +105,11 @@ public class SoloGame extends Game {
 
         notifyBroadcast(new UpdateActionToken(token.getId(), actionTokens.stream().map(ActionToken::getId).toList()));
 
-        checkBlackWin();
+        /* Check if Lorenzo is winning */
+        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
+            blackWinner = true;
 
-        if (!isBlackWinner())
+        if (!blackWinner)
             super.onTurnEnd();
         else {
             ended = true;
@@ -123,15 +125,6 @@ public class SoloGame extends Game {
     @Override
     public boolean isBlackWinner() {
         return blackWinner;
-    }
-
-    /**
-     * Checks if Lorenzo is winning.
-     */
-    private void checkBlackWin() {
-        if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount()) {
-            setBlackWinner();
-        }
     }
 
     /**
@@ -160,12 +153,5 @@ public class SoloGame extends Game {
     @Override
     public void onDiscardResources(Player player, int quantity) {
         incrementBlackPoints(quantity);
-    }
-
-    /**
-     * Declares Lorenzo as winner.
-     */
-    public void setBlackWinner() {
-        this.blackWinner = true;
     }
 }
