@@ -25,7 +25,6 @@ public class Lobby extends ModelObservable {
     public Lobby(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
         this.nicknames = new HashMap<>();
-        // this.games = new ArrayList<>();
         this.joined = new HashMap<>();
         this.waiting = new ArrayList<>();
         this.disconnected = new HashMap<>();
@@ -60,30 +59,30 @@ public class Lobby extends ModelObservable {
         }
         else {
             System.out.println("Set nickname \"" + nickname + "\".");
-
             boolean isFirst = waiting.size() == 0;
-
-            waiting.add(view);
-
             notify(view, new ResJoin(isFirst));
 
-            // Sort of notifyBroadcast
-            waiting.forEach(v -> notify(v, new UpdateFreeSeats(playersCount, playersCount - waiting.size())));
+            if (!isFirst) {
+                // Sort of notifyBroadcast
+                waiting.forEach(v -> notify(v, new UpdateFreeSeats(playersCount, playersCount - waiting.size())));
 
-            if (waiting.size() == playersCount)
-                startNewGame();
+                if (waiting.size() == playersCount)
+                    startNewGame();
+            }
         }
     }
 
     public void prepareNewGame(View view, int playersCount) {
         checkNickname(view);
-        if (!isPlayerFirst(view)) {
+        if (waiting.size() != 0) {
             notify(view, new ErrAction("Command unavailable. You are not the first player who joined."));
             return;
         }
-        System.out.printf("Setting players count to %d.%n", playersCount);
 
+        System.out.printf("Setting players count to %d.%n", playersCount);
         this.playersCount = playersCount;
+
+        waiting.add(view);
 
         notify(view, new UpdateFreeSeats(this.playersCount, this.playersCount - waiting.size()));
 
@@ -97,7 +96,6 @@ public class Lobby extends ModelObservable {
                 gameFactory.getMultiGame(waiting.subList(0, playersCount).stream().map(nicknames::get).toList());
 
         GameContext newContext = new GameContext(newGame, gameFactory, new ArrayList<>(waiting.subList(0, playersCount)));
-        // games.add(newContext);
         waiting.subList(0, playersCount).forEach(v -> {
             newContext.register(v, nicknames.get(v));
             joined.put(v, newContext);
@@ -107,11 +105,10 @@ public class Lobby extends ModelObservable {
     }
 
     public void exit(View view) {
-        // TODO: Manage the exit of a view
         String nickname = nicknames.get(view);
-        if(nickname != null) {
+        if (nickname != null) {
             GameContext context = joined.get(view);
-            if(context != null) {
+            if (context != null) {
                 context.removeObserver(view);
                 try {
                     context.setActive(nickname, false);
@@ -124,10 +121,6 @@ public class Lobby extends ModelObservable {
             nicknames.remove(view);
         }
         notify(view, new ResGoodbye());
-    }
-
-    public boolean isPlayerFirst(View view) {
-        return waiting.indexOf(view) == 0;
     }
 
     public void checkJoinedThen(View view, BiConsumer<GameContext, String> then) {
