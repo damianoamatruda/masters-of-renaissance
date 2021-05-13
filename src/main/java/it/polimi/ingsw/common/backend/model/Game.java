@@ -87,43 +87,36 @@ public class Game extends ModelObservable {
         this.ended = false;
     }
 
-    public void register(View o) {
-        this.observers.add(o);
+    @Override
+    public void addObserver(View o) {
+        super.addObserver(o);
         this.players.forEach(obj -> obj.addObserver(o));
         this.leaderCards.forEach(obj -> obj.addObserver(o));
-        // this.developmentCards.forEach(obj -> obj.addObserver(o)); // technically unneeded
+        // this.developmentCards.forEach(obj -> obj.register(o)); // technically unneeded
         this.resContainers.forEach(obj -> obj.addObserver(o));
         this.devCardGrid.addObserver(o);
         this.market.addObserver(o);
         this.faithTrack.addObserver(o);
     }
 
-    public void addObserver(View o, Player p) {
-        register(o);
-
-        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
-        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
-        int strongbox = p.getStrongbox().getId();
+    public void register(View o, Player p) {
+        addObserver(o);
 
         notify(o, new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-            resContainers.stream().map(ResourceContainer::reduce).toList(),
-            productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-            null,
-            leaders,
-            shelves,
-            strongbox,
-            new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                null, // Not sent
+                p.getLeaders().stream().map(Card::getId).toList(),
+                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+                p.getStrongbox().getId(),
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
     }
 
     public void resume(View o, Player p) {
-        register(o);
-
-        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
-        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
-        int strongbox = p.getStrongbox().getId();
+        addObserver(o);
 
         notify(o, new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
@@ -131,12 +124,13 @@ public class Game extends ModelObservable {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                null,
-                leaders,
-                shelves,
-                strongbox,
-                p.hasChosenLeaders(), p.hasChosenResources(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())
+                null, // Not sent
+                p.getLeaders().stream().map(Card::getId).toList(),
+                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+                p.getStrongbox().getId(),
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+                p.hasChosenLeaders(),
+                p.hasChosenResources()
         ));
     }
 

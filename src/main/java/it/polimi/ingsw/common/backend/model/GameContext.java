@@ -351,9 +351,9 @@ public class GameContext extends ModelObservable {
         turnDone = false;
     }
 
-    public void addObserver(View v, String nickname) {
+    public void register(View v, String nickname) {
         addObserver(v);
-        game.addObserver(v, getPlayerByNickname(nickname));
+        game.register(v, getPlayerByNickname(nickname));
     }
 
     @Override

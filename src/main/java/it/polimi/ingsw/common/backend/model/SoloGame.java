@@ -50,12 +50,9 @@ public class SoloGame extends Game {
         this.blackWinner = false;
     }
 
-    public void addObserver(View o, Player p) {
-        register(o);
-
-        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
-        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
-        int strongbox = p.getStrongbox().getId();
+    @Override
+    public void register(View o, Player p) {
+        addObserver(o);
 
         notify(o, new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
@@ -64,18 +61,15 @@ public class SoloGame extends Game {
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 actionTokens.stream().map(ActionToken::reduce).toList(),
-                leaders,
-                shelves,
-                strongbox,
+                p.getLeaders().stream().map(Card::getId).toList(),
+                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+                p.getStrongbox().getId(),
                 new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())));
     }
 
+    @Override
     public void resume(View o, Player p) {
-        register(o);
-
-        List<Integer> leaders = p.getLeaders().stream().map(Card::getId).toList();
-        List<Integer> shelves = p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList();
-        int strongbox = p.getStrongbox().getId();
+        addObserver(o);
 
         notify(o, new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
@@ -84,12 +78,17 @@ public class SoloGame extends Game {
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 actionTokens.stream().map(ActionToken::reduce).toList(),
-                leaders,
-                shelves,
-                strongbox,
-                p.hasChosenLeaders(), p.hasChosenResources(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources())
-        ));
+                p.getLeaders().stream().map(Card::getId).toList(),
+                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+                p.getStrongbox().getId(),
+                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
+                p.hasChosenLeaders(),
+                p.hasChosenResources()));
+    }
+
+    @Override
+    public void onDiscardResources(Player player, int quantity) {
+        incrementBlackPoints(quantity);
     }
 
     /**
@@ -148,10 +147,5 @@ public class SoloGame extends Game {
         onIncrementFaithPoints(blackPoints);
 
         notifyBroadcast(new UpdateFaithPoints(null, blackPoints, true));
-    }
-
-    @Override
-    public void onDiscardResources(Player player, int quantity) {
-        incrementBlackPoints(quantity);
     }
 }
