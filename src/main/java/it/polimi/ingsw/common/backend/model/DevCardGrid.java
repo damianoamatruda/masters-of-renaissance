@@ -15,13 +15,13 @@ import java.util.stream.IntStream;
  */
 public class DevCardGrid extends ModelObservable {
     /** Number of rows of separate decks that represent different development card levels. */
-    protected final int levelsCount;
+    private final int levelsCount;
 
     /** Number of columns of separate decks that represent different development card colors. */
-    protected final int colorsCount;
+    private final int colorsCount;
 
     /** All the cards that are still not bought by any player. */
-    protected final Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
+    private final Map<DevCardColor, List<Stack<DevelopmentCard>>> grid;
 
     /**
      * Generates the grid.
