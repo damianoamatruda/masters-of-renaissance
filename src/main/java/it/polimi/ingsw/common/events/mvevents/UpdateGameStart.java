@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UpdateGameStart implements MVEvent {
     // TODO commproto docs
-    private final List<String> nicknames;
+    private final List<String> players;
     private final ReducedMarket market;
     private final ReducedDevCardGrid developmentCardGrid;
     private final List<ReducedLeaderCard> leaderCards;
@@ -32,7 +32,7 @@ public class UpdateGameStart implements MVEvent {
      * @param warehouseShelves      player's warehouseShelves' IDs
      * @param strongbox             player's strongbox's ID
      */
-    public UpdateGameStart(List<String> nicknames,
+    public UpdateGameStart(List<String> players,
                            ReducedMarket market,
                            ReducedDevCardGrid developmentCardGrid,
                            List<ReducedLeaderCard> leaderCards,
@@ -44,7 +44,7 @@ public class UpdateGameStart implements MVEvent {
                            List<Integer> warehouseShelves,
                            int strongbox,
                            ReducedBoost boost) {
-        this.nicknames = nicknames;
+        this.players = players;
         this.market = market;
         this.developmentCardGrid = developmentCardGrid;
         this.leaderCards = leaderCards;
@@ -66,8 +66,8 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the players' nicknames
      */
-    public List<String> getNicknames() {
-        return nicknames;
+    public List<String> getPlayers() {
+        return players;
     }
 
     /**
