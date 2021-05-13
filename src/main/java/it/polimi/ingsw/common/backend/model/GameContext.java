@@ -148,9 +148,9 @@ public class GameContext extends ModelObservable {
      *
      * @param v        the view the action originates from. Used to send back errors
      * @param nickname the player
-     * @param leaderid the leader card to activate
+     * @param leaderId the leader card to activate
      */
-    public void activateLeader(View v, String nickname, Integer leaderid) {
+    public void activateLeader(View v, String nickname, Integer leaderId) {
         Player player = getPlayerByNickname(nickname);
 
         if (!preliminaryChecks(v, player, "Activate leader"))
@@ -162,7 +162,7 @@ public class GameContext extends ModelObservable {
         LeaderCard leader;
 
         try {
-            leader = player.getLeaderById(leaderid).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
+            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
             notify(v, new ErrAction(e.getMessage()));
             return;
@@ -180,9 +180,9 @@ public class GameContext extends ModelObservable {
      *
      * @param v        the view the action originates from. Used to send back errors
      * @param nickname the player
-     * @param leaderid the leader card to discard
+     * @param leaderId the leader card to discard
      */
-    public void discardLeader(View v, String nickname, Integer leaderid) {
+    public void discardLeader(View v, String nickname, Integer leaderId) {
         Player player = getPlayerByNickname(nickname);
 
         if (!preliminaryChecks(v, player, "Discard leader"))
@@ -191,7 +191,7 @@ public class GameContext extends ModelObservable {
         if (!checkCurrentPlayer(v, player, "Discard leader"))
             return;
 
-        LeaderCard leader = game.getLeaderById(leaderid).orElseThrow();
+        LeaderCard leader = game.getLeaderById(leaderId).orElseThrow();
 
         try {
             player.discardLeader(game, leader);
