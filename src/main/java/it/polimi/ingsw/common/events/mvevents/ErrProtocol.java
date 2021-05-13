@@ -3,16 +3,16 @@ package it.polimi.ingsw.common.events.mvevents;
 import it.polimi.ingsw.common.View;
 
 /** Error generated upon unsuccessful parsing of a message. */
-public class ErrUnparsableMessage implements MVEvent {
+public class ErrProtocol implements MVEvent {
     /** The reason why the message was unparsable */
     private final String message;
 
     /**
      * Class constructor.
-     * 
+     *
      * @param message the reason why the message was unparsable
      */
-    public ErrUnparsableMessage(String message) {
+    public ErrProtocol(String message) {
         this.message = message;
     }
 

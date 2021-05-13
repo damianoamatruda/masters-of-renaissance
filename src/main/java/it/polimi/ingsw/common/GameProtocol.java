@@ -1,8 +1,8 @@
 package it.polimi.ingsw.common;
 
 import com.google.gson.*;
-import it.polimi.ingsw.common.events.mvevents.ErrController;
-import it.polimi.ingsw.common.events.mvevents.ErrUnparsableMessage;
+import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
+import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
@@ -12,7 +12,7 @@ public class GameProtocol {
      */
     public void processInput(String input, View view) {
         if (input == null || input.isBlank()) {
-            view.update(new ErrUnparsableMessage("Empty input."));
+            view.update(new ErrProtocol("Empty input."));
             return;
         }
 
@@ -24,18 +24,18 @@ public class GameProtocol {
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonSyntaxException e) {
-            view.update(new ErrUnparsableMessage("Invalid syntax."));
+            view.update(new ErrProtocol("Invalid syntax."));
             return;
         }
         if (jsonObject == null) {
-            view.update(new ErrUnparsableMessage("Unknown parser error."));
+            view.update(new ErrProtocol("Unknown parser error."));
             return;
         }
 
         JsonElement type = jsonObject.get("type");
 
         if (type == null) {
-            view.update(new ErrUnparsableMessage("Field \"type\" not found."));
+            view.update(new ErrProtocol("Field \"type\" not found."));
             return;
         }
 
@@ -44,17 +44,17 @@ public class GameProtocol {
         try {
             event = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.common.events.vcevents." + type.getAsString()).asSubclass(VCEvent.class));
         } catch (ClassNotFoundException e) {
-            view.update(new ErrUnparsableMessage("Event type \"" + type.getAsString() + "\" does not exist."));
+            view.update(new ErrProtocol("Event type \"" + type.getAsString() + "\" does not exist."));
             return;
         } catch (JsonSyntaxException e) {
-            view.update(new ErrUnparsableMessage("Invalid attribute types."));
+            view.update(new ErrProtocol("Invalid attribute types."));
             return;
         }
 
         try {
             event.handle(view);
         } catch (Exception e) {
-            view.update(new ErrController(e));
+            view.update(new ErrRuntime(e));
         }
     }
 

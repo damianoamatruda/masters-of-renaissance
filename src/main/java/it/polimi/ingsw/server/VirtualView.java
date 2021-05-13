@@ -59,7 +59,7 @@ public class VirtualView implements View {
     // ControllerObservable section
 
     @Override
-    public void notify(GoodBye event) {
+    public void notify(ReqGoodbye event) {
         controller.update(this, event);
     }
 
@@ -114,7 +114,7 @@ public class VirtualView implements View {
     }
 
     @Override
-    public void notify(ReqTurnEnd event) {
+    public void notify(ReqEndTurn event) {
         controller.update(this, event);
     }
 }

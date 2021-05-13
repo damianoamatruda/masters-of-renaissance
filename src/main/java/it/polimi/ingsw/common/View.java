@@ -22,7 +22,7 @@ public interface View /*extends ModelObserver, ControllerObservable, Communicati
     
     // ControllerObservable section
     
-    void notify(GoodBye event);
+    void notify(ReqGoodbye event);
 
     void notify(ReqJoin event);
 
@@ -44,5 +44,5 @@ public interface View /*extends ModelObserver, ControllerObservable, Communicati
 
     void notify(ReqTakeFromMarket event);
 
-    void notify(ReqTurnEnd event);
+    void notify(ReqEndTurn event);
 }

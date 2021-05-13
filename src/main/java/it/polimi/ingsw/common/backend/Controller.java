@@ -11,7 +11,7 @@ public class Controller {
         this.model = model;
     }
 
-    public void update(View view, GoodBye event) {
+    public void update(View view, ReqGoodbye event) {
         model.exit(view);
     }
 
@@ -63,7 +63,7 @@ public class Controller {
                 gameContext.activateProductionRequests(view, nickname, event.getProductionRequests()));
     }
 
-    public void update(View view, ReqTurnEnd event) {
+    public void update(View view, ReqEndTurn event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.endTurn(view, nickname));
     }
