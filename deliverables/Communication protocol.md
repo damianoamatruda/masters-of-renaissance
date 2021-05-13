@@ -1016,14 +1016,14 @@ When the match is waiting for players to join before its start, sending notifica
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │                   UpdateWinner │
+               │                  UpdateGameEnd │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateWinner (server)**
+**UpdateGameEnd (server)**
 ```json
 {
-  "type": "UpdateWinner",
+  "type": "UpdateGameEnd",
   "winner": "NicknameA",
   "victoryPoints": { "NicknameA": 20, "NicknameB": 16, "NicknameC": 12 }
 }
