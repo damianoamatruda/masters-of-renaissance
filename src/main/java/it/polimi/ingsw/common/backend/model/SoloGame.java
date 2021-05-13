@@ -88,7 +88,7 @@ public class SoloGame extends Game {
         token.trigger(this);
         actionTokens.add(token);
 
-        notifyBroadcast(new UpdateActionToken(token.getId(), actionTokens.stream().map(ActionToken::getId).toList()));
+        notifyBroadcast(new UpdateActionToken(token.getId()));
 
         checkBlackWin();
 
