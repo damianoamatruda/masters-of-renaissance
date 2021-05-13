@@ -61,11 +61,13 @@ public class Lobby extends ModelObservable {
         else {
             System.out.println("Set nickname \"" + nickname + "\".");
 
+            boolean isFirst = waiting.size() == 0;
+
             waiting.add(view);
 
-            notify(view, new ResJoin(waiting.size() == 1));
+            notify(view, new ResJoin(isFirst));
 
-            if (countToNewGame != 0)
+            if (!isFirst)
                 notify(view, new UpdateFreeSeats(countToNewGame, countToNewGame - waiting.size()));
 
             if (waiting.size() == countToNewGame)
