@@ -218,6 +218,7 @@ public class PlayerTest {
         @BeforeEach
         void setup() {
             players = game.getPlayers();
+            players.forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
         }
 
         @Test

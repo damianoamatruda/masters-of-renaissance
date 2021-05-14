@@ -85,8 +85,6 @@ public class Game extends ModelObservable {
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
-
-        this.players.forEach(player -> player.getSetup().giveInitialFaithPoints(this, player)); // FIXME: This should be done after all observers are set
     }
 
     @Override

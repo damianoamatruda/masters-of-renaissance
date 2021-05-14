@@ -38,6 +38,10 @@ public class GameContext extends ModelObservable {
         this.mandatoryActionDone = false;
     }
 
+    public void start() {
+        game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
+    }
+
     /**
      * Choose leaders from the hand of a player.
      *

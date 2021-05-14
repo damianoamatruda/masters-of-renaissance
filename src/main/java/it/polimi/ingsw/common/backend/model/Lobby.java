@@ -115,6 +115,7 @@ public class Lobby extends ModelObservable {
             newContext.register(v, nicknames.get(v));
             joined.put(v, newContext);
         });
+        newContext.start();
 
         /* Remove players who joined from waiting list */
         waiting.subList(0, newGamePlayersCount).clear();
