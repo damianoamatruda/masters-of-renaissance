@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
-import it.polimi.ingsw.common.events.mvevents.UpdateFreeSeats;
+import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +73,7 @@ public class Lobby extends ModelObservable {
             waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size(), waiting.indexOf(v) == 0)));
 
             if (newGamePlayersCount != 0)
-                waiting.forEach(v -> notify(v, new UpdateFreeSeats(newGamePlayersCount, newGamePlayersCount - waiting.size())));
+                notify(view, new UpdateJoinGame(newGamePlayersCount));
 
             if (waiting.size() == newGamePlayersCount)
                 startNewGame();
@@ -98,8 +98,8 @@ public class Lobby extends ModelObservable {
         System.out.printf("Setting players count to %d.%n", newGamePlayersCount);
         this.newGamePlayersCount = newGamePlayersCount;
 
-        if (waiting.size() <= newGamePlayersCount)
-            waiting.forEach(v -> notify(v, new UpdateFreeSeats(newGamePlayersCount, newGamePlayersCount - waiting.size())));
+        // Sort of notifyBroadcast
+        waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> notify(v, new UpdateJoinGame(newGamePlayersCount)));
 
         if (waiting.size() >= newGamePlayersCount)
             startNewGame();
