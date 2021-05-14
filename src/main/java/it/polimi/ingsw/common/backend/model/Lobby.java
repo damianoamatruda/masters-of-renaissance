@@ -49,15 +49,20 @@ public class Lobby extends ModelObservable {
 
         if (disconnected.containsKey(nickname)) {
             System.out.println("Player \"" + nickname + "\" rejoined");
-            notify(view, new ResJoin(false));
-            GameContext toResume = disconnected.get(nickname);
+            notify(view, new ResJoin(false)); // send join ack
+            
+            // get the match the nickname was previously in and set the player back to active
+            GameContext oldContext = disconnected.get(nickname);
             try {
-                toResume.setActive(nickname, true);
+                oldContext.setActive(nickname, true);
             } catch (NoActivePlayersException e) {
-                notify(view, new ErrAction(e.getMessage())); // TODO does this make sense?
+                // notify(view, new ErrAction(e.getMessage()));
+                throw new RuntimeException("No active players after player rejoining.");
             }
-            toResume.resume(view, nicknames.get(view));
-            joined.put(view, toResume);
+
+            // resuming routine (observer registrations and state messages)
+            oldContext.resume(view, nicknames.get(view));
+            joined.put(view, oldContext);
             disconnected.remove(nickname);
         }
         else {
