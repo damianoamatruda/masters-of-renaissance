@@ -79,7 +79,7 @@ public class Lobby extends ModelObservable {
 
     /* If the player is one of the first to join, it will have to choose the total number of players in the match. */
     public void prepareNewGame(View view, int newGamePlayersCount) {
-        checkNickname(view);
+        if (!checkNickname(view)) return;
 
         if (waiting.get(0) != view) {
             notify(view, new ErrAction("Command unavailable. You are not the first player who joined."));
