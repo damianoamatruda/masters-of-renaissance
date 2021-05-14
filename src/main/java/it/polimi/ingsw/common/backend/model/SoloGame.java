@@ -60,6 +60,7 @@ public class SoloGame extends Game {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 actionTokens.stream().map(ActionToken::reduce).toList(),
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
@@ -81,6 +82,7 @@ public class SoloGame extends Game {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 actionTokens.stream().map(ActionToken::reduce).toList(),
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),

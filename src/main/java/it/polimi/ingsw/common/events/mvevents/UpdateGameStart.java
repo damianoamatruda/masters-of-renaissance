@@ -12,6 +12,7 @@ public class UpdateGameStart implements MVEvent {
     private final List<ReducedDevCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
     private final List<ReducedResourceTransactionRecipe> productions;
+    private final int baseProduction;
     private final List<ReducedActionToken> actionTokens;
     private final List<Integer> leaders, warehouseShelves;
     private final int strongbox;
@@ -34,6 +35,7 @@ public class UpdateGameStart implements MVEvent {
                            List<ReducedDevCard> developmentCards,
                            List<ReducedResourceContainer> resContainers,
                            List<ReducedResourceTransactionRecipe> productions,
+                           int baseProduction,
                            List<ReducedActionToken> actionTokens,
                            List<Integer> leaders,
                            List<Integer> warehouseShelves,
@@ -45,12 +47,20 @@ public class UpdateGameStart implements MVEvent {
         this.developmentCards = developmentCards;
         this.resContainers = resContainers;
         this.productions = productions;
+        this.baseProduction = baseProduction;
         this.actionTokens = actionTokens;
         this.leaders = leaders;
         this.warehouseShelves = warehouseShelves;
         this.strongbox = strongbox;
         this.boost = boost;
         this.chosenLeadersCount = chosenLeadersCount;
+    }
+
+    /**
+     * @return the ID of the base production
+     */
+    public int getBaseProduction() {
+        return baseProduction;
     }
 
     /**

@@ -108,6 +108,7 @@ public class Game extends ModelObservable {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 null, // Not sent
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
@@ -128,6 +129,7 @@ public class Game extends ModelObservable {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 null, // Not sent
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
