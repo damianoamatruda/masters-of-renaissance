@@ -2,8 +2,6 @@ package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 
-import java.util.stream.IntStream;
-
 /**
  * Exception thrown when a resource cannot be added or removed.
  */
@@ -52,17 +50,10 @@ public class IllegalResourceTransferException extends Exception {
      * there's another shelf already bound to that resource type. 
      * 
      * @param res the resource being added/removed.
-     * @param w the warehouse the shelves of which are conflicting.
+     * @param shelfIndex the conflicting warehouse shelf's index.
      */
-    public IllegalResourceTransferException(ResourceType res, Warehouse w) {
+    public IllegalResourceTransferException(ResourceType res, int shelfIndex) {
         super(String.format("Cannot add resource of type %s: a warehouse shelf %d is already bound to that resource",
-            res.getName(), getConflictingShelfIndex(res, w)));
-    }
-
-    private static int getConflictingShelfIndex(ResourceType r, Warehouse w) {
-        return IntStream.range(0, w.getShelves().size())
-                .filter(i -> w.getShelves().get(i).getResourceType().isPresent() &&
-                        w.getShelves().get(i).getResourceType().get().equals(r))
-                .findAny().orElse(-1);
+            res.getName(), shelfIndex));
     }
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 /**
  * This class represents a container of shelves of growing size.
@@ -99,7 +100,11 @@ public class Warehouse {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .anyMatch(r -> r.equals(resType)))
-                throw new IllegalResourceTransferException(resType, warehouse);
+                throw new IllegalResourceTransferException(resType, IntStream.range(0, warehouse.getShelves().size())
+                    .filter(i -> warehouse.getShelves().get(i).getResourceType().isPresent() &&
+                        warehouse.getShelves().get(i).getResourceType().get().equals(resType) &&
+                        warehouse.getShelves().get(i).getId() != this.getId())
+                    .findAny().orElse(-1));
             super.addResources(resMap);
         }
     }
