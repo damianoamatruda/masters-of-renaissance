@@ -300,12 +300,11 @@ public class Player extends ModelObservable {
      * @return the total number of resources the player has available
      */
     public int getResourcesCount() {
-        int quantity = 0;
-        quantity += strongbox.getQuantity();
-        quantity += warehouse.getShelves().stream()
-                .mapToInt(Shelf::getQuantity)
-                .sum();
-        return quantity;
+        Set<ResourceContainer> resContainers = new HashSet<>();
+        resContainers.add(strongbox);
+        resContainers.addAll(warehouse.getShelves());
+        resContainers.addAll(leaders.stream().map(LeaderCard::getDepot).filter(Optional::isPresent).map(Optional::get).toList());
+        return resContainers.stream().map(ResourceContainer::getQuantity).reduce(0, Integer::sum);
     }
 
     public PlayerSetup getSetup() {
