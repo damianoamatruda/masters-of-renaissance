@@ -7,9 +7,9 @@ public class CannotChooseException extends Exception {
     /**
      * Class constructor.
      * 
-     * @param choosenElement either "leader cards" or "resources"
+     * @param reason the reason for the exception being thrown
      */
-    public CannotChooseException(String choosenElement) {
-        super(String.format("Cannot choose starting %s again, choice already made.", choosenElement));
+    public CannotChooseException(String reason) {
+        super(reason);
     }
 }

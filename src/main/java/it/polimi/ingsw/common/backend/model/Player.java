@@ -127,8 +127,21 @@ public class Player extends ModelObservable {
      * @throws CannotChooseException if the leader cards have already been chosen
      */
     public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
-        if (chosenLeaders.size() != chosenLeadersCount || !leaders.containsAll(chosenLeaders))
-            throw new CannotChooseException("leader cards");
+        if (leaders.size() == chosenLeadersCount)
+            throw new CannotChooseException("Cannot choose starting leaders again, choice already made."); // TODO what happens if server parameters make this default?
+
+        if (chosenLeaders.size() != chosenLeadersCount)
+            throw new CannotChooseException(
+                String.format("Not enough leader cards chosen: %d chosen, %d required.", chosenLeaders.size(), chosenLeadersCount));
+        
+        if (!leaders.containsAll(chosenLeaders))
+            throw new CannotChooseException(
+                String.format("Cannot choose leader %d: not in your hand.",
+                    leaders.stream()
+                        .map(l -> l.getId())
+                        .filter(id -> !chosenLeaders.stream().map(cl -> cl.getId()).toList().contains(id))
+                        .findAny().orElse(-1)));
+
         leaders.retainAll(chosenLeaders);
 
         notifyBroadcast(new ResChooseLeaders(extractLeadersIDs(leaders)));
@@ -144,7 +157,7 @@ public class Player extends ModelObservable {
      */
     public void chooseResources(Game game, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalResourceTransactionActivationException {
         if (hasChosenResources)
-            throw new CannotChooseException("resources");
+            throw new CannotChooseException("Cannot choose starting resources again, choice already made.");
 
         Map<ResourceType, Integer> chosenResources = shelves.values().stream()
                 .map(Map::entrySet)
