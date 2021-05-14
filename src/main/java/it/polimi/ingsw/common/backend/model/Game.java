@@ -449,14 +449,4 @@ public class Game extends ModelObservable {
         for (Player p : players)
             p.incrementVictoryPoints(p.getResourcesCount() / 5);
     }
-
-    /**
-     * Sums the points earned based on the last yellow tile that has been reached.
-     */
-    private void sumPointsFromYellowTiles() { // TODO never used locally
-        for (Player p : players) {
-            faithTrack.getLastReachedYellowTile(p.getFaithPoints())
-                .ifPresent(lastReachedYellowTile -> p.incrementVictoryPoints(lastReachedYellowTile.getVictoryPoints()));
-        }
-    }
 }
