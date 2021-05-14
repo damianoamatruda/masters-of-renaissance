@@ -334,7 +334,7 @@ public class Player extends ModelObservable {
     }
 
     public Optional<DevelopmentCard> getDevCardById(int id) {
-        return devSlots.stream().flatMap(Collection::stream).filter(d -> d.getId() == id).findAny();
+        return devSlots.stream().map(Stack::peek).filter(d -> d.getId() == id).findAny();
     }
 
     public Optional<ResourceTransactionRecipe> getProductionById(int id) {
