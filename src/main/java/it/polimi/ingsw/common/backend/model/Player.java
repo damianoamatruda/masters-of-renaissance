@@ -144,7 +144,7 @@ public class Player extends ModelObservable {
 
         leaders.retainAll(chosenLeaders);
 
-        // notifyBroadcast(new ResChooseLeaders(extractLeadersIDs(leaders)));
+        notifyBroadcast(new UpdateChooseLeaders(getNickname()));
     }
 
     /**
@@ -452,15 +452,6 @@ public class Player extends ModelObservable {
         if (production.isEmpty())
             production = devSlots.stream().flatMap(Collection::stream).map(DevelopmentCard::getProduction).filter(p -> p.getId() == id).findAny();
         return production;
-    }
-
-    public List<Integer> extractLeadersIDs(List<LeaderCard> leaders) {
-        List<Integer> ids = new ArrayList<>();
-
-        for (LeaderCard l : leaders)
-            ids.add(l.getId());
-
-        return ids;
     }
 
     @Override

@@ -10,7 +10,6 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
-import it.polimi.ingsw.common.events.mvevents.ResChooseLeaders;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
@@ -65,7 +64,6 @@ public class GameContext extends ModelObservable {
 
         try {
             player.chooseLeaders(leaders);
-            notify(v, new ResChooseLeaders(player.extractLeadersIDs(leaders)));
         } catch (CannotChooseException e) {
             notify(v, new ErrAction(e.getMessage()));
             return;
