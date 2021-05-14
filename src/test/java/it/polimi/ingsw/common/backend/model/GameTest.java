@@ -33,8 +33,9 @@ public class GameTest {
                     shuffledNicknames.get(i),
                     i == 0, List.of(),
                     new Warehouse(3), new Strongbox(),
-                    new ResourceTransactionRecipe(Map.of(), 2, Map.of(), 1), 3
-                    , 0, 0, 0, Set.of());
+                    new ResourceTransactionRecipe(Map.of(), 2, Map.of(), 1),
+                    3,
+                    new PlayerSetup(0, 0, 0, Set.of()));
             players.add(player);
         }
 

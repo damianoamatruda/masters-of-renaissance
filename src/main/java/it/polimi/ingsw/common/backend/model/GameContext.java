@@ -48,7 +48,7 @@ public class GameContext extends ModelObservable {
     public void chooseLeaders(View v, String nickname, List<Integer> leaderIds) {
         Player player = getPlayerByNickname(nickname);
 
-        if (player.hasDoneSetup()) {
+        if (player.getSetup().isDone()) {
             notify(v, new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
             return;
         }
@@ -56,14 +56,19 @@ public class GameContext extends ModelObservable {
         if (leaderIds.stream().map(player::getLeaderById).anyMatch(Optional::isEmpty)) {
             notify(v, new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
             // TODO: Specify leader that is not owned
-            // look at cannotchooseexception and chooseLeaders
+            /*throw new CannotChooseException(
+                    String.format("Cannot choose leader %d: not in your hand.",
+                            leaders.stream()
+                                    .map(Card::getId)
+                                    .filter(id -> !chosenLeaders.stream().map(Card::getId).toList().contains(id))
+                                    .findAny().orElse(-1))); */
             return;
         }
 
         List<LeaderCard> leaders = leaderIds.stream().map(game::getLeaderById).filter(Optional::isPresent).map(Optional::get).toList();
 
         try {
-            player.chooseLeaders(leaders);
+            player.getSetup().chooseLeaders(player, leaders);
         } catch (CannotChooseException e) {
             notify(v, new ErrAction(e.getMessage()));
             return;
@@ -82,7 +87,7 @@ public class GameContext extends ModelObservable {
     public void chooseResources(View v, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
         Player player = getPlayerByNickname(nickname);
 
-        if (player.hasDoneSetup()) {
+        if (player.getSetup().isDone()) {
             notify(v, new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
             return;
         }
@@ -98,7 +103,7 @@ public class GameContext extends ModelObservable {
         });
 
         try {
-            player.chooseResources(game, shelves);
+            player.getSetup().chooseResources(game, player, shelves);
         } catch (CannotChooseException | IllegalResourceTransactionActivationException e) {
             notify(v, new ErrAction(e.getMessage()));
             return;
@@ -390,7 +395,7 @@ public class GameContext extends ModelObservable {
      * Check if the last necessary setup move has been made.
      */
     private void checkEndSetup() {
-        if (game.getPlayers().stream().allMatch(Player::hasDoneSetup))
+        if (game.getPlayers().stream().map(Player::getSetup).allMatch(PlayerSetup::isDone))
             notifyBroadcast(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
     }
 
@@ -404,8 +409,8 @@ public class GameContext extends ModelObservable {
      * @return whether the checks passed
      */
     private boolean preliminaryChecks(View v, Player player, String action) {
-        if (!player.hasDoneSetup() || game.hasEnded()) {
-            notify(v, new ErrAction(new IllegalActionException(action, !player.hasDoneSetup() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+        if (!player.getSetup().isDone() || game.hasEnded()) {
+            notify(v, new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
             return false;
         }
         return true;

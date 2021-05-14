@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.leadercards;
 
 import it.polimi.ingsw.common.backend.model.Player;
+import it.polimi.ingsw.common.backend.model.PlayerSetup;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
@@ -43,7 +44,7 @@ public class LeaderCardTest {
     @Test
     void activateNoRequirements() {
         leader = new ZeroLeader(coin, null, 0, 0);
-        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
         
         assertDoesNotThrow(() -> leader.activate(p));
         assertTrue(leader.isActive());
@@ -54,7 +55,7 @@ public class LeaderCardTest {
      */
     @Test
     void activateWithRequirements() {
-        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
         p.getStrongbox().addResource(coin);
 
         assertDoesNotThrow(() -> leader.activate(p));
@@ -66,7 +67,7 @@ public class LeaderCardTest {
      */
     @Test
     void activateWrongResources() {
-        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
         p.getStrongbox().addResource(new ResourceType("Shield", true));
 
         assertThrows(CardRequirementsNotMetException.class, () -> leader.activate(p));

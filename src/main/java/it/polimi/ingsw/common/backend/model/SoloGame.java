@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.events.mvevents.*;
-import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,8 +65,7 @@ public class SoloGame extends Game {
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
-                p.getChosenLeadersCount()));
+                p.getSetup().reduce()));
 
         // Sort of notifyBroadcast
         notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
@@ -88,10 +86,7 @@ public class SoloGame extends Game {
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
-                p.getChosenLeadersCount(),
-                p.hasChosenLeaders(),
-                p.hasChosenResources()));
+                p.getSetup().reduce()));
 
         // Sort of notifyBroadcast
         notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));

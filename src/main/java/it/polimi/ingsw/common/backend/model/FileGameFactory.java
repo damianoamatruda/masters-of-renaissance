@@ -65,8 +65,8 @@ public class FileGameFactory implements GameFactory {
     /** The base production shared by all players. */
     private final ResourceTransactionRecipe baseProduction;
 
-    /** The boosts. */
-    private final List<Boost> boosts;
+    /** The setups of the players. */
+    private final List<PlayerSetup> playerSetups;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
@@ -104,7 +104,7 @@ public class FileGameFactory implements GameFactory {
                 .collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
 
         baseProduction = gson.fromJson(parserObject.get("baseProduction"), ResourceTransactionRecipe.class);
-        boosts = gson.fromJson(parserObject.get("boosts"), new TypeToken<ArrayList<Boost>>() {
+        playerSetups = gson.fromJson(parserObject.get("playerSetups"), new TypeToken<ArrayList<PlayerSetup>>() {
         }.getType());
     }
 
@@ -225,10 +225,7 @@ public class FileGameFactory implements GameFactory {
                     strongbox,
                     baseProduction,
                     slotsCount,
-                    chosenLeadersCount,
-                    boosts.get(i).initialResources,
-                    boosts.get(i).initialFaith,
-                    boosts.get(i).initialExcludedResources));
+                    playerSetups.get(i)));
         }
 
         return players;
@@ -374,18 +371,6 @@ public class FileGameFactory implements GameFactory {
             }
         }
         return tokens;
-    }
-
-    /** Private class representing the early game boost in resources. */
-    private static class Boost {
-        /** Number of choosable resources obtained at the beginning. */
-        private int initialResources;
-
-        /** Starting faith points. */
-        private int initialFaith;
-
-        /** Resources that cannot be chosen. */
-        private Set<ResourceType> initialExcludedResources;
     }
 
     /** Custom deserializer for leader card requirements. */

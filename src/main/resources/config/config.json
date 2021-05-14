@@ -59,31 +59,35 @@
     ],
     "discardableOutput": false
   },
-  "boosts": [
+  "playerSetups": [
     {
+      "initialFaith": 0,
+      "chosenLeadersCount": 2,
       "initialResources": 0,
-      "initialFaith": 0,
       "initialExcludedResources": [
         "Faith"
       ]
     },
     {
-      "initialResources": 1,
       "initialFaith": 0,
+      "chosenLeadersCount": 2,
+      "initialResources": 1,
       "initialExcludedResources": [
         "Faith"
       ]
     },
     {
-      "initialResources": 1,
       "initialFaith": 1,
+      "chosenLeadersCount": 2,
+      "initialResources": 1,
       "initialExcludedResources": [
         "Faith"
       ]
     },
     {
+      "initialFaith": 1,
+      "chosenLeadersCount": 2,
       "initialResources": 2,
-      "initialFaith": 1,
       "initialExcludedResources": [
         "Faith"
       ]

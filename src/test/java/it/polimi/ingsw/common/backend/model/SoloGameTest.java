@@ -8,7 +8,6 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ public class SoloGameTest {
         player = new Player("Alessandro", true, List.of(
                 new DepotLeader(2, coin, null, 0, 0),
                 new DepotLeader(2, coin, null, 0, 0)
-        ), new Warehouse(3), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 3, 0, 0, 0, Set.of());
+        ), new Warehouse(3), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 3, new PlayerSetup(0, 0, 0, Set.of()));
 
         track = new FaithTrack(Set.of(
                 new FaithTrack.VaticanSection(0, 5, 8, 2),

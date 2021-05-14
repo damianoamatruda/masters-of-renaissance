@@ -7,7 +7,6 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -60,7 +59,7 @@ class ActionTokenDiscardTwoTest {
                 List.of(),
                 new Warehouse(0), new Strongbox(),
                 new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 1,
-                0, 0, 0, Set.of());
+                new PlayerSetup(0, 0, 0, Set.of()));
         game = new SoloGame(
                 player,
                 List.of(),

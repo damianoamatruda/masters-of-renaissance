@@ -56,7 +56,7 @@ public class PlayerTest {
                     i == 0, new ArrayList<>(List.of(new DepotLeader(0, null, null, 0, 0))),
                     new Warehouse(3), new Strongbox(),
                     new ResourceTransactionRecipe(Map.of(), 2, Map.of(), 1), 3,
-                    0, bonusResources.get(i), bonusFaith.get(i), Set.of());
+                    new PlayerSetup(bonusFaith.get(i), 0, bonusResources.get(i), Set.of()));
             players.add(player);
         }
 
@@ -233,14 +233,14 @@ public class PlayerTest {
         @Test
         void thirdPlayerOneFaith() {
             WarehouseShelf s = players.get(2).getWarehouse().getShelves().get(0);
-            assertDoesNotThrow(() -> players.get(2).chooseResources(game, Map.of(s, Map.of(coin, 1))));
+            assertDoesNotThrow(() -> players.get(2).getSetup().chooseResources(game, players.get(2), Map.of(s, Map.of(coin, 1))));
             assertEquals(players.get(2).getFaithPoints(), 1);
         }
 
         @Test
         void fourthPlayerOneFaith() {
             WarehouseShelf s = players.get(3).getWarehouse().getShelves().get(1);
-            assertDoesNotThrow(() -> players.get(3).chooseResources(game, Map.of(s, Map.of(coin, 2))));
+            assertDoesNotThrow(() -> players.get(3).getSetup().chooseResources(game, players.get(3), Map.of(s, Map.of(coin, 2))));
             assertEquals(players.get(3).getFaithPoints(), 1);
         }
 
@@ -248,8 +248,8 @@ public class PlayerTest {
         void firstPlayerNoResources() {
             Player first = players.get(0);
             Warehouse.WarehouseShelf shelf = first.getWarehouse().getShelves().get(0);
-            assertThrows(CannotChooseException.class, () -> first.chooseResources(
-                    game, Map.of(shelf, Map.of(coin, 1))
+            assertThrows(CannotChooseException.class, () -> first.getSetup().chooseResources(
+                    game, first, Map.of(shelf, Map.of(coin, 1))
             ));
         }
 
@@ -264,8 +264,8 @@ public class PlayerTest {
 
             Warehouse.WarehouseShelf shelf = second.getWarehouse().getShelves().get(1);
 
-            assertAll(() -> assertDoesNotThrow(() -> second.chooseResources(
-                    game, Map.of(shelf, Map.of(coin, 1))
+            assertAll(() -> assertDoesNotThrow(() -> second.getSetup().chooseResources(
+                    game, second, Map.of(shelf, Map.of(coin, 1))
                     )),
                     () -> assertDoesNotThrow(() -> second.addToDevSlot(game, 1, card, resContainers)));
         }
@@ -274,11 +274,11 @@ public class PlayerTest {
         void fourthPlayerTwoResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.chooseResources(
-                    game, Map.of(shelf, Map.of(coin, 3))
+            assertAll(() -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.getSetup().chooseResources(
+                    game, fourth, Map.of(shelf, Map.of(coin, 3))
                     )),
-                    () -> assertDoesNotThrow(() -> fourth.chooseResources(
-                            game, Map.of(shelf, Map.of(coin, 2))
+                    () -> assertDoesNotThrow(() -> fourth.getSetup().chooseResources(
+                            game, fourth, Map.of(shelf, Map.of(coin, 2))
                     )));
         }
 
@@ -286,11 +286,11 @@ public class PlayerTest {
         void illegalResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            assertAll(() -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.chooseResources(
-                    game, Map.of(shelf, Map.of(zero, 1))
+            assertAll(() -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.getSetup().chooseResources(
+                    game, fourth, Map.of(shelf, Map.of(zero, 1))
                     )),
-                    () -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.chooseResources(
-                            game, Map.of(shelf, Map.of(faith, 1))
+                    () -> assertThrows(IllegalResourceTransactionActivationException.class, () -> fourth.getSetup().chooseResources(
+                            game, fourth, Map.of(shelf, Map.of(faith, 1))
                     )));
         }
 

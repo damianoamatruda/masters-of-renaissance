@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.cardrequirements;
 
 import it.polimi.ingsw.common.backend.model.Player;
+import it.polimi.ingsw.common.backend.model.PlayerSetup;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
@@ -25,7 +26,7 @@ public class ResourceRequirementTest {
 
     @BeforeEach
     void setup() {
-        p = new Player("", false, List.of(), new Warehouse(1), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 1, 0, 0, 0, Set.of());
+        p = new Player("", false, List.of(), new Warehouse(1), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 1, new PlayerSetup(0, 0, 0, Set.of()));
     }
 
     /**
@@ -46,7 +47,7 @@ public class ResourceRequirementTest {
      */
     @Test
     void checkRequirements() {
-        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0, 0, 0, Set.of());
+        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
         p.getStrongbox().addResource(coin);
 
         ResourceRequirement req = new ResourceRequirement(Map.of(coin, 1));

@@ -7,12 +7,11 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Class dedicated to the storage of the player's data and available operations.
@@ -20,6 +19,9 @@ import java.util.stream.Collectors;
 public class Player extends ModelObservable {
     /** The player's nickname. */
     private final String nickname;
+
+    /** Visible to the view, this indicates whether the player starts first each round. */
+    private final boolean inkwell;
 
     /** The hand of leader cards available to the player. */
     private final List<LeaderCard> leaders;
@@ -36,24 +38,11 @@ public class Player extends ModelObservable {
     /** The base production "recipe". */
     private final ResourceTransactionRecipe baseProduction;
 
-    /** Visible to the view, this indicates whether the player starts first each round. */
-    private final boolean inkwell;
-
-    /** The number of leader cards that must be discarded in the early game. */
-    private final int chosenLeadersCount;
-
-    /** The number of resources the player can still choose at the beginning. */
-    private final int initialResources;
-
-    /** The resources the player cannot choose at the beginning. */
-    private final Set<ResourceType> initialExcludedResources;
-
-    /** <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise. */
-    private boolean hasChosenResources;
+    /** The player's setup. */
+    private final PlayerSetup setup;
 
     /** The player's faith track marker. */
     private int faithPoints;
-    private final int initialFaithPoints;
 
     /** The player's score. */
     private int victoryPoints;
@@ -74,30 +63,21 @@ public class Player extends ModelObservable {
      * @param strongbox                the player's strongbox
      * @param baseProduction           the player's base production
      * @param devSlotsCount            number of possible production slots that can be occupied by development cards
-     * @param chosenLeadersCount       number of leader cards that must be discarded in the early game
-     * @param initialResources         number of resources the player can choose at the beginning
-     * @param initialFaith             initial faith points
-     * @param initialExcludedResources resources the player cannot choose at the beginning
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
-                  ResourceTransactionRecipe baseProduction, int devSlotsCount, int chosenLeadersCount, int initialResources,
-                  int initialFaith, Set<ResourceType> initialExcludedResources) {
+                  ResourceTransactionRecipe baseProduction, int devSlotsCount, PlayerSetup setup) {
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = new ArrayList<>(leaders);
         this.warehouse = warehouse;
         this.strongbox = strongbox;
-
         this.devSlots = new ArrayList<>();
         for (int i = 0; i < devSlotsCount; i++)
             this.devSlots.add(new Stack<>());
-
         this.baseProduction = baseProduction;
-        this.chosenLeadersCount = chosenLeadersCount;
-        this.initialResources = initialResources;
-        this.initialExcludedResources = Set.copyOf(initialExcludedResources);
-        this.hasChosenResources = initialResources == 0;
-        this.initialFaithPoints = initialFaith;
+        this.setup = setup;
+
+        this.faithPoints = 0;
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
@@ -113,6 +93,15 @@ public class Player extends ModelObservable {
     }
 
     /**
+     * Checks whether the player has the inkwell, i.e. the player starts first at each round.
+     *
+     * @return <code>true</code> if this player starts first; <code>false</code> otherwise.
+     */
+    public boolean hasInkwell() {
+        return inkwell;
+    }
+
+    /**
      * Getter of the hand of leader cards available to the player.
      *
      * @return the list of leader cards
@@ -121,99 +110,13 @@ public class Player extends ModelObservable {
         return List.copyOf(leaders);
     }
 
-    /**
-     * Chooses leaders from the hand of the player.
-     *
-     * @param chosenLeaders the leader cards to choose
-     * @throws CannotChooseException if the leader cards have already been chosen
-     */
-    public void chooseLeaders(List<LeaderCard> chosenLeaders) throws CannotChooseException {
-        if (leaders.size() == chosenLeadersCount)
-            throw new CannotChooseException("Cannot choose starting leaders again, choice already made."); // TODO what happens if server parameters make this default?
+    public void retainLeaders(List<LeaderCard> leaders) {
+        if (!this.leaders.containsAll(leaders))
+            throw new RuntimeException(); // TODO: Add more specific exception
 
-        if (chosenLeaders.size() != chosenLeadersCount)
-            throw new CannotChooseException(
-                String.format("Not enough leader cards chosen: %d chosen, %d required.", chosenLeaders.size(), chosenLeadersCount));
-        
-        if (!leaders.containsAll(chosenLeaders))
-            throw new CannotChooseException(
-                String.format("Cannot choose leader %d: not in your hand.",
-                    leaders.stream()
-                        .map(l -> l.getId())
-                        .filter(id -> !chosenLeaders.stream().map(cl -> cl.getId()).toList().contains(id))
-                        .findAny().orElse(-1)));
+        this.leaders.retainAll(leaders);
 
-        leaders.retainAll(chosenLeaders);
-
-        notifyBroadcast(new UpdateLeadersHand(getNickname(), leaders.size()));
-    }
-
-    /**
-     * Chooses the initial resources to be given to the player.
-     *
-     * @param game    the game the player is playing in
-     * @param shelves the destination shelves
-     * @throws CannotChooseException                         all the allowed initial resources have already been chosen
-     * @throws IllegalResourceTransactionActivationException invalid container
-     */
-    public void chooseResources(Game game, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalResourceTransactionActivationException {
-        if (hasChosenResources)
-            throw new CannotChooseException("Cannot choose starting resources again, choice already made.");
-
-        Map<ResourceType, Integer> chosenResources = shelves.values().stream()
-                .map(Map::entrySet)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
-
-        ResourceTransactionRequest transactionRequest;
-
-        try {
-            transactionRequest = new ResourceTransactionRequest(
-                    new ResourceTransactionRecipe(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                    Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
-        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
-            throw new IllegalResourceTransactionActivationException(e); // TODO: Add more specific exception
-        }
-
-        new ResourceTransaction(List.of(transactionRequest)).activate(game, this);
-
-        hasChosenResources = true;
-
-        incrementFaithPoints(game, initialFaithPoints);
-    }
-
-    /**
-     * @return the number of leaders to be chosen during the setup.
-     */
-    public int getChosenLeadersCount() {
-        return chosenLeadersCount;
-    }
-
-    /**
-     * Returns whether the player has chosen the leaders.
-     *
-     * @return <code>true</code> if the player has chosen the leaders; <code>false</code> otherwise.
-     */
-    public boolean hasChosenLeaders() {
-        return leaders.size() == chosenLeadersCount;
-    }
-
-    /**
-     * Returns whether the player has chosen the initial resources.
-     *
-     * @return <code>true</code> if the player has chosen the initial resources; <code>false</code> otherwise.
-     */
-    public boolean hasChosenResources() {
-        return hasChosenResources;
-    }
-
-    /**
-     * Returns whether the player has done the setup.
-     *
-     * @return <code>true</code> if the player has done the setup; <code>false</code> otherwise.
-     */
-    public boolean hasDoneSetup() {
-        return hasChosenLeaders() && hasChosenResources();
+        notifyBroadcast(new UpdateLeadersHand(getNickname(), this.leaders.size()));
     }
 
     /**
@@ -287,15 +190,6 @@ public class Player extends ModelObservable {
      */
     public List<Stack<DevelopmentCard>> getDevSlots() {
         return List.copyOf(devSlots);
-    }
-
-    /**
-     * Checks whether the player has the inkwell, i.e. the player starts first at each round.
-     *
-     * @return <code>true</code> if this player starts first; <code>false</code> otherwise.
-     */
-    public boolean hasInkwell() {
-        return inkwell;
     }
 
     /**
@@ -414,12 +308,8 @@ public class Player extends ModelObservable {
         return quantity;
     }
 
-    public List<String> getInitialExcludedResources() {
-        return initialExcludedResources.stream().map(ResourceType::getName).toList();
-    }
-
-    public int getInitialResources() {
-        return initialResources;
+    public PlayerSetup getSetup() {
+        return setup;
     }
 
     public Optional<Strongbox> getStrongboxById(int id) {

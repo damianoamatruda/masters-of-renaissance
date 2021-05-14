@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.events.mvevents.*;
-import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +85,8 @@ public class Game extends ModelObservable {
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
+
+        this.players.forEach(player -> player.getSetup().giveInitialFaithPoints(this, player)); // FIXME: This should be done after all observers are set
     }
 
     @Override
@@ -109,18 +110,17 @@ public class Game extends ModelObservable {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream()
                     .collect(Collectors.toMap(
-                        ResourceContainer::reduce,
-                        c -> players.stream()
-                            .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                            .findAny().get().getNickname())),
+                            ResourceContainer::reduce,
+                            c -> players.stream()
+                                    .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                                    .findAny().get().getNickname())),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 null, // actiontokens not sent
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
-                p.getChosenLeadersCount()));
+                p.getSetup().reduce()));
 
         // Sort of notifyBroadcast
         notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
@@ -135,21 +135,17 @@ public class Game extends ModelObservable {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream()
                     .collect(Collectors.toMap(
-                        ResourceContainer::reduce,
-                        c -> players.stream()
-                            .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                            .findAny().get().getNickname())),
+                            ResourceContainer::reduce,
+                            c -> players.stream()
+                                    .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                                    .findAny().get().getNickname())),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 null, // actiontokens not sent
                 p.getLeaders().stream().map(Card::getId).toList(),
                 p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
                 p.getStrongbox().getId(),
-                new ReducedBoost(p.getInitialResources(), p.getInitialExcludedResources()),
-                p.getChosenLeadersCount(),
-                p.hasChosenLeaders(),
-                p.hasChosenResources()
-        ));
+                p.getSetup().reduce()));
 
         // Sort of notifyBroadcast
         notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
