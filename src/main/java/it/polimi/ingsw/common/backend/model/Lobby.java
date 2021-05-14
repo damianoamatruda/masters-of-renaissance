@@ -70,7 +70,7 @@ public class Lobby extends ModelObservable {
             waiting.add(view);
 
             // Sort of notifyBroadcast
-            waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size())));
+            waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size(), waiting.indexOf(v) == 0)));
 
             if (newGamePlayersCount != 0)
                 waiting.forEach(v -> notify(v, new UpdateFreeSeats(newGamePlayersCount, newGamePlayersCount - waiting.size())));
@@ -85,8 +85,8 @@ public class Lobby extends ModelObservable {
         if (!checkNickname(view))
             return;
 
-        if (waiting.get(0) != view) {
-            notify(view, new ErrAction("Command unavailable. You are not the first player who booked a seat."));
+        if (waiting.indexOf(view) != 0) {
+            notify(view, new ErrAction("Cannot prepare a new game. You are not the first player who booked a seat."));
             return;
         }
 
@@ -120,7 +120,7 @@ public class Lobby extends ModelObservable {
         waiting.subList(0, newGamePlayersCount).clear();
 
         // Sort of notifyBroadcast
-        waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size())));
+        waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size(), waiting.indexOf(v) == 0)));
 
         newGamePlayersCount = 0;
     }
