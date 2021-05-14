@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.ModelObservable;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
+import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateFreeSeats;
 
 import java.util.ArrayList;
@@ -44,13 +45,13 @@ public class Lobby extends ModelObservable {
             return;
         }
 
-        // nickname validated, join lobby
+        /* nickname validated, join lobby */
         nicknames.put(view, nickname);
 
         if (disconnected.containsKey(nickname)) {
             System.out.println("Player \"" + nickname + "\" rejoined");
 
-            // get the match the nickname was previously in and set the player back to active
+            /* Get the match the nickname was previously in and set the player back to active */
             GameContext oldContext = disconnected.get(nickname);
             try {
                 oldContext.setActive(nickname, true);
@@ -59,15 +60,17 @@ public class Lobby extends ModelObservable {
                 throw new RuntimeException("No active players after player rejoining.");
             }
 
-            // resuming routine (observer registrations and state messages)
+            /* Resuming routine (observer registrations and state messages) */
             oldContext.resume(view, nicknames.get(view));
             joined.put(view, oldContext);
             disconnected.remove(nickname);
         } else {
             System.out.println("Set nickname \"" + nickname + "\".");
-            boolean isFirst = waiting.size() == 0;
 
             waiting.add(view);
+
+            // Sort of notifyBroadcast
+            waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size())));
 
             if (newGamePlayersCount != 0)
                 waiting.forEach(v -> notify(v, new UpdateFreeSeats(newGamePlayersCount, newGamePlayersCount - waiting.size())));
@@ -79,10 +82,11 @@ public class Lobby extends ModelObservable {
 
     /* If the player is one of the first to join, it will have to choose the total number of players in the match. */
     public void prepareNewGame(View view, int newGamePlayersCount) {
-        if (!checkNickname(view)) return;
+        if (!checkNickname(view))
+            return;
 
         if (waiting.get(0) != view) {
-            notify(view, new ErrAction("Command unavailable. You are not the first player who joined."));
+            notify(view, new ErrAction("Command unavailable. You are not the first player who booked a seat."));
             return;
         }
 
@@ -94,11 +98,6 @@ public class Lobby extends ModelObservable {
         System.out.printf("Setting players count to %d.%n", newGamePlayersCount);
         this.newGamePlayersCount = newGamePlayersCount;
 
-        // if > 0 there's still empty seats
-        // else there's more waiting players than the amount needed to start this new game
-        // can leverage for more info if wanted
-        // (es. "count of players waiting in lobby for a new game to be started" -> with implications
-        // (what happens if the first player doesn't start a new game? The specification doesn't say, ask teachers))
         if (waiting.size() <= newGamePlayersCount)
             waiting.forEach(v -> notify(v, new UpdateFreeSeats(newGamePlayersCount, newGamePlayersCount - waiting.size())));
 
@@ -117,8 +116,12 @@ public class Lobby extends ModelObservable {
             joined.put(v, newContext);
         });
 
-        // remove players who joined from waiting list
+        /* Remove players who joined from waiting list */
         waiting.subList(0, newGamePlayersCount).clear();
+
+        // Sort of notifyBroadcast
+        waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size())));
+
         newGamePlayersCount = 0;
     }
 
