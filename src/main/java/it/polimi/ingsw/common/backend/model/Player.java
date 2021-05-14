@@ -144,7 +144,7 @@ public class Player extends ModelObservable {
 
         leaders.retainAll(chosenLeaders);
 
-        notifyBroadcast(new ResChooseLeaders(extractLeadersIDs(leaders)));
+        // notifyBroadcast(new ResChooseLeaders(extractLeadersIDs(leaders)));
     }
 
     /**
