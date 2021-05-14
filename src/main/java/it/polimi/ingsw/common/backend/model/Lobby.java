@@ -20,7 +20,7 @@ public class Lobby extends ModelObservable {
     private final Map<View, GameContext> joined;
     private final Map<String, GameContext> disconnected;
     private final List<View> waiting;
-    private int playersCount;
+    private int newGamePlayersCount;
 
     public Lobby(GameFactory gameFactory) {
         this.gameFactory = gameFactory;
@@ -43,7 +43,10 @@ public class Lobby extends ModelObservable {
             notify(view, new ErrAction("Nickname \"" + nickname + "\" already in use. Choose another one."));
             return;
         }
+
+        // nickname validated, join lobby
         nicknames.put(view, nickname);
+
         if (disconnected.containsKey(nickname)) {
             System.out.println("Player \"" + nickname + "\" rejoined");
             notify(view, new ResJoin(false));
@@ -60,51 +63,63 @@ public class Lobby extends ModelObservable {
         else {
             System.out.println("Set nickname \"" + nickname + "\".");
             boolean isFirst = waiting.size() == 0;
+            // send ack back + notify of needing to choose match's number of players
             notify(view, new ResJoin(isFirst));
 
-            if (!isFirst) {
-                waiting.add(view);
+            waiting.add(view);
 
-                // Sort of notifyBroadcast
-                waiting.forEach(v -> notify(v, new UpdateFreeSeats(playersCount, playersCount - waiting.size())));
+            if (newGamePlayersCount != 0)
+                waiting.forEach(v -> notify(v, new UpdateFreeSeats(newGamePlayersCount, newGamePlayersCount - waiting.size())));
 
-                if (waiting.size() == playersCount)
-                    startNewGame();
-            }
+            if (waiting.size() == newGamePlayersCount)
+                startNewGame();
         }
     }
 
-    public void prepareNewGame(View view, int playersCount) {
+    public void prepareNewGame(View view, int newGamePlayersCount) {
         checkNickname(view);
-        if (waiting.size() != 0) {
+        if (waiting.get(0) != view) {
             notify(view, new ErrAction("Command unavailable. You are not the first player who joined."));
             return;
         }
+        if (newGamePlayersCount == 0) {
+            notify(view, new ErrAction("Cannot have zero players in a game, please choose a valid amount."));
+            return;
+        }
 
-        System.out.printf("Setting players count to %d.%n", playersCount);
-        this.playersCount = playersCount;
+        System.out.printf("Setting players count to %d.%n", newGamePlayersCount);
+        this.newGamePlayersCount = newGamePlayersCount;
 
-        waiting.add(view);
+        // if > 0 there's still empty seats
+        // else there's more waiting players than the amount needed to start this new game
+        // can leverage for more info if wanted
+        // (es. "count of players waiting in lobby for a new game to be started" -> with implications
+        // (what happens if the first player doesn't start a new game? The specification doesn't say, ask teachers))
+        if (newGamePlayersCount - waiting.size() > 0)
+            waiting.subList(0, newGamePlayersCount).forEach(v -> notify(v, new UpdateFreeSeats(newGamePlayersCount, newGamePlayersCount - waiting.size())));
 
-        // Sort of notifyBroadcast
-        waiting.forEach(v -> notify(v, new UpdateFreeSeats(playersCount, playersCount - waiting.size())));
-
-        if (waiting.size() == this.playersCount)
+        if (waiting.size() >= this.newGamePlayersCount)
             startNewGame();
     }
 
     public void startNewGame() {
-        Game newGame = playersCount == 1 ?
+        Game newGame = newGamePlayersCount == 1 ?
                 gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
-                gameFactory.getMultiGame(waiting.subList(0, playersCount).stream().map(nicknames::get).toList());
+                gameFactory.getMultiGame(waiting.subList(0, newGamePlayersCount).stream().map(nicknames::get).toList());
 
         GameContext newContext = new GameContext(newGame, gameFactory);
-        waiting.subList(0, playersCount).forEach(v -> {
+        waiting.subList(0, newGamePlayersCount).forEach(v -> {
             newContext.register(v, nicknames.get(v));
             joined.put(v, newContext);
         });
-        waiting.subList(0, playersCount).clear();
-        playersCount = 0;
+
+        // remove players who joined from waiting list
+        waiting.subList(0, newGamePlayersCount).clear();
+        newGamePlayersCount = 0;
+        // if there's still players waiting, send new request for newGamePlayersCount to start a new game
+        if (waiting.size() > 0) {
+            notify(waiting.get(0), new ResJoin(true)); // might want to separate ResJoin from player count choice
+        }
     }
 
     public void exit(View view) {

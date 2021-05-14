@@ -11,6 +11,7 @@ public class ResJoin implements MVEvent {
      * Class constructor.
      *
      * @param isFirst <code>true</code> if the player joining is the first of the match; <code>false</code> otherwise.
+     *                If the player is the first to join, they will have to choose the total number of players in the match.
      */
     public ResJoin(boolean isFirst) {
         this.isFirst = isFirst;
