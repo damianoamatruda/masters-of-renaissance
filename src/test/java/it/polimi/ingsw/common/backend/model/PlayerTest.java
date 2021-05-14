@@ -7,6 +7,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTr
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse.WarehouseShelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionActivationException;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
@@ -231,11 +232,15 @@ public class PlayerTest {
 
         @Test
         void thirdPlayerOneFaith() {
+            WarehouseShelf s = players.get(2).getWarehouse().getShelves().get(0);
+            assertDoesNotThrow(() -> players.get(2).chooseResources(game, Map.of(s, Map.of(coin, 1))));
             assertEquals(players.get(2).getFaithPoints(), 1);
         }
 
         @Test
         void fourthPlayerOneFaith() {
+            WarehouseShelf s = players.get(3).getWarehouse().getShelves().get(1);
+            assertDoesNotThrow(() -> players.get(3).chooseResources(game, Map.of(s, Map.of(coin, 2))));
             assertEquals(players.get(3).getFaithPoints(), 1);
         }
 

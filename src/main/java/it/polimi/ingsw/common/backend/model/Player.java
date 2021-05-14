@@ -53,6 +53,7 @@ public class Player extends ModelObservable {
 
     /** The player's faith track marker. */
     private int faithPoints;
+    private final int initialFaithPoints;
 
     /** The player's score. */
     private int victoryPoints;
@@ -96,7 +97,7 @@ public class Player extends ModelObservable {
         this.initialResources = initialResources;
         this.initialExcludedResources = Set.copyOf(initialExcludedResources);
         this.hasChosenResources = initialResources == 0;
-        this.faithPoints = initialFaith; /* This does not trigger game.onIncrementFaithPoints(initialFaith); */
+        this.initialFaithPoints = initialFaith;
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
@@ -177,6 +178,8 @@ public class Player extends ModelObservable {
         new ResourceTransaction(List.of(transactionRequest)).activate(game, this);
 
         hasChosenResources = true;
+
+        incrementFaithPoints(game, initialFaithPoints);
     }
 
     /**
