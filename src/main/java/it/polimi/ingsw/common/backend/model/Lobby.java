@@ -70,7 +70,7 @@ public class Lobby extends ModelObservable {
             waiting.add(view);
 
             // Sort of notifyBroadcast
-            waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size(), waiting.indexOf(v) == 0)));
+            waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
 
             if (newGamePlayersCount != 0)
                 notify(view, new UpdateJoinGame(newGamePlayersCount));
@@ -120,7 +120,7 @@ public class Lobby extends ModelObservable {
         waiting.subList(0, newGamePlayersCount).clear();
 
         // Sort of notifyBroadcast
-        waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size(), waiting.indexOf(v) == 0)));
+        waiting.forEach(v -> notify(v, new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
 
         newGamePlayersCount = 0;
     }

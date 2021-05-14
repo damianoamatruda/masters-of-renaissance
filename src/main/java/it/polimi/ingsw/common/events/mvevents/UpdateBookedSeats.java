@@ -7,16 +7,16 @@ public class UpdateBookedSeats implements MVEvent {
     /** The number of players that are booked to join before the game is prepared. */
     private final int bookedSeats;
 
-    /** <code>true</code> if the player can prepare a new game; <code>false</code> otherwise. */
-    private final boolean canPrepareNewGame;
+    /** The nickname of the player that can prepare a new game. */
+    private final String canPrepareNewGame;
 
     /**
      * Class constructor.
      *
      * @param bookedSeats       the number of players that are booked to join before the game is prepared
-     * @param canPrepareNewGame <code>true</code> if the player can prepare a new game; <code>false</code> otherwise.
+     * @param canPrepareNewGame the nickname of the player that can prepare a new game
      */
-    public UpdateBookedSeats(int bookedSeats, boolean canPrepareNewGame) {
+    public UpdateBookedSeats(int bookedSeats, String canPrepareNewGame) {
         this.bookedSeats = bookedSeats;
         this.canPrepareNewGame = canPrepareNewGame;
     }
@@ -34,9 +34,9 @@ public class UpdateBookedSeats implements MVEvent {
     }
 
     /**
-     * @return <code>true</code> if the player can prepare a new game; <code>false</code> otherwise.
+     * @return the nickname of the player that can prepare a new game
      */
-    public boolean canPrepareNewGame() {
+    public String canPrepareNewGame() {
         return canPrepareNewGame;
     }
 }
