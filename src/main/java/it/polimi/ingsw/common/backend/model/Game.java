@@ -11,6 +11,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -106,7 +107,12 @@ public class Game extends ModelObservable {
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                resContainers.stream()
+                    .collect(Collectors.toMap(
+                        ResourceContainer::reduce,
+                        c -> players.stream()
+                            .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                            .findAny().get().getNickname())),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 null, // Not sent
@@ -127,7 +133,12 @@ public class Game extends ModelObservable {
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                resContainers.stream()
+                    .collect(Collectors.toMap(
+                        ResourceContainer::reduce,
+                        c -> players.stream()
+                            .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                            .findAny().get().getNickname())),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 null, // Not sent

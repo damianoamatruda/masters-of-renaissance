@@ -4,6 +4,7 @@ package it.polimi.ingsw.common.events.mvevents;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class UpdateGameResume extends UpdateGameStart {
     private final boolean hasChosenLeaders;
@@ -12,7 +13,7 @@ public class UpdateGameResume extends UpdateGameStart {
     public UpdateGameResume(List<String> players,
                             List<ReducedLeaderCard> leaderCards,
                             List<ReducedDevCard> developmentCards,
-                            List<ReducedResourceContainer> resContainers,
+                            Map<ReducedResourceContainer, String> resContainers,
                             List<ReducedResourceTransactionRecipe> productions,
                             int baseProduction,
                             List<ReducedActionToken> actionTokens,

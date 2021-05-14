@@ -11,6 +11,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedBoost;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a single-player game of Masters of Renaissance. It contains all the extra functionality.
@@ -58,7 +59,7 @@ public class SoloGame extends Game {
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                resContainers.stream().collect(Collectors.toMap(ResourceContainer::reduce, c -> p.getNickname())),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 actionTokens.stream().map(ActionToken::reduce).toList(),
@@ -80,7 +81,7 @@ public class SoloGame extends Game {
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                resContainers.stream().collect(Collectors.toMap(ResourceContainer::reduce, c -> p.getNickname())),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
                 actionTokens.stream().map(ActionToken::reduce).toList(),

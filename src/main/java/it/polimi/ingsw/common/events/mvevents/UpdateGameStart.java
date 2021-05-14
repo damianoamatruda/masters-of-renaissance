@@ -4,13 +4,14 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class UpdateGameStart implements MVEvent {
     // TODO commproto docs
     private final List<String> players;
     private final List<ReducedLeaderCard> leaderCards;
     private final List<ReducedDevCard> developmentCards;
-    private final List<ReducedResourceContainer> resContainers;
+    private final Map<ReducedResourceContainer, String> resContainers;
     private final List<ReducedResourceTransactionRecipe> productions;
     private final int baseProduction;
     private final List<ReducedActionToken> actionTokens;
@@ -33,7 +34,7 @@ public class UpdateGameStart implements MVEvent {
     public UpdateGameStart(List<String> players,
                            List<ReducedLeaderCard> leaderCards,
                            List<ReducedDevCard> developmentCards,
-                           List<ReducedResourceContainer> resContainers,
+                           Map<ReducedResourceContainer, String> resContainers,
                            List<ReducedResourceTransactionRecipe> productions,
                            int baseProduction,
                            List<ReducedActionToken> actionTokens,
@@ -92,7 +93,7 @@ public class UpdateGameStart implements MVEvent {
     /**
      * @return the resource containers
      */
-    public List<ReducedResourceContainer> getResContainers() {
+    public Map<ReducedResourceContainer, String> getResContainers() {
         return resContainers;
     }
 
