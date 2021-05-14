@@ -4,26 +4,21 @@ import it.polimi.ingsw.common.View;
 
 /** Leader card state update. */
 public class UpdateLeader implements MVEvent {
-    /** <code>true</code> if the card is now active; <code>false</code> otherwise. */
-    private final boolean isActive;
-
-    /** <code>true</code> if the card is now discard; <code>false</code> otherwise. */
-    private final boolean isDiscarded;
-
     /** The ID of the card the action was called upon. */
     private final int leader;
+
+    /** <code>true</code> if the card is active; <code>false</code> otherwise. */
+    private final boolean active;
 
     /**
      * Class constructor.
      *
-     * @param leader      <code>true</code> if the card is now active; <code>false</code> otherwise.
-     * @param isActive    <code>true</code> if the card is now discard; <code>false</code> otherwise.
-     * @param isDiscarded the ID of the card the action was called upon
+     * @param leader the ID of the card the action was called upon
+     * @param active <code>true</code> if the card is active; <code>false</code> otherwise.
      */
-    public UpdateLeader(int leader, boolean isActive, boolean isDiscarded) {
+    public UpdateLeader(int leader, boolean active) {
         this.leader = leader;
-        this.isActive = isActive;
-        this.isDiscarded = isDiscarded;
+        this.active = active;
     }
 
     @Override
@@ -39,16 +34,9 @@ public class UpdateLeader implements MVEvent {
     }
 
     /**
-     * @return <code>true</code> if the card is now discard; <code>false</code> otherwise.
-     */
-    public boolean isDiscarded() {
-        return isDiscarded;
-    }
-
-    /**
-     * @return <code>true</code> if the card is now active; <code>false</code> otherwise.
+     * @return <code>true</code> if the card is active; <code>false</code> otherwise.
      */
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 }

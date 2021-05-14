@@ -26,7 +26,7 @@ public abstract class LeaderCard extends Card {
     protected final CardRequirement requirement; // TODO: Merge ReducedDepotLeaderCard, ReducedDiscountLeaderCard, ReducedProductionLeaderCard and ReducedLeaderCard
 
     /** The card's status. If active, the ability can be triggered. */
-    private boolean isActive = false;
+    private boolean active = false;
 
     /**
      * Class constructor.
@@ -49,7 +49,7 @@ public abstract class LeaderCard extends Card {
      * @return the card's activation status.
      */
     public boolean isActive() {
-        return isActive;
+        return active;
     }
 
     /**
@@ -62,14 +62,14 @@ public abstract class LeaderCard extends Card {
     public void activate(Player player) throws IllegalArgumentException, CardRequirementsNotMetException {
         if (!player.getLeaders().contains(this))
             throw new IllegalArgumentException(
-                String.format("Illegal leader choice: leader isn't owned by player %s", player.getNickname()));
+                    String.format("Illegal leader choice: leader isn't owned by player %s", player.getNickname()));
         if (requirement != null)
             requirement.checkRequirements(player);
-        
-        isActive = true;
+
+        active = true;
 
         player.incrementVictoryPoints(getVictoryPoints());
-        notifyBroadcast(new UpdateLeader(getId(), isActive, false));
+        notifyBroadcast(new UpdateLeader(getId(), active));
     }
 
     /**

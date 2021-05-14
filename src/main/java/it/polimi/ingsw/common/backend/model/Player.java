@@ -145,7 +145,7 @@ public class Player extends ModelObservable {
 
         leaders.retainAll(chosenLeaders);
 
-        notifyBroadcast(new UpdateChooseLeaders(getNickname()));
+        notifyBroadcast(new UpdateLeadersHand(getNickname(), leaders.size()));
     }
 
     /**
@@ -231,7 +231,7 @@ public class Player extends ModelObservable {
         game.onDiscardLeader(this);
         leaders.remove(leader);
 
-        notifyBroadcast(new UpdateLeader(leader.getId(), false, true));
+        notifyBroadcast(new UpdateLeadersHand(getNickname(), leaders.size()));
     }
 
     /**
