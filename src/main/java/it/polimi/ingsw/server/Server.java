@@ -48,7 +48,7 @@ public class Server {
             GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config/config.json"));
             Lobby model = new Lobby(gameFactory);
             Controller controller = new Controller(model);
-            Protocol gp = new Protocol();
+            Protocol protocol = new Protocol();
 
             System.out.println("Server ready");
             listening = true;
@@ -56,7 +56,7 @@ public class Server {
                 Socket clientSocket = serverSocket.accept();
                 VirtualView view = new VirtualView(controller);
                 // String nickname = getNickname(view).orElse(null);
-                executor.submit(new ServerClientHandler(clientSocket, view, gp));
+                executor.submit(new ServerClientHandler(clientSocket, view, protocol));
             }
             executor.shutdown();
         } catch (IOException e) {

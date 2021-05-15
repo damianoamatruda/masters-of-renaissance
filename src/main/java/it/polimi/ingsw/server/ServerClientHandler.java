@@ -14,20 +14,20 @@ import java.net.SocketTimeoutException;
 public class ServerClientHandler implements Runnable, MVEventSender {
     private final Socket clientSocket;
     private final VirtualView view;
-    private final Protocol gp;
+    private final Protocol protocol;
     private PrintWriter out;
     private BufferedReader in;
     private volatile boolean listening;
     private final int timeout;
 
-    public ServerClientHandler(Socket clientSocket, VirtualView view, Protocol gp) {
+    public ServerClientHandler(Socket clientSocket, VirtualView view, Protocol protocol) {
         this.clientSocket = clientSocket;
 
         view.setEventSender(this);
         this.view = view;
 
         this.timeout = 600000;
-        this.gp = gp;
+        this.protocol = protocol;
 
         this.in = null;
         this.out = null;
@@ -55,7 +55,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
                         break;
                     try {
                         halfTimeout = 0;
-                        gp.processInput(inputLine, view);
+                        protocol.processInput(inputLine, view);
                         if (inputLine.equals(reqGoodbye))
                             break;
                     } catch (Exception e) {
@@ -67,7 +67,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
                         halfTimeout++;
                     }
                     else {
-                        gp.processInput(reqGoodbye, view);
+                        protocol.processInput(reqGoodbye, view);
                         break;
                     }
                 }
@@ -93,6 +93,6 @@ public class ServerClientHandler implements Runnable, MVEventSender {
 
     @Override
     public void send(MVEvent event) {
-        send(gp.processOutput(event));
+        send(protocol.processOutput(event));
     }
 }
