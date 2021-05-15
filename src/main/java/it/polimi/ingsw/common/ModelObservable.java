@@ -1,9 +1,9 @@
 package it.polimi.ingsw.common;
 
+import it.polimi.ingsw.common.events.mvevents.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import it.polimi.ingsw.common.events.mvevents.*;
 
 /** Object of the model able to notify its observers of status changes. */
 public class ModelObservable {
@@ -30,12 +30,6 @@ public class ModelObservable {
      * @param o the observer to register
      */
     public void addObserver(View o) {
-        // leadercards get created through GSON
-        // GSON does not call the class constructor to instantiate objs
-        // therefore, the list can't be created before adding observers to the cards
-        if (observers == null)
-            observers = new ArrayList<>();
-
         observers.add(o);
     }
 

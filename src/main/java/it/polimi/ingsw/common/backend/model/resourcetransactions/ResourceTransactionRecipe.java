@@ -17,10 +17,6 @@ public class ResourceTransactionRecipe {
 
     private final int id;
 
-    public static int generateId() {
-        return idCounter.getAndIncrement();
-    }
-
     /** The map of the input resources. */
     private final Map<ResourceType, Integer> input;
 
@@ -58,6 +54,7 @@ public class ResourceTransactionRecipe {
                                      boolean discardableOutput) {
         // TODO: Check that the given maps have values >= 0
 
+        this.id = idCounter.getAndIncrement();
         this.input = Map.copyOf(input);
         this.inputBlanks = inputBlanks;
         this.inputBlanksExclusions = Set.copyOf(inputBlanksExclusions);
@@ -65,7 +62,6 @@ public class ResourceTransactionRecipe {
         this.outputBlanks = outputBlanks;
         this.outputBlanksExclusions = Set.copyOf(outputBlanksExclusions);
         this.discardableOutput = discardableOutput;
-        this.id = 0;
     }
 
     public int getId() {

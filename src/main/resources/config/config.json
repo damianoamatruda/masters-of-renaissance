@@ -91,16 +91,18 @@
       ]
     }
   ],
-  "marketResources": {
-    "Coin": 2,
-    "Faith": 1,
-    "Servant": 2,
-    "Shield": 2,
-    "Stone": 2,
-    "Zero": 4
+  "market": {
+    "resources": {
+      "Coin": 2,
+      "Faith": 1,
+      "Servant": 2,
+      "Shield": 2,
+      "Stone": 2,
+      "Zero": 4
+    },
+    "colsCount": 4,
+    "replaceableResource": "Zero"
   },
-  "marketColumns": 4,
-  "marketReplaceableResource": "Zero",
   "developmentCards": [
     {
       "id": 1,
@@ -1383,10 +1385,7 @@
     {
       "id": 53,
       "type": "DepotLeader",
-      "shelf": {
-        "boundedResType": "Stone",
-        "size": 2
-      },
+      "shelfSize": 2,
       "resource": "Stone",
       "requirement": {
         "type": "ResourceRequirement",
@@ -1400,10 +1399,7 @@
     {
       "id": 54,
       "type": "DepotLeader",
-      "shelf": {
-        "boundedResType": "Servant",
-        "size": 2
-      },
+      "shelfSize": 2,
       "resource": "Servant",
       "requirement": {
         "type": "ResourceRequirement",
@@ -1417,10 +1413,7 @@
     {
       "id": 55,
       "type": "DepotLeader",
-      "shelf": {
-        "boundedResType": "Shield",
-        "size": 2
-      },
+      "shelfSize": 2,
       "resource": "Shield",
       "requirement": {
         "type": "ResourceRequirement",
@@ -1434,10 +1427,7 @@
     {
       "id": 56,
       "type": "DepotLeader",
-      "shelf": {
-        "boundedResType": "Coin",
-        "size": 2
-      },
+      "shelfSize": 2,
       "resource": "Coin",
       "requirement": {
         "type": "ResourceRequirement",
