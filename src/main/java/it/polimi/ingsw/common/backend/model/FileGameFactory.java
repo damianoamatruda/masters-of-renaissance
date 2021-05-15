@@ -35,9 +35,6 @@ public class FileGameFactory implements GameFactory {
     /** Initial number of leader cards per player. */
     private final int playerLeadersCount;
 
-    /** Number of leader cards per player that must be discarded in the early game. */
-    private final int chosenLeadersCount;
-
     /** The maximum amount of faith points a player can have. */
     private final int maxFaith;
 
@@ -88,7 +85,6 @@ public class FileGameFactory implements GameFactory {
         maxPlayers = gson.fromJson(parserObject.get("maxPlayers"), int.class);
         warehouseShelvesCount = gson.fromJson(parserObject.get("warehouseShelvesCount"), int.class);
         playerLeadersCount = gson.fromJson(parserObject.get("playerLeadersCount"), int.class);
-        chosenLeadersCount = gson.fromJson(parserObject.get("chosenLeadersCount"), int.class);
         maxFaith = gson.fromJson(parserObject.get("maxFaith"), int.class);
         maxDevCards = gson.fromJson(parserObject.get("maxDevCards"), int.class);
         levelsCount = gson.fromJson(parserObject.get("levelsCount"), int.class);
