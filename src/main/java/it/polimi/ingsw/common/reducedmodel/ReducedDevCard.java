@@ -5,20 +5,20 @@ public class ReducedDevCard {
     private final String color;
     private final ReducedCardRequirement cost;
     private final int level;
-    private final int productionId;
+    private final int production;
 
     /**
      * @param color
      * @param cost
      * @param level
-     * @param productionId
+     * @param production
      */
-    public ReducedDevCard(int id, String color, ReducedCardRequirement cost, int level, int productionId) {
+    public ReducedDevCard(int id, String color, ReducedCardRequirement cost, int level, int production) {
         this.id = id;
         this.color = color;
         this.cost = cost;
         this.level = level;
-        this.productionId = productionId;
+        this.production = production;
     }
 
     /**
@@ -50,9 +50,9 @@ public class ReducedDevCard {
     }
 
     /**
-     * @return the productionId of the card's production
+     * @return the ID of the production of the card
      */
-    public int getProductionId() {
-        return productionId;
+    public int getProduction() {
+        return production;
     }
 }

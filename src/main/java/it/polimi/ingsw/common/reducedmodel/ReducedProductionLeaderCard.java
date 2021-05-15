@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 public class ReducedProductionLeaderCard extends ReducedLeaderCard {
-    private final int productionId;
+    private final int production;
 
     /**
      * @param id
@@ -10,18 +10,18 @@ public class ReducedProductionLeaderCard extends ReducedLeaderCard {
      * @param leaderType
      * @param isActive
      * @param requirement
-     * @param productionId
+     * @param production
      */
     public ReducedProductionLeaderCard(int id, int victoryPoints, String resourceType, String leaderType,
-            boolean isActive, ReducedCardRequirement requirement, int productionId) {
+                                       boolean isActive, ReducedCardRequirement requirement, int production) {
         super(id, victoryPoints, resourceType, leaderType, isActive, requirement);
-        this.productionId = productionId;
+        this.production = production;
     }
 
     /**
-     * @return the productionId of the card
+     * @return the ID of the production of the card
      */
-    public int getProductionId() {
-        return productionId;
+    public int getProduction() {
+        return production;
     }
 }
