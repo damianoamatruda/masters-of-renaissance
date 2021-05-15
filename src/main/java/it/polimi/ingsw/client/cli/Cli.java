@@ -54,6 +54,11 @@ public class Cli implements Ui {
         return !value.isBlank() ? value : defaultValue;
     }
 
+    static String prompt(PrintStream out, Scanner in, String prompt) {
+        out.printf("%s: ", prompt);
+        return in.nextLine();
+    }
+
     /**
      * Sets the state.
      *

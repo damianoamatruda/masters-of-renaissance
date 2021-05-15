@@ -17,22 +17,30 @@ public class MainMenuState extends CliState {
 
     private void renderMainMenu(Cli cli, PrintStream out, Scanner in) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('S', new Menu.Entry("Singleplayer", (menu) -> out.println("Solo")));
+        entries.put('S', new Menu.Entry("Singleplayer", (menu) -> cli.setState(new SingleplayerMenuState())));
         entries.put('M', new Menu.Entry("Multiplayer", (menu) -> cli.setState(new MultiplayerMenuState())));
         entries.put('O', new Menu.Entry("Options...", (menu) -> out.println("Options")));
         entries.put('Q', new Menu.Entry("Quit Game", (menu) -> {
             Cli.clear(out);
+            renderMainTitle(out);
+            for (int i = 0; i < 2; i++)
+                out.println();
             out.print("Quitting in 2 seconds...");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
             }
+
             Cli.clear(out);
+            renderMainTitle(out);
+            for (int i = 0; i < 2; i++)
+                out.println();
             out.print("Quitting in 1 seconds...");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
             }
+
             Cli.clear(out);
         }));
         new Menu(entries).render(cli, out, in);
