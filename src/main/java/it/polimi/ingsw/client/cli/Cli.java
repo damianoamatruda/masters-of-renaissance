@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -58,27 +57,6 @@ public class Cli implements Ui {
         out.printf("%s (default: %s): ", prompt, defaultValue);
         String value = in.nextLine();
         return !value.isBlank() ? value : defaultValue;
-    }
-
-    static Character menu(PrintStream out, Scanner in, Map<Character, String> entries) {
-        entries.forEach((ch, desc) -> out.printf("[%c] %s%n", ch, desc));
-        String value;
-        do {
-            value = in.nextLine();
-        } while (value.isBlank() || !entries.containsKey(value.charAt(0)));
-        return value.charAt(0);
-    }
-
-    static Character centerMenu(PrintStream out, Scanner in, Map<Character, String> entries) {
-        // entries.forEach((ch, desc) -> out.printf("[%c] %s%n", ch, desc));
-        StringBuilder stringBuilder = new StringBuilder();
-        entries.forEach((ch, desc) -> stringBuilder.append(String.format("[%c] %s%n", ch, desc)));
-        out.print(center(stringBuilder.toString()));
-        String value;
-        do {
-            value = in.nextLine();
-        } while (value.isBlank() || !entries.containsKey(value.charAt(0)));
-        return value.charAt(0);
     }
 
     /**
