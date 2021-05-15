@@ -147,7 +147,7 @@ public class PlayerSetup {
      * @return <code>true</code> if the setup is done; <code>false</code> otherwise.
      */
     public boolean isDone() {
-        return hasGivenInitialFaithPoints && hasChosenLeaders && (hasChosenResources || initialResources == 0);
+        return hasGivenInitialFaithPoints && hasChosenLeaders && hasChosenResources;
     }
 
     public ReducedPlayerSetup reduce() {
