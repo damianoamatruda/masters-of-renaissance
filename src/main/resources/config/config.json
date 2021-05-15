@@ -105,7 +105,7 @@
   },
   "developmentCards": [
     {
-      "id": 1,
+      "id": 0,
       "color": "Green",
       "cost": {
         "resources": {
@@ -128,7 +128,7 @@
       "victoryPoints": 1
     },
     {
-      "id": 2,
+      "id": 1,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -151,7 +151,7 @@
       "victoryPoints": 1
     },
     {
-      "id": 3,
+      "id": 2,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -174,7 +174,7 @@
       "victoryPoints": 1
     },
     {
-      "id": 4,
+      "id": 3,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -197,7 +197,7 @@
       "victoryPoints": 1
     },
     {
-      "id": 5,
+      "id": 4,
       "color": "Green",
       "cost": {
         "resources": {
@@ -222,7 +222,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 6,
+      "id": 5,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -247,7 +247,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 7,
+      "id": 6,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -272,7 +272,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 8,
+      "id": 7,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -297,7 +297,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 9,
+      "id": 8,
       "color": "Green",
       "cost": {
         "resources": {
@@ -322,7 +322,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 10,
+      "id": 9,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -347,7 +347,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 11,
+      "id": 10,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -372,7 +372,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 12,
+      "id": 11,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -397,7 +397,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 13,
+      "id": 12,
       "color": "Green",
       "cost": {
         "resources": {
@@ -423,7 +423,7 @@
       "victoryPoints": 4
     },
     {
-      "id": 14,
+      "id": 13,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -449,7 +449,7 @@
       "victoryPoints": 4
     },
     {
-      "id": 15,
+      "id": 14,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -475,7 +475,7 @@
       "victoryPoints": 4
     },
     {
-      "id": 16,
+      "id": 15,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -501,7 +501,7 @@
       "victoryPoints": 4
     },
     {
-      "id": 17,
+      "id": 16,
       "color": "Green",
       "cost": {
         "resources": {
@@ -524,7 +524,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 18,
+      "id": 17,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -547,7 +547,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 19,
+      "id": 18,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -570,7 +570,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 20,
+      "id": 19,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -593,7 +593,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 21,
+      "id": 20,
       "color": "Green",
       "cost": {
         "resources": {
@@ -618,7 +618,7 @@
       "victoryPoints": 6
     },
     {
-      "id": 22,
+      "id": 21,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -643,7 +643,7 @@
       "victoryPoints": 6
     },
     {
-      "id": 23,
+      "id": 22,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -668,7 +668,7 @@
       "victoryPoints": 6
     },
     {
-      "id": 24,
+      "id": 23,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -693,7 +693,7 @@
       "victoryPoints": 6
     },
     {
-      "id": 25,
+      "id": 24,
       "color": "Green",
       "cost": {
         "resources": {
@@ -717,7 +717,7 @@
       "victoryPoints": 7
     },
     {
-      "id": 26,
+      "id": 25,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -741,7 +741,7 @@
       "victoryPoints": 7
     },
     {
-      "id": 27,
+      "id": 26,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -765,7 +765,7 @@
       "victoryPoints": 7
     },
     {
-      "id": 28,
+      "id": 27,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -789,7 +789,7 @@
       "victoryPoints": 7
     },
     {
-      "id": 29,
+      "id": 28,
       "color": "Green",
       "cost": {
         "resources": {
@@ -814,7 +814,7 @@
       "victoryPoints": 8
     },
     {
-      "id": 30,
+      "id": 29,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -839,7 +839,7 @@
       "victoryPoints": 8
     },
     {
-      "id": 31,
+      "id": 30,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -864,7 +864,7 @@
       "victoryPoints": 8
     },
     {
-      "id": 32,
+      "id": 31,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -889,7 +889,7 @@
       "victoryPoints": 8
     },
     {
-      "id": 33,
+      "id": 32,
       "color": "Green",
       "cost": {
         "resources": {
@@ -913,7 +913,7 @@
       "victoryPoints": 9
     },
     {
-      "id": 34,
+      "id": 33,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -937,7 +937,7 @@
       "victoryPoints": 9
     },
     {
-      "id": 35,
+      "id": 34,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -961,7 +961,7 @@
       "victoryPoints": 9
     },
     {
-      "id": 36,
+      "id": 35,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -985,7 +985,7 @@
       "victoryPoints": 9
     },
     {
-      "id": 37,
+      "id": 36,
       "color": "Green",
       "cost": {
         "resources": {
@@ -1012,7 +1012,7 @@
       "victoryPoints": 10
     },
     {
-      "id": 38,
+      "id": 37,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -1039,7 +1039,7 @@
       "victoryPoints": 10
     },
     {
-      "id": 39,
+      "id": 38,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -1066,7 +1066,7 @@
       "victoryPoints": 10
     },
     {
-      "id": 40,
+      "id": 39,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -1093,7 +1093,7 @@
       "victoryPoints": 10
     },
     {
-      "id": 41,
+      "id": 40,
       "color": "Green",
       "cost": {
         "resources": {
@@ -1117,7 +1117,7 @@
       "victoryPoints": 11
     },
     {
-      "id": 42,
+      "id": 41,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -1141,7 +1141,7 @@
       "victoryPoints": 11
     },
     {
-      "id": 43,
+      "id": 42,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -1165,7 +1165,7 @@
       "victoryPoints": 11
     },
     {
-      "id": 44,
+      "id": 43,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -1189,7 +1189,7 @@
       "victoryPoints": 11
     },
     {
-      "id": 45,
+      "id": 44,
       "color": "Green",
       "cost": {
         "resources": {
@@ -1214,7 +1214,7 @@
       "victoryPoints": 12
     },
     {
-      "id": 46,
+      "id": 45,
       "color": "Purple",
       "cost": {
         "resources": {
@@ -1239,7 +1239,7 @@
       "victoryPoints": 12
     },
     {
-      "id": 47,
+      "id": 46,
       "color": "Blue",
       "cost": {
         "resources": {
@@ -1264,7 +1264,7 @@
       "victoryPoints": 12
     },
     {
-      "id": 48,
+      "id": 47,
       "color": "Yellow",
       "cost": {
         "resources": {
@@ -1291,7 +1291,7 @@
   ],
   "leaderCards": [
     {
-      "id": 49,
+      "id": 0,
       "type": "DiscountLeader",
       "discount": 1,
       "resource": "Servant",
@@ -1314,7 +1314,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 50,
+      "id": 1,
       "type": "DiscountLeader",
       "discount": 1,
       "resource": "Shield",
@@ -1337,7 +1337,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 51,
+      "id": 2,
       "type": "DiscountLeader",
       "discount": 1,
       "resource": "Stone",
@@ -1360,7 +1360,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 52,
+      "id": 3,
       "type": "DiscountLeader",
       "discount": 1,
       "resource": "Coin",
@@ -1383,7 +1383,7 @@
       "victoryPoints": 2
     },
     {
-      "id": 53,
+      "id": 4,
       "type": "DepotLeader",
       "shelfSize": 2,
       "resource": "Stone",
@@ -1397,7 +1397,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 54,
+      "id": 5,
       "type": "DepotLeader",
       "shelfSize": 2,
       "resource": "Servant",
@@ -1411,7 +1411,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 55,
+      "id": 6,
       "type": "DepotLeader",
       "shelfSize": 2,
       "resource": "Shield",
@@ -1425,7 +1425,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 56,
+      "id": 7,
       "type": "DepotLeader",
       "shelfSize": 2,
       "resource": "Coin",
@@ -1439,7 +1439,7 @@
       "victoryPoints": 3
     },
     {
-      "id": 57,
+      "id": 8,
       "type": "ZeroLeader",
       "resource": "Servant",
       "requirement": {
@@ -1461,7 +1461,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 58,
+      "id": 9,
       "type": "ZeroLeader",
       "resource": "Shield",
       "requirement": {
@@ -1483,7 +1483,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 59,
+      "id": 10,
       "type": "ZeroLeader",
       "resource": "Stone",
       "requirement": {
@@ -1505,7 +1505,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 60,
+      "id": 11,
       "type": "ZeroLeader",
       "resource": "Coin",
       "requirement": {
@@ -1527,7 +1527,7 @@
       "victoryPoints": 5
     },
     {
-      "id": 61,
+      "id": 12,
       "type": "ProductionLeader",
       "production": {
         "input": {
@@ -1556,7 +1556,7 @@
       "victoryPoints": 4
     },
     {
-      "id": 62,
+      "id": 13,
       "type": "ProductionLeader",
       "production": {
         "input": {
@@ -1585,7 +1585,7 @@
       "victoryPoints": 4
     },
     {
-      "id": 63,
+      "id": 14,
       "type": "ProductionLeader",
       "production": {
         "input": {
@@ -1614,7 +1614,7 @@
       "victoryPoints": 4
     },
     {
-      "id": 64,
+      "id": 15,
       "type": "ProductionLeader",
       "production": {
         "input": {
@@ -1646,21 +1646,21 @@
   "faithTrack": {
     "vaticanSections": [
       {
-        "id": 65,
+        "id": 0,
         "faithPointsBeginning": 5,
         "faithPointsEnd": 8,
         "victoryPoints": 2,
         "activated": false
       },
       {
-        "id": 66,
+        "id": 1,
         "faithPointsBeginning": 19,
         "faithPointsEnd": 24,
         "victoryPoints": 4,
         "activated": false
       },
       {
-        "id": 67,
+        "id": 2,
         "faithPointsBeginning": 12,
         "faithPointsEnd": 16,
         "victoryPoints": 3,
@@ -1704,34 +1704,34 @@
   },
   "actionTokens": [
     {
-      "id": 68,
+      "id": 0,
       "type": "ActionTokenBlackMoveOneShuffle"
     },
     {
-      "id": 69,
+      "id": 1,
       "type": "ActionTokenBlackMoveTwo"
     },
     {
-      "id": 70,
+      "id": 2,
       "type": "ActionTokenBlackMoveTwo"
     },
     {
-      "id": 71,
+      "id": 3,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Blue"
     },
     {
-      "id": 72,
+      "id": 4,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Green"
     },
     {
-      "id": 73,
+      "id": 5,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Purple"
     },
     {
-      "id": 74,
+      "id": 6,
       "type": "ActionTokenDiscardTwo",
       "discardedColor": "Yellow"
     }
