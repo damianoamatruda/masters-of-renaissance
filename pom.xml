@@ -171,6 +171,7 @@
                     <include>it/polimi/ingsw/client/**</include>
                     <include>it/polimi/ingsw/common/**</include>
                     <include>config/server.json</include>
+                    <include>assets/**</include>
                   </includes>
                 </filter>
               </filters>
