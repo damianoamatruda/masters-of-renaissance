@@ -55,8 +55,7 @@
     "outputBlanks": 1,
     "outputBlanksExclusions": [
       "Faith"
-    ],
-    "discardableOutput": false
+    ]
   },
   "playerSetups": [
     {
@@ -122,8 +121,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 1
     },
@@ -146,8 +144,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 1
     },
@@ -170,8 +167,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 1
     },
@@ -194,8 +190,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 1
     },
@@ -220,8 +215,7 @@
           "Servant": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 2
     },
@@ -246,8 +240,7 @@
           "Shield": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 2
     },
@@ -272,8 +265,7 @@
           "Stone": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 2
     },
@@ -298,8 +290,7 @@
           "Coin": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 2
     },
@@ -324,8 +315,7 @@
           "Stone": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 3
     },
@@ -350,8 +340,7 @@
           "Stone": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 3
     },
@@ -376,8 +365,7 @@
           "Stone": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 3
     },
@@ -402,8 +390,7 @@
           "Stone": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 3
     },
@@ -429,8 +416,7 @@
           "Coin": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 4
     },
@@ -456,8 +442,7 @@
           "Stone": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 4
     },
@@ -483,8 +468,7 @@
           "Servant": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 4
     },
@@ -510,8 +494,7 @@
           "Shield": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 4
     },
@@ -534,8 +517,7 @@
           "Faith": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 5
     },
@@ -558,8 +540,7 @@
           "Faith": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 5
     },
@@ -582,8 +563,7 @@
           "Faith": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 5
     },
@@ -606,8 +586,7 @@
           "Faith": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 5
     },
@@ -632,8 +611,7 @@
           "Stone": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 6
     },
@@ -658,8 +636,7 @@
           "Shield": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 6
     },
@@ -684,8 +661,7 @@
           "Servant": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 6
     },
@@ -710,8 +686,7 @@
           "Coin": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 6
     },
@@ -735,8 +710,7 @@
           "Stone": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 7
     },
@@ -760,8 +734,7 @@
           "Coin": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 7
     },
@@ -785,8 +758,7 @@
           "Shield": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 7
     },
@@ -810,8 +782,7 @@
           "Servant": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 7
     },
@@ -836,8 +807,7 @@
           "Shield": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 8
     },
@@ -862,8 +832,7 @@
           "Servant": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 8
     },
@@ -888,8 +857,7 @@
           "Stone": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 8
     },
@@ -914,8 +882,7 @@
           "Coin": 2
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 8
     },
@@ -939,8 +906,7 @@
           "Stone": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 9
     },
@@ -964,8 +930,7 @@
           "Coin": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 9
     },
@@ -989,8 +954,7 @@
           "Shield": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 9
     },
@@ -1014,8 +978,7 @@
           "Servant": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 9
     },
@@ -1042,8 +1005,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 10
     },
@@ -1070,8 +1032,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 10
     },
@@ -1098,8 +1059,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 10
     },
@@ -1126,8 +1086,7 @@
           "Faith": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 10
     },
@@ -1151,8 +1110,7 @@
           "Coin": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 11
     },
@@ -1176,8 +1134,7 @@
           "Stone": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 11
     },
@@ -1201,8 +1158,7 @@
           "Shield": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 11
     },
@@ -1226,8 +1182,7 @@
           "Servant": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 11
     },
@@ -1252,8 +1207,7 @@
           "Coin": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 12
     },
@@ -1278,8 +1232,7 @@
           "Stone": 3
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 12
     },
@@ -1304,8 +1257,7 @@
           "Coin": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 12
     },
@@ -1330,8 +1282,7 @@
           "Stone": 1
         },
         "outputBlanks": 0,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "victoryPoints": 12
     }
@@ -1598,8 +1549,7 @@
           "Faith": 1
         },
         "outputBlanks": 1,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "resource": "Shield",
       "requirement": {
@@ -1628,8 +1578,7 @@
           "Faith": 1
         },
         "outputBlanks": 1,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "resource": "Servant",
       "requirement": {
@@ -1658,8 +1607,7 @@
           "Faith": 1
         },
         "outputBlanks": 1,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "resource": "Stone",
       "requirement": {
@@ -1688,8 +1636,7 @@
           "Faith": 1
         },
         "outputBlanks": 1,
-        "outputBlanksExclusions": [],
-        "discardableOutput": false
+        "outputBlanksExclusions": []
       },
       "resource": "Coin",
       "requirement": {
