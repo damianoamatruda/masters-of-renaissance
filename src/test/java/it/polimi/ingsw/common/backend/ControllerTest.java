@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.vcevents.*;
+import it.polimi.ingsw.server.MVEventSender;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.VirtualView;
 
@@ -15,7 +16,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Integration tests for the server pipeline.
@@ -28,6 +31,7 @@ public class ControllerTest {
         public DummyView(Controller controller) {
             super(controller);
             replies = new ArrayList<>();
+            this.eventSender = new ListEventSender(replies);
         }
 
         public MVEvent getLastMsg() {
@@ -38,11 +42,22 @@ public class ControllerTest {
         public void update(ResGoodbye event) {
             replies.add(event);
         }
+    }
 
-        // @Override
-        // public void update(MVEvent event) {
-        //     replies.add(event);
-        // }
+    class ListEventSender implements MVEventSender {
+        List<MVEvent> replies;
+        public ListEventSender(List<MVEvent> replies) { this.replies = replies; }
+        @Override
+        public void send(MVEvent event) {
+            replies.add(event);
+        }
+
+        @Override
+        public void stop() {
+            // TODO Auto-generated method stub
+            
+        }
+
     }
 
     private GameFactory gf;
@@ -70,34 +85,4 @@ public class ControllerTest {
         c = new Controller(m);
         v = new DummyView(c);
     }
-
-    @Test
-    void newGame() {
-        DummyView v2 = new DummyView(c);
-        DummyView v3 = new DummyView(c);
-        DummyView v4 = new DummyView(c);
-        
-        v.notify(new ReqJoin("Marco"));
-        v2.notify(new ReqJoin("Damiano"));
-        v3.notify(new ReqJoin("Alessandro"));
-        v4.notify(new ReqJoin("p4"));
-        v.notify(new ReqNewGame(2));
-        
-        v2.notify(new ReqNewGame(2));
-
-        String resGameStarted = gson.toJson(v.replies.get(3));
-        // String resGameStarted2 = gson.toJson(v2.replies.get(0));
-        // v.notify(new GoodBye());
-        // v.notify(new ReqJoin("Marco"));
-
-        int y = 0;
-        int x = 0;
-    }
 }
-
-{"type":"ReqJoin","nickname":"Dami"}
-{"type":"ReqNewGame","playersCount":1}
-{"type":"ReqChooseLeaders","leaders":[50,49]}
-{"type":"ReqTakeFromMarket","index":0,"isRow":true,"replacements":{},"shelves":[[2,{"Shield":1}],[1,{"Servant":1}]]}
-{"type":"ReqSwapShelves","shelf1":0,"shelf2":1}
-{"type":"ReqTurnEnd"}

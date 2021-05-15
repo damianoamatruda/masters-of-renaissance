@@ -13,7 +13,7 @@ public class VirtualView implements View {
     private final Controller controller;
 
     /** The event sender of the view. */
-    private MVEventSender eventSender;
+    protected MVEventSender eventSender;
 
     /**
      * Class constructor.
