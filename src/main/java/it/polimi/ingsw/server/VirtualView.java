@@ -35,11 +35,6 @@ public class VirtualView implements View {
     }
 
     @Override
-    public void update(MVEvent event) {
-        send(event);
-    }
-
-    @Override
     public void update(ResGoodbye event) {
         if (eventSender != null) {
             eventSender.send(event);

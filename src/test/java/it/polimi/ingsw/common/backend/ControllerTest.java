@@ -39,10 +39,10 @@ public class ControllerTest {
             replies.add(event);
         }
 
-        @Override
-        public void update(MVEvent event) {
-            replies.add(event);
-        }
+        // @Override
+        // public void update(MVEvent event) {
+        //     replies.add(event);
+        // }
     }
 
     private GameFactory gf;
@@ -94,3 +94,10 @@ public class ControllerTest {
         int x = 0;
     }
 }
+
+{"type":"ReqJoin","nickname":"Dami"}
+{"type":"ReqNewGame","playersCount":1}
+{"type":"ReqChooseLeaders","leaders":[50,49]}
+{"type":"ReqTakeFromMarket","index":0,"isRow":true,"replacements":{},"shelves":[[2,{"Shield":1}],[1,{"Servant":1}]]}
+{"type":"ReqSwapShelves","shelf1":0,"shelf2":1}
+{"type":"ReqTurnEnd"}

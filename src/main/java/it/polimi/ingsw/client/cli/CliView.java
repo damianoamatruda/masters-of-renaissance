@@ -29,11 +29,6 @@ public class CliView implements View {
     }
 
     @Override
-    public void update(MVEvent event) {
-
-    }
-
-    @Override
     public void update(ResGoodbye event) {
 
     }

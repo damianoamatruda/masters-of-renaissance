@@ -7,9 +7,6 @@ import it.polimi.ingsw.common.events.vcevents.*;
 public interface View /*extends ModelObserver, ControllerObservable, CommunicationObserver*/ {
     // ModelObserver section
 
-    // FIXME
-    void update(MVEvent event);
-
     /**
      * @param event the response to a disconnection request. Handled specifically due to special routines being needed.
      */
