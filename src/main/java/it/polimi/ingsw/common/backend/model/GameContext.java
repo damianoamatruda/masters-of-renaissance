@@ -1,6 +1,5 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
@@ -9,7 +8,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.mvevents.*;
+import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -17,7 +16,7 @@ import java.util.*;
 /**
  * This class manages the states and actions of a game.
  */
-public class GameContext extends EventDispatcher {
+public class GameContext {
     /** The game. */
     private final Game game;
 
@@ -36,38 +35,29 @@ public class GameContext extends EventDispatcher {
         this.game = game;
         this.gameFactory = gameFactory;
         this.mandatoryActionDone = false;
+    }
 
-        this.game.addEventListener(UpdateGameStart.class, this::dispatch);
-        this.game.addEventListener(UpdateCurrentPlayer.class, this::dispatch);
-        this.game.addEventListener(UpdateSetupDone.class, this::dispatch);
-        this.game.addEventListener(UpdateGameResume.class, this::dispatch);
-        this.game.addEventListener(UpdateLastRound.class, this::dispatch);
-        this.game.addEventListener(UpdateGameEnd.class, this::dispatch);
-        this.game.addEventListener(UpdatePlayer.class, this::dispatch);
-        this.game.addEventListener(UpdateLeadersHandCount.class, this::dispatch);
-        this.game.addEventListener(UpdateFaithPoints.class, this::dispatch);
-        this.game.addEventListener(UpdateVictoryPoints.class, this::dispatch);
-        this.game.addEventListener(UpdatePlayerStatus.class, this::dispatch);
-        this.game.addEventListener(UpdateDevCardSlot.class, this::dispatch);
-        this.game.addEventListener(UpdateLeader.class, this::dispatch);
-        this.game.addEventListener(UpdateResourceContainer.class, this::dispatch);
-        this.game.addEventListener(UpdateDevCardGrid.class, this::dispatch);
-        this.game.addEventListener(UpdateMarket.class, this::dispatch);
-        this.game.addEventListener(UpdateVaticanSection.class, this::dispatch);
-        this.game.addEventListener(UpdateActionToken.class, this::dispatch);
+    public void registerViewToModel(View view, String nickname) {
+        view.registerToModelGame(game);
+        view.registerToModelPlayer(getPlayerByNickname(nickname));
+    }
+
+    public void unregisterViewToModel(View view, String nickname) {
+        view.unregisterToModelGame(game);
+        view.unregisterToModelPlayer(getPlayerByNickname(nickname));
     }
 
     public void start() {
-        game.emitInitialState();
-        game.getMarket().emitInitialState();
-        game.getDevCardGrid().emitInitialState();
-        game.getPlayers().forEach(Player::emitInitialState);
+        game.dispatchInitialState();
+        game.getMarket().dispatchInitialState();
+        game.getDevCardGrid().dispatchInitialState();
+        game.getPlayers().forEach(Player::dispatchInitialState);
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
     public void resume(View view) {
-        game.emitResumeState(view);
-        game.getPlayers().forEach(p -> p.emitResumeState(view));
+        game.dispatchResumeState(view);
+        game.getPlayers().forEach(p -> p.dispatchResumeState(view));
     }
 
     /**
@@ -81,7 +71,7 @@ public class GameContext extends EventDispatcher {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            view.on(new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.")));
             return;
         }
 
@@ -102,8 +92,7 @@ public class GameContext extends EventDispatcher {
         try {
             player.getSetup().chooseLeaders(game, player, leaders);
         } catch (CannotChooseException e) {
-            view.on(new ErrAction(e.getMessage()));
-            return;
+            view.on(new ErrAction(e));
         }
     }
 
@@ -118,7 +107,7 @@ public class GameContext extends EventDispatcher {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            view.on(new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException("Choose resources", "Setup already done.")));
             return;
         }
 
@@ -128,15 +117,14 @@ public class GameContext extends EventDispatcher {
             try {
                 shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                view.on(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e));
             }
         });
 
         try {
             player.getSetup().chooseResources(game, player, shelves);
         } catch (CannotChooseException | IllegalResourceTransactionActivationException e) {
-            view.on(new ErrAction(e.getMessage()));
-            return;
+            view.on(new ErrAction(e));
         }
     }
 
@@ -164,14 +152,14 @@ public class GameContext extends EventDispatcher {
             shelf1 = player.getShelfById(shelfId1).orElseThrow(() -> new Exception("Shelf 1 not owned.")); // TODO: This is a PoC exception
             shelf2 = player.getShelfById(shelfId2).orElseThrow(() -> new Exception("Shelf 2 not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
             return;
         }
 
         try {
             Shelf.swap(shelf1, shelf2);
         } catch (IllegalResourceTransferException e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
         }
     }
 
@@ -196,14 +184,14 @@ public class GameContext extends EventDispatcher {
         try {
             leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
             return;
         }
 
         try {
             leader.activate(player);
         } catch (CardRequirementsNotMetException | IllegalArgumentException e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
         }
     }
 
@@ -228,7 +216,7 @@ public class GameContext extends EventDispatcher {
         try {
             player.discardLeader(game, leader);
         } catch (IndexOutOfBoundsException | ActiveLeaderDiscardException e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
         }
     }
 
@@ -262,14 +250,14 @@ public class GameContext extends EventDispatcher {
             try {
                 shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                view.on(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e));
             }
         });
 
         try {
             game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
         } catch (IllegalMarketTransferException e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
             return;
         }
 
@@ -306,7 +294,7 @@ public class GameContext extends EventDispatcher {
                 resContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
                 // TODO: Specify resource container that is not owned
-                view.on(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e));
                 throw new RuntimeException();
             }
         });
@@ -314,7 +302,7 @@ public class GameContext extends EventDispatcher {
         try {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
         } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
             return;
         }
 
@@ -351,7 +339,7 @@ public class GameContext extends EventDispatcher {
         try {
             prodRequests = reducedProdRequests.stream().map(r -> translateToProductionRequest(view, player, r)).toList();
         } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
             return;
         }
 
@@ -359,7 +347,7 @@ public class GameContext extends EventDispatcher {
         try {
             transaction.activate(game, player);
         } catch (IllegalResourceTransactionActivationException e) {
-            view.on(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e));
             return;
         }
 
@@ -382,14 +370,14 @@ public class GameContext extends EventDispatcher {
             return;
 
         if (!mandatoryActionDone) {
-            view.on(new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn").getMessage()));
+            view.on(new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn")));
             return;
         }
 
         try {
             game.onTurnEnd();
         } catch (NoActivePlayersException e) {
-            view.on(new ErrAction(e.getMessage())); // TODO does this make sense?
+            view.on(new ErrAction(e)); // TODO does this make sense?
             return;
         }
 
@@ -403,10 +391,6 @@ public class GameContext extends EventDispatcher {
             game.onTurnEnd();
     }
 
-    public void registerViewToPlayer(View view, String nickname) {
-        view.registerToPrivateModelPlayer(getPlayerByNickname(nickname));
-    }
-
     /**
      * Ensures that the setup still isn't finished and the game has not ended yet. Action methods can use these checks
      * to confirm their legitimacy of execution, before starting.
@@ -418,7 +402,7 @@ public class GameContext extends EventDispatcher {
      */
     private boolean preliminaryChecks(View view, Player player, String action) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
-            view.on(new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+            view.on(new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended")));
             return false;
         }
         return true;
@@ -434,7 +418,7 @@ public class GameContext extends EventDispatcher {
      */
     private boolean checkCurrentPlayer(View view, Player player, String action) {
         if (!player.equals(game.getCurrentPlayer())) {
-            view.on(new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.")));
             return false;
         }
         return true;
@@ -449,7 +433,7 @@ public class GameContext extends EventDispatcher {
      */
     private boolean checkMandatoryActionNotDone(View view, String action) {
         if (mandatoryActionDone) {
-            view.on(new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.")));
             return false;
         }
         return true;
@@ -472,7 +456,7 @@ public class GameContext extends EventDispatcher {
             try {
                 inputContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                view.on(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e));
                 // TODO: Specify resource container that is not owned
                 throw new RuntimeException();
             }

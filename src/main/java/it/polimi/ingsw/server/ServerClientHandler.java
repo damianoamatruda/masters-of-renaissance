@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class ServerClientHandler /* extends EventDispatcher */ implements Runnable, EventPasser {
+public class ServerClientHandler implements Runnable, EventPasser {
     private final Socket clientSocket;
     private final VirtualView view;
     private final Protocol protocol;
@@ -49,8 +49,7 @@ public class ServerClientHandler /* extends EventDispatcher */ implements Runnab
             String inputLine;
             String reqGoodbye = "{\"type\":\"ReqGoodbye\"}";
 
-            // emit(new ResWelcome());
-            on(new ResWelcome());
+            view.on(new ResWelcome());
 
             listening = true;
             clientSocket.setSoTimeout(timeout / 2);
@@ -67,9 +66,9 @@ public class ServerClientHandler /* extends EventDispatcher */ implements Runnab
                         try {
                             view.dispatch(protocol.processInputAsVCEvent(inputLine));
                         } catch (ProtocolException e) {
-                            on(new ErrProtocol(e));
+                            view.on(new ErrProtocol(e));
                         } catch (Exception e) {
-                            on(new ErrRuntime(e));
+                            view.on(new ErrRuntime(e));
                             e.printStackTrace();
                         }
 
@@ -87,9 +86,9 @@ public class ServerClientHandler /* extends EventDispatcher */ implements Runnab
                         try {
                             view.dispatch(protocol.processInputAsMVEvent(reqGoodbye)); // FIXME: Add type 'NetEvent'
                         } catch (ProtocolException e1) {
-                            on(new ErrProtocol(e1));
+                            view.on(new ErrProtocol(e1));
                         } catch (Exception e1) {
-                            on(new ErrRuntime(e1));
+                            view.on(new ErrRuntime(e1));
                             e.printStackTrace();
                         }
                         break;
@@ -105,17 +104,18 @@ public class ServerClientHandler /* extends EventDispatcher */ implements Runnab
         this.in = null;
     }
 
+    @Override
     public void stop() {
         listening = false;
-    }
-
-    private void send(String output) {
-        if (this.out != null)
-            out.println(output);
     }
 
     @Override
     public void on(Event event) {
         send(protocol.processOutput(event));
+    }
+
+    private void send(String output) {
+        if (out != null)
+            out.println(output);
     }
 }

@@ -99,7 +99,7 @@ public class Game extends EventDispatcher {
         this.faithTrack.addEventListener(UpdateVaticanSection.class, this::dispatch);
     }
 
-    public void emitInitialState() {
+    public void dispatchInitialState() {
         dispatch(new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
@@ -111,7 +111,7 @@ public class Game extends EventDispatcher {
         dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
-    public void emitResumeState(View view) {
+    public void dispatchResumeState(View view) {
         view.on(new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),

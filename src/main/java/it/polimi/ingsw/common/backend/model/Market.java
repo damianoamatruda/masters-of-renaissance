@@ -67,7 +67,7 @@ public class Market extends EventDispatcher {
         this.replaceableResType = replaceableResType;
     }
 
-    public void emitInitialState() {
+    public void dispatchInitialState() {
         dispatch(new UpdateMarket(reduce()));
     }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class Lobby extends EventDispatcher {
+public class Lobby {
     private final GameFactory gameFactory;
     // private final List<GameContext> games;
     private final Map<View, String> nicknames;
@@ -56,13 +55,13 @@ public class Lobby extends EventDispatcher {
             try {
                 oldContext.setActive(nickname, true);
             } catch (NoActivePlayersException e) {
-                // view.on(new ErrAction(e.getMessage()));
+                // view.on(new ErrAction(e));
                 throw new RuntimeException("No active players after player rejoining.");
             }
 
             /* Resuming routine (observer registrations and state messages) */
             oldContext.resume(view);
-            oldContext.registerViewToPlayer(view, nickname);
+            oldContext.registerViewToModel(view, nickname);
             joined.put(view, oldContext);
             disconnected.remove(nickname);
         } else {
@@ -70,11 +69,10 @@ public class Lobby extends EventDispatcher {
 
             waiting.add(view);
 
-            // Sort of public emit
             waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
 
             if (newGamePlayersCount != 0)
-                dispatch(new UpdateJoinGame(newGamePlayersCount));
+                view.on(new UpdateJoinGame(newGamePlayersCount));
 
             if (waiting.size() == newGamePlayersCount)
                 startNewGame();
@@ -99,7 +97,6 @@ public class Lobby extends EventDispatcher {
         System.out.printf("Setting players count to %d.%n", newGamePlayersCount);
         this.newGamePlayersCount = newGamePlayersCount;
 
-        // Sort of public emit
         waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> v.on(new UpdateJoinGame(newGamePlayersCount)));
 
         if (waiting.size() >= newGamePlayersCount)
@@ -113,8 +110,7 @@ public class Lobby extends EventDispatcher {
 
         GameContext context = new GameContext(newGame, gameFactory);
         waiting.subList(0, newGamePlayersCount).forEach(view -> {
-            view.registerToModelGameContext(context);
-            context.registerViewToPlayer(view, nicknames.get(view));
+            context.registerViewToModel(view, nicknames.get(view));
             joined.put(view, context);
         });
         context.start();
@@ -122,7 +118,6 @@ public class Lobby extends EventDispatcher {
         /* Remove players who joined from waiting list */
         waiting.subList(0, newGamePlayersCount).clear();
 
-        // Sort of public emit
         waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
 
         newGamePlayersCount = 0;
@@ -133,7 +128,7 @@ public class Lobby extends EventDispatcher {
         if (nickname != null) {
             GameContext context = joined.get(view);
             if (context != null) {
-                view.unregisterToModelGameContext(context);
+                context.unregisterViewToModel(view, nickname);
 
                 try {
                     context.setActive(nickname, false);
@@ -145,7 +140,7 @@ public class Lobby extends EventDispatcher {
             }
             nicknames.remove(view);
         }
-        dispatch(new ResGoodbye());
+        view.on(new ResGoodbye());
     }
 
     public void checkJoinedThen(View view, BiConsumer<GameContext, String> then) {

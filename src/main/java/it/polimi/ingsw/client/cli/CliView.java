@@ -13,7 +13,6 @@ public class CliView extends View {
      * Class constructor.
      */
     public CliView() {
-        super();
         this.eventPasser = null;
     }
 
@@ -27,115 +26,87 @@ public class CliView extends View {
     }
 
     @Override
-    public void registerToModelLobby(EventDispatcher model) {
-        model.addEventListener(ErrAction.class, this::on);
-        model.addEventListener(UpdateBookedSeats.class, this::on);
-        model.addEventListener(UpdateJoinGame.class, this::on);
-        model.addEventListener(ResGoodbye.class, this::on);
-    }
-
-    @Override
-    public void unregisterToModelLobby(EventDispatcher model) {
-        model.removeEventListener(ErrAction.class, this::on);
-        model.removeEventListener(UpdateBookedSeats.class, this::on);
-        model.removeEventListener(UpdateJoinGame.class, this::on);
-        model.removeEventListener(ResGoodbye.class, this::on);
-    }
-
-    @Override
-    public void registerToModelGameContext(EventDispatcher model) {
-        model.addEventListener(ErrAction.class, this::on);
-        model.addEventListener(UpdateSetupDone.class, this::on);
-
+    public void registerToModelGame(EventDispatcher game) {
         /* Game */
-        model.addEventListener(UpdateGameStart.class, this::on);
-        model.addEventListener(UpdateCurrentPlayer.class, this::on);
-        model.addEventListener(UpdateGameResume.class, this::on);
-        model.addEventListener(UpdateLastRound.class, this::on);
-        model.addEventListener(UpdateGameEnd.class, this::on);
+        game.addEventListener(UpdateGameStart.class, this::on);
+        game.addEventListener(UpdateCurrentPlayer.class, this::on);
+        game.addEventListener(UpdateSetupDone.class, this::on);
+        game.addEventListener(UpdateGameResume.class, this::on);
+        game.addEventListener(UpdateLastRound.class, this::on);
+        game.addEventListener(UpdateGameEnd.class, this::on);
 
         /* Player */
-        model.addEventListener(UpdatePlayer.class, this::on);
-        model.addEventListener(UpdateLeadersHandCount.class, this::on);
-        model.addEventListener(UpdateFaithPoints.class, this::on);
-        model.addEventListener(UpdateVictoryPoints.class, this::on);
-        model.addEventListener(UpdatePlayerStatus.class, this::on);
-        model.addEventListener(UpdateDevCardSlot.class, this::on);
+        game.addEventListener(UpdatePlayer.class, this::on);
+        game.addEventListener(UpdateLeadersHandCount.class, this::on);
+        game.addEventListener(UpdateFaithPoints.class, this::on);
+        game.addEventListener(UpdateVictoryPoints.class, this::on);
+        game.addEventListener(UpdatePlayerStatus.class, this::on);
+        game.addEventListener(UpdateDevCardSlot.class, this::on);
 
         /* Card */
-        model.addEventListener(UpdateLeader.class, this::on);
+        game.addEventListener(UpdateLeader.class, this::on);
 
         /* ResourceContainer */
-        model.addEventListener(UpdateResourceContainer.class, this::on);
+        game.addEventListener(UpdateResourceContainer.class, this::on);
 
         /* DevCardGrid */
-        model.addEventListener(UpdateDevCardGrid.class, this::on);
+        game.addEventListener(UpdateDevCardGrid.class, this::on);
 
         /* Market */
-        model.addEventListener(UpdateMarket.class, this::on);
+        game.addEventListener(UpdateMarket.class, this::on);
 
         /* FaithTrack */
-        model.addEventListener(UpdateVaticanSection.class, this::on);
+        game.addEventListener(UpdateVaticanSection.class, this::on);
 
         /* SoloGame */
-        model.addEventListener(UpdateActionToken.class, this::on);
+        game.addEventListener(UpdateActionToken.class, this::on);
     }
 
     @Override
-    public void unregisterToModelGameContext(EventDispatcher model) {
-        /* Lobby and GameContext */
-        model.removeEventListener(ErrAction.class, this::on);
-
-        /* Lobby (only) */
-        model.removeEventListener(UpdateBookedSeats.class, this::on);
-        model.removeEventListener(UpdateJoinGame.class, this::on);
-        model.removeEventListener(ResGoodbye.class, this::on);
-
-        /* GameContext (only) */
-        model.removeEventListener(UpdateSetupDone.class, this::on);
-
+    public void unregisterToModelGame(EventDispatcher game) {
         /* Game */
-        model.removeEventListener(UpdateGameStart.class, this::on);
-        model.removeEventListener(UpdateCurrentPlayer.class, this::on);
-        model.removeEventListener(UpdateGameResume.class, this::on);
-        model.removeEventListener(UpdateLastRound.class, this::on);
-        model.removeEventListener(UpdateGameEnd.class, this::on);
+        game.removeEventListener(UpdateGameStart.class, this::on);
+        game.removeEventListener(UpdateCurrentPlayer.class, this::on);
+        game.removeEventListener(UpdateSetupDone.class, this::on);
+        game.removeEventListener(UpdateGameResume.class, this::on);
+        game.removeEventListener(UpdateLastRound.class, this::on);
+        game.removeEventListener(UpdateGameEnd.class, this::on);
 
         /* Player */
-        model.removeEventListener(UpdatePlayer.class, this::on);
-        model.removeEventListener(UpdateLeadersHandCount.class, this::on);
-        model.removeEventListener(UpdateFaithPoints.class, this::on);
-        model.removeEventListener(UpdateVictoryPoints.class, this::on);
-        model.removeEventListener(UpdatePlayerStatus.class, this::on);
-        model.removeEventListener(UpdateDevCardSlot.class, this::on);
+        game.removeEventListener(UpdatePlayer.class, this::on);
+        game.removeEventListener(UpdateLeadersHandCount.class, this::on);
+        game.removeEventListener(UpdateFaithPoints.class, this::on);
+        game.removeEventListener(UpdateVictoryPoints.class, this::on);
+        game.removeEventListener(UpdatePlayerStatus.class, this::on);
+        game.removeEventListener(UpdateDevCardSlot.class, this::on);
 
         /* Card */
-        model.removeEventListener(UpdateLeader.class, this::on);
+        game.removeEventListener(UpdateLeader.class, this::on);
 
         /* ResourceContainer */
-        model.removeEventListener(UpdateResourceContainer.class, this::on);
+        game.removeEventListener(UpdateResourceContainer.class, this::on);
 
         /* DevCardGrid */
-        model.removeEventListener(UpdateDevCardGrid.class, this::on);
+        game.removeEventListener(UpdateDevCardGrid.class, this::on);
 
         /* Market */
-        model.removeEventListener(UpdateMarket.class, this::on);
+        game.removeEventListener(UpdateMarket.class, this::on);
 
         /* FaithTrack */
-        model.removeEventListener(UpdateVaticanSection.class, this::on);
+        game.removeEventListener(UpdateVaticanSection.class, this::on);
 
         /* SoloGame */
-        model.removeEventListener(UpdateActionToken.class, this::on);
+        game.removeEventListener(UpdateActionToken.class, this::on);
     }
 
     @Override
-    public void registerToPrivateModelPlayer(EventDispatcher model) {
-        model.addEventListener(UpdateLeadersHand.class, this::on);
+    public void registerToModelPlayer(EventDispatcher player) {
+        player.addEventListener(UpdateLeadersHand.class, this::on);
     }
 
     @Override
-    public void unregisterToPrivateModelPlayer(EventDispatcher model) {
-        model.removeEventListener(UpdateLeadersHand.class, this::on);
+    public void unregisterToModelPlayer(EventDispatcher player) {
+        player.removeEventListener(UpdateLeadersHand.class, this::on);
     }
 
     @Override

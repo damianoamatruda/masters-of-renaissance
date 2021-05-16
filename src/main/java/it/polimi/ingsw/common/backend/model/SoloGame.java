@@ -50,7 +50,7 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public void emitInitialState() {
+    public void dispatchInitialState() {
         dispatch(new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
@@ -63,7 +63,7 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public void emitResumeState(View view) {
+    public void dispatchResumeState(View view) {
         view.on(new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),

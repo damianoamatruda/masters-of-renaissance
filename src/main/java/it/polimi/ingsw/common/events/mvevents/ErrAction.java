@@ -7,12 +7,23 @@ public class ErrAction implements MVEvent {
 
     /**
      * Class constructor.
-     * 
-     * @param msg the message containing the reason and details
-     *            of why the client request failed
+     *
+     * @param msg the message containing the reason and details of why the client request failed
      */
     public ErrAction(String msg) {
         this.msg = msg;
+    }
+
+    /**
+     * Class constructor.
+     *
+     * @param e the action exception
+     */
+    public ErrAction(Exception e) {
+        StringBuilder stringBuilder = new StringBuilder(e.getClass().getName());
+        if (e.getMessage() != null)
+            stringBuilder.append(": ").append(e.getMessage());
+        this.msg = stringBuilder.toString();
     }
 
     /**

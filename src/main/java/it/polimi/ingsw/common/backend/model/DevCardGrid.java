@@ -54,7 +54,7 @@ public class DevCardGrid extends EventDispatcher {
         }
     }
 
-    public void emitInitialState() {
+    public void dispatchInitialState() {
         dispatch(new UpdateDevCardGrid(reduce()));
     }
 

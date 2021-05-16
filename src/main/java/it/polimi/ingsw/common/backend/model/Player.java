@@ -84,7 +84,7 @@ public class Player extends EventDispatcher {
         this.winner = false;
     }
 
-    public void emitInitialState() {
+    public void dispatchInitialState() {
         dispatch(new UpdatePlayer(
                 nickname,
                 baseProduction.getId(),
@@ -94,7 +94,7 @@ public class Player extends EventDispatcher {
         dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
     }
 
-    public void emitResumeState(View view) {
+    public void dispatchResumeState(View view) {
         view.on(new UpdatePlayer(
                 nickname,
                 baseProduction.getId(),

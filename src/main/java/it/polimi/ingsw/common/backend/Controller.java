@@ -26,7 +26,7 @@ public class Controller {
         view.addEventListener(ReqEndTurn.class, event -> on(view, event));
     }
 
-    public void unregisterView(View view) {
+    public void unregisterToView(View view) {
         view.removeEventListener(ReqGoodbye.class, event -> on(view, event));
         view.removeEventListener(ReqJoin.class, event -> on(view, event));
         view.removeEventListener(ReqNewGame.class, event -> on(view, event));
