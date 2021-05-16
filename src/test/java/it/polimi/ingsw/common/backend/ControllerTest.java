@@ -3,30 +3,27 @@ package it.polimi.ingsw.common.backend;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializer;
+import it.polimi.ingsw.common.EventSender;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
 import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
-import it.polimi.ingsw.common.events.mvevents.*;
-import it.polimi.ingsw.common.events.vcevents.*;
-import it.polimi.ingsw.server.MVEventSender;
+import it.polimi.ingsw.common.events.Event;
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.server.VirtualView;
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Integration tests for the server pipeline.
  */
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ControllerTest {
-    class DummyView extends VirtualView {
-        List<MVEvent> replies;
+    static class DummyView extends VirtualView {
+        List<Event> replies;
 
         public DummyView(Controller controller) {
             super(controller);
@@ -34,7 +31,7 @@ public class ControllerTest {
             this.eventSender = new ListEventSender(replies);
         }
 
-        public MVEvent getLastMsg() {
+        public Event getLastMsg() {
             return replies.get(replies.size() - 1);
         }
 
@@ -44,18 +41,22 @@ public class ControllerTest {
         }
     }
 
-    class ListEventSender implements MVEventSender {
-        List<MVEvent> replies;
-        public ListEventSender(List<MVEvent> replies) { this.replies = replies; }
+    static class ListEventSender implements EventSender {
+        List<Event> replies;
+
+        public ListEventSender(List<Event> replies) {
+            this.replies = replies;
+        }
+
         @Override
-        public void send(MVEvent event) {
+        public void send(Event event) {
             replies.add(event);
         }
 
         @Override
         public void stop() {
             // TODO Auto-generated method stub
-            
+
         }
 
     }

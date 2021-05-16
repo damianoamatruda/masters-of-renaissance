@@ -1,7 +1,8 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.common.EventSender;
 import it.polimi.ingsw.common.Protocol;
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.ResWelcome;
 
 import java.io.BufferedReader;
@@ -11,7 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class ServerClientHandler implements Runnable, MVEventSender {
+public class ServerClientHandler implements Runnable, EventSender {
     private final Socket clientSocket;
     private final VirtualView view;
     private final Protocol protocol;
@@ -92,7 +93,7 @@ public class ServerClientHandler implements Runnable, MVEventSender {
     }
 
     @Override
-    public void send(MVEvent event) {
+    public void send(Event event) {
         send(protocol.processOutput(event));
     }
 }

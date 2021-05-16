@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.VCEventSender;
+import it.polimi.ingsw.common.EventSender;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -8,7 +8,7 @@ import it.polimi.ingsw.common.events.vcevents.*;
 
 public class CliView implements View {
     /** The event sender of the view. */
-    private VCEventSender eventSender;
+    private EventSender eventSender;
 
     /**
      * Class constructor.
@@ -24,7 +24,7 @@ public class CliView implements View {
      *
      * @param eventSender the event sender
      */
-    public void setEventSender(VCEventSender eventSender) {
+    public void setEventSender(EventSender eventSender) {
         this.eventSender = eventSender;
     }
 

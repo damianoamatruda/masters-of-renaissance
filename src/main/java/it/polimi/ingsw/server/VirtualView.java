@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.common.EventSender;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -13,7 +14,7 @@ public class VirtualView implements View {
     private final Controller controller;
 
     /** The event sender of the view. */
-    protected MVEventSender eventSender;
+    protected EventSender eventSender;
 
     /**
      * Class constructor.
@@ -30,7 +31,7 @@ public class VirtualView implements View {
      *
      * @param eventSender the event sender
      */
-    public void setEventSender(MVEventSender eventSender) {
+    public void setEventSender(EventSender eventSender) {
         this.eventSender = eventSender;
     }
 
@@ -222,6 +223,6 @@ public class VirtualView implements View {
         if (eventSender != null)
             eventSender.send(event);
         else
-            throw new RuntimeException("Cannot send MVEvent: no sender available");
+            throw new RuntimeException("Cannot send MVEvent: no sender available.");
     }
 }

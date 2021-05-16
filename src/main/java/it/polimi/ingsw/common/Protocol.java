@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common;
 
 import com.google.gson.*;
+import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
 import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
@@ -58,7 +59,7 @@ public class Protocol {
         }
     }
 
-    public String processOutput(MVEvent event) {
+    public String processOutput(Event event) {
         Gson gson = new Gson().newBuilder()
                 .enableComplexMapKeySerialization()
                 .registerTypeHierarchyAdapter(MVEvent.class, (JsonSerializer<MVEvent>) (msg, type, jsonSerializationContext) -> {
