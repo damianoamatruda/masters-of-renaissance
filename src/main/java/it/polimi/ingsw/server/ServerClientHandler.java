@@ -72,6 +72,7 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
                             on(new ErrProtocol(e));
                         } catch (Exception e) {
                             on(new ErrRuntime(e));
+                            e.printStackTrace();
                         }
 
                         if (inputLine.equals(reqGoodbye))
@@ -91,6 +92,7 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
                             on(new ErrProtocol(e1));
                         } catch (Exception e1) {
                             on(new ErrRuntime(e1));
+                            e.printStackTrace();
                         }
                         break;
                     }

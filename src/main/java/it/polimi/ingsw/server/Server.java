@@ -55,8 +55,7 @@ public class Server {
             while (listening) {
                 Socket clientSocket = serverSocket.accept();
                 VirtualView view = new VirtualView();
-                view.registerToProtocol(protocol);
-                view.registerToModel(model);
+                view.registerToModelLobby(model);
                 controller.registerToView(view);
                 executor.submit(new ServerClientHandler(clientSocket, view, protocol));
             }

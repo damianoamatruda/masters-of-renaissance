@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
@@ -10,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
@@ -76,9 +76,9 @@ public class Game extends EventEmitter {
                 int maxObtainableDevCards) {
         super(Set.of(
                 /* Game */
-                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
-                /* Player */
-                UpdateLeadersHand.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
+                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateSetupDone.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
+                /* Player (except UpdateLeadersHand.class) */
+                UpdatePlayer.class, UpdateLeadersHandCount.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
                 /* Card */
                 UpdateLeader.class,
                 /* ResourceContainer */
@@ -105,7 +105,8 @@ public class Game extends EventEmitter {
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
 
-        this.players.forEach(p -> p.register(UpdateLeadersHand.class, this::emit));
+        this.players.forEach(p -> p.register(UpdatePlayer.class, this::emit));
+        this.players.forEach(p -> p.register(UpdateLeadersHandCount.class, this::emit));
         this.players.forEach(p -> p.register(UpdateFaithPoints.class, this::emit));
         this.players.forEach(p -> p.register(UpdateVictoryPoints.class, this::emit));
         this.players.forEach(p -> p.register(UpdatePlayerStatus.class, this::emit));
@@ -122,43 +123,23 @@ public class Game extends EventEmitter {
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream()
-                        .collect(Collectors.toMap(
-                                ResourceContainer::reduce,
-                                c -> players.stream()
-                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                                        .findAny().get().getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
-        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-        // null, // actiontokens not sent
-        // p.getLeaders().stream().map(Card::getId).toList(),
-        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-        // p.getStrongbox().getId(),
-        // p.getSetup().reduce()));
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                null)); /* actionTokens not sent */
 
         emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
-    public void emitResumeState() {
-        emit(new UpdateGameResume(
+    public void emitResumeState(View view) {
+        view.on(new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream()
-                        .collect(Collectors.toMap(
-                                ResourceContainer::reduce,
-                                c -> players.stream()
-                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                                        .findAny().get().getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
-        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-        // null, // actiontokens not sent
-        // p.getLeaders().stream().map(Card::getId).toList(),
-        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-        // p.getStrongbox().getId(),
-        // p.getSetup().reduce()));
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                null)); /* actionTokens not sent */
 
-        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        view.on(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {
@@ -289,6 +270,14 @@ public class Game extends EventEmitter {
 
         if (lastRound)
             end();
+    }
+
+    /**
+     * Check if the last necessary setup move has been made.
+     */
+    public void onPlayerSetupDone() {
+        if (players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone))
+            emit(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
     }
 
     /**

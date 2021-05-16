@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
@@ -66,7 +67,7 @@ public class Player extends EventEmitter {
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
                   ResourceTransactionRecipe baseProduction, int devSlotsCount, PlayerSetup setup) {
-        super(Set.of(UpdateLeadersHand.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class));
+        super(Set.of(UpdatePlayer.class, UpdateLeadersHand.class, UpdateLeadersHandCount.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class));
 
         this.nickname = nickname;
         this.inkwell = inkwell;
@@ -83,6 +84,26 @@ public class Player extends EventEmitter {
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
+    }
+
+    public void emitInitialState() {
+        emit(new UpdatePlayer(
+                nickname,
+                baseProduction.getId(),
+                warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
+                strongbox.getId(),
+                setup.reduce()));
+        emit(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
+    }
+
+    public void emitResumeState(View view) {
+        view.on(new UpdatePlayer(
+                nickname,
+                baseProduction.getId(),
+                warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
+                strongbox.getId(),
+                setup.reduce()));
+        view.on(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
     }
 
     /**
@@ -118,7 +139,8 @@ public class Player extends EventEmitter {
 
         this.leaders.retainAll(leaders);
 
-        emit(new UpdateLeadersHand(getNickname(), this.leaders.size()));
+        emit(new UpdateLeadersHand(getNickname(), this.leaders.stream().map(Card::getId).toList()));
+        emit(new UpdateLeadersHandCount(getNickname(), this.leaders.size()));
     }
 
     /**
@@ -136,7 +158,7 @@ public class Player extends EventEmitter {
         game.onDiscardLeader(this);
         leaders.remove(leader);
 
-        emit(new UpdateLeadersHand(getNickname(), leaders.size()));
+        emit(new UpdateLeadersHandCount(getNickname(), leaders.size()));
     }
 
     /**

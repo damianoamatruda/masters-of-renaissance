@@ -69,6 +69,8 @@ public class PlayerSetup {
         player.incrementFaithPoints(game, initialFaithPoints);
 
         hasGivenInitialFaithPoints = true;
+        if (isDone())
+            game.onPlayerSetupDone();
     }
 
     /**
@@ -77,7 +79,7 @@ public class PlayerSetup {
      * @param chosenLeaders the leader cards to choose
      * @throws CannotChooseException if the leader cards have already been chosen
      */
-    public void chooseLeaders(Player player, List<LeaderCard> chosenLeaders) throws CannotChooseException {
+    public void chooseLeaders(Game game, Player player, List<LeaderCard> chosenLeaders) throws CannotChooseException {
         if (hasChosenLeaders)
             throw new CannotChooseException("Cannot choose starting leaders again, choice already made."); // TODO what happens if server parameters make this default?
 
@@ -88,6 +90,8 @@ public class PlayerSetup {
         player.retainLeaders(chosenLeaders);
 
         hasChosenLeaders = true;
+        if (isDone())
+            game.onPlayerSetupDone();
     }
 
     /**
@@ -121,6 +125,8 @@ public class PlayerSetup {
         new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
 
         hasChosenResources = true;
+        if (isDone())
+            game.onPlayerSetupDone();
     }
 
     /**

@@ -35,11 +35,11 @@ public class GameContext extends EventEmitter {
     public GameContext(Game game, GameFactory gameFactory) {
         super(Set.of(
                 /* GameContext */
-                ErrAction.class, UpdateSetupDone.class,
+                ErrAction.class,
                 /* Game */
-                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
-                /* Player */
-                UpdateLeadersHand.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
+                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateSetupDone.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
+                /* Player (except UpdateLeadersHand.class) */
+                UpdatePlayer.class, UpdateLeadersHandCount.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
                 /* Card */
                 UpdateLeader.class,
                 /* ResourceContainer */
@@ -59,10 +59,12 @@ public class GameContext extends EventEmitter {
 
         this.game.register(UpdateGameStart.class, this::emit);
         this.game.register(UpdateCurrentPlayer.class, this::emit);
+        this.game.register(UpdateSetupDone.class, this::emit);
         this.game.register(UpdateGameResume.class, this::emit);
         this.game.register(UpdateLastRound.class, this::emit);
         this.game.register(UpdateGameEnd.class, this::emit);
-        this.game.register(UpdateLeadersHand.class, this::emit);
+        this.game.register(UpdatePlayer.class, this::emit);
+        this.game.register(UpdateLeadersHandCount.class, this::emit);
         this.game.register(UpdateFaithPoints.class, this::emit);
         this.game.register(UpdateVictoryPoints.class, this::emit);
         this.game.register(UpdatePlayerStatus.class, this::emit);
@@ -79,30 +81,32 @@ public class GameContext extends EventEmitter {
         game.emitInitialState();
         game.getMarket().emitInitialState();
         game.getDevCardGrid().emitInitialState();
+        game.getPlayers().forEach(Player::emitInitialState);
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
-    public void resume() {
-        game.emitResumeState();
+    public void resume(View view) {
+        game.emitResumeState(view);
+        game.getPlayers().forEach(p -> p.emitResumeState(view));
     }
 
     /**
      * Choose leaders from the hand of a player.
      *
-     * @param v         the view the action originates from. Used to on back errors
+     * @param view      the view the action originates from. Used to on back errors
      * @param nickname  the player
      * @param leaderIds the leader cards to choose
      */
-    public void chooseLeaders(View v, String nickname, List<Integer> leaderIds) {
+    public void chooseLeaders(View view, String nickname, List<Integer> leaderIds) {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            emit(new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
             return;
         }
 
         if (leaderIds.stream().map(player::getLeaderById).anyMatch(Optional::isEmpty)) {
-            emit(new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
+            view.on(new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
             // TODO: Specify leader that is not owned
             /*throw new CannotChooseException(
                     String.format("Cannot choose leader %d: not in your hand.",
@@ -116,27 +120,25 @@ public class GameContext extends EventEmitter {
         List<LeaderCard> leaders = leaderIds.stream().map(game::getLeaderById).filter(Optional::isPresent).map(Optional::get).toList();
 
         try {
-            player.getSetup().chooseLeaders(player, leaders);
+            player.getSetup().chooseLeaders(game, player, leaders);
         } catch (CannotChooseException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
-
-        checkEndSetup();
     }
 
     /**
      * Chooses the initial resources to take as a player.
      *
-     * @param v              the view the action originates from. Used to on back errors
+     * @param view              the view the action originates from. Used to on back errors
      * @param nickname       the player
      * @param reducedShelves the destination shelves
      */
-    public void chooseResources(View v, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
+    public void chooseResources(View view, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            emit(new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
             return;
         }
 
@@ -146,35 +148,33 @@ public class GameContext extends EventEmitter {
             try {
                 shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                emit(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e.getMessage()));
             }
         });
 
         try {
             player.getSetup().chooseResources(game, player, shelves);
         } catch (CannotChooseException | IllegalResourceTransactionActivationException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
-
-        checkEndSetup();
     }
 
     /**
      * Swaps the content of two shelves of a player.
      *
-     * @param v        the view the action originates from. Used to on back errors
+     * @param view        the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param shelfId1 the first shelf
      * @param shelfId2 the second shelf
      */
-    public void swapShelves(View v, String nickname, Integer shelfId1, Integer shelfId2) {
+    public void swapShelves(View view, String nickname, Integer shelfId1, Integer shelfId2) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!preliminaryChecks(v, player, "Swap shelves"))
+        if (!preliminaryChecks(view, player, "Swap shelves"))
             return;
 
-        if (!checkCurrentPlayer(v, player, "Swap shelves"))
+        if (!checkCurrentPlayer(view, player, "Swap shelves"))
             return;
 
         Shelf shelf1;
@@ -184,31 +184,31 @@ public class GameContext extends EventEmitter {
             shelf1 = player.getShelfById(shelfId1).orElseThrow(() -> new Exception("Shelf 1 not owned.")); // TODO: This is a PoC exception
             shelf2 = player.getShelfById(shelfId2).orElseThrow(() -> new Exception("Shelf 2 not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
 
         try {
             Shelf.swap(shelf1, shelf2);
         } catch (IllegalResourceTransferException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
         }
     }
 
     /**
      * Makes a player activate a leader card.
      *
-     * @param v        the view the action originates from. Used to on back errors
+     * @param view        the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param leaderId the leader card to activate
      */
-    public void activateLeader(View v, String nickname, Integer leaderId) {
+    public void activateLeader(View view, String nickname, Integer leaderId) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!preliminaryChecks(v, player, "Activate leader"))
+        if (!preliminaryChecks(view, player, "Activate leader"))
             return;
 
-        if (!checkCurrentPlayer(v, player, "Activate leader"))
+        if (!checkCurrentPlayer(view, player, "Activate leader"))
             return;
 
         LeaderCard leader;
@@ -216,31 +216,31 @@ public class GameContext extends EventEmitter {
         try {
             leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
 
         try {
             leader.activate(player);
         } catch (CardRequirementsNotMetException | IllegalArgumentException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
         }
     }
 
     /**
      * Makes a player discard a leader card.
      *
-     * @param v        the view the action originates from. Used to on back errors
+     * @param view        the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param leaderId the leader card to discard
      */
-    public void discardLeader(View v, String nickname, Integer leaderId) {
+    public void discardLeader(View view, String nickname, Integer leaderId) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!preliminaryChecks(v, player, "Discard leader"))
+        if (!preliminaryChecks(view, player, "Discard leader"))
             return;
 
-        if (!checkCurrentPlayer(v, player, "Discard leader"))
+        if (!checkCurrentPlayer(view, player, "Discard leader"))
             return;
 
         LeaderCard leader = game.getLeaderById(leaderId).orElseThrow();
@@ -248,32 +248,32 @@ public class GameContext extends EventEmitter {
         try {
             player.discardLeader(game, leader);
         } catch (IndexOutOfBoundsException | ActiveLeaderDiscardException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
         }
     }
 
     /**
      * Takes resources from the market as a player.
      *
-     * @param v              the view the action originates from. Used to on back errors
+     * @param view              the view the action originates from. Used to on back errors
      * @param nickname       the player
      * @param isRow          <code>true</code> if a row is selected; <code>false</code> if a column is selected.
      * @param index          index of the selected row or column
      * @param replacements   a map of the chosen resources to take, if choices are applicable
      * @param reducedShelves a map of the shelves where to add the taken resources, if possible
      */
-    public void takeMarketResources(View v, String nickname, boolean isRow, int index,
+    public void takeMarketResources(View view, String nickname, boolean isRow, int index,
                                     Map<String, Integer> replacements,
                                     Map<Integer, Map<String, Integer>> reducedShelves) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!preliminaryChecks(v, player, "Take market resources"))
+        if (!preliminaryChecks(view, player, "Take market resources"))
             return;
 
-        if (!checkCurrentPlayer(v, player, "Take market resources"))
+        if (!checkCurrentPlayer(view, player, "Take market resources"))
             return;
 
-        if (!checkMandatoryActionNotDone(v, "Take market resources"))
+        if (!checkMandatoryActionNotDone(view, "Take market resources"))
             return;
 
         // TODO: Use stream to do this
@@ -282,14 +282,14 @@ public class GameContext extends EventEmitter {
             try {
                 shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                emit(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e.getMessage()));
             }
         });
 
         try {
             game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
         } catch (IllegalMarketTransferException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -299,24 +299,24 @@ public class GameContext extends EventEmitter {
     /**
      * Makes a player buy a development card from the development card grid.
      *
-     * @param v                    the view the action originates from. Used to on back errors
+     * @param view                    the view the action originates from. Used to on back errors
      * @param nickname             the player
      * @param color                the color of the card to be bought
      * @param level                the level of the card to be bought
-     * @param slotIndex            the index of the dev slot where to put the development card
+     * @param slotIndex            the index of the deview slot where to put the development card
      * @param reducedResContainers a map of the resource containers where to take the storable resources
      */
-    public void buyDevCard(View v, String nickname, String color, int level, int slotIndex,
+    public void buyDevCard(View view, String nickname, String color, int level, int slotIndex,
                            Map<Integer, Map<String, Integer>> reducedResContainers) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!preliminaryChecks(v, player, "Buy development card"))
+        if (!preliminaryChecks(view, player, "Buy development card"))
             return;
 
-        if (!checkCurrentPlayer(v, player, "Buy development card"))
+        if (!checkCurrentPlayer(view, player, "Buy development card"))
             return;
 
-        if (!checkMandatoryActionNotDone(v, "Buy development card"))
+        if (!checkMandatoryActionNotDone(view, "Buy development card"))
             return;
 
         // TODO: Use stream to do this
@@ -326,7 +326,7 @@ public class GameContext extends EventEmitter {
                 resContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
                 // TODO: Specify resource container that is not owned
-                emit(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e.getMessage()));
                 throw new RuntimeException();
             }
         });
@@ -334,7 +334,7 @@ public class GameContext extends EventEmitter {
         try {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
         } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -344,24 +344,24 @@ public class GameContext extends EventEmitter {
     /**
      * Makes a player activate a group of productions.
      *
-     * @param v                   the view the action originates from. Used to on back errors
+     * @param view                   the view the action originates from. Used to on back errors
      * @param nickname            the player
      * @param reducedProdRequests the group of requested contemporary productions
      */
-    public void activateProductionRequests(View v, String nickname, List<ReducedProductionRequest> reducedProdRequests) {
+    public void activateProductionRequests(View view, String nickname, List<ReducedProductionRequest> reducedProdRequests) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!preliminaryChecks(v, player, "Activate production"))
+        if (!preliminaryChecks(view, player, "Activate production"))
             return;
 
-        if (!checkCurrentPlayer(v, player, "Activate production"))
+        if (!checkCurrentPlayer(view, player, "Activate production"))
             return;
 
-        if (!checkMandatoryActionNotDone(v, "Activate production"))
+        if (!checkMandatoryActionNotDone(view, "Activate production"))
             return;
 
         if (reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).map(player::getProductionById).anyMatch(Optional::isEmpty)) {
-            emit(new ErrAction("Production not owned.")); // TODO: This is a PoC exception
+            view.on(new ErrAction("Production not owned.")); // TODO: This is a PoC exception
             // TODO: Specify production that is not owned
             return;
         }
@@ -369,9 +369,9 @@ public class GameContext extends EventEmitter {
         List<ProductionRequest> prodRequests;
 
         try {
-            prodRequests = reducedProdRequests.stream().map(r -> translateToProductionRequest(v, player, r)).toList();
+            prodRequests = reducedProdRequests.stream().map(r -> translateToProductionRequest(view, player, r)).toList();
         } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -379,7 +379,7 @@ public class GameContext extends EventEmitter {
         try {
             transaction.activate(game, player);
         } catch (IllegalResourceTransactionActivationException e) {
-            emit(new ErrAction(e.getMessage()));
+            view.on(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -389,27 +389,27 @@ public class GameContext extends EventEmitter {
     /**
      * Makes a player end his turn.
      *
-     * @param v        the view the action originates from. Used to on back errors
+     * @param view        the view the action originates from. Used to on back errors
      * @param nickname the player
      */
-    public void endTurn(View v, String nickname) {
+    public void endTurn(View view, String nickname) {
         Player player = getPlayerByNickname(nickname);
 
-        if (!preliminaryChecks(v, player, "End turn"))
+        if (!preliminaryChecks(view, player, "End turn"))
             return;
 
-        if (!checkCurrentPlayer(v, player, "End turn"))
+        if (!checkCurrentPlayer(view, player, "End turn"))
             return;
 
         if (!mandatoryActionDone) {
-            emit(new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn").getMessage()));
+            view.on(new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn").getMessage()));
             return;
         }
 
         try {
             game.onTurnEnd();
         } catch (NoActivePlayersException e) {
-            emit(new ErrAction(e.getMessage())); // TODO does this make sense?
+            view.on(new ErrAction(e.getMessage())); // TODO does this make sense?
             return;
         }
 
@@ -423,26 +423,22 @@ public class GameContext extends EventEmitter {
             game.onTurnEnd();
     }
 
-    /**
-     * Check if the last necessary setup move has been made.
-     */
-    private void checkEndSetup() {
-        if (game.getPlayers().stream().map(Player::getSetup).allMatch(PlayerSetup::isDone))
-            emit(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
+    public void registerViewToPlayer(View view, String nickname) {
+        view.registerToPrivateModelPlayer(getPlayerByNickname(nickname));
     }
 
     /**
      * Ensures that the setup still isn't finished and the game has not ended yet. Action methods can use these checks
      * to confirm their legitimacy of execution, before starting.
      *
-     * @param v      the view to use to on back the error, if the checks don't on
+     * @param view   the view to use to on back the error, if the checks don't on
      * @param action the action trying to be performed. Will be used as a reason when sending the error message to the
      *               client trying to execute the action.
      * @return whether the checks passed
      */
-    private boolean preliminaryChecks(View v, Player player, String action) {
+    private boolean preliminaryChecks(View view, Player player, String action) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
-            emit(new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+            view.on(new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
             return false;
         }
         return true;
@@ -451,14 +447,14 @@ public class GameContext extends EventEmitter {
     /**
      * Ensures that the given player is the current player in the turn.
      *
-     * @param v      the view to on the error massage back with
+     * @param view      the view to on the error massage back with
      * @param player the player to check
      * @param action the action trying to be performed
      * @return whether the check passed
      */
-    private boolean checkCurrentPlayer(View v, Player player, String action) {
+    private boolean checkCurrentPlayer(View view, Player player, String action) {
         if (!player.equals(game.getCurrentPlayer())) {
-            emit(new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.").getMessage()));
             return false;
         }
         return true;
@@ -467,13 +463,13 @@ public class GameContext extends EventEmitter {
     /**
      * Ensures that the current player has not done a mandatory action yet.
      *
-     * @param v      the view to on the error massage back with
+     * @param view      the view to on the error massage back with
      * @param action the action trying to be performed
      * @return whether the check passed
      */
-    private boolean checkMandatoryActionNotDone(View v, String action) {
+    private boolean checkMandatoryActionNotDone(View view, String action) {
         if (mandatoryActionDone) {
-            emit(new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.").getMessage()));
+            view.on(new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.").getMessage()));
             return false;
         }
         return true;
@@ -490,13 +486,13 @@ public class GameContext extends EventEmitter {
         return res;
     }
 
-    private ProductionRequest translateToProductionRequest(View v, Player player, ReducedProductionRequest r) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
+    private ProductionRequest translateToProductionRequest(View view, Player player, ReducedProductionRequest r) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
         r.getInputContainers().forEach((id, resMap) -> {
             try {
                 inputContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                emit(new ErrAction(e.getMessage()));
+                view.on(new ErrAction(e.getMessage()));
                 // TODO: Specify resource container that is not owned
                 throw new RuntimeException();
             }

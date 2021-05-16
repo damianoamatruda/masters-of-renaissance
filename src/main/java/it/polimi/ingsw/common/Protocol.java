@@ -2,18 +2,10 @@ package it.polimi.ingsw.common;
 
 import com.google.gson.*;
 import it.polimi.ingsw.common.events.Event;
-import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
-import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
-import java.util.Set;
-
-public class Protocol extends EventEmitter {
-    public Protocol() {
-        super(Set.of(ErrProtocol.class, ErrRuntime.class));
-    }
-
+public class Protocol {
     /*
      * Interprets input string.
      */

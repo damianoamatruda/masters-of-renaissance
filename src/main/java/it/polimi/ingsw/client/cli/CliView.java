@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.common.EventEmitter;
 import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 
 public class CliView extends View {
@@ -27,26 +26,25 @@ public class CliView extends View {
         this.eventPasser = eventPasser;
     }
 
-    public void registerToProtocol(EventEmitter protocol) {
-        protocol.register(ErrProtocol.class, this::on);
-        protocol.register(ErrRuntime.class, this::on);
-    }
-
-    public void unregisterToProtocol(EventEmitter protocol) {
-        protocol.unregister(ErrProtocol.class, this::on);
-        protocol.unregister(ErrRuntime.class, this::on);
-    }
-
-    public void registerToModel(EventEmitter model) {
-        /* Lobby and GameContext */
+    @Override
+    public void registerToModelLobby(EventEmitter model) {
         model.register(ErrAction.class, this::on);
-
-        /* Lobby (only) */
         model.register(UpdateBookedSeats.class, this::on);
         model.register(UpdateJoinGame.class, this::on);
         model.register(ResGoodbye.class, this::on);
+    }
 
-        /* GameContext (only) */
+    @Override
+    public void unregisterToModelLobby(EventEmitter model) {
+        model.unregister(ErrAction.class, this::on);
+        model.unregister(UpdateBookedSeats.class, this::on);
+        model.unregister(UpdateJoinGame.class, this::on);
+        model.unregister(ResGoodbye.class, this::on);
+    }
+
+    @Override
+    public void registerToModelGameContext(EventEmitter model) {
+        model.register(ErrAction.class, this::on);
         model.register(UpdateSetupDone.class, this::on);
 
         /* Game */
@@ -57,7 +55,8 @@ public class CliView extends View {
         model.register(UpdateGameEnd.class, this::on);
 
         /* Player */
-        model.register(UpdateLeadersHand.class, this::on);
+        model.register(UpdatePlayer.class, this::on);
+        model.register(UpdateLeadersHandCount.class, this::on);
         model.register(UpdateFaithPoints.class, this::on);
         model.register(UpdateVictoryPoints.class, this::on);
         model.register(UpdatePlayerStatus.class, this::on);
@@ -77,9 +76,13 @@ public class CliView extends View {
 
         /* FaithTrack */
         model.register(UpdateVaticanSection.class, this::on);
+
+        /* SoloGame */
+        model.register(UpdateActionToken.class, this::on);
     }
 
-    public void unregisterToModel(EventEmitter model) {
+    @Override
+    public void unregisterToModelGameContext(EventEmitter model) {
         /* Lobby and GameContext */
         model.unregister(ErrAction.class, this::on);
 
@@ -99,7 +102,8 @@ public class CliView extends View {
         model.unregister(UpdateGameEnd.class, this::on);
 
         /* Player */
-        model.unregister(UpdateLeadersHand.class, this::on);
+        model.unregister(UpdatePlayer.class, this::on);
+        model.unregister(UpdateLeadersHandCount.class, this::on);
         model.unregister(UpdateFaithPoints.class, this::on);
         model.unregister(UpdateVictoryPoints.class, this::on);
         model.unregister(UpdatePlayerStatus.class, this::on);
@@ -119,11 +123,24 @@ public class CliView extends View {
 
         /* FaithTrack */
         model.unregister(UpdateVaticanSection.class, this::on);
+
+        /* SoloGame */
+        model.unregister(UpdateActionToken.class, this::on);
     }
 
-    private void on(Event event) {
+    @Override
+    public void registerToPrivateModelPlayer(EventEmitter model) {
+        model.register(UpdateLeadersHand.class, this::on);
+    }
+
+    @Override
+    public void unregisterToPrivateModelPlayer(EventEmitter model) {
+        model.unregister(UpdateLeadersHand.class, this::on);
+    }
+
+    @Override
+    public void on(MVEvent event) {
         // TODO: Implement all listeners in CliView and link them to Cli
-        // on(event);
         System.out.println("Temporary listener.");
     }
 }

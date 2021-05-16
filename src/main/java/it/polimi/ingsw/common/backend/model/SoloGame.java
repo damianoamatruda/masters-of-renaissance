@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
@@ -9,7 +10,6 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * This class represents a single-player game of Masters of Renaissance. It contains all the extra functionality.
@@ -55,42 +55,22 @@ public class SoloGame extends Game {
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream()
-                        .collect(Collectors.toMap(
-                                ResourceContainer::reduce,
-                                c -> players.stream()
-                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                                        .findAny().get().getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
-        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-        // actionTokens.stream().map(ActionToken::reduce).toList(),
-        // p.getLeaders().stream().map(Card::getId).toList(),
-        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-        // p.getStrongbox().getId(),
-        // p.getSetup().reduce()));
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                actionTokens.stream().map(ActionToken::reduce).toList()));
 
         emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
-    public void emitResumeState() {
-        emit(new UpdateGameResume(
+    public void emitResumeState(View view) {
+        view.on(new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream()
-                        .collect(Collectors.toMap(
-                                ResourceContainer::reduce,
-                                c -> players.stream()
-                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                                        .findAny().get().getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
-        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-        // actionTokens.stream().map(ActionToken::reduce).toList(),
-        // p.getLeaders().stream().map(Card::getId).toList(),
-        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-        // p.getStrongbox().getId(),
-        // p.getSetup().reduce()));
+                resContainers.stream().map(ResourceContainer::reduce).toList(),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                actionTokens.stream().map(ActionToken::reduce).toList()));
 
         emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
