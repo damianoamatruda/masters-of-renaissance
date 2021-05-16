@@ -10,8 +10,6 @@ public class Protocol {
      * Interprets input string.
      */
     private static <T extends Event> T processInputAs(String input, String packageName, Class<T> eventSuperclass) {
-        // TODO: Implement private events in some way
-
         if (input == null || input.isBlank())
             throw new ProtocolException("Empty input.");
 
