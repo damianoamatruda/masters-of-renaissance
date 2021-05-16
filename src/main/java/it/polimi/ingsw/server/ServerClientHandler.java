@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class ServerClientHandler /* extends EventEmitter */ implements Runnable, EventPasser {
+public class ServerClientHandler /* extends EventDispatcher */ implements Runnable, EventPasser {
     private final Socket clientSocket;
     private final VirtualView view;
     private final Protocol protocol;
@@ -25,8 +25,6 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
     private final int timeout;
 
     public ServerClientHandler(Socket clientSocket, VirtualView view, Protocol protocol) {
-        // super(Set.of(ResWelcome.class));
-
         this.clientSocket = clientSocket;
 
         this.view = view;
@@ -67,7 +65,7 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
                         System.out.println("Received: \"" + inputLine + "\"");
 
                         try {
-                            view.emit(protocol.processInputAsVCEvent(inputLine));
+                            view.dispatch(protocol.processInputAsVCEvent(inputLine));
                         } catch (ProtocolException e) {
                             on(new ErrProtocol(e));
                         } catch (Exception e) {
@@ -87,7 +85,7 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
                     }
                     else {
                         try {
-                            view.emit(protocol.processInputAsMVEvent(reqGoodbye)); // FIXME: Add type 'NetEvent'
+                            view.dispatch(protocol.processInputAsMVEvent(reqGoodbye)); // FIXME: Add type 'NetEvent'
                         } catch (ProtocolException e1) {
                             on(new ErrProtocol(e1));
                         } catch (Exception e1) {

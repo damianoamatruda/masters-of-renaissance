@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * This class manages the states and actions of a game.
  */
-public class GameContext extends EventEmitter {
+public class GameContext extends EventDispatcher {
     /** The game. */
     private final Game game;
 
@@ -33,48 +33,28 @@ public class GameContext extends EventEmitter {
      * @param game the game
      */
     public GameContext(Game game, GameFactory gameFactory) {
-        super(Set.of(
-                /* GameContext */
-                ErrAction.class,
-                /* Game */
-                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateSetupDone.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
-                /* Player (except UpdateLeadersHand.class) */
-                UpdatePlayer.class, UpdateLeadersHandCount.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
-                /* Card */
-                UpdateLeader.class,
-                /* ResourceContainer */
-                UpdateResourceContainer.class,
-                /* DevCardGrid */
-                UpdateDevCardGrid.class,
-                /* Market */
-                UpdateMarket.class,
-                /* FaithTrack */
-                UpdateVaticanSection.class,
-                /* SoloGame */
-                UpdateActionToken.class));
-
         this.game = game;
         this.gameFactory = gameFactory;
         this.mandatoryActionDone = false;
 
-        this.game.register(UpdateGameStart.class, this::emit);
-        this.game.register(UpdateCurrentPlayer.class, this::emit);
-        this.game.register(UpdateSetupDone.class, this::emit);
-        this.game.register(UpdateGameResume.class, this::emit);
-        this.game.register(UpdateLastRound.class, this::emit);
-        this.game.register(UpdateGameEnd.class, this::emit);
-        this.game.register(UpdatePlayer.class, this::emit);
-        this.game.register(UpdateLeadersHandCount.class, this::emit);
-        this.game.register(UpdateFaithPoints.class, this::emit);
-        this.game.register(UpdateVictoryPoints.class, this::emit);
-        this.game.register(UpdatePlayerStatus.class, this::emit);
-        this.game.register(UpdateDevCardSlot.class, this::emit);
-        this.game.register(UpdateLeader.class, this::emit);
-        this.game.register(UpdateResourceContainer.class, this::emit);
-        this.game.register(UpdateDevCardGrid.class, this::emit);
-        this.game.register(UpdateMarket.class, this::emit);
-        this.game.register(UpdateVaticanSection.class, this::emit);
-        this.game.register(UpdateActionToken.class, this::emit);
+        this.game.addEventListener(UpdateGameStart.class, this::dispatch);
+        this.game.addEventListener(UpdateCurrentPlayer.class, this::dispatch);
+        this.game.addEventListener(UpdateSetupDone.class, this::dispatch);
+        this.game.addEventListener(UpdateGameResume.class, this::dispatch);
+        this.game.addEventListener(UpdateLastRound.class, this::dispatch);
+        this.game.addEventListener(UpdateGameEnd.class, this::dispatch);
+        this.game.addEventListener(UpdatePlayer.class, this::dispatch);
+        this.game.addEventListener(UpdateLeadersHandCount.class, this::dispatch);
+        this.game.addEventListener(UpdateFaithPoints.class, this::dispatch);
+        this.game.addEventListener(UpdateVictoryPoints.class, this::dispatch);
+        this.game.addEventListener(UpdatePlayerStatus.class, this::dispatch);
+        this.game.addEventListener(UpdateDevCardSlot.class, this::dispatch);
+        this.game.addEventListener(UpdateLeader.class, this::dispatch);
+        this.game.addEventListener(UpdateResourceContainer.class, this::dispatch);
+        this.game.addEventListener(UpdateDevCardGrid.class, this::dispatch);
+        this.game.addEventListener(UpdateMarket.class, this::dispatch);
+        this.game.addEventListener(UpdateVaticanSection.class, this::dispatch);
+        this.game.addEventListener(UpdateActionToken.class, this::dispatch);
     }
 
     public void start() {

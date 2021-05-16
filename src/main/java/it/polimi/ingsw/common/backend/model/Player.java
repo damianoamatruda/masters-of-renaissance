@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
@@ -17,7 +17,7 @@ import java.util.*;
 /**
  * Class dedicated to the storage of the player's data and available operations.
  */
-public class Player extends EventEmitter {
+public class Player extends EventDispatcher {
     /** The player's nickname. */
     private final String nickname;
 
@@ -67,8 +67,6 @@ public class Player extends EventEmitter {
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
                   ResourceTransactionRecipe baseProduction, int devSlotsCount, PlayerSetup setup) {
-        super(Set.of(UpdatePlayer.class, UpdateLeadersHand.class, UpdateLeadersHandCount.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class));
-
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = new ArrayList<>(leaders);
@@ -87,13 +85,13 @@ public class Player extends EventEmitter {
     }
 
     public void emitInitialState() {
-        emit(new UpdatePlayer(
+        dispatch(new UpdatePlayer(
                 nickname,
                 baseProduction.getId(),
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
                 setup.reduce()));
-        emit(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
+        dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
     }
 
     public void emitResumeState(View view) {
@@ -139,8 +137,8 @@ public class Player extends EventEmitter {
 
         this.leaders.retainAll(leaders);
 
-        emit(new UpdateLeadersHand(getNickname(), this.leaders.stream().map(Card::getId).toList()));
-        emit(new UpdateLeadersHandCount(getNickname(), this.leaders.size()));
+        dispatch(new UpdateLeadersHand(getNickname(), this.leaders.stream().map(Card::getId).toList()));
+        dispatch(new UpdateLeadersHandCount(getNickname(), this.leaders.size()));
     }
 
     /**
@@ -158,7 +156,7 @@ public class Player extends EventEmitter {
         game.onDiscardLeader(this);
         leaders.remove(leader);
 
-        emit(new UpdateLeadersHandCount(getNickname(), leaders.size()));
+        dispatch(new UpdateLeadersHandCount(getNickname(), leaders.size()));
     }
 
     /**
@@ -176,7 +174,7 @@ public class Player extends EventEmitter {
         game.updatePtsFromYellowTiles(this, points);
         game.onIncrementFaithPoints(faithPoints);
 
-        emit(new UpdateFaithPoints(getNickname(), faithPoints, false));
+        dispatch(new UpdateFaithPoints(getNickname(), faithPoints, false));
     }
 
     /**
@@ -241,7 +239,7 @@ public class Player extends EventEmitter {
      */
     public void incrementVictoryPoints(int points) {
         this.victoryPoints += points;
-        emit(new UpdateVictoryPoints(nickname, victoryPoints));
+        dispatch(new UpdateVictoryPoints(nickname, victoryPoints));
     }
 
     /**
@@ -261,7 +259,7 @@ public class Player extends EventEmitter {
     public void setActive(boolean active) {
         this.active = active;
 
-        emit(new UpdatePlayerStatus(getNickname(), active));
+        dispatch(new UpdatePlayerStatus(getNickname(), active));
     }
 
     /**
@@ -306,7 +304,7 @@ public class Player extends EventEmitter {
         slot.push(devCard);
 
         incrementVictoryPoints(devCard.getVictoryPoints());
-        emit(new UpdateDevCardSlot(devCard.getId(), devSlotIndex));
+        dispatch(new UpdateDevCardSlot(devCard.getId(), devSlotIndex));
     }
 
     /**

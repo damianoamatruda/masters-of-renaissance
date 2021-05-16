@@ -1,25 +1,18 @@
 package it.polimi.ingsw.common;
 
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
-import it.polimi.ingsw.common.events.vcevents.*;
-
-import java.util.Set;
 
 /** Interface defining the 'View' role in the MVC architecture. */
-public abstract class View extends EventEmitter implements EventListener<MVEvent> {
-    public View() {
-        super(Set.of(ReqGoodbye.class, ReqJoin.class, ReqNewGame.class, ReqChooseLeaders.class, ReqChooseResources.class, ReqSwapShelves.class, ReqActivateLeader.class, ReqDiscardLeader.class, ReqTakeFromMarket.class, ReqBuyDevCard.class, ReqActivateProduction.class, ReqEndTurn.class));
-    }
+public abstract class View extends EventDispatcher implements EventListener<MVEvent> {
+    public abstract void registerToModelLobby(EventDispatcher model);
 
-    public abstract void registerToModelLobby(EventEmitter model);
+    public abstract void unregisterToModelLobby(EventDispatcher model);
 
-    public abstract void unregisterToModelLobby(EventEmitter model);
+    public abstract void registerToModelGameContext(EventDispatcher model);
 
-    public abstract void registerToModelGameContext(EventEmitter model);
+    public abstract void unregisterToModelGameContext(EventDispatcher model);
 
-    public abstract void unregisterToModelGameContext(EventEmitter model);
+    public abstract void registerToPrivateModelPlayer(EventDispatcher model);
 
-    public abstract void registerToPrivateModelPlayer(EventEmitter model);
-
-    public abstract void unregisterToPrivateModelPlayer(EventEmitter model);
+    public abstract void unregisterToPrivateModelPlayer(EventDispatcher model);
 }

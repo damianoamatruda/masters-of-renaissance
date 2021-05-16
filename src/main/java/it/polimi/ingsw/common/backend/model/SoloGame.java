@@ -51,7 +51,7 @@ public class SoloGame extends Game {
 
     @Override
     public void emitInitialState() {
-        emit(new UpdateGameStart(
+        dispatch(new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
@@ -59,7 +59,7 @@ public class SoloGame extends Game {
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 actionTokens.stream().map(ActionToken::reduce).toList()));
 
-        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SoloGame extends Game {
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 actionTokens.stream().map(ActionToken::reduce).toList()));
 
-        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SoloGame extends Game {
         token.trigger(this);
         actionTokens.add(token);
 
-        emit(new UpdateActionToken(token.getId()));
+        dispatch(new UpdateActionToken(token.getId()));
 
         /* Check if Lorenzo is winning */
         if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
@@ -101,7 +101,7 @@ public class SoloGame extends Game {
             super.onTurnEnd();
         else {
             ended = true;
-            emit(new UpdateGameEnd(null));
+            dispatch(new UpdateGameEnd(null));
         }
     }
 
@@ -135,6 +135,6 @@ public class SoloGame extends Game {
 
         onIncrementFaithPoints(blackPoints);
 
-        emit(new UpdateFaithPoints(null, blackPoints, true));
+        dispatch(new UpdateFaithPoints(null, blackPoints, true));
     }
 }

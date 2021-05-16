@@ -1,10 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeader;
-
-import java.util.Set;
 
 /**
  * Card is the abstract class for all card-like entities that share the victory points attribute.
@@ -12,7 +9,7 @@ import java.util.Set;
  * @see DevelopmentCard
  * @see LeaderCard
  */
-public abstract class Card extends EventEmitter {
+public abstract class Card extends EventDispatcher {
     private final int id;
 
     /** The amount of points the card gives to its owner. */
@@ -26,7 +23,6 @@ public abstract class Card extends EventEmitter {
      * @see Player
      */
     public Card(int victoryPoints, int id) {
-        super(Set.of(UpdateLeader.class));
         this.victoryPoints = victoryPoints;
         this.id = id;
     }

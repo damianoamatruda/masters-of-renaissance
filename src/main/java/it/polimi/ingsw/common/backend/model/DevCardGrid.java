@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 /**
  * This class represents a grid of decks of development cards.
  */
-public class DevCardGrid extends EventEmitter {
+public class DevCardGrid extends EventDispatcher {
     /** Number of rows of separate decks that represent different development card levels. */
     private final int levelsCount;
 
@@ -31,8 +31,6 @@ public class DevCardGrid extends EventEmitter {
      * @param colorsCount the number of columns of separate decks that represent different development card colors.
      */
     public DevCardGrid(List<DevelopmentCard> devCards, int levelsCount, int colorsCount) {
-        super(Set.of(UpdateDevCardGrid.class));
-
         this.grid = new HashMap<>();
         this.levelsCount = levelsCount;
         this.colorsCount = colorsCount;
@@ -57,7 +55,7 @@ public class DevCardGrid extends EventEmitter {
     }
 
     public void emitInitialState() {
-        emit(new UpdateDevCardGrid(reduce()));
+        dispatch(new UpdateDevCardGrid(reduce()));
     }
 
     /**
@@ -135,7 +133,7 @@ public class DevCardGrid extends EventEmitter {
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
             player.addToDevSlot(game, slotIndex, card, resContainers);
-            emit(new UpdateDevCardGrid(reduce()));
+            dispatch(new UpdateDevCardGrid(reduce()));
         } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
@@ -158,7 +156,7 @@ public class DevCardGrid extends EventEmitter {
         }
         if (quantity > 0) grid.remove(color);
 
-        emit(new UpdateDevCardGrid(reduce()));
+        dispatch(new UpdateDevCardGrid(reduce()));
     }
 
     public ReducedDevCardGrid reduce() {

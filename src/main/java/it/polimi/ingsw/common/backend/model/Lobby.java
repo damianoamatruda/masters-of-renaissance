@@ -1,16 +1,19 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class Lobby extends EventEmitter {
+public class Lobby extends EventDispatcher {
     private final GameFactory gameFactory;
     // private final List<GameContext> games;
     private final Map<View, String> nicknames;
@@ -20,8 +23,6 @@ public class Lobby extends EventEmitter {
     private int newGamePlayersCount;
 
     public Lobby(GameFactory gameFactory) {
-        super(Set.of(ErrAction.class, UpdateBookedSeats.class, UpdateJoinGame.class, ResGoodbye.class));
-
         this.gameFactory = gameFactory;
         this.nicknames = new HashMap<>();
         this.joined = new HashMap<>();
@@ -73,7 +74,7 @@ public class Lobby extends EventEmitter {
             waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
 
             if (newGamePlayersCount != 0)
-                emit(new UpdateJoinGame(newGamePlayersCount));
+                dispatch(new UpdateJoinGame(newGamePlayersCount));
 
             if (waiting.size() == newGamePlayersCount)
                 startNewGame();
@@ -144,7 +145,7 @@ public class Lobby extends EventEmitter {
             }
             nicknames.remove(view);
         }
-        emit(new ResGoodbye());
+        dispatch(new ResGoodbye());
     }
 
     public void checkJoinedThen(View view, BiConsumer<GameContext, String> then) {

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
@@ -10,13 +10,12 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
  * as some attributes shared by the players that can be easily accessed from the outside.
  */
-public class Game extends EventEmitter {
+public class Game extends EventDispatcher {
     /** Reference to the collection from which all the player's data can be accessed. */
     protected final List<Player> players;
 
@@ -74,24 +73,6 @@ public class Game extends EventEmitter {
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxFaithPointsCount,
                 int maxObtainableDevCards) {
-        super(Set.of(
-                /* Game */
-                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateSetupDone.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
-                /* Player (except UpdateLeadersHand.class) */
-                UpdatePlayer.class, UpdateLeadersHandCount.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
-                /* Card */
-                UpdateLeader.class,
-                /* ResourceContainer */
-                UpdateResourceContainer.class,
-                /* DevCardGrid */
-                UpdateDevCardGrid.class,
-                /* Market */
-                UpdateMarket.class,
-                /* FaithTrack */
-                UpdateVaticanSection.class,
-                /* SoloGame */
-                UpdateActionToken.class));
-
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);
@@ -105,21 +86,21 @@ public class Game extends EventEmitter {
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
 
-        this.players.forEach(p -> p.register(UpdatePlayer.class, this::emit));
-        this.players.forEach(p -> p.register(UpdateLeadersHandCount.class, this::emit));
-        this.players.forEach(p -> p.register(UpdateFaithPoints.class, this::emit));
-        this.players.forEach(p -> p.register(UpdateVictoryPoints.class, this::emit));
-        this.players.forEach(p -> p.register(UpdatePlayerStatus.class, this::emit));
-        this.players.forEach(p -> p.register(UpdateDevCardSlot.class, this::emit));
-        this.leaderCards.forEach(l -> l.register(UpdateLeader.class, this::emit));
-        this.resContainers.forEach(c -> c.register(UpdateResourceContainer.class, this::emit));
-        this.devCardGrid.register(UpdateDevCardGrid.class, this::emit);
-        this.market.register(UpdateMarket.class, this::emit);
-        this.faithTrack.register(UpdateVaticanSection.class, this::emit);
+        this.players.forEach(p -> p.addEventListener(UpdatePlayer.class, this::dispatch));
+        this.players.forEach(p -> p.addEventListener(UpdateLeadersHandCount.class, this::dispatch));
+        this.players.forEach(p -> p.addEventListener(UpdateFaithPoints.class, this::dispatch));
+        this.players.forEach(p -> p.addEventListener(UpdateVictoryPoints.class, this::dispatch));
+        this.players.forEach(p -> p.addEventListener(UpdatePlayerStatus.class, this::dispatch));
+        this.players.forEach(p -> p.addEventListener(UpdateDevCardSlot.class, this::dispatch));
+        this.leaderCards.forEach(l -> l.addEventListener(UpdateLeader.class, this::dispatch));
+        this.resContainers.forEach(c -> c.addEventListener(UpdateResourceContainer.class, this::dispatch));
+        this.devCardGrid.addEventListener(UpdateDevCardGrid.class, this::dispatch);
+        this.market.addEventListener(UpdateMarket.class, this::dispatch);
+        this.faithTrack.addEventListener(UpdateVaticanSection.class, this::dispatch);
     }
 
     public void emitInitialState() {
-        emit(new UpdateGameStart(
+        dispatch(new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
@@ -127,7 +108,7 @@ public class Game extends EventEmitter {
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 null)); /* actionTokens not sent */
 
-        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     public void emitResumeState(View view) {
@@ -242,7 +223,7 @@ public class Game extends EventEmitter {
     private void setLastRound() {
         lastRound = true;
 
-        emit(new UpdateLastRound());
+        dispatch(new UpdateLastRound());
     }
 
     /**
@@ -263,7 +244,7 @@ public class Game extends EventEmitter {
             nextPlayer = players.get(0);
         } while (!nextPlayer.isActive());
 
-        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
 
         if (nextPlayer.equals(getFirstPlayer()))
             rounds++;
@@ -277,7 +258,7 @@ public class Game extends EventEmitter {
      */
     public void onPlayerSetupDone() {
         if (players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone))
-            emit(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
+            dispatch(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
     }
 
     /**
@@ -426,7 +407,7 @@ public class Game extends EventEmitter {
         /* In case of a draw, the first player in order becomes the winner */
         winners.stream().findFirst().ifPresent(p -> {
             p.setWinner();
-            emit(new UpdateGameEnd(p.getNickname()));
+            dispatch(new UpdateGameEnd(p.getNickname()));
         });
     }
 

@@ -69,7 +69,7 @@ public abstract class LeaderCard extends Card {
         active = true;
 
         player.incrementVictoryPoints(getVictoryPoints());
-        emit(new UpdateLeader(getId(), active));
+        dispatch(new UpdateLeader(getId(), active));
     }
 
     /**

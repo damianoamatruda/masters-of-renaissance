@@ -12,88 +12,88 @@ public class Controller {
     }
 
     public void registerToView(View view) {
-        view.register(ReqGoodbye.class, event -> on(view, event));
-        view.register(ReqJoin.class, event -> on(view, event));
-        view.register(ReqNewGame.class, event -> on(view, event));
-        view.register(ReqChooseLeaders.class, event -> on(view, event));
-        view.register(ReqChooseResources.class, event -> on(view, event));
-        view.register(ReqSwapShelves.class, event -> on(view, event));
-        view.register(ReqActivateLeader.class, event -> on(view, event));
-        view.register(ReqDiscardLeader.class, event -> on(view, event));
-        view.register(ReqTakeFromMarket.class, event -> on(view, event));
-        view.register(ReqBuyDevCard.class, event -> on(view, event));
-        view.register(ReqActivateProduction.class, event -> on(view, event));
-        view.register(ReqEndTurn.class, event -> on(view, event));
+        view.addEventListener(ReqGoodbye.class, event -> on(view, event));
+        view.addEventListener(ReqJoin.class, event -> on(view, event));
+        view.addEventListener(ReqNewGame.class, event -> on(view, event));
+        view.addEventListener(ReqChooseLeaders.class, event -> on(view, event));
+        view.addEventListener(ReqChooseResources.class, event -> on(view, event));
+        view.addEventListener(ReqSwapShelves.class, event -> on(view, event));
+        view.addEventListener(ReqActivateLeader.class, event -> on(view, event));
+        view.addEventListener(ReqDiscardLeader.class, event -> on(view, event));
+        view.addEventListener(ReqTakeFromMarket.class, event -> on(view, event));
+        view.addEventListener(ReqBuyDevCard.class, event -> on(view, event));
+        view.addEventListener(ReqActivateProduction.class, event -> on(view, event));
+        view.addEventListener(ReqEndTurn.class, event -> on(view, event));
     }
 
     public void unregisterView(View view) {
-        view.unregister(ReqGoodbye.class, event -> on(view, event));
-        view.unregister(ReqJoin.class, event -> on(view, event));
-        view.unregister(ReqNewGame.class, event -> on(view, event));
-        view.unregister(ReqChooseLeaders.class, event -> on(view, event));
-        view.unregister(ReqChooseResources.class, event -> on(view, event));
-        view.unregister(ReqSwapShelves.class, event -> on(view, event));
-        view.unregister(ReqActivateLeader.class, event -> on(view, event));
-        view.unregister(ReqDiscardLeader.class, event -> on(view, event));
-        view.unregister(ReqTakeFromMarket.class, event -> on(view, event));
-        view.unregister(ReqBuyDevCard.class, event -> on(view, event));
-        view.unregister(ReqActivateProduction.class, event -> on(view, event));
-        view.unregister(ReqEndTurn.class, event -> on(view, event));
+        view.removeEventListener(ReqGoodbye.class, event -> on(view, event));
+        view.removeEventListener(ReqJoin.class, event -> on(view, event));
+        view.removeEventListener(ReqNewGame.class, event -> on(view, event));
+        view.removeEventListener(ReqChooseLeaders.class, event -> on(view, event));
+        view.removeEventListener(ReqChooseResources.class, event -> on(view, event));
+        view.removeEventListener(ReqSwapShelves.class, event -> on(view, event));
+        view.removeEventListener(ReqActivateLeader.class, event -> on(view, event));
+        view.removeEventListener(ReqDiscardLeader.class, event -> on(view, event));
+        view.removeEventListener(ReqTakeFromMarket.class, event -> on(view, event));
+        view.removeEventListener(ReqBuyDevCard.class, event -> on(view, event));
+        view.removeEventListener(ReqActivateProduction.class, event -> on(view, event));
+        view.removeEventListener(ReqEndTurn.class, event -> on(view, event));
     }
 
-    public void on(View view, ReqGoodbye event) {
+    private void on(View view, ReqGoodbye event) {
         model.exit(view);
     }
 
-    public void on(View view, ReqJoin event) {
+    private void on(View view, ReqJoin event) {
         model.joinLobby(view, event.getNickname());
     }
 
-    public void on(View view, ReqNewGame event) {
+    private void on(View view, ReqNewGame event) {
         model.prepareNewGame(view, event.getPlayersCount());
     }
 
-    public void on(View view, ReqChooseLeaders event) {
+    private void on(View view, ReqChooseLeaders event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.chooseLeaders(view, nickname, event.getLeaders()));
     }
 
-    public void on(View view, ReqChooseResources event) {
+    private void on(View view, ReqChooseResources event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.chooseResources(view, nickname, event.getShelves()));
     }
 
-    public void on(View view, ReqSwapShelves event) {
+    private void on(View view, ReqSwapShelves event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.swapShelves(view, nickname, event.getShelf1(), event.getShelf2()));
     }
 
-    public void on(View view, ReqActivateLeader event) {
+    private void on(View view, ReqActivateLeader event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.activateLeader(view, nickname, event.getLeader()));
     }
 
-    public void on(View view, ReqDiscardLeader event) {
+    private void on(View view, ReqDiscardLeader event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.discardLeader(view, nickname, event.getLeader()));
     }
 
-    public void on(View view, ReqTakeFromMarket event) {
+    private void on(View view, ReqTakeFromMarket event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.takeMarketResources(view, nickname, event.isRow(), event.getIndex(), event.getReplacements(), event.getShelves()));
     }
 
-    public void on(View view, ReqBuyDevCard event) {
+    private void on(View view, ReqBuyDevCard event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.buyDevCard(view, nickname, event.getColor(), event.getLevel(), event.getDevSlot(), event.getResContainers()));
     }
 
-    public void on(View view, ReqActivateProduction event) {
+    private void on(View view, ReqActivateProduction event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.activateProductionRequests(view, nickname, event.getProdRequests()));
     }
 
-    public void on(View view, ReqEndTurn event) {
+    private void on(View view, ReqEndTurn event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.endTurn(view, nickname));
     }

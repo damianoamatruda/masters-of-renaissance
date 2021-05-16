@@ -1,8 +1,7 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.mvevents.UpdateResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.Map;
@@ -12,13 +11,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * This interface represents a container of storable resources.
  */
-public abstract class ResourceContainer extends EventEmitter {
+public abstract class ResourceContainer extends EventDispatcher {
     private static final AtomicInteger idCounter = new AtomicInteger();
 
     private final int id;
 
     public ResourceContainer() {
-        super(Set.of(UpdateResourceContainer.class));
         id = idCounter.getAndIncrement();
     }
 

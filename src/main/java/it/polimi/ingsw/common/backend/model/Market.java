@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventEmitter;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
  * This class represents a special container of resources that can be taken from the player. It consists of a grid of
  * resources together with a slide containing a single resource.
  */
-public class Market extends EventEmitter {
+public class Market extends EventDispatcher {
     /**
      * The resources in the grid. Columns of rows.
      */
@@ -36,8 +36,6 @@ public class Market extends EventEmitter {
      * @param replaceableResType the type of the resources that can be replaced
      */
     public Market(Map<ResourceType, Integer> resources, int colsCount, ResourceType replaceableResType) {
-        super(Set.of(UpdateMarket.class));
-
         List<ResourceType> resourcesList = new ArrayList<>();
         resources.forEach((r, q) -> IntStream.range(0, q).forEach(i -> resourcesList.add(r)));
 
@@ -70,7 +68,7 @@ public class Market extends EventEmitter {
     }
 
     public void emitInitialState() {
-        emit(new UpdateMarket(reduce()));
+        dispatch(new UpdateMarket(reduce()));
     }
 
     /**
@@ -122,7 +120,7 @@ public class Market extends EventEmitter {
 
         shift(isRow, index);
 
-        emit(new UpdateMarket(reduce()));
+        dispatch(new UpdateMarket(reduce()));
     }
 
     /**
