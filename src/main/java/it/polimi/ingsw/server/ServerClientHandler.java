@@ -64,6 +64,8 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
                     try {
                         halfTimeout = 0;
 
+                        System.out.println("Received: \"" + inputLine + "\"");
+
                         try {
                             view.emit(protocol.processInputAsVCEvent(inputLine));
                         } catch (ProtocolException e) {

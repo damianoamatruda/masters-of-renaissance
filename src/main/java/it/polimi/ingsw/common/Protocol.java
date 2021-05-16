@@ -23,15 +23,13 @@ public class Protocol extends EventEmitter {
         if (input == null || input.isBlank())
             throw new ProtocolException("Empty input.");
 
-        System.out.println("Received: \"" + input + "\"");
-
         Gson gson = new Gson();
         JsonObject jsonObject;
 
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonSyntaxException e) {
-            throw new ProtocolException("Invalid syntax.");
+            throw new ProtocolException("Invalid syntax.", e);
         }
         if (jsonObject == null)
             throw new ProtocolException("Unknown parser error.");
