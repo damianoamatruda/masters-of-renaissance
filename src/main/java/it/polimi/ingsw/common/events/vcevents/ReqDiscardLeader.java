@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Client request to discard a leader card. */
 public class ReqDiscardLeader implements VCEvent {
     /** The ID of the leader card to be discareded. */
@@ -14,11 +12,6 @@ public class ReqDiscardLeader implements VCEvent {
      */
     public ReqDiscardLeader(int leader) {
         this.leader = leader;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**

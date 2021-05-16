@@ -1,6 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.List;
@@ -17,11 +16,6 @@ public class ReqActivateProduction implements VCEvent {
      */
     public ReqActivateProduction(List<ReducedProductionRequest> prodRequests) {
         this.prodRequests = prodRequests;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**

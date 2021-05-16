@@ -1,5 +1,7 @@
 package it.polimi.ingsw.common.events.mvevents;
 
+import it.polimi.ingsw.common.ProtocolException;
+
 /** Error generated upon unsuccessful parsing of a message. */
 public class ErrProtocol implements MVEvent {
     /** The reason why the message was unparsable */
@@ -8,10 +10,10 @@ public class ErrProtocol implements MVEvent {
     /**
      * Class constructor.
      *
-     * @param msg the reason why the message was unparsable
+     * @param e the protocol exception
      */
-    public ErrProtocol(String msg) {
-        this.msg = msg;
+    public ErrProtocol(ProtocolException e) {
+        this.msg = e.getMessage();
     }
 
     /**

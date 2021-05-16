@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
-
 import java.util.Map;
 
 /** Client request to buy a development card. */
@@ -31,11 +29,6 @@ public class ReqBuyDevCard implements VCEvent {
         this.level = level;
         this.devSlot = devSlot;
         this.resContainers = resContainers;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**

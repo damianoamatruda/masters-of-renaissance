@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
-
 import java.util.Map;
 
 /** Client request for setup resource choice. */
@@ -16,11 +14,6 @@ public class ReqChooseResources implements VCEvent {
      */
     public ReqChooseResources(Map<Integer, Map<String, Integer>> shelves) {
         this.shelves = shelves;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**

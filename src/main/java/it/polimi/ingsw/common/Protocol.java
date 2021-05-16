@@ -15,15 +15,13 @@ public class Protocol extends EventEmitter {
     }
 
     /*
-     * Interprets command string and calls an action from the model.
+     * Interprets input string.
      */
-    public void processInput(String input, View view) {
+    private static <T extends Event> T processInputAs(String input, String packageName, Class<T> eventSuperclass) {
         // TODO: Implement private events in some way
 
-        if (input == null || input.isBlank()) {
-            emit(new ErrProtocol("Empty input."));
-            return;
-        }
+        if (input == null || input.isBlank())
+            throw new ProtocolException("Empty input.");
 
         System.out.println("Received: \"" + input + "\"");
 
@@ -33,48 +31,45 @@ public class Protocol extends EventEmitter {
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonSyntaxException e) {
-            emit(new ErrProtocol("Invalid syntax."));
-            return;
+            throw new ProtocolException("Invalid syntax.");
         }
-        if (jsonObject == null) {
-            emit(new ErrProtocol("Unknown parser error."));
-            return;
-        }
+        if (jsonObject == null)
+            throw new ProtocolException("Unknown parser error.");
 
         JsonElement type = jsonObject.get("type");
 
-        if (type == null) {
-            emit(new ErrProtocol("Field \"type\" not found."));
-            return;
-        }
+        if (type == null)
+            throw new ProtocolException("Field \"type\" not found.");
 
-        VCEvent event;
+        T event;
 
         try {
-            event = gson.fromJson(jsonObject, Class.forName("it.polimi.ingsw.common.events.vcevents." + type.getAsString()).asSubclass(VCEvent.class));
+            event = gson.fromJson(jsonObject, Class.forName(String.format("%s.%s", packageName, type.getAsString())).asSubclass(eventSuperclass));
         } catch (ClassNotFoundException e) {
-            emit(new ErrProtocol("MVEvent type \"" + type.getAsString() + "\" does not exist."));
-            return;
+            throw new ProtocolException(String.format("Event type \"%s\" as subclass of \"%s\" does not exist.", type.getAsString(), eventSuperclass.getSimpleName()), e);
         } catch (JsonSyntaxException e) {
-            emit(new ErrProtocol("Invalid attribute types."));
-            return;
+            throw new ProtocolException("Invalid attribute types.", e);
         }
 
-        try {
-            event.handle(view);
-        } catch (Exception e) {
-            emit(new ErrRuntime(e));
-        }
+        return event;
+    }
+
+    public VCEvent processInputAsVCEvent(String input) {
+        return processInputAs(input, "it.polimi.ingsw.common.events.vcevents", VCEvent.class);
+    }
+
+    public MVEvent processInputAsMVEvent(String input) {
+        return processInputAs(input, "it.polimi.ingsw.common.events.mvevents", MVEvent.class);
     }
 
     public String processOutput(Event event) {
         Gson gson = new Gson().newBuilder()
                 .enableComplexMapKeySerialization()
-                .registerTypeHierarchyAdapter(MVEvent.class, (JsonSerializer<MVEvent>) (msg, type, jsonSerializationContext) -> {
-                    Gson customGson = new Gson().newBuilder()
+                .registerTypeHierarchyAdapter(Event.class, (JsonSerializer<Event>) (msg, type, jsonSerializationContext) -> {
+                    Gson gson1 = new Gson().newBuilder()
                             .enableComplexMapKeySerialization()
                             .create();
-                    JsonElement jsonElement = customGson.toJsonTree(msg);
+                    JsonElement jsonElement = gson1.toJsonTree(msg);
                     jsonElement.getAsJsonObject().addProperty("type", ((Class<?>) type).getSimpleName());
                     return jsonElement;
                 })

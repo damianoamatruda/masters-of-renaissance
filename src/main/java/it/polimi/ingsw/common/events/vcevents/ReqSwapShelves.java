@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Client request to swap two shelves. */
 public class ReqSwapShelves implements VCEvent {
     /** The first shelf. */
@@ -19,11 +17,6 @@ public class ReqSwapShelves implements VCEvent {
     public ReqSwapShelves(int shelf1, int shelf2) {
         this.shelf1 = shelf1;
         this.shelf2 = shelf2;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**

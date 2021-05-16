@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
-
 import java.util.List;
 
 /** Client request for setup leader choice. */
@@ -16,11 +14,6 @@ public class ReqChooseLeaders implements VCEvent {
      */
     public ReqChooseLeaders(List<Integer> leaders) {
         this.leaders = leaders;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**

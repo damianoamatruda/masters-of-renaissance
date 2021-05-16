@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Client request for leader activation. */
 public class ReqActivateLeader implements VCEvent {
     /** The ID of the leader card to be activated */
@@ -14,11 +12,6 @@ public class ReqActivateLeader implements VCEvent {
      */
     public ReqActivateLeader(int leader) {
         this.leader = leader;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**

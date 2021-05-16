@@ -2,7 +2,10 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.Protocol;
+import it.polimi.ingsw.common.ProtocolException;
 import it.polimi.ingsw.common.events.Event;
+import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
+import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.mvevents.ResWelcome;
 
 import java.io.BufferedReader;
@@ -60,7 +63,15 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
                         break;
                     try {
                         halfTimeout = 0;
-                        protocol.processInput(inputLine, view);
+
+                        try {
+                            view.emit(protocol.processInputAsVCEvent(inputLine));
+                        } catch (ProtocolException e) {
+                            on(new ErrProtocol(e));
+                        } catch (Exception e) {
+                            on(new ErrRuntime(e));
+                        }
+
                         if (inputLine.equals(reqGoodbye))
                             break;
                     } catch (Exception e) {
@@ -72,7 +83,13 @@ public class ServerClientHandler /* extends EventEmitter */ implements Runnable,
                         halfTimeout++;
                     }
                     else {
-                        protocol.processInput(reqGoodbye, view);
+                        try {
+                            view.emit(protocol.processInputAsMVEvent(reqGoodbye)); // FIXME: Add type 'NetEvent'
+                        } catch (ProtocolException e1) {
+                            on(new ErrProtocol(e1));
+                        } catch (Exception e1) {
+                            on(new ErrRuntime(e1));
+                        }
                         break;
                     }
                 }

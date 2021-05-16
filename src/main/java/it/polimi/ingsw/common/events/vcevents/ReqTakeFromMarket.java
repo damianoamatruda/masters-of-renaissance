@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-import it.polimi.ingsw.common.View;
-
 import java.util.Map;
 
 /** Client request to take resources from the market. */
@@ -31,11 +29,6 @@ public class ReqTakeFromMarket implements VCEvent {
         this.index = index;
         this.replacements = replacements;
         this.shelves = shelves;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.emit(this);
     }
 
     /**
