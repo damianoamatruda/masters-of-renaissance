@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Winner player and victory points state update. */
 public class UpdateGameEnd implements MVEvent {
     /**
@@ -17,11 +15,6 @@ public class UpdateGameEnd implements MVEvent {
      */
     public UpdateGameEnd(String winner) {
         this.winner = winner;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

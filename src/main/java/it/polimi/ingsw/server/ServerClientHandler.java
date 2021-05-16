@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.common.EventSender;
+import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.Protocol;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.ResWelcome;
@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class ServerClientHandler implements Runnable, EventSender {
+public class ServerClientHandler /* extends EventEmitter */ implements Runnable, EventPasser {
     private final Socket clientSocket;
     private final VirtualView view;
     private final Protocol protocol;
@@ -22,9 +22,10 @@ public class ServerClientHandler implements Runnable, EventSender {
     private final int timeout;
 
     public ServerClientHandler(Socket clientSocket, VirtualView view, Protocol protocol) {
+        // super(Set.of(ResWelcome.class));
+
         this.clientSocket = clientSocket;
 
-        view.setEventSender(this);
         this.view = view;
 
         this.timeout = 600000;
@@ -33,6 +34,8 @@ public class ServerClientHandler implements Runnable, EventSender {
         this.in = null;
         this.out = null;
         this.listening = false;
+
+        this.view.setEventPasser(this);
     }
 
     public void run() {
@@ -45,7 +48,8 @@ public class ServerClientHandler implements Runnable, EventSender {
             String inputLine;
             String reqGoodbye = "{\"type\":\"ReqGoodbye\"}";
 
-            view.update(new ResWelcome());
+            // emit(new ResWelcome());
+            on(new ResWelcome());
 
             listening = true;
             clientSocket.setSoTimeout(timeout / 2);
@@ -82,18 +86,17 @@ public class ServerClientHandler implements Runnable, EventSender {
         this.in = null;
     }
 
-    @Override
     public void stop() {
         listening = false;
     }
 
-    public void send(String output) {
+    private void send(String output) {
         if (this.out != null)
             out.println(output);
     }
 
     @Override
-    public void send(Event event) {
+    public void on(Event event) {
         send(protocol.processOutput(event));
     }
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Victory points update. */
 public class UpdateVictoryPoints implements MVEvent {
     /** The player whose victory points increased. */
@@ -19,11 +17,6 @@ public class UpdateVictoryPoints implements MVEvent {
     public UpdateVictoryPoints(String player, int victoryPoints) {
         this.player = player;
         this.victoryPoints = victoryPoints;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

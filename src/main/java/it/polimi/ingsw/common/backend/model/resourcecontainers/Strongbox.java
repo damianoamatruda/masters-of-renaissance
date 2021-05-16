@@ -61,7 +61,7 @@ public class Strongbox extends ResourceContainer {
         for (ResourceType resType : resMap.keySet())
             resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
 
-        notifyBroadcast(new UpdateResourceContainer(reduce()));
+        emit(new UpdateResourceContainer(reduce()));
     }
 
     @Override
@@ -84,8 +84,8 @@ public class Strongbox extends ResourceContainer {
                 throw new IllegalArgumentException(new IllegalResourceTransferException(resType, false, this));
         for (ResourceType resType : resMap.keySet())
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
-        
-        notifyBroadcast(new UpdateResourceContainer(reduce()));
+
+        emit(new UpdateResourceContainer(reduce()));
     }
 
     @Override

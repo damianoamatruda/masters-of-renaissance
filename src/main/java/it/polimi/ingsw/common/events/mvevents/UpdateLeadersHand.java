@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Server confirmation to the leader choice request during player setup. */
 public class UpdateLeadersHand implements MVEvent {
     /** The nickname of the player that has chosen the leader cards. */
@@ -19,11 +17,6 @@ public class UpdateLeadersHand implements MVEvent {
     public UpdateLeadersHand(String player, int leadersCount) {
         this.player = player;
         this.leadersCount = leadersCount;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

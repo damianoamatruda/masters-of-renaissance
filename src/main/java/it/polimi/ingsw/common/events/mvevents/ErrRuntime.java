@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Error message signaling an uncaught exception. */
 public class ErrRuntime implements MVEvent {
     /** The message containing the error's reason. */
@@ -17,11 +15,6 @@ public class ErrRuntime implements MVEvent {
         if (e.getMessage() != null)
             stringBuilder.append(": ").append(e.getMessage());
         this.msg = stringBuilder.toString();
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

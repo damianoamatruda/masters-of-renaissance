@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Leader card state update. */
 public class UpdateLeader implements MVEvent {
     /** The ID of the card the action was called upon. */
@@ -19,11 +17,6 @@ public class UpdateLeader implements MVEvent {
     public UpdateLeader(int leader, boolean active) {
         this.leader = leader;
         this.active = active;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

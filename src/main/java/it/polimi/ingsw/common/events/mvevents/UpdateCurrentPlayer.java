@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Current player state update. */
 public class UpdateCurrentPlayer implements MVEvent {
     /** The nickname of the new current player. */
@@ -14,11 +12,6 @@ public class UpdateCurrentPlayer implements MVEvent {
      */
     public UpdateCurrentPlayer(String player) {
         this.player = player;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

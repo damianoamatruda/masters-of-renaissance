@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.ModelObservable;
+import it.polimi.ingsw.common.EventEmitter;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Class dedicated to the storage of the player's data and available operations.
  */
-public class Player extends ModelObservable {
+public class Player extends EventEmitter {
     /** The player's nickname. */
     private final String nickname;
 
@@ -66,6 +66,8 @@ public class Player extends ModelObservable {
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
                   ResourceTransactionRecipe baseProduction, int devSlotsCount, PlayerSetup setup) {
+        super(Set.of(UpdateLeadersHand.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class));
+
         this.nickname = nickname;
         this.inkwell = inkwell;
         this.leaders = new ArrayList<>(leaders);
@@ -116,7 +118,7 @@ public class Player extends ModelObservable {
 
         this.leaders.retainAll(leaders);
 
-        notifyBroadcast(new UpdateLeadersHand(getNickname(), this.leaders.size()));
+        emit(new UpdateLeadersHand(getNickname(), this.leaders.size()));
     }
 
     /**
@@ -134,7 +136,7 @@ public class Player extends ModelObservable {
         game.onDiscardLeader(this);
         leaders.remove(leader);
 
-        notifyBroadcast(new UpdateLeadersHand(getNickname(), leaders.size()));
+        emit(new UpdateLeadersHand(getNickname(), leaders.size()));
     }
 
     /**
@@ -152,7 +154,7 @@ public class Player extends ModelObservable {
         game.updatePtsFromYellowTiles(this, points);
         game.onIncrementFaithPoints(faithPoints);
 
-        notifyBroadcast(new UpdateFaithPoints(getNickname(), faithPoints, false));
+        emit(new UpdateFaithPoints(getNickname(), faithPoints, false));
     }
 
     /**
@@ -217,7 +219,7 @@ public class Player extends ModelObservable {
      */
     public void incrementVictoryPoints(int points) {
         this.victoryPoints += points;
-        notifyBroadcast(new UpdateVictoryPoints(nickname, victoryPoints));
+        emit(new UpdateVictoryPoints(nickname, victoryPoints));
     }
 
     /**
@@ -237,7 +239,7 @@ public class Player extends ModelObservable {
     public void setActive(boolean active) {
         this.active = active;
 
-        notifyBroadcast(new UpdatePlayerStatus(getNickname(), active));
+        emit(new UpdatePlayerStatus(getNickname(), active));
     }
 
     /**
@@ -282,7 +284,7 @@ public class Player extends ModelObservable {
         slot.push(devCard);
 
         incrementVictoryPoints(devCard.getVictoryPoints());
-        notifyBroadcast(new UpdateDevCardSlot(devCard.getId(), devSlotIndex));
+        emit(new UpdateDevCardSlot(devCard.getId(), devSlotIndex));
     }
 
     /**

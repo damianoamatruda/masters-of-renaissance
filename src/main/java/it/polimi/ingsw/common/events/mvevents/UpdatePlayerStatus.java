@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Player connection status update. */
 public class UpdatePlayerStatus implements MVEvent {
     /** The player the new status refers to. */
@@ -19,11 +17,6 @@ public class UpdatePlayerStatus implements MVEvent {
     public UpdatePlayerStatus(String player, boolean isActive) {
         this.player = player;
         this.isActive = isActive;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

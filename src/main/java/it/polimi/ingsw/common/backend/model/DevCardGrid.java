@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.ModelObservable;
-import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.EventEmitter;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
@@ -14,7 +13,7 @@ import java.util.stream.IntStream;
 /**
  * This class represents a grid of decks of development cards.
  */
-public class DevCardGrid extends ModelObservable {
+public class DevCardGrid extends EventEmitter {
     /** Number of rows of separate decks that represent different development card levels. */
     private final int levelsCount;
 
@@ -32,6 +31,8 @@ public class DevCardGrid extends ModelObservable {
      * @param colorsCount the number of columns of separate decks that represent different development card colors.
      */
     public DevCardGrid(List<DevelopmentCard> devCards, int levelsCount, int colorsCount) {
+        super(Set.of(UpdateDevCardGrid.class));
+
         this.grid = new HashMap<>();
         this.levelsCount = levelsCount;
         this.colorsCount = colorsCount;
@@ -55,12 +56,8 @@ public class DevCardGrid extends ModelObservable {
         }
     }
 
-    @Override
-    public void addObserver(View o) {
-        super.addObserver(o);
-
-        // Sort of notifyBroadcast
-        notify(o, new UpdateDevCardGrid(reduce()));
+    public void emitInitialState() {
+        emit(new UpdateDevCardGrid(reduce()));
     }
 
     /**
@@ -138,7 +135,7 @@ public class DevCardGrid extends ModelObservable {
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
             player.addToDevSlot(game, slotIndex, card, resContainers);
-            notifyBroadcast(new UpdateDevCardGrid(reduce()));
+            emit(new UpdateDevCardGrid(reduce()));
         } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
@@ -161,7 +158,7 @@ public class DevCardGrid extends ModelObservable {
         }
         if (quantity > 0) grid.remove(color);
 
-        notifyBroadcast(new UpdateDevCardGrid(reduce()));
+        emit(new UpdateDevCardGrid(reduce()));
     }
 
     public ReducedDevCardGrid reduce() {

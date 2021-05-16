@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.ModelObservable;
-import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.EventEmitter;
 import it.polimi.ingsw.common.events.mvevents.UpdateVaticanSection;
 
 import java.util.Comparator;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
  *
  * @see VaticanSection
  */
-public class FaithTrack {
+public class FaithTrack extends EventEmitter {
     /** Maps the end of each Vatican Section to the Vatican Section. */
     private final Map<Integer, VaticanSection> vaticanSectionsMap;
 
@@ -30,8 +29,11 @@ public class FaithTrack {
      * @param yellowTiles     the set of the Yellow Tiles which will give bonus points at the end
      */
     public FaithTrack(Set<VaticanSection> vaticanSections, Set<YellowTile> yellowTiles) {
+        super(Set.of(UpdateVaticanSection.class));
+
         this.vaticanSectionsMap = vaticanSections.stream()
                 .collect(Collectors.toUnmodifiableMap(VaticanSection::getFaithPointsEnd, Function.identity()));
+        this.vaticanSectionsMap.values().forEach(s -> s.register(UpdateVaticanSection.class, this::emit));
         this.yellowTiles = Set.copyOf(yellowTiles);
     }
 
@@ -76,23 +78,9 @@ public class FaithTrack {
     }
 
     /**
-     * Adds observers to the faith track's vatican sections,
-     * which can be activated. Therefore, views need to be notified of such event.
-     * 
-     * @param o the observer of the vatican section to be added
-     */
-    public void addObserver(View o) {
-        this.vaticanSectionsMap.values().forEach(s -> s.addObserver(o));
-    }
-
-    public void removeObserver(View o) {
-        this.vaticanSectionsMap.values().forEach(s -> s.removeObserver(o));
-    }
-
-    /**
      * This class represents a Vatican Section in the Faith Track.
      */
-    public static class VaticanSection extends ModelObservable {
+    public static class VaticanSection extends EventEmitter {
         private final int id;
 
         /** The first tile of the Vatican Section, which needs to be reached in order to earn bonus points. */
@@ -119,6 +107,8 @@ public class FaithTrack {
          * @see VaticanSection
          */
         public VaticanSection(int id, int faithPointsBeginning, int faithPointsEnd, int victoryPoints) {
+            super(Set.of(UpdateVaticanSection.class));
+
             this.id = id;
             this.faithPointsBeginning = faithPointsBeginning;
             this.faithPointsEnd = faithPointsEnd;
@@ -169,7 +159,7 @@ public class FaithTrack {
          */
         public void activate() {
             this.activated = true;
-            notifyBroadcast(new UpdateVaticanSection(id));
+            emit(new UpdateVaticanSection(id));
         }
     }
 

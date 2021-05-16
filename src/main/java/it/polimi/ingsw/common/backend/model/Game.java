@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.ModelObservable;
-import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.EventEmitter;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
@@ -10,13 +9,14 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * This class represents a game of Masters of Renaissance. It contains the general components of the "game box", as well
  * as some attributes shared by the players that can be easily accessed from the outside.
  */
-public class Game extends ModelObservable {
+public class Game extends EventEmitter {
     /** Reference to the collection from which all the player's data can be accessed. */
     protected final List<Player> players;
 
@@ -74,6 +74,24 @@ public class Game extends ModelObservable {
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxFaithPointsCount,
                 int maxObtainableDevCards) {
+        super(Set.of(
+                /* Game */
+                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
+                /* Player */
+                UpdateLeadersHand.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
+                /* Card */
+                UpdateLeader.class,
+                /* ResourceContainer */
+                UpdateResourceContainer.class,
+                /* DevCardGrid */
+                UpdateDevCardGrid.class,
+                /* Market */
+                UpdateMarket.class,
+                /* FaithTrack */
+                UpdateVaticanSection.class,
+                /* SoloGame */
+                UpdateActionToken.class));
+
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);
@@ -82,82 +100,65 @@ public class Game extends ModelObservable {
         this.devCardGrid = devCardGrid;
         this.market = market;
         this.faithTrack = faithTrack;
+
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
+
+        this.players.forEach(p -> p.register(UpdateLeadersHand.class, this::emit));
+        this.players.forEach(p -> p.register(UpdateFaithPoints.class, this::emit));
+        this.players.forEach(p -> p.register(UpdateVictoryPoints.class, this::emit));
+        this.players.forEach(p -> p.register(UpdatePlayerStatus.class, this::emit));
+        this.players.forEach(p -> p.register(UpdateDevCardSlot.class, this::emit));
+        this.leaderCards.forEach(l -> l.register(UpdateLeader.class, this::emit));
+        this.resContainers.forEach(c -> c.register(UpdateResourceContainer.class, this::emit));
+        this.devCardGrid.register(UpdateDevCardGrid.class, this::emit);
+        this.market.register(UpdateMarket.class, this::emit);
+        this.faithTrack.register(UpdateVaticanSection.class, this::emit);
     }
 
-    @Override
-    public void addObserver(View o) {
-        super.addObserver(o);
-        this.players.forEach(obj -> obj.addObserver(o));
-        this.leaderCards.forEach(obj -> obj.addObserver(o));
-        // this.developmentCards.forEach(obj -> obj.register(o)); // technically unneeded
-        this.resContainers.forEach(obj -> obj.addObserver(o));
-        this.devCardGrid.addObserver(o);
-        this.market.addObserver(o);
-        this.faithTrack.addObserver(o);
-    }
-
-    public void register(View o, Player p) {
-        addObserver(o);
-
-        notify(o, new UpdateGameStart(
+    public void emitInitialState() {
+        emit(new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream()
-                    .collect(Collectors.toMap(
-                            ResourceContainer::reduce,
-                            c -> players.stream()
-                                    .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                                    .findAny().get().getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-                null, // actiontokens not sent
-                p.getLeaders().stream().map(Card::getId).toList(),
-                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-                p.getStrongbox().getId(),
-                p.getSetup().reduce()));
+                        .collect(Collectors.toMap(
+                                ResourceContainer::reduce,
+                                c -> players.stream()
+                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                                        .findAny().get().getNickname())),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
+        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
+        // null, // actiontokens not sent
+        // p.getLeaders().stream().map(Card::getId).toList(),
+        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+        // p.getStrongbox().getId(),
+        // p.getSetup().reduce()));
 
-        // Sort of notifyBroadcast
-        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
-    public void resume(View o, Player p) {
-        addObserver(o);
-
-        notify(o, new UpdateGameResume(
+    public void emitResumeState() {
+        emit(new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream()
-                    .collect(Collectors.toMap(
-                            ResourceContainer::reduce,
-                            c -> players.stream()
-                                    .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
-                                    .findAny().get().getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-                null, // actiontokens not sent
-                p.getLeaders().stream().map(Card::getId).toList(),
-                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-                p.getStrongbox().getId(),
-                p.getSetup().reduce()));
+                        .collect(Collectors.toMap(
+                                ResourceContainer::reduce,
+                                c -> players.stream()
+                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                                        .findAny().get().getNickname())),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
+        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
+        // null, // actiontokens not sent
+        // p.getLeaders().stream().map(Card::getId).toList(),
+        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+        // p.getStrongbox().getId(),
+        // p.getSetup().reduce()));
 
-        // Sort of notifyBroadcast
-        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
-    }
-
-    @Override
-    public void removeObserver(View o) {
-        this.observers.remove(o);
-        this.players.forEach(obj -> obj.removeObserver(o));
-        this.leaderCards.forEach(obj -> obj.removeObserver(o));
-        this.resContainers.forEach(obj -> obj.removeObserver(o));
-        this.devCardGrid.removeObserver(o);
-        this.market.removeObserver(o);
-        this.faithTrack.removeObserver(o);
+        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {
@@ -260,7 +261,7 @@ public class Game extends ModelObservable {
     private void setLastRound() {
         lastRound = true;
 
-        notifyBroadcast(new UpdateLastRound());
+        emit(new UpdateLastRound());
     }
 
     /**
@@ -281,7 +282,7 @@ public class Game extends ModelObservable {
             nextPlayer = players.get(0);
         } while (!nextPlayer.isActive());
 
-        notifyBroadcast(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
 
         if (nextPlayer.equals(getFirstPlayer()))
             rounds++;
@@ -436,7 +437,7 @@ public class Game extends ModelObservable {
         /* In case of a draw, the first player in order becomes the winner */
         winners.stream().findFirst().ifPresent(p -> {
             p.setWinner();
-            notifyBroadcast(new UpdateGameEnd(p.getNickname()));
+            emit(new UpdateGameEnd(p.getNickname()));
         });
     }
 

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Faith track state update. */
 public class UpdateFaithPoints implements MVEvent {
     /** The player whose faith points increased. */
@@ -25,11 +23,6 @@ public class UpdateFaithPoints implements MVEvent {
         this.player = player;
         this.faithPoints = faithPoints;
         this.isBlackCross = isBlackCross;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

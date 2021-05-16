@@ -1,7 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.ModelObservable;
-import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.EventEmitter;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
@@ -17,10 +16,9 @@ import java.util.stream.IntStream;
  * This class represents a special container of resources that can be taken from the player. It consists of a grid of
  * resources together with a slide containing a single resource.
  */
-public class Market extends ModelObservable {
-    /** 
-     * The resources in the grid.
-     * Columns of rows.
+public class Market extends EventEmitter {
+    /**
+     * The resources in the grid. Columns of rows.
      */
     private final List<List<ResourceType>> grid;
 
@@ -38,6 +36,8 @@ public class Market extends ModelObservable {
      * @param replaceableResType the type of the resources that can be replaced
      */
     public Market(Map<ResourceType, Integer> resources, int colsCount, ResourceType replaceableResType) {
+        super(Set.of(UpdateMarket.class));
+
         List<ResourceType> resourcesList = new ArrayList<>();
         resources.forEach((r, q) -> IntStream.range(0, q).forEach(i -> resourcesList.add(r)));
 
@@ -69,12 +69,8 @@ public class Market extends ModelObservable {
         this.replaceableResType = replaceableResType;
     }
 
-    @Override
-    public void addObserver(View o) {
-        super.addObserver(o);
-
-        // Sort of notifyBroadcast
-        notify(o, new UpdateMarket(reduce()));
+    public void emitInitialState() {
+        emit(new UpdateMarket(reduce()));
     }
 
     /**
@@ -126,7 +122,7 @@ public class Market extends ModelObservable {
 
         shift(isRow, index);
 
-        notifyBroadcast(new UpdateMarket(reduce()));
+        emit(new UpdateMarket(reduce()));
     }
 
     /**

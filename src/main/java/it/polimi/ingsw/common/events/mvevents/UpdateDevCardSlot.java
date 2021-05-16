@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Development card slot state update. */
 public class UpdateDevCardSlot implements MVEvent {
     /** The ID of the card added to the slot. */
@@ -19,11 +17,6 @@ public class UpdateDevCardSlot implements MVEvent {
     public UpdateDevCardSlot(int devCard, int devSlot) {
         this.devCard = devCard;
         this.devSlot = devSlot;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

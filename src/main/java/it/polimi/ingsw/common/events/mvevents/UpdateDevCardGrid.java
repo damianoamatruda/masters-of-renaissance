@@ -1,6 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
 /** Development card grid state update. */
@@ -15,11 +14,6 @@ public class UpdateDevCardGrid implements MVEvent {
      */
     public UpdateDevCardGrid(ReducedDevCardGrid topCards) {
         this.topCards = topCards;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

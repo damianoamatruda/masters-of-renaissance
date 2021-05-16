@@ -6,6 +6,6 @@ import it.polimi.ingsw.common.View;
 public class ReqGoodbye implements VCEvent {
     @Override
     public void handle(View view) {
-        view.notify(this);
+        view.emit(this);
     }
 }

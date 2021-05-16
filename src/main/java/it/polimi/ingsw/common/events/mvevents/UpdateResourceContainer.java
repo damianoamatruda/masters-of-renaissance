@@ -1,6 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 /** Resource container state update. */
@@ -15,11 +14,6 @@ public class UpdateResourceContainer implements MVEvent {
      */
     public UpdateResourceContainer(ReducedResourceContainer resContainer) {
         this.resContainer = resContainer;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**

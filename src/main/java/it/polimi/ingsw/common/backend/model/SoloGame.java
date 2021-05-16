@@ -1,6 +1,5 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
@@ -51,45 +50,49 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public void register(View o, Player p) {
-        addObserver(o);
-
-        notify(o, new UpdateGameStart(
+    public void emitInitialState() {
+        emit(new UpdateGameStart(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().collect(Collectors.toMap(ResourceContainer::reduce, c -> p.getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-                actionTokens.stream().map(ActionToken::reduce).toList(),
-                p.getLeaders().stream().map(Card::getId).toList(),
-                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-                p.getStrongbox().getId(),
-                p.getSetup().reduce()));
+                resContainers.stream()
+                        .collect(Collectors.toMap(
+                                ResourceContainer::reduce,
+                                c -> players.stream()
+                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                                        .findAny().get().getNickname())),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
+        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
+        // actionTokens.stream().map(ActionToken::reduce).toList(),
+        // p.getLeaders().stream().map(Card::getId).toList(),
+        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+        // p.getStrongbox().getId(),
+        // p.getSetup().reduce()));
 
-        // Sort of notifyBroadcast
-        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
-    public void resume(View o, Player p) {
-        addObserver(o);
-
-        notify(o, new UpdateGameResume(
+    public void emitResumeState() {
+        emit(new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().collect(Collectors.toMap(ResourceContainer::reduce, c -> p.getNickname())),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
-                actionTokens.stream().map(ActionToken::reduce).toList(),
-                p.getLeaders().stream().map(Card::getId).toList(),
-                p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
-                p.getStrongbox().getId(),
-                p.getSetup().reduce()));
+                resContainers.stream()
+                        .collect(Collectors.toMap(
+                                ResourceContainer::reduce,
+                                c -> players.stream()
+                                        .filter(pl -> pl.getResourceContainerById(c.getId()).isPresent())
+                                        .findAny().get().getNickname())),
+                productions.stream().map(ResourceTransactionRecipe::reduce).toList()));
+        // p.getBaseProduction().getId(), // FileGameFactory.baseProduction is unique, so same ID returned in all calls
+        // actionTokens.stream().map(ActionToken::reduce).toList(),
+        // p.getLeaders().stream().map(Card::getId).toList(),
+        // p.getWarehouse().getShelves().stream().map(ResourceContainer::getId).toList(),
+        // p.getStrongbox().getId(),
+        // p.getSetup().reduce()));
 
-        // Sort of notifyBroadcast
-        notify(o, new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        emit(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     @Override
@@ -108,7 +111,7 @@ public class SoloGame extends Game {
         token.trigger(this);
         actionTokens.add(token);
 
-        notifyBroadcast(new UpdateActionToken(token.getId()));
+        emit(new UpdateActionToken(token.getId()));
 
         /* Check if Lorenzo is winning */
         if (blackPoints == maxFaithPointsCount || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
@@ -118,7 +121,7 @@ public class SoloGame extends Game {
             super.onTurnEnd();
         else {
             ended = true;
-            notifyBroadcast(new UpdateGameEnd(null));
+            emit(new UpdateGameEnd(null));
         }
     }
 
@@ -152,6 +155,6 @@ public class SoloGame extends Game {
 
         onIncrementFaithPoints(blackPoints);
 
-        notifyBroadcast(new UpdateFaithPoints(null, blackPoints, true));
+        emit(new UpdateFaithPoints(null, blackPoints, true));
     }
 }

@@ -18,7 +18,7 @@ public class ReqDiscardLeader implements VCEvent {
 
     @Override
     public void handle(View view) {
-        view.notify(this);
+        view.emit(this);
     }
 
     /**

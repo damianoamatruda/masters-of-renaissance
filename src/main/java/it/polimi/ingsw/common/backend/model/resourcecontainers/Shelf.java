@@ -129,7 +129,7 @@ public class Shelf extends ResourceContainer {
         this.resType = resType;
         this.quantity += resMap.get(resType);
 
-        notifyBroadcast(new UpdateResourceContainer(reduce()));
+        emit(new UpdateResourceContainer(reduce()));
     }
 
     @Override
@@ -156,7 +156,7 @@ public class Shelf extends ResourceContainer {
             this.resType = null;
         this.quantity -= resMap.get(resType);
 
-        notifyBroadcast(new UpdateResourceContainer(reduce()));
+        emit(new UpdateResourceContainer(reduce()));
     }
 
     @Override

@@ -3,7 +3,7 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.common.EventSender;
+import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.events.Event;
 
 import java.io.BufferedReader;
@@ -15,7 +15,7 @@ import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ClientServerHandler implements EventSender {
+public class ClientServerHandler implements EventPasser {
     private final static String quitInputType = "ResGoodbye";
     private final static String quitOutputType = "ReqQuit";
 
@@ -103,6 +103,6 @@ public class ClientServerHandler implements EventSender {
     }
 
     @Override
-    public void send(Event event) {
+    public void on(Event event) {
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.ModelObservable;
+import it.polimi.ingsw.common.EventEmitter;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
@@ -9,8 +9,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.mvevents.ErrAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
+import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -18,10 +17,11 @@ import java.util.*;
 /**
  * This class manages the states and actions of a game.
  */
-public class GameContext extends ModelObservable {
+public class GameContext extends EventEmitter {
     /** The game. */
     private final Game game;
 
+    /** The game factory. */
     private final GameFactory gameFactory;
 
     /** This represents the state of a game during the turn of a player that has not made the mandatory move yet. */
@@ -33,19 +33,63 @@ public class GameContext extends ModelObservable {
      * @param game the game
      */
     public GameContext(Game game, GameFactory gameFactory) {
+        super(Set.of(
+                /* GameContext */
+                ErrAction.class, UpdateSetupDone.class,
+                /* Game */
+                UpdateGameStart.class, UpdateCurrentPlayer.class, UpdateGameResume.class, UpdateLastRound.class, UpdateGameEnd.class,
+                /* Player */
+                UpdateLeadersHand.class, UpdateFaithPoints.class, UpdateVictoryPoints.class, UpdatePlayerStatus.class, UpdateDevCardSlot.class,
+                /* Card */
+                UpdateLeader.class,
+                /* ResourceContainer */
+                UpdateResourceContainer.class,
+                /* DevCardGrid */
+                UpdateDevCardGrid.class,
+                /* Market */
+                UpdateMarket.class,
+                /* FaithTrack */
+                UpdateVaticanSection.class,
+                /* SoloGame */
+                UpdateActionToken.class));
+
         this.game = game;
         this.gameFactory = gameFactory;
         this.mandatoryActionDone = false;
+
+        this.game.register(UpdateGameStart.class, this::emit);
+        this.game.register(UpdateCurrentPlayer.class, this::emit);
+        this.game.register(UpdateGameResume.class, this::emit);
+        this.game.register(UpdateLastRound.class, this::emit);
+        this.game.register(UpdateGameEnd.class, this::emit);
+        this.game.register(UpdateLeadersHand.class, this::emit);
+        this.game.register(UpdateFaithPoints.class, this::emit);
+        this.game.register(UpdateVictoryPoints.class, this::emit);
+        this.game.register(UpdatePlayerStatus.class, this::emit);
+        this.game.register(UpdateDevCardSlot.class, this::emit);
+        this.game.register(UpdateLeader.class, this::emit);
+        this.game.register(UpdateResourceContainer.class, this::emit);
+        this.game.register(UpdateDevCardGrid.class, this::emit);
+        this.game.register(UpdateMarket.class, this::emit);
+        this.game.register(UpdateVaticanSection.class, this::emit);
+        this.game.register(UpdateActionToken.class, this::emit);
     }
 
     public void start() {
+        game.emitInitialState();
+        game.getMarket().emitInitialState();
+        game.getDevCardGrid().emitInitialState();
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
+    }
+
+    public void resume() {
+        game.emitResumeState();
     }
 
     /**
      * Choose leaders from the hand of a player.
      *
-     * @param v         the view the action originates from. Used to send back errors
+     * @param v         the view the action originates from. Used to on back errors
      * @param nickname  the player
      * @param leaderIds the leader cards to choose
      */
@@ -53,12 +97,12 @@ public class GameContext extends ModelObservable {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            notify(v, new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
+            emit(new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.").getMessage()));
             return;
         }
 
         if (leaderIds.stream().map(player::getLeaderById).anyMatch(Optional::isEmpty)) {
-            notify(v, new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
+            emit(new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
             // TODO: Specify leader that is not owned
             /*throw new CannotChooseException(
                     String.format("Cannot choose leader %d: not in your hand.",
@@ -74,7 +118,7 @@ public class GameContext extends ModelObservable {
         try {
             player.getSetup().chooseLeaders(player, leaders);
         } catch (CannotChooseException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -84,7 +128,7 @@ public class GameContext extends ModelObservable {
     /**
      * Chooses the initial resources to take as a player.
      *
-     * @param v              the view the action originates from. Used to send back errors
+     * @param v              the view the action originates from. Used to on back errors
      * @param nickname       the player
      * @param reducedShelves the destination shelves
      */
@@ -92,7 +136,7 @@ public class GameContext extends ModelObservable {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            notify(v, new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
+            emit(new ErrAction(new IllegalActionException("Choose resources", "Setup already done.").getMessage()));
             return;
         }
 
@@ -102,14 +146,14 @@ public class GameContext extends ModelObservable {
             try {
                 shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                notify(v, new ErrAction(e.getMessage()));
+                emit(new ErrAction(e.getMessage()));
             }
         });
 
         try {
             player.getSetup().chooseResources(game, player, shelves);
         } catch (CannotChooseException | IllegalResourceTransactionActivationException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -119,7 +163,7 @@ public class GameContext extends ModelObservable {
     /**
      * Swaps the content of two shelves of a player.
      *
-     * @param v        the view the action originates from. Used to send back errors
+     * @param v        the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param shelfId1 the first shelf
      * @param shelfId2 the second shelf
@@ -140,21 +184,21 @@ public class GameContext extends ModelObservable {
             shelf1 = player.getShelfById(shelfId1).orElseThrow(() -> new Exception("Shelf 1 not owned.")); // TODO: This is a PoC exception
             shelf2 = player.getShelfById(shelfId2).orElseThrow(() -> new Exception("Shelf 2 not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
         try {
             Shelf.swap(shelf1, shelf2);
         } catch (IllegalResourceTransferException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
         }
     }
 
     /**
      * Makes a player activate a leader card.
      *
-     * @param v        the view the action originates from. Used to send back errors
+     * @param v        the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param leaderId the leader card to activate
      */
@@ -172,21 +216,21 @@ public class GameContext extends ModelObservable {
         try {
             leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
         } catch (Exception e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
         try {
             leader.activate(player);
         } catch (CardRequirementsNotMetException | IllegalArgumentException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
         }
     }
 
     /**
      * Makes a player discard a leader card.
      *
-     * @param v        the view the action originates from. Used to send back errors
+     * @param v        the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param leaderId the leader card to discard
      */
@@ -204,14 +248,14 @@ public class GameContext extends ModelObservable {
         try {
             player.discardLeader(game, leader);
         } catch (IndexOutOfBoundsException | ActiveLeaderDiscardException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
         }
     }
 
     /**
      * Takes resources from the market as a player.
      *
-     * @param v              the view the action originates from. Used to send back errors
+     * @param v              the view the action originates from. Used to on back errors
      * @param nickname       the player
      * @param isRow          <code>true</code> if a row is selected; <code>false</code> if a column is selected.
      * @param index          index of the selected row or column
@@ -238,14 +282,14 @@ public class GameContext extends ModelObservable {
             try {
                 shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                notify(v, new ErrAction(e.getMessage()));
+                emit(new ErrAction(e.getMessage()));
             }
         });
 
         try {
             game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
         } catch (IllegalMarketTransferException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -255,7 +299,7 @@ public class GameContext extends ModelObservable {
     /**
      * Makes a player buy a development card from the development card grid.
      *
-     * @param v                    the view the action originates from. Used to send back errors
+     * @param v                    the view the action originates from. Used to on back errors
      * @param nickname             the player
      * @param color                the color of the card to be bought
      * @param level                the level of the card to be bought
@@ -282,7 +326,7 @@ public class GameContext extends ModelObservable {
                 resContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
                 // TODO: Specify resource container that is not owned
-                notify(v, new ErrAction(e.getMessage()));
+                emit(new ErrAction(e.getMessage()));
                 throw new RuntimeException();
             }
         });
@@ -290,7 +334,7 @@ public class GameContext extends ModelObservable {
         try {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
         } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -300,7 +344,7 @@ public class GameContext extends ModelObservable {
     /**
      * Makes a player activate a group of productions.
      *
-     * @param v                   the view the action originates from. Used to send back errors
+     * @param v                   the view the action originates from. Used to on back errors
      * @param nickname            the player
      * @param reducedProdRequests the group of requested contemporary productions
      */
@@ -317,7 +361,7 @@ public class GameContext extends ModelObservable {
             return;
 
         if (reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).map(player::getProductionById).anyMatch(Optional::isEmpty)) {
-            notify(v, new ErrAction("Production not owned.")); // TODO: This is a PoC exception
+            emit(new ErrAction("Production not owned.")); // TODO: This is a PoC exception
             // TODO: Specify production that is not owned
             return;
         }
@@ -327,7 +371,7 @@ public class GameContext extends ModelObservable {
         try {
             prodRequests = reducedProdRequests.stream().map(r -> translateToProductionRequest(v, player, r)).toList();
         } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -335,7 +379,7 @@ public class GameContext extends ModelObservable {
         try {
             transaction.activate(game, player);
         } catch (IllegalResourceTransactionActivationException e) {
-            notify(v, new ErrAction(e.getMessage()));
+            emit(new ErrAction(e.getMessage()));
             return;
         }
 
@@ -345,7 +389,7 @@ public class GameContext extends ModelObservable {
     /**
      * Makes a player end his turn.
      *
-     * @param v        the view the action originates from. Used to send back errors
+     * @param v        the view the action originates from. Used to on back errors
      * @param nickname the player
      */
     public void endTurn(View v, String nickname) {
@@ -358,34 +402,18 @@ public class GameContext extends ModelObservable {
             return;
 
         if (!mandatoryActionDone) {
-            notify(v, new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn").getMessage()));
+            emit(new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn").getMessage()));
             return;
         }
 
         try {
             game.onTurnEnd();
         } catch (NoActivePlayersException e) {
-            notify(v, new ErrAction(e.getMessage())); // TODO does this make sense?
+            emit(new ErrAction(e.getMessage())); // TODO does this make sense?
             return;
         }
 
         mandatoryActionDone = false;
-    }
-
-    public void register(View v, String nickname) {
-        addObserver(v);
-        game.register(v, getPlayerByNickname(nickname));
-    }
-
-    public void resume(View v, String nickname) {
-        addObserver(v);
-        game.resume(v, getPlayerByNickname(nickname));
-    }
-
-    @Override
-    public void removeObserver(View o) {
-        super.removeObserver(o);
-        game.removeObserver(o);
     }
 
     public void setActive(String nickname, boolean active) throws NoActivePlayersException {
@@ -400,21 +428,21 @@ public class GameContext extends ModelObservable {
      */
     private void checkEndSetup() {
         if (game.getPlayers().stream().map(Player::getSetup).allMatch(PlayerSetup::isDone))
-            notifyBroadcast(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
+            emit(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
     }
 
     /**
      * Ensures that the setup still isn't finished and the game has not ended yet. Action methods can use these checks
      * to confirm their legitimacy of execution, before starting.
      *
-     * @param v      the view to use to send back the error, if the checks don't pass
+     * @param v      the view to use to on back the error, if the checks don't on
      * @param action the action trying to be performed. Will be used as a reason when sending the error message to the
      *               client trying to execute the action.
      * @return whether the checks passed
      */
     private boolean preliminaryChecks(View v, Player player, String action) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
-            notify(v, new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
+            emit(new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended").getMessage()));
             return false;
         }
         return true;
@@ -423,14 +451,14 @@ public class GameContext extends ModelObservable {
     /**
      * Ensures that the given player is the current player in the turn.
      *
-     * @param v      the view to send the error massage back with
+     * @param v      the view to on the error massage back with
      * @param player the player to check
      * @param action the action trying to be performed
      * @return whether the check passed
      */
     private boolean checkCurrentPlayer(View v, Player player, String action) {
         if (!player.equals(game.getCurrentPlayer())) {
-            notify(v, new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.").getMessage()));
+            emit(new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.").getMessage()));
             return false;
         }
         return true;
@@ -439,13 +467,13 @@ public class GameContext extends ModelObservable {
     /**
      * Ensures that the current player has not done a mandatory action yet.
      *
-     * @param v      the view to send the error massage back with
+     * @param v      the view to on the error massage back with
      * @param action the action trying to be performed
      * @return whether the check passed
      */
     private boolean checkMandatoryActionNotDone(View v, String action) {
         if (mandatoryActionDone) {
-            notify(v, new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.").getMessage()));
+            emit(new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.").getMessage()));
             return false;
         }
         return true;
@@ -468,7 +496,7 @@ public class GameContext extends ModelObservable {
             try {
                 inputContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
             } catch (Exception e) {
-                notify(v, new ErrAction(e.getMessage()));
+                emit(new ErrAction(e.getMessage()));
                 // TODO: Specify resource container that is not owned
                 throw new RuntimeException();
             }

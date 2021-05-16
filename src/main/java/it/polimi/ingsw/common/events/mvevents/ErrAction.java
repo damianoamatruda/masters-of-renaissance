@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.View;
-
 /** Error message sent by the server that originates from errors in client requests. */
 public class ErrAction implements MVEvent {
     /** Message containing the reason and details of why the client request failed. */
@@ -15,11 +13,6 @@ public class ErrAction implements MVEvent {
      */
     public ErrAction(String msg) {
         this.msg = msg;
-    }
-
-    @Override
-    public void handle(View view) {
-        view.update(this);
     }
 
     /**
