@@ -9,9 +9,11 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrObjectNotOwned;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class manages the states and actions of a game.
@@ -75,15 +77,9 @@ public class GameContext {
             return;
         }
 
-        if (leaderIds.stream().map(player::getLeaderById).anyMatch(Optional::isEmpty)) {
-            view.on(new ErrAction("Leader not owned.")); // TODO: This is a PoC exception
-            // TODO: Specify leader that is not owned
-            /*throw new CannotChooseException(
-                    String.format("Cannot choose leader %d: not in your hand.",
-                            leaders.stream()
-                                    .map(Card::getId)
-                                    .filter(id -> !chosenLeaders.stream().map(Card::getId).toList().contains(id))
-                                    .findAny().orElse(-1))); */
+        Optional<Integer> missing = leaderIds.stream().filter(l -> player.getLeaderById(l).isEmpty()).findAny();
+        if (missing.isPresent()) {
+            view.on(new ErrObjectNotOwned(missing.get()));
             return;
         }
 
@@ -111,20 +107,32 @@ public class GameContext {
             return;
         }
 
-        // TODO: Use stream to do this
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
-        reducedShelves.forEach((id, resMap) -> {
-            try {
-                shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
-            } catch (Exception e) {
-                view.on(new ErrAction(e));
+        for (Map.Entry<Integer, Map<String, Integer>> shelf : reducedShelves.entrySet()) {
+            Optional<Shelf> s = player.getShelfById(shelf.getKey());
+
+            if (s.isEmpty()) {
+                view.on(new ErrObjectNotOwned(shelf.getKey()));
+                return;
             }
-        });
+
+            shelves.put(s.get(), translateResMap(shelf.getValue()));
+        }
 
         try {
             player.getSetup().chooseResources(game, player, shelves);
-        } catch (CannotChooseException | IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException | IllegalResourceTransferException e) {
-            view.on(new ErrAction(e));
+        } catch (IllegalResourceTransactionReplacementsException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IllegalResourceTransactionContainersException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (CannotChooseException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IllegalResourceTransferException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
     }
 
@@ -145,14 +153,18 @@ public class GameContext {
         if (!checkCurrentPlayer(view, player, "Swap shelves"))
             return;
 
-        Shelf shelf1;
-        Shelf shelf2;
+        Shelf shelf1, shelf2;
 
         try {
-            shelf1 = player.getShelfById(shelfId1).orElseThrow(() -> new Exception("Shelf 1 not owned.")); // TODO: This is a PoC exception
-            shelf2 = player.getShelfById(shelfId2).orElseThrow(() -> new Exception("Shelf 2 not owned.")); // TODO: This is a PoC exception
-        } catch (Exception e) {
-            view.on(new ErrAction(e));
+            shelf1 = player.getShelfById(shelfId1).get();
+        } catch (NoSuchElementException e) {
+            view.on(new ErrObjectNotOwned(shelfId1));
+            return;
+        }
+        try {
+            shelf2 = player.getShelfById(shelfId2).get();
+        } catch (NoSuchElementException e) {
+            view.on(new ErrObjectNotOwned(shelfId2));
             return;
         }
 
@@ -182,9 +194,9 @@ public class GameContext {
         LeaderCard leader;
 
         try {
-            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
+            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
         } catch (Exception e) {
-            view.on(new ErrAction(e));
+            view.on(new ErrObjectNotOwned(leaderId));
             return;
         }
 
@@ -214,9 +226,9 @@ public class GameContext {
         LeaderCard leader;
         
         try {
-            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
+            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
         } catch (Exception e) {
-            view.on(new ErrAction(e));
+            view.on(new ErrObjectNotOwned(leaderId));
             return;
         }
 
@@ -251,22 +263,31 @@ public class GameContext {
         if (!checkMandatoryActionNotDone(view, "Take market resources"))
             return;
 
-        // TODO: Use stream to do this
         Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
-        reducedShelves.forEach((id, resMap) -> {
-            try {
-                shelves.put(player.getShelfById(id).orElseThrow(() -> new Exception("Shelf not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
-            } catch (Exception e) {
-                view.on(new ErrAction(e));
+        for (Map.Entry<Integer, Map<String, Integer>> shelf : reducedShelves.entrySet()) {
+            Optional<Shelf> s = player.getShelfById(shelf.getKey());
+
+            if (s.isEmpty()) {
+                view.on(new ErrObjectNotOwned(shelf.getKey()));
+                return;
             }
-        });
+
+            shelves.put(s.get(), translateResMap(shelf.getValue()));
+        }
 
         try {
             game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
-        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException | IllegalResourceTransferException e) {
-            view.on(new ErrAction(e));
-            return;
+        } catch (IllegalResourceTransactionReplacementsException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalResourceTransactionContainersException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalResourceTransferException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        
 
         mandatoryActionDone = true;
     }
@@ -294,23 +315,32 @@ public class GameContext {
         if (!checkMandatoryActionNotDone(view, "Buy development card"))
             return;
 
-        // TODO: Use stream to do this
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>();
-        reducedResContainers.forEach((id, resMap) -> {
-            try {
-                resContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
-            } catch (Exception e) {
-                // TODO: Specify resource container that is not owned
-                view.on(new ErrAction(e));
-                throw new RuntimeException();
+        for (Map.Entry<Integer, Map<String, Integer>> container : reducedResContainers.entrySet()) {
+            Optional<ResourceContainer> c = player.getResourceContainerById(container.getKey());
+
+            if (c.isEmpty()) {
+                view.on(new ErrObjectNotOwned(container.getKey()));
+                return;
             }
-        });
+
+            resContainers.put(c.get(), translateResMap(container.getValue()));
+        }
 
         try {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
-        } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException | IllegalResourceTransferException e) {
-            view.on(new ErrAction(e));
-            return;
+        } catch (EmptyStackException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (CardRequirementsNotMetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalCardDepositException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalResourceTransferException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
         mandatoryActionDone = true;
@@ -335,19 +365,33 @@ public class GameContext {
         if (!checkMandatoryActionNotDone(view, "Activate production"))
             return;
 
-        if (reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).map(player::getProductionById).anyMatch(Optional::isEmpty)) {
-            view.on(new ErrAction("Production not owned.")); // TODO: This is a PoC exception
-            // TODO: Specify production that is not owned
+        Optional<Integer> missing = reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).filter(p -> player.getProductionById(p).isEmpty()).findAny();
+        if (missing.isPresent()) {
+            view.on(new ErrObjectNotOwned(missing.get()));
             return;
         }
 
-        List<ProductionRequest> prodRequests;
+        List<ProductionRequest> prodRequests = new ArrayList<>();
 
-        try {
-            prodRequests = reducedProdRequests.stream().map(r -> translateToProductionRequest(view, player, r)).toList();
-        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
-            view.on(new ErrAction(e));
-            return;
+        for (ReducedProductionRequest r : reducedProdRequests) {
+            Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
+            for (Map.Entry<Integer, Map<String, Integer>> container : r.getInputContainers().entrySet()) {
+                Optional<ResourceContainer> c = player.getResourceContainerById(container.getKey());
+    
+                if (c.isEmpty()) {
+                    view.on(new ErrObjectNotOwned(container.getKey()));
+                    return;
+                }
+    
+                inputContainers.put(c.get(), translateResMap(container.getValue()));
+            }
+            
+            prodRequests.add(
+                new ProductionRequest(
+                    game.getProductionById(r.getProduction()).orElseThrow(),
+                    translateResMap(r.getInputBlanksRep()),
+                    translateResMap(r.getOutputBlanksRep()),
+                    inputContainers, player.getStrongbox()));
         }
 
         ResourceTransaction transaction = new ResourceTransaction(List.copyOf(prodRequests));
@@ -451,24 +495,6 @@ public class GameContext {
     }
 
     private Map<ResourceType, Integer> translateResMap(Map<String, Integer> r) {
-        // TODO: Use stream
-        Map<ResourceType, Integer> res = new HashMap<>();
-        r.forEach((resTypeName, quantity) -> res.put(gameFactory.getResourceType(resTypeName).orElseThrow(), quantity));
-        return res;
-    }
-
-    private ProductionRequest translateToProductionRequest(View view, Player player, ReducedProductionRequest r) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
-        Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
-        r.getInputContainers().forEach((id, resMap) -> {
-            try {
-                inputContainers.put(player.getResourceContainerById(id).orElseThrow(() -> new Exception("Resource container not owned.")), translateResMap(resMap)); // TODO: This is a PoC exception
-            } catch (Exception e) {
-                view.on(new ErrAction(e));
-                // TODO: Specify resource container that is not owned
-                throw new RuntimeException();
-            }
-        });
-        return new ProductionRequest(game.getProductionById(r.getProduction()).orElseThrow(), translateResMap(r.getInputBlanksRep()), translateResMap(r.getOutputBlanksRep()),
-                inputContainers, player.getStrongbox());
+        return r.entrySet().stream().collect(Collectors.toMap(e -> gameFactory.getResourceType(e.getKey()).orElseThrow(), e -> e.getValue()));
     }
 }
