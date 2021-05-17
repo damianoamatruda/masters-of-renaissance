@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrNickname;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
@@ -32,15 +32,15 @@ public class Lobby {
     /* The player joining is one of the first of the match if 'freeSeats' is negative. */
     public void joinLobby(View view, String nickname) {
         if (nicknames.containsKey(view)) {
-            view.on(new ErrAction(String.format("You already have nickname \"%s\".", nicknames.get(view))));
+            view.on(ErrNickname.ALREADYSET);
             return;
         }
         if (nickname == null || nickname.isBlank()) {
-            view.on(new ErrAction("Given nickname is empty."));
+            view.on(ErrNickname.NOTSET);
             return;
         }
         if (nicknames.containsValue(nickname)) {
-            view.on(new ErrAction(String.format("Nickname \"%s\" already in use. Choose another one.", nickname)));
+            view.on(ErrNickname.TAKEN);
             return;
         }
 
@@ -150,7 +150,7 @@ public class Lobby {
 
     private boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
-            view.on(new ErrAction("You must first request a nickname."));
+            view.on(ErrNickname.NOTSET);
             return false;
         }
         return true;
@@ -160,7 +160,7 @@ public class Lobby {
         if (!checkNickname(view))
             return false;
         if (!joined.containsKey(view)) {
-            view.on(new ErrAction("You must first join a game."));
+            view.on(ErrNickname.NOTINGAME);
             return false;
         }
         return true;
