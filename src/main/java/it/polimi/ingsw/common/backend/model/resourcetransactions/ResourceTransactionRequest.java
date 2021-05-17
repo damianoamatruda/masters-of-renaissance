@@ -65,19 +65,22 @@ public class ResourceTransactionRequest {
         // TODO: Check that the given maps have values >= 0
 
         if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
-            throw new IllegalResourceTransactionReplacementsException("Input replacements contain non-storable and non-takeable resources", inputBlanksRep);
+            throw new IllegalResourceTransactionReplacementsException(true, true, false, 0, 0);
         if (outputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isGiveableToPlayer()))
-            throw new IllegalResourceTransactionReplacementsException("Output replacements contain non-storable and non-giveable resources", outputBlanksRep);
+            throw new IllegalResourceTransactionReplacementsException(false, true, false, 0, 0);
+
 
         if (inputBlanksRep.keySet().stream().anyMatch(resType -> recipe.getInputBlanksExclusions().contains(resType)))
-            throw new IllegalResourceTransactionReplacementsException("Input replacements contain excluded resources", inputBlanksRep);
+            throw new IllegalResourceTransactionReplacementsException(true, false, true, 0, 0);
+
         if (outputBlanksRep.keySet().stream().anyMatch(resType -> recipe.getOutputBlanksExclusions().contains(resType)))
-            throw new IllegalResourceTransactionReplacementsException("Output replacements contain excluded resources", outputBlanksRep);
+            throw new IllegalResourceTransactionReplacementsException(false, false, true, 0, 0);
 
         if (inputBlanksRep.values().stream().reduce(0, Integer::sum) != recipe.getInputBlanks())
-            throw new IllegalResourceTransactionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", recipe.getInputBlanks()), inputBlanksRep);
+            throw new IllegalResourceTransactionReplacementsException(true, false, false, inputBlanksRep.values().stream().reduce(0, Integer::sum), recipe.getInputBlanks());
+
         if (outputBlanksRep.values().stream().reduce(0, Integer::sum) != recipe.getOutputBlanks())
-            throw new IllegalResourceTransactionReplacementsException(String.format("Incorrect input replacements' amount, should be %d", recipe.getInputBlanks()), inputBlanksRep);
+            throw new IllegalResourceTransactionReplacementsException(false, false, false, outputBlanksRep.values().stream().reduce(0, Integer::sum), recipe.getInputBlanks());
 
         if (!recipe.hasDiscardableOutput() && !getDiscardedOutput(recipe.getOutput(), outputBlanksRep, outputContainers).isEmpty())
             throw new RuntimeException(); // TODO: Add more specific exception

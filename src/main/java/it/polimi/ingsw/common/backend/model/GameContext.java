@@ -15,6 +15,7 @@ import it.polimi.ingsw.common.events.mvevents.Errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrObjectNotOwned;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrReplacedTransRecipe;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrResourceReplacement;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -126,9 +127,9 @@ public class GameContext {
 
         try {
             player.getSetup().chooseResources(game, player, shelves);
-        } catch (IllegalResourceTransactionReplacementsException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (IllegalResourceTransactionReplacementsException e) {
+            // illegal replaced resources
+            view.on(new ErrResourceReplacement(e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
         } catch (IllegalResourceTransactionContainersException e) {
             // amount of resources in replaced map is different from shelves mapping
             view.on(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
@@ -287,8 +288,8 @@ public class GameContext {
         try {
             game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
         } catch (IllegalResourceTransactionReplacementsException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // illegal replaced resources
+            view.on(new ErrResourceReplacement(e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
         } catch (IllegalResourceTransactionContainersException e) {
             // amount of resources in replaced map is different from shelves mapping
             view.on(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));

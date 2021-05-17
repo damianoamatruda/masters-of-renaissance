@@ -1,14 +1,12 @@
-package it.polimi.ingsw.common.backend.model.resourcetransactions;
+package it.polimi.ingsw.common.events.mvevents.Errors;
 
-/**
- * Exception used in validating transaction requests' replacements.
- */
-public class IllegalResourceTransactionReplacementsException extends RuntimeException {
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
+
+public class ErrResourceReplacement implements MVEvent {
     private final boolean isInput;
     private final boolean isNonStorable;
     private final boolean isExcluded;
     private final int replacedCount, blanks;
-
     /**
      * @param isInput
      * @param isNonStorable
@@ -16,7 +14,7 @@ public class IllegalResourceTransactionReplacementsException extends RuntimeExce
      * @param replacedCount
      * @param blanks
      */
-    public IllegalResourceTransactionReplacementsException (
+    public ErrResourceReplacement(
         boolean isInput,
         boolean isNonStorable,
         boolean isExcluded,
