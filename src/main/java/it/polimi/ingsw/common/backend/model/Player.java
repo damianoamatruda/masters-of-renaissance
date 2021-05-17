@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
@@ -147,10 +148,11 @@ public class Player extends EventDispatcher {
      * @param game   the game the player is playing in
      * @param leader the leader card to discard
      * @throws ActiveLeaderDiscardException leader is already active
+     * @throws IllegalArgumentException     leader isn't owned by the player
      */
-    public void discardLeader(Game game, LeaderCard leader) throws IndexOutOfBoundsException, ActiveLeaderDiscardException {
+    public void discardLeader(Game game, LeaderCard leader) throws IllegalArgumentException, ActiveLeaderDiscardException {
         if (!leaders.contains(leader))
-            throw new IndexOutOfBoundsException(
+            throw new IllegalArgumentException(
                     String.format("Leader %d cannot be discarded: inexistent leader, max index allowed %d", leaders.indexOf(leader), leaders.size()));
         if (leader.isActive()) throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
         game.onDiscardLeader(this);
@@ -290,9 +292,10 @@ public class Player extends EventDispatcher {
      * @throws IllegalCardDepositException     blocks the action if the level of the previous top card of the slot is
      *                                         not equal to current level minus 1
      * @throws CardRequirementsNotMetException requirements for card purchase are not satisfied
+     * @throws IllegalResourceTransferException if the player cannot pay for the card
      */
     public void addToDevSlot(Game game, int devSlotIndex, DevelopmentCard devCard,
-                             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalCardDepositException {
+                             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
         Stack<DevelopmentCard> slot = devSlots.get(devSlotIndex);
         if ((slot.isEmpty() && devCard.getLevel() != 1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel() - 1))
             throw new IllegalCardDepositException(devCard, slot, devSlotIndex);

@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
@@ -84,10 +85,12 @@ public class Market extends EventDispatcher {
      * @param index        index of the selected row or column
      * @param replacements a map of the chosen resources to take, if choices are applicable
      * @param shelves      a map of the shelves where to add the taken resources, if possible
-     * @throws IllegalMarketTransferException if it is not possible
+     * @throws IllegalResourceTransactionReplacementsException if the specified replacements are incorrect
+     * @throws IllegalResourceTransactionContainersException   if the specified shelf mappings are incorrect
+     * @throws IllegalResourceTransferException                if there are issues trasferring the resource from/to a container
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
-                              Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalMarketTransferException {
+                              Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
             throw new IllegalArgumentException(
                     String.format("Cannot take resources: %s %d does not exist, limit is %d",
@@ -104,19 +107,12 @@ public class Market extends EventDispatcher {
 
         ResourceTransactionRequest transactionRequest;
 
-        try {
-            transactionRequest = new ResourceTransactionRequest(
-                    new ResourceTransactionRecipe(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
-                    Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
-        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
-            throw new IllegalMarketTransferException(e);
-        }
 
-        try {
-            new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
-        } catch (IllegalResourceTransactionActivationException e) {
-            throw new IllegalMarketTransferException(e);
-        }
+        transactionRequest = new ResourceTransactionRequest(
+                new ResourceTransactionRecipe(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
+                Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
+
+        new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
 
         shift(isRow, index);
 

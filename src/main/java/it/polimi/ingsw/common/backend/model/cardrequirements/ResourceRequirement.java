@@ -1,14 +1,8 @@
 package it.polimi.ingsw.common.backend.model.cardrequirements;
 
-import it.polimi.ingsw.common.backend.model.Game;
 import it.polimi.ingsw.common.backend.model.Player;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionActivationException;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransaction;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRequest;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
@@ -48,7 +42,7 @@ public class ResourceRequirement implements CardRequirement {
      * @param p the player whose leader are to be used in the discounting process.
      * @return the discounted cost of this requirement.
      */
-    private Map<ResourceType, Integer> getDiscountedCost(Player p) {
+    public Map<ResourceType, Integer> getDiscountedCost(Player p) {
         Map<ResourceType, Integer> discountedRes = new HashMap<>(resources);
 
         for (LeaderCard l : p.getLeaders())
@@ -93,27 +87,6 @@ public class ResourceRequirement implements CardRequirement {
             }
 
             throw new CardRequirementsNotMetException("resource", msg);
-        }
-    }
-
-    /**
-     * Takes the resources that form the requirement from the player. Each storable resource is taken from a given
-     * resource container.
-     *
-     * @param game          the game the player is playing in
-     * @param player        the player the resources are taken from
-     * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws CardRequirementsNotMetException if it is not possible
-     */
-    public void take(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException {
-        try {
-            new ResourceTransaction(List.of(
-                    new ResourceTransactionRequest(
-                            new ResourceTransactionRecipe(getDiscountedCost(player), 0, Map.of(), 0),
-                            Map.of(), Map.of(), resContainers, Map.of())
-            )).activate(game, player);
-        } catch (IllegalResourceTransactionActivationException e) {
-            throw new CardRequirementsNotMetException("resource", e);
         }
     }
 

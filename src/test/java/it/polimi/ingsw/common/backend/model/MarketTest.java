@@ -1,8 +1,11 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionContainersException;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionReplacementsException;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
@@ -64,9 +67,12 @@ public class MarketTest {
 
     /**
      * Checks that a row of the market grid remains the same after a complete shift.
+     * @throws IllegalResourceTransferException
+     * @throws IllegalResourceTransactionContainersException
+     * @throws IllegalResourceTransactionReplacementsException
      */
     @Test
-    void completelyShiftRow() throws IllegalMarketTransferException {
+    void completelyShiftRow() throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", false);
         ResourceType r3 = new ResourceType("r3", true);

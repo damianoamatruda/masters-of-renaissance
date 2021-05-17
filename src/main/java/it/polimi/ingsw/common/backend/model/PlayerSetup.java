@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
@@ -100,10 +101,12 @@ public class PlayerSetup {
      * @param game    the game the player is playing in
      * @param player  the player
      * @param shelves the destination shelves
-     * @throws CannotChooseException                         all the allowed initial resources have already been chosen
-     * @throws IllegalResourceTransactionActivationException invalid container
+     * @throws CannotChooseException                            all the allowed initial resources have already been chosen
+     * @throws IllegalResourceTransactionReplacementsException  
+     * @throws IllegalResourceTransactionContainersException    
+     * @throws IllegalResourceTransferException                 when trasferring resources to a container fails
      */
-    public void chooseResources(Game game, Player player, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalResourceTransactionActivationException {
+    public void chooseResources(Game game, Player player, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         if (hasChosenResources)
             throw new CannotChooseException("Cannot choose starting resources again, choice already made.");
 
@@ -114,13 +117,9 @@ public class PlayerSetup {
 
         ResourceTransactionRequest transactionRequest;
 
-        try {
-            transactionRequest = new ResourceTransactionRequest(
-                    new ResourceTransactionRecipe(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                    Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
-        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException e) {
-            throw new IllegalResourceTransactionActivationException(e); // TODO: Add more specific exception
-        }
+        transactionRequest = new ResourceTransactionRequest(
+                new ResourceTransactionRecipe(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
+                Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
 
         new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
 

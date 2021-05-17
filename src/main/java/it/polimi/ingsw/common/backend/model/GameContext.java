@@ -123,7 +123,7 @@ public class GameContext {
 
         try {
             player.getSetup().chooseResources(game, player, shelves);
-        } catch (CannotChooseException | IllegalResourceTransactionActivationException e) {
+        } catch (CannotChooseException | IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException | IllegalResourceTransferException e) {
             view.on(new ErrAction(e));
         }
     }
@@ -222,7 +222,7 @@ public class GameContext {
 
         try {
             player.discardLeader(game, leader);
-        } catch (IndexOutOfBoundsException | ActiveLeaderDiscardException e) {
+        } catch (IllegalArgumentException | ActiveLeaderDiscardException e) {
             view.on(new ErrAction(e));
         }
     }
@@ -263,7 +263,7 @@ public class GameContext {
 
         try {
             game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
-        } catch (IllegalMarketTransferException e) {
+        } catch (IllegalResourceTransactionReplacementsException | IllegalResourceTransactionContainersException | IllegalResourceTransferException e) {
             view.on(new ErrAction(e));
             return;
         }
@@ -308,7 +308,7 @@ public class GameContext {
 
         try {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
-        } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException e) {
+        } catch (IllegalCardDepositException | CardRequirementsNotMetException | EmptyStackException | IllegalResourceTransferException e) {
             view.on(new ErrAction(e));
             return;
         }
@@ -353,7 +353,7 @@ public class GameContext {
         ResourceTransaction transaction = new ResourceTransaction(List.copyOf(prodRequests));
         try {
             transaction.activate(game, player);
-        } catch (IllegalResourceTransactionActivationException e) {
+        } catch (IllegalResourceTransferException e) {
             view.on(new ErrAction(e));
             return;
         }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.UpdateDevCardGrid;
@@ -122,13 +123,14 @@ public class DevCardGrid extends EventDispatcher {
      * @param level         the level of the card to be bought
      * @param slotIndex     the position of the dev slot where to put the development card
      * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws IllegalCardDepositException     Bought card cannot be placed in the chosen player slot
-     * @throws CardRequirementsNotMetException error while player was depositing the card
-     * @throws EmptyStackException             No cards available with given color and level
+     * @throws IllegalCardDepositException      Bought card cannot be placed in the chosen player slot
+     * @throws CardRequirementsNotMetException  error while player was depositing the card
+     * @throws EmptyStackException              No cards available with given color and level
+     * @throws IllegalResourceTransferException if the player cannot pay for the card
      */
     public void buyDevCard(Game game, Player player, DevCardColor color, int level, int slotIndex,
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
-            throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException {
+            throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException, IllegalResourceTransferException {
 
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {

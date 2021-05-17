@@ -37,9 +37,9 @@ public class ResourceTransaction {
      *
      * @param game   the game the player is playing in
      * @param player the player on which to trigger the actions of the non-storable resources
-     * @throws IllegalResourceTransactionActivationException if the transaction failed
+     * @throws IllegalResourceTransferException if the transaction failed
      */
-    public void activate(Game game, Player player) throws IllegalResourceTransactionActivationException {
+    public void activate(Game game, Player player) throws IllegalResourceTransferException {
         Map<ResourceType, Integer> inputNonStorable = new HashMap<>();
         Map<ResourceType, Integer> outputNonStorable = new HashMap<>();
         Map<ResourceType, Integer> discardedOutput = new HashMap<>();
@@ -80,20 +80,12 @@ public class ResourceTransaction {
         /* Try removing all input storable resources from cloned resource containers.
          * If a resource transfer exception is thrown, the requested activation is not possible. */
         for (ResourceContainer resContainer : inputContainers.keySet())
-            try {
-                clonedContainers.get(resContainer).removeResources(inputContainers.get(resContainer));
-            } catch (IllegalResourceTransferException e) {
-                throw new IllegalResourceTransactionActivationException("Illegal input transfer.", e);
-            }
+            clonedContainers.get(resContainer).removeResources(inputContainers.get(resContainer));
 
         /* Try adding all output storable resources into cloned resource containers (with input removed).
          * If a resource transfer exception is thrown, the requested activation is not possible. */
         for (ResourceContainer resContainer : outputContainers.keySet())
-            try {
-                clonedContainers.get(resContainer).addResources(outputContainers.get(resContainer));
-            } catch (IllegalResourceTransferException e) {
-                throw new IllegalResourceTransactionActivationException("Illegal output transfer.", e);
-            }
+            clonedContainers.get(resContainer).addResources(outputContainers.get(resContainer));
 
         /* Remove all input storable resources from real resource containers.
          * This should be possible, as it worked with cloned resource containers */

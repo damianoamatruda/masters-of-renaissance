@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.resourcetransactions;
 
 import it.polimi.ingsw.common.backend.model.*;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class ResourceTransactionTest {
     @Test
-    void singleRequestWithoutBlanks() throws IllegalResourceTransactionActivationException {
+    void singleRequestWithoutBlanks() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
@@ -52,7 +53,7 @@ public class ResourceTransactionTest {
     }
 
     @Test
-    void singleRequestWithInputBlanks() throws IllegalResourceTransactionActivationException {
+    void singleRequestWithInputBlanks() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
@@ -79,7 +80,7 @@ public class ResourceTransactionTest {
     }
 
     @Test
-    void singleRequestWithOutputBlanks() throws IllegalResourceTransactionActivationException {
+    void singleRequestWithOutputBlanks() throws IllegalResourceTransferException {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         ResourceType r3 = new ResourceType("r3", true);
