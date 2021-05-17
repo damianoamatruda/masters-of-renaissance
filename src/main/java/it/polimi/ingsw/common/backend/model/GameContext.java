@@ -10,6 +10,7 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrActiveLeaderDiscarded;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrObjectNotOwned;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
@@ -89,7 +90,7 @@ public class GameContext {
         try {
             player.getSetup().chooseLeaders(game, player, leaders);
         } catch (CannotChooseException e) {
-            view.on(new ErrAction(e));
+            view.on(new ErrInitialChoice(true, e.getMissingLeadersCount()));
         }
     }
 
@@ -129,8 +130,8 @@ public class GameContext {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         } catch (CannotChooseException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            // resources already chosen
+            view.on(new ErrInitialChoice(false, 0));
         } catch (IllegalResourceTransferException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

@@ -65,7 +65,7 @@ public class PlayerSetup {
 
     public void giveInitialFaithPoints(Game game, Player player) throws CannotChooseException {
         if (hasGivenInitialFaithPoints)
-            throw new CannotChooseException("Cannot give initial faith points again, choice already made.");
+            throw new CannotChooseException(0);
 
         player.incrementFaithPoints(game, initialFaithPoints);
 
@@ -82,11 +82,10 @@ public class PlayerSetup {
      */
     public void chooseLeaders(Game game, Player player, List<LeaderCard> chosenLeaders) throws CannotChooseException {
         if (hasChosenLeaders)
-            throw new CannotChooseException("Cannot choose starting leaders again, choice already made."); // TODO what happens if server parameters make this default?
+            throw new CannotChooseException(0);
 
         if (chosenLeaders.size() != chosenLeadersCount)
-            throw new CannotChooseException(
-                    String.format("Not enough leader cards chosen: %d chosen, %d required.", chosenLeaders.size(), chosenLeadersCount));
+            throw new CannotChooseException(chosenLeadersCount - chosenLeaders.size());
 
         player.retainLeaders(chosenLeaders);
 
@@ -108,7 +107,7 @@ public class PlayerSetup {
      */
     public void chooseResources(Game game, Player player, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         if (hasChosenResources)
-            throw new CannotChooseException("Cannot choose starting resources again, choice already made.");
+            throw new CannotChooseException(0);
 
         Map<ResourceType, Integer> chosenResources = shelves.values().stream()
                 .map(Map::entrySet)
