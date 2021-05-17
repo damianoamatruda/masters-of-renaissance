@@ -46,9 +46,6 @@ public class Game extends EventDispatcher {
     /** Number of development cards a player can have, before triggering the end of the game. */
     protected final int maxObtainableDevCards;
 
-    /** Progressive number of the current round. */
-    protected int rounds = 0;
-
     /** Flag that indicates the Game is about to end. */
     protected boolean lastRound;
 
@@ -246,9 +243,6 @@ public class Game extends EventDispatcher {
 
         dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
 
-        if (nextPlayer.equals(getFirstPlayer()))
-            rounds++;
-
         if (lastRound)
             end();
     }
@@ -313,15 +307,6 @@ public class Game extends EventDispatcher {
      */
     public FaithTrack getFaithTrack() {
         return faithTrack;
-    }
-
-    /**
-     * Getter of the current number of completed rounds.
-     *
-     * @return the current round number
-     */
-    public int getRounds() {
-        return rounds;
     }
 
     /**

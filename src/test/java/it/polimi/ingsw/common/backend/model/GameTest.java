@@ -71,8 +71,7 @@ public class GameTest {
     @Test
     @DisplayName("Game should already be instantiated")
     void instantiationTest() {
-        assertAll(() -> assertEquals(0, game.getRounds()),
-                () -> assertTrue(game.getPlayers().get(0).hasInkwell()));
+        assertAll(() -> assertTrue(game.getPlayers().get(0).hasInkwell()));
     }
 
     /**
