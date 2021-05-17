@@ -298,7 +298,7 @@ public class Player extends EventDispatcher {
                              Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
         Stack<DevelopmentCard> slot = devSlots.get(devSlotIndex);
         if ((slot.isEmpty() && devCard.getLevel() != 1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel() - 1))
-            throw new IllegalCardDepositException(devCard, slot, devSlotIndex);
+            throw new IllegalCardDepositException();
 
         devCard.takeFromPlayer(game, this, resContainers);
 

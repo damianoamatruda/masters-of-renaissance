@@ -11,6 +11,7 @@ import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.ErrCardRequirements;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrActiveLeaderDiscarded;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrObjectNotOwned;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
@@ -337,13 +338,11 @@ public class GameContext {
         try {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
         } catch (EmptyStackException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            view.on(new ErrBuyDevCard(true));
         } catch (CardRequirementsNotMetException e) {
             view.on(new ErrCardRequirements(e.getMessage()));
         } catch (IllegalCardDepositException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            view.on(new ErrBuyDevCard(false));
         } catch (IllegalResourceTransferException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
