@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrNewGame;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrNickname;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
@@ -85,12 +86,12 @@ public class Lobby {
             return;
 
         if (waiting.indexOf(view) != 0) {
-            view.on(new ErrAction("Cannot prepare a new game. You are not the first player who booked a seat."));
+            view.on(new ErrNewGame(false));
             return;
         }
 
         if (newGamePlayersCount == 0) {
-            view.on(new ErrAction("Cannot have zero players in a game, please choose a valid amount."));
+            view.on(new ErrNewGame(true));
             return;
         }
 
