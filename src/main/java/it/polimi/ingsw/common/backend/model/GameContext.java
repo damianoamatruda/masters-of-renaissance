@@ -211,7 +211,14 @@ public class GameContext {
         if (!checkCurrentPlayer(view, player, "Discard leader"))
             return;
 
-        LeaderCard leader = game.getLeaderById(leaderId).orElseThrow();
+        LeaderCard leader;
+        
+        try {
+            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception("Leader not owned.")); // TODO: This is a PoC exception
+        } catch (Exception e) {
+            view.on(new ErrAction(e));
+            return;
+        }
 
         try {
             player.discardLeader(game, leader);
