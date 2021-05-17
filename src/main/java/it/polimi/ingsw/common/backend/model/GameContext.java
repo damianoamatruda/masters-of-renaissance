@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrObjectNotOwned;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
@@ -234,8 +235,10 @@ public class GameContext {
 
         try {
             player.discardLeader(game, leader);
-        } catch (IllegalArgumentException | ActiveLeaderDiscardException e) {
-            view.on(new ErrAction(e));
+        } catch (IllegalArgumentException e) {
+            view.on(new ErrObjectNotOwned(leaderId));
+        } catch (ActiveLeaderDiscardException e) {
+            view.on(new ErrActiveLeaderDiscarded());
         }
     }
 
