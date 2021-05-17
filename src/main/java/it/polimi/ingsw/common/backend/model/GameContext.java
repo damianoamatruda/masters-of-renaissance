@@ -9,7 +9,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.ErrCardRequirements;
-import it.polimi.ingsw.common.events.mvevents.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrInitialChoice;
@@ -77,7 +77,7 @@ public class GameContext {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            view.on(new ErrAction(new IllegalActionException("Choose leaders", "Setup already done.")));
+            view.on(ErrAction.LATESETUPACTION);
             return;
         }
 
@@ -107,7 +107,7 @@ public class GameContext {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
-            view.on(new ErrAction(new IllegalActionException("Choose resources", "Setup already done.")));
+            view.on(ErrAction.LATESETUPACTION);
             return;
         }
 
@@ -426,7 +426,7 @@ public class GameContext {
             return;
 
         if (!mandatoryActionDone) {
-            view.on(new ErrAction(new IllegalActionException("End turn", "No mandatory action done in the turn")));
+            view.on(ErrAction.EARLYTURNEND);
             return;
         }
 
@@ -458,7 +458,7 @@ public class GameContext {
      */
     private boolean preliminaryChecks(View view, Player player, String action) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
-            view.on(new ErrAction(new IllegalActionException(action, !player.getSetup().isDone() ? "Setup phase not concluded." : "Game has already ended")));
+            view.on(!player.getSetup().isDone() ? ErrAction.EARLYMANDATORYACTION : ErrAction.ENDEDGAME);
             return false;
         }
         return true;
@@ -474,7 +474,7 @@ public class GameContext {
      */
     private boolean checkCurrentPlayer(View view, Player player, String action) {
         if (!player.equals(game.getCurrentPlayer())) {
-            view.on(new ErrAction(new IllegalActionException(action, "You are not the current player in the turn.")));
+            view.on(ErrAction.NOTCURRENTPLAYER);
             return false;
         }
         return true;
@@ -489,7 +489,7 @@ public class GameContext {
      */
     private boolean checkMandatoryActionNotDone(View view, String action) {
         if (mandatoryActionDone) {
-            view.on(new ErrAction(new IllegalActionException(action, "You have already done a mandatory action.")));
+            view.on(ErrAction.LATEMANDATORYACTION);
             return false;
         }
         return true;
