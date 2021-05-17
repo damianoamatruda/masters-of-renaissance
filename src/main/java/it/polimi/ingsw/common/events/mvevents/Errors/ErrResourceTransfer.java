@@ -1,12 +1,9 @@
-package it.polimi.ingsw.common.backend.model.resourcecontainers;
+package it.polimi.ingsw.common.events.mvevents.Errors;
 
-import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
-/**
- * Exception thrown when a resource cannot be added or removed.
- */
-public class IllegalResourceTransferException extends Exception {
-    private final ResourceType resource;
+public class ErrResourceTransfer implements MVEvent {
+    private final String resType;
     private final boolean isBoundedResTypeDifferent,
                           isNonStorable,
                           isCapacityReached,
@@ -14,16 +11,16 @@ public class IllegalResourceTransferException extends Exception {
                           isDuplicateBoundedResource;
 
     /**
-     * @param resource
+     * @param resType
      * @param isBoundedResTypeDifferent
      * @param isNonStorable
      * @param isCapacityReached
      * @param isAdded
      * @param isDuplicateBoundedResource
      */
-    public IllegalResourceTransferException(ResourceType resource, boolean isBoundedResTypeDifferent, boolean isNonStorable, boolean isCapacityReached,
+    public ErrResourceTransfer(String resType, boolean isBoundedResTypeDifferent, boolean isNonStorable, boolean isCapacityReached,
             boolean isAdded, boolean isDuplicateBoundedResource) {
-        this.resource = resource;
+        this.resType = resType;
         this.isBoundedResTypeDifferent = isBoundedResTypeDifferent;
         this.isNonStorable = isNonStorable;
         this.isCapacityReached = isCapacityReached;
@@ -32,10 +29,10 @@ public class IllegalResourceTransferException extends Exception {
     }
 
     /**
-     * @return the resource
+     * @return the resType
      */
-    public ResourceType getResource() {
-        return resource;
+    public String getResType() {
+        return resType;
     }
 
     /**

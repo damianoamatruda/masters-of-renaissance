@@ -16,6 +16,7 @@ import it.polimi.ingsw.common.events.mvevents.Errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrObjectNotOwned;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrReplacedTransRecipe;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrResourceReplacement;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrResourceTransfer;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -95,6 +96,7 @@ public class GameContext {
             player.getSetup().chooseLeaders(game, player, leaders);
         } catch (CannotChooseException e) {
             view.on(new ErrInitialChoice(true, e.getMissingLeadersCount()));
+            return;
         }
     }
 
@@ -130,15 +132,24 @@ public class GameContext {
         } catch (IllegalResourceTransactionReplacementsException e) {
             // illegal replaced resources
             view.on(new ErrResourceReplacement(e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
+            return;
         } catch (IllegalResourceTransactionContainersException e) {
             // amount of resources in replaced map is different from shelves mapping
             view.on(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
+            return;
         } catch (CannotChooseException e1) {
             // resources already chosen
             view.on(new ErrInitialChoice(false, 0));
-        } catch (IllegalResourceTransferException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            return;
+        } catch (IllegalResourceTransferException e) {
+            view.on(new ErrResourceTransfer(
+                e.getResource().getName(),
+                e.isBoundedResTypeDifferent(),
+                e.isNonStorable(),
+                e.isCapacityReached(),
+                e.isAdded(),
+                e.isDuplicateBoundedResource()));
+            return;
         }
     }
 
@@ -177,7 +188,14 @@ public class GameContext {
         try {
             Shelf.swap(shelf1, shelf2);
         } catch (IllegalResourceTransferException e) {
-            view.on(new ErrAction(e));
+            view.on(new ErrResourceTransfer(
+                e.getResource().getName(),
+                e.isBoundedResTypeDifferent(),
+                e.isNonStorable(),
+                e.isCapacityReached(),
+                e.isAdded(),
+                e.isDuplicateBoundedResource()));
+            return;
         }
     }
 
@@ -210,8 +228,10 @@ public class GameContext {
             leader.activate(player);
         } catch (IllegalArgumentException e) {
             view.on(new ErrObjectNotOwned(leaderId));
+            return;
         } catch (CardRequirementsNotMetException e) {
             view.on(new ErrCardRequirements(e.getMessage()));
+            return;
         }
     }
 
@@ -244,8 +264,10 @@ public class GameContext {
             player.discardLeader(game, leader);
         } catch (IllegalArgumentException e) {
             view.on(new ErrObjectNotOwned(leaderId));
+            return;
         } catch (ActiveLeaderDiscardException e) {
             view.on(new ErrActiveLeaderDiscarded());
+            return;
         }
     }
 
@@ -290,12 +312,20 @@ public class GameContext {
         } catch (IllegalResourceTransactionReplacementsException e) {
             // illegal replaced resources
             view.on(new ErrResourceReplacement(e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
+            return;
         } catch (IllegalResourceTransactionContainersException e) {
             // amount of resources in replaced map is different from shelves mapping
             view.on(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
+            return;
         } catch (IllegalResourceTransferException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            view.on(new ErrResourceTransfer(
+                e.getResource().getName(),
+                e.isBoundedResTypeDifferent(),
+                e.isNonStorable(),
+                e.isCapacityReached(),
+                e.isAdded(),
+                e.isDuplicateBoundedResource()));
+            return;
         }
         
 
@@ -341,13 +371,22 @@ public class GameContext {
             game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
         } catch (EmptyStackException e) {
             view.on(new ErrBuyDevCard(true));
+            return;
         } catch (CardRequirementsNotMetException e) {
             view.on(new ErrCardRequirements(e.getMessage()));
+            return;
         } catch (IllegalCardDepositException e) {
             view.on(new ErrBuyDevCard(false));
+            return;
         } catch (IllegalResourceTransferException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            view.on(new ErrResourceTransfer(
+                e.getResource().getName(),
+                e.isBoundedResTypeDifferent(),
+                e.isNonStorable(),
+                e.isCapacityReached(),
+                e.isAdded(),
+                e.isDuplicateBoundedResource()));
+            return;
         }
 
         mandatoryActionDone = true;
@@ -405,7 +444,13 @@ public class GameContext {
         try {
             transaction.activate(game, player);
         } catch (IllegalResourceTransferException e) {
-            view.on(new ErrAction(e));
+            view.on(new ErrResourceTransfer(
+                e.getResource().getName(),
+                e.isBoundedResTypeDifferent(),
+                e.isNonStorable(),
+                e.isCapacityReached(),
+                e.isAdded(),
+                e.isDuplicateBoundedResource()));
             return;
         }
 
@@ -435,8 +480,7 @@ public class GameContext {
         try {
             game.onTurnEnd();
         } catch (NoActivePlayersException e) {
-            view.on(new ErrAction(e)); // TODO does this make sense?
-            return;
+            throw new RuntimeException("No active players");
         }
 
         mandatoryActionDone = false;

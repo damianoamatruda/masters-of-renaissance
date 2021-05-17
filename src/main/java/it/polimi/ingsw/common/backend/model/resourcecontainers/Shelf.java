@@ -120,11 +120,11 @@ public class Shelf extends ResourceContainer {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, true, this.resType);
+            throw new IllegalResourceTransferException(resType, true, false, false, true, false);
         if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, true);
+            throw new IllegalResourceTransferException(resType, false, true, false, true, false);
         if (this.quantity + resMap.get(resType) > size)
-            throw new IllegalResourceTransferException(resType, true, this);
+            throw new IllegalResourceTransferException(resType, false, false, true, true, false);
 
         this.resType = resType;
         this.quantity += resMap.get(resType);
@@ -146,12 +146,11 @@ public class Shelf extends ResourceContainer {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, false, this.resType);
+            throw new IllegalResourceTransferException(resType, true, false, false, false, false);
         if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, false);
-
+            throw new IllegalResourceTransferException(resType, false, true, false, false, false);
         if (this.quantity < resMap.get(resType))
-            throw new IllegalResourceTransferException(resType, false, this);
+            throw new IllegalResourceTransferException(resType, false, false, true, false, false);
         if (this.quantity == resMap.get(resType))
             this.resType = null;
         this.quantity -= resMap.get(resType);

@@ -47,7 +47,7 @@ public class ResourceShelf extends Shelf {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (!resType.equals(this.boundedResType))
-            throw new IllegalResourceTransferException(resType, true, this.getBoundedResType());
+            throw new IllegalResourceTransferException(resType, true, false, false, true, false);
         super.addResources(resMap);
     }
 
