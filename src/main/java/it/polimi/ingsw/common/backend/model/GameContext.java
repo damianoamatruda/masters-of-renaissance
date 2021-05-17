@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.events.ErrCardRequirements;
 import it.polimi.ingsw.common.events.mvevents.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrInitialChoice;
@@ -204,8 +205,10 @@ public class GameContext {
 
         try {
             leader.activate(player);
-        } catch (CardRequirementsNotMetException | IllegalArgumentException e) {
-            view.on(new ErrAction(e));
+        } catch (IllegalArgumentException e) {
+            view.on(new ErrObjectNotOwned(leaderId));
+        } catch (CardRequirementsNotMetException e) {
+            view.on(new ErrCardRequirements(e.getMessage()));
         }
     }
 
@@ -337,8 +340,7 @@ public class GameContext {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (CardRequirementsNotMetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            view.on(new ErrCardRequirements(e.getMessage()));
         } catch (IllegalCardDepositException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
