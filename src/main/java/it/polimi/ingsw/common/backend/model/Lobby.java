@@ -1,11 +1,11 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.Errors.ErrNewGame;
-import it.polimi.ingsw.common.events.mvevents.Errors.ErrNickname;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 
 import java.util.ArrayList;
 import java.util.HashMap;
