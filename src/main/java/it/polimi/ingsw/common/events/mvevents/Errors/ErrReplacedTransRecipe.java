@@ -1,25 +1,20 @@
-package it.polimi.ingsw.common.backend.model.resourcetransactions;
+package it.polimi.ingsw.common.events.mvevents.Errors;
 
-/**
- * Exception used in validating resource transaction requests' containers.
- */
-public class IllegalResourceTransactionContainersException extends RuntimeException {
+import it.polimi.ingsw.common.events.mvevents.MVEvent;
+
+public class ErrReplacedTransRecipe implements MVEvent {
     private final String resType;
     private final int replacedCount, shelvesChoiceResCount;
-    
     /**
-     * Class constructor.
-     * 
      * @param resType               the resource type the count of which is wrong in the replaced recipe
      * @param replacedCount         the count of resources in the replaced map
      * @param shelvesChoiceResCount the count of resources in the shelves mapping
      */
-    public IllegalResourceTransactionContainersException(String resType, int replacedCount, int shelvesChoiceResCount) {
+    public ErrReplacedTransRecipe(String resType, int replacedCount, int shelvesChoiceResCount) {
         this.resType = resType;
         this.replacedCount = replacedCount;
         this.shelvesChoiceResCount = shelvesChoiceResCount;
     }
-
     /**
      * @return the resType
      */

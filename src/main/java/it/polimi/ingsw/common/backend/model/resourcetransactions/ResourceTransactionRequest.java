@@ -108,8 +108,7 @@ public class ResourceTransactionRequest {
                 .reduce(0, Integer::sum);
         if (resContainersResourcesCount != resourceMapResourcesCount)
             throw new IllegalResourceTransactionContainersException(
-                    String.format("Amount of resources specified in the shelves map (%d) does not match amount in replaced recipe (%d)",
-                            resContainersResourcesCount, resourceMapResourcesCount));
+                "", resourceMapResourcesCount, resContainersResourcesCount);
 
         /* Check that the quantity of each storable resource type in the map of resources is the same as in the map
            of resource containers */
@@ -119,8 +118,7 @@ public class ResourceTransactionRequest {
                 resourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
             if (resourceCount != resourceMap.get(resType))
                 throw new IllegalResourceTransactionContainersException(
-                        String.format("Amount of %s specified in replaced recipe (%d) does not match amount specified in shelves (%d)",
-                                resType.getName(), resourceMap.get(resType), resourceCount));
+                    resType.getName(), resourceMap.get(resType), resourceCount);
         }
     }
 

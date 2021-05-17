@@ -14,6 +14,7 @@ import it.polimi.ingsw.common.events.mvevents.Errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.mvevents.Errors.ErrObjectNotOwned;
+import it.polimi.ingsw.common.events.mvevents.Errors.ErrReplacedTransRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -128,9 +129,9 @@ public class GameContext {
         } catch (IllegalResourceTransactionReplacementsException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
-        } catch (IllegalResourceTransactionContainersException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (IllegalResourceTransactionContainersException e) {
+            // amount of resources in replaced map is different from shelves mapping
+            view.on(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
         } catch (CannotChooseException e1) {
             // resources already chosen
             view.on(new ErrInitialChoice(false, 0));
@@ -289,8 +290,8 @@ public class GameContext {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalResourceTransactionContainersException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // amount of resources in replaced map is different from shelves mapping
+            view.on(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
         } catch (IllegalResourceTransferException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
