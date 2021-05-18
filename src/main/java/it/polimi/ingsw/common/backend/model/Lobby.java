@@ -14,15 +14,16 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class Lobby {
+    private final Object lock;
     private final GameFactory gameFactory;
-    // private final List<GameContext> games;
-    private final Map<View, String> nicknames;
-    private final Map<View, GameContext> joined;
-    private final Map<String, GameContext> disconnected;
-    private final List<View> waiting;
-    private int newGamePlayersCount;
+    public final Map<View, String> nicknames;
+    public final Map<View, GameContext> joined;
+    public final Map<String, GameContext> disconnected;
+    public final List<View> waiting;
+    public int newGamePlayersCount;
 
     public Lobby(GameFactory gameFactory) {
+        this.lock = new Object();
         this.gameFactory = gameFactory;
         this.nicknames = new HashMap<>();
         this.joined = new HashMap<>();
@@ -32,121 +33,139 @@ public class Lobby {
 
     /* The player joining is one of the first of the match if 'freeSeats' is negative. */
     public void joinLobby(View view, String nickname) {
-        if (nicknames.containsKey(view)) {
-            view.on(ErrNickname.ALREADYSET);
-            return;
-        }
-        if (nickname == null || nickname.isBlank()) {
-            view.on(ErrNickname.NOTSET);
-            return;
-        }
-        if (nicknames.containsValue(nickname)) {
-            view.on(ErrNickname.TAKEN);
-            return;
-        }
-
-        /* nickname validated, join lobby */
-        nicknames.put(view, nickname);
-
-        if (disconnected.containsKey(nickname)) {
-            System.out.printf("Player \"%s\" rejoined%n", nickname);
-
-            /* Get the match the nickname was previously in and set the player back to active */
-            GameContext oldContext = disconnected.get(nickname);
-            try {
-                oldContext.setActive(nickname, true);
-            } catch (NoActivePlayersException e) {
-                // view.on(new ErrAction(e));
-                throw new RuntimeException("No active players after player rejoining.");
+        synchronized(lock) {
+            if (nicknames.containsKey(view)) {
+                view.on(ErrNickname.ALREADYSET);
+                return;
             }
-
-            /* Resuming routine (observer registrations and state messages) */
-            oldContext.resume(view);
-            oldContext.registerViewToModel(view, nickname);
-            joined.put(view, oldContext);
-            disconnected.remove(nickname);
-        } else {
-            System.out.printf("Set nickname \"%s\".%n", nickname);
-
-            waiting.add(view);
-
-            waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
-
-            if (newGamePlayersCount != 0)
-                view.on(new UpdateJoinGame(newGamePlayersCount));
-
-            if (waiting.size() == newGamePlayersCount)
-                startNewGame();
+            if (nickname == null || nickname.isBlank()) {
+                view.on(ErrNickname.NOTSET);
+                return;
+            }
+            if (nicknames.containsValue(nickname)) {
+                view.on(ErrNickname.TAKEN);
+                return;
+            }
+    
+            /* nickname validated, join lobby */
+            nicknames.put(view, nickname);
+    
+            if (disconnected.containsKey(nickname)) {
+                System.out.printf("Player \"%s\" rejoined%n", nickname);
+    
+                /* Get the match the nickname was previously in and set the player back to active */
+                GameContext oldContext = disconnected.get(nickname);
+                try {
+                    oldContext.setActive(nickname, true);
+                } catch (NoActivePlayersException e) {
+                    // view.on(new ErrAction(e));
+                    throw new RuntimeException("No active players after player rejoining.");
+                }
+    
+                /* Resuming routine (observer registrations and state messages) */
+                oldContext.resume(view);
+                oldContext.registerViewToModel(view, nickname);
+                joined.put(view, oldContext);
+                disconnected.remove(nickname);
+            } else {
+                System.out.printf("Set nickname \"%s\".%n", nickname);
+    
+                waiting.add(view);
+                System.out.printf("adding %s, %d waiting\n", nickname, waiting.size());
+    
+                waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
+    
+                if (newGamePlayersCount != 0)
+                    view.on(new UpdateJoinGame(newGamePlayersCount));
+    
+                if (waiting.size() == newGamePlayersCount) {
+                    System.out.printf("%s joining started a new game\n", nicknames.get(view));
+                    startNewGame();
+                }
+            }
         }
     }
 
     /* If the player is one of the first to join, it will have to choose the total number of players in the match. */
     public void prepareNewGame(View view, int newGamePlayersCount) {
-        if (!checkNickname(view))
-            return;
-
-        if (waiting.indexOf(view) != 0) {
-            view.on(new ErrNewGame(false));
-            return;
+        synchronized(lock) {
+            if (!checkNickname(view))
+                return;
+    
+            if (waiting.indexOf(view) != 0) {
+                System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+                view.on(new ErrNewGame(false));
+                return;
+            }
+    
+            if (newGamePlayersCount == 0) {
+                view.on(new ErrNewGame(true));
+                return;
+            }
+    
+            System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+            this.newGamePlayersCount = newGamePlayersCount;
+    
+            waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> v.on(new UpdateJoinGame(newGamePlayersCount)));
+    
+            if (waiting.size() >= newGamePlayersCount){
+                startNewGame();
+                System.out.printf("%s prepared a new game\n", nicknames.get(view));
+            }
         }
-
-        if (newGamePlayersCount == 0) {
-            view.on(new ErrNewGame(true));
-            return;
-        }
-
-        System.out.printf("Setting players count to %d.%n", newGamePlayersCount);
-        this.newGamePlayersCount = newGamePlayersCount;
-
-        waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> v.on(new UpdateJoinGame(newGamePlayersCount)));
-
-        if (waiting.size() >= newGamePlayersCount)
-            startNewGame();
     }
 
     public void startNewGame() {
-        Game newGame = newGamePlayersCount == 1 ?
-                gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
-                gameFactory.getMultiGame(waiting.subList(0, newGamePlayersCount).stream().map(nicknames::get).toList());
-
-        GameContext context = new GameContext(newGame, gameFactory);
-        waiting.subList(0, newGamePlayersCount).forEach(view -> {
-            context.registerViewToModel(view, nicknames.get(view));
-            joined.put(view, context);
-        });
-        context.start();
-
-        /* Remove players who joined from waiting list */
-        waiting.subList(0, newGamePlayersCount).clear();
-
-        waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
-
-        newGamePlayersCount = 0;
+        synchronized(lock) {
+            Game newGame = newGamePlayersCount == 1 ?
+                    gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
+                    gameFactory.getMultiGame(waiting.subList(0, newGamePlayersCount).stream().map(nicknames::get).toList());
+    
+            GameContext context = new GameContext(newGame, gameFactory);
+            waiting.subList(0, newGamePlayersCount).forEach(view -> {
+                context.registerViewToModel(view, nicknames.get(view));
+                joined.put(view, context);
+            });
+            context.start();
+            System.out.printf("started context, waiting list %d\n", waiting.size());
+    
+            /* Remove players who joined from waiting list */
+            waiting.subList(0, newGamePlayersCount).clear();
+            System.out.printf("removed %d waiting %d\n", newGamePlayersCount, waiting.size());
+    
+            waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
+    
+            newGamePlayersCount = 0;
+        }
     }
 
     public void exit(View view) {
-        String nickname = nicknames.get(view);
-        if (nickname != null) {
-            GameContext context = joined.get(view);
-            if (context != null) {
-                context.unregisterViewToModel(view, nickname);
-
-                try {
-                    context.setActive(nickname, false);
-                    disconnected.put(nickname, context);
-                } catch (NoActivePlayersException e) {
-                    disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
+        synchronized(lock) {
+            String nickname = nicknames.get(view);
+            if (nickname != null) {
+                GameContext context = joined.get(view);
+                if (context != null) {
+                    context.unregisterViewToModel(view, nickname);
+    
+                    try {
+                        context.setActive(nickname, false);
+                        disconnected.put(nickname, context);
+                    } catch (NoActivePlayersException e) {
+                        disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
+                    }
+                    joined.remove(view);
                 }
-                joined.remove(view);
+                nicknames.remove(view);
             }
-            nicknames.remove(view);
+            view.on(new ResGoodbye());
         }
-        view.on(new ResGoodbye());
     }
 
     public void checkJoinedThen(View view, BiConsumer<GameContext, String> then) {
-        if (checkJoined(view))
-            then.accept(joined.get(view), nicknames.get(view));
+        synchronized(lock) {
+            if (checkJoined(view))
+                then.accept(joined.get(view), nicknames.get(view));
+        }
     }
 
     private boolean checkNickname(View view) {
