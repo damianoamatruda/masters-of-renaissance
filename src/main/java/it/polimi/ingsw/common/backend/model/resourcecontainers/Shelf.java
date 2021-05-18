@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException.Kind;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.UpdateResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
@@ -120,11 +121,11 @@ public class Shelf extends ResourceContainer {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, true, false, false, true, false);
+            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDEDRESTYPEDIFFER);
         if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, false, true, false, true, false);
+            throw new IllegalResourceTransferException(resType, true, Kind.NONSTORABLE);
         if (this.quantity + resMap.get(resType) > size)
-            throw new IllegalResourceTransferException(resType, false, false, true, true, false);
+            throw new IllegalResourceTransferException(resType, true, Kind.CAPACITYREACHED);
 
         this.resType = resType;
         this.quantity += resMap.get(resType);
@@ -146,11 +147,11 @@ public class Shelf extends ResourceContainer {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, true, false, false, false, false);
+            throw new IllegalResourceTransferException(resType, false, Kind.BOUNDEDRESTYPEDIFFER);
         if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, false, true, false, false, false);
+            throw new IllegalResourceTransferException(resType, false, Kind.NONSTORABLE);
         if (this.quantity < resMap.get(resType))
-            throw new IllegalResourceTransferException(resType, false, false, true, false, false);
+            throw new IllegalResourceTransferException(resType, false, Kind.CAPACITYREACHED);
         if (this.quantity == resMap.get(resType))
             this.resType = null;
         this.quantity -= resMap.get(resType);

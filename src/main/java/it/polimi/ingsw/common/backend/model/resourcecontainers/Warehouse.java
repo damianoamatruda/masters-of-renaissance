@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException.Kind;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public class Warehouse {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .anyMatch(r -> r.equals(resType)))
-                throw new IllegalResourceTransferException(resType, false, false, false, false, true);
+                throw new IllegalResourceTransferException(resType, true, Kind.DUPLICATEBOUNDEDRESOURCE);
             super.addResources(resMap);
         }
     }

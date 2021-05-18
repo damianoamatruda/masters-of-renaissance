@@ -7,28 +7,37 @@ import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
  */
 public class IllegalResourceTransferException extends Exception {
     private final ResourceType resource;
-    private final boolean isBoundedResTypeDifferent,
-                          isNonStorable,
-                          isCapacityReached,
-                          isAdded,
-                          isDuplicateBoundedResource;
+    private final boolean isAdded;
+
+    private final Kind kind;
+    
+    public enum Kind {
+        BOUNDEDRESTYPEDIFFER,
+        NONSTORABLE,
+        CAPACITYREACHED,
+        DUPLICATEBOUNDEDRESOURCE
+    }
 
     /**
+     * Class constructor.
+     * 
      * @param resource
-     * @param isBoundedResTypeDifferent
-     * @param isNonStorable
-     * @param isCapacityReached
      * @param isAdded
-     * @param isDuplicateBoundedResource
+     * @param kind
      */
-    public IllegalResourceTransferException(ResourceType resource, boolean isBoundedResTypeDifferent, boolean isNonStorable, boolean isCapacityReached,
-            boolean isAdded, boolean isDuplicateBoundedResource) {
+    public IllegalResourceTransferException(ResourceType resource,
+            boolean isAdded,
+            Kind kind) {
+                this.kind = kind;
         this.resource = resource;
-        this.isBoundedResTypeDifferent = isBoundedResTypeDifferent;
-        this.isNonStorable = isNonStorable;
-        this.isCapacityReached = isCapacityReached;
         this.isAdded = isAdded;
-        this.isDuplicateBoundedResource = isDuplicateBoundedResource;
+    }
+
+    /**
+     * @return the kind
+     */
+    public Kind getKind() {
+        return kind;
     }
 
     /**
@@ -39,37 +48,9 @@ public class IllegalResourceTransferException extends Exception {
     }
 
     /**
-     * @return the isBoundedResTypeDifferent
-     */
-    public boolean isBoundedResTypeDifferent() {
-        return isBoundedResTypeDifferent;
-    }
-
-    /**
-     * @return the isDuplicateBoundedResource
-     */
-    public boolean isDuplicateBoundedResource() {
-        return isDuplicateBoundedResource;
-    }
-
-    /**
      * @return the isAdded
      */
     public boolean isAdded() {
         return isAdded;
-    }
-
-    /**
-     * @return the isCapacityReached
-     */
-    public boolean isCapacityReached() {
-        return isCapacityReached;
-    }
-
-    /**
-     * @return the isNonStorable
-     */
-    public boolean isNonStorable() {
-        return isNonStorable;
     }
 }

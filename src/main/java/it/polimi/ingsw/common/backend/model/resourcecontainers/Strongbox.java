@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException.Kind;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.UpdateResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
@@ -57,7 +58,7 @@ public class Strongbox extends ResourceContainer {
         if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
             ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
             throw new IllegalArgumentException(
-                new IllegalResourceTransferException(nonStorable, false, true, false, true, false));
+                new IllegalResourceTransferException(nonStorable, true, Kind.NONSTORABLE));
         }
         for (ResourceType resType : resMap.keySet())
             resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
@@ -75,17 +76,17 @@ public class Strongbox extends ResourceContainer {
         if (!resMap.keySet().stream().allMatch(resources::containsKey)) {
             ResourceType resType = resMap.keySet().stream().filter(r -> !resources.containsKey(r)).findAny().orElseThrow();
             throw new IllegalArgumentException(
-                new IllegalResourceTransferException(resType, false, false, false, false, false));
+                new IllegalResourceTransferException(resType, false, Kind.CAPACITYREACHED));
         }
         if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
             ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
             throw new IllegalArgumentException(
-                new IllegalResourceTransferException(nonStorable, false, true, false, false, false));
+                new IllegalResourceTransferException(nonStorable, false, Kind.NONSTORABLE));
         }
         for (ResourceType resType : resMap.keySet())
             if (resources.get(resType) < resMap.get(resType))
                 throw new IllegalArgumentException(
-                    new IllegalResourceTransferException(resType, false, false, true, false, false));
+                    new IllegalResourceTransferException(resType, false, Kind.CAPACITYREACHED));
         for (ResourceType resType : resMap.keySet())
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
 

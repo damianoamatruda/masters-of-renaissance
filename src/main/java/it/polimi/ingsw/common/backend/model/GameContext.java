@@ -17,6 +17,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrObjectNotOwned;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrReplacedTransRecipe;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrResourceReplacement;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrResourceTransfer;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrResourceTransfer.Reason;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -144,11 +145,8 @@ public class GameContext {
         } catch (IllegalResourceTransferException e) {
             view.on(new ErrResourceTransfer(
                 e.getResource().getName(),
-                e.isBoundedResTypeDifferent(),
-                e.isNonStorable(),
-                e.isCapacityReached(),
                 e.isAdded(),
-                e.isDuplicateBoundedResource()));
+                Reason.values()[e.getKind().ordinal()]));
             return;
         }
     }
@@ -190,11 +188,8 @@ public class GameContext {
         } catch (IllegalResourceTransferException e) {
             view.on(new ErrResourceTransfer(
                 e.getResource().getName(),
-                e.isBoundedResTypeDifferent(),
-                e.isNonStorable(),
-                e.isCapacityReached(),
                 e.isAdded(),
-                e.isDuplicateBoundedResource()));
+                Reason.values()[e.getKind().ordinal()]));
             return;
         }
     }
@@ -320,11 +315,8 @@ public class GameContext {
         } catch (IllegalResourceTransferException e) {
             view.on(new ErrResourceTransfer(
                 e.getResource().getName(),
-                e.isBoundedResTypeDifferent(),
-                e.isNonStorable(),
-                e.isCapacityReached(),
                 e.isAdded(),
-                e.isDuplicateBoundedResource()));
+                Reason.values()[e.getKind().ordinal()]));
             return;
         }
         
@@ -381,11 +373,8 @@ public class GameContext {
         } catch (IllegalResourceTransferException e) {
             view.on(new ErrResourceTransfer(
                 e.getResource().getName(),
-                e.isBoundedResTypeDifferent(),
-                e.isNonStorable(),
-                e.isCapacityReached(),
                 e.isAdded(),
-                e.isDuplicateBoundedResource()));
+                Reason.values()[e.getKind().ordinal()]));
             return;
         }
 
@@ -446,11 +435,8 @@ public class GameContext {
         } catch (IllegalResourceTransferException e) {
             view.on(new ErrResourceTransfer(
                 e.getResource().getName(),
-                e.isBoundedResTypeDifferent(),
-                e.isNonStorable(),
-                e.isCapacityReached(),
                 e.isAdded(),
-                e.isDuplicateBoundedResource()));
+                Reason.values()[e.getKind().ordinal()]));
             return;
         }
 

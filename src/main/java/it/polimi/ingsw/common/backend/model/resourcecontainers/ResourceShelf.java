@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
+import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException.Kind;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
@@ -47,7 +48,7 @@ public class ResourceShelf extends Shelf {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (!resType.equals(this.boundedResType))
-            throw new IllegalResourceTransferException(resType, true, false, false, true, false);
+            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDEDRESTYPEDIFFER);
         super.addResources(resMap);
     }
 
