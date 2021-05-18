@@ -17,9 +17,12 @@ public class Cli implements Ui {
 
     private CliView view;
 
+    private Scanner scanner;
+
     public Cli() {
         this.state = new SplashState();
         this.view = new CliView();
+        this.scanner = new Scanner(System.in);
     }
 
     static String convertStreamToString(InputStream is) {
@@ -70,12 +73,12 @@ public class Cli implements Ui {
      */
     void setState(CliState state) {
         this.state = state;
-        state.render(this, System.out, new Scanner(System.in));
+        state.render(this, System.out, scanner);
     }
 
     @Override
     public void execute() {
-        state.render(this, System.out, new Scanner(System.in));
+        state.render(this, System.out, scanner);
     }
 
     void startServerHandler(String host, int port) {

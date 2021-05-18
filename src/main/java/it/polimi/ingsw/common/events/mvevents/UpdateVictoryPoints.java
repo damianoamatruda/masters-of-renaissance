@@ -5,7 +5,7 @@ public class UpdateVictoryPoints implements MVEvent {
     /** The player whose victory points increased. */
     private final String player;
 
-    /** The new marker position. */
+    /** The updated points. */
     private final int victoryPoints;
 
     /**
