@@ -53,5 +53,8 @@ public class MultiplayerMenuState extends CliState {
 
         out.println();
         cli.startServerHandler(host, port);
+
+        // This line will exist only until MVEvent handling is not implemented (where state will be changed on event receival)
+        cli.setState(new InputNicknameState());
     }
 }

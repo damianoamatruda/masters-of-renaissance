@@ -9,23 +9,12 @@ import it.polimi.ingsw.common.events.mvevents.*;
  * This class represents a virtual view.
  */
 public class VirtualView extends View {
-    /** The event passer of the view. */
-    private EventPasser eventPasser;
 
     /**
      * Class constructor.
      */
     public VirtualView() {
         this.eventPasser = null;
-    }
-
-    /**
-     * Sets the event passer.
-     *
-     * @param eventPasser the event passer
-     */
-    public void setEventPasser(EventPasser eventPasser) {
-        this.eventPasser = eventPasser;
     }
 
     @Override

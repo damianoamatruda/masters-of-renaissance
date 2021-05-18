@@ -4,25 +4,15 @@ import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
+import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 public class CliView extends View {
-    /** The event passer of the view. */
-    private EventPasser eventPasser;
 
     /**
      * Class constructor.
      */
     public CliView() {
         this.eventPasser = null;
-    }
-
-    /**
-     * Sets the event passer.
-     *
-     * @param eventPasser the event passer
-     */
-    public void setEventPasser(EventPasser eventPasser) {
-        this.eventPasser = eventPasser;
     }
 
     @Override
@@ -113,5 +103,11 @@ public class CliView extends View {
     public void on(MVEvent event) {
         // TODO: Implement all listeners in CliView and link them to Cli
         System.out.println("Temporary listener.");
+    }
+
+    public void on(VCEvent event) {
+        if (eventPasser == null)
+            throw new RuntimeException("Cannot send VCEvent: no passer available.");
+        eventPasser.on(event);
     }
 }

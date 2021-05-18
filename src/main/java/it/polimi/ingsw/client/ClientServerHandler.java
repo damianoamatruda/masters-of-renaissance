@@ -3,7 +3,10 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import it.polimi.ingsw.client.cli.CliView;
 import it.polimi.ingsw.common.EventPasser;
+import it.polimi.ingsw.common.Protocol;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.Event;
 
 import java.io.BufferedReader;
@@ -23,12 +26,21 @@ public class ClientServerHandler implements EventPasser {
     private final int port;
     private final ExecutorService executor;
     private Socket socket;
+    private final View view;
+    private final Protocol protocol;
+    private PrintWriter out;
 
-    public ClientServerHandler(String host, int port) {
+    public ClientServerHandler(String host, int port, View view) {
         this.host = host;
         this.port = port;
         this.executor = Executors.newFixedThreadPool(2);
         this.socket = null;
+        this.view = view;
+        this.protocol = new Protocol();
+
+        this.view.setEventPasser(this);
+
+        this.out = null;
     }
 
     public void start() throws IOException {
@@ -70,6 +82,7 @@ public class ClientServerHandler implements EventPasser {
                         System.out.println("[Client] Goodbye message from server. Ending thread 'runReceive'...");
                         break;
                     }
+                    view.dispatch(protocol.processInputAsMVEvent(fromServer));
                 } catch (JsonSyntaxException ignored) {
                 }
             }
@@ -82,6 +95,7 @@ public class ClientServerHandler implements EventPasser {
     private void runSend() {
         Gson gson = new Gson();
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+            this.out = out;
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             String fromClient;
             JsonObject jsonObject;
@@ -104,5 +118,11 @@ public class ClientServerHandler implements EventPasser {
 
     @Override
     public void on(Event event) {
+        send(protocol.processOutput(event));
+    }
+
+    private void send(String output) {
+        if (out != null)
+            out.println(output);
     }
 }

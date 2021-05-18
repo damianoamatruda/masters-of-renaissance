@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.ClientServerHandler;
 import it.polimi.ingsw.client.Ui;
+import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +15,11 @@ public class Cli implements Ui {
     /** The current state of the interface. */
     private CliState state;
 
+    private CliView view;
+
     public Cli() {
         this.state = new SplashState();
+        this.view = new CliView();
     }
 
     static String convertStreamToString(InputStream is) {
@@ -76,9 +80,13 @@ public class Cli implements Ui {
 
     void startServerHandler(String host, int port) {
         try {
-            new ClientServerHandler(host, port).start();
+            new ClientServerHandler(host, port, view).start();
         } catch (IOException e) {
             System.exit(1);
         }
+    }
+
+    public void sendToView(VCEvent event) {
+        view.on(event);
     }
 }
