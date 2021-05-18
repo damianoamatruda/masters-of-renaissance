@@ -96,19 +96,19 @@ public class ClientServerHandler implements EventPasser {
         Gson gson = new Gson();
         try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
             this.out = out;
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+//            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
             String fromClient;
             JsonObject jsonObject;
-            while ((fromClient = stdIn.readLine()) != null) {
-                out.println(fromClient);
-                try {
-                    jsonObject = gson.fromJson(fromClient, JsonObject.class);
-                    if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
-                        System.out.println("[Client] Quit message from client. Ending thread 'runSend'...");
-                        break;
-                    }
-                } catch (JsonSyntaxException ignored) {
-                }
+            while (/*(fromClient = stdIn.readLine()) != null*/ true) {
+//                out.println(fromClient);
+//                try {
+//                    jsonObject = gson.fromJson(fromClient, JsonObject.class);
+//                    if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
+//                        System.out.println("[Client] Quit message from client. Ending thread 'runSend'...");
+//                        break;
+//                    }
+//                } catch (JsonSyntaxException ignored) {
+//                }
             }
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + host + " for output stream");

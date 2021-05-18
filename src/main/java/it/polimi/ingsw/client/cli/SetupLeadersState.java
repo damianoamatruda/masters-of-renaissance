@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
+
 import java.io.PrintStream;
 import java.util.*;
 
@@ -22,6 +24,7 @@ public class SetupLeadersState extends CliState {
             }
         }
 
+        cli.sendToView(new ReqChooseLeaders(leaders));
         //build event and send
         //if error from server, repeat
     }
