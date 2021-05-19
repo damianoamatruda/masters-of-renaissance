@@ -55,10 +55,10 @@ public class FileGameFactory implements GameFactory {
     private final Map<String, ResourceType> resTypeMap;
 
     /** The base production shared by all players. */
-    private final ResourceTransactionRecipe baseProduction;
+    private ResourceTransactionRecipe baseProduction;
 
     /** The setups of the players. */
-    private final List<PlayerSetup> playerSetups;
+    private List<PlayerSetup> playerSetups;
 
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
@@ -82,21 +82,19 @@ public class FileGameFactory implements GameFactory {
 
         devCardColorMap = buildDevCardColors().stream().collect(Collectors.toUnmodifiableMap(DevCardColor::getName, Function.identity()));
         resTypeMap = buildResourceTypes().stream().collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
-
-        baseProduction = buildBaseProduction();
-        playerSetups = buildPlayerSetups();
     }
 
     @Override
     public Game getMultiGame(List<String> nicknames) {
         checkNumberOfPlayers(nicknames);
-
+        
+        baseProduction = buildBaseProduction();
         List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
         List<LeaderCard> leaderCards = buildLeaderCards(productions);
         List<DevelopmentCard> developmentCards = buildDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
         addDevCardProductions(productions, developmentCards);
-
+        
         return new Game(
                 getPlayers(nicknames, leaderCards, resContainers),
                 leaderCards,
@@ -113,6 +111,7 @@ public class FileGameFactory implements GameFactory {
 
     @Override
     public SoloGame getSoloGame(String nickname) {
+        baseProduction = buildBaseProduction();
         List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
         List<LeaderCard> leaderCards = buildLeaderCards(productions);
         List<DevelopmentCard> developmentCards = buildDevCards();
@@ -192,6 +191,8 @@ public class FileGameFactory implements GameFactory {
         /* Shuffle the leader cards */
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
+
+        playerSetups = buildPlayerSetups();
 
         for (int i = 0; i < shuffledNicknames.size(); i++) {
             Warehouse warehouse = new Warehouse(warehouseShelvesCount);

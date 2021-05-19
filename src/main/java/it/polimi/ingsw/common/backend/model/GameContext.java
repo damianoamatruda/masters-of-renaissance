@@ -57,10 +57,10 @@ public class GameContext {
 
     public void start() {
         synchronized(lock) {
-            System.out.println("context.start, players:");
-            for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
-                System.out.println(n);
-            System.out.println("context.start, players: end of list");
+            // System.out.println("context.start, players:");
+            // for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
+            //     System.out.println(n);
+            // System.out.println("context.start, players: end of list");
     
             game.dispatchInitialState();
             game.getMarket().dispatchInitialState();
