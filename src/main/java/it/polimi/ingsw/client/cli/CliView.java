@@ -224,7 +224,6 @@ public class CliView extends View implements EventListener<VCEvent> {
         cache.setContainers(event.getResContainers());
         cache.setFaithPoints(0);
         //... might as well use a constructor instead of all these setters
-        cli.setState(new SetupLeadersState());
     }
 
     private void on(UpdateJoinGame event) {
@@ -240,11 +239,11 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeadersHand event) {
-
+        cli.setState(new SetupLeadersState());
     }
 
     private void on(UpdateLeadersHandCount event) {
-
+        // here the confirmation of the above
     }
 
     private void on(UpdateMarket event) {
