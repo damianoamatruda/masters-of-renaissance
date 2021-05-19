@@ -145,7 +145,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrNewGame event) {
-
+        cli.repeatState(event.isInvalidPlayersCount() ? "Invalid players count." : "You are not supposed to choose");
     }
 
     private void on(ErrNickname event) {
@@ -195,11 +195,11 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateCurrentPlayer event) {
-
+        cache.setCurrentPlayer(event.getPlayer());
     }
 
     private void on(UpdateDevCardGrid event) {
-
+        cache.setDevCardGrid(event.getCards());
     }
 
     private void on(UpdateDevCardSlot event) {
@@ -207,7 +207,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateFaithPoints event) {
-
+        cache.setFaithPoints(event.getFaithPoints());
     }
 
     private void on(UpdateGameEnd event) {
@@ -219,15 +219,19 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateGameStart event) {
-
+        cache.setVictoryPoints(0);
+        cache.setActionTokens(event.getActionTokens());
+        cache.setContainers(event.getResContainers());
+        cache.setFaithPoints(0);
+        //...
     }
 
     private void on(UpdateJoinGame event) {
-
+//        cli.setState(new WaitingState(event.getPlayersCount()));
     }
 
     private void on(UpdateLastRound event) {
-
+        cache.setLastRound();
     }
 
     private void on(UpdateLeader event) {

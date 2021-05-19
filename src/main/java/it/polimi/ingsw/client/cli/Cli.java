@@ -107,4 +107,9 @@ public class Cli implements Ui {
     public void sendToView(VCEvent event) {
         view.on(event);
     }
+
+    public void repeatState(String s) {
+        System.out.println(s);
+        state.render(this, System.out, scanner);
+    }
 }
