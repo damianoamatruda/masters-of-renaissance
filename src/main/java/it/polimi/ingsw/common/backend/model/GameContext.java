@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -88,7 +89,7 @@ public class GameContext {
             Player player = getPlayerByNickname(nickname);
     
             if (player.getSetup().isDone()) {
-                view.on(new ErrAction(0));
+                view.on(new ErrAction(ErrActionReason.LATESETUPACTION));
                 return;
             }
     
@@ -121,7 +122,7 @@ public class GameContext {
             Player player = getPlayerByNickname(nickname);
     
             if (player.getSetup().isDone()) {
-                view.on(new ErrAction(0));
+                view.on(new ErrAction(ErrActionReason.LATESETUPACTION));
                 return;
             }
     
@@ -483,7 +484,7 @@ public class GameContext {
                 return;
     
             if (!mandatoryActionDone) {
-                view.on(new ErrAction(3));
+                view.on(new ErrAction(ErrActionReason.EARLYTURNEND));
                 return;
             }
     
@@ -517,7 +518,7 @@ public class GameContext {
      */
     private boolean preliminaryChecks(View view, Player player) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
-            view.on(!player.getSetup().isDone() ? new ErrAction(1) : new ErrAction(4));
+            view.on(!player.getSetup().isDone() ? new ErrAction(ErrActionReason.EARLYMANDATORYACTION) : new ErrAction(ErrActionReason.ENDEDGAME));
             return false;
         }
         return true;
@@ -533,7 +534,7 @@ public class GameContext {
      */
     private boolean checkCurrentPlayer(View view, Player player) {
         if (!player.equals(game.getCurrentPlayer())) {
-            view.on(new ErrAction(5));
+            view.on(new ErrAction(ErrActionReason.NOTCURRENTPLAYER));
             return false;
         }
         return true;
@@ -548,7 +549,7 @@ public class GameContext {
      */
     private boolean checkMandatoryActionNotDone(View view) {
         if (mandatoryActionDone) {
-            view.on(new ErrAction(2));
+            view.on(new ErrAction(ErrActionReason.LATEMANDATORYACTION));
             return false;
         }
         return true;
