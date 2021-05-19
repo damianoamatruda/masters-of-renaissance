@@ -11,6 +11,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 public class CliView extends View implements EventListener<VCEvent> {
     private final ReducedGame cache;
     private final Cli cli;
+    private VCEvent lastReq;
 
     /**
      * Class constructor.
@@ -121,6 +122,8 @@ public class CliView extends View implements EventListener<VCEvent> {
 
     @Override
     public void on(VCEvent event) {
+        lastReq = event;
+
         if (eventPasser == null)
             throw new RuntimeException("Cannot send VCEvent: no passer available.");
         eventPasser.on(event);
