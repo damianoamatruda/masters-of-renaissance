@@ -92,6 +92,11 @@ public class Cli implements Ui {
      */
     void setState(CliState state) {
         this.state = state;
+        
+        // flush stdin before reading
+        while (scanner.hasNext())
+            scanner.next();
+        
         state.render(this, System.out, scanner);
     }
 
