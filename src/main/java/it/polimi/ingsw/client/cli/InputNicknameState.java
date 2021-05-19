@@ -15,7 +15,9 @@ public class InputNicknameState extends CliState{
         }
         System.out.println("Welcome");
         String input = Cli.prompt(out, in, "Nickname");
+        cli.setNickname(input);
         cli.sendToView(new ReqJoin(input));
+
         //send to view
         //if sth goes wrong, the view will reset this state, thus repeating the prompt.
         // Otherwise, the receival of a positive event will trigger a change of state (by the view??)

@@ -21,6 +21,16 @@ public class Cli implements Ui {
 
     private Scanner scanner;
 
+    private String nickname; //should be moved out of here
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public Cli() {
         this.scanner = new Scanner(System.in);
         
