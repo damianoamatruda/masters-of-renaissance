@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static it.polimi.ingsw.client.cli.CliState.renderMainTitle;
+
 public class Cli implements Ui {
     static final int width = 80;
 
@@ -152,4 +154,30 @@ public class Cli implements Ui {
         }
         return shelves;
     }
+
+    public void quit() {
+        PrintStream out = System.out;
+
+        Cli.clear(out);
+        renderMainTitle(out);
+        for (int i = 0; i < 2; i++)
+            out.println();
+        out.print("Quitting in 2 seconds...");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
+
+        Cli.clear(out);
+        renderMainTitle(out);
+        for (int i = 0; i < 2; i++)
+            out.println();
+        out.print("Quitting in 1 seconds...");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
+
+        Cli.clear(out);
+    };
 }

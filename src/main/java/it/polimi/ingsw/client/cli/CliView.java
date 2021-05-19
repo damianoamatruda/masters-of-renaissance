@@ -125,23 +125,23 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrAction event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrActiveLeaderDiscarded event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrBuyDevCard event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrCardRequirements event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrInitialChoice event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrNewGame event) {
@@ -149,7 +149,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrNickname event) {
-
+        cli.repeatState("Nickname is invalid. Reason: " + event.toString());
     }
 
     private void on(ErrObjectNotOwned event) {
@@ -157,19 +157,19 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrReplacedTransRecipe event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrResourceReplacement event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrResourceTransfer event) {
-
+        cli.repeatState("");
     }
 
     private void on(ErrProtocol event) {
-
+        cli.repeatState("Error. Elaborated input was not sent in a proper JSON format");
     }
 
     private void on(ErrRuntime event) {
@@ -177,7 +177,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ResGoodbye event) {
-
+        cli.quit();
     }
 
     private void on(ResWelcome event) {
