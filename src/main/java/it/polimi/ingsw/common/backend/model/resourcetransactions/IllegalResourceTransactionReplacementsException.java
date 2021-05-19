@@ -3,7 +3,7 @@ package it.polimi.ingsw.common.backend.model.resourcetransactions;
 /**
  * Exception used in validating transaction requests' replacements.
  */
-public class IllegalResourceTransactionReplacementsException extends RuntimeException {
+public class IllegalResourceTransactionReplacementsException extends IllegalResourceTransactionException {
     private final boolean isInput;
     private final boolean isNonStorable;
     private final boolean isExcluded;

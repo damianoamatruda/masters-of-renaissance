@@ -162,9 +162,14 @@ public class Lobby {
     }
 
     public void checkJoinedThen(View view, BiConsumer<GameContext, String> then) {
-        synchronized(lock) {
-            if (checkJoined(view))
-                then.accept(joined.get(view), nicknames.get(view));
+        if (checkJoined(view)) {
+            String nickname = "";
+    
+            synchronized(lock) {
+                nickname = nicknames.get(view);
+            }
+    
+            then.accept(joined.get(view), nickname);
         }
     }
 
@@ -177,12 +182,14 @@ public class Lobby {
     }
 
     private boolean checkJoined(View view) {
-        if (!checkNickname(view))
-            return false;
-        if (!joined.containsKey(view)) {
-            view.on(ErrNickname.NOTINGAME);
-            return false;
+        synchronized(lock) {
+            if (!checkNickname(view))
+                return false;
+            if (!joined.containsKey(view)) {
+                view.on(ErrNickname.NOTINGAME);
+                return false;
+            }
+            return true;
         }
-        return true;
     }
 }
