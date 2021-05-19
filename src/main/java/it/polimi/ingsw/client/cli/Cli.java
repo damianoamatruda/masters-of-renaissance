@@ -11,6 +11,8 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import static it.polimi.ingsw.client.cli.CliState.renderMainTitle;
 
@@ -27,6 +29,8 @@ public class Cli implements Ui {
 
     private String nickname; //should be moved out of here
 
+    private BlockingQueue<CliState> stateQueue = new LinkedBlockingDeque<>();
+
     public String getNickname() {
         return nickname;
     }
@@ -38,7 +42,7 @@ public class Cli implements Ui {
     public Cli() {
         this.scanner = new Scanner(System.in);
         
-        this.state = new SplashState();
+        this.stateQueue.add(new SplashState());
 
         this.model = new ReducedGame();
         this.view = new CliView(model, this);
@@ -90,14 +94,28 @@ public class Cli implements Ui {
      *
      * @param state the next state
      */
-    void setState(CliState state) {
-        this.state = state;
-        state.render(this, System.out, scanner);
+    public void setState(CliState s) {
+        stateQueue.add(s);
+    }
+
+    public void repeatState(String s) {
+        System.out.println(s);
+        stateQueue.add(this.state);
     }
 
     @Override
     public void execute() {
-        state.render(this, System.out, scanner);
+        try {
+            this.state = stateQueue.take();;
+        } catch (InterruptedException e) { e.printStackTrace(); }
+        
+        while (this.state != null) {
+            System.out.println(state.getClass().getSimpleName());
+            state.render(this, System.out, scanner);
+            try {
+                this.state = stateQueue.take();
+            } catch (InterruptedException e) { e.printStackTrace(); }
+        }
     }
 
     void startServerHandler(String host, int port) {
@@ -110,11 +128,6 @@ public class Cli implements Ui {
 
     public void sendToView(VCEvent event) {
         view.on(event);
-    }
-
-    public void repeatState(String s) {
-        System.out.println(s);
-        state.render(this, System.out, scanner);
     }
 
     public Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
