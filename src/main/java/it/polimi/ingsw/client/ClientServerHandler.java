@@ -3,7 +3,6 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.client.cli.CliView;
 import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.Protocol;
 import it.polimi.ingsw.common.View;
@@ -54,11 +53,24 @@ public class ClientServerHandler implements EventPasser {
             throw e;
         }
 
+        try {
+            out = new PrintWriter(socket.getOutputStream(), true);
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for the connection to " + host + " for output stream");
+            throw e;
+        }
+
         executor.submit(this::runReceive);
-        executor.submit(this::runSend);
+        // executor.submit(this::runSend);
     }
 
+    @Override
     public void stop() {
+        if (out != null) {
+            out.close();
+            out = null;
+        }
+
         executor.shutdown();
         if (socket != null) {
             try {
@@ -93,27 +105,27 @@ public class ClientServerHandler implements EventPasser {
     }
 
     private void runSend() {
-        Gson gson = new Gson();
-        try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
-            this.out = out;
-//            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-            String fromClient;
-            JsonObject jsonObject;
-            while (/*(fromClient = stdIn.readLine()) != null*/ true) {
-//                out.println(fromClient);
-//                try {
-//                    jsonObject = gson.fromJson(fromClient, JsonObject.class);
-//                    if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
-//                        System.out.println("[Client] Quit message from client. Ending thread 'runSend'...");
-//                        break;
-//                    }
-//                } catch (JsonSyntaxException ignored) {
-//                }
-            }
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + host + " for output stream");
-        }
-        stop();
+        // Gson gson = new Gson();
+        // try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+        //     this.out = out;
+        //    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+        //     String fromClient;
+        //     JsonObject jsonObject;
+        //     while ((fromClient = stdIn.readLine()) != null) {
+        //        out.println(fromClient);
+        //        try {
+        //            jsonObject = gson.fromJson(fromClient, JsonObject.class);
+        //            if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
+        //                System.out.println("[Client] Quit message from client. Ending thread 'runSend'...");
+        //                break;
+        //            }
+        //        } catch (JsonSyntaxException ignored) {
+        //        }
+        //     }
+        // } catch (IOException e) {
+        //     System.err.println("Couldn't get I/O for the connection to " + host + " for output stream");
+        // }
+        // stop();
     }
 
     @Override
