@@ -4,14 +4,14 @@ import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 public class ErrObjectNotOwned implements MVEvent {
     private final int id;
-    private final String type;
+    private final String objectType;
 
     /**
      * @param id
      */
-    public ErrObjectNotOwned(int id, String type) {
+    public ErrObjectNotOwned(int id, String objectType) {
         this.id = id;
-        this.type = type;
+        this.objectType = objectType;
     }
 
     /**
@@ -22,9 +22,9 @@ public class ErrObjectNotOwned implements MVEvent {
     }
 
     /**
-     * @return the type
+     * @return the objectType
      */
-    public String getType() {
-        return type;
+    public String getObjectType() {
+        return objectType;
     }
 }
