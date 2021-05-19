@@ -8,6 +8,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Cli implements Ui {
@@ -111,5 +113,43 @@ public class Cli implements Ui {
     public void repeatState(String s) {
         System.out.println(s);
         state.render(this, System.out, scanner);
+    }
+
+    public Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
+        final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
+        int container;
+        String resource;
+        int amount;
+
+        String input = Cli.prompt(out, in, "Which container?");
+        while (!input.equalsIgnoreCase("send")) {
+            try {
+                container = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please input an integer.");
+                continue;
+            }
+
+            resource = Cli.prompt(out, in, "Which resource?");
+
+            input = Cli.prompt(out, in, "How many?");
+            try {
+                amount = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please input an integer.");
+                continue;
+            }
+
+            if(shelves.containsKey(container)) {
+                if(shelves.get(container).containsKey(resource)) {
+                    shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);
+                } else {
+                    shelves.get(container).put(resource, amount);
+                }
+            } else {
+                shelves.put(container, Map.of(resource, amount));
+            }
+        }
+        return shelves;
     }
 }

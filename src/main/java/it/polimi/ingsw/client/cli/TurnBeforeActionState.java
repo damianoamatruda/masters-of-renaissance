@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 
@@ -48,7 +47,7 @@ public class TurnBeforeActionState extends CliState {
             }
         }
 
-        shelves = promptShelves(cli, out, in);
+        shelves = cli.promptShelves(out, in);
 
         //build request event
         cli.sendToView(new ReqBuyDevCard(color, level, slot, shelves));
@@ -77,7 +76,7 @@ public class TurnBeforeActionState extends CliState {
                 isValid = false;
             }
         }
-        cli.sendToView(new ReqTakeFromMarket(isRow, index, null /* Remove null obv */, promptShelves(cli, out, in)));
+        cli.sendToView(new ReqTakeFromMarket(isRow, index, null /* Remove null obv */, cli.promptShelves(out, in)));
     }
 
     private void produce(Cli cli, PrintStream out, Scanner in) {
@@ -86,43 +85,5 @@ public class TurnBeforeActionState extends CliState {
 
     private void leaderAction(Cli cli, PrintStream out, Scanner in) {
 //        cli.sendToView();   //either activate or discard
-    }
-
-    private Map<Integer, Map<String, Integer>> promptShelves(Cli cli, PrintStream out, Scanner in) {
-        final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
-        int container;
-        String resource;
-        int amount;
-
-        String input = Cli.prompt(out, in, "Which container?");
-        while (!input.equalsIgnoreCase("send")) {
-            try {
-                container = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
-                continue;
-            }
-
-            resource = Cli.prompt(out, in, "Which resource?");
-
-            input = Cli.prompt(out, in, "How many?");
-            try {
-                amount = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
-                continue;
-            }
-
-            if(shelves.containsKey(container)) {
-                if(shelves.get(container).containsKey(resource)) {
-                    shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);
-                } else {
-                    shelves.get(container).put(resource, amount);
-                }
-            } else {
-                shelves.put(container, Map.of(resource, amount));
-            }
-        }
-        return shelves;
     }
 }

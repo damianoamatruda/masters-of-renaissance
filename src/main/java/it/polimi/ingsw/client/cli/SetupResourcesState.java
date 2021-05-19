@@ -16,41 +16,8 @@ public class SetupResourcesState extends CliState {
     }
     @Override
     public void render(Cli cli, PrintStream out, Scanner in) {
-        final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
-
-        int chosen = 0;
-        while(chosen < choosable) {
-            int container;
-            int amount;
-            String input = Cli.prompt(out, in, "Which container?");
-            try {
-                container = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
-                continue;
-            }
-
-            String resource = Cli.prompt(out, in, "Which resource?");
-
-            input = Cli.prompt(out, in, "How many?");
-            try {
-                amount = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
-                continue;
-            }
-
-            if(shelves.containsKey(container)) {
-                if(shelves.get(container).containsKey(resource)) {
-                   shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);
-                } else {
-                    shelves.get(container).put(resource, amount);
-                }
-            } else {
-                shelves.put(container, Map.of(resource, amount));
-            }
-            chosen += amount;
-        }
+        System.out.println("You have the right to " + choosable + " resources of choice. Which do you choose?");
+        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(out, in);
 
         cli.sendToView(new ReqChooseResources(shelves));
     }

@@ -14,7 +14,7 @@ public class SetupLeadersState extends CliState {
 
         int chosen = 0;
         while(chosen < 2) {
-            String input = Cli.prompt(out, in, "Which leaders?");
+            String input = Cli.prompt(out, in, "Choose " + (chosen == 0 ? "first " : "second ") + "leader");
             try {
                 int id = Integer.parseInt(input);
                 leaders.add(id);

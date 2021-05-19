@@ -153,7 +153,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrObjectNotOwned event) {
-
+        cli.repeatState("You are not the owner. Try again.");
     }
 
     private void on(ErrReplacedTransRecipe event) {
@@ -173,7 +173,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrRuntime event) {
-
+        cli.repeatState("Helo your computer has virus");
     }
 
     private void on(ResGoodbye event) {
@@ -223,7 +223,8 @@ public class CliView extends View implements EventListener<VCEvent> {
         cache.setActionTokens(event.getActionTokens());
         cache.setContainers(event.getResContainers());
         cache.setFaithPoints(0);
-        //...
+        //... might as well use a constructor instead of all these setters
+        cli.setState(new SetupLeadersState());
     }
 
     private void on(UpdateJoinGame event) {
