@@ -94,7 +94,7 @@ public class GameContext {
     
             Optional<Integer> missing = leaderIds.stream().filter(l -> player.getLeaderById(l).isEmpty()).findAny();
             if (missing.isPresent()) {
-                view.on(new ErrObjectNotOwned(missing.get()));
+                view.on(new ErrObjectNotOwned(missing.get(), "LeaderCard"));
                 return;
             }
     
@@ -130,7 +130,7 @@ public class GameContext {
                 Optional<Shelf> s = player.getShelfById(shelf.getKey());
     
                 if (s.isEmpty()) {
-                    view.on(new ErrObjectNotOwned(shelf.getKey()));
+                    view.on(new ErrObjectNotOwned(shelf.getKey(), "Shelf"));
                     return;
                 }
     
@@ -184,13 +184,13 @@ public class GameContext {
             try {
                 shelf1 = player.getShelfById(shelfId1).get();
             } catch (NoSuchElementException e) {
-                view.on(new ErrObjectNotOwned(shelfId1));
+                view.on(new ErrObjectNotOwned(shelfId1, "Shelf"));
                 return;
             }
             try {
                 shelf2 = player.getShelfById(shelfId2).get();
             } catch (NoSuchElementException e) {
-                view.on(new ErrObjectNotOwned(shelfId2));
+                view.on(new ErrObjectNotOwned(shelfId2, "Shelf"));
                 return;
             }
     
@@ -228,14 +228,14 @@ public class GameContext {
             try {
                 leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
             } catch (Exception e) {
-                view.on(new ErrObjectNotOwned(leaderId));
+                view.on(new ErrObjectNotOwned(leaderId, "LeaderCard"));
                 return;
             }
     
             try {
                 leader.activate(player);
             } catch (IllegalArgumentException e) {
-                view.on(new ErrObjectNotOwned(leaderId));
+                view.on(new ErrObjectNotOwned(leaderId, "LeaderCard"));
                 return;
             } catch (CardRequirementsNotMetException e) {
                 view.on(new ErrCardRequirements(e.getMessage()));
@@ -266,14 +266,14 @@ public class GameContext {
             try {
                 leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
             } catch (Exception e) {
-                view.on(new ErrObjectNotOwned(leaderId));
+                view.on(new ErrObjectNotOwned(leaderId, "LeaderCard"));
                 return;
             }
     
             try {
                 player.discardLeader(game, leader);
             } catch (IllegalArgumentException e) {
-                view.on(new ErrObjectNotOwned(leaderId));
+                view.on(new ErrObjectNotOwned(leaderId, "LeaderCard"));
                 return;
             } catch (ActiveLeaderDiscardException e) {
 
@@ -314,7 +314,7 @@ public class GameContext {
                 Optional<Shelf> s = player.getShelfById(shelf.getKey());
 
                 if (s.isEmpty()) {
-                    view.on(new ErrObjectNotOwned(shelf.getKey()));
+                    view.on(new ErrObjectNotOwned(shelf.getKey(), "Shelf"));
                     return;
                 }
 
@@ -372,7 +372,7 @@ public class GameContext {
                 Optional<ResourceContainer> c = player.getResourceContainerById(container.getKey());
 
                 if (c.isEmpty()) {
-                    view.on(new ErrObjectNotOwned(container.getKey()));
+                    view.on(new ErrObjectNotOwned(container.getKey(), "ResourceContainer"));
                     return;
                 }
 
@@ -424,7 +424,7 @@ public class GameContext {
 
             Optional<Integer> missing = reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).filter(p -> player.getProductionById(p).isEmpty()).findAny();
             if (missing.isPresent()) {
-                view.on(new ErrObjectNotOwned(missing.get()));
+                view.on(new ErrObjectNotOwned(missing.get(), "ReducedProductionRequest"));
                 return;
             }
 
@@ -436,7 +436,7 @@ public class GameContext {
                     Optional<ResourceContainer> c = player.getResourceContainerById(container.getKey());
         
                     if (c.isEmpty()) {
-                        view.on(new ErrObjectNotOwned(container.getKey()));
+                        view.on(new ErrObjectNotOwned(container.getKey(), "ResourceContainer"));
                         return;
                     }
         
