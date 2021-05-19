@@ -32,7 +32,7 @@ public class ServerClientHandler implements Runnable, EventPasser {
 
         this.view = view;
 
-        this.timeout = 60000;
+        this.timeout = 600000;
         this.protocol = protocol;
 
         this.in = null;

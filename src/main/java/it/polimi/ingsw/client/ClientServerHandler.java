@@ -105,6 +105,8 @@ public class ClientServerHandler extends EventDispatcher implements EventPasser 
                     }
                     dispatch(protocol.processInputAsMVEvent(fromServer));
                 } catch (JsonSyntaxException ignored) {
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {

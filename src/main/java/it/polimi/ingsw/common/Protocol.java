@@ -45,7 +45,11 @@ public class Protocol {
         try {
             event = gson.fromJson(jsonObject, Class.forName(String.format("%s.%s", packageName, type.getAsString())).asSubclass(eventSuperclass));
         } catch (ClassNotFoundException e) {
-            throw new ProtocolException(String.format("Event type \"%s\" as subclass of \"%s\" does not exist.", type.getAsString(), eventSuperclass.getSimpleName()), e);
+            try {
+                event = gson.fromJson(jsonObject, Class.forName(String.format("%s.errors.%s", packageName, type.getAsString())).asSubclass(eventSuperclass));
+            } catch (ClassNotFoundException e1) {
+                throw new ProtocolException(String.format("Event type \"%s\" as subclass of \"%s\" does not exist.", type.getAsString(), eventSuperclass.getSimpleName()), e1);
+            }
         } catch (JsonSyntaxException e) {
             throw new ProtocolException("Invalid attribute types.", e);
         }
