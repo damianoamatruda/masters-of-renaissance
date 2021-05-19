@@ -6,7 +6,10 @@ import it.polimi.ingsw.common.ProtocolException;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
 import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
+import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.ResWelcome;
+import it.polimi.ingsw.common.events.vcevents.ReqGoodbye;
+import it.polimi.ingsw.common.events.vcevents.ReqHeartbeat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,7 +50,6 @@ public class ServerClientHandler implements Runnable, EventPasser {
             this.out = out;
             this.in = in;
             String inputLine;
-            String reqGoodbye = "{\"type\":\"ReqGoodbye\"}";
 
             view.on(new ResWelcome());
 
@@ -71,20 +73,17 @@ public class ServerClientHandler implements Runnable, EventPasser {
                             view.on(new ErrRuntime(e));
                             e.printStackTrace();
                         }
-
-                        if (inputLine.equals(reqGoodbye))
-                            break;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } catch (SocketTimeoutException e) {
                     if(halfTimeout < 1) {
-                        out.println("{\"type\":\"ReqHeartbeat\"}");
+                        out.println(protocol.processOutput(new ReqHeartbeat()));
                         halfTimeout++;
                     }
                     else {
                         try {
-                            view.dispatch(protocol.processInputAsMVEvent(reqGoodbye)); // FIXME: Add type 'NetEvent'
+                            view.dispatch(new ReqGoodbye()); // FIXME: Add type 'NetEvent'
                         } catch (ProtocolException e1) {
                             view.on(new ErrProtocol(e1));
                         } catch (Exception e1) {
@@ -112,6 +111,9 @@ public class ServerClientHandler implements Runnable, EventPasser {
     @Override
     public void on(Event event) {
         send(protocol.processOutput(event));
+        
+        if (event instanceof ResGoodbye)
+            stop();
     }
 
     private void send(String output) {

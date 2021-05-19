@@ -40,6 +40,7 @@ public class Controller {
     }
 
     private void on(View view, ReqGoodbye event) {
+        unregisterToView(view);
         model.exit(view);
     }
 
