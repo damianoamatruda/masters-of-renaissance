@@ -1,9 +1,10 @@
 package it.polimi.ingsw.common;
 
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 /** Interface defining the 'View' role in the MVC architecture. */
-public abstract class View extends EventDispatcher implements EventListener<MVEvent> {
+public abstract class View extends EventDispatcher {
     /** The event passer of the view. */
     protected EventPasser eventPasser;
 
@@ -23,4 +24,7 @@ public abstract class View extends EventDispatcher implements EventListener<MVEv
     public abstract void registerToModelPlayer(EventDispatcher player);
 
     public abstract void unregisterToModelPlayer(EventDispatcher player);
+
+    public abstract void on(MVEvent event);
+    public abstract void on(VCEvent event);
 }

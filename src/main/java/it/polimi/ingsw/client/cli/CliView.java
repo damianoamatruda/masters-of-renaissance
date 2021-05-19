@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.EventDispatcher;
-import it.polimi.ingsw.common.EventPasser;
+import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
-public class CliView extends View {
+public class CliView extends View implements EventListener<VCEvent> {
 
     /**
      * Class constructor.
@@ -98,13 +98,13 @@ public class CliView extends View {
     public void unregisterToModelPlayer(EventDispatcher player) {
         player.removeEventListener(UpdateLeadersHand.class, this::on);
     }
-
+    
     @Override
     public void on(MVEvent event) {
-        // TODO: Implement all listeners in CliView and link them to Cli
-        System.out.println("Temporary listener.");
+        throw new RuntimeException("You shouldn't be here. 'Here' is ClientView.on(MVEvent).");
     }
 
+    @Override
     public void on(VCEvent event) {
         if (eventPasser == null)
             throw new RuntimeException("Cannot send VCEvent: no passer available.");

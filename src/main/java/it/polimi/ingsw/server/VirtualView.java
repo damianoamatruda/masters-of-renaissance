@@ -1,14 +1,15 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.common.EventDispatcher;
-import it.polimi.ingsw.common.EventPasser;
+import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
+import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 /**
  * This class represents a virtual view.
  */
-public class VirtualView extends View {
+public class VirtualView extends View implements EventListener<MVEvent> {
 
     /**
      * Class constructor.
@@ -106,5 +107,10 @@ public class VirtualView extends View {
         if (eventPasser == null)
             throw new RuntimeException("Cannot send MVEvent: no passer available.");
         eventPasser.on(event);
+    }
+
+    @Override
+    public void on(VCEvent event) {
+        throw new RuntimeException("You shouldn't be here. 'Here' is VirtualView.on(VCEvent).");
     }
 }
