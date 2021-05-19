@@ -37,6 +37,7 @@ public class CliView extends View implements EventListener<VCEvent> {
         dispatcher.addEventListener(ErrResourceTransfer.class, this::on);
         dispatcher.addEventListener(ErrProtocol.class, this::on);
         dispatcher.addEventListener(ErrRuntime.class, this::on);
+        // dispatcher.addEventListener(ReqHeartbeat.class, this::on);
         dispatcher.addEventListener(ResGoodbye.class, this::on);
         dispatcher.addEventListener(ResWelcome.class, this::on);
         dispatcher.addEventListener(UpdateActionToken.class, this::on);
@@ -77,6 +78,7 @@ public class CliView extends View implements EventListener<VCEvent> {
         dispatcher.removeEventListener(ErrResourceTransfer.class, this::on);
         dispatcher.removeEventListener(ErrProtocol.class, this::on);
         dispatcher.removeEventListener(ErrRuntime.class, this::on);
+        // dispatcher.removeEventListener(ReqHeartbeat.class, this::on);
         dispatcher.removeEventListener(ResGoodbye.class, this::on);
         dispatcher.removeEventListener(ResWelcome.class, this::on);
         dispatcher.removeEventListener(UpdateActionToken.class, this::on);
@@ -174,6 +176,11 @@ public class CliView extends View implements EventListener<VCEvent> {
 
     private void on(ErrRuntime event) {
         cli.repeatState("Helo your computer has virus");
+    }
+
+    private void on(ReqHeartbeat event) {
+        // handled in the ClientServerHandler
+        // this.on(new ResHeartbeat());
     }
 
     private void on(ResGoodbye event) {

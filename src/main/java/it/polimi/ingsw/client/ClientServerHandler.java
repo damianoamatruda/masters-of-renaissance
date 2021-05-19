@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.Protocol;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.Event;
+import it.polimi.ingsw.common.events.vcevents.ResHeartbeat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ClientServerHandler extends EventDispatcher implements EventPasser {
+    private final static String heartbeatInputType = "ReqHeartbeat";
+    private final static String heartbeatOutputType = "ResHeartbeat";
     private final static String quitInputType = "ResGoodbye";
     private final static String quitOutputType = "ReqQuit";
 
@@ -92,9 +95,13 @@ public class ClientServerHandler extends EventDispatcher implements EventPasser 
                 System.out.println(fromServer); // will be removed as soon as uis are complete
                 try {
                     jsonObject = gson.fromJson(fromServer, JsonObject.class);
-                    if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitInputType)) {
-                        System.out.println("[Client] Goodbye message from server. Ending thread 'runReceive'...");
-                        break;
+                    if (jsonObject != null && jsonObject.get("type") != null) {
+                        if (jsonObject.get("type").getAsString().equals(quitInputType)) {
+                            System.out.println("[Client] Goodbye message from server. Ending thread 'runReceive'...");
+                            break;
+                        } else if (jsonObject.get("type").getAsString().equals(heartbeatInputType)) {
+                            on(new ResHeartbeat());
+                       }
                     }
                     dispatch(protocol.processInputAsMVEvent(fromServer));
                 } catch (JsonSyntaxException ignored) {

@@ -9,7 +9,7 @@ import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
 import it.polimi.ingsw.common.events.mvevents.ResWelcome;
 import it.polimi.ingsw.common.events.vcevents.ReqGoodbye;
-import it.polimi.ingsw.common.events.vcevents.ReqHeartbeat;
+import it.polimi.ingsw.common.events.mvevents.ReqHeartbeat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class ServerClientHandler implements Runnable, EventPasser {
 
         this.view = view;
 
-        this.timeout = 600000;
+        this.timeout = 60000;
         this.protocol = protocol;
 
         this.in = null;
@@ -82,6 +82,7 @@ public class ServerClientHandler implements Runnable, EventPasser {
                         halfTimeout++;
                     }
                     else {
+                        System.out.println("Heartbeat not received. Dispatching Goodbye.");
                         try {
                             view.dispatch(new ReqGoodbye()); // FIXME: Add type 'NetEvent'
                         } catch (ProtocolException e1) {
@@ -94,6 +95,7 @@ public class ServerClientHandler implements Runnable, EventPasser {
                     }
                 }
             }
+            System.out.println("Closing socket.");
             clientSocket.close();
         } catch (IOException e) {
             System.err.println("Exception caught when listening for a connection");
