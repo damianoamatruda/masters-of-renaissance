@@ -3,7 +3,7 @@ package it.polimi.ingsw.common.backend.model.resourcetransactions;
 /**
  * Exception used in validating resource transaction requests' containers.
  */
-public class IllegalResourceTransactionContainersException extends RuntimeException {
+public class IllegalResourceTransactionContainersException extends IllegalResourceTransactionException {
     private final String resType;
     private final int replacedCount, shelvesChoiceResCount;
     
