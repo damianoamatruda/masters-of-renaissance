@@ -18,8 +18,7 @@ public class Controller {
         view.addEventListener(ReqChooseLeaders.class, event -> on(view, event));
         view.addEventListener(ReqChooseResources.class, event -> on(view, event));
         view.addEventListener(ReqSwapShelves.class, event -> on(view, event));
-        view.addEventListener(ReqActivateLeader.class, event -> on(view, event));
-        view.addEventListener(ReqDiscardLeader.class, event -> on(view, event));
+        view.addEventListener(ReqLeaderAction.class, event -> on(view, event));
         view.addEventListener(ReqTakeFromMarket.class, event -> on(view, event));
         view.addEventListener(ReqBuyDevCard.class, event -> on(view, event));
         view.addEventListener(ReqActivateProduction.class, event -> on(view, event));
@@ -33,8 +32,7 @@ public class Controller {
         view.removeEventListener(ReqChooseLeaders.class, event -> on(view, event));
         view.removeEventListener(ReqChooseResources.class, event -> on(view, event));
         view.removeEventListener(ReqSwapShelves.class, event -> on(view, event));
-        view.removeEventListener(ReqActivateLeader.class, event -> on(view, event));
-        view.removeEventListener(ReqDiscardLeader.class, event -> on(view, event));
+        view.removeEventListener(ReqLeaderAction.class, event -> on(view, event));
         view.removeEventListener(ReqTakeFromMarket.class, event -> on(view, event));
         view.removeEventListener(ReqBuyDevCard.class, event -> on(view, event));
         view.removeEventListener(ReqActivateProduction.class, event -> on(view, event));
@@ -68,13 +66,12 @@ public class Controller {
                 gameContext.swapShelves(view, nickname, event.getShelf1(), event.getShelf2()));
     }
 
-    private void on(View view, ReqActivateLeader event) {
-        model.checkJoinedThen(view, (gameContext, nickname) ->
+    private void on(View view, ReqLeaderAction event) {
+        if (event.isActivate())
+            model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.activateLeader(view, nickname, event.getLeader()));
-    }
-
-    private void on(View view, ReqDiscardLeader event) {
-        model.checkJoinedThen(view, (gameContext, nickname) ->
+        else
+            model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.discardLeader(view, nickname, event.getLeader()));
     }
 
