@@ -1,8 +1,10 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ClientController;
 import it.polimi.ingsw.client.ClientServerHandler;
 import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,13 +18,20 @@ public class Cli implements Ui {
     private CliState state;
 
     private CliView view;
+    private ClientController controller;
+    private ReducedGame model;
 
     private Scanner scanner;
 
     public Cli() {
-        this.state = new SplashState();
-        this.view = new CliView();
         this.scanner = new Scanner(System.in);
+        
+        this.state = new SplashState();
+        
+        this.view = new CliView();
+        this.model = new ReducedGame();
+        this.controller = new ClientController(model);
+        this.controller.registerToView(view);
     }
 
     static String convertStreamToString(InputStream is) {
