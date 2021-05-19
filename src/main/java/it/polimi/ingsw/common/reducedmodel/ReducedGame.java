@@ -12,6 +12,8 @@ public class ReducedGame {
     List<ReducedResourceContainer> containers;
     ReducedPlayerSetup setup;
     List<Boolean> vaticanSections;
+    int leadersToChoose = 2;
+    int resourcesToChoose;
     int faithPoints;
     int victoryPoints;
     boolean lastRound = false;
@@ -67,5 +69,21 @@ public class ReducedGame {
 
     public void setLastRound() {
         lastRound = true;
+    }
+
+    public int getLeadersToChoose() {
+        return leadersToChoose;
+    }
+
+    public void setLeadersToChoose(int leadersToChoose) {
+        this.leadersToChoose = leadersToChoose;
+    }
+
+    public int getResourcesToChoose() {
+        return resourcesToChoose;
+    }
+
+    public void setResourcesToChoose(int resourcesToChoose) {
+        this.resourcesToChoose = resourcesToChoose;
     }
 }

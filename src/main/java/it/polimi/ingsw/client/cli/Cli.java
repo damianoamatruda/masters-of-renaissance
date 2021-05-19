@@ -123,8 +123,9 @@ public class Cli implements Ui {
         String resource;
         int amount;
 
-        String input = Cli.prompt(out, in, "Which container?");
-        while (!input.equalsIgnoreCase("send")) {
+        String input = "";
+        while (!input.equalsIgnoreCase("Y")) {
+            input = Cli.prompt(out, in, "Which container?");
             try {
                 container = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -144,14 +145,16 @@ public class Cli implements Ui {
 
             if(shelves.containsKey(container)) {
                 if(shelves.get(container).containsKey(resource)) {
-                    shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);
+                    shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);  //bugged (it loops forever?)
                 } else {
                     shelves.get(container).put(resource, amount);
                 }
             } else {
                 shelves.put(container, Map.of(resource, amount));
             }
+            input = Cli.prompt(out, in, "Are you done choosing what to pay? [Y/*]");
         }
+        System.out.println("Building shelves...");
         return shelves;
     }
 
@@ -179,5 +182,5 @@ public class Cli implements Ui {
         }
 
         Cli.clear(out);
-    };
+    }
 }

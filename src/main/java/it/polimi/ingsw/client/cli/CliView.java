@@ -239,7 +239,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeadersHand event) {
-        cli.setState(new SetupLeadersState());
+        cli.setState(new SetupLeadersState(4 - event.getLeaders().size()));
     }
 
     private void on(UpdateLeadersHandCount event) {
@@ -263,7 +263,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateSetupDone event) {
-
+        cli.setState(new TurnBeforeActionState());
     }
 
     private void on(UpdateVaticanSection event) {
