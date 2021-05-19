@@ -4,21 +4,24 @@ import it.polimi.ingsw.common.events.mvevents.MVEvent;
 
 /** General action error. */
 public class ErrAction implements MVEvent {
-    private final int reason;
+    private final ErrActionReason reason;
 
+    public enum ErrActionReason {
+        LATESETUPACTION,
+        EARLYMANDATORYACTION,
+        LATEMANDATORYACTION,
+        EARLYTURNEND,
+        ENDEDGAME,
+        NOTCURRENTPLAYER
+    }
     /**
-     * @param reason ordinal of 0. LATESETUPACTION,
-     *                          1. EARLYMANDATORYACTION,
-     *                          2. LATEMANDATORYACTION,
-     *                          3. EARLYTURNEND,
-     *                          4. ENDEDGAME,
-     *                          5. NOTCURRENTPLAYER
+     * @param reason
      */
-    public ErrAction(int reason) {
+    public ErrAction(ErrActionReason reason) {
         this.reason = reason;
     }
 
-    public int getReason() {
+    public ErrActionReason getReason() {
         return reason;
     }
 }

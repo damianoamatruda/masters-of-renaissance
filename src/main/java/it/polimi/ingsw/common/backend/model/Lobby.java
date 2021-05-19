@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,15 +36,15 @@ public class Lobby {
     public void joinLobby(View view, String nickname) {
         synchronized(lock) {
             if (nicknames.containsKey(view)) {
-                view.on(ErrNickname.ALREADYSET);
+                view.on(new ErrNickname(ErrNicknameReason.ALREADYSET));
                 return;
             }
             if (nickname == null || nickname.isBlank()) {
-                view.on(ErrNickname.NOTSET);
+                view.on(new ErrNickname(ErrNicknameReason.NOTSET));
                 return;
             }
             if (nicknames.containsValue(nickname)) {
-                view.on(ErrNickname.TAKEN);
+                view.on(new ErrNickname(ErrNicknameReason.TAKEN));
                 return;
             }
     
@@ -175,7 +176,7 @@ public class Lobby {
 
     private boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
-            view.on(ErrNickname.NOTSET);
+            view.on(new ErrNickname(ErrNicknameReason.NOTSET));
             return false;
         }
         return true;
@@ -186,7 +187,7 @@ public class Lobby {
             if (!checkNickname(view))
                 return false;
             if (!joined.containsKey(view)) {
-                view.on(ErrNickname.NOTINGAME);
+                view.on(new ErrNickname(ErrNicknameReason.NOTINGAME));
                 return false;
             }
             return true;
