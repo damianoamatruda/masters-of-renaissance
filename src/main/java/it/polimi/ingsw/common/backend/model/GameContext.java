@@ -173,10 +173,10 @@ public class GameContext {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
     
-            if (!preliminaryChecks(view, player, "Swap shelves"))
+            if (!preliminaryChecks(view, player))
                 return;
     
-            if (!checkCurrentPlayer(view, player, "Swap shelves"))
+            if (!checkCurrentPlayer(view, player))
                 return;
     
             Shelf shelf1, shelf2;
@@ -217,10 +217,10 @@ public class GameContext {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
     
-            if (!preliminaryChecks(view, player, "Activate leader"))
+            if (!preliminaryChecks(view, player))
                 return;
     
-            if (!checkCurrentPlayer(view, player, "Activate leader"))
+            if (!checkCurrentPlayer(view, player))
                 return;
     
             LeaderCard leader;
@@ -255,10 +255,10 @@ public class GameContext {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
     
-            if (!preliminaryChecks(view, player, "Discard leader"))
+            if (!preliminaryChecks(view, player))
                 return;
     
-            if (!checkCurrentPlayer(view, player, "Discard leader"))
+            if (!checkCurrentPlayer(view, player))
                 return;
     
             LeaderCard leader;
@@ -300,13 +300,13 @@ public class GameContext {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
 
-            if (!preliminaryChecks(view, player, "Take market resources"))
+            if (!preliminaryChecks(view, player))
                 return;
 
-            if (!checkCurrentPlayer(view, player, "Take market resources"))
+            if (!checkCurrentPlayer(view, player))
                 return;
 
-            if (!checkMandatoryActionNotDone(view, "Take market resources"))
+            if (!checkMandatoryActionNotDone(view))
                 return;
 
             Map<Shelf, Map<ResourceType, Integer>> shelves = new HashMap<>();
@@ -358,13 +358,13 @@ public class GameContext {
                            Map<Integer, Map<String, Integer>> reducedResContainers) {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
-            if (!preliminaryChecks(view, player, "Buy development card"))
+            if (!preliminaryChecks(view, player))
                 return;
 
-            if (!checkCurrentPlayer(view, player, "Buy development card"))
+            if (!checkCurrentPlayer(view, player))
                 return;
 
-            if (!checkMandatoryActionNotDone(view, "Buy development card"))
+            if (!checkMandatoryActionNotDone(view))
                 return;
 
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = new HashMap<>();
@@ -413,13 +413,13 @@ public class GameContext {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
 
-            if (!preliminaryChecks(view, player, "Activate production"))
+            if (!preliminaryChecks(view, player))
                 return;
 
-            if (!checkCurrentPlayer(view, player, "Activate production"))
+            if (!checkCurrentPlayer(view, player))
                 return;
 
-            if (!checkMandatoryActionNotDone(view, "Activate production"))
+            if (!checkMandatoryActionNotDone(view))
                 return;
 
             Optional<Integer> missing = reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).filter(p -> player.getProductionById(p).isEmpty()).findAny();
@@ -476,10 +476,10 @@ public class GameContext {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
     
-            if (!preliminaryChecks(view, player, "End turn"))
+            if (!preliminaryChecks(view, player))
                 return;
     
-            if (!checkCurrentPlayer(view, player, "End turn"))
+            if (!checkCurrentPlayer(view, player))
                 return;
     
             if (!mandatoryActionDone) {
@@ -515,7 +515,7 @@ public class GameContext {
      *               client trying to execute the action.
      * @return whether the checks passed
      */
-    private boolean preliminaryChecks(View view, Player player, String action) {
+    private boolean preliminaryChecks(View view, Player player) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
             view.on(!player.getSetup().isDone() ? new ErrAction(1) : new ErrAction(4));
             return false;
@@ -531,7 +531,7 @@ public class GameContext {
      * @param action the action trying to be performed
      * @return whether the check passed
      */
-    private boolean checkCurrentPlayer(View view, Player player, String action) {
+    private boolean checkCurrentPlayer(View view, Player player) {
         if (!player.equals(game.getCurrentPlayer())) {
             view.on(new ErrAction(5));
             return false;
@@ -546,7 +546,7 @@ public class GameContext {
      * @param action the action trying to be performed
      * @return whether the check passed
      */
-    private boolean checkMandatoryActionNotDone(View view, String action) {
+    private boolean checkMandatoryActionNotDone(View view) {
         if (mandatoryActionDone) {
             view.on(new ErrAction(2));
             return false;
