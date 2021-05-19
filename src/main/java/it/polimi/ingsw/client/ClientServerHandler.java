@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.Protocol;
 import it.polimi.ingsw.common.View;
@@ -17,7 +18,7 @@ import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ClientServerHandler implements EventPasser {
+public class ClientServerHandler extends EventDispatcher implements EventPasser {
     private final static String quitInputType = "ResGoodbye";
     private final static String quitOutputType = "ReqQuit";
 
@@ -38,6 +39,7 @@ public class ClientServerHandler implements EventPasser {
         this.protocol = new Protocol();
 
         this.view.setEventPasser(this);
+        this.view.registerToModelGame(this);    //name of method must be changed
 
         this.out = null;
     }
@@ -94,7 +96,7 @@ public class ClientServerHandler implements EventPasser {
                         System.out.println("[Client] Goodbye message from server. Ending thread 'runReceive'...");
                         break;
                     }
-                    view.dispatch(protocol.processInputAsMVEvent(fromServer));
+                    dispatch(protocol.processInputAsMVEvent(fromServer));
                 } catch (JsonSyntaxException ignored) {
                 }
             }
