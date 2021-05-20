@@ -75,7 +75,7 @@ public class TurnBeforeActionState extends CliTurnState {
             else isValid = false;
 
             try {
-                index = Integer.parseInt(splitInput[1]);
+                index = Integer.parseInt(splitInput[1]) - 1;
             } catch (Exception e) {
                 isValid = false;
             }
@@ -83,8 +83,6 @@ public class TurnBeforeActionState extends CliTurnState {
 
         // if has ZeroLeaders active: (if branch to be implemented)
         Map<String,Integer> replacements = cli.promptResources(out, in);
-
-        cli.promptShelves(out, in);
 
         cli.sendToView(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(out, in)));
     }
