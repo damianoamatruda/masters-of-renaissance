@@ -261,11 +261,11 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeadersHand event) {
-        cli.setState(new SetupLeadersState(4 - event.getLeaders().size()));
+        cli.setState(new SetupLeadersState(4 - cache.getLeadersToChoose()));
     }
 
     private void on(UpdateLeadersHandCount event) {
-        // here the confirmation of the above
+        cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
     }
 
     private void on(UpdateMarket event) {
