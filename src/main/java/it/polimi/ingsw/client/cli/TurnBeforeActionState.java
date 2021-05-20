@@ -14,7 +14,7 @@ public class TurnBeforeActionState extends CliTurnState {
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Buy a card", (menu) -> buyCard(cli, out, in)));
-        entries.put('2', new Menu.Entry("Obtain resources", (menu) -> getResources(cli, out, in)));
+        entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in)));
         entries.put('3', new Menu.Entry("Activate production", (menu) -> produce(cli, out, in)));
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
 
@@ -69,14 +69,14 @@ public class TurnBeforeActionState extends CliTurnState {
             if(splitInput[0].equalsIgnoreCase("row")) {
                 isRow = true;
             }
-            else if(splitInput[0].contains("col".toLowerCase())) {
+            else if(splitInput[0].equalsIgnoreCase("col")) {
                 isRow = false;
             }
             else isValid = false;
 
             try {
                 index = Integer.parseInt(splitInput[1]);
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 isValid = false;
             }
         }
