@@ -105,6 +105,6 @@ public class Strongbox extends ResourceContainer {
 
     @Override
     public ReducedResourceContainer reduce() {
-        return new ReducedResourceContainer(getId(), resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)), null);
+        return new ReducedResourceContainer(getId(), -1, resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)), null);
     }
 }

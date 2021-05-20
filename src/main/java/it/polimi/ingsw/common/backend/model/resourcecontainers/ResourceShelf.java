@@ -63,6 +63,6 @@ public class ResourceShelf extends Shelf {
 
     @Override
     public ReducedResourceContainer reduce() {
-        return new ReducedResourceContainer(getId(), getResourceType().isPresent() ? Map.of(getResourceType().get().getName(), getQuantity()) : Map.of(), boundedResType.getName());
+        return new ReducedResourceContainer(getId(), -1, getResourceType().isPresent() ? Map.of(getResourceType().get().getName(), getQuantity()) : Map.of(), boundedResType.getName());
     }
 }

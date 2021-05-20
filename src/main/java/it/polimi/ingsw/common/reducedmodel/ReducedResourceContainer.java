@@ -12,6 +12,8 @@ public class ReducedResourceContainer {
     /** The resource binding the container's contents. */
     private final String boundedResType;
 
+    private final int dimensions;
+
     /**
      * Class constructor.
      *
@@ -19,10 +21,18 @@ public class ReducedResourceContainer {
      * @param content        the new state of the container
      * @param boundedResType the resource binding the container's contents
      */
-    public ReducedResourceContainer(int id, Map<String, Integer> content, String boundedResType) {
+    public ReducedResourceContainer(int id, int dimensions, Map<String, Integer> content, String boundedResType) {
         this.id = id;
+        this.dimensions = dimensions;
         this.content = content;
         this.boundedResType = boundedResType;
+    }
+
+    /**
+     * @return the dimensions
+     */
+    public int getDimensions() {
+        return dimensions;
     }
 
     /**

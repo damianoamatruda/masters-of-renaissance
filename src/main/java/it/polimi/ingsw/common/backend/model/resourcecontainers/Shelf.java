@@ -180,6 +180,6 @@ public class Shelf extends ResourceContainer {
 
     @Override
     public ReducedResourceContainer reduce() {
-        return new ReducedResourceContainer(getId(), resType != null ? Map.of(resType.getName(), quantity) : Map.of(), resType != null ? resType.getName() : null);
+        return new ReducedResourceContainer(getId(), getSize(), resType != null ? Map.of(resType.getName(), quantity) : Map.of(), resType != null ? resType.getName() : null);
     }
 }

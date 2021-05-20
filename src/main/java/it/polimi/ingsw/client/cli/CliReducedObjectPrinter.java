@@ -97,8 +97,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedResourceContainer newObject) {
-        // TODO Auto-generated method stub
-        
+        System.out.println(String.format("Container ID: %d, bounded resource: %s, dimensions: %d\n",
+            newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
+
+        String contents = "";
+        newObject.getContent().entrySet().stream().forEach(e -> contents.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
     }
     
     @Override

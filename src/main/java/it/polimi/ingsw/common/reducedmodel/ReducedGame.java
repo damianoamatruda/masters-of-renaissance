@@ -54,10 +54,14 @@ public class ReducedGame {
     public void setContainer(ReducedResourceContainer newContainer) {
         ReducedResourceContainer toBeReplaced = containers.stream().filter(c -> c.getId() == newContainer.getId()).findAny().orElseThrow();
         containers.set(containers.indexOf(toBeReplaced), newContainer);
+
+        printer.update(newContainer);
     }
 
     public void setContainers(List<ReducedResourceContainer> containers) {
         this.containers = containers;
+
+        containers.forEach(c -> printer.update(c));
     }
 
     public String getCurrentPlayer() {
