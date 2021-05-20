@@ -119,8 +119,29 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     
     @Override
     public void update(ReducedResourceTransactionRecipe newObject) {
-        // TODO Auto-generated method stub
+        System.out.println(String.format("Production ID: %d\n",
+            newObject.getId()));
+
+        String input = "", output = "";
+        newObject.getInput().entrySet().stream().forEach(e -> input.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
+        System.out.println("Input:\n" + input);
+
+        System.out.println(String.format("Input blanks: %d\n",
+            newObject.getInputBlanks()));
         
+        System.out.println("Input blanks exclusions:\n");
+        newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
+
+        newObject.getOutput().entrySet().stream().forEach(e -> output.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
+        System.out.println("Output:\n" + output);
+
+        System.out.println(String.format("Output blanks: %d\n",
+            newObject.getOutputBlanks()));
+        
+        System.out.println("Output blanks exclusions:\n");
+        newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
+
+        System.out.println(newObject.isDiscardableOutput() ? "Output is discardable\n" : "");
     }
 
     @Override
