@@ -157,8 +157,10 @@ public class CliView extends View implements EventListener<VCEvent> {
 
     private void on(ErrInitialChoice event) {
         cli.repeatState(event.isLeadersChoice() ?
-            String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
-            "");
+            event.getMissingLeadersCount() == 0 ?
+                "Leaders already chosen" :
+                String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
+            "Resources already chosen");
     }
 
     private void on(ErrNewGame event) {
