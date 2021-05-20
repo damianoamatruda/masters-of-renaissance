@@ -220,12 +220,12 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ResWelcome event) {
+        printer.update(event);
         cli.setState(new InputNicknameState());
     }
 
     private void on(UpdateActionToken event) {
-//        cache.setActionTokens();  // how does the update work?
-//        might probably put a setState here, not sure yet
+        // show activated action token
     }
 
     private void on(UpdateBookedSeats event) {
@@ -339,7 +339,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateVaticanSection event) {
-//        cache.setActiveVaticanSection(event.getVaticanSection());
+       cache.setActiveVaticanSection(event.getVaticanSection());
     }
 
     private void on(UpdateVictoryPoints event) {
