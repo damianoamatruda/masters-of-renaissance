@@ -59,7 +59,8 @@ public class ReducedGame {
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
         this.actionTokens = actionTokens;
 
-        actionTokens.forEach(printer::update);
+        if(actionTokens != null)
+            actionTokens.forEach(printer::update);
     }
 
     public void setBaseProduction(String player, int baseProd) {
