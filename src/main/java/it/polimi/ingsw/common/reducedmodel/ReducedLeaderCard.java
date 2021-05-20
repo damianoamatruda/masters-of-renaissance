@@ -5,8 +5,9 @@ public class ReducedLeaderCard {
     private final int victoryPoints;
     private final String resourceType;
     private final String leaderType;
-    private final boolean isActive;
     private final ReducedCardRequirement requirement;
+    private boolean isActive;
+    private boolean isDiscarded;
 
     /**
      * @param id
@@ -24,6 +25,8 @@ public class ReducedLeaderCard {
         this.leaderType = leaderType;
         this.isActive = isActive;
         this.requirement = requirement;
+
+        this.isDiscarded = false;
     }
 
     /**
@@ -59,6 +62,18 @@ public class ReducedLeaderCard {
      */
     public boolean isActive() {
         return isActive;
+    }
+
+    public void setActive() {
+        this.isActive = true;
+    }
+    
+    public boolean isDiscarded() {
+        return isDiscarded;
+    }
+
+    public void setDiscarded() {
+        this.isDiscarded = true;
     }
 
     /**

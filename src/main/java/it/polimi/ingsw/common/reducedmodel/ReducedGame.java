@@ -61,6 +61,10 @@ public class ReducedGame {
         this.leadersToChoose = leadersToChoose;
     }
 
+    public List<ReducedLeaderCard> getLeaders() {
+        return leaderCards;
+    }
+
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }

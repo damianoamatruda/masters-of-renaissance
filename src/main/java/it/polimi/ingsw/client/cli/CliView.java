@@ -244,7 +244,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateJoinGame event) {
-//        cli.setState(new WaitingState(event.getPlayersCount()));
+       cli.setState(new WaitingState(event.getPlayersCount()));
     }
 
     private void on(UpdateLastRound event) {
@@ -252,7 +252,12 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeader event) {
+        ReducedLeaderCard l = cache.getLeaders().stream().filter(c -> c.getId() == event.getLeader()).findAny().get();
 
+        if (event.isActive())
+            l.setActive();
+        else
+            l.setDiscarded();
     }
 
     private void on(UpdateLeadersHand event) {
