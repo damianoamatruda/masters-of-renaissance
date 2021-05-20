@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
@@ -178,5 +179,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     @Override
     public void showCurrentPlayer(String player) {
         System.out.println("Current player: " + player);
+    }
+
+    @Override
+    public void showBaseProductions(Map<String, Integer> baseProductions) {
+        System.out.println("Base productions:");
+
+        baseProductions.entrySet().stream().forEach(e -> System.out.println("Player: " + e.getKey() + ", baseprod ID: " + e.getValue()));
     }
 }

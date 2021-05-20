@@ -12,6 +12,7 @@ public class ReducedGame {
 
     private String nickname;
     private List<ReducedActionToken> actionTokens;
+    private Map<String, Integer> baseProductions;
     private List<ReducedResourceContainer> containers;
     private String currentPlayer;
     private List<ReducedDevCard> developmentCards;
@@ -35,6 +36,7 @@ public class ReducedGame {
         this.printer = printer;
 
         actionTokens = new ArrayList<>();
+        baseProductions = new HashMap<>();
         containers = new ArrayList<>();
         developmentCards = new ArrayList<>();
         players = new ArrayList<>();
@@ -55,6 +57,12 @@ public class ReducedGame {
         this.actionTokens = actionTokens;
 
         actionTokens.forEach(t -> printer.update(t));
+    }
+
+    public void setBaseProduction(String player, int baseProd) {
+        baseProductions.put(player, baseProd);
+
+        printer.showBaseProductions(baseProductions);
     }
 
     public void setContainer(ReducedResourceContainer newContainer) {

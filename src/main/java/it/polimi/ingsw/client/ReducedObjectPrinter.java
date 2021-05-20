@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import java.util.List;
+import java.util.Map;
 
 import it.polimi.ingsw.common.events.mvevents.ResWelcome;
 import it.polimi.ingsw.common.reducedmodel.*;
@@ -19,4 +20,5 @@ public interface ReducedObjectPrinter {
     
     public void showPlayers(List<String> nicknames);
     public void showCurrentPlayer(String player);
+    public void showBaseProductions(Map<String, Integer> baseProductions);
 }
