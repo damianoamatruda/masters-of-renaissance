@@ -26,6 +26,7 @@ public class ReducedGame {
     private final Map<String, Boolean> playerState;
     private final Map<String, List<Integer>> playerLeaders;
     private final Map<String, Integer> playerLeadersCount;
+    private final Map<String, List<Integer>> playerWarehouseShelves;
     private List<ReducedResourceTransactionRecipe> productions;
     private int resourcesToChoose;
     private Map<String, ReducedPlayerSetup> setup;
@@ -43,6 +44,7 @@ public class ReducedGame {
         playerState = new HashMap<>();
         playerLeaders = new HashMap<>();
         playerLeadersCount = new HashMap<>();
+        playerWarehouseShelves = new HashMap<>();
         productions = new ArrayList<>();
         setup = new HashMap<>();
         vaticanSections = new ArrayList<>();
@@ -162,6 +164,11 @@ public class ReducedGame {
 
     public void setPlayerLeadersCount(String player, int count) {
         this.playerLeadersCount.put(player, count);
+    }
+
+
+    public void setPlayerWarehouseShelves(String player, List<Integer> shelves) {
+        this.playerWarehouseShelves.put(player, shelves);
     }
 
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
