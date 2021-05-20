@@ -84,6 +84,8 @@ public class ReducedGame {
 
     public void setDevCardGrid(ReducedDevCardGrid devCardGrid) {
         this.devCardGrid = devCardGrid;
+
+        printer.update(devCardGrid);
     }
 
     public void setFaithPoints(int faithPoints) {

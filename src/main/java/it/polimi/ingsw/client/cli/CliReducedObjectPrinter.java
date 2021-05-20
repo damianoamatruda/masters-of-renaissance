@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import java.util.List;
+import java.util.Stack;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -59,8 +60,19 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedDevCardGrid newObject) {
-        // TODO Auto-generated method stub
-        
+        List<Stack<Integer>> grid = newObject.getGrid().entrySet().stream().flatMap(e -> e.getValue().stream()).toList();
+
+        System.out.println("Development card grid state:");
+        newObject.getGrid().entrySet().stream().forEach(e -> System.out.print(e.getKey() + " "));
+        System.out.print("\n");
+
+        for (int i = 1; i < newObject.getLevelsCount(); i++) {
+            for (int j = 0; j < newObject.getColorsCount(); j++) {
+                System.out.print(grid.get(i + (j * newObject.getLevelsCount())) + "  ");
+            }
+            System.out.print("\n");
+        }
+        System.out.println();
     }
 
     @Override
@@ -101,7 +113,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             System.out.print("\n");
         });
         System.out.println("Slide resource: " + newObject.getSlide());
-        System.out.println("Replaceable resource type: " + newObject.getReplaceableResType());
+        System.out.println("Replaceable resource type: " + newObject.getReplaceableResType() + "\n");
     }
 
     @Override
