@@ -23,7 +23,7 @@ public class Cli implements Ui {
     private CliState state;
 
     private CliView view;
-    private ReducedGame model;
+    private ReducedGame cache;
 
     private Scanner scanner;
 
@@ -44,8 +44,8 @@ public class Cli implements Ui {
         
         this.stateQueue.add(new SplashState());
 
-        this.model = new ReducedGame();
-        this.view = new CliView(model, this, new CliReducedObjectPrinter(this, model));
+        this.cache = new ReducedGame();
+        this.view = new CliView(cache, this, new CliReducedObjectPrinter(this, cache));
     }
 
     static String convertStreamToString(InputStream is) {
@@ -111,7 +111,7 @@ public class Cli implements Ui {
         
         while (this.state != null) {
             System.out.println(state.getClass().getSimpleName());
-            state.render(this, System.out, scanner, this.model);
+            state.render(this, System.out, scanner, this.cache);
             try {
                 this.state = stateQueue.take();
             } catch (InterruptedException e) { e.printStackTrace(); }

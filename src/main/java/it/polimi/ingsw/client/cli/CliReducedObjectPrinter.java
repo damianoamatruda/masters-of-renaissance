@@ -6,11 +6,11 @@ import it.polimi.ingsw.common.reducedmodel.*;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private final Cli cli; // probably unneeded but who knows
-    private final ReducedGame model;
+    private final ReducedGame cache;
 
-    public CliReducedObjectPrinter(Cli cli, ReducedGame model) {
+    public CliReducedObjectPrinter(Cli cli, ReducedGame cache) {
         this.cli = cli;
-        this.model = model;
+        this.cache = cache;
     }
 
     @Override
