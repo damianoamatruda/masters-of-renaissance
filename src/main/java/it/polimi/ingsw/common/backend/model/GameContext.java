@@ -345,6 +345,8 @@ public class GameContext {
                     e.isAdded(),
                     e.getKind().ordinal()));
                 return;
+            } catch (IllegalArgumentException e) {
+                // view.on(); // TODO not implemented
             }
             
 

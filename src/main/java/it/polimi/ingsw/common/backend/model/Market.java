@@ -90,11 +90,11 @@ public class Market extends EventDispatcher {
      * @throws IllegalResourceTransferException                if there are issues trasferring the resource from/to a container
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
-                              Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
+                              Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalArgumentException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
             throw new IllegalArgumentException(
                     String.format("Cannot take resources: %s %d does not exist, limit is %d",
-                            isRow ? "row" : "column", index, isRow ? grid.get(0).size() : grid.size()));
+                            isRow ? "row" : "column", index, isRow ? grid.size() : grid.get(0).size()));
 
         Map<ResourceType, Integer> output = IntStream
                 .range(0, isRow ? getColsCount() : getRowsCount())
