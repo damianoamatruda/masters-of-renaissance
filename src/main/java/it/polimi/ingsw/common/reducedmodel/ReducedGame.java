@@ -59,7 +59,7 @@ public class ReducedGame {
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
         this.actionTokens = actionTokens;
 
-        actionTokens.forEach(t -> printer.update(t));
+        actionTokens.forEach(printer::update);
     }
 
     public void setBaseProduction(String player, int baseProd) {
@@ -94,7 +94,7 @@ public class ReducedGame {
     public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
         this.developmentCards = developmentCards;
 
-        developmentCards.forEach(c -> printer.update(c));
+        developmentCards.forEach(printer::update);
     }
 
     public void setDevCardGrid(ReducedDevCardGrid devCardGrid) {
@@ -118,7 +118,7 @@ public class ReducedGame {
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
 
-        leaderCards.forEach(l -> printer.update(l));
+        leaderCards.forEach(printer::update);
     }
 
     public void setMarket(ReducedMarket mkt) {
