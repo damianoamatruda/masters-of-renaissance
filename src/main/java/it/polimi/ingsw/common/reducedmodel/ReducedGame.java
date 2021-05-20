@@ -77,6 +77,10 @@ public class ReducedGame {
         this.players = players;
     }
 
+    public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
+        this.productions = productions;
+    }
+
     public int getResourcesToChoose() {
         return resourcesToChoose;
     }
