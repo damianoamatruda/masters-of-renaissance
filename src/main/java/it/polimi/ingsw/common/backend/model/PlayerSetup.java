@@ -151,7 +151,8 @@ public class PlayerSetup {
      * @return <code>true</code> if the setup is done; <code>false</code> otherwise.
      */
     public boolean isDone() {
-        return hasGivenInitialFaithPoints && hasChosenLeaders && hasChosenResources;
+        // last or necessary because setups are created by GSON -> constructor doesn't get called
+        return hasGivenInitialFaithPoints && hasChosenLeaders && (hasChosenResources || initialResources == 0);
     }
 
     public ReducedPlayerSetup reduce() {
