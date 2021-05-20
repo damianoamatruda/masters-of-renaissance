@@ -232,7 +232,7 @@ public class Cli implements Ui {
         renderMainTitle(out);
         for (int i = 0; i < 2; i++)
             out.println();
-        out.print("Quitting in 2 seconds...");
+        out.println("Quitting in 2 seconds...");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -242,7 +242,7 @@ public class Cli implements Ui {
         renderMainTitle(out);
         for (int i = 0; i < 2; i++)
             out.println();
-        out.print("Quitting in 1 seconds...");
+        out.println("Quitting in 1 seconds...");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
