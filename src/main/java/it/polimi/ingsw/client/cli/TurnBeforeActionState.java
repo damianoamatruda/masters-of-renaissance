@@ -50,7 +50,7 @@ public class TurnBeforeActionState extends CliTurnState {
             }
         }
 
-        shelves = Cli.promptShelves(out, in);
+        shelves = cli.promptShelves(out, in);
 
         //build request event
         cli.sendToView(new ReqBuyDevCard(color, level, slot, shelves));
@@ -81,11 +81,11 @@ public class TurnBeforeActionState extends CliTurnState {
             }
         }
 
-        Map<String,Integer> replacements = Cli.promptResources(out, in);
+        Map<String,Integer> replacements = cli.promptResources(out, in);
 
-        Cli.promptShelves(out, in);
+        cli.promptShelves(out, in);
 
-        cli.sendToView(new ReqTakeFromMarket(isRow, index, replacements, Cli.promptShelves(out, in)));
+        cli.sendToView(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(out, in)));
     }
 
     private void produce(Cli cli, PrintStream out, Scanner in) {
@@ -101,12 +101,12 @@ public class TurnBeforeActionState extends CliTurnState {
                 continue;
             }
             System.out.println("-- Input replacement --");
-            Map<String, Integer> inputReplacement = Cli.promptResources(out, in);
+            Map<String, Integer> inputReplacement = cli.promptResources(out, in);
             System.out.println("-- Output replacement --");
-            Map<String, Integer> outputReplacement = Cli.promptResources(out, in);
+            Map<String, Integer> outputReplacement = cli.promptResources(out, in);
 
             System.out.println("-- Containers (from which to pay) --");
-            Map<Integer, Map<String, Integer>> shelves = Cli.promptShelves(out, in);
+            Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(out, in);
 
             requests.add(new ReducedProductionRequest(productionid, inputReplacement, outputReplacement, shelves));
             input = Cli.prompt(out, in, "Are you done? [Y/*]");

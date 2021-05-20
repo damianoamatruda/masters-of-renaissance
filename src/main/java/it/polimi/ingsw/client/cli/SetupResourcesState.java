@@ -16,7 +16,7 @@ public class SetupResourcesState extends CliState {
     @Override
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         System.out.println("You have the right to " + choosable + " resources of choice. Which do you choose?");
-        Map<Integer, Map<String, Integer>> shelves = Cli.promptShelves(out, in);
+        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(out, in);
 
         cli.sendToView(new ReqChooseResources(shelves));
     }

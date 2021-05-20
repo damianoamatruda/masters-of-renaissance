@@ -166,4 +166,8 @@ public class ReducedGame {
     public void setActiveVaticanSection(int vaticanSection) {
         vaticanSections.set(vaticanSection, true);
     }
+
+    public List<ReducedResourceContainer> getContainers() {
+        return containers;
+    }
 }

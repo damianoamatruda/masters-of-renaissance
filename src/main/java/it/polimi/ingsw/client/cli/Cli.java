@@ -23,10 +23,10 @@ public class Cli implements Ui {
     /** The current state of the interface. */
     private CliState state;
 
-    private CliView view;
-    private ReducedGame cache;
+    private final CliView view;
+    private final ReducedGame cache;
 
-    private Scanner scanner;
+    private final Scanner scanner;
 
     private String nickname; //should be moved out of here
 
@@ -133,7 +133,7 @@ public class Cli implements Ui {
         view.on(event);
     }
 
-    public static Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
+    public Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
         System.out.println("Choose mapping shelf-resource-quantity:");
         final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
         int container;
@@ -145,6 +145,11 @@ public class Cli implements Ui {
             input = Cli.prompt(out, in, "Which container?");
             try {
                 container = Integer.parseInt(input);
+                int finalContainer = container;
+                if(cache.getContainers().stream().filter(c -> c.getId() == finalContainer).findAny().isEmpty()) {
+                    System.out.println("You do not own this container. Try again");
+                    continue;
+                };
             } catch (NumberFormatException e) {
                 System.out.println("Please input an integer.");
                 continue;
@@ -182,7 +187,7 @@ public class Cli implements Ui {
         return shelves;
     }
 
-    public static Map<String, Integer> promptResources(PrintStream out, Scanner in) {
+    public Map<String, Integer> promptResources(PrintStream out, Scanner in) {
         String resource;
         int amount;
         String input;
