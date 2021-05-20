@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -13,21 +12,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     public CliReducedObjectPrinter(Cli cli) {
         this.cli = cli;
-    }
-
-    private static String stringifyDevCardRequirement(ReducedDevCardRequirement req) {
-        String out = "";
-
-        req.getEntries().stream().forEach(e -> out.concat("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount() + "\n"));
-        
-        return out;
-    }
-
-    private static String stringifyResoureRequirement(ReducedResourceRequirement req) {
-        String out = "";
-
-        req.getRequirements().entrySet().stream().forEach(e -> out.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
-        return out;
     }
 
     @Override
@@ -50,19 +34,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getLevel(),
             newObject.getVictoryPoints()
         ));
-        System.out.println(String.format("Production ID: %d\n",
+        System.out.println(String.format("Production ID: %d",
             newObject.getProduction()
         ));
         System.out.println("Requirements (resources):");
-        System.out.println(stringifyResoureRequirement(newObject.getCost()));
+        
+        newObject.getCost()
+            .getRequirements().entrySet().stream()
+            .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
 
         System.out.println();
     }
 
     @Override
     public void update(ReducedDevCardGrid newObject) {
-        List<Stack<Integer>> grid = newObject.getGrid().entrySet().stream().flatMap(e -> e.getValue().stream()).toList();
-
         System.out.println("Development card grid state:");
         newObject.getGrid().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
     }
@@ -87,11 +72,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         ));
         if (newObject.getDevCardRequirement() != null) {
             System.out.println("Requirements (development cards):");
-            System.out.println(stringifyDevCardRequirement(newObject.getDevCardRequirement()));
+            newObject.getDevCardRequirement().getEntries().stream()
+                .forEach(e -> System.out.println("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));            
         }
         if (newObject.getResourceRequirement() != null) {
             System.out.println("Requirements (resources):");
-            System.out.println(stringifyResoureRequirement(newObject.getResourceRequirement()));
+            newObject.getResourceRequirement().getRequirements().entrySet().stream()
+                .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
         }
 
         System.out.println();
