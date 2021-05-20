@@ -9,7 +9,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import java.io.PrintStream;
 import java.util.*;
 
-public class TurnBeforeActionState extends CliState {
+public class TurnBeforeActionState extends CliTurnState {
     @Override
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
@@ -18,7 +18,7 @@ public class TurnBeforeActionState extends CliState {
         entries.put('3', new Menu.Entry("Activate production", (menu) -> produce(cli, out, in)));
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
 
-        new Menu(entries).render(cli, out, in, model); // Will be eventually changed to sth different than a menu, no worries
+        new Menu(entries).render(cli, out, in, model);
 
     }
 
@@ -113,9 +113,5 @@ public class TurnBeforeActionState extends CliState {
         }
 
         cli.sendToView(new ReqActivateProduction(requests));
-    }
-
-    private void leaderAction(Cli cli, PrintStream out, Scanner in) {
-//        cli.sendToView();   //either activate or discard
     }
 }
