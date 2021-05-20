@@ -36,7 +36,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedDevCard newObject) {
-        System.out.println(String.format("ID: %d, color: %s",
+        System.out.println(String.format("Development Card ID: %d, color: %s",
             newObject.getId(),
             newObject.getColor()
         ));
@@ -47,6 +47,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.println(String.format("Production ID: %d\n",
             newObject.getProduction()
         ));
+        System.out.println("Requirements (resources):");
         System.out.println(stringifyResoureRequirement(newObject.getCost()));
 
         System.out.println();
@@ -60,7 +61,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedLeaderCard newObject) {
-        System.out.println(String.format("ID: %d, type: %s",
+        System.out.println(String.format("Leader Card ID: %d, type: %s",
             newObject.getId(),
             newObject.getLeaderType()
         ));
@@ -76,10 +77,14 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getProduction(),
             newObject.getDiscount()
         ));
-        if (newObject.getDevCardRequirement() != null)
+        if (newObject.getDevCardRequirement() != null) {
+            System.out.println("Requirements (development cards):");
             System.out.println(stringifyDevCardRequirement(newObject.getDevCardRequirement()));
-        if (newObject.getResourceRequirement() != null)
+        }
+        if (newObject.getResourceRequirement() != null) {
+            System.out.println("Requirements (resources):");
             System.out.println(stringifyResoureRequirement(newObject.getResourceRequirement()));
+        }
 
         System.out.println();
     }
@@ -104,11 +109,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedResourceContainer newObject) {
-        System.out.println(String.format("Container ID: %d, bounded resource: %s, dimensions: %d\n",
+        System.out.println(String.format("Resource Container ID: %d, bounded resource: %s, dimensions: %d\n",
             newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
 
         String contents = "";
         newObject.getContent().entrySet().stream().forEach(e -> contents.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
+        System.out.println(contents);
     }
     
     @Override
