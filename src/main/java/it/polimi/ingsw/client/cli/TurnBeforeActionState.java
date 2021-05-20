@@ -89,20 +89,25 @@ public class TurnBeforeActionState extends CliState {
 
     private void produce(Cli cli, PrintStream out, Scanner in) {
         List<ReducedProductionRequest> requests = new ArrayList<>();
-//        int productionid;
-//        String input = "";
-//        while (!input.equalsIgnoreCase("Y")) {
-//            input = Cli.prompt(out, in, "Choose a production number");
-//            try {
-//                container = Integer.parseInt(input);
-//            } catch (NumberFormatException e) {
-//                System.out.println("Please input an integer.");
-//                continue;
-//            }
-//
-//        }
+        int productionid;
+        String input = "";
+        while (!input.equalsIgnoreCase("Y")) {
+            input = Cli.prompt(out, in, "Choose a production number");
+            try {
+                productionid = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please input an integer.");
+                continue;
+            }
+            Map<String, Integer> inputReplacement = Cli.promptResources(out, in);
+            Map<String, Integer> outputReplacement = Cli.promptResources(out, in);
 
-//        cli.sendToView(new ReqActivateProduction());
+            Map<Integer, Map<String, Integer>> shelves = Cli.promptShelves(out, in);
+
+            requests.add(new ReducedProductionRequest(productionid, inputReplacement, outputReplacement, shelves));
+        }
+
+        cli.sendToView(new ReqActivateProduction(requests));
     }
 
     private void leaderAction(Cli cli, PrintStream out, Scanner in) {
