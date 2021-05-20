@@ -157,6 +157,9 @@ public class Lobby {
                     joined.remove(view);
                 }
                 nicknames.remove(view);
+
+                if(waiting.contains(view))
+                    waiting.remove(view);
             }
             view.on(new ResGoodbye());
         }
