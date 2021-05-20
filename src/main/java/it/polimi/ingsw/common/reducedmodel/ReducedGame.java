@@ -78,7 +78,7 @@ public class ReducedGame {
     public void setContainers(List<ReducedResourceContainer> containers) {
         this.containers = containers;
 
-        containers.forEach(c -> printer.update(c));
+        containers.forEach(printer::update);
     }
 
     public String getCurrentPlayer() {

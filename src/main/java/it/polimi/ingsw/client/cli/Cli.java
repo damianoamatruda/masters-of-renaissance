@@ -152,11 +152,11 @@ public class Cli implements Ui {
 
             try {
                 container = Integer.parseInt(input);
-                int finalContainer = container;
-                if(cache.getContainers().stream().filter(c -> c.getId() == finalContainer).findAny().isEmpty()) {
-                    System.out.println("You do not own this container. Try again");
-                    continue;
-                };
+//                int finalContainer = container;
+//                if(cache.getContainers().stream().filter(c -> c.getId() == finalContainer).findAny().isEmpty()) {
+//                    System.out.println("You do not own this container. Try again");
+//                    continue;
+//                };
             } catch (NumberFormatException e) {
                 System.out.println("Please input an integer.");
                 continue;
