@@ -3,68 +3,50 @@ package it.polimi.ingsw.common.reducedmodel;
 import java.util.List;
 
 public class ReducedGame {
-    String currentPlayer;
-    List<String> players;
-    List<ReducedActionToken> actionTokens;
-    List<ReducedLeaderCard> leaderCards;
-    ReducedDevCardGrid devCardGrid;
-    ReducedMarket market;
-    List<ReducedResourceContainer> containers;
-    ReducedPlayerSetup setup;
-    List<Boolean> vaticanSections;
-    int leadersToChoose = 2;
-    int resourcesToChoose;
-    int faithPoints;
-    int victoryPoints;
-    boolean lastRound = false;
+    private List<ReducedActionToken> actionTokens;
+    private List<ReducedResourceContainer> containers;
+    private String currentPlayer;
+    private List<ReducedDevCard> developmentCards;
+    private ReducedDevCardGrid devCardGrid;
+    private int faithPoints;
+    private boolean lastRound = false;
+    private List<ReducedLeaderCard> leaderCards;
+    private int leadersToChoose = 2;
+    private ReducedMarket market;
+    private List<String> players;
+    private List<ReducedResourceTransactionRecipe> productions;
+    private int resourcesToChoose;
+    private ReducedPlayerSetup setup;
+    private List<Boolean> vaticanSections;
+    private int victoryPoints;
 
-    public void setVictoryPoints(int pts) {
-        victoryPoints = pts;
+    public void setActionTokens(List<ReducedActionToken> actionTokens) {
+        this.actionTokens = actionTokens;
     }
 
-    public void setMarket(ReducedMarket mkt) {
-        market = mkt;
-    }
-
-    public void setContainer(ReducedResourceContainer cont) {
-        ReducedResourceContainer toBeReplaced = containers.stream().filter(c -> c.getId() == cont.getId()).findAny().orElseThrow();
-        containers.set(containers.indexOf(toBeReplaced), cont);
+    public void setContainer(ReducedResourceContainer newContainer) {
+        ReducedResourceContainer toBeReplaced = containers.stream().filter(c -> c.getId() == newContainer.getId()).findAny().orElseThrow();
+        containers.set(containers.indexOf(toBeReplaced), newContainer);
     }
 
     public void setContainers(List<ReducedResourceContainer> containers) {
         this.containers = containers;
     }
 
-    public void setFaithPoints(int faithPoints) {
-        this.faithPoints = faithPoints;
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
-    public void setActionTokens(List<ReducedActionToken> actionTokens) {
-        this.actionTokens = actionTokens;
+    public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
+        this.developmentCards = developmentCards;
     }
 
     public void setDevCardGrid(ReducedDevCardGrid devCardGrid) {
         this.devCardGrid = devCardGrid;
     }
 
-    public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
-        this.leaderCards = leaderCards;
-    }
-
-    public void setPlayers(List<String> players) {
-        this.players = players;
-    }
-
-    public void setSetup(ReducedPlayerSetup setup) {
-        this.setup = setup;
-    }
-
-    public void setVaticanSections(List<Boolean> vaticanSections) {
-        this.vaticanSections = vaticanSections;
-    }
-
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public void setFaithPoints(int faithPoints) {
+        this.faithPoints = faithPoints;
     }
 
     public void setLastRound() {
@@ -79,11 +61,35 @@ public class ReducedGame {
         this.leadersToChoose = leadersToChoose;
     }
 
+    public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
+        this.leaderCards = leaderCards;
+    }
+
+    public void setMarket(ReducedMarket mkt) {
+        market = mkt;
+    }
+
+    public void setPlayers(List<String> players) {
+        this.players = players;
+    }
+
     public int getResourcesToChoose() {
         return resourcesToChoose;
     }
 
     public void setResourcesToChoose(int resourcesToChoose) {
         this.resourcesToChoose = resourcesToChoose;
+    }
+
+    public void setSetup(ReducedPlayerSetup setup) {
+        this.setup = setup;
+    }
+
+    public void setVaticanSections(List<Boolean> vaticanSections) {
+        this.vaticanSections = vaticanSections;
+    }
+
+    public void setVictoryPoints(int pts) {
+        victoryPoints = pts;
     }
 }
