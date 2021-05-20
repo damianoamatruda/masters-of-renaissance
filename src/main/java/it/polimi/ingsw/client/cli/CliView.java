@@ -6,7 +6,7 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
-import it.polimi.ingsw.common.reducedmodel.ReducedGame;
+import it.polimi.ingsw.common.reducedmodel.*;
 
 public class CliView extends View implements EventListener<VCEvent> {
     private final ReducedGame cache;
@@ -233,11 +233,14 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateGameStart event) {
-        cache.setVictoryPoints(0);
         cache.setActionTokens(event.getActionTokens());
         cache.setContainers(event.getResContainers());
+        cache.setDevelopmentCards(event.getDevelopmentCards());
         cache.setFaithPoints(0);
-        //... might as well use a constructor instead of all these setters
+        cache.setLeaderCards(event.getLeaderCards());
+        cache.setPlayers(event.getPlayers());
+        cache.setProductions(event.getProductions());
+        cache.setVictoryPoints(0);
     }
 
     private void on(UpdateJoinGame event) {
