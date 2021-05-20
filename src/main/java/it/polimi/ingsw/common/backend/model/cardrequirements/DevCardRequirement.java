@@ -3,9 +3,9 @@ package it.polimi.ingsw.common.backend.model.cardrequirements;
 import it.polimi.ingsw.common.backend.model.DevCardColor;
 import it.polimi.ingsw.common.backend.model.DevelopmentCard;
 import it.polimi.ingsw.common.backend.model.Player;
-import it.polimi.ingsw.common.reducedmodel.ReducedCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -83,7 +83,12 @@ public class DevCardRequirement implements CardRequirement {
     }
 
     @Override
-    public ReducedCardRequirement reduce() {
+    public ReducedResourceRequirement reduceRR() {
+        return null;
+    }
+
+    @Override
+    public ReducedDevCardRequirement reduceDR() {
         return new ReducedDevCardRequirement(entryList.stream().map(e -> e.reduce()).toList());
     }
 

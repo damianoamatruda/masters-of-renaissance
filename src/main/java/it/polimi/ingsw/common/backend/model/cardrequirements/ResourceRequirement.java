@@ -4,7 +4,7 @@ import it.polimi.ingsw.common.backend.model.Player;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.reducedmodel.ReducedCardRequirement;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
 import java.util.ArrayList;
@@ -91,8 +91,13 @@ public class ResourceRequirement implements CardRequirement {
     }
 
     @Override
-    public ReducedCardRequirement reduce() {
+    public ReducedResourceRequirement reduceRR() {
         return new ReducedResourceRequirement(
             resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)));
+    }
+
+    @Override
+    public ReducedDevCardRequirement reduceDR() {
+        return null;
     }
 }

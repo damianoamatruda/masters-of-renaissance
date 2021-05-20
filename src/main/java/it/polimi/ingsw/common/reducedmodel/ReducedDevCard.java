@@ -3,7 +3,7 @@ package it.polimi.ingsw.common.reducedmodel;
 public class ReducedDevCard {
     private final int id;
     private final String color;
-    private final ReducedCardRequirement cost;
+    private final ReducedResourceRequirement cost;
     private final int level;
     private final int production;
     private final int victoryPoints;
@@ -14,7 +14,7 @@ public class ReducedDevCard {
      * @param level
      * @param production
      */
-    public ReducedDevCard(int id, int victoryPoints, String color, ReducedCardRequirement cost, int level, int production) {
+    public ReducedDevCard(int id, int victoryPoints, String color, ReducedResourceRequirement cost, int level, int production) {
         this.id = id;
         this.victoryPoints = victoryPoints;
         this.color = color;
@@ -47,7 +47,7 @@ public class ReducedDevCard {
     /**
      * @return the cost of the card
      */
-    public ReducedCardRequirement getCost() {
+    public ReducedResourceRequirement getCost() {
         return cost;
     }
 

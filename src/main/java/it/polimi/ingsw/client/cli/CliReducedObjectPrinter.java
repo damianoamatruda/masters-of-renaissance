@@ -13,18 +13,18 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         this.cli = cli;
     }
 
-    private static String stringifyCardRequirement(ReducedCardRequirement req) {
+    private static String stringifyDevCardRequirement(ReducedDevCardRequirement req) {
         String out = "";
-        if (req instanceof ReducedDevCardRequirement) {
-            ReducedDevCardRequirement r = (ReducedDevCardRequirement)req;
 
-            r.getEntries().stream().forEach(e -> out.concat("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount() + "\n"));
-        } else {
-            ReducedResourceRequirement r = (ReducedResourceRequirement)req;
+        req.getEntries().stream().forEach(e -> out.concat("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount() + "\n"));
+        
+        return out;
+    }
 
-            r.getRequirements().entrySet().stream().forEach(e -> out.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
-        }
+    private static String stringifyResoureRequirement(ReducedResourceRequirement req) {
+        String out = "";
 
+        req.getRequirements().entrySet().stream().forEach(e -> out.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
         return out;
     }
 
@@ -47,7 +47,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.println(String.format("Production ID: %d\n",
             newObject.getProduction()
         ));
-        System.out.println(stringifyCardRequirement(newObject.getCost()));
+        System.out.println(stringifyResoureRequirement(newObject.getCost()));
+
+        System.out.println();
     }
 
     @Override
@@ -66,15 +68,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getResourceType(),
             newObject.getVictoryPoints()
         ));
-        System.out.println(String.format("Active status: %s, depot ID: %d\n",
+        System.out.println(String.format("Active status: %s, depot ID: %d",
             newObject.isActive(),
             newObject.getContainerId()
         ));
-        System.out.println(String.format("Production ID: %d, discount: %d\n",
+        System.out.println(String.format("Production ID: %d, discount: %d",
             newObject.getProduction(),
             newObject.getDiscount()
         ));
-        System.out.println(stringifyCardRequirement(newObject.getRequirement()));
+        if (newObject.getDevCardRequirement() != null)
+            System.out.println(stringifyDevCardRequirement(newObject.getDevCardRequirement()));
+        if (newObject.getResourceRequirement() != null)
+            System.out.println(stringifyResoureRequirement(newObject.getResourceRequirement()));
+
+        System.out.println();
     }
 
     @Override

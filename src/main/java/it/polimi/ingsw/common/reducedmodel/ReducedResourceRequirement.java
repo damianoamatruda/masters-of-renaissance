@@ -2,7 +2,7 @@ package it.polimi.ingsw.common.reducedmodel;
 
 import java.util.Map;
 
-public class ReducedResourceRequirement extends ReducedCardRequirement {
+public class ReducedResourceRequirement {
     private final Map<String, Integer> requirements;
 
     /**

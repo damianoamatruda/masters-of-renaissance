@@ -2,7 +2,7 @@ package it.polimi.ingsw.common.reducedmodel;
 
 import java.util.List;
 
-public class ReducedDevCardRequirement extends ReducedCardRequirement {
+public class ReducedDevCardRequirement {
     private final List<ReducedDevCardRequirementEntry> entries;
 
     /**
