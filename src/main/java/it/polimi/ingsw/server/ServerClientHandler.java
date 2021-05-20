@@ -99,6 +99,7 @@ public class ServerClientHandler implements Runnable, EventPasser {
             clientSocket.close();
         } catch (IOException e) {
             System.err.println("Exception caught when listening for a connection");
+            view.dispatch(new ReqGoodbye());
             System.err.println(e.getMessage());
         }
         this.out = null;
