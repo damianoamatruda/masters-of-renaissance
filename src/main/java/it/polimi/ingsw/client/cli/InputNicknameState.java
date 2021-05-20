@@ -16,7 +16,7 @@ public class InputNicknameState extends CliState{
         }
         System.out.println("Welcome");
         String input = Cli.prompt(out, in, "Nickname");
-        cli.setNickname(input);
+        model.setNickname(input);
         cli.sendToView(new ReqJoin(input));
 
         //send to view

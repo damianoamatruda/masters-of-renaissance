@@ -234,7 +234,7 @@ public class CliView extends View implements EventListener<VCEvent> {
 
     private void on(UpdateCurrentPlayer event) {
         cache.setCurrentPlayer(event.getPlayer());
-        if(!event.getPlayer().equals(cli.getNickname()))
+        if(!event.getPlayer().equals(cache.getNickname()))
             cli.setState(new WaitingForTurnState());
         else if(!(lastReq instanceof ReqNewGame))
             cli.setState(new TurnBeforeActionState());  // make sure the update never arrives during the own turn

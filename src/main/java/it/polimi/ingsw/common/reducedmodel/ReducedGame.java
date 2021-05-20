@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ReducedGame {
+    private String nickname;
     private List<ReducedActionToken> actionTokens;
     private List<ReducedResourceContainer> containers;
     private String currentPlayer;
@@ -96,6 +97,15 @@ public class ReducedGame {
     public void setMarket(ReducedMarket mkt) {
         market = mkt;
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
 
     public void setPlayers(List<String> players) {
         this.players = players;
