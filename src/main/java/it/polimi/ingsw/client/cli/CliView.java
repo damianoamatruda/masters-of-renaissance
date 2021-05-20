@@ -237,7 +237,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     private void on(UpdateCurrentPlayer event) {
         cache.setCurrentPlayer(event.getPlayer());
         if(!event.getPlayer().equals(cache.getNickname()))
-            cli.setState(new WaitingForTurnState());
+            cli.setState(new WaitingAfterTurnState());
         else if(!(lastReq instanceof ReqNewGame))
             cli.setState(new TurnBeforeActionState());  // make sure the update never arrives during the own turn
     }
@@ -255,11 +255,12 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateGameEnd event) {
-
+        cache.setWinner(event.getWinner());
+        cli.setState(new GameEndState());
     }
 
     private void on(UpdateGameResume event) {
-
+        cli.setState(new WaitingAfterTurnState());
     }
 
     private void on(UpdateGameStart event) {

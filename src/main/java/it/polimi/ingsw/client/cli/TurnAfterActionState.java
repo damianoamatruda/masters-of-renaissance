@@ -10,12 +10,12 @@ import java.util.Scanner;
 
 public class TurnAfterActionState extends CliTurnState {
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
         entries.put('E', new Menu.Entry("End turn", (menu) -> endTurn(cli)));
 
-        new Menu(entries).render(cli, out, in, model);
+        new Menu(entries).render(cli, out, in, cache);
     }
 
     private void endTurn(Cli cli) {

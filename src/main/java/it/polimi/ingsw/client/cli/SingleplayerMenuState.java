@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 public class SingleplayerMenuState extends CliState {
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         Cli.clear(out);
         renderMainTitle(out);
         for (int i = 0; i < 2; i++)

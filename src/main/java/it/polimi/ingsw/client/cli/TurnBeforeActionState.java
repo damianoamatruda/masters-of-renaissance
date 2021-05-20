@@ -12,15 +12,15 @@ import java.util.*;
 
 public class TurnBeforeActionState extends CliTurnState {
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Buy a card", (menu) -> buyCard(cli, out, in)));
-        entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in, model)));
+        entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in, cache)));
         entries.put('3', new Menu.Entry("Activate production", (menu) -> produce(cli, out, in)));
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
         entries.put('S', new Menu.Entry("Swap shelves", (menu) -> swapShelves(cli, out, in)));
 
-        new Menu(entries).render(cli, out, in, model);
+        new Menu(entries).render(cli, out, in, cache);
 
     }
 

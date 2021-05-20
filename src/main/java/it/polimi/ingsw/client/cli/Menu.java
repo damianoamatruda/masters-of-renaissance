@@ -16,7 +16,7 @@ public class Menu implements Renderable {
     }
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         // entries.forEach((ch, desc) -> out.printf("[%c] %s%n", ch, desc));
         StringBuilder stringBuilder = new StringBuilder();
         entries.forEach((character, entry) -> stringBuilder.append(String.format("[%c] %s%n", character, entry.description)));

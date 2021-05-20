@@ -20,7 +20,7 @@ public class SplashState extends CliState {
     }
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         Cli.clear(out);
         renderMainTitle(out);
         for (int i = 0; i < 2; i++)

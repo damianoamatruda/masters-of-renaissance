@@ -14,13 +14,13 @@ public class SetupLeadersState extends CliState {
     }
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         //print that says player has X resources, and Y leaders of choice. But who says how much are X and Y?
 
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while(chosen < model.getLeadersToChoose()) {
+        while(chosen < cache.getLeadersToChoose()) {
             String input = Cli.prompt(out, in, "Choose a leader. " + (leadersToChoose - chosen) + " left");
             try {
                 int id = Integer.parseInt(input);

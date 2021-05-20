@@ -14,7 +14,7 @@ public class MultiplayerMenuState extends CliState {
     private final static String jsonConfigPath = "/config/server.json";
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         Cli.clear(out);
         renderMainTitle(out);
         for (int i = 0; i < 2; i++)

@@ -7,5 +7,5 @@ import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 @FunctionalInterface
 public interface Renderable {
-    void render(Cli cli, PrintStream out, Scanner in, ReducedGame model);
+    void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache);
 }

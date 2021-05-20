@@ -14,7 +14,7 @@ public class SetupResourcesState extends CliState {
         this.choosable = choosable;
     }
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         System.out.println("You have the right to " + choosable + " resources of choice. Which do you choose?");
         Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(out, in);
 

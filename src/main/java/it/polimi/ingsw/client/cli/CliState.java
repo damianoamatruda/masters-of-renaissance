@@ -11,5 +11,5 @@ public abstract class CliState implements Renderable {
     }
 
     @Override
-    public abstract void render(Cli cli, PrintStream out, Scanner in, ReducedGame model);
+    public abstract void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache);
 }

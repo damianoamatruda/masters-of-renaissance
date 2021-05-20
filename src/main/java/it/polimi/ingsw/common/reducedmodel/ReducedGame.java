@@ -31,6 +31,7 @@ public class ReducedGame {
     private Map<String, ReducedPlayerSetup> setup;
     private List<Boolean> vaticanSections;
     private final Map<String, Integer> victoryPoints;
+    private String winner;
 
     public ReducedGame(ReducedObjectPrinter printer) {
         this.printer = printer;
@@ -200,5 +201,25 @@ public class ReducedGame {
 
     public List<ReducedLeaderCard> getLeaderCards() {
         return leaderCards;
+    }
+
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    public void setLastRound(boolean lastRound) {
+        this.lastRound = lastRound;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public int getVictoryPoints(String nickname) {
+        return victoryPoints.get(nickname);
     }
 }

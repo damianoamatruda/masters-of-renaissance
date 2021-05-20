@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class InputPlayersCountState extends CliState {
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         int count = 0;
         boolean isNumber = false;
         while (!isNumber) {

@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class InputNicknameState extends CliState{
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -16,7 +16,7 @@ public class InputNicknameState extends CliState{
         }
 
         String input = Cli.prompt(out, in, "Nickname");
-        model.setNickname(input);
+        cache.setNickname(input);
         cli.sendToView(new ReqJoin(input));
 
         //send to view
