@@ -322,8 +322,7 @@ public class CliView extends View implements EventListener<VCEvent> {
         cache.setPlayerWarehouseShelves(event.getPlayer(), event.getWarehouseShelves());
         cache.setPlayerStrongbox(event.getPlayer(), event.getStrongbox());
 
-        cache.setResourcesToChoose(event.getPlayerSetup().getInitialResources());
-        cache.setLeadersToChoose(event.getPlayerSetup().getChosenLeadersCount());
+        cache.setSetup(event.getPlayer(), event.getPlayerSetup());
     }
 
     private void on(UpdatePlayerStatus event) {

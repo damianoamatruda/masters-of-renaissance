@@ -104,7 +104,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             r.forEach(res -> System.out.print(res + " "));
             System.out.print("\n");
         });
-        System.out.println("\nSlide resource: " + newObject.getSlide() + "\n");
+        System.out.println("Slide resource: " + newObject.getSlide());
         System.out.println("Replaceable resource type: " + newObject.getReplaceableResType() + "\n");
     }
 

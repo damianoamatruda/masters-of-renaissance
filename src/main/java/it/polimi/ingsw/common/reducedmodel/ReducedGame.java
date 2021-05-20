@@ -20,7 +20,6 @@ public class ReducedGame {
     private int faithPoints;
     private boolean lastRound = false;
     private List<ReducedLeaderCard> leaderCards;
-    private int leadersToChoose;
     private ReducedMarket market;
     private List<String> players;
     private final Map<String, Boolean> playerState;
@@ -29,7 +28,6 @@ public class ReducedGame {
     private final Map<String, Integer> playerStrongbox;
     private final Map<String, List<Integer>> playerWarehouseShelves;
     private List<ReducedResourceTransactionRecipe> productions;
-    private int resourcesToChoose;
     private Map<String, ReducedPlayerSetup> setup;
     private List<Boolean> vaticanSections;
     private final Map<String, Integer> victoryPoints;
@@ -113,11 +111,7 @@ public class ReducedGame {
     }
 
     public int getLeadersToChoose() {
-        return leadersToChoose;
-    }
-
-    public void setLeadersToChoose(int leadersToChoose) {
-        this.leadersToChoose = leadersToChoose;
+        return this.setup.get(nickname).getChosenLeadersCount();
     }
 
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
@@ -181,11 +175,7 @@ public class ReducedGame {
     }
 
     public int getResourcesToChoose() {
-        return resourcesToChoose;
-    }
-
-    public void setResourcesToChoose(int resourcesToChoose) {
-        this.resourcesToChoose = resourcesToChoose;
+        return this.setup.get(nickname).getInitialResources();
     }
 
     public void setSetup(String player, ReducedPlayerSetup newSetup) {
