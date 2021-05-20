@@ -157,4 +157,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void showPlayers(List<String> nicknames) {
         nicknames.forEach(n -> System.out.println(n));
     }
+
+    @Override
+    public void showCurrentPlayer(String player) {
+        System.out.println("Current player: " + player);
+    }
 }

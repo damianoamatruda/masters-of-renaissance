@@ -18,4 +18,5 @@ public interface ReducedObjectPrinter {
     public void update(ResWelcome newObject);
     
     public void showPlayers(List<String> nicknames);
+    public void showCurrentPlayer(String player);
 }

@@ -49,6 +49,8 @@ public class ReducedGame {
 
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
         this.actionTokens = actionTokens;
+
+        actionTokens.forEach(t -> printer.update(t));
     }
 
     public void setContainer(ReducedResourceContainer newContainer) {
@@ -70,6 +72,8 @@ public class ReducedGame {
 
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
+
+        printer.showCurrentPlayer(currentPlayer);
     }
 
     public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
@@ -120,6 +124,7 @@ public class ReducedGame {
     public void setPlayers(List<String> players) {
         this.players = players;
 
+        printer.showPlayers(players);
     }
 
     public void setPlayerState(String player, boolean newState) {
