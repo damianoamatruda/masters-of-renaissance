@@ -1,7 +1,9 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
+import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -47,7 +49,7 @@ public class TurnBeforeActionState extends CliState {
             }
         }
 
-        shelves = cli.promptShelves(out, in);
+        shelves = Cli.promptShelves(out, in);
 
         //build request event
         cli.sendToView(new ReqBuyDevCard(color, level, slot, shelves));
@@ -57,10 +59,11 @@ public class TurnBeforeActionState extends CliState {
         boolean isValid = false;
         boolean isRow = false;
         int index = -1;
+        String input;
 
         while (!isValid) {
             isValid = true;
-            String input = Cli.prompt(out, in, "Choose a row or a column (example: row 4)");
+            input = Cli.prompt(out, in, "Choose a row or a column (example: row 4)");
             String[] splitInput = input.split(" ", 2);
             if(splitInput[0].equalsIgnoreCase("row")) {
                 isRow = true;
@@ -76,10 +79,29 @@ public class TurnBeforeActionState extends CliState {
                 isValid = false;
             }
         }
-        cli.sendToView(new ReqTakeFromMarket(isRow, index, null /* Remove null obv */, cli.promptShelves(out, in)));
+
+        Map<String,Integer> replacements = Cli.promptResources(out, in);
+
+        Cli.promptShelves(out, in);
+
+        cli.sendToView(new ReqTakeFromMarket(isRow, index, replacements, Cli.promptShelves(out, in)));
     }
 
     private void produce(Cli cli, PrintStream out, Scanner in) {
+        List<ReducedProductionRequest> requests = new ArrayList<>();
+//        int productionid;
+//        String input = "";
+//        while (!input.equalsIgnoreCase("Y")) {
+//            input = Cli.prompt(out, in, "Choose a production number");
+//            try {
+//                container = Integer.parseInt(input);
+//            } catch (NumberFormatException e) {
+//                System.out.println("Please input an integer.");
+//                continue;
+//            }
+//
+//        }
+
 //        cli.sendToView(new ReqActivateProduction());
     }
 

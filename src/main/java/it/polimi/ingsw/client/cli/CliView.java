@@ -182,7 +182,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrRuntime event) {
-        cli.repeatState("Helo your computer has virus");
+        cli.repeatState("Uncaught exception has been thrown. Please retry.");
     }
 
     private void on(ReqHeartbeat event) {
@@ -261,7 +261,12 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeadersHand event) {
-        cli.setState(new SetupLeadersState(4 - cache.getLeadersToChoose()));
+        if(event.getLeaders().size() > 2)
+            cli.setState(new SetupLeadersState(event.getLeaders().size() - 2));
+        else if(cache.getResourcesToChoose() > 0)
+            cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
+        else
+            cli.setState(new TurnBeforeActionState());
     }
 
     private void on(UpdateLeadersHandCount event) {
@@ -273,7 +278,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdatePlayer event) {
-
+        cache.setResourcesToChoose(event.getPlayerSetup().getInitialResources());
     }
 
     private void on(UpdatePlayerStatus event) {

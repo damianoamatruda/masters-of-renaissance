@@ -130,7 +130,7 @@ public class Cli implements Ui {
         view.on(event);
     }
 
-    public Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
+    public static Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
         final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
         int container;
         String resource;
@@ -169,6 +169,35 @@ public class Cli implements Ui {
         }
         System.out.println("Building shelves...");
         return shelves;
+    }
+
+    public static Map<String, Integer> promptResources(PrintStream out, Scanner in) {
+        String resource;
+        int amount;
+        String input;
+        Map<String, Integer> result = new HashMap<>();
+
+        input = "";
+        while (!input.equalsIgnoreCase("Y")) {
+            resource = Cli.prompt(out, in, "Which resource?");
+
+            input = Cli.prompt(out, in, "How many?");
+            try {
+                amount = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please input an integer.");
+                continue;
+            }
+
+            if(result.containsKey(resource)) {
+                result.replace(resource, result.get(resource) + amount);
+            } else {
+                result.put(resource, amount);
+            }
+
+            input = Cli.prompt(out, in, "Are you done choosing? [Y/*]");
+        }
+        return result;
     }
 
     public void quit() {
