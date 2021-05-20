@@ -261,8 +261,17 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeadersHand event) {
-        if(event.getLeaders().size() > 2)
-            cli.setState(new SetupLeadersState(event.getLeaders().size() - 2));
+        /* this message arrives last among the starting events:
+            joingame
+            updategamestart
+            currplayer
+            market
+            devcardgrid
+            player
+            leadershand -> with GS and player has enough info for leader choice */
+
+        if(event.getLeaders().size() > 0)
+            cli.setState(new SetupLeadersState(event.getLeaders().size() - cache.getLeadersToChoose()));
         else if(cache.getResourcesToChoose() > 0)
             cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
         else
@@ -282,7 +291,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdatePlayerStatus event) {
-
+        cache.setPlayerState(event.getPlayer(), event.isActive());
     }
 
     private void on(UpdateResourceContainer event) {

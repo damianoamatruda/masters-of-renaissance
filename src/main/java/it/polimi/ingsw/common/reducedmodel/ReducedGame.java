@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 import java.util.List;
+import java.util.Map;
 
 public class ReducedGame {
     private List<ReducedActionToken> actionTokens;
@@ -14,9 +15,10 @@ public class ReducedGame {
     private int leadersToChoose = 2;
     private ReducedMarket market;
     private List<String> players;
+    private Map<String, Boolean> playerState;
     private List<ReducedResourceTransactionRecipe> productions;
     private int resourcesToChoose;
-    private ReducedPlayerSetup setup;
+    private Map<String, ReducedPlayerSetup> setup;
     private List<Boolean> vaticanSections;
     private int victoryPoints;
 
@@ -77,6 +79,17 @@ public class ReducedGame {
         this.players = players;
     }
 
+    /**
+     * @return map nickname-active status of the player
+     */
+    public Map<String, Boolean> getPlayerState() {
+        return playerState;
+    }
+
+    public void setPlayerState(String player, boolean newState) {
+        this.playerState.put(player, newState);
+    }
+
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
         this.productions = productions;
     }
@@ -89,8 +102,8 @@ public class ReducedGame {
         this.resourcesToChoose = resourcesToChoose;
     }
 
-    public void setSetup(ReducedPlayerSetup setup) {
-        this.setup = setup;
+    public void setSetup(String player, ReducedPlayerSetup newSetup) {
+        this.setup.put(player, newSetup);
     }
 
     public void setVaticanSections(List<Boolean> vaticanSections) {
