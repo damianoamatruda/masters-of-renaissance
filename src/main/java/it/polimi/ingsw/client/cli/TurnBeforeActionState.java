@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.io.PrintStream;
@@ -10,14 +11,14 @@ import java.util.*;
 
 public class TurnBeforeActionState extends CliState {
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Buy a card", (menu) -> buyCard(cli, out, in)));
         entries.put('2', new Menu.Entry("Obtain resources", (menu) -> getResources(cli, out, in)));
         entries.put('3', new Menu.Entry("Activate production", (menu) -> produce(cli, out, in)));
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
 
-        new Menu(entries).render(cli, out, in); // Will be eventually changed to sth different than a menu, no worries
+        new Menu(entries).render(cli, out, in, model); // Will be eventually changed to sth different than a menu, no worries
 
     }
 

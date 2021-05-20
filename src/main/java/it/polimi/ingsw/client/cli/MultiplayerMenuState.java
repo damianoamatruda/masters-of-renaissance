@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.client.ClientServerHandler;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -13,7 +14,7 @@ public class MultiplayerMenuState extends CliState {
     private final static String jsonConfigPath = "/config/server.json";
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         Cli.clear(out);
         renderMainTitle(out);
         for (int i = 0; i < 2; i++)

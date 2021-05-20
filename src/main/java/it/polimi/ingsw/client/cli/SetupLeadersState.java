@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.PrintStream;
 import java.util.*;
@@ -13,7 +14,7 @@ public class SetupLeadersState extends CliState {
     }
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         //print that says player has X resources, and Y leaders of choice. But who says how much are X and Y?
 
         List<Integer> leaders = new ArrayList<>();

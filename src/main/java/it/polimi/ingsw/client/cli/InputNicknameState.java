@@ -1,13 +1,14 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.PrintStream;
 import java.util.Scanner;
 
 public class InputNicknameState extends CliState{
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {

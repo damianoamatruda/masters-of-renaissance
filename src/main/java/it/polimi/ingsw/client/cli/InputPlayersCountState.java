@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 public class InputPlayersCountState extends CliState {
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         int count = 0;
         boolean isNumber = false;
         while (!isNumber) {

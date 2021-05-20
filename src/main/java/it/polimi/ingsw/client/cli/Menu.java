@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
+
 public class Menu implements Renderable {
     private final Map<Character, Entry> entries;
 
@@ -14,7 +16,7 @@ public class Menu implements Renderable {
     }
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         // entries.forEach((ch, desc) -> out.printf("[%c] %s%n", ch, desc));
         StringBuilder stringBuilder = new StringBuilder();
         entries.forEach((character, entry) -> stringBuilder.append(String.format("[%c] %s%n", character, entry.description)));
