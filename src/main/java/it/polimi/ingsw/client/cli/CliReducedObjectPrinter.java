@@ -23,14 +23,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     @Override
-    public void update(ReducedDepotLeaderCard newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void update(ReducedDevCard newObject) {
-        // TODO Auto-generated method stub
         
     }
 
@@ -48,12 +41,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedDevCardRequirementEntry newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void update(ReducedDiscountLeaderCard newObject) {
         // TODO Auto-generated method stub
         
     }
@@ -78,12 +65,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedPlayerSetup newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void update(ReducedProductionLeaderCard newObject) {
         // TODO Auto-generated method stub
         
     }

@@ -8,6 +8,10 @@ public class ReducedLeaderCard {
     private final ReducedCardRequirement requirement;
     private boolean isActive;
 
+    private final int containerId;
+    private final int discount;
+    private final int production;
+
     /**
      * @param id
      * @param victoryPoints
@@ -15,15 +19,25 @@ public class ReducedLeaderCard {
      * @param leaderType
      * @param isActive
      * @param requirement
+     * @param containerId
+     * @param discount
+     * @param production
      */
     public ReducedLeaderCard(int id, int victoryPoints, String resourceType, String leaderType, boolean isActive,
-            ReducedCardRequirement requirement) {
+            ReducedCardRequirement requirement,
+            int containerId,
+            int discount,
+            int production) {
         this.id = id;
         this.victoryPoints = victoryPoints;
         this.resourceType = resourceType;
         this.leaderType = leaderType;
         this.isActive = isActive;
         this.requirement = requirement;
+        
+        this.containerId = containerId;
+        this.discount = discount;
+        this.production = production;
     }
 
     /**
@@ -70,5 +84,26 @@ public class ReducedLeaderCard {
      */
     public ReducedCardRequirement getRequirement() {
         return requirement;
+    }
+
+    /**
+     * @return the containerId of the card
+     */
+    public int getContainerId() {
+        return containerId;
+    }
+
+    /**
+     * @return the discount of the card
+     */
+    public int getDiscount() {
+        return discount;
+    }
+
+    /**
+     * @return the ID of the production of the card
+     */
+    public int getProduction() {
+        return production;
     }
 }

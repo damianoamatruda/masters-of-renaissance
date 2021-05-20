@@ -4,7 +4,6 @@ import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedProductionLeaderCard;
 
 import java.util.Optional;
 
@@ -39,7 +38,7 @@ public class ProductionLeader extends LeaderCard {
 
     @Override
     public ReducedLeaderCard reduce() {
-        return new ReducedProductionLeaderCard(
-            getId(), getVictoryPoints(), getResource().getName(), getClass().getSimpleName(), isActive(), requirement.reduce(), production.getId());
+        return new ReducedLeaderCard(
+            getId(), getVictoryPoints(), getResource().getName(), getClass().getSimpleName(), isActive(), requirement.reduce(), -1, -1, production.getId());
     }
 }
