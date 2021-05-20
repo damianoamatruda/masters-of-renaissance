@@ -12,7 +12,7 @@ public class ReducedGame {
     private int faithPoints;
     private boolean lastRound = false;
     private List<ReducedLeaderCard> leaderCards;
-    private int leadersToChoose = 2;
+    private int leadersToChoose;
     private ReducedMarket market;
     private List<String> players;
     private Map<String, Boolean> playerState;

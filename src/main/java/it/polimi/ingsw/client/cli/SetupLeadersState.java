@@ -20,7 +20,7 @@ public class SetupLeadersState extends CliState {
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while(chosen < leadersToChoose) {
+        while(chosen < model.getLeadersToChoose()) {
             String input = Cli.prompt(out, in, "Choose a leader. " + (leadersToChoose - chosen) + " left");
             try {
                 int id = Integer.parseInt(input);

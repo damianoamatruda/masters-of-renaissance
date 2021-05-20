@@ -270,7 +270,7 @@ public class CliView extends View implements EventListener<VCEvent> {
             player
             leadershand -> with GS and player has enough info for leader choice */
 
-        if(event.getLeaders().size() > 0)
+        if(event.getLeaders().size() > cache.getLeadersToChoose())
             cli.setState(new SetupLeadersState(event.getLeaders().size() - cache.getLeadersToChoose()));
         else if(cache.getResourcesToChoose() > 0)
             cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
@@ -288,6 +288,7 @@ public class CliView extends View implements EventListener<VCEvent> {
 
     private void on(UpdatePlayer event) {
         cache.setResourcesToChoose(event.getPlayerSetup().getInitialResources());
+        cache.setLeadersToChoose(event.getPlayerSetup().getChosenLeadersCount());
     }
 
     private void on(UpdatePlayerStatus event) {
