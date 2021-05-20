@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
-public class WaitingState extends CliState {
+public class WaitingBeforeGameState extends CliState {
     private int bookedSeats;
 
-    public WaitingState(int bookedSeats) {
+    public WaitingBeforeGameState(int bookedSeats) {
         this.bookedSeats = bookedSeats;
     }
 

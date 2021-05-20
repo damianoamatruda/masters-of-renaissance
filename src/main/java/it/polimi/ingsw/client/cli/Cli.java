@@ -94,8 +94,8 @@ public class Cli implements Ui {
      *
      * @param state the next state
      */
-    public void setState(CliState s) {
-        stateQueue.add(s);
+    public void setState(CliState state) {
+        stateQueue.add(state);
     }
 
     public void repeatState(String s) {
@@ -159,16 +159,23 @@ public class Cli implements Ui {
 
             if(shelves.containsKey(container)) {
                 if(shelves.get(container).containsKey(resource)) {
-                    shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);  //bugged (it loops forever?)
+                    shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);
                 } else {
                     shelves.get(container).put(resource, amount);
                 }
             } else {
-                shelves.put(container, Map.of(resource, amount));
+                Map<String, Integer> resourceMapping = new HashMap<>();
+                resourceMapping.put(resource, amount);
+                shelves.put(container, resourceMapping);
             }
-            input = Cli.prompt(out, in, "Are you done choosing what to pay? [Y/*]");
+            input = Cli.prompt(out, in, "Are you done choosing? [Y/*]");
         }
         System.out.println("Building shelves...");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return shelves;
     }
 
@@ -180,7 +187,7 @@ public class Cli implements Ui {
 
         input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            resource = Cli.prompt(out, in, "Which resource?");
+            resource = Cli.prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks?");
 
             input = Cli.prompt(out, in, "How many?");
             try {

@@ -222,17 +222,22 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateActionToken event) {
-
+//        cache.setActionTokens();  // how does the update work?
+//        might probably put a setState here, not sure yet
     }
 
     private void on(UpdateBookedSeats event) {
         if(event.canPrepareNewGame().equals(cli.getNickname()))
             cli.setState(new InputPlayersCountState());
-        else cli.setState(new WaitingState(event.getBookedSeats()));
+        else cli.setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
 
     private void on(UpdateCurrentPlayer event) {
         cache.setCurrentPlayer(event.getPlayer());
+        if(!event.getPlayer().equals(cli.getNickname()))
+            cli.setState(new WaitingForTurnState());
+        else if(!(lastReq instanceof ReqNewGame))
+            cli.setState(new TurnBeforeActionState());  // make sure the update never arrives during the own turn
     }
 
     private void on(UpdateDevCardGrid event) {
@@ -240,7 +245,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateDevCardSlot event) {
-
+        cli.setState(new TurnAfterActionState());
     }
 
     private void on(UpdateFaithPoints event) {
@@ -267,7 +272,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateJoinGame event) {
-       cli.setState(new WaitingState(event.getPlayersCount()));
+       cli.setState(new WaitingBeforeGameState(event.getPlayersCount()));
     }
 
     private void on(UpdateLastRound event) {
@@ -303,6 +308,11 @@ public class CliView extends View implements EventListener<VCEvent> {
 
     private void on(UpdateMarket event) {
         cache.setMarket(event.getMarket());
+
+        /* if market update originates from my command and not from others' (base action) */
+        //might be problematic if this command is sent while not current player, but immediately after sb else activates market
+        if(lastReq instanceof ReqTakeFromMarket)
+            cli.setState(new TurnAfterActionState());
     }
 
     private void on(UpdatePlayer event) {
@@ -316,6 +326,10 @@ public class CliView extends View implements EventListener<VCEvent> {
 
     private void on(UpdateResourceContainer event) {
         cache.setContainer(event.getResContainer());
+
+        /* if update comes from my production activation (base action) */
+        if(lastReq instanceof ReqActivateProduction)
+            cli.setState(new TurnAfterActionState());
     }
 
     private void on(UpdateSetupDone event) {
@@ -323,7 +337,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateVaticanSection event) {
-
+//        cache.setActiveVaticanSection(event.getVaticanSection());
     }
 
     private void on(UpdateVictoryPoints event) {

@@ -170,4 +170,8 @@ public class ReducedGame {
     public void setVictoryPoints(String player, int pts) {
         victoryPoints.put(player, pts);
     }
+
+    public void setActiveVaticanSection(int vaticanSection) {
+        vaticanSections.set(vaticanSection, true);
+    }
 }

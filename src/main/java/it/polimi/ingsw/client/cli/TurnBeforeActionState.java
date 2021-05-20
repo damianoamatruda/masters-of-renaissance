@@ -64,7 +64,7 @@ public class TurnBeforeActionState extends CliTurnState {
 
         while (!isValid) {
             isValid = true;
-            input = Cli.prompt(out, in, "Choose a row or a column (example: row 4)");
+            input = Cli.prompt(out, in, "Choose a row or a column (example: row 1)");
             String[] splitInput = input.split(" ", 2);
             if(splitInput[0].equalsIgnoreCase("row")) {
                 isRow = true;
