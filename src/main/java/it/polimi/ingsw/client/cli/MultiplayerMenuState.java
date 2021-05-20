@@ -28,7 +28,7 @@ public class MultiplayerMenuState extends CliState {
         boolean validAddress = false;
 
         while (!validAddress) {
-            String address = Cli.prompt(out, in, "Server address", String.format("%s:%s", host, port));
+            String address = cli.prompt(out, in, "Server address", String.format("%s:%s", host, port));
 
             if (address.isBlank())
                 validAddress = true;

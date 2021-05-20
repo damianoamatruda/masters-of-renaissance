@@ -9,13 +9,13 @@ public abstract class CliTurnState extends CliState {
     public void leaderAction(Cli cli, PrintStream out, Scanner in) {
         String input;
         do {
-            input = Cli.prompt(out, in, "Leader action. A = Activate, D = Discard");
+            input = cli.prompt(out, in, "Leader action. A = Activate, D = Discard");
         } while (!input.toUpperCase().startsWith("A") && !input.toUpperCase().startsWith("D"));
 
         boolean isActivate = input.toUpperCase().startsWith("A");
 
         while (true) {
-            input = Cli.prompt(out, in, "Which leader?");
+            input = cli.prompt(out, in, "Which leader?");
             try {
                 int leaderid = Integer.parseInt(input);
                 cli.sendToView(new ReqLeaderAction(leaderid, isActivate));

@@ -15,7 +15,7 @@ public class InputNicknameState extends CliState{
             e.printStackTrace();
         }
 
-        String input = Cli.prompt(out, in, "Nickname");
+        String input = cli.prompt(out, in, "Nickname");
         cache.setNickname(input);
         cli.sendToView(new ReqJoin(input));
 

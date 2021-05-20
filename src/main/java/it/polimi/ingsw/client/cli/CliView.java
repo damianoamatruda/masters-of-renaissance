@@ -127,9 +127,10 @@ public class CliView extends View implements EventListener<VCEvent> {
     public void on(VCEvent event) {
         lastReq = event;
 
-        if (eventPasser == null)
-            throw new RuntimeException("Cannot send VCEvent: no passer available.");
-        eventPasser.on(event);
+//        if (eventPasser == null)
+//            throw new RuntimeException("Cannot send VCEvent: no passer available.");
+        if(eventPasser != null)
+            eventPasser.on(event);
     }
 
     private void on(ErrAction event) {

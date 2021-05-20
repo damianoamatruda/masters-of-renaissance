@@ -14,7 +14,7 @@ public class InputPlayersCountState extends CliState {
         boolean isNumber = false;
         while (!isNumber) {
             try {
-                String input = Cli.prompt(out, in, "You are the first player. Choose players count");
+                String input = cli.prompt(out, in, "You are the first player. Choose players count");
                 count = Integer.parseInt(input);
                 isNumber = true;
             } catch (NumberFormatException e) {

@@ -98,6 +98,7 @@ public class ClientServerHandler extends EventDispatcher implements EventPasser 
                     if (jsonObject != null && jsonObject.get("type") != null) {
                         if (jsonObject.get("type").getAsString().equals(quitInputType)) {
                             System.out.println("[Client] Goodbye message from server. Ending thread 'runReceive'...");
+                            dispatch(protocol.processInputAsMVEvent(fromServer));
                             break;
                         } else if (jsonObject.get("type").getAsString().equals(heartbeatInputType)) {
                             on(new ResHeartbeat());

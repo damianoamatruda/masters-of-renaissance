@@ -21,7 +21,7 @@ public class SetupLeadersState extends CliState {
 
         int chosen = 0;
         while(chosen < cache.getLeadersToChoose()) {
-            String input = Cli.prompt(out, in, "Choose a leader. " + (leadersToChoose - chosen) + " left");
+            String input = cli.prompt(out, in, "Choose a leader. " + (leadersToChoose - chosen) + " left");
             try {
                 int id = Integer.parseInt(input);
                 leaders.add(id);

@@ -16,7 +16,7 @@ public class SingleplayerMenuState extends CliState {
         String nickname;
 
         do {
-            nickname = Cli.prompt(out, in, "Nickname");
+            nickname = cli.prompt(out, in, "Nickname");
         } while (nickname.isBlank());
 
         out.println();

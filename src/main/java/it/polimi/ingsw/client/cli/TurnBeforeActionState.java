@@ -29,11 +29,11 @@ public class TurnBeforeActionState extends CliTurnState {
         final Map<Integer, Map<String, Integer>> shelves;
         int level = 0, slot = 0;
 
-        String color = Cli.prompt(out, in, "What color?");
+        String color = cli.prompt(out, in, "What color?");
         boolean isNumber = false;
         while (!isNumber) {
             try {
-                String input = Cli.prompt(out, in, "What level?");
+                String input = cli.prompt(out, in, "What level?");
                 level = Integer.parseInt(input);
                 isNumber = true;
             } catch (NumberFormatException e) {
@@ -44,7 +44,7 @@ public class TurnBeforeActionState extends CliTurnState {
         isNumber = false;
         while (!isNumber) {
             try {
-                String input = Cli.prompt(out, in, "Which slot?");
+                String input = cli.prompt(out, in, "Which slot?");
                 slot = Integer.parseInt(input);
                 isNumber = true;
             } catch (NumberFormatException e) {
@@ -66,7 +66,7 @@ public class TurnBeforeActionState extends CliTurnState {
 
         while (!isValid) {
             isValid = true;
-            input = Cli.prompt(out, in, "Choose a row or a column (example: row 1)");
+            input = cli.prompt(out, in, "Choose a row or a column (example: row 1)");
             String[] splitInput = input.split(" ", 2);
             if(splitInput[0].equalsIgnoreCase("row")) {
                 isRow = true;
@@ -94,7 +94,7 @@ public class TurnBeforeActionState extends CliTurnState {
         int productionid;
         String input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            input = Cli.prompt(out, in, "Choose a production number");
+            input = cli.prompt(out, in, "Choose a production number");
             try {
                 productionid = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -110,7 +110,7 @@ public class TurnBeforeActionState extends CliTurnState {
             Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(out, in);
 
             requests.add(new ReducedProductionRequest(productionid, inputReplacement, outputReplacement, shelves));
-            input = Cli.prompt(out, in, "Are you done? [Y/*]");
+            input = cli.prompt(out, in, "Are you done? [Y/*]");
         }
 
         cli.sendToView(new ReqActivateProduction(requests));
@@ -122,7 +122,7 @@ public class TurnBeforeActionState extends CliTurnState {
 
 
         while (!isValid) {
-            String input = Cli.prompt(out, in, "Choose shelf 1");
+            String input = cli.prompt(out, in, "Choose shelf 1");
             try {
                 shelfid1 = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -130,7 +130,7 @@ public class TurnBeforeActionState extends CliTurnState {
                 continue;
             }
 
-            input = Cli.prompt(out, in, "Choose shelf 2");
+            input = cli.prompt(out, in, "Choose shelf 2");
             try {
                 shelfid2 = Integer.parseInt(input);
             } catch (NumberFormatException e) {

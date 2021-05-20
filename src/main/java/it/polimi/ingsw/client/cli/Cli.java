@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.ClientServerHandler;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.Ui;
+import it.polimi.ingsw.common.events.vcevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
@@ -81,15 +82,18 @@ public class Cli implements Ui {
         in.nextLine();
     }
 
-    static String prompt(PrintStream out, Scanner in, String prompt, String defaultValue) {
+    String prompt(PrintStream out, Scanner in, String prompt, String defaultValue) {
         out.printf("%s (default: %s): ", prompt, defaultValue);
         String value = in.nextLine();
         return !value.isBlank() ? value : defaultValue;
     }
 
-    static String prompt(PrintStream out, Scanner in, String prompt) {
+    String prompt(PrintStream out, Scanner in, String prompt) {
         out.printf("%s: ", prompt);
-        return in.nextLine();
+        String input = in.nextLine();
+        if(input.toUpperCase().startsWith("Q"))
+            sendToView(new ReqGoodbye());
+        return input;
     }
 
     /**
@@ -142,7 +146,7 @@ public class Cli implements Ui {
 
         String input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            input = Cli.prompt(out, in, "Which container? (Input a number, or else Enter to skip)");
+            input = prompt(out, in, "Which container? (Input a number, or else Enter to skip)");
             if(input.isEmpty())
                 break;
 
@@ -158,9 +162,9 @@ public class Cli implements Ui {
                 continue;
             }
 
-            resource = Cli.prompt(out, in, "Which resource?");
+            resource = prompt(out, in, "Which resource?");
 
-            input = Cli.prompt(out, in, "How many?");
+            input = prompt(out, in, "How many?");
             try {
                 amount = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -179,7 +183,7 @@ public class Cli implements Ui {
                 resourceMapping.put(resource, amount);
                 shelves.put(container, resourceMapping);
             }
-            input = Cli.prompt(out, in, "Are you done choosing? [Y/*]");
+            input = prompt(out, in, "Are you done choosing? [Y/*]");
         }
         System.out.println("Building shelves...");
         try {
@@ -198,11 +202,11 @@ public class Cli implements Ui {
 
         input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            resource = Cli.prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Or else Enter to skip)");
+            resource = prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Or else Enter to skip)");
             if(resource.isEmpty())
                 break;
 
-            input = Cli.prompt(out, in, "How many?");
+            input = prompt(out, in, "How many?");
             try {
                 amount = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -216,7 +220,7 @@ public class Cli implements Ui {
                 result.put(resource, amount);
             }
 
-            input = Cli.prompt(out, in, "Are you done choosing? [Y/*]");
+            input = prompt(out, in, "Are you done choosing? [Y/*]");
         }
         return result;
     }
