@@ -5,7 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
+
 public class ReducedGame {
+    private final ReducedObjectPrinter printer;
+
     private String nickname;
     private List<ReducedActionToken> actionTokens;
     private List<ReducedResourceContainer> containers;
@@ -27,7 +31,9 @@ public class ReducedGame {
     private List<Boolean> vaticanSections;
     private final Map<String, Integer> victoryPoints;
 
-    public ReducedGame() {
+    public ReducedGame(ReducedObjectPrinter printer) {
+        this.printer = printer;
+
         actionTokens = new ArrayList<>();
         containers = new ArrayList<>();
         developmentCards = new ArrayList<>();
@@ -86,12 +92,10 @@ public class ReducedGame {
         this.leadersToChoose = leadersToChoose;
     }
 
-    public List<ReducedLeaderCard> getLeaders() {
-        return leaderCards;
-    }
-
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
+
+        leaderCards.forEach(l -> printer.update(l));
     }
 
     public void setMarket(ReducedMarket mkt) {
@@ -109,24 +113,11 @@ public class ReducedGame {
 
     public void setPlayers(List<String> players) {
         this.players = players;
-    }
 
-    /**
-     * @return map nickname-active status of the players
-     */
-    public Map<String, Boolean> getPlayerState() {
-        return playerState;
     }
 
     public void setPlayerState(String player, boolean newState) {
         this.playerState.put(player, newState);
-    }
-
-    /**
-     * @return map nickname-leader IDs of the players
-     */
-    public Map<String, List<Integer>> getPlayerLeaders() {
-        return playerLeaders;
     }
 
     public void setPlayerLeaders(String player, int leaderId) {
@@ -140,13 +131,6 @@ public class ReducedGame {
             ids.add(leaderId);
             return ids;
         });
-    }
-
-    /**
-     * @return map nickname-leader count of the players' hands
-     */
-    public Map<String, Integer> getPlayerLeadersCount() {
-        return playerLeadersCount;
     }
 
     public void setPlayerLeadersCount(String player, int count) {
@@ -171,10 +155,6 @@ public class ReducedGame {
 
     public void setVaticanSections(List<Boolean> vaticanSections) {
         this.vaticanSections = vaticanSections;
-    }
-
-    public Map<String, Integer> getVictoryPoints() {
-        return victoryPoints;
     }
 
     public void setVictoryPoints(String player, int pts) {

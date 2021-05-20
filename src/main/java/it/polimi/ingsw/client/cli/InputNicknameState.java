@@ -14,7 +14,7 @@ public class InputNicknameState extends CliState{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Welcome");
+
         String input = Cli.prompt(out, in, "Nickname");
         model.setNickname(input);
         cli.sendToView(new ReqJoin(input));

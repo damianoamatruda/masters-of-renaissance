@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.ClientServerHandler;
+import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
@@ -44,8 +45,10 @@ public class Cli implements Ui {
         
         this.stateQueue.add(new SplashState());
 
-        this.cache = new ReducedGame();
-        this.view = new CliView(cache, this, new CliReducedObjectPrinter(this, cache));
+        ReducedObjectPrinter printer = new CliReducedObjectPrinter(this);
+
+        this.cache = new ReducedGame(printer);
+        this.view = new CliView(cache, this, printer);
     }
 
     static String convertStreamToString(InputStream is) {

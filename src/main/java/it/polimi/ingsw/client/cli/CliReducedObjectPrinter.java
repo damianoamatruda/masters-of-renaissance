@@ -1,26 +1,35 @@
 package it.polimi.ingsw.client.cli;
 
+import java.util.List;
+
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private final Cli cli; // probably unneeded but who knows
-    private final ReducedGame cache;
 
-    public CliReducedObjectPrinter(Cli cli, ReducedGame cache) {
+    public CliReducedObjectPrinter(Cli cli) {
         this.cli = cli;
-        this.cache = cache;
+    }
+
+    private static String stringifyCardRequirement(ReducedCardRequirement req) {
+        String out = "";
+        if (req instanceof ReducedDevCardRequirement) {
+            ReducedDevCardRequirement r = (ReducedDevCardRequirement)req;
+
+            r.getEntries().stream().forEach(e -> out.concat("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount() + "\n"));
+        } else {
+            ReducedResourceRequirement r = (ReducedResourceRequirement)req;
+
+            r.getRequirements().entrySet().stream().forEach(e -> out.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
+        }
+
+        return out;
     }
 
     @Override
     public void update(ReducedActionToken newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void update(ReducedCardRequirement newObject) {
         // TODO Auto-generated method stub
         
     }
@@ -37,27 +46,24 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     @Override
-    public void update(ReducedDevCardRequirement newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void update(ReducedDevCardRequirementEntry newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void update(ReducedGame newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void update(ReducedLeaderCard newObject) {
-        // TODO Auto-generated method stub
-        
+        System.out.println(String.format("ID: %d, type: %s",
+            newObject.getId(),
+            newObject.getClass()
+        ));
+        System.out.println(String.format("BoundResource: %s, VP: %d",
+            newObject.getResourceType(),
+            newObject.getVictoryPoints()
+        ));
+        System.out.println(String.format("Active status: %s, depot ID: %d\n",
+            newObject.isActive(),
+            newObject.getContainerId()
+        ));
+        System.out.println(String.format("Production ID: %d, discount: %d\n",
+            newObject.getProduction(),
+            newObject.getDiscount()
+        ));
+        System.out.println(stringifyCardRequirement(newObject.getRequirement()));
     }
 
     @Override
@@ -83,13 +89,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         // TODO Auto-generated method stub
         
     }
-
-    @Override
-    public void update(ReducedResourceRequirement newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
+    
     @Override
     public void update(ReducedResourceTransactionRecipe newObject) {
         // TODO Auto-generated method stub
@@ -99,5 +99,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     @Override
     public void update(ResWelcome newObject) {
         System.out.println(Cli.center("WELCOME"));
+    }
+
+    @Override
+    public void showPlayers(List<String> nicknames) {
+        nicknames.forEach(n -> System.out.println(n));
     }
 }

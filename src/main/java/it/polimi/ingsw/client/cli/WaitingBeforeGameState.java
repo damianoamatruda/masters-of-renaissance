@@ -14,6 +14,6 @@ public class WaitingBeforeGameState extends CliState {
 
     @Override
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
-        System.out.println("Waiting for a new game..." + bookedSeats + " joined");
+        System.out.println("Waiting for a new game... " + bookedSeats + " player(s) joined");
     }
 }
