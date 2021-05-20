@@ -272,12 +272,8 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeader event) {
-        ReducedLeaderCard l = cache.getLeaders().stream().filter(c -> c.getId() == event.getLeader()).findAny().orElseThrow();
-
         if (event.isActive())
-            l.setActive();
-        else
-            l.setDiscarded();
+            cache.setPlayerLeaders(cache.getCurrentPlayer(), event.getLeader());
     }
 
     private void on(UpdateLeadersHand event) {
@@ -290,6 +286,8 @@ public class CliView extends View implements EventListener<VCEvent> {
             player
             leadershand -> with GS and player has enough info for leader choice */
 
+        event.getLeaders().forEach(id -> cache.setPlayerLeaders(event.getPlayer(), id));
+
         if(event.getLeaders().size() > cache.getLeadersToChoose())
             cli.setState(new SetupLeadersState(event.getLeaders().size() - cache.getLeadersToChoose()));
         else if(cache.getResourcesToChoose() > 0)
@@ -299,7 +297,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeadersHandCount event) {
-        cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
+        cache.setPlayerLeadersCount(event.getPlayer(), event.getLeadersCount());
     }
 
     private void on(UpdateMarket event) {

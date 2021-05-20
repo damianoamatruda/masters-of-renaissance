@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +17,28 @@ public class ReducedGame {
     private int leadersToChoose;
     private ReducedMarket market;
     private List<String> players;
-    private Map<String, Boolean> playerState;
+    private final Map<String, Boolean> playerState;
+    private final Map<String, List<Integer>> playerLeaders;
+    private final Map<String, Integer> playerLeadersCount;
     private List<ReducedResourceTransactionRecipe> productions;
     private int resourcesToChoose;
     private Map<String, ReducedPlayerSetup> setup;
     private List<Boolean> vaticanSections;
-    private final Map<String, Integer> victoryPoints = new HashMap<>();
+    private final Map<String, Integer> victoryPoints;
+
+    public ReducedGame() {
+        actionTokens = new ArrayList<>();
+        containers = new ArrayList<>();
+        developmentCards = new ArrayList<>();
+        players = new ArrayList<>();
+        playerState = new HashMap<>();
+        playerLeaders = new HashMap<>();
+        playerLeadersCount = new HashMap<>();
+        productions = new ArrayList<>();
+        setup = new HashMap<>();
+        vaticanSections = new ArrayList<>();
+        victoryPoints = new HashMap<>();
+    }
 
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
         this.actionTokens = actionTokens;
@@ -34,6 +51,10 @@ public class ReducedGame {
 
     public void setContainers(List<ReducedResourceContainer> containers) {
         this.containers = containers;
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
     }
 
     public void setCurrentPlayer(String currentPlayer) {
@@ -81,7 +102,7 @@ public class ReducedGame {
     }
 
     /**
-     * @return map nickname-active status of the player
+     * @return map nickname-active status of the players
      */
     public Map<String, Boolean> getPlayerState() {
         return playerState;
@@ -89,6 +110,37 @@ public class ReducedGame {
 
     public void setPlayerState(String player, boolean newState) {
         this.playerState.put(player, newState);
+    }
+
+    /**
+     * @return map nickname-leader IDs of the players
+     */
+    public Map<String, List<Integer>> getPlayerLeaders() {
+        return playerLeaders;
+    }
+
+    public void setPlayerLeaders(String player, int leaderId) {
+        playerLeaders.compute(player, (k, v) -> {
+            List<Integer> ids;
+            if (v == null)
+                ids = new ArrayList<>();
+            else
+                ids = v;
+            
+            ids.add(leaderId);
+            return ids;
+        });
+    }
+
+    /**
+     * @return map nickname-leader count of the players' hands
+     */
+    public Map<String, Integer> getPlayerLeadersCount() {
+        return playerLeadersCount;
+    }
+
+    public void setPlayerLeadersCount(String player, int count) {
+        this.playerLeadersCount.put(player, count);
     }
 
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {

@@ -7,7 +7,6 @@ public class ReducedLeaderCard {
     private final String leaderType;
     private final ReducedCardRequirement requirement;
     private boolean isActive;
-    private boolean isDiscarded;
 
     /**
      * @param id
@@ -25,8 +24,6 @@ public class ReducedLeaderCard {
         this.leaderType = leaderType;
         this.isActive = isActive;
         this.requirement = requirement;
-
-        this.isDiscarded = false;
     }
 
     /**
@@ -68,14 +65,6 @@ public class ReducedLeaderCard {
         this.isActive = true;
     }
     
-    public boolean isDiscarded() {
-        return isDiscarded;
-    }
-
-    public void setDiscarded() {
-        this.isDiscarded = true;
-    }
-
     /**
      * @return the requirement of the card
      */
