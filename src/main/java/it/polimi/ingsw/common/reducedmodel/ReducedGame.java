@@ -110,6 +110,8 @@ public class ReducedGame {
 
     public void setMarket(ReducedMarket mkt) {
         market = mkt;
+
+        printer.update(mkt);
     }
 
     public String getNickname() {

@@ -95,8 +95,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedMarket newObject) {
-        // TODO Auto-generated method stub
-        
+        System.out.println("Market:");
+        newObject.getGrid().forEach(r -> {
+            r.forEach(res -> System.out.print(res + " "));
+            System.out.print("\n");
+        });
+        System.out.println("Slide resource: " + newObject.getSlide());
+        System.out.println("Replaceable resource type: " + newObject.getReplaceableResType());
     }
 
     @Override

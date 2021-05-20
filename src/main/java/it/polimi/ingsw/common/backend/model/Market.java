@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
  */
 public class Market extends EventDispatcher {
     /**
-     * The resources in the grid. Columns of rows.
+     * The resources in the grid. List of rows.
      */
     private final List<List<ResourceType>> grid;
 
