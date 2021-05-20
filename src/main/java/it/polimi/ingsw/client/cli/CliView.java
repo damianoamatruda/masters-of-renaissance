@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.View;
@@ -12,13 +13,15 @@ public class CliView extends View implements EventListener<VCEvent> {
     private final ReducedGame cache;
     private final Cli cli;
     private VCEvent lastReq;
+    private final ReducedObjectPrinter printer;
 
     /**
      * Class constructor.
      */
-    public CliView(ReducedGame cache, Cli cli) {
+    public CliView(ReducedGame cache, Cli cli, ReducedObjectPrinter printer) {
         this.cache = cache;
         this.cli = cli;
+        this.printer = printer;
 
         this.eventPasser = null;
     }
@@ -292,8 +295,6 @@ public class CliView extends View implements EventListener<VCEvent> {
             cli.setState(new SetupLeadersState(event.getLeaders().size() - cache.getLeadersToChoose()));
         else if(cache.getResourcesToChoose() > 0)
             cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
-        else
-            cli.setState(new TurnBeforeActionState());
     }
 
     private void on(UpdateLeadersHandCount event) {

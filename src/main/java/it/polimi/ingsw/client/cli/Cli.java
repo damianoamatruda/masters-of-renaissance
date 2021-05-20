@@ -45,7 +45,7 @@ public class Cli implements Ui {
         this.stateQueue.add(new SplashState());
 
         this.model = new ReducedGame();
-        this.view = new CliView(model, this);
+        this.view = new CliView(model, this, new CliReducedObjectPrinter(this, model));
     }
 
     static String convertStreamToString(InputStream is) {
@@ -131,6 +131,7 @@ public class Cli implements Ui {
     }
 
     public static Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
+        System.out.println("Choose mapping shelf-resource-quantity:");
         final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
         int container;
         String resource;
