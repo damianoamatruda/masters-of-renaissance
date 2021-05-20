@@ -146,19 +146,23 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrInitialChoice event) {
-        cli.repeatState("");
+        cli.repeatState(event.isLeadersChoice() ?
+            String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
+            "");
     }
 
     private void on(ErrNewGame event) {
-        cli.repeatState(event.isInvalidPlayersCount() ? "Invalid players count." : "You are not supposed to choose");
+        cli.repeatState(event.isInvalidPlayersCount() ?
+            "Invalid players count." :
+            "You are not supposed to choose the players count for the game.");
     }
 
     private void on(ErrNickname event) {
-        cli.repeatState("Nickname is invalid. Reason: " + event.toString());
+        cli.repeatState("Nickname is invalid. Reason: " + event.getReason().toString());
     }
 
     private void on(ErrObjectNotOwned event) {
-        cli.repeatState("You are not the owner. Try again.");
+        cli.repeatState(String.format("%s %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
     }
 
     private void on(ErrReplacedTransRecipe event) {
