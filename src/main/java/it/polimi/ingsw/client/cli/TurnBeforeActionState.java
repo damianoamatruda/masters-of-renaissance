@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
+import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
@@ -17,6 +18,7 @@ public class TurnBeforeActionState extends CliTurnState {
         entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in, model)));
         entries.put('3', new Menu.Entry("Activate production", (menu) -> produce(cli, out, in)));
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
+        entries.put('S', new Menu.Entry("Swap shelves", (menu) -> swapShelves(cli, out, in)));
 
         new Menu(entries).render(cli, out, in, model);
 
@@ -112,5 +114,34 @@ public class TurnBeforeActionState extends CliTurnState {
         }
 
         cli.sendToView(new ReqActivateProduction(requests));
+    }
+
+    private void swapShelves(Cli cli, PrintStream out, Scanner in) {
+        int shelfid1, shelfid2;
+        boolean isValid = false;
+
+
+        while (!isValid) {
+            String input = Cli.prompt(out, in, "Choose shelf 1");
+            try {
+                shelfid1 = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please input an integer.");
+                continue;
+            }
+
+            input = Cli.prompt(out, in, "Choose shelf 2");
+            try {
+                shelfid2 = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please input an integer.");
+                continue;
+            }
+
+            isValid = true;
+            cli.sendToView(new ReqSwapShelves(shelfid1, shelfid2));
+
+            cli.repeatState("Swap request sent...");
+        }
     }
 }
