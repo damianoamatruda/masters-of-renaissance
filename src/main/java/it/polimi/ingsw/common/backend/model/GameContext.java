@@ -98,6 +98,13 @@ public class GameContext {
                 view.on(new ErrObjectNotOwned(missing.get(), "LeaderCard"));
                 return;
             }
+
+            int distinctSize = leaderIds.stream().distinct().toList().size();
+            if (distinctSize < leaderIds.size()) {
+                view.on(new ErrInitialChoice(true, leaderIds.size() - distinctSize));
+                return;
+            }
+
     
             List<LeaderCard> leaders = leaderIds.stream().map(game::getLeaderById).filter(Optional::isPresent).map(Optional::get).toList();
     
