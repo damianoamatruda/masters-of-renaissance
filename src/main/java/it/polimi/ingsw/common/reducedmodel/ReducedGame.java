@@ -14,6 +14,7 @@ public class ReducedGame {
     private int leadersToChoose = 2;
     private ReducedMarket market;
     private List<String> players;
+    private Map<String, Boolean> playerState;
     private List<ReducedResourceTransactionRecipe> productions;
     private int resourcesToChoose;
     private ReducedPlayerSetup setup;
@@ -75,6 +76,17 @@ public class ReducedGame {
 
     public void setPlayers(List<String> players) {
         this.players = players;
+    }
+
+    /**
+     * @return map nickname-active status of the player
+     */
+    public Map<String, Boolean> getPlayerState() {
+        return playerState;
+    }
+
+    public void setPlayerState(String player, boolean newState) {
+        this.playerState.put(player, newState);
     }
 
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
