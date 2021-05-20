@@ -252,7 +252,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateLeader event) {
-        ReducedLeaderCard l = cache.getLeaders().stream().filter(c -> c.getId() == event.getLeader()).findAny().get();
+        ReducedLeaderCard l = cache.getLeaders().stream().filter(c -> c.getId() == event.getLeader()).findAny().orElseThrow();
 
         if (event.isActive())
             l.setActive();
