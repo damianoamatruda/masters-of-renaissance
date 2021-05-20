@@ -70,6 +70,8 @@ public class ReducedGame {
 
     public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
         this.developmentCards = developmentCards;
+
+        developmentCards.forEach(c -> printer.update(c));
     }
 
     public void setDevCardGrid(ReducedDevCardGrid devCardGrid) {

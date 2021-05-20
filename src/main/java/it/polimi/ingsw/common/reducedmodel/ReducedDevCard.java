@@ -6,6 +6,7 @@ public class ReducedDevCard {
     private final ReducedCardRequirement cost;
     private final int level;
     private final int production;
+    private final int victoryPoints;
 
     /**
      * @param color
@@ -13,12 +14,20 @@ public class ReducedDevCard {
      * @param level
      * @param production
      */
-    public ReducedDevCard(int id, String color, ReducedCardRequirement cost, int level, int production) {
+    public ReducedDevCard(int id, int victoryPoints, String color, ReducedCardRequirement cost, int level, int production) {
         this.id = id;
+        this.victoryPoints = victoryPoints;
         this.color = color;
         this.cost = cost;
         this.level = level;
         this.production = production;
+    }
+
+    /**
+     * @return the victoryPoints
+     */
+    public int getVictoryPoints() {
+        return victoryPoints;
     }
 
     /**

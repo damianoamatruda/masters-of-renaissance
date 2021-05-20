@@ -36,7 +36,18 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedDevCard newObject) {
-        
+        System.out.println(String.format("ID: %d, color: %s",
+            newObject.getId(),
+            newObject.getColor()
+        ));
+        System.out.println(String.format("Level: %d, VP: %d",
+            newObject.getLevel(),
+            newObject.getVictoryPoints()
+        ));
+        System.out.println(String.format("Production ID: %d\n",
+            newObject.getProduction()
+        ));
+        System.out.println(stringifyCardRequirement(newObject.getCost()));
     }
 
     @Override
@@ -49,7 +60,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void update(ReducedLeaderCard newObject) {
         System.out.println(String.format("ID: %d, type: %s",
             newObject.getId(),
-            newObject.getClass()
+            newObject.getLeaderType()
         ));
         System.out.println(String.format("BoundResource: %s, VP: %d",
             newObject.getResourceType(),
