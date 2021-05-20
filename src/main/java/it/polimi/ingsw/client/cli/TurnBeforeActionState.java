@@ -14,7 +14,7 @@ public class TurnBeforeActionState extends CliTurnState {
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame model) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Buy a card", (menu) -> buyCard(cli, out, in)));
-        entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in)));
+        entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in, model)));
         entries.put('3', new Menu.Entry("Activate production", (menu) -> produce(cli, out, in)));
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
 
@@ -56,7 +56,7 @@ public class TurnBeforeActionState extends CliTurnState {
         cli.sendToView(new ReqBuyDevCard(color, level, slot, shelves));
     }
 
-    private void getResources(Cli cli, PrintStream out, Scanner in) {
+    private void getResources(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
         boolean isValid = false;
         boolean isRow = false;
         int index = -1;
@@ -81,6 +81,7 @@ public class TurnBeforeActionState extends CliTurnState {
             }
         }
 
+        // if has ZeroLeaders active: (if branch to be implemented)
         Map<String,Integer> replacements = cli.promptResources(out, in);
 
         cli.promptShelves(out, in);

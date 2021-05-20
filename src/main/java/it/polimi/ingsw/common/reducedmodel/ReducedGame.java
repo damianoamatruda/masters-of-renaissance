@@ -207,4 +207,8 @@ public class ReducedGame {
     public List<ReducedResourceContainer> getContainers() {
         return containers;
     }
+
+    public List<ReducedLeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
 }

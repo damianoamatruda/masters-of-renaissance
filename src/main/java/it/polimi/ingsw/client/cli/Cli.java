@@ -142,7 +142,10 @@ public class Cli implements Ui {
 
         String input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            input = Cli.prompt(out, in, "Which container?");
+            input = Cli.prompt(out, in, "Which container? (Input a number, or else Enter to skip)");
+            if(input.isEmpty())
+                break;
+
             try {
                 container = Integer.parseInt(input);
                 int finalContainer = container;
@@ -195,7 +198,9 @@ public class Cli implements Ui {
 
         input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            resource = Cli.prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks?");
+            resource = Cli.prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Or else Enter to skip)");
+            if(resource.isEmpty())
+                break;
 
             input = Cli.prompt(out, in, "How many?");
             try {
