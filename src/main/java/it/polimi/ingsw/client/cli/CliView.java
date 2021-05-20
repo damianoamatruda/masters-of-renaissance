@@ -225,7 +225,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateActionToken event) {
-        // show activated action token
+        printer.update(cache.getActionToken(event.getActionToken()));
     }
 
     private void on(UpdateBookedSeats event) {

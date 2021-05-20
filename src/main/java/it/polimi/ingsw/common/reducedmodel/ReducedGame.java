@@ -47,6 +47,10 @@ public class ReducedGame {
         victoryPoints = new HashMap<>();
     }
 
+    public ReducedActionToken getActionToken(int actionToken) {
+        return actionTokens.stream().filter(t -> t.getId() == actionToken).findAny().orElse(new ReducedActionToken(-1, "", ""));
+    }
+
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
         this.actionTokens = actionTokens;
 
