@@ -2,7 +2,7 @@ package it.polimi.ingsw.common.reducedmodel;
 
 public class ReducedActionToken {
     private final int id;
-    private final String type;
+    private final String kind;
     private final String discardedDevCardColor;
     
     /**
@@ -10,9 +10,9 @@ public class ReducedActionToken {
      * @param type
      * @param discardedDevCardColor
      */
-    public ReducedActionToken(int id, String type, String discardedDevCardColor) {
+    public ReducedActionToken(int id, String kind, String discardedDevCardColor) {
         this.id = id;
-        this.type = type;
+        this.kind = kind;
         this.discardedDevCardColor = discardedDevCardColor;
     }
 
@@ -26,8 +26,8 @@ public class ReducedActionToken {
     /**
      * @return the token's type
      */
-    public String getType() {
-        return type;
+    public String getKind() {
+        return kind;
     }
 
     /**

@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
-    private final Cli cli; // probably unneeded but who knows
+    private final Cli cli;
 
     public CliReducedObjectPrinter(Cli cli) {
         this.cli = cli;
@@ -30,8 +30,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedActionToken newObject) {
-        // TODO Auto-generated method stub
-        
+        System.out.println(String.format("ActionToken ID: %d, kind: %s",
+            newObject.getId(),
+            newObject.getKind()
+        ));
+        System.out.println(newObject.getDiscardedDevCardColor() == null ? "" : 
+            String.format("Color of discarded development card: %s\n", newObject.getDiscardedDevCardColor()));
     }
 
     @Override
