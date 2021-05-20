@@ -291,7 +291,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdatePlayerStatus event) {
-
+        cache.setPlayerState(event.getPlayer(), event.isActive());
     }
 
     private void on(UpdateResourceContainer event) {
