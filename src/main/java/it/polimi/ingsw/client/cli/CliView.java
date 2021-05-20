@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.VCEvent;
+import it.polimi.ingsw.common.events.vcevents.*;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 public class CliView extends View implements EventListener<VCEvent> {
@@ -130,19 +130,26 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrAction event) {
-        cli.repeatState("");
+        cli.repeatState(event.getReason().toString());
     }
 
     private void on(ErrActiveLeaderDiscarded event) {
-        cli.repeatState("");
+        int id = -1;
+        try {
+            id = ((ReqLeaderAction)lastReq).getLeader();
+        } catch (Exception ignored) {}
+
+        cli.repeatState(String.format("Active leader %d tried to be discarded.", id));
     }
 
     private void on(ErrBuyDevCard event) {
-        cli.repeatState("");
+        cli.repeatState(event.isStackEmpty() ?
+            "Cannot buy development card. Deck is empty." :
+            "Cannot place devcard in slot, level mismatch."); // TODO improve msg
     }
 
     private void on(ErrCardRequirements event) {
-        cli.repeatState("");
+        cli.repeatState(event.getReason());
     }
 
     private void on(ErrInitialChoice event) {
@@ -166,15 +173,28 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrReplacedTransRecipe event) {
-        cli.repeatState("");
+        cli.repeatState(
+            String.format(
+                "Discrepancy in the transaction recipe.\nResource: %s, replaced count: %d, specified shelfmap count: %d",
+                event.getResType(), event.getReplacedCount(), event.getShelvesChoiceResCount()));
     }
 
     private void on(ErrResourceReplacement event) {
-        cli.repeatState("");
+        if (event.isExcluded() || event.isNonStorable())
+            cli.repeatState(String.format("Error validating transaction request %s: %s resource found.",
+                event.isInput() ? "input" : "output",
+                event.isNonStorable() ? "nonstorable" : "excluded"));
+        else
+            cli.repeatState(String.format("Error validating transaction request: %d replaced resources when %d replaceable.",
+                event.getReplacedCount(),
+                event.getBlanks()));
     }
 
     private void on(ErrResourceTransfer event) {
-        cli.repeatState("");
+        cli.repeatState(String.format("Error transferring resources: resource %s, %s, %s.",
+            event.getResType(),
+            event.isAdded() ? "added" : "removed",
+            event.getReason().toString()));
     }
 
     private void on(ErrProtocol event) {

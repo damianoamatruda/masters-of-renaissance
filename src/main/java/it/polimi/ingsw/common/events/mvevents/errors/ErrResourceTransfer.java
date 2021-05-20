@@ -5,8 +5,14 @@ import it.polimi.ingsw.common.events.mvevents.MVEvent;
 public class ErrResourceTransfer implements MVEvent {
     private final String resType;
     private final boolean isAdded;
-    private final int kind;
+    private final ErrResourceTransferReason reason;
 
+    public enum ErrResourceTransferReason {
+        BOUNDEDRESTYPEDIFFER,
+        NONSTORABLE,
+        CAPACITYREACHED,
+        DUPLICATEBOUNDEDRESOURCE
+    }
     /**
      * Class constructor.
      * 
@@ -16,17 +22,17 @@ public class ErrResourceTransfer implements MVEvent {
      */
     public ErrResourceTransfer(String resType,
             boolean isAdded,
-            int kind) {
-        this.kind = kind;
+            int reason) {
+        this.reason = ErrResourceTransferReason.values()[reason];
         this.resType = resType;
         this.isAdded = isAdded;
     }
 
     /**
-     * @return the kind
+     * @return the reason
      */
-    public int getKind() {
-        return kind;
+    public ErrResourceTransferReason getReason() {
+        return reason;
     }
 
     /**
