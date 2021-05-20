@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class ReducedGame {
     private int resourcesToChoose;
     private Map<String, ReducedPlayerSetup> setup;
     private List<Boolean> vaticanSections;
-    private Map<String, Integer> victoryPoints;
+    private Map<String, Integer> victoryPoints = new HashMap<>();
 
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
         this.actionTokens = actionTokens;

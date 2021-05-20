@@ -100,12 +100,16 @@ public class TurnBeforeActionState extends CliState {
                 System.out.println("Please input an integer.");
                 continue;
             }
+            System.out.println("-- Input replacement --");
             Map<String, Integer> inputReplacement = Cli.promptResources(out, in);
+            System.out.println("-- Output replacement --");
             Map<String, Integer> outputReplacement = Cli.promptResources(out, in);
 
+            System.out.println("-- Containers (from which to pay) --");
             Map<Integer, Map<String, Integer>> shelves = Cli.promptShelves(out, in);
 
             requests.add(new ReducedProductionRequest(productionid, inputReplacement, outputReplacement, shelves));
+            input = Cli.prompt(out, in, "Are you done? [Y/*]");
         }
 
         cli.sendToView(new ReqActivateProduction(requests));
