@@ -20,7 +20,7 @@ public class ReducedGame {
     private int resourcesToChoose;
     private Map<String, ReducedPlayerSetup> setup;
     private List<Boolean> vaticanSections;
-    private int victoryPoints;
+    private Map<String, Integer> victoryPoints;
 
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
         this.actionTokens = actionTokens;
@@ -110,7 +110,11 @@ public class ReducedGame {
         this.vaticanSections = vaticanSections;
     }
 
-    public void setVictoryPoints(int pts) {
-        victoryPoints = pts;
+    public Map<String, Integer> getVictoryPoints() {
+        return victoryPoints;
+    }
+
+    public void setVictoryPoints(String player, int pts) {
+        victoryPoints.put(player, pts);
     }
 }

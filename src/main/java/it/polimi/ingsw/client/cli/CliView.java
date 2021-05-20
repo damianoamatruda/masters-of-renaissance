@@ -240,7 +240,7 @@ public class CliView extends View implements EventListener<VCEvent> {
         cache.setLeaderCards(event.getLeaderCards());
         cache.setPlayers(event.getPlayers());
         cache.setProductions(event.getProductions());
-        cache.setVictoryPoints(0);
+        event.getPlayers().forEach(p -> cache.setVictoryPoints(p, 0));
     }
 
     private void on(UpdateJoinGame event) {
@@ -308,6 +308,6 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateVictoryPoints event) {
-        cache.setVictoryPoints(event.getVictoryPoints());
+        cache.setVictoryPoints(event.getPlayer(), event.getVictoryPoints());
     }
 }
