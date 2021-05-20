@@ -64,16 +64,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         List<Stack<Integer>> grid = newObject.getGrid().entrySet().stream().flatMap(e -> e.getValue().stream()).toList();
 
         System.out.println("Development card grid state:");
-        newObject.getGrid().entrySet().stream().forEach(e -> System.out.print(e.getKey() + " "));
-        System.out.print("\n");
-
-        for (int i = 1; i < newObject.getLevelsCount(); i++) {
-            for (int j = 0; j < newObject.getColorsCount(); j++) {
-                System.out.print(grid.get(i + (j * newObject.getLevelsCount())) + "  ");
-            }
-            System.out.print("\n");
-        }
-        System.out.println();
+        newObject.getGrid().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
     }
 
     @Override
@@ -113,7 +104,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             r.forEach(res -> System.out.print(res + " "));
             System.out.print("\n");
         });
-        System.out.println("Slide resource: " + newObject.getSlide());
+        System.out.println("\nSlide resource: " + newObject.getSlide() + "\n");
         System.out.println("Replaceable resource type: " + newObject.getReplaceableResType() + "\n");
     }
 
@@ -135,7 +126,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
 
         String contents = "";
-        newObject.getContent().entrySet().stream().forEach(e -> contents.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
+        newObject.getContent().entrySet().stream().forEach(e -> contents.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
         System.out.println(contents);
     }
     
