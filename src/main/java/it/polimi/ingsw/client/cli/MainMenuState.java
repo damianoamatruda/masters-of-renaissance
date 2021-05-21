@@ -1,12 +1,13 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.client.cli.components.Menu;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
+
 import java.io.PrintStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 public class MainMenuState extends CliState {
     @Override

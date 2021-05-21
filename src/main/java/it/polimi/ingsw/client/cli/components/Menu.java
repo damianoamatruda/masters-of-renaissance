@@ -1,6 +1,8 @@
-package it.polimi.ingsw.client.cli;
+package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.client.cli.Cli;
+import it.polimi.ingsw.client.cli.Renderable;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.PrintStream;

@@ -55,12 +55,12 @@ public class Cli extends EventDispatcher implements Ui {
         this.singleplayer = false;
     }
 
-    static String convertStreamToString(InputStream is) {
+    public static String convertStreamToString(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
     }
 
-    static String center(String s) {
+    public static String center(String s) {
         if (s.lines().count() == 0)
             return "";
 
@@ -76,22 +76,36 @@ public class Cli extends EventDispatcher implements Ui {
         return stringBuilder.toString();
     }
 
-    static void clear(PrintStream out) {
+    public static void clear(PrintStream out) {
         out.print("\033[H\033[2J");
         out.flush();
     }
 
-    static void pause(Scanner in) {
+    public static void pause(Scanner in) {
         in.nextLine();
     }
 
-    String prompt(PrintStream out, Scanner in, String prompt, String defaultValue) {
+    /**
+     * Sets the state.
+     *
+     * @param state the next state
+     */
+    void setState(CliState state) {
+        stateQueue.add(state);
+    }
+
+    void repeatState(String s) {
+        System.out.println(s);
+        stateQueue.add(this.state);
+    }
+
+    public String prompt(PrintStream out, Scanner in, String prompt, String defaultValue) {
         out.printf("%s (default: %s): ", prompt, defaultValue);
         String value = in.nextLine();
         return !value.isBlank() ? value : defaultValue;
     }
 
-    String prompt(PrintStream out, Scanner in, String prompt) {
+    public String prompt(PrintStream out, Scanner in, String prompt) {
         if (!prompt.isEmpty())
             out.printf("%s: ", prompt);
         String input = in.nextLine();
@@ -102,20 +116,6 @@ public class Cli extends EventDispatcher implements Ui {
 
     public CliState getState() {
         return state;
-    }
-
-    /**
-     * Sets the state.
-     *
-     * @param state the next state
-     */
-    public void setState(CliState state) {
-        stateQueue.add(state);
-    }
-
-    public void repeatState(String s) {
-        System.out.println(s);
-        stateQueue.add(this.state);
     }
 
     @Override

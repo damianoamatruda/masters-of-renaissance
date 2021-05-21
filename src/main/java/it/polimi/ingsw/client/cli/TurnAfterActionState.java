@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.client.cli.components.Menu;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
