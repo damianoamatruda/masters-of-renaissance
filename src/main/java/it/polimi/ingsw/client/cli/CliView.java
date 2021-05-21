@@ -267,6 +267,13 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateGameResume event) {
+        cache.setActionTokens(event.getActionTokens());
+        cache.setContainers(event.getResContainers());
+        cache.setDevelopmentCards(event.getDevelopmentCards());
+        cache.setFaithPoints(0);
+        cache.setLeaderCards(event.getLeaderCards());
+        cache.setPlayers(event.getPlayers());
+        cache.setProductions(event.getProductions());
         cli.setState(new WaitingAfterTurnState());
     }
 
