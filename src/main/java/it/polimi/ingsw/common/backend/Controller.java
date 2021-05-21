@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend;
 
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.Lobby;
+import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.vcevents.*;
 
 public class Controller {
@@ -11,7 +12,7 @@ public class Controller {
         this.model = model;
     }
 
-    public void registerToView(View view) {
+    public void registerOnVC(View view) {
         view.addEventListener(ReqGoodbye.class, event -> on(view, event));
         view.addEventListener(ReqJoin.class, event -> on(view, event));
         view.addEventListener(ReqNewGame.class, event -> on(view, event));
@@ -25,7 +26,7 @@ public class Controller {
         view.addEventListener(ReqEndTurn.class, event -> on(view, event));
     }
 
-    public void unregisterToView(View view) {
+    public void unregisterOnVC(View view) {
         view.removeEventListener(ReqGoodbye.class, event -> on(view, event));
         view.removeEventListener(ReqJoin.class, event -> on(view, event));
         view.removeEventListener(ReqNewGame.class, event -> on(view, event));
@@ -40,7 +41,7 @@ public class Controller {
     }
 
     private void on(View view, ReqGoodbye event) {
-        unregisterToView(view);
+        unregisterOnVC(view);
         model.exit(view);
     }
 

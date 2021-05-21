@@ -64,7 +64,7 @@ public class SoloGame extends Game {
 
     @Override
     public void dispatchResumeState(View view) {
-        view.on(new UpdateGameResume(
+        view.dispatch(new UpdateGameResume(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),

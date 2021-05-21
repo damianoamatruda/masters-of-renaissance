@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.client.ClientServerHandler;
+import it.polimi.ingsw.client.NetworkClient;
 
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -19,7 +19,7 @@ public class MultiplayerMenuState extends CliState {
         for (int i = 0; i < 2; i++)
             out.println();
 
-        JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(ClientServerHandler.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
+        JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(NetworkClient.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
 
         String host = jsonConfig.get("host").getAsString();
         int port = jsonConfig.get("port").getAsInt();
@@ -52,6 +52,6 @@ public class MultiplayerMenuState extends CliState {
         }
 
         out.println();
-        cli.startServerHandler(host, port);
+        cli.startNetworkClient(host, port);
     }
 }

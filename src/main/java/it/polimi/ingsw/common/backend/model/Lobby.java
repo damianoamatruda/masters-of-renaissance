@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.mvevents.ResGoodbye;
+import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
@@ -36,15 +36,15 @@ public class Lobby {
     public void joinLobby(View view, String nickname) {
         synchronized(lock) {
             if (nicknames.containsKey(view)) {
-                view.on(new ErrNickname(ErrNicknameReason.ALREADYSET));
+                view.dispatch(new ErrNickname(ErrNicknameReason.ALREADYSET));
                 return;
             }
             if (nickname == null || nickname.isBlank()) {
-                view.on(new ErrNickname(ErrNicknameReason.NOTSET));
+                view.dispatch(new ErrNickname(ErrNicknameReason.NOTSET));
                 return;
             }
             if (nicknames.containsValue(nickname)) {
-                view.on(new ErrNickname(ErrNicknameReason.TAKEN));
+                view.dispatch(new ErrNickname(ErrNicknameReason.TAKEN));
                 return;
             }
     
@@ -59,7 +59,7 @@ public class Lobby {
                 try {
                     oldContext.setActive(nickname, true);
                 } catch (NoActivePlayersException e) {
-                    // view.on(new ErrAction(e));
+                    // view.dispatch(new ErrAction(e));
                     throw new RuntimeException("No active players after player rejoining.");
                 }
     
@@ -73,11 +73,11 @@ public class Lobby {
     
                 waiting.add(view);
                 System.out.printf("adding %s, %d waiting\n", nickname, waiting.size());
-    
-                waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
+
+                waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
     
                 if (newGamePlayersCount != 0)
-                    view.on(new UpdateJoinGame(newGamePlayersCount));
+                    view.dispatch(new UpdateJoinGame(newGamePlayersCount));
     
                 if (waiting.size() == newGamePlayersCount) {
                     System.out.printf("%s joining started a new game\n", nicknames.get(view));
@@ -95,19 +95,19 @@ public class Lobby {
     
             if (waiting.indexOf(view) != 0) {
                 System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
-                view.on(new ErrNewGame(false));
+                view.dispatch(new ErrNewGame(false));
                 return;
             }
     
             if (newGamePlayersCount == 0) {
-                view.on(new ErrNewGame(true));
+                view.dispatch(new ErrNewGame(true));
                 return;
             }
     
             System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
             this.newGamePlayersCount = newGamePlayersCount;
-    
-            waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> v.on(new UpdateJoinGame(newGamePlayersCount)));
+
+            waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> v.dispatch(new UpdateJoinGame(newGamePlayersCount)));
     
             if (waiting.size() >= newGamePlayersCount){
                 startNewGame();
@@ -133,8 +133,8 @@ public class Lobby {
             /* Remove players who joined from waiting list */
             waiting.subList(0, newGamePlayersCount).clear();
             System.out.printf("removed %d waiting %d\n", newGamePlayersCount, waiting.size());
-    
-            waiting.forEach(v -> v.on(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
+
+            waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
     
             newGamePlayersCount = 0;
         }
@@ -158,7 +158,7 @@ public class Lobby {
                 }
                 nicknames.remove(view);
             }
-            view.on(new ResGoodbye());
+            view.dispatch(new ResQuit());
         }
     }
 
@@ -176,7 +176,7 @@ public class Lobby {
 
     private boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
-            view.on(new ErrNickname(ErrNicknameReason.NOTSET));
+            view.dispatch(new ErrNickname(ErrNicknameReason.NOTSET));
             return false;
         }
         return true;
@@ -187,7 +187,7 @@ public class Lobby {
             if (!checkNickname(view))
                 return false;
             if (!joined.containsKey(view)) {
-                view.on(new ErrNickname(ErrNicknameReason.NOTINGAME));
+                view.dispatch(new ErrNickname(ErrNicknameReason.NOTINGAME));
                 return false;
             }
             return true;

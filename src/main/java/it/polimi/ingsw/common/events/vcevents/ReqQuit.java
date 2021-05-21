@@ -1,4 +1,4 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-public class ReqHeartbeat implements VCEvent {
+public class ReqQuit implements VCEvent {
 }

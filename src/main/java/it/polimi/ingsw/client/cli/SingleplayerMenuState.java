@@ -11,13 +11,15 @@ public class SingleplayerMenuState extends CliState {
         for (int i = 0; i < 2; i++)
             out.println();
 
-        String nickname;
+        // String nickname;
 
-        do {
-            nickname = Cli.prompt(out, in, "Nickname");
-        } while (nickname.isBlank());
+        // do {
+        //     nickname = Cli.prompt(out, in, "Nickname");
+        // } while (nickname.isBlank());
 
-        out.println();
-        out.printf("Welcome, %s!%n", nickname);
+        // out.println();
+        // out.printf("Welcome, %s!%n", nickname);
+
+        cli.startLocalClient();
     }
 }

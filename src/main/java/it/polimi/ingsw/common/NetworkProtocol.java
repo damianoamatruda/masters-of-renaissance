@@ -3,15 +3,16 @@ package it.polimi.ingsw.common;
 import com.google.gson.*;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.events.netevents.NetEvent;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
-public class Protocol {
+public class NetworkProtocol {
     /*
      * Interprets input string.
      */
     private static <T extends Event> T processInputAs(String input, String packageName, Class<T> eventSuperclass) {
         if (input == null || input.isBlank())
-            throw new ProtocolException("Empty input.");
+            throw new NetworkProtocolException("Empty input.");
 
         Gson gson = new Gson();
         JsonObject jsonObject;
@@ -19,27 +20,31 @@ public class Protocol {
         try {
             jsonObject = gson.fromJson(input, JsonObject.class);
         } catch (JsonSyntaxException e) {
-            throw new ProtocolException("Invalid syntax.", e);
+            throw new NetworkProtocolException("Invalid syntax.", e);
         }
         if (jsonObject == null)
-            throw new ProtocolException("Unknown parser error.");
+            throw new NetworkProtocolException("Unknown parser error.");
 
         JsonElement type = jsonObject.get("type");
 
         if (type == null)
-            throw new ProtocolException("Field \"type\" not found.");
+            throw new NetworkProtocolException("Field \"type\" not found.");
 
         T event;
 
         try {
             event = gson.fromJson(jsonObject, Class.forName(String.format("%s.%s", packageName, type.getAsString())).asSubclass(eventSuperclass));
         } catch (ClassNotFoundException e) {
-            throw new ProtocolException(String.format("Event type \"%s\" as subclass of \"%s\" does not exist.", type.getAsString(), eventSuperclass.getSimpleName()), e);
+            throw new NetworkProtocolException(String.format("Event type \"%s\" as subclass of \"%s\" does not exist.", type.getAsString(), eventSuperclass.getSimpleName()), e);
         } catch (JsonSyntaxException e) {
-            throw new ProtocolException("Invalid attribute types.", e);
+            throw new NetworkProtocolException("Invalid attribute types.", e);
         }
 
         return event;
+    }
+
+    public NetEvent processInputAsNetEvent(String input) {
+        return processInputAs(input, "it.polimi.ingsw.common.events.netevents", NetEvent.class);
     }
 
     public VCEvent processInputAsVCEvent(String input) {
