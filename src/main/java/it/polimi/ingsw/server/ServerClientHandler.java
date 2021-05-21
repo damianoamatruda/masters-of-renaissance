@@ -21,7 +21,7 @@ public class ServerClientHandler extends NetworkHandler {
 
     public ServerClientHandler(Socket socket, NetworkProtocol protocol) {
         super(socket, protocol);
-        this.timeout = 600000;
+        this.timeout = 20000;
     }
 
     public void run() {
