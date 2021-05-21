@@ -28,7 +28,7 @@ public class SetupLeadersState extends CliState {
         System.out.println("Please input leader card IDs from the ones assigned to you.\n");
 
         if (cache.getPlayerLeaders(cache.getNickname()) != null)
-            cache.getPlayerLeaders(cache.getNickname()).forEach(id -> printer.showLeadersHand(cache.getNickname(), id));
+            cache.getPlayerLeaders(cache.getNickname()).forEach(printer::update);
 
         List<Integer> leaders = new ArrayList<>();
 

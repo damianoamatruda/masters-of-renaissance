@@ -187,7 +187,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
         cache.getLeaderCards().stream()
             .filter(lc -> lc.getContainerId() >= 0 &&
-                          cache.getPlayerLeaders(cache.getNickname()).contains(lc.getId()) &&
+                          cache.getPlayerLeadersId(cache.getNickname()).contains(lc.getId()) &&
                           lc.isActive())
             .forEach(lc -> update(cache.getContainers().stream().filter(c -> c.getId() == lc.getContainerId()).findFirst().orElseThrow()));
     }

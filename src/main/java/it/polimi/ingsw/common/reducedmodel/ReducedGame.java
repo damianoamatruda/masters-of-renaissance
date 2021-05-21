@@ -175,8 +175,12 @@ public class ReducedGame {
         printer.showPlayerSlots(player);
     }
 
-    public List<Integer> getPlayerLeaders(String player) {
+    public List<Integer> getPlayerLeadersId(String player) {
         return playerLeaders.get(player);
+    }
+
+    public List<ReducedLeaderCard> getPlayerLeaders(String player) {
+        return leaderCards.stream().filter(l -> playerLeaders.get(player).contains(l.getId())).toList();
     }
 
     public void setPlayerLeaders(String player, int leaderId) {
