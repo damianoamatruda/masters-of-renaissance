@@ -142,7 +142,11 @@ public class GameContext {
                     return;
                 }
     
-                shelves.put(s.get(), translateResMap(shelf.getValue()));
+                try {
+                    shelves.put(s.get(), translateResMap(shelf.getValue()));
+                } catch (NoSuchElementException e) {
+                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                }
             }
     
             try {
@@ -326,7 +330,11 @@ public class GameContext {
                     return;
                 }
 
-                shelves.put(s.get(), translateResMap(shelf.getValue()));
+                try {
+                    shelves.put(s.get(), translateResMap(shelf.getValue()));
+                } catch (NoSuchElementException e) {
+                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                }
             }
 
             try {
@@ -346,7 +354,9 @@ public class GameContext {
                     e.getKind().ordinal()));
                 return;
             } catch (IllegalArgumentException e) {
-                // view.on(); // TODO not implemented
+                view.on(new ErrInexistentEntity(e.getMessage()));
+            } catch (NoSuchElementException e) {
+                view.on(new ErrInexistentEntity("Inexistent resource specified."));
             }
             
 
@@ -386,7 +396,11 @@ public class GameContext {
                     return;
                 }
 
-                resContainers.put(c.get(), translateResMap(container.getValue()));
+                try {
+                    resContainers.put(c.get(), translateResMap(container.getValue()));
+                } catch (NoSuchElementException e) {
+                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                }
             }
 
             try {
@@ -450,15 +464,23 @@ public class GameContext {
                         return;
                     }
         
-                    inputContainers.put(c.get(), translateResMap(container.getValue()));
+                    try {
+                        inputContainers.put(c.get(), translateResMap(container.getValue()));
+                    } catch (NoSuchElementException e) {
+                        view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                    }
                 }
                 
-                prodRequests.add(
-                    new ProductionRequest(
-                        game.getProductionById(r.getProduction()).orElseThrow(),
-                        translateResMap(r.getInputBlanksRep()),
-                        translateResMap(r.getOutputBlanksRep()),
-                        inputContainers, player.getStrongbox()));
+                try {
+                    prodRequests.add(
+                        new ProductionRequest(
+                            game.getProductionById(r.getProduction()).orElseThrow(),
+                            translateResMap(r.getInputBlanksRep()),
+                            translateResMap(r.getOutputBlanksRep()),
+                            inputContainers, player.getStrongbox()));
+                } catch (NoSuchElementException e) {
+                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                }
             }
 
             ResourceTransaction transaction = new ResourceTransaction(List.copyOf(prodRequests));

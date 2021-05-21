@@ -32,6 +32,7 @@ public class CliView extends View implements EventListener<VCEvent> {
         dispatcher.addEventListener(ErrActiveLeaderDiscarded.class, this::on);
         dispatcher.addEventListener(ErrBuyDevCard.class, this::on);
         dispatcher.addEventListener(ErrCardRequirements.class, this::on);
+        dispatcher.addEventListener(ErrInexistentEntity.class, this::on);
         dispatcher.addEventListener(ErrInitialChoice.class, this::on);
         dispatcher.addEventListener(ErrNewGame.class, this::on);
         dispatcher.addEventListener(ErrNickname.class, this::on);
@@ -73,6 +74,7 @@ public class CliView extends View implements EventListener<VCEvent> {
         dispatcher.removeEventListener(ErrActiveLeaderDiscarded.class, this::on);
         dispatcher.removeEventListener(ErrBuyDevCard.class, this::on);
         dispatcher.removeEventListener(ErrCardRequirements.class, this::on);
+        dispatcher.removeEventListener(ErrInexistentEntity.class, this::on);
         dispatcher.removeEventListener(ErrInitialChoice.class, this::on);
         dispatcher.removeEventListener(ErrNewGame.class, this::on);
         dispatcher.removeEventListener(ErrNickname.class, this::on);
@@ -153,6 +155,10 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrCardRequirements event) {
+        cli.repeatState(event.getReason());
+    }
+
+    private void on(ErrInexistentEntity event) {
         cli.repeatState(event.getReason());
     }
 
