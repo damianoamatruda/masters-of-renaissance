@@ -10,10 +10,8 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReas
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
 
 public class Lobby {
@@ -22,7 +20,7 @@ public class Lobby {
     public final Map<View, String> nicknames;
     public final Map<View, GameContext> joined;
     public final Map<String, GameContext> disconnected;
-    public final ConcurrentLinkedQueue<View> waiting;
+    public final List<View> waiting;
     public int newGamePlayersCount;
 
     public Lobby(GameFactory gameFactory) {
@@ -30,7 +28,7 @@ public class Lobby {
         this.gameFactory = gameFactory;
         this.nicknames = new HashMap<>();
         this.joined = new HashMap<>();
-        this.waiting = new ConcurrentLinkedQueue<>();
+        this.waiting = new ArrayList<>();
         this.disconnected = new HashMap<>();
     }
 
@@ -76,7 +74,7 @@ public class Lobby {
                 waiting.add(view);
                 System.out.printf("adding %s, %d waiting\n", nickname, waiting.size());
 
-                waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.peek()))));
+                waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
     
                 if (newGamePlayersCount != 0)
                     view.dispatch(new UpdateJoinGame(newGamePlayersCount));
@@ -95,7 +93,7 @@ public class Lobby {
             if (!checkNickname(view))
                 return;
     
-            if (waiting.peek() != view) {
+            if (waiting.indexOf(view) != 0) {
                 System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
                 view.dispatch(new ErrNewGame(false));
                 return;
@@ -108,13 +106,8 @@ public class Lobby {
     
             System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
             this.newGamePlayersCount = newGamePlayersCount;
-    
-            Iterator<View> iter = waiting.iterator();
-            int i = 0;
-            while (iter.hasNext() && i < Math.min(waiting.size(), newGamePlayersCount)) {
-                View v = iter.next();
-                v.dispatch(new UpdateJoinGame(newGamePlayersCount));
-            }
+
+            waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> v.dispatch(new UpdateJoinGame(newGamePlayersCount)));
     
             if (waiting.size() >= newGamePlayersCount){
                 startNewGame();
@@ -125,33 +118,23 @@ public class Lobby {
 
     public void startNewGame() {
         synchronized(lock) {
-            ConcurrentLinkedQueue<View> gamePlayers = new ConcurrentLinkedQueue<>();
-            Iterator<View> iter = waiting.iterator();
-            int i = 0;
-            while (iter.hasNext() && i < newGamePlayersCount)
-                gamePlayers.add(iter.next());
-
             Game newGame = newGamePlayersCount == 1 ?
-                    gameFactory.getSoloGame(nicknames.get(waiting.peek())) :
-                    gameFactory.getMultiGame(gamePlayers.stream().map(nicknames::get).toList());
+                    gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
+                    gameFactory.getMultiGame(waiting.subList(0, newGamePlayersCount).stream().map(nicknames::get).toList());
     
             GameContext context = new GameContext(newGame, gameFactory);
-            
-            iter = waiting.iterator(); i = 0;
-            while (iter.hasNext() && i < newGamePlayersCount) {
-                View view = iter.next();
-                
+            waiting.subList(0, newGamePlayersCount).forEach(view -> {
                 context.registerViewToModel(view, nicknames.get(view));
                 joined.put(view, context);
-
-                iter.remove();
-            }
-
-            context.start();    
-            
+            });
+            context.start();
+            System.out.printf("started context, waiting list %d\n", waiting.size());
+    
+            /* Remove players who joined from waiting list */
+            waiting.subList(0, newGamePlayersCount).clear();
             System.out.printf("removed %d waiting %d\n", newGamePlayersCount, waiting.size());
 
-            waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.peek()))));
+            waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
     
             newGamePlayersCount = 0;
         }
