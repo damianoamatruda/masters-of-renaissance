@@ -11,7 +11,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        boolean useGui = args.length < 1 || !args[0].equals("cli");
+        boolean useGui = args.length < 1 || !args[0].equals("--cli");
         new Client(useGui).start();
     }
 
