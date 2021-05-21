@@ -98,8 +98,7 @@ public class Cli implements Ui {
      * @param state the next state
      */
     public void setState(CliState state) {
-        if (stateQueue.peek() != null && state.getClass() == stateQueue.peek().getClass())
-            stateQueue.add(state);
+        stateQueue.add(state);
     }
 
     public void repeatState(String s) {

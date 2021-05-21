@@ -245,7 +245,7 @@ public class CliView extends View implements EventListener<VCEvent> {
         cache.setCurrentPlayer(event.getPlayer());
         if(!event.getPlayer().equals(cache.getNickname()))
             cli.setState(new WaitingAfterTurnState());
-        else if(!(cli.getState() instanceof WaitingBeforeGameState))
+        else if(!(cli.getState() instanceof WaitingBeforeGameState) && !(cli.getState() instanceof TurnBeforeActionState))
             cli.setState(new TurnBeforeActionState());  // make sure the update never arrives during the own turn
     }
 
@@ -325,7 +325,8 @@ public class CliView extends View implements EventListener<VCEvent> {
                     cache.getSetup(cache.getNickname()).getInitialResources()));
         }
         else {
-            cli.setState(new TurnBeforeActionState());
+            if (!(cli.getState() instanceof TurnBeforeActionState))
+                cli.setState(new TurnBeforeActionState());
         }
     }
 
@@ -363,7 +364,8 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateSetupDone event) {
-        cli.setState(new TurnBeforeActionState());
+        if (!(cli.getState() instanceof TurnBeforeActionState))
+                cli.setState(new TurnBeforeActionState());
     }
 
     private void on(UpdateVaticanSection event) {
