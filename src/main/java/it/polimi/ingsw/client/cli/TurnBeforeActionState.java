@@ -16,6 +16,8 @@ public class TurnBeforeActionState extends CliTurnState {
     private ReducedObjectPrinter printer;
     @Override
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
+        System.out.println(Cli.center("\n\nAvailable actions:\n"));
+
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Buy a card", (menu) -> buyCard(cli, out, in)));
         entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in, cache)));
@@ -27,15 +29,16 @@ public class TurnBeforeActionState extends CliTurnState {
     }
 
     private void buyCard(Cli cli, PrintStream out, Scanner in) {
+        System.out.println("Buying a development card.");
         //prompt for parameters
         final Map<Integer, Map<String, Integer>> shelves;
         int level = 0, slot = 0;
 
-        String color = cli.prompt(out, in, "What color?");
+        String color = cli.prompt(out, in, "Card color");
         boolean isNumber = false;
         while (!isNumber) {
             try {
-                String input = cli.prompt(out, in, "What level?");
+                String input = cli.prompt(out, in, "Card level");
                 level = Integer.parseInt(input);
                 isNumber = true;
             } catch (NumberFormatException e) {
@@ -46,13 +49,19 @@ public class TurnBeforeActionState extends CliTurnState {
         isNumber = false;
         while (!isNumber) {
             try {
-                String input = cli.prompt(out, in, "Which slot?");
+                String input = cli.prompt(out, in, "Player board slot to assign to the card");
                 slot = Integer.parseInt(input);
                 isNumber = true;
             } catch (NumberFormatException e) {
                 System.out.println("Please input an integer.");
             }
         }
+
+        System.out.println("Resources need to be paid.");
+        System.out.println("Please specify how many resources to take from which container.");
+
+        printer.showWarehouseShelves(cache.getNickname());
+        printer.showStrongbox(cache.getNickname());
 
         shelves = cli.promptShelves(out, in);
 

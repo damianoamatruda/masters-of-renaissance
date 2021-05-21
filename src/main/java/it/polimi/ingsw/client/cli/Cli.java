@@ -148,7 +148,7 @@ public class Cli implements Ui {
 
         String input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            input = prompt(out, in, "Which container? (Input a number, or else Enter to skip)");
+            input = prompt(out, in, "Which container? (Input an ID, or else Enter to skip)");
             if(input.isEmpty())
                 break;
 
