@@ -167,9 +167,17 @@ public class ReducedGame {
     public void setPlayerLeadersCount(String player, int count) {
         this.playerLeadersCount.put(player, count);
     }
-
+    
+    public int getPlayerStrongboxID(String player) {
+        return this.playerStrongbox.get(player);
+    }
+    
     public void setPlayerStrongbox(String player, int strongboxId) {
         this.playerStrongbox.put(player, strongboxId);
+    }
+
+    public List<Integer> getPlayerWarehouseShelvesIDs(String player) {
+        return playerWarehouseShelves.get(player);
     }
 
     public void setPlayerWarehouseShelves(String player, List<Integer> shelves) {

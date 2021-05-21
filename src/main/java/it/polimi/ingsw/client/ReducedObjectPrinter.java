@@ -20,4 +20,6 @@ public interface ReducedObjectPrinter {
     public void showCurrentPlayer(String player);
     public void showBaseProductions(Map<String, Integer> baseProductions);
     public void showLeadersHand(String player, int leaderId);
+    public void showWarehouseShelves(String player);
+    public void showStrongbox(String player);
 }

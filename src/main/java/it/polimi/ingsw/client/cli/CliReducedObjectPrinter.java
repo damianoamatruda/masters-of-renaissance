@@ -157,6 +157,28 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void showLeadersHand(String player, int leaderId) {
-        System.out.println(String.format("Leader %d assigned is owned by player %s.", leaderId, player));
+        System.out.println(String.format("Leader %d now owned by player %s.", leaderId, player));
+    }
+
+    @Override
+    public void showWarehouseShelves(String player) {
+        System.out.println(String.format("Showing %s's warehouse shelves:", player));
+        cache.getPlayerWarehouseShelvesIDs(player).forEach(s -> {
+            System.out.println("ID: " + s + "Contents:");
+            Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == s).findFirst();
+            if (cont.isPresent())
+                cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+        });
+    }
+
+    @Override
+    public void showStrongbox(String player) {
+        System.out.println(String.format("Showing %s's strongbox:", player));
+
+        int id = cache.getPlayerStrongboxID(player);
+
+        Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == id).findFirst();
+        if (cont.isPresent())
+            cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
     }
 }
