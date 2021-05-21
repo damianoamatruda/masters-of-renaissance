@@ -123,10 +123,6 @@ public class ReducedGame {
         lastRound = true;
     }
 
-    public int getLeadersToChoose() {
-        return this.setup.get(nickname).getChosenLeadersCount();
-    }
-
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
 
@@ -205,11 +201,8 @@ public class ReducedGame {
         this.productions = productions;
     }
 
-    /**
-     * @return the number of initial resources the player can choose
-     */
-    public int getResourcesToChoose() {
-        return this.setup.get(nickname).getInitialResources();
+    public ReducedPlayerSetup getSetup(String player) {
+        return setup.get(player);
     }
 
     public void setSetup(String player, ReducedPlayerSetup newSetup) {

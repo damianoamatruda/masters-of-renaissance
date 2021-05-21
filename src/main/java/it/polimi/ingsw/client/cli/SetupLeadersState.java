@@ -28,7 +28,7 @@ public class SetupLeadersState extends CliState {
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while(chosen < cache.getLeadersToChoose()) {
+        while(chosen < cache.getSetup(cache.getNickname()).getChosenLeadersCount()) {
             String input = cli.prompt(out, in,
                 (leadersToChoose - chosen) + " leader cards left to be chosen, which would you like to add? ID");
             try {

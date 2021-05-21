@@ -306,10 +306,20 @@ public class CliView extends View implements EventListener<VCEvent> {
 
         event.getLeaders().forEach(id -> cache.setPlayerLeaders(event.getPlayer(), id));
 
-        if(event.getLeaders().size() > cache.getLeadersToChoose())
-            cli.setState(new SetupLeadersState(event.getLeaders().size() - cache.getLeadersToChoose()));
-        else if(cache.getResourcesToChoose() > 0 && !(cli.getState() instanceof SetupResourcesState))
-            cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
+        if(cache.getSetup(cache.getNickname()) != null &&
+            event.getLeaders().size() > cache.getSetup(cache.getNickname()).getChosenLeadersCount()) {
+                cli.setState(new SetupLeadersState(
+                    event.getLeaders().size() - cache.getSetup(cache.getNickname()).getChosenLeadersCount()));
+        }
+        else if(cache.getSetup(cache.getNickname()) != null &&
+            cache.getSetup(cache.getNickname()).getInitialResources() > 0 &&
+            !(cli.getState() instanceof SetupResourcesState)) {
+                cli.setState(new SetupResourcesState(
+                    cache.getSetup(cache.getNickname()).getInitialResources()));
+        }
+        else {
+            cli.setState(new TurnBeforeActionState());
+        }
     }
 
     private void on(UpdateLeadersHandCount event) {
