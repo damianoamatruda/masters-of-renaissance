@@ -30,17 +30,7 @@ public class Cli implements Ui {
 
     private final Scanner scanner;
 
-    private String nickname; //should be moved out of here
-
     private BlockingQueue<CliState> stateQueue = new LinkedBlockingDeque<>();
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public Cli() {
         this.scanner = new Scanner(System.in);
@@ -96,6 +86,10 @@ public class Cli implements Ui {
         if(input.toUpperCase().startsWith("Q"))
             sendToView(new ReqGoodbye());
         return input;
+    }
+
+    public CliState getState() {
+        return state;
     }
 
     /**
