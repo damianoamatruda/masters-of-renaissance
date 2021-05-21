@@ -113,7 +113,7 @@ public class Cli implements Ui {
         } catch (InterruptedException e) { e.printStackTrace(); }
         
         while (this.state != null) {
-            System.out.println(state.getClass().getSimpleName());
+            // System.out.println(state.getClass().getSimpleName());
             state.render(this, System.out, scanner, cache, printer);
             try {
                 this.state = stateQueue.take();

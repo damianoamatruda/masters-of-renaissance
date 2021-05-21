@@ -92,7 +92,7 @@ public class ClientServerHandler extends EventDispatcher implements EventPasser 
             String fromServer;
             JsonObject jsonObject;
             while ((fromServer = in.readLine()) != null) {
-                System.out.println(fromServer); // will be removed as soon as uis are complete
+                // System.out.println(fromServer); // will be removed as soon as uis are complete
                 try {
                     jsonObject = gson.fromJson(fromServer, JsonObject.class);
                     if (jsonObject != null && jsonObject.get("type") != null) {
