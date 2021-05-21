@@ -24,7 +24,7 @@ public class Menu implements Renderable {
         out.print(Cli.center(stringBuilder.toString()));
         String value;
         do {
-            value = in.nextLine();
+            value = cli.prompt(out, in, "");
         } while (value.isBlank() || !entries.containsKey(value.charAt(0)));
         entries.get(value.charAt(0)).action.accept(this);
     }

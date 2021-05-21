@@ -81,7 +81,8 @@ public class Cli implements Ui {
     }
 
     String prompt(PrintStream out, Scanner in, String prompt) {
-        out.printf("%s: ", prompt);
+        if(!prompt.isEmpty())
+            out.printf("%s: ", prompt);
         String input = in.nextLine();
         if(input.toUpperCase().startsWith("Q"))
             sendToView(new ReqGoodbye());
