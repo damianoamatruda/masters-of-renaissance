@@ -2,7 +2,6 @@ package it.polimi.ingsw.common;
 
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.vcevents.*;
 
 /** Interface defining the 'View' role in the MVC architecture. */
@@ -86,7 +85,7 @@ public abstract class View extends EventDispatcher {
     }
 
     public void registerOnVC(EventDispatcher view) {
-        view.addEventListener(ReqGoodbye.class, this::dispatch);
+        view.addEventListener(ReqQuit.class, this::dispatch);
         view.addEventListener(ReqJoin.class, this::dispatch);
         view.addEventListener(ReqNewGame.class, this::dispatch);
         view.addEventListener(ReqChooseLeaders.class, this::dispatch);
@@ -100,7 +99,7 @@ public abstract class View extends EventDispatcher {
     }
 
     public void unregisterOnVC(EventDispatcher view) {
-        view.removeEventListener(ReqGoodbye.class, this::dispatch);
+        view.removeEventListener(ReqQuit.class, this::dispatch);
         view.removeEventListener(ReqJoin.class, this::dispatch);
         view.removeEventListener(ReqNewGame.class, this::dispatch);
         view.removeEventListener(ReqChooseLeaders.class, this::dispatch);

@@ -3,7 +3,6 @@ package it.polimi.ingsw.common;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.vcevents.*;
 
 import java.io.BufferedReader;
@@ -99,7 +98,7 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     }
 
     public void registerOnVC(View view) {
-        view.addEventListener(ReqGoodbye.class, this::send);
+        view.addEventListener(ReqQuit.class, this::send);
         view.addEventListener(ReqJoin.class, this::send);
         view.addEventListener(ReqNewGame.class, this::send);
         view.addEventListener(ReqChooseLeaders.class, this::send);
@@ -113,7 +112,7 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     }
 
     public void unregisterOnVC(View view) {
-        view.removeEventListener(ReqGoodbye.class, this::send);
+        view.removeEventListener(ReqQuit.class, this::send);
         view.removeEventListener(ReqJoin.class, this::send);
         view.removeEventListener(ReqNewGame.class, this::send);
         view.removeEventListener(ReqChooseLeaders.class, this::send);

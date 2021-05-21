@@ -19,7 +19,7 @@ public class NetworkClient {
     private final View view;
     private final Cli cli; // TODO: Make it compatible with other UIs
     private Socket socket;
-    private volatile boolean listening;
+    private NetworkHandler networkHandler;
 
     public NetworkClient(String host, int port, View view, Cli cli) {
         this.host = host;
@@ -28,45 +28,12 @@ public class NetworkClient {
         this.view = view;
         this.cli = cli;
         this.socket = null;
-        this.listening = false;
+        this.networkHandler = null;
     }
 
     public void start() throws IOException {
-        listening = true;
-
-        NetworkHandler networkHandler;
-
-        try (Socket socket = new Socket(host, port)) {
-            this.socket = socket;
-
-            NetworkProtocol protocol = new NetworkProtocol();
-            networkHandler = new ClientServerHandler(socket, protocol);
-
-            networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
-
-            view.registerOnVC(cli);
-            cli.registerOnMV(view);
-
-            networkHandler.registerOnVC(view);
-
-            view.registerOnModelGame(networkHandler);
-            view.registerOnModelPlayer(networkHandler);
-
-            executor.submit(networkHandler);
-
-            while (listening)
-                Thread.onSpinWait();
-
-            view.unregisterOnVC(cli);
-            cli.unregisterOnMV(view);
-
-            view.unregisterOnModelGame(networkHandler);
-            view.unregisterOnModelPlayer(networkHandler);
+        try {
+            this.socket = new Socket(host, port);
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + host);
             System.err.println(e.getMessage());
@@ -75,15 +42,47 @@ public class NetworkClient {
             System.err.println("Couldn't get I/O for the connection to " + host + " when creating the socket");
             System.err.println(e.getMessage());
             throw e;
-        } finally {
-            executor.shutdown();
-            socket = null;
-            listening = false;
         }
+
+        NetworkProtocol protocol = new NetworkProtocol();
+        networkHandler = new ClientServerHandler(socket, protocol);
+
+        networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
+
+        view.registerOnVC(cli);
+        cli.registerOnMV(view);
+
+        networkHandler.registerOnVC(view);
+
+        view.registerOnModelGame(networkHandler);
+        view.registerOnModelPlayer(networkHandler);
+
+        executor.submit(networkHandler);
     }
 
     public void stop() {
-        listening = false;
+        view.unregisterOnVC(cli);
+        cli.unregisterOnMV(view);
+
+        executor.shutdown();
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException ignored) {
+            }
+            socket = null;
+        }
+
+        if (networkHandler != null) {
+            view.unregisterOnModelGame(networkHandler);
+            view.unregisterOnModelPlayer(networkHandler);
+            networkHandler = null;
+        }
     }
 
     private void on(ReqWelcome event, NetworkHandler networkHandler) {

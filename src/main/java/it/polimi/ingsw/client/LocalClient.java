@@ -17,6 +17,7 @@ public class LocalClient {
     public LocalClient(View view, Cli cli) {
         this.view = view;
         this.cli = cli;
+        this.controller = null;
     }
 
     public void start() {
@@ -34,6 +35,7 @@ public class LocalClient {
         view.unregisterOnVC(cli);
         cli.unregisterOnMV(view);
 
-        controller.unregisterOnVC(view);
+        if (controller != null)
+            controller.unregisterOnVC(view);
     }
 }

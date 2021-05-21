@@ -35,20 +35,24 @@ public class Cli extends EventDispatcher implements Ui {
 
     private final Scanner scanner;
 
-    private BlockingQueue<CliState> stateQueue = new LinkedBlockingDeque<>();
+    private final BlockingQueue<CliState> stateQueue;
 
-    private VCEvent lastReq;
+    private final VCEvent lastReq;
+
+    private boolean singleplayer;
 
     public Cli() {
         this.view = new CliView();
+        this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());
-        
+
         this.cache = new ReducedGame();
         this.printer = new CliReducedObjectPrinter(cache);
         this.cache.setPrinter(printer);
         this.scanner = new Scanner(System.in);
 
         this.lastReq = null;
+        this.singleplayer = false;
     }
 
     static String convertStreamToString(InputStream is) {
@@ -116,7 +120,7 @@ public class Cli extends EventDispatcher implements Ui {
     @Override
     public void execute() {
         try {
-            this.state = stateQueue.take();;
+            this.state = stateQueue.take();
         } catch (InterruptedException e) { e.printStackTrace(); }
         
         while (this.state != null) {
@@ -208,12 +212,15 @@ public class Cli extends EventDispatcher implements Ui {
             connected = false;
             // TODO: setState (error)
         }
-        if (connected)
+        if (connected) {
+            singleplayer = false;
             setState(new InputNicknameState());
+        }
     }
 
     void startLocalClient() {
         new LocalClient(view, this).start();
+        singleplayer = true;
         setState(new InputNicknameState());
     }
 
@@ -427,9 +434,12 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateBookedSeats event) {
-        if(event.canPrepareNewGame().equals(cache.getNickname()) && !(getState() instanceof InputPlayersCountState))
-            setState(new InputPlayersCountState());
-        else setState(new WaitingBeforeGameState(event.getBookedSeats()));
+        if (event.canPrepareNewGame().equals(cache.getNickname()) && !(getState() instanceof InputPlayersCountState)) {
+            if (singleplayer)
+                dispatch(new ReqNewGame(1));
+            else
+                setState(new InputPlayersCountState());
+        } else setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
 
     private void on(UpdateCurrentPlayer event) {
@@ -458,6 +468,13 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateGameResume event) {
+        cache.setActionTokens(event.getActionTokens());
+        cache.setContainers(event.getResContainers());
+        cache.setDevelopmentCards(event.getDevelopmentCards());
+        cache.setFaithPoints(0);
+        cache.setLeaderCards(event.getLeaderCards());
+        cache.setPlayers(event.getPlayers());
+        cache.setProductions(event.getProductions());
         setState(new WaitingAfterTurnState());
     }
 
