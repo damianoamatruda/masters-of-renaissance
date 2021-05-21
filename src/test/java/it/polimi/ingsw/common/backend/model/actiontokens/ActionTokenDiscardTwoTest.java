@@ -84,7 +84,7 @@ class ActionTokenDiscardTwoTest {
                         return null;
                     }
                 }), 0,
-                2);
+                2, null, null);
     }
 
     /**

@@ -12,6 +12,8 @@ public class UpdateGameStart implements MVEvent {
     private final List<ReducedResourceContainer> resContainers;
     private final List<ReducedResourceTransactionRecipe> productions;
     private final List<ReducedActionToken> actionTokens;
+    private final List<ReducedColor> colors;
+    private final List<ReducedResourceType> resourceTypes;
 
     /**
      * Class constructor.
@@ -20,19 +22,23 @@ public class UpdateGameStart implements MVEvent {
      * @param developmentCards development cards available at play time
      * @param resContainers    resource containers available at play time
      * @param productions      productions available at play time
+     * @param resourceTypes    resource types available at play time
+     * @param colors           development card colors available at play time
      */
     public UpdateGameStart(List<String> players,
                            List<ReducedLeaderCard> leaderCards,
                            List<ReducedDevCard> developmentCards,
                            List<ReducedResourceContainer> resContainers,
                            List<ReducedResourceTransactionRecipe> productions,
-                           List<ReducedActionToken> actionTokens) {
+                           List<ReducedResourceType> resourceTypes, List<ReducedColor> colors, List<ReducedActionToken> actionTokens) {
         this.players = players;
         this.leaderCards = leaderCards;
         this.developmentCards = developmentCards;
         this.resContainers = resContainers;
         this.productions = productions;
         this.actionTokens = actionTokens;
+        this.colors = colors;
+        this.resourceTypes = resourceTypes;
     }
 
     /**
@@ -75,5 +81,19 @@ public class UpdateGameStart implements MVEvent {
      */
     public List<ReducedActionToken> getActionTokens() {
         return actionTokens;
+    }
+
+    /**
+     * @return the card colors
+     */
+    public List<ReducedColor> getColors() {
+        return colors;
+    }
+
+    /**
+     * @return the resource types
+     */
+    public List<ReducedResourceType> getResourceTypes() {
+        return resourceTypes;
     }
 }

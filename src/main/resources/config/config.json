@@ -8,43 +8,53 @@
   "slotsCount": 3,
   "cardColors": [
     {
-      "name": "Yellow"
+      "name": "Yellow",
+      "hex": "\u001B[33m"
     },
     {
-      "name": "Purple"
+      "name": "Purple",
+      "hex": "\u001B[35m"
     },
     {
-      "name": "Green"
+      "name": "Green",
+      "hex": "\u001B[32m"
     },
     {
-      "name": "Blue"
+      "name": "Blue",
+      "hex": "\u001B[34m"
     }
   ],
   "resourceTypes": [
     {
       "type": "IncrementFaithPointsResType",
       "name": "Faith",
-      "storable": false
+      "storable": false,
+      "hex": "\u001B[31m"
     },
     {
       "name": "Servant",
-      "storable": true
+      "storable": true,
+      "hex": "\u001B[95m"
     },
     {
       "name": "Zero",
-      "storable": false
+      "storable": false,
+      "hex": "\u001B[97m"
     },
     {
       "name": "Shield",
-      "storable": true
+      "storable": true,
+      "hex": "\u001B[36m"
     },
     {
       "name": "Coin",
-      "storable": true
+      "storable": true,
+      "hex": "\u001B[93m"
     },
     {
       "name": "Stone",
-      "storable": true
+      "storable": true,
+      "hex": "\u001B[90m"
     }
   ],
   "baseProduction": {

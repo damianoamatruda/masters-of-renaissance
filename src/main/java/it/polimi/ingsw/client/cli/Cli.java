@@ -492,6 +492,8 @@ public class Cli extends EventDispatcher implements Ui {
         cache.setLeaderCards(event.getLeaderCards());
         cache.setPlayers(event.getPlayers());
         cache.setProductions(event.getProductions());
+        cache.setColors(event.getColors());
+        cache.setResourceTypes(event.getResourceTypes());
         event.getPlayers().forEach(p -> cache.setVictoryPoints(p, 0));
     }
 

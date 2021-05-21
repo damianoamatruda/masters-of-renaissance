@@ -105,7 +105,9 @@ public class FileGameFactory implements GameFactory {
                 buildMarket(),
                 buildFaithTrack(),
                 maxFaith,
-                maxDevCards
+                maxDevCards,
+                resTypeMap.values().stream().toList(),
+                devCardColorMap.values().stream().toList()
         );
     }
 
@@ -129,7 +131,9 @@ public class FileGameFactory implements GameFactory {
                 buildFaithTrack(),
                 buildActionTokens(),
                 maxFaith,
-                maxDevCards
+                maxDevCards,
+                resTypeMap.values().stream().toList(),
+                devCardColorMap.values().stream().toList()
         );
     }
 

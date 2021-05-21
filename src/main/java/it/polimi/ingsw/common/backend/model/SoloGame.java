@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
+import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.*;
 
 import java.util.ArrayList;
@@ -26,8 +27,7 @@ public class SoloGame extends Game {
 
     /**
      * Initializes the solo game with the following parameters.
-     *
-     * @param player                the nickname of the player who joined
+     *  @param player                the nickname of the player who joined
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
      * @param resContainers         the list of resource containers
@@ -38,12 +38,14 @@ public class SoloGame extends Game {
      * @param actionTokens          the deck of tokens, of which the top token is activated after each round
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
+     * @param resourceTypes
+     * @param colors
      */
     public SoloGame(Player player, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                     List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                     DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, List<ActionToken> actionTokens,
-                    int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(List.of(player), leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
+                    int maxFaithPointsCount, int maxObtainableDevCards, List<ResourceType> resourceTypes, List<DevCardColor> colors) {
+        super(List.of(player), leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards, resourceTypes, colors);
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;
@@ -57,6 +59,8 @@ public class SoloGame extends Game {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                resourceTypes.stream().map(ResourceType::reduce).toList(),
+                colors.stream().map(DevCardColor::reduce).toList(),
                 actionTokens.stream().map(ActionToken::reduce).toList()));
 
         dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
@@ -70,6 +74,8 @@ public class SoloGame extends Game {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                resourceTypes.stream().map(ResourceType::reduce).toList(),
+                colors.stream().map(DevCardColor::reduce).toList(),
                 actionTokens.stream().map(ActionToken::reduce).toList()));
 
         dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));

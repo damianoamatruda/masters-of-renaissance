@@ -1,11 +1,15 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.reducedmodel.ReducedColor;
+
 /**
  * This class represents a development card color.
  */
 public class DevCardColor {
     /** The name of the development card color. */
     private final String name;
+
+    private final String hex;
 
     /**
      * Constructor of the development card color.
@@ -14,6 +18,7 @@ public class DevCardColor {
      */
     public DevCardColor(String name) {
         this.name = name;
+        this.hex = "#ffffff";
     }
 
     /**
@@ -28,5 +33,9 @@ public class DevCardColor {
     @Override
     public String toString() {
         return name;
+    }
+
+    public ReducedColor reduce() {
+        return new ReducedColor(name, hex);
     }
 }

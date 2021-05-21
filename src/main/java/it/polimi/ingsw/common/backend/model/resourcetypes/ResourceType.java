@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend.model.resourcetypes;
 
 import it.polimi.ingsw.common.backend.model.Game;
 import it.polimi.ingsw.common.backend.model.Player;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 /**
  * This class represents a resource type.
@@ -9,6 +10,8 @@ import it.polimi.ingsw.common.backend.model.Player;
 public class ResourceType {
     /** The name of the resource type. */
     private final String name;
+
+    private final String hex;
 
     /**
      * <code>true</code> if the resources of this type can be stored in a resource container; <code>false</code>
@@ -26,6 +29,7 @@ public class ResourceType {
     public ResourceType(String name, boolean storable) {
         this.name = name;
         this.storable = storable;
+        this.hex = "#ffffff";
     }
 
     /**
@@ -89,5 +93,9 @@ public class ResourceType {
     @Override
     public String toString() {
         return name;
+    }
+
+    public ReducedResourceType reduce() {
+        return new ReducedResourceType(name, hex);
     }
 }

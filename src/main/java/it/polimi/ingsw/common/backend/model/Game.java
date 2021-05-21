@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
+import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.*;
 
 import java.util.ArrayList;
@@ -52,10 +53,12 @@ public class Game extends EventDispatcher {
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
+    protected List<ResourceType> resourceTypes;
+    protected List<DevCardColor> colors;
+
     /**
      * Constructor of Game instances.
-     *
-     * @param players               the list of nicknames of players who joined
+     *  @param players               the list of nicknames of players who joined
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
      * @param resContainers         the list of resource containers
@@ -65,11 +68,13 @@ public class Game extends EventDispatcher {
      * @param faithTrack            the faith track
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
+     * @param resourceTypes
+     * @param colors
      */
     public Game(List<Player> players, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxFaithPointsCount,
-                int maxObtainableDevCards) {
+                int maxObtainableDevCards, List<ResourceType> resourceTypes, List<DevCardColor> colors) {
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);
@@ -78,6 +83,9 @@ public class Game extends EventDispatcher {
         this.devCardGrid = devCardGrid;
         this.market = market;
         this.faithTrack = faithTrack;
+
+        this.resourceTypes = resourceTypes;
+        this.colors = colors;
 
         this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
@@ -94,6 +102,7 @@ public class Game extends EventDispatcher {
         this.devCardGrid.addEventListener(UpdateDevCardGrid.class, this::dispatch);
         this.market.addEventListener(UpdateMarket.class, this::dispatch);
         this.faithTrack.addEventListener(UpdateVaticanSection.class, this::dispatch);
+
     }
 
     public void dispatchInitialState() {
@@ -103,6 +112,8 @@ public class Game extends EventDispatcher {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                resourceTypes.stream().map(ResourceType::reduce).toList(),
+                colors.stream().map(DevCardColor::reduce).toList(),
                 null)); /* actionTokens not sent */
 
         dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
@@ -115,6 +126,8 @@ public class Game extends EventDispatcher {
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                resourceTypes.stream().map(ResourceType::reduce).toList(),
+                colors.stream().map(DevCardColor::reduce).toList(),
                 null)); /* actionTokens not sent */
 
         view.dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));

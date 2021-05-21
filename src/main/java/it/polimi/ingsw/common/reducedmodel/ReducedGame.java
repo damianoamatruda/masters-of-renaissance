@@ -31,6 +31,9 @@ public class ReducedGame {
     private final Map<String, Integer> victoryPoints;
     private String winner;
 
+    private List<ReducedResourceType> resourceTypes;
+    private List<ReducedColor> colors;
+
     public ReducedGame() {
         actionTokens = new ArrayList<>();
         baseProductions = new HashMap<>();
@@ -279,5 +282,21 @@ public class ReducedGame {
      */
     public int getVictoryPoints(String nickname) {
         return victoryPoints.get(nickname);
+    }
+
+    public List<ReducedResourceType> getResourceTypes() {
+        return resourceTypes;
+    }
+
+    public void setResourceTypes(List<ReducedResourceType> resourceTypes) {
+        this.resourceTypes = resourceTypes;
+    }
+
+    public List<ReducedColor> getColors() {
+        return colors;
+    }
+
+    public void setColors(List<ReducedColor> colors) {
+        this.colors = colors;
     }
 }

@@ -85,7 +85,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         if (newObject.getDevCardRequirement() != null) {
             System.out.println("Requirements (development cards):");
             newObject.getDevCardRequirement().getEntries().stream()
-                .forEach(e -> System.out.println("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));            
+                .forEach(e -> System.out.println("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));
         }
         if (newObject.getResourceRequirement() != null) {
             System.out.println("Requirements (resources):");
@@ -104,7 +104,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void update(ReducedMarket newObject) {
         System.out.println("Market:");
         newObject.getGrid().forEach(r -> {
-            r.forEach(res -> System.out.print(res + "\t"));
+            r.forEach(res -> System.out.print(printResource(res) + "\t"));
             System.out.print("\n");
         });
         System.out.print("\n");
@@ -204,5 +204,15 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.println("Showing" + player + "'s development card slots:");
         if (cache.getPlayerDevSlots(player) != null)
             cache.getPlayerDevSlots(player).entrySet().stream().forEach(e -> System.out.println("Slot " + e.getKey() + ", card ID: " + e.getValue()));
+    }
+
+    private String printColor(String colorName) {
+        String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getHex).findAny().orElseThrow();
+        return color + "⚫" + "\u001B[0m";
+    }
+
+    private String printResource(String resourceType) {
+        String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getHex).findAny().orElseThrow();
+        return color + "⚫" + "\u001B[0m";
     }
 }

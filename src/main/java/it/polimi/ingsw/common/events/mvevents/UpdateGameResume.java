@@ -10,7 +10,7 @@ public class UpdateGameResume extends UpdateGameStart {
                             List<ReducedDevCard> developmentCards,
                             List<ReducedResourceContainer> resContainers,
                             List<ReducedResourceTransactionRecipe> productions,
-                            List<ReducedActionToken> actionTokens) {
-        super(players, leaderCards, developmentCards, resContainers, productions, actionTokens);
+                            List<ReducedResourceType> resourceTypes, List<ReducedColor> colors, List<ReducedActionToken> actionTokens) {
+        super(players, leaderCards, developmentCards, resContainers, productions, resourceTypes, colors, actionTokens);
     }
 }
