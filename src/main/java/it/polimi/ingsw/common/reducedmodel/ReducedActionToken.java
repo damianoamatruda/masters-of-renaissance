@@ -7,7 +7,7 @@ public class ReducedActionToken {
     
     /**
      * @param id
-     * @param type
+     * @param kind
      * @param discardedDevCardColor
      */
     public ReducedActionToken(int id, String kind, String discardedDevCardColor) {

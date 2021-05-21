@@ -282,6 +282,8 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     public Map<String, Integer> promptResources(PrintStream out, Scanner in) {
+        System.out.println("Choosing blank resource replacements:");
+
         String resource;
         int amount;
         String input;
@@ -289,11 +291,11 @@ public class Cli extends EventDispatcher implements Ui {
 
         input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            resource = prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Or else Enter to skip)");
+            resource = prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Enter to skip)");
             if(resource.isEmpty())
                 break;
 
-            input = prompt(out, in, "How many?");
+            input = prompt(out, in, "How many blanks would you like to replace?");
             try {
                 amount = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -345,7 +347,7 @@ public class Cli extends EventDispatcher implements Ui {
     private void on(ErrActiveLeaderDiscarded event) {
         int id = -1;
         try {
-            id = ((ReqLeaderAction) lastReq).getLeader();
+            id = ((ReqLeaderAction)lastReq).getLeader();
         } catch (Exception ignored) {}
 
         repeatState(String.format("Active leader %d tried to be discarded.", id));

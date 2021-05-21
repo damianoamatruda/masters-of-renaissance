@@ -18,7 +18,7 @@ public class ErrResourceTransfer implements MVEvent {
      * 
      * @param resType
      * @param isAdded
-     * @param kind
+     * @param reason
      */
     public ErrResourceTransfer(String resType,
             boolean isAdded,

@@ -129,6 +129,10 @@ public class ReducedGame {
         leaderCards.forEach(printer::update);
     }
 
+    public ReducedMarket getMarket() {
+        return this.market;
+    }
+    
     public void setMarket(ReducedMarket mkt) {
         market = mkt;
 
@@ -154,6 +158,10 @@ public class ReducedGame {
         this.playerState.put(player, newState);
     }
 
+    public List<Integer> getPlayerLeaders(String player) {
+        return playerLeaders.get(player);
+    }
+    
     public void setPlayerLeaders(String player, int leaderId) {
         playerLeaders.compute(player, (k, v) -> {
             List<Integer> ids;
