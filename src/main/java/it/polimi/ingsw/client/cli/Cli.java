@@ -98,7 +98,8 @@ public class Cli implements Ui {
      * @param state the next state
      */
     public void setState(CliState state) {
-        stateQueue.add(state);
+        if (stateQueue.peek() != null && state.getClass() == stateQueue.peek().getClass())
+            stateQueue.add(state);
     }
 
     public void repeatState(String s) {
@@ -113,7 +114,7 @@ public class Cli implements Ui {
         } catch (InterruptedException e) { e.printStackTrace(); }
         
         while (this.state != null) {
-            // System.out.println(state.getClass().getSimpleName());
+            System.out.println(state.getClass().getSimpleName());
             state.render(this, System.out, scanner, cache, printer);
             try {
                 this.state = stateQueue.take();
