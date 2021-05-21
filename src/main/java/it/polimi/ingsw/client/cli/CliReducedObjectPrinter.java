@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,6 +52,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void update(ReducedDevCardGrid newObject) {
         System.out.println("Development card grid state:");
         newObject.getGrid().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
+        
+        List<Integer> topCards = new ArrayList<>();
+        newObject.getGrid().entrySet().stream().forEach(e -> topCards.addAll(e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
+
+        topCards.forEach(id -> update(cache.getDevCard(id)));
     }
 
     @Override
