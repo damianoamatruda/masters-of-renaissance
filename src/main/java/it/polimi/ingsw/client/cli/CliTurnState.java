@@ -18,7 +18,7 @@ public abstract class CliTurnState extends CliState {
             input = cli.prompt(out, in, "Which leader?");
             try {
                 int leaderid = Integer.parseInt(input);
-                cli.sendToView(new ReqLeaderAction(leaderid, isActivate));
+                cli.dispatch(new ReqLeaderAction(leaderid, isActivate));
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("Please input an integer.");

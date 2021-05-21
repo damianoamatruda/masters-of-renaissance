@@ -20,6 +20,6 @@ public class TurnAfterActionState extends CliTurnState {
     }
 
     private void endTurn(Cli cli) {
-        cli.sendToView(new ReqEndTurn());
+        cli.dispatch(new ReqEndTurn());
     }
 }

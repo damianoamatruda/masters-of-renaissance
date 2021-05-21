@@ -31,7 +31,7 @@ public class NetworkClient {
         this.listening = false;
     }
 
-    public void start() {
+    public void start() throws IOException {
         listening = true;
 
         NetworkHandler networkHandler;
@@ -70,9 +70,11 @@ public class NetworkClient {
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + host);
             System.err.println(e.getMessage());
+            throw e;
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + host + " when creating the socket");
             System.err.println(e.getMessage());
+            throw e;
         } finally {
             executor.shutdown();
             socket = null;

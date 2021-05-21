@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 
@@ -122,10 +123,6 @@ public class ReducedGame {
         lastRound = true;
     }
 
-    public int getLeadersToChoose() {
-        return this.setup.get(nickname).getChosenLeadersCount();
-    }
-
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
 
@@ -196,16 +193,16 @@ public class ReducedGame {
      * @param id the id of the production to be returned
      * @return   the production associated to the id
      */
-    public ReducedResourceTransactionRecipe getProduction(int id) {
-        return productions.stream().filter(p -> p.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
+        return productions.stream().filter(p -> p.getId() == id).findAny();
     }
 
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
         this.productions = productions;
     }
 
-    public int getResourcesToChoose() {
-        return this.setup.get(nickname).getInitialResources();
+    public ReducedPlayerSetup getSetup(String player) {
+        return setup.get(player);
     }
 
     public void setSetup(String player, ReducedPlayerSetup newSetup) {
@@ -224,10 +221,16 @@ public class ReducedGame {
         vaticanSections.set(vaticanSection, true);
     }
 
+    /**
+     * @return all resource containers
+     */
     public List<ReducedResourceContainer> getContainers() {
         return containers;
     }
 
+    /**
+     * @return all leader cards
+     */
     public List<ReducedLeaderCard> getLeaderCards() {
         return leaderCards;
     }
@@ -248,6 +251,10 @@ public class ReducedGame {
         return winner;
     }
 
+    /**
+     * @param nickname the player to get the victory points of
+     * @return         the player's victory points
+     */
     public int getVictoryPoints(String nickname) {
         return victoryPoints.get(nickname);
     }

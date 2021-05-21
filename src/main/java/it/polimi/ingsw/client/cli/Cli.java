@@ -8,10 +8,10 @@ import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.netevents.ResWelcome;
 import it.polimi.ingsw.common.events.vcevents.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -201,8 +201,15 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     void startNetworkClient(String host, int port) {
-        new NetworkClient(host, port, view, this).start();
-        setState(new InputNicknameState());
+        boolean connected = true;
+        try {
+            new NetworkClient(host, port, view, this).start();
+        } catch (IOException e) {
+            connected = false;
+            // TODO: setState (error)
+        }
+        if (connected)
+            setState(new InputNicknameState());
     }
 
     void startLocalClient() {
@@ -340,7 +347,7 @@ public class Cli extends EventDispatcher implements Ui {
     private void on(ErrBuyDevCard event) {
         repeatState(event.isStackEmpty() ?
                 "Cannot buy development card. Deck is empty." :
-                "Cannot place devcard in slot, level mismatch."); // TODO improve msg
+                "Cannot place devcard in slot, level mismatch.");
     }
 
     private void on(ErrCardRequirements event) {
@@ -352,11 +359,11 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(ErrInitialChoice event) {
-        repeatState(event.isLeadersChoice() ?
+        repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
-                        "Leaders already chosen" :
+                        "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
-                "Resources already chosen");
+                "Resources already chosen");          // else it's from the resources choice
     }
 
     private void on(ErrNewGame event) {
@@ -366,7 +373,7 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(ErrNickname event) {
-        repeatState("Nickname is invalid. Reason: " + event.getReason().toString());
+        repeatState("Nickname is invalid. Reason: " + event.getReason().toString().toLowerCase());
     }
 
     private void on(ErrObjectNotOwned event) {
@@ -420,7 +427,7 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateBookedSeats event) {
-        if(event.canPrepareNewGame().equals(cache.getNickname()) && !(lastReq instanceof ReqNewGame) && !(getState() instanceof InputPlayersCountState))
+        if(event.canPrepareNewGame().equals(cache.getNickname()) && !(getState() instanceof InputPlayersCountState))
             setState(new InputPlayersCountState());
         else setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
@@ -479,21 +486,31 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateLeadersHand event) {
-    /* this message arrives last among the starting events:
-        joingame
-        updategamestart
-        currplayer
-        market
-        devcardgrid
-        player
-        leadershand -> with GS and player has enough info for leader choice */
+        /* this message arrives last among the starting events:
+            joingame
+            updategamestart
+            currplayer
+            market
+            devcardgrid
+            player
+            leadershand -> with GS and player has enough info for leader choice */
 
         event.getLeaders().forEach(id -> cache.setPlayerLeaders(event.getPlayer(), id));
 
-        if(event.getLeaders().size() > cache.getLeadersToChoose())
-            setState(new SetupLeadersState(event.getLeaders().size() - cache.getLeadersToChoose()));
-        else if(cache.getResourcesToChoose() > 0)
-            setState(new SetupResourcesState(cache.getResourcesToChoose()));
+        if(cache.getSetup(cache.getNickname()) != null &&
+                event.getLeaders().size() > cache.getSetup(cache.getNickname()).getChosenLeadersCount()) {
+            setState(new SetupLeadersState(
+                    event.getLeaders().size() - cache.getSetup(cache.getNickname()).getChosenLeadersCount()));
+        }
+        else if(cache.getSetup(cache.getNickname()) != null &&
+                cache.getSetup(cache.getNickname()).getInitialResources() > 0 &&
+                !(getState() instanceof SetupResourcesState)) {
+            setState(new SetupResourcesState(
+                    cache.getSetup(cache.getNickname()).getInitialResources()));
+        }
+        else {
+            setState(new TurnBeforeActionState());
+        }
     }
 
     private void on(UpdateLeadersHandCount event) {

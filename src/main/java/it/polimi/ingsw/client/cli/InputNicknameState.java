@@ -18,7 +18,7 @@ public class InputNicknameState extends CliState{
 
         String input = cli.prompt(out, in, "Nickname");
         cache.setNickname(input);
-        cli.sendToView(new ReqJoin(input));
+        cli.dispatch(new ReqJoin(input));
 
         //send to view
         //if sth goes wrong, the view will reset this state, thus repeating the prompt.

@@ -104,7 +104,7 @@ public class GameContext {
 
             int distinctSize = leaderIds.stream().distinct().toList().size();
             if (distinctSize < leaderIds.size()) {
-                view.on(new ErrInitialChoice(true, leaderIds.size() - distinctSize));
+                view.dispatch(new ErrInitialChoice(true, leaderIds.size() - distinctSize));
                 return;
             }
 
@@ -148,7 +148,7 @@ public class GameContext {
                 try {
                     shelves.put(s.get(), translateResMap(shelf.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
                 }
             }
     
@@ -336,7 +336,7 @@ public class GameContext {
                 try {
                     shelves.put(s.get(), translateResMap(shelf.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
                 }
             }
 
@@ -357,9 +357,9 @@ public class GameContext {
                         e.getKind().ordinal()));
                 return;
             } catch (IllegalArgumentException e) {
-                view.on(new ErrInexistentEntity(e.getMessage()));
+                view.dispatch(new ErrInexistentEntity(e.getMessage()));
             } catch (NoSuchElementException e) {
-                view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
             }
             
 
@@ -402,7 +402,7 @@ public class GameContext {
                 try {
                     resContainers.put(c.get(), translateResMap(container.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
                 }
             }
 
@@ -470,7 +470,7 @@ public class GameContext {
                     try {
                         inputContainers.put(c.get(), translateResMap(container.getValue()));
                     } catch (NoSuchElementException e) {
-                        view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                        view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
                     }
                 }
                 
@@ -482,7 +482,7 @@ public class GameContext {
                             translateResMap(r.getOutputBlanksRep()),
                             inputContainers, player.getStrongbox()));
                 } catch (NoSuchElementException e) {
-                    view.on(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
                 }
             }
 
@@ -546,8 +546,6 @@ public class GameContext {
      * to confirm their legitimacy of execution, before starting.
      *
      * @param view   the view to use to on back the error, if the checks don't on
-     * @param action the action trying to be performed. Will be used as a reason when sending the error message to the
-     *               client trying to execute the action.
      * @return whether the checks passed
      */
     private boolean preliminaryChecks(View view, Player player) {
@@ -563,7 +561,6 @@ public class GameContext {
      *
      * @param view      the view to on the error massage back with
      * @param player the player to check
-     * @param action the action trying to be performed
      * @return whether the check passed
      */
     private boolean checkCurrentPlayer(View view, Player player) {
@@ -578,7 +575,6 @@ public class GameContext {
      * Ensures that the current player has not done a mandatory action yet.
      *
      * @param view      the view to on the error massage back with
-     * @param action the action trying to be performed
      * @return whether the check passed
      */
     private boolean checkMandatoryActionNotDone(View view) {
@@ -594,6 +590,10 @@ public class GameContext {
     }
 
     private Map<ResourceType, Integer> translateResMap(Map<String, Integer> r) {
-        return r.entrySet().stream().collect(Collectors.toMap(e -> gameFactory.getResourceType(e.getKey()).orElseThrow(), e -> e.getValue()));
+        return r.entrySet().stream().collect(Collectors.toMap(e -> {
+            String name = e.getKey().substring(0, 1).toUpperCase() + e.getKey().substring(1);
+            return gameFactory.getResourceType(name).orElseThrow();
+        }, e -> e.getValue()
+        ));
     }
 }

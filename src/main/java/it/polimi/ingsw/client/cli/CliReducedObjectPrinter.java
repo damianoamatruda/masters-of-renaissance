@@ -45,7 +45,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             .getRequirements().entrySet().stream()
             .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
         
-        update(cache.getProduction(newObject.getProduction()));
+        Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
+        if (prod.isPresent())
+            update(prod.get());
 
         System.out.println();
     }
@@ -58,6 +60,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         List<Integer> topCards = new ArrayList<>();
         newObject.getGrid().entrySet().stream().forEach(e -> topCards.addAll(e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
 
+        System.out.println();
         topCards.forEach(id -> update(cache.getDevCard(id)));
     }
 
@@ -91,6 +94,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         }
 
         System.out.println();
+        update(cache.getDevCard(newObject.getProduction()));
     }
 
     @Override
@@ -116,39 +120,34 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     
     @Override
     public void update(ReducedResourceTransactionRecipe newObject) {
-        System.out.println(String.format("Production ID: %d\n",
+        System.out.println(String.format("Production ID: %d",
             newObject.getId()));
 
-        String input = "", output = "";
-        newObject.getInput().entrySet().stream().forEach(e -> input.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
-        System.out.println("Input:\n" + input);
+        System.out.println("Input:");
+        newObject.getInput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
 
-        System.out.println(String.format("Input blanks: %d\n",
+        System.out.println(String.format("Input blanks: %d",
             newObject.getInputBlanks()));
         
-        System.out.println("Input blanks exclusions:\n");
+        System.out.println("Input blanks exclusions:");
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
-        newObject.getOutput().entrySet().stream().forEach(e -> output.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
-        System.out.println("Output:\n" + output);
+        System.out.println("Output:");
+        newObject.getOutput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
 
-        System.out.println(String.format("Output blanks: %d\n",
+        System.out.println(String.format("Output blanks: %d",
             newObject.getOutputBlanks()));
         
-        System.out.println("Output blanks exclusions:\n");
+        System.out.println("Output blanks exclusions:");
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
         System.out.println(newObject.isDiscardableOutput() ? "Output is discardable\n" : "");
     }
 
     @Override
-    public void update(ResWelcome newObject) {
-        System.out.println(Cli.center("WELCOME"));
-    }
-
-    @Override
     public void showPlayers(List<String> nicknames) {
-        nicknames.forEach(n -> System.out.println(n));
+        System.out.println("Players:");
+        nicknames.forEach(n -> System.out.print(n + ", "));
     }
 
     @Override

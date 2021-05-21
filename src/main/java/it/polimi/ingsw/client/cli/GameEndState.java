@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.common.events.vcevents.ReqGoodbye;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.PrintStream;
@@ -15,7 +15,7 @@ public class GameEndState extends CliState {
         else 
             System.out.println(cache.getWinner() + " is the winner with " + cache.getVictoryPoints(cache.getWinner()) + " points. Better luck next time!");
         
-        cli.sendToView(new ReqGoodbye());
+        cli.dispatch(new ReqQuit());
         
         // show game end message for a little longer
         try {

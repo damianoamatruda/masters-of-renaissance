@@ -23,7 +23,7 @@ public class InputPlayersCountState extends CliState {
             }
         }
 
-        cli.sendToView(new ReqNewGame(count));
+        cli.dispatch(new ReqNewGame(count));
         //send
         //if goes wrong, this state will be repeated
     }

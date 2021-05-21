@@ -19,6 +19,6 @@ public class SetupResourcesState extends CliState {
         System.out.println("You have the right to " + choosable + " resources of choice. Which do you choose?");
         Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(out, in);
 
-        cli.sendToView(new ReqChooseResources(shelves));
+        cli.dispatch(new ReqChooseResources(shelves));
     }
 }

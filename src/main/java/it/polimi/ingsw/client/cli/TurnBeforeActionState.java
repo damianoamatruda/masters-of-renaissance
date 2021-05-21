@@ -73,7 +73,7 @@ public class TurnBeforeActionState extends CliTurnState {
         shelves = cli.promptShelves(out, in);
 
         //build request event
-        cli.sendToView(new ReqBuyDevCard(color, level, slot, shelves));
+        cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));
     }
 
     private void getResources(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
@@ -104,7 +104,7 @@ public class TurnBeforeActionState extends CliTurnState {
         // if has ZeroLeaders active: (if branch to be implemented)
         Map<String,Integer> replacements = cli.promptResources(out, in);
 
-        cli.sendToView(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(out, in)));
+        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(out, in)));
     }
 
     private void produce(Cli cli, PrintStream out, Scanner in) {
@@ -131,7 +131,7 @@ public class TurnBeforeActionState extends CliTurnState {
             input = cli.prompt(out, in, "Are you done? [Y/*]");
         }
 
-        cli.sendToView(new ReqActivateProduction(requests));
+        cli.dispatch(new ReqActivateProduction(requests));
     }
 
     private void swapShelves(Cli cli, PrintStream out, Scanner in) {
@@ -157,7 +157,7 @@ public class TurnBeforeActionState extends CliTurnState {
             }
 
             isValid = true;
-            cli.sendToView(new ReqSwapShelves(shelfid1, shelfid2));
+            cli.dispatch(new ReqSwapShelves(shelfid1, shelfid2));
 
             cli.repeatState("Swap request sent...");
         }
