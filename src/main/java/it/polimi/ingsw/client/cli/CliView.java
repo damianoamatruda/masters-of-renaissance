@@ -129,8 +129,8 @@ public class CliView extends View implements EventListener<VCEvent> {
     public void on(VCEvent event) {
         lastReq = event;
 
-//        if (eventPasser == null)
-//            throw new RuntimeException("Cannot send VCEvent: no passer available.");
+        // if (eventPasser == null)
+        //     throw new RuntimeException("Cannot send VCEvent: no passer available.");
         if(eventPasser != null)
             eventPasser.on(event);
     }
@@ -151,7 +151,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     private void on(ErrBuyDevCard event) {
         cli.repeatState(event.isStackEmpty() ?
             "Cannot buy development card. Deck is empty." :
-            "Cannot place devcard in slot, level mismatch."); // TODO improve msg
+            "Cannot place devcard in slot, level mismatch.");
     }
 
     private void on(ErrCardRequirements event) {
@@ -163,11 +163,11 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrInitialChoice event) {
-        cli.repeatState(event.isLeadersChoice() ?
+        cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
             event.getMissingLeadersCount() == 0 ?
-                "Leaders already chosen" :
+                "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
                 String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
-            "Resources already chosen");
+            "Resources already chosen");          // else it's from the resources choice
     }
 
     private void on(ErrNewGame event) {

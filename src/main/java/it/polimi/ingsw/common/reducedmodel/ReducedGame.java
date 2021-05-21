@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 
@@ -204,6 +205,9 @@ public class ReducedGame {
         this.productions = productions;
     }
 
+    /**
+     * @return the number of initial resources the player can choose
+     */
     public int getResourcesToChoose() {
         return this.setup.get(nickname).getInitialResources();
     }
@@ -224,10 +228,16 @@ public class ReducedGame {
         vaticanSections.set(vaticanSection, true);
     }
 
+    /**
+     * @return all resource containers
+     */
     public List<ReducedResourceContainer> getContainers() {
         return containers;
     }
 
+    /**
+     * @return all leader cards
+     */
     public List<ReducedLeaderCard> getLeaderCards() {
         return leaderCards;
     }
@@ -248,6 +258,10 @@ public class ReducedGame {
         return winner;
     }
 
+    /**
+     * @param nickname the player to get the victory points of
+     * @return         the player's victory points
+     */
     public int getVictoryPoints(String nickname) {
         return victoryPoints.get(nickname);
     }
