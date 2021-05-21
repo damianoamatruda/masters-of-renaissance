@@ -196,8 +196,8 @@ public class ReducedGame {
      * @param id the id of the production to be returned
      * @return   the production associated to the id
      */
-    public ReducedResourceTransactionRecipe getProduction(int id) {
-        return productions.stream().filter(p -> p.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
+        return productions.stream().filter(p -> p.getId() == id).findAny();
     }
 
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {

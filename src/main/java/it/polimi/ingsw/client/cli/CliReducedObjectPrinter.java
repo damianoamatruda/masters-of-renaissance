@@ -45,7 +45,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             .getRequirements().entrySet().stream()
             .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
         
-        update(cache.getProduction(newObject.getProduction()));
+        Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
+        if (prod.isPresent())
+            update(prod.get());
 
         System.out.println();
     }

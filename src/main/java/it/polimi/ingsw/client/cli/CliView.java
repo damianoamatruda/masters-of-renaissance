@@ -177,7 +177,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(ErrNickname event) {
-        cli.repeatState("Nickname is invalid. Reason: " + event.getReason().toString());
+        cli.repeatState("Nickname is invalid. Reason: " + event.getReason().toString().toLowerCase());
     }
 
     private void on(ErrObjectNotOwned event) {
@@ -236,7 +236,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateBookedSeats event) {
-        if(event.canPrepareNewGame().equals(cache.getNickname()) && !(lastReq instanceof ReqNewGame) && !(cli.getState() instanceof InputPlayersCountState))
+        if(event.canPrepareNewGame().equals(cache.getNickname()) && !(cli.getState() instanceof InputPlayersCountState))
             cli.setState(new InputPlayersCountState());
         else cli.setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
