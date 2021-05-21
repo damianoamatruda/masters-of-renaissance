@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 public class WaitingBeforeGameState extends CliState {
@@ -13,7 +14,7 @@ public class WaitingBeforeGameState extends CliState {
     }
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
         System.out.println("Waiting for a new game... " + bookedSeats + " player(s) joined");
     }
 }

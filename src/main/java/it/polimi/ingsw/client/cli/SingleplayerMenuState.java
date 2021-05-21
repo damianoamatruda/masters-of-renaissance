@@ -3,11 +3,12 @@ package it.polimi.ingsw.client.cli;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 public class SingleplayerMenuState extends CliState {
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
         Cli.clear(out);
         renderMainTitle(out);
         for (int i = 0; i < 2; i++)

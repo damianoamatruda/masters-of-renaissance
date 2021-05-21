@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.events.vcevents.ReqGoodbye;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
@@ -8,7 +9,7 @@ import java.util.Scanner;
 
 public class GameEndState extends CliState {
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
         if(cache.getWinner().equals(cache.getNickname()))
             System.out.println("You won with " + cache.getVictoryPoints(cache.getWinner()) + " points! CONGRATULATIONS!");
         else 

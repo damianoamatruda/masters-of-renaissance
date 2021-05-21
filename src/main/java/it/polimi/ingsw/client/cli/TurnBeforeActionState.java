@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
@@ -11,8 +12,10 @@ import java.io.PrintStream;
 import java.util.*;
 
 public class TurnBeforeActionState extends CliTurnState {
+    private ReducedGame cache;
+    private ReducedObjectPrinter printer;
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
+    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Buy a card", (menu) -> buyCard(cli, out, in)));
         entries.put('2', new Menu.Entry("Take market resources", (menu) -> getResources(cli, out, in, cache)));
@@ -20,8 +23,7 @@ public class TurnBeforeActionState extends CliTurnState {
         entries.put('L', new Menu.Entry("Leader action", (menu) -> leaderAction(cli, out, in)));
         entries.put('S', new Menu.Entry("Swap shelves", (menu) -> swapShelves(cli, out, in)));
 
-        new Menu(entries).render(cli, out, in, cache);
-
+        new Menu(entries).render(cli, out, in, cache, printer);
     }
 
     private void buyCard(Cli cli, PrintStream out, Scanner in) {
