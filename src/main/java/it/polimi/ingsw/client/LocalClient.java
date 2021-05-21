@@ -14,16 +14,16 @@ import java.util.concurrent.Executors;
 public class LocalClient {
     private final static String gameConfigPath = "/config/config.json";
 
-    private final ExecutorService executor;
     private final View view;
     private final Cli cli; // TODO: Make it compatible with other UIs
+    private final ExecutorService executor;
     private Controller controller;
     private NetworkHandler networkHandler;
 
     public LocalClient(View view, Cli cli) {
-        this.executor = Executors.newCachedThreadPool();
         this.view = view;
         this.cli = cli;
+        this.executor = Executors.newCachedThreadPool();
         this.controller = null;
         this.networkHandler = null;
     }
@@ -51,11 +51,11 @@ public class LocalClient {
     }
 
     public void stop() {
+        executor.shutdown();
+
         view.unregisterOnVC(cli);
         cli.unregisterOnMV(view);
 
-        executor.shutdown();
-        
         if (controller != null)
             controller.unregisterOnVC(view);
 

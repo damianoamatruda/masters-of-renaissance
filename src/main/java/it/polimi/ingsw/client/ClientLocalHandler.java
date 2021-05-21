@@ -11,7 +11,7 @@ public class ClientLocalHandler extends NetworkHandler {
 
     public ClientLocalHandler() {
         super(null, null);
-        eventQueue = new LinkedBlockingQueue<>();
+        this.eventQueue = new LinkedBlockingQueue<>();
     }
 
     public void run() {
@@ -22,7 +22,7 @@ public class ClientLocalHandler extends NetworkHandler {
             try {
                 event = eventQueue.take();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                listening = false;
                 break;
             }
             dispatch(event);

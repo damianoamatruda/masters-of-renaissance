@@ -47,9 +47,9 @@ public class ClientServerHandler extends NetworkHandler {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Exception caught when listening for a connection");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            // System.err.println("Exception caught when listening for a connection");
+            // System.err.println(e.getMessage());
+            // e.printStackTrace();
             send(new ReqGoodbye());
         } finally {
             this.out = null;

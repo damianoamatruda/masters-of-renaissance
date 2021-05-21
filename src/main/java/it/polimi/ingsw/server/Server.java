@@ -24,11 +24,17 @@ public class Server {
     private final static String gameConfigPath = "/config/config.json"; // TODO: Share this constant with LocalClient
 
     private final int port;
+    private final ExecutorService executor;
+    private final NetworkProtocol protocol;
+    private ServerSocket serverSocket;
     // private final Map<Socket, View> views;
     private volatile boolean listening;
 
     public Server(int port) {
         this.port = port;
+        this.executor = Executors.newCachedThreadPool();
+        this.protocol = new NetworkProtocol();
+        this.serverSocket = null;
         this.listening = false;
     }
 
@@ -44,54 +50,55 @@ public class Server {
 
         boolean connected = true;
         try {
-            new Server(port).execute();
+            new Server(port).start();
         } catch (IOException e) {
             connected = false;
             System.err.printf("Exception caught when trying to listen on port %d%n", port);
         }
     }
 
-    public void execute() throws IOException {
-        ExecutorService executor = Executors.newCachedThreadPool();
+    public void start() throws IOException {
+        serverSocket = new ServerSocket(port);
+
+        GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream(gameConfigPath));
+        Lobby model = new Lobby(gameFactory);
+        Controller controller = new Controller(model);
+
+        System.out.println("Server ready");
         listening = true;
+        while (listening) {
+            Socket socket;
 
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream(gameConfigPath));
-            Lobby model = new Lobby(gameFactory);
-            Controller controller = new Controller(model);
-
-            NetworkProtocol protocol = new NetworkProtocol();
-
-            System.out.println("Server ready");
-
-            while (listening) {
-                Socket clientSocket = serverSocket.accept();
-                NetworkHandler networkHandler = new ServerClientHandler(clientSocket, protocol);
-
-                networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
-                networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
-                networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
-                networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
-                networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
-                networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
-
-                View view = new VirtualView();
-                view.registerOnVC(networkHandler);
-                controller.registerOnVC(view);
-
-                networkHandler.registerOnMV(view);
-
-                executor.submit(networkHandler);
-
-                // TODO: Unregister when the socket or the server is closed
+            try {
+                socket = serverSocket.accept();
+            } catch (IOException e) {
+                // System.err.println("Exception caught when listening for a connection");
+                // System.err.println(e.getMessage());
+                continue;
             }
-        } finally {
-            executor.shutdown();
-            listening = false;
+
+            NetworkHandler networkHandler = new ServerClientHandler(socket, protocol);
+
+            networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
+            networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
+            networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
+            networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
+            networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
+            networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
+
+            View view = new VirtualView();
+            view.registerOnVC(networkHandler);
+            controller.registerOnVC(view);
+
+            networkHandler.registerOnMV(view);
+
+            executor.submit(networkHandler);
         }
+        stop();
     }
 
     public void stop() {
+        executor.shutdown();
         listening = false;
     }
 

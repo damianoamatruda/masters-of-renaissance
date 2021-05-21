@@ -14,26 +14,27 @@ import java.util.concurrent.Executors;
 public class NetworkClient {
     private final String host;
     private final int port;
-    private final ExecutorService executor;
     private final View view;
     private final Cli cli; // TODO: Make it compatible with other UIs
+    private final ExecutorService executor;
+    private final NetworkProtocol protocol;
     private Socket socket;
     private NetworkHandler networkHandler;
 
     public NetworkClient(String host, int port, View view, Cli cli) {
         this.host = host;
         this.port = port;
-        this.executor = Executors.newCachedThreadPool();
         this.view = view;
         this.cli = cli;
+        this.executor = Executors.newCachedThreadPool();
+        this.protocol = new NetworkProtocol();
         this.socket = null;
         this.networkHandler = null;
     }
 
     public void start() throws IOException {
-        this.socket = new Socket(host, port);
+        socket = new Socket(host, port);
 
-        NetworkProtocol protocol = new NetworkProtocol();
         networkHandler = new ClientServerHandler(socket, protocol);
 
         networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
@@ -55,10 +56,10 @@ public class NetworkClient {
     }
 
     public void stop() {
+        executor.shutdown();
+
         view.unregisterOnVC(cli);
         cli.unregisterOnMV(view);
-
-        executor.shutdown();
 
         if (socket != null) {
             try {
@@ -71,6 +72,7 @@ public class NetworkClient {
         if (networkHandler != null) {
             view.unregisterOnModelGame(networkHandler);
             view.unregisterOnModelPlayer(networkHandler);
+            networkHandler.stop();
             networkHandler = null;
         }
     }
@@ -91,7 +93,6 @@ public class NetworkClient {
 
     private void on(ReqGoodbye event, NetworkHandler networkHandler) {
         networkHandler.send(new ResGoodbye());
-        networkHandler.stop();
         stop();
     }
 

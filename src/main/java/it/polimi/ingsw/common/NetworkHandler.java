@@ -20,8 +20,8 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
         this.socket = socket;
         this.protocol = protocol;
 
-        this.in = null;
         this.out = null;
+        this.in = null;
         this.listening = false;
     }
 
