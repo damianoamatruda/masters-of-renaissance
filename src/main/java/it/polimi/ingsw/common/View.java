@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.vcevents.*;
 
 /** Interface defining the 'View' role in the MVC architecture. */
-public abstract class View extends EventDispatcher {
+public class View extends EventDispatcher {
     public void registerOnModelGame(EventDispatcher game) {
         game.addEventListener(ErrAction.class, this::dispatch);
         game.addEventListener(ErrActiveLeaderDiscarded.class, this::dispatch);

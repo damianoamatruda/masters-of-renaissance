@@ -70,6 +70,7 @@ public class NetworkClient {
         cli.unregisterOnMV(view);
 
         executor.shutdown();
+
         if (socket != null) {
             try {
                 socket.close();
