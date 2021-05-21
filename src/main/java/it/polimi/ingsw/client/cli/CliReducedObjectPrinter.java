@@ -179,11 +179,19 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void showWarehouseShelves(String player) {
         System.out.println(String.format("Showing %s's warehouse shelves:", player));
         cache.getPlayerWarehouseShelvesIDs(player).forEach(s -> {
-            System.out.println("ID: " + s + "Contents:");
+            System.out.println("Shelf ID: " + s + ", contents:");
             Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == s).findFirst();
             if (cont.isPresent())
                 cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
         });
+
+        System.out.println("\nShowing leader shelves:");
+
+        cache.getLeaderCards().stream()
+            .filter(lc -> lc.getContainerId() >= 0 &&
+                          cache.getPlayerLeaders(cache.getNickname()).contains(lc.getId()) &&
+                          lc.isActive())
+            .forEach(lc -> update(cache.getContainers().stream().filter(c -> c.getId() == lc.getContainerId()).findFirst().get()));
     }
 
     @Override
