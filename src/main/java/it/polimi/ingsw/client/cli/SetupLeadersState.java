@@ -22,8 +22,8 @@ public class SetupLeadersState extends CliState {
             e1.printStackTrace();
         }
 
-        System.out.println("Choosing leaders hand.");
-        System.out.println("Please input leader card IDs from the ones assigned to you.");
+        System.out.println("\nChoosing leaders hand.");
+        System.out.println("Please input leader card IDs from the ones assigned to you.\n");
 
         if (cache.getPlayerLeaders(cache.getNickname()) != null)
             cache.getPlayerLeaders(cache.getNickname()).forEach(id -> printer.showLeadersHand(cache.getNickname(), id));

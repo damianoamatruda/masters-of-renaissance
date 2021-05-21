@@ -45,6 +45,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             .getRequirements().entrySet().stream()
             .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
         
+        System.out.println();
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
         if (prod.isPresent())
             update(prod.get());
@@ -116,9 +117,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.println(String.format("Resource Container ID: %d, bounded resource: %s, dimensions: %d\n",
             newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
 
-        String contents = "";
-        newObject.getContent().entrySet().stream().forEach(e -> contents.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
-        System.out.println(contents);
+        newObject.getContent().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
     }
     
     @Override
@@ -179,10 +178,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void showWarehouseShelves(String player) {
         System.out.println(String.format("Showing %s's warehouse shelves:", player));
         cache.getPlayerWarehouseShelvesIDs(player).forEach(s -> {
-            System.out.println("Shelf ID: " + s + ", contents:");
             Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == s).findFirst();
             if (cont.isPresent())
-                cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+                update(cont.get());
         });
 
         System.out.println("\nShowing leader shelves:");

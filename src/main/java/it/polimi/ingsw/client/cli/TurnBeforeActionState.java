@@ -18,6 +18,12 @@ public class TurnBeforeActionState extends CliTurnState {
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
         this.cache = cache;
         this.printer = printer;
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         System.out.println(Cli.center("\n\nAvailable actions:\n"));
 
