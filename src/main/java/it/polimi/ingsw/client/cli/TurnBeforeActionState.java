@@ -77,6 +77,11 @@ public class TurnBeforeActionState extends CliTurnState {
     }
 
     private void getResources(Cli cli, PrintStream out, Scanner in, ReducedGame cache) {
+        System.out.println("Getting resources from the market:");
+
+        printer.update(cache.getMarket());
+        printer.showWarehouseShelves(cache.getNickname());
+        
         boolean isValid = false;
         boolean isRow = false;
         int index = -1;
@@ -135,6 +140,10 @@ public class TurnBeforeActionState extends CliTurnState {
     }
 
     private void swapShelves(Cli cli, PrintStream out, Scanner in) {
+        System.out.println("Swapping shelves:");
+
+        printer.showWarehouseShelves(cache.getNickname());
+
         int shelfid1, shelfid2;
         boolean isValid = false;
 
