@@ -2,16 +2,17 @@ package it.polimi.ingsw.client.cli;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
-    private final Cli cli;
+    private final ReducedGame cache;
 
-    public CliReducedObjectPrinter(Cli cli) {
-        this.cli = cli;
+    public CliReducedObjectPrinter(ReducedGame cache) {
+        this.cache = cache;
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.Map;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 
 public class ReducedGame {
-    private final ReducedObjectPrinter printer;
+    private ReducedObjectPrinter printer;
 
     private String nickname;
     private List<ReducedActionToken> actionTokens;
@@ -33,9 +33,7 @@ public class ReducedGame {
     private final Map<String, Integer> victoryPoints;
     private String winner;
 
-    public ReducedGame(ReducedObjectPrinter printer) {
-        this.printer = printer;
-
+    public ReducedGame() {
         actionTokens = new ArrayList<>();
         baseProductions = new HashMap<>();
         containers = new ArrayList<>();
@@ -50,6 +48,10 @@ public class ReducedGame {
         setup = new HashMap<>();
         vaticanSections = new ArrayList<>();
         victoryPoints = new HashMap<>();
+    }
+
+    public void setPrinter(ReducedObjectPrinter printer) {
+        this.printer = printer;
     }
 
     public ReducedActionToken getActionToken(int actionToken) {

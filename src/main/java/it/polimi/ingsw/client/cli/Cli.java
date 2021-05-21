@@ -26,6 +26,7 @@ public class Cli implements Ui {
 
     private final CliView view;
     private final ReducedGame cache;
+    private final ReducedObjectPrinter printer;
 
     private final Scanner scanner;
 
@@ -46,9 +47,10 @@ public class Cli implements Ui {
         
         this.stateQueue.add(new SplashState());
 
-        ReducedObjectPrinter printer = new CliReducedObjectPrinter(this);
-
-        this.cache = new ReducedGame(printer);
+        
+        this.cache = new ReducedGame();
+        this.printer = new CliReducedObjectPrinter(cache);
+        this.cache.setPrinter(printer);
         this.view = new CliView(cache, this, printer);
     }
 
@@ -118,7 +120,7 @@ public class Cli implements Ui {
         
         while (this.state != null) {
             System.out.println(state.getClass().getSimpleName());
-            state.render(this, System.out, scanner, this.cache);
+            state.render(this, System.out, scanner, cache, printer);
             try {
                 this.state = stateQueue.take();
             } catch (InterruptedException e) { e.printStackTrace(); }
