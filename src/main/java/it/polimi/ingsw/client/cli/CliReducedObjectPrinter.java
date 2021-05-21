@@ -60,6 +60,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         List<Integer> topCards = new ArrayList<>();
         newObject.getGrid().entrySet().stream().forEach(e -> topCards.addAll(e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
 
+        System.out.println();
         topCards.forEach(id -> update(cache.getDevCard(id)));
     }
 
@@ -93,6 +94,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         }
 
         System.out.println();
+        update(cache.getDevCard(newObject.getProduction()));
     }
 
     @Override
