@@ -191,6 +191,8 @@ public class Cli implements Ui {
     }
 
     public Map<String, Integer> promptResources(PrintStream out, Scanner in) {
+        System.out.println("Choosing blank resource replacements:");
+
         String resource;
         int amount;
         String input;
@@ -198,11 +200,11 @@ public class Cli implements Ui {
 
         input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            resource = prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Or else Enter to skip)");
+            resource = prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Enter to skip)");
             if(resource.isEmpty())
                 break;
 
-            input = prompt(out, in, "How many?");
+            input = prompt(out, in, "How many blanks would you like to replace?");
             try {
                 amount = Integer.parseInt(input);
             } catch (NumberFormatException e) {
