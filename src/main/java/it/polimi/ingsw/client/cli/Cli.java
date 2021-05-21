@@ -23,7 +23,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import static it.polimi.ingsw.client.cli.CliState.renderMainTitle;
 
 public class Cli extends EventDispatcher implements Ui {
-    static final int width = 80;
+    static final int width = 160;
 
     private final View view;
 
@@ -125,7 +125,10 @@ public class Cli extends EventDispatcher implements Ui {
         } catch (InterruptedException e) { e.printStackTrace(); }
         
         while (this.state != null) {
-            System.out.println(state.getClass().getSimpleName());
+            System.out.println();
+            for(int i = 0; i < width; i++) System.out.print("-");
+            System.out.println();
+            System.out.println("\u001b[31m" + Cli.center(state.getClass().getSimpleName()) + "\u001B[0m");
             state.render(this, System.out, scanner, cache, printer);
             try {
                 this.state = stateQueue.take();
@@ -548,7 +551,7 @@ public class Cli extends EventDispatcher implements Ui {
 
         /* if market update originates from my command and not from others' (base action) */
         //might be problematic if this command is sent while not current player, but immediately after sb else activates market
-        if(lastReq instanceof ReqTakeFromMarket)
+        if(state instanceof TurnBeforeActionState)
             setState(new TurnAfterActionState());
     }
 
@@ -568,7 +571,7 @@ public class Cli extends EventDispatcher implements Ui {
         cache.setContainer(event.getResContainer());
 
         /* if update comes from my production activation (base action) */
-        if(lastReq instanceof ReqActivateProduction)
+        if(state instanceof TurnBeforeActionState)
             setState(new TurnAfterActionState());
     }
 

@@ -199,11 +199,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     private String printColor(String colorName) {
+        if(colorName == null) return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
         String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
     }
 
     private String printResource(String resourceType) {
+        if(resourceType == null)  return "Ø";
         String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
