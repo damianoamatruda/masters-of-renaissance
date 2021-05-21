@@ -58,8 +58,11 @@ public class ServerClientHandler implements Runnable, EventPasser {
             int halfTimeout = 0;
             while (listening) {
                 try {
-                    if ((inputLine = in.readLine()) == null)
+                    if ((inputLine = in.readLine()) == null) {
+                        view.dispatch(new ReqGoodbye());
                         break;
+                    }
+
                     try {
                         halfTimeout = 0;
 
