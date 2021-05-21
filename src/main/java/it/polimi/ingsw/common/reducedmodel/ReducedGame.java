@@ -192,6 +192,14 @@ public class ReducedGame {
         this.playerWarehouseShelves.put(player, shelves);
     }
 
+    /**
+     * @param id the id of the production to be returned
+     * @return   the production associated to the id
+     */
+    public ReducedResourceTransactionRecipe getProduction(int id) {
+        return productions.stream().filter(p -> p.getId() == id).findAny().orElseThrow();
+    }
+
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
         this.productions = productions;
     }
