@@ -591,6 +591,10 @@ public class GameContext {
     }
 
     private Map<ResourceType, Integer> translateResMap(Map<String, Integer> r) {
-        return r.entrySet().stream().collect(Collectors.toMap(e -> gameFactory.getResourceType(e.getKey()).orElseThrow(), e -> e.getValue()));
+        return r.entrySet().stream().collect(Collectors.toMap(e -> {
+            String name = e.getKey().substring(0, 1).toUpperCase() + e.getKey().substring(1);
+            return gameFactory.getResourceType(name).orElseThrow();
+        }, e -> e.getValue()
+        ));
     }
 }
