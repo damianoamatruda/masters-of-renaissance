@@ -204,4 +204,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         if (cont.isPresent())
             cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
     }
+
+    @Override
+    public void showPlayerSlots(String player) {
+        System.out.println("Showing" + player + "'s development card slots:");
+        if (cache.getPlayerDevSlots(player) != null)
+            cache.getPlayerDevSlots(player).entrySet().stream().forEach(e -> System.out.println("Slot " + e.getKey() + ", card ID: " + e.getValue()));
+    }
 }

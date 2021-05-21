@@ -254,7 +254,9 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateDevCardSlot event) {
-        cli.setState(new TurnAfterActionState());
+        cache.setPlayerDevSlot(cache.getCurrentPlayer(), event.getDevSlot(), event.getDevCard());
+        if (lastReq instanceof ReqBuyDevCard)
+            cli.setState(new TurnAfterActionState());
     }
 
     private void on(UpdateFaithPoints event) {

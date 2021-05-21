@@ -22,4 +22,5 @@ public interface ReducedObjectPrinter {
     public void showLeadersHand(String player, int leaderId);
     public void showWarehouseShelves(String player);
     public void showStrongbox(String player);
+    public void showPlayerSlots(String player);
 }

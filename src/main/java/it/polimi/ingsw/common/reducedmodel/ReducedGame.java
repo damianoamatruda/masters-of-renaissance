@@ -23,6 +23,7 @@ public class ReducedGame {
     private List<ReducedLeaderCard> leaderCards;
     private ReducedMarket market;
     private List<String> players;
+    private final Map<String, Map<Integer, Integer>> playerDevSlots;
     private final Map<String, Boolean> playerState;
     private final Map<String, List<Integer>> playerLeaders;
     private final Map<String, Integer> playerLeadersCount;
@@ -41,6 +42,7 @@ public class ReducedGame {
         developmentCards = new ArrayList<>();
         players = new ArrayList<>();
         playerState = new HashMap<>();
+        playerDevSlots = new HashMap<>();
         playerLeaders = new HashMap<>();
         playerLeadersCount = new HashMap<>();
         playerStrongbox = new HashMap<>();
@@ -156,6 +158,22 @@ public class ReducedGame {
 
     public void setPlayerState(String player, boolean newState) {
         this.playerState.put(player, newState);
+    }
+
+    public Map<Integer, Integer> getPlayerDevSlots(String player) {
+        return playerDevSlots.get(player);
+    }
+
+    public void setPlayerDevSlot(String player, int devSlot, int cardId) {
+        this.playerDevSlots.compute(player, (p, slots) -> {
+            Map<Integer, Integer> slotMap = new HashMap<>();
+            if (slots != null) slotMap = slots;
+
+            slotMap.put(devSlot, cardId);
+            return slotMap;
+        });
+
+        printer.showPlayerSlots(player);
     }
 
     public List<Integer> getPlayerLeaders(String player) {
