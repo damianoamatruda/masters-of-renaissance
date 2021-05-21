@@ -308,7 +308,7 @@ public class CliView extends View implements EventListener<VCEvent> {
 
         if(event.getLeaders().size() > cache.getLeadersToChoose())
             cli.setState(new SetupLeadersState(event.getLeaders().size() - cache.getLeadersToChoose()));
-        else if(cache.getResourcesToChoose() > 0)
+        else if(cache.getResourcesToChoose() > 0 && !(cli.getState() instanceof SetupResourcesState))
             cli.setState(new SetupResourcesState(cache.getResourcesToChoose()));
     }
 
