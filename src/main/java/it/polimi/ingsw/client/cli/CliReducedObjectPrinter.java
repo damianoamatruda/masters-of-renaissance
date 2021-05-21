@@ -19,14 +19,14 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getKind()
         );
         System.out.println(newObject.getDiscardedDevCardColor() == null ? "" : 
-            String.format("Color of discarded development card: %s\n", newObject.getDiscardedDevCardColor()));
+            String.format("Color of discarded development card: %s\n", printColor(newObject.getDiscardedDevCardColor())));
     }
 
     @Override
     public void update(ReducedDevCard newObject) {
         System.out.printf("Development Card ID: %d, color: %s%n",
             newObject.getId(),
-            newObject.getColor()
+                printColor(newObject.getColor())
         );
         System.out.printf("Level: %d, VP: %d%n",
             newObject.getLevel(),
@@ -38,7 +38,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.println("Requirements (resources):");
 
         newObject.getCost()
-                .getRequirements().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
+                .getRequirements().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
 
         System.out.println();
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
@@ -80,11 +80,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         if (newObject.getDevCardRequirement() != null) {
             System.out.println("Requirements (development cards):");
             newObject.getDevCardRequirement().getEntries()
-                .forEach(e -> System.out.println("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));
+                .forEach(e -> System.out.println("Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));
         }
         if (newObject.getResourceRequirement() != null) {
             System.out.println("Requirements (resources):");
-            newObject.getResourceRequirement().getRequirements().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
+            newObject.getResourceRequirement().getRequirements().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
         }
 
         System.out.println();
@@ -102,15 +102,15 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         });
         System.out.print("\n");
         System.out.println("Slide resource: " + newObject.getSlide());
-        System.out.println("Replaceable resource type: " + newObject.getReplaceableResType() + "\n");
+        System.out.println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
     }
 
     @Override
     public void update(ReducedResourceContainer newObject) {
         System.out.printf("Resource Container ID: %d, bounded resource: %s, dimensions: %d%n",
-                newObject.getId(), newObject.getboundedResType(), newObject.getDimensions());
+                newObject.getId(), printResource(newObject.getboundedResType()), newObject.getDimensions());
 
-        newObject.getContent().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
+        newObject.getContent().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
         System.out.println();
     }
     
@@ -120,7 +120,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getId());
 
         System.out.println("Input:");
-        newObject.getInput().forEach((key1, value1) -> System.out.println("Resource type: " + key1 + ", amount: " + value1));
+        newObject.getInput().forEach((key1, value1) -> System.out.println("Resource type: " + printResource(key1) + ", amount: " + value1));
 
         System.out.printf("Input blanks: %d%n",
             newObject.getInputBlanks());
@@ -129,13 +129,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
         System.out.println("Output:");
-        newObject.getOutput().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
+        newObject.getOutput().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
 
         System.out.printf("Output blanks: %d%n",
             newObject.getOutputBlanks());
         
         System.out.println("Output blanks exclusions:");
-        newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
+        newObject.getInputBlanksExclusions().forEach(e -> System.out.print(printResource(e) + ", "));
 
         System.out.println(newObject.isDiscardableOutput() ? "Output is discardable\n" : "");
     }
@@ -161,6 +161,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     @Override
     public void showLeadersHand(String player, int leaderId) {
         System.out.printf("Leader %d now owned by player %s.%n", leaderId, player);
+        // print actual leader
     }
 
     @Override
@@ -187,7 +188,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         int id = cache.getPlayerStrongboxID(player);
 
         Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == id).findFirst();
-        cont.ifPresent(reducedResourceContainer -> reducedResourceContainer.getContent().forEach((key, value) -> System.out.println(key + ": " + value)));
+        cont.ifPresent(reducedResourceContainer -> reducedResourceContainer.getContent().forEach((key, value) -> System.out.println(printResource(key) + ": " + value)));
     }
 
     @Override
@@ -199,11 +200,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     private String printColor(String colorName) {
         String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
-        return color + "⚫" + "\u001B[0m";
+        return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
     }
 
     private String printResource(String resourceType) {
         String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
-        return color + "⚫" + "\u001B[0m";
+        return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
 }
