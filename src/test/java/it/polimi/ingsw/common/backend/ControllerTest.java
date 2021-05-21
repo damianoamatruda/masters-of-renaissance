@@ -3,7 +3,6 @@ package it.polimi.ingsw.common.backend;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializer;
-import it.polimi.ingsw.common.EventPasser;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
 import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
@@ -37,7 +36,7 @@ public class ControllerTest {
 
         public DummyView() {
             replies = new ArrayList<>();
-            setEventPasser(new ListEventPasser(replies));
+            // setEventPasser(new ListEventPasser(replies));
         }
 
         public Event getLastMsg() {
@@ -66,23 +65,23 @@ public class ControllerTest {
             })
             .setPrettyPrinting().create();
 
-    static class ListEventPasser implements EventPasser {
-        List<Event> replies;
+    // static class ListEventPasser implements EventPasser {
+    //     List<Event> replies;
+    //
+    //     public ListEventPasser(List<Event> replies) {
+    //         this.replies = replies;
+    //     }
 
-        public ListEventPasser(List<Event> replies) {
-            this.replies = replies;
-        }
+    //     @Override
+    //     public void on(Event event) {
+    //         replies.add(event);
+    //     }
 
-        @Override
-        public void on(Event event) {
-            replies.add(event);
-        }
+    //     @Override
+    //     public void stop() {
+    //         // TODO Auto-generated method stub
 
-        @Override
-        public void stop() {
-            // TODO Auto-generated method stub
+    //     }
 
-        }
-
-    }
+    // }
 }

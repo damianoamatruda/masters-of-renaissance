@@ -4,11 +4,7 @@ import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.*;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -96,13 +92,13 @@ public class Player extends EventDispatcher {
     }
 
     public void dispatchResumeState(View view) {
-        view.on(new UpdatePlayer(
+        view.dispatch(new UpdatePlayer(
                 nickname,
                 baseProduction.getId(),
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
                 setup.reduce()));
-        view.on(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
+        view.dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
     }
 
     /**

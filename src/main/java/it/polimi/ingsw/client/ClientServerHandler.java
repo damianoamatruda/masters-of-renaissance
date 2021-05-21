@@ -1,152 +1,54 @@
 package it.polimi.ingsw.client;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import it.polimi.ingsw.common.EventDispatcher;
-import it.polimi.ingsw.common.EventPasser;
-import it.polimi.ingsw.common.Protocol;
-import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.Event;
-import it.polimi.ingsw.common.events.vcevents.ResHeartbeat;
+import it.polimi.ingsw.common.NetworkHandler;
+import it.polimi.ingsw.common.NetworkProtocol;
+import it.polimi.ingsw.common.NetworkProtocolException;
+import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
+import it.polimi.ingsw.common.events.netevents.ReqWelcome;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class ClientServerHandler extends EventDispatcher implements EventPasser {
-    private final static String heartbeatInputType = "ReqHeartbeat";
-    private final static String heartbeatOutputType = "ResHeartbeat";
-    private final static String quitInputType = "ResGoodbye";
-    private final static String quitOutputType = "ReqQuit";
-
-    private final String host;
-    private final int port;
-    private final ExecutorService executor;
-    private Socket socket;
-    private final View view;
-    private final Protocol protocol;
-    private PrintWriter out;
-
-    public ClientServerHandler(String host, int port, View view) {
-        this.host = host;
-        this.port = port;
-        this.executor = Executors.newFixedThreadPool(2);
-        this.socket = null;
-        this.view = view;
-        this.protocol = new Protocol();
-
-        this.view.setEventPasser(this);
-        this.view.registerToModelGame(this);    //name of method must be changed
-
-        this.out = null;
+public class ClientServerHandler extends NetworkHandler {
+    public ClientServerHandler(Socket socket, NetworkProtocol protocol) {
+        super(socket, protocol);
     }
 
-    public void start() throws IOException {
-        try {
-            socket = new Socket(host, port);
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host " + host);
-            throw e;
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + host + " when creating the socket");
-            throw e;
-        }
+    public void run() {
+        try (
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+        ) {
+            this.out = out;
+            this.in = in;
+            String inputLine;
 
-        try {
-            out = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + host + " for output stream");
-            throw e;
-        }
+            send(new ReqWelcome());
 
-        executor.submit(this::runReceive);
-        // executor.submit(this::runSend);
-    }
-
-    @Override
-    public void stop() {
-        if (out != null) {
-            out.close();
-            out = null;
-        }
-
-        executor.shutdown();
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException ignored) {
-            }
-            socket = null;
-        }
-    }
-
-    private void runReceive() {
-        Gson gson = new Gson();
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-            String fromServer;
-            JsonObject jsonObject;
-            while ((fromServer = in.readLine()) != null) {
-                System.out.println(fromServer); // will be removed as soon as uis are complete
+            listening = true;
+            while (listening) {
+                if ((inputLine = in.readLine()) == null)
+                    break;
                 try {
-                    jsonObject = gson.fromJson(fromServer, JsonObject.class);
-                    if (jsonObject != null && jsonObject.get("type") != null) {
-                        if (jsonObject.get("type").getAsString().equals(quitInputType)) {
-                            System.out.println("[Client] Goodbye message from server. Ending thread 'runReceive'...");
-                            dispatch(protocol.processInputAsMVEvent(fromServer));
-                            break;
-                        } else if (jsonObject.get("type").getAsString().equals(heartbeatInputType)) {
-                            on(new ResHeartbeat());
-                       }
+                    dispatch(protocol.processInputAsNetEvent(inputLine));
+                } catch (NetworkProtocolException e1) {
+                    try {
+                        dispatch(protocol.processInputAsMVEvent(inputLine));
+                    } catch (NetworkProtocolException e2) {
+                        send(new ErrProtocol(e2));
                     }
-                    dispatch(protocol.processInputAsMVEvent(fromServer));
-                } catch (JsonSyntaxException ignored) {
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + host + " for input stream");
+            System.err.println("Exception caught when listening for a connection");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            this.out = null;
+            this.in = null;
         }
-        stop();
-    }
-
-    private void runSend() {
-        // Gson gson = new Gson();
-        // try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
-        //     this.out = out;
-        //    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        //     String fromClient;
-        //     JsonObject jsonObject;
-        //     while ((fromClient = stdIn.readLine()) != null) {
-        //        out.println(fromClient);
-        //        try {
-        //            jsonObject = gson.fromJson(fromClient, JsonObject.class);
-        //            if (jsonObject != null && jsonObject.get("type") != null && jsonObject.get("type").getAsString().equals(quitOutputType)) { /* Necessary as stdIn::readLine is a blocking operation */
-        //                System.out.println("[Client] Quit message from client. Ending thread 'runSend'...");
-        //                break;
-        //            }
-        //        } catch (JsonSyntaxException ignored) {
-        //        }
-        //     }
-        // } catch (IOException e) {
-        //     System.err.println("Couldn't get I/O for the connection to " + host + " for output stream");
-        // }
-        // stop();
-    }
-
-    @Override
-    public void on(Event event) {
-        send(protocol.processOutput(event));
-    }
-
-    private void send(String output) {
-        if (out != null)
-            out.println(output);
     }
 }
