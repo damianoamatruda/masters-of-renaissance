@@ -236,7 +236,7 @@ public class CliView extends View implements EventListener<VCEvent> {
     }
 
     private void on(UpdateBookedSeats event) {
-        if(event.canPrepareNewGame().equals(cache.getNickname()) && !(cli.getState() instanceof InputPlayersCountState))
+        if(event.canPrepareNewGame().equals(cache.getNickname()) && (!(cli.getState() instanceof InputPlayersCountState) || !(cli.getState() instanceof WaitingBeforeGameState)))
             cli.setState(new InputPlayersCountState());
         else cli.setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
