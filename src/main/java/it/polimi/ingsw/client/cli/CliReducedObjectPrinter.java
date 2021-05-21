@@ -3,10 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.reducedmodel.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private final ReducedGame cache;
@@ -17,37 +14,35 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedActionToken newObject) {
-        System.out.println(String.format("ActionToken ID: %d, kind: %s",
+        System.out.printf("ActionToken ID: %d, kind: %s%n",
             newObject.getId(),
             newObject.getKind()
-        ));
+        );
         System.out.println(newObject.getDiscardedDevCardColor() == null ? "" : 
             String.format("Color of discarded development card: %s\n", newObject.getDiscardedDevCardColor()));
     }
 
     @Override
     public void update(ReducedDevCard newObject) {
-        System.out.println(String.format("Development Card ID: %d, color: %s",
+        System.out.printf("Development Card ID: %d, color: %s%n",
             newObject.getId(),
             newObject.getColor()
-        ));
-        System.out.println(String.format("Level: %d, VP: %d",
+        );
+        System.out.printf("Level: %d, VP: %d%n",
             newObject.getLevel(),
             newObject.getVictoryPoints()
-        ));
-        System.out.println(String.format("Production ID: %d",
+        );
+        System.out.printf("Production ID: %d%n",
             newObject.getProduction()
-        ));
+        );
         System.out.println("Requirements (resources):");
 
         newObject.getCost()
-                .getRequirements().entrySet().stream()
-                .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
+                .getRequirements().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
 
         System.out.println();
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
-        if (prod.isPresent())
-            update(prod.get());
+        prod.ifPresent(this::update);
 
         System.out.println();
     }
@@ -55,10 +50,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     @Override
     public void update(ReducedDevCardGrid newObject) {
         System.out.println("Development card grid state:");
-        newObject.getGrid().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
+        newObject.getGrid().forEach((key, value) -> System.out.println(key + ": " + value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
         
         List<Integer> topCards = new ArrayList<>();
-        newObject.getGrid().entrySet().stream().forEach(e -> topCards.addAll(e.getValue().stream().filter(s -> s != null).map(s -> s.peek()).toList()));
+        newObject.getGrid().forEach((key, value) -> topCards.addAll(value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
 
         System.out.println();
         topCards.forEach(id -> update(cache.getDevCard(id)));
@@ -66,38 +61,36 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedLeaderCard newObject) {
-        System.out.println(String.format("Leader Card ID: %d, type: %s",
+        System.out.printf("Leader Card ID: %d, type: %s%n",
             newObject.getId(),
             newObject.getLeaderType()
-        ));
-        System.out.println(String.format("BoundResource: %s, VP: %d",
+        );
+        System.out.printf("BoundResource: %s, VP: %d%n",
             newObject.getResourceType(),
             newObject.getVictoryPoints()
-        ));
-        System.out.println(String.format("Active status: %s, depot ID: %d",
+        );
+        System.out.printf("Active status: %s, depot ID: %d%n",
             newObject.isActive(),
             newObject.getContainerId()
-        ));
-        System.out.println(String.format("Production ID: %d, discount: %d",
+        );
+        System.out.printf("Production ID: %d, discount: %d%n",
             newObject.getProduction(),
             newObject.getDiscount()
-        ));
+        );
         if (newObject.getDevCardRequirement() != null) {
             System.out.println("Requirements (development cards):");
-            newObject.getDevCardRequirement().getEntries().stream()
+            newObject.getDevCardRequirement().getEntries()
                 .forEach(e -> System.out.println("Color: " + e.getColor() + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));
         }
         if (newObject.getResourceRequirement() != null) {
             System.out.println("Requirements (resources):");
-            newObject.getResourceRequirement().getRequirements().entrySet().stream()
-                    .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
+            newObject.getResourceRequirement().getRequirements().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
         }
 
         System.out.println();
 
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
-        if (prod.isPresent())
-            update(prod.get());
+        prod.ifPresent(this::update);
     }
 
     @Override
@@ -114,32 +107,32 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedResourceContainer newObject) {
-        System.out.println(String.format("Resource Container ID: %d, bounded resource: %s, dimensions: %d",
-                newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
+        System.out.printf("Resource Container ID: %d, bounded resource: %s, dimensions: %d%n",
+                newObject.getId(), newObject.getboundedResType(), newObject.getDimensions());
 
-        newObject.getContent().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
+        newObject.getContent().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
         System.out.println();
     }
     
     @Override
     public void update(ReducedResourceTransactionRecipe newObject) {
-        System.out.println(String.format("Production ID: %d",
-            newObject.getId()));
+        System.out.printf("Production ID: %d%n",
+            newObject.getId());
 
         System.out.println("Input:");
-        newObject.getInput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
+        newObject.getInput().forEach((key1, value1) -> System.out.println("Resource type: " + key1 + ", amount: " + value1));
 
-        System.out.println(String.format("Input blanks: %d",
-            newObject.getInputBlanks()));
+        System.out.printf("Input blanks: %d%n",
+            newObject.getInputBlanks());
         
         System.out.println("Input blanks exclusions:");
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
         System.out.println("Output:");
-        newObject.getOutput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
+        newObject.getOutput().forEach((key, value) -> System.out.println("Resource type: " + key + ", amount: " + value));
 
-        System.out.println(String.format("Output blanks: %d",
-            newObject.getOutputBlanks()));
+        System.out.printf("Output blanks: %d%n",
+            newObject.getOutputBlanks());
         
         System.out.println("Output blanks exclusions:");
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
@@ -162,21 +155,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void showBaseProductions(Map<String, Integer> baseProductions) {
         System.out.println("Base productions:");
 
-        baseProductions.entrySet().stream().forEach(e -> System.out.println("Player: " + e.getKey() + ", baseprod ID: " + e.getValue()));
+        baseProductions.forEach((key, value) -> System.out.println("Player: " + key + ", baseprod ID: " + value));
     }
 
     @Override
     public void showLeadersHand(String player, int leaderId) {
-        System.out.println(String.format("Leader %d now owned by player %s.", leaderId, player));
+        System.out.printf("Leader %d now owned by player %s.%n", leaderId, player);
     }
 
     @Override
     public void showWarehouseShelves(String player) {
-        System.out.println(String.format("Showing %s's warehouse shelves:", player));
+        System.out.printf("Showing %s's warehouse shelves:%n", player);
         cache.getPlayerWarehouseShelvesIDs(player).forEach(s -> {
             Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == s).findFirst();
-            if (cont.isPresent())
-                update(cont.get());
+            cont.ifPresent(this::update);
         });
 
         System.out.println("\nShowing leader shelves:");
@@ -185,25 +177,24 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             .filter(lc -> lc.getContainerId() >= 0 &&
                           cache.getPlayerLeaders(cache.getNickname()).contains(lc.getId()) &&
                           lc.isActive())
-            .forEach(lc -> update(cache.getContainers().stream().filter(c -> c.getId() == lc.getContainerId()).findFirst().get()));
+            .forEach(lc -> update(cache.getContainers().stream().filter(c -> c.getId() == lc.getContainerId()).findFirst().orElseThrow()));
     }
 
     @Override
     public void showStrongbox(String player) {
-        System.out.println(String.format("Showing %s's strongbox:", player));
+        System.out.printf("Showing %s's strongbox:%n", player);
 
         int id = cache.getPlayerStrongboxID(player);
 
         Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == id).findFirst();
-        if (cont.isPresent())
-            cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+        cont.ifPresent(reducedResourceContainer -> reducedResourceContainer.getContent().forEach((key, value) -> System.out.println(key + ": " + value)));
     }
 
     @Override
     public void showPlayerSlots(String player) {
         System.out.println("Showing" + player + "'s development card slots:");
         if (cache.getPlayerDevSlots(player) != null)
-            cache.getPlayerDevSlots(player).entrySet().stream().forEach(e -> System.out.println("Slot " + e.getKey() + ", card ID: " + e.getValue()));
+            cache.getPlayerDevSlots(player).forEach((key, value) -> System.out.println("Slot " + key + ", card ID: " + value));
     }
 
     private String printColor(String colorName) {
