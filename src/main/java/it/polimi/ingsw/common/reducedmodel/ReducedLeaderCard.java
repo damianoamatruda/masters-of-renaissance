@@ -19,7 +19,6 @@ public class ReducedLeaderCard {
      * @param resourceType
      * @param leaderType
      * @param isActive
-     * @param requirement
      * @param containerId
      * @param discount
      * @param production
