@@ -120,26 +120,25 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     
     @Override
     public void update(ReducedResourceTransactionRecipe newObject) {
-        System.out.println(String.format("Production ID: %d\n",
+        System.out.println(String.format("Production ID: %d",
             newObject.getId()));
 
-        String input = "", output = "";
-        newObject.getInput().entrySet().stream().forEach(e -> input.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
-        System.out.println("Input:\n" + input);
+        System.out.println("Input:");
+        newObject.getInput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
 
-        System.out.println(String.format("Input blanks: %d\n",
+        System.out.println(String.format("Input blanks: %d",
             newObject.getInputBlanks()));
         
-        System.out.println("Input blanks exclusions:\n");
+        System.out.println("Input blanks exclusions:");
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
-        newObject.getOutput().entrySet().stream().forEach(e -> output.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue()) + "\n"));
-        System.out.println("Output:\n" + output);
+        System.out.println("Output:");
+        newObject.getOutput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
 
-        System.out.println(String.format("Output blanks: %d\n",
+        System.out.println(String.format("Output blanks: %d",
             newObject.getOutputBlanks()));
         
-        System.out.println("Output blanks exclusions:\n");
+        System.out.println("Output blanks exclusions:");
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
         System.out.println(newObject.isDiscardableOutput() ? "Output is discardable\n" : "");
@@ -152,7 +151,8 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void showPlayers(List<String> nicknames) {
-        nicknames.forEach(n -> System.out.println(n));
+        System.out.println("Players:");
+        nicknames.forEach(n -> System.out.print(n + ", "));
     }
 
     @Override
