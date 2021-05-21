@@ -94,7 +94,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         }
 
         System.out.println();
-        update(cache.getDevCard(newObject.getProduction()));
+
+        Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
+        if (prod.isPresent())
+            update(prod.get());
     }
 
     @Override
