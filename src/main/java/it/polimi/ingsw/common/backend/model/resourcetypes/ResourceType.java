@@ -11,7 +11,7 @@ public class ResourceType {
     /** The name of the resource type. */
     private final String name;
 
-    private final String hex;
+    private final String colorValue;
 
     /**
      * <code>true</code> if the resources of this type can be stored in a resource container; <code>false</code>
@@ -29,7 +29,7 @@ public class ResourceType {
     public ResourceType(String name, boolean storable) {
         this.name = name;
         this.storable = storable;
-        this.hex = "#ffffff";
+        this.colorValue = "#ffffff";
     }
 
     /**
@@ -96,6 +96,6 @@ public class ResourceType {
     }
 
     public ReducedResourceType reduce() {
-        return new ReducedResourceType(name, hex);
+        return new ReducedResourceType(name, colorValue);
     }
 }

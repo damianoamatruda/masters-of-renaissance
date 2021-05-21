@@ -1,18 +1,18 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 public class ReducedColor {
-    private String name, hex;
+    private String name, colorValue;
 
-    public ReducedColor(String name, String hex) {
+    public ReducedColor(String name, String colorValue) {
         this.name = name;
-        this.hex = hex;
+        this.colorValue = colorValue;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getHex() {
-        return hex;
+    public String getcolorValue() {
+        return colorValue;
     }
 }

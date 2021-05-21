@@ -9,7 +9,7 @@ public class DevCardColor {
     /** The name of the development card color. */
     private final String name;
 
-    private final String hex;
+    private final String colorValue;
 
     /**
      * Constructor of the development card color.
@@ -18,7 +18,7 @@ public class DevCardColor {
      */
     public DevCardColor(String name) {
         this.name = name;
-        this.hex = "#ffffff";
+        this.colorValue = "#ffffff";
     }
 
     /**
@@ -36,6 +36,6 @@ public class DevCardColor {
     }
 
     public ReducedColor reduce() {
-        return new ReducedColor(name, hex);
+        return new ReducedColor(name, colorValue);
     }
 }

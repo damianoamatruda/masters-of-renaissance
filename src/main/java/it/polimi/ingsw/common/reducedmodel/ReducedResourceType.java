@@ -1,19 +1,19 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 public class ReducedResourceType {
-    private String name, hex;
+    private String name, colorValue;
 
-    public ReducedResourceType(String name, String hex) {
+    public ReducedResourceType(String name, String colorValue) {
         this.name = name;
-        this.hex = hex;
+        this.colorValue = colorValue;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getHex() {
-        return hex;
+    public String getcolorValue() {
+        return colorValue;
     }
 
 }

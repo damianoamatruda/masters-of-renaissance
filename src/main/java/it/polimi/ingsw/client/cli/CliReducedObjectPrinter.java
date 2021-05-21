@@ -207,12 +207,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     private String printColor(String colorName) {
-        String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getHex).findAny().orElseThrow();
+        String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
         return color + "⚫" + "\u001B[0m";
     }
 
     private String printResource(String resourceType) {
-        String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getHex).findAny().orElseThrow();
+        String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
         return color + "⚫" + "\u001B[0m";
     }
 }
