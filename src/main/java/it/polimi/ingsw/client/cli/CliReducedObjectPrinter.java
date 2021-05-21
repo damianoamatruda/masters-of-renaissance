@@ -1,13 +1,12 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.common.reducedmodel.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.common.events.mvevents.*;
-import it.polimi.ingsw.common.reducedmodel.*;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private final ReducedGame cache;
@@ -40,11 +39,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getProduction()
         ));
         System.out.println("Requirements (resources):");
-        
+
         newObject.getCost()
-            .getRequirements().entrySet().stream()
-            .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
-        
+                .getRequirements().entrySet().stream()
+                .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
+
+        System.out.println();
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
         if (prod.isPresent())
             update(prod.get());
@@ -90,7 +90,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         if (newObject.getResourceRequirement() != null) {
             System.out.println("Requirements (resources):");
             newObject.getResourceRequirement().getRequirements().entrySet().stream()
-                .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
+                    .forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
         }
 
         System.out.println();
@@ -104,21 +104,21 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void update(ReducedMarket newObject) {
         System.out.println("Market:");
         newObject.getGrid().forEach(r -> {
-            r.forEach(res -> System.out.print(res + " "));
+            r.forEach(res -> System.out.print(res + "\t"));
             System.out.print("\n");
         });
+        System.out.print("\n");
         System.out.println("Slide resource: " + newObject.getSlide());
         System.out.println("Replaceable resource type: " + newObject.getReplaceableResType() + "\n");
     }
 
     @Override
     public void update(ReducedResourceContainer newObject) {
-        System.out.println(String.format("Resource Container ID: %d, bounded resource: %s, dimensions: %d\n",
-            newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
+        System.out.println(String.format("Resource Container ID: %d, bounded resource: %s, dimensions: %d",
+                newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
 
-        String contents = "";
-        newObject.getContent().entrySet().stream().forEach(e -> contents.concat("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
-        System.out.println(contents);
+        newObject.getContent().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
+        System.out.println();
     }
     
     @Override
@@ -127,7 +127,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getId()));
 
         System.out.println("Input:");
-        newObject.getInput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
+        newObject.getInput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
 
         System.out.println(String.format("Input blanks: %d",
             newObject.getInputBlanks()));
@@ -136,7 +136,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
         System.out.println("Output:");
-        newObject.getOutput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + Integer.toString(e.getValue())));
+        newObject.getOutput().entrySet().stream().forEach(e -> System.out.println("Resource type: " + e.getKey() + ", amount: " + e.getValue()));
 
         System.out.println(String.format("Output blanks: %d",
             newObject.getOutputBlanks()));
@@ -174,10 +174,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void showWarehouseShelves(String player) {
         System.out.println(String.format("Showing %s's warehouse shelves:", player));
         cache.getPlayerWarehouseShelvesIDs(player).forEach(s -> {
-            System.out.println("Shelf ID: " + s + ", contents:");
             Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == s).findFirst();
             if (cont.isPresent())
-                cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+                update(cont.get());
         });
 
         System.out.println("\nShowing leader shelves:");
@@ -198,5 +197,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == id).findFirst();
         if (cont.isPresent())
             cont.get().getContent().entrySet().stream().forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+    }
+
+    @Override
+    public void showPlayerSlots(String player) {
+        System.out.println("Showing" + player + "'s development card slots:");
+        if (cache.getPlayerDevSlots(player) != null)
+            cache.getPlayerDevSlots(player).entrySet().stream().forEach(e -> System.out.println("Slot " + e.getKey() + ", card ID: " + e.getValue()));
     }
 }

@@ -92,7 +92,8 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     String prompt(PrintStream out, Scanner in, String prompt) {
-        out.printf("%s: ", prompt);
+        if (!prompt.isEmpty())
+            out.printf("%s: ", prompt);
         String input = in.nextLine();
         if (input.toUpperCase().startsWith("Q"))
             dispatch(new ReqQuit());
@@ -446,9 +447,9 @@ public class Cli extends EventDispatcher implements Ui {
 
     private void on(UpdateCurrentPlayer event) {
         cache.setCurrentPlayer(event.getPlayer());
-        if(!event.getPlayer().equals(cache.getNickname()))
+        if (!event.getPlayer().equals(cache.getNickname()))
             setState(new WaitingAfterTurnState());
-        else if(!(getState() instanceof WaitingBeforeGameState))
+        else if (!(getState() instanceof WaitingBeforeGameState) && !(getState() instanceof TurnBeforeActionState))
             setState(new TurnBeforeActionState());  // make sure the update never arrives during the own turn
     }
 
@@ -457,7 +458,9 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateDevCardSlot event) {
-        setState(new TurnAfterActionState());
+        cache.setPlayerDevSlot(cache.getCurrentPlayer(), event.getDevSlot(), event.getDevCard());
+        if (lastReq instanceof ReqBuyDevCard)
+            setState(new TurnAfterActionState());
     }
 
     private void on(UpdateFaithPoints event) {
@@ -528,7 +531,8 @@ public class Cli extends EventDispatcher implements Ui {
                     cache.getSetup(cache.getNickname()).getInitialResources()));
         }
         else {
-            setState(new TurnBeforeActionState());
+            if (!(getState() instanceof TurnBeforeActionState))
+                setState(new TurnBeforeActionState());
         }
     }
 
@@ -566,7 +570,8 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateSetupDone event) {
-        setState(new TurnBeforeActionState());
+        if (!(getState() instanceof TurnBeforeActionState))
+            setState(new TurnBeforeActionState());
     }
 
     private void on(UpdateVaticanSection event) {

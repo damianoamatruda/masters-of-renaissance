@@ -5,10 +5,12 @@ import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.PrintStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class SetupLeadersState extends CliState {
-    private int leadersToChoose;
+    private final int leadersToChoose;
 
     public SetupLeadersState(int leadersToChoose) {
         this.leadersToChoose = leadersToChoose;
@@ -22,8 +24,8 @@ public class SetupLeadersState extends CliState {
             e1.printStackTrace();
         }
 
-        System.out.println("Choosing leaders hand.");
-        System.out.println("Please input leader card IDs from the ones assigned to you.");
+        System.out.println("\nChoosing leaders hand.");
+        System.out.println("Please input leader card IDs from the ones assigned to you.\n");
 
         if (cache.getPlayerLeaders(cache.getNickname()) != null)
             cache.getPlayerLeaders(cache.getNickname()).forEach(id -> printer.showLeadersHand(cache.getNickname(), id));
@@ -31,9 +33,9 @@ public class SetupLeadersState extends CliState {
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while(chosen < cache.getSetup(cache.getNickname()).getChosenLeadersCount()) {
+        while (chosen < cache.getSetup(cache.getNickname()).getChosenLeadersCount()) {
             String input = cli.prompt(out, in,
-                (leadersToChoose - chosen) + " leader cards left to be chosen, which would you like to add? ID");
+                    (leadersToChoose - chosen) + " leader cards left to be chosen, which would you like to add? ID");
             try {
                 int id = Integer.parseInt(input);
                 leaders.add(id);

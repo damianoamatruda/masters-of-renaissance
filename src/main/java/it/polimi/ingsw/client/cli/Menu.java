@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.common.reducedmodel.ReducedGame;
+
 import java.io.PrintStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Consumer;
-
-import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 public class Menu implements Renderable {
     private final Map<Character, Entry> entries;
@@ -24,7 +24,7 @@ public class Menu implements Renderable {
         out.print(Cli.center(stringBuilder.toString()));
         String value;
         do {
-            value = in.nextLine();
+            value = cli.prompt(out, in, "");
         } while (value.isBlank() || !entries.containsKey(value.charAt(0)));
         entries.get(value.charAt(0)).action.accept(this);
     }

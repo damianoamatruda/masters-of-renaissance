@@ -1,19 +1,15 @@
 package it.polimi.ingsw.common.reducedmodel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import it.polimi.ingsw.client.ReducedObjectPrinter;
+
+import java.util.*;
 
 public class ReducedGame {
     private ReducedObjectPrinter printer;
 
     private String nickname;
     private List<ReducedActionToken> actionTokens;
-    private Map<String, Integer> baseProductions;
+    private final Map<String, Integer> baseProductions;
     private List<ReducedResourceContainer> containers;
     private String currentPlayer;
     private List<ReducedDevCard> developmentCards;
@@ -23,13 +19,14 @@ public class ReducedGame {
     private List<ReducedLeaderCard> leaderCards;
     private ReducedMarket market;
     private List<String> players;
+    private final Map<String, Map<Integer, Integer>> playerDevSlots;
     private final Map<String, Boolean> playerState;
     private final Map<String, List<Integer>> playerLeaders;
     private final Map<String, Integer> playerLeadersCount;
     private final Map<String, Integer> playerStrongbox;
     private final Map<String, List<Integer>> playerWarehouseShelves;
     private List<ReducedResourceTransactionRecipe> productions;
-    private Map<String, ReducedPlayerSetup> setup;
+    private final Map<String, ReducedPlayerSetup> setup;
     private List<Boolean> vaticanSections;
     private final Map<String, Integer> victoryPoints;
     private String winner;
@@ -41,6 +38,7 @@ public class ReducedGame {
         developmentCards = new ArrayList<>();
         players = new ArrayList<>();
         playerState = new HashMap<>();
+        playerDevSlots = new HashMap<>();
         playerLeaders = new HashMap<>();
         playerLeadersCount = new HashMap<>();
         playerStrongbox = new HashMap<>();
@@ -158,10 +156,26 @@ public class ReducedGame {
         this.playerState.put(player, newState);
     }
 
+    public Map<Integer, Integer> getPlayerDevSlots(String player) {
+        return playerDevSlots.get(player);
+    }
+
+    public void setPlayerDevSlot(String player, int devSlot, int cardId) {
+        this.playerDevSlots.compute(player, (p, slots) -> {
+            Map<Integer, Integer> slotMap = new HashMap<>();
+            if (slots != null) slotMap = slots;
+
+            slotMap.put(devSlot, cardId);
+            return slotMap;
+        });
+
+        printer.showPlayerSlots(player);
+    }
+
     public List<Integer> getPlayerLeaders(String player) {
         return playerLeaders.get(player);
     }
-    
+
     public void setPlayerLeaders(String player, int leaderId) {
         playerLeaders.compute(player, (k, v) -> {
             List<Integer> ids;
