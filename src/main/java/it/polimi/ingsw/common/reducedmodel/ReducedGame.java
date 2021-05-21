@@ -158,6 +158,8 @@ public class ReducedGame {
             ids.add(leaderId);
             return ids;
         });
+
+        printer.showLeadersHand(player, leaderId);
     }
 
     public void setPlayerLeadersCount(String player, int count) {

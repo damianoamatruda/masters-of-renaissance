@@ -12,8 +12,6 @@ public interface ReducedObjectPrinter {
     public void update(ReducedDevCardGrid newObject);
     public void update(ReducedLeaderCard newObject);
     public void update(ReducedMarket newObject);
-    public void update(ReducedPlayerSetup newObject);
-    public void update(ReducedProductionRequest newObject);
     public void update(ReducedResourceContainer newObject);
     public void update(ReducedResourceTransactionRecipe newObject);
     public void update(ResWelcome newObject);
@@ -21,4 +19,5 @@ public interface ReducedObjectPrinter {
     public void showPlayers(List<String> nicknames);
     public void showCurrentPlayer(String player);
     public void showBaseProductions(Map<String, Integer> baseProductions);
+    public void showLeadersHand(String player, int leaderId);
 }

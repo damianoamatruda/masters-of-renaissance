@@ -96,18 +96,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     @Override
-    public void update(ReducedPlayerSetup newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void update(ReducedProductionRequest newObject) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void update(ReducedResourceContainer newObject) {
         System.out.println(String.format("Resource Container ID: %d, bounded resource: %s, dimensions: %d\n",
             newObject.getId(), newObject.getboundedResType(), newObject.getDimensions()));
@@ -164,5 +152,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.println("Base productions:");
 
         baseProductions.entrySet().stream().forEach(e -> System.out.println("Player: " + e.getKey() + ", baseprod ID: " + e.getValue()));
+    }
+
+    @Override
+    public void showLeadersHand(String player, int leaderId) {
+        System.out.println(String.format("Leader %d assigned is owned by player %s.", leaderId, player));
     }
 }
