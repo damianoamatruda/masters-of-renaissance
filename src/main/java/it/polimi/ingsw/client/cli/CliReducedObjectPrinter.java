@@ -50,7 +50,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     @Override
     public void update(ReducedDevCardGrid newObject) {
         System.out.println("Development card grid state:");
-        newObject.getGrid().forEach((key, value) -> System.out.println(key + ": " + value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
+        newObject.getGrid().forEach((key, value) -> System.out.println(printColor(key) + ": " + value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
         
         List<Integer> topCards = new ArrayList<>();
         newObject.getGrid().forEach((key, value) -> topCards.addAll(value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
@@ -101,7 +101,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             System.out.print("\n");
         });
         System.out.print("\n");
-        System.out.println("Slide resource: " + newObject.getSlide());
+        System.out.println("Slide resource: " + printResource(newObject.getSlide()));
         System.out.println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
     }
 
