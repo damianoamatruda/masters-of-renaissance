@@ -93,6 +93,6 @@ public class DevelopmentCard extends Card {
     }
 
     public ReducedDevCard reduce() {
-        return new ReducedDevCard(getId(), getVictoryPoints(), getColor().getName(), getCost().reduceRR(), getProduction().getId(), getLevel());
+        return new ReducedDevCard(getId(), getVictoryPoints(), getColor().getName(), getCost().reduceRR(), getLevel(), getProduction().getId());
     }
 }
