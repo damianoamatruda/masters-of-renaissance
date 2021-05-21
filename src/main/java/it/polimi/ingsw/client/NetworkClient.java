@@ -8,7 +8,6 @@ import it.polimi.ingsw.common.events.netevents.*;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,17 +31,7 @@ public class NetworkClient {
     }
 
     public void start() throws IOException {
-        try {
-            this.socket = new Socket(host, port);
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host " + host);
-            System.err.println(e.getMessage());
-            throw e;
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + host + " when creating the socket");
-            System.err.println(e.getMessage());
-            throw e;
-        }
+        this.socket = new Socket(host, port);
 
         NetworkProtocol protocol = new NetworkProtocol();
         networkHandler = new ClientServerHandler(socket, protocol);

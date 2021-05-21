@@ -42,10 +42,16 @@ public class Server {
             port = jsonConfig.get("port").getAsInt();
         }
 
-        new Server(port).execute();
+        boolean connected = true;
+        try {
+            new Server(port).execute();
+        } catch (IOException e) {
+            connected = false;
+            System.err.printf("Exception caught when trying to listen on port %d%n", port);
+        }
     }
 
-    public void execute() {
+    public void execute() throws IOException {
         ExecutorService executor = Executors.newCachedThreadPool();
         listening = true;
 
@@ -57,6 +63,7 @@ public class Server {
             NetworkProtocol protocol = new NetworkProtocol();
 
             System.out.println("Server ready");
+
             while (listening) {
                 Socket clientSocket = serverSocket.accept();
                 NetworkHandler networkHandler = new ServerClientHandler(clientSocket, protocol);
@@ -78,9 +85,6 @@ public class Server {
 
                 // TODO: Unregister when the socket or the server is closed
             }
-        } catch (IOException e) {
-            System.err.println("Exception caught when trying to listen on port " + port);
-            System.err.println(e.getMessage());
         } finally {
             executor.shutdown();
             listening = false;

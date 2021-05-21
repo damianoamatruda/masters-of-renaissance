@@ -14,13 +14,12 @@ import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
-
-import static it.polimi.ingsw.client.cli.CliState.renderMainTitle;
 
 public class Cli extends EventDispatcher implements Ui {
     static final int width = 160;
@@ -37,6 +36,8 @@ public class Cli extends EventDispatcher implements Ui {
 
     private final BlockingQueue<CliState> stateQueue;
 
+    private volatile boolean running;
+
     private final VCEvent lastReq;
 
     private boolean singleplayer;
@@ -51,6 +52,7 @@ public class Cli extends EventDispatcher implements Ui {
         this.cache.setPrinter(printer);
         this.scanner = new Scanner(System.in);
 
+        this.running = false;
         this.lastReq = null;
         this.singleplayer = false;
     }
@@ -120,22 +122,29 @@ public class Cli extends EventDispatcher implements Ui {
 
     @Override
     public void execute() {
-        try {
-            this.state = stateQueue.take();
-        } catch (InterruptedException e) { e.printStackTrace(); }
-        
-        while (this.state != null) {
+        running = true;
+        while (running) {
+            try {
+                state = stateQueue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                running = false;
+                break;
+            }
+
             System.out.println();
-            for(int i = 0; i < width; i++) System.out.print("-");
+            for (int i = 0; i < width; i++)
+                System.out.print("-");
             System.out.println();
             System.out.println("\u001b[31m" + Cli.center(state.getClass().getSimpleName()) + "\u001B[0m");
             state.render(this, System.out, scanner, cache, printer);
-            try {
-                this.state = stateQueue.take();
-            } catch (InterruptedException e) { e.printStackTrace(); }
         }
     }
-    
+
+    public void stop() {
+        running = false;
+    }
+
     public void registerOnMV(EventDispatcher view) {
         view.addEventListener(ErrAction.class, this::on);
         view.addEventListener(ErrActiveLeaderDiscarded.class, this::on);
@@ -212,13 +221,22 @@ public class Cli extends EventDispatcher implements Ui {
         boolean connected = true;
         try {
             new NetworkClient(host, port, view, this).start();
+        } catch (UnknownHostException e) {
+            connected = false;
+            System.err.printf("Don't know about host %s%n", host);
         } catch (IOException e) {
             connected = false;
-            // TODO: setState (error)
+            System.err.printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
         }
         if (connected) {
             singleplayer = false;
             setState(new InputNicknameState());
+        } else {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ignored) {
+            }
+            setState(new MultiplayerMenuState());
         }
     }
 
@@ -319,29 +337,8 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     public void quit() {
-        PrintStream out = System.out;
-
-        Cli.clear(out);
-        renderMainTitle(out);
-        for (int i = 0; i < 2; i++)
-            out.println();
-        out.println("Quitting in 2 seconds...");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-        }
-
-        Cli.clear(out);
-        renderMainTitle(out);
-        for (int i = 0; i < 2; i++)
-            out.println();
-        out.println("Quitting in 1 seconds...");
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-        }
-
-        Cli.clear(out);
+        Cli.clear(System.out);
+        stop();
     }
 
     private void on(ErrAction event) {
