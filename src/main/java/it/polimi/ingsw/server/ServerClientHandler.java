@@ -7,6 +7,7 @@ import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
 import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.netevents.ReqHeartbeat;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,8 +38,10 @@ public class ServerClientHandler extends NetworkHandler {
             int halfTimeout = 0;
             while (listening) {
                 try {
-                    if ((inputLine = in.readLine()) == null)
+                    if ((inputLine = in.readLine()) == null) {
+                        dispatch(new ReqQuit());
                         break;
+                    }
 
                     halfTimeout = 0;
 
@@ -64,6 +67,7 @@ public class ServerClientHandler extends NetworkHandler {
                         halfTimeout++;
                     } else {
                         send(new ReqGoodbye());
+                        dispatch(new ReqQuit());
                         break;
                     }
                 }
@@ -72,6 +76,7 @@ public class ServerClientHandler extends NetworkHandler {
         } catch (IOException e) {
             System.err.println("Exception caught when listening for a connection");
             System.err.println(e.getMessage());
+            dispatch(new ReqQuit());
         } finally {
             this.out = null;
             this.in = null;

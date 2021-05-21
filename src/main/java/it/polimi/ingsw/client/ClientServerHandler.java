@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.NetworkProtocol;
 import it.polimi.ingsw.common.NetworkProtocolException;
 import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
+import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.netevents.ReqWelcome;
 
 import java.io.BufferedReader;
@@ -46,6 +47,7 @@ public class ClientServerHandler extends NetworkHandler {
             System.err.println("Exception caught when listening for a connection");
             System.err.println(e.getMessage());
             e.printStackTrace();
+            send(new ReqGoodbye());
         } finally {
             this.out = null;
             this.in = null;
