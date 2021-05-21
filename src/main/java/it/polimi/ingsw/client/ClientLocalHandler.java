@@ -21,7 +21,6 @@ public class ClientLocalHandler extends NetworkHandler {
         while (listening) {
             try {
                 event = eventQueue.take();
-                System.out.println(event);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
