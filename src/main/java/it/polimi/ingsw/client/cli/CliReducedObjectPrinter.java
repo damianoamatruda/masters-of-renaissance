@@ -105,9 +105,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void update(ReducedMarket newObject) {
         System.out.println("Market:");
         newObject.getGrid().forEach(r -> {
-            r.forEach(res -> System.out.print(res + " "));
+            r.forEach(res -> System.out.print(res + "\t"));
             System.out.print("\n");
         });
+        System.out.print("\n");
         System.out.println("Slide resource: " + newObject.getSlide());
         System.out.println("Replaceable resource type: " + newObject.getReplaceableResType() + "\n");
     }
