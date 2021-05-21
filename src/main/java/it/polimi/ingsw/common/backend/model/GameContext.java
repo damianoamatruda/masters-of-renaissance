@@ -13,6 +13,7 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransac
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrNoSuchEntity.IDType;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
@@ -148,7 +149,7 @@ public class GameContext {
                 try {
                     shelves.put(s.get(), translateResMap(shelf.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
                 }
             }
     
@@ -336,7 +337,7 @@ public class GameContext {
                 try {
                     shelves.put(s.get(), translateResMap(shelf.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
                 }
             }
 
@@ -357,11 +358,10 @@ public class GameContext {
                         e.getKind().ordinal()));
                 return;
             } catch (IllegalArgumentException e) {
-                view.dispatch(new ErrInexistentEntity(e.getMessage()));
+                view.dispatch(new ErrNoSuchEntity(IDType.MARKETINDEX, index, null));
             } catch (NoSuchElementException e) {
-                view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
+                view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
             }
-            
 
             mandatoryActionDone = true;
         }
@@ -402,7 +402,7 @@ public class GameContext {
                 try {
                     resContainers.put(c.get(), translateResMap(container.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
                 }
             }
 
@@ -470,7 +470,7 @@ public class GameContext {
                     try {
                         inputContainers.put(c.get(), translateResMap(container.getValue()));
                     } catch (NoSuchElementException e) {
-                        view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
+                        view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
                     }
                 }
                 
@@ -482,7 +482,7 @@ public class GameContext {
                             translateResMap(r.getOutputBlanksRep()),
                             inputContainers, player.getStrongbox()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrInexistentEntity("Inexistent resource specified."));
+                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
                 }
             }
 
@@ -592,7 +592,7 @@ public class GameContext {
     private Map<ResourceType, Integer> translateResMap(Map<String, Integer> r) {
         return r.entrySet().stream().collect(Collectors.toMap(e -> {
             String name = e.getKey().substring(0, 1).toUpperCase() + e.getKey().substring(1);
-            return gameFactory.getResourceType(name).orElseThrow();
+            return gameFactory.getResourceType(name).orElseThrow(() -> new NoSuchElementException(name));
         }, e -> e.getValue()
         ));
     }

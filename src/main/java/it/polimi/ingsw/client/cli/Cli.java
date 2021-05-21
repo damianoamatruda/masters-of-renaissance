@@ -364,8 +364,9 @@ public class Cli extends EventDispatcher implements Ui {
         repeatState(event.getReason());
     }
 
-    private void on(ErrInexistentEntity event) {
-        repeatState(event.getReason());
+    private void on(ErrNoSuchEntity event) {
+        // TODO handle
+        // repeatState(event.getReason());
     }
 
     private void on(ErrInitialChoice event) {

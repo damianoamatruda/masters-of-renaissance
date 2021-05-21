@@ -92,9 +92,7 @@ public class Market extends EventDispatcher {
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
                               Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalArgumentException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         if (isRow && index >= getRowsCount() || !isRow && index >= getColsCount())
-            throw new IllegalArgumentException(
-                    String.format("Cannot take resources: %s %d does not exist, limit is %d",
-                            isRow ? "row" : "column", index, isRow ? grid.size() : grid.get(0).size()));
+            throw new IllegalArgumentException();
 
         Map<ResourceType, Integer> output = IntStream
                 .range(0, isRow ? getColsCount() : getRowsCount())
