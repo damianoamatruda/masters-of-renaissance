@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.NetworkProtocol;
 import it.polimi.ingsw.common.NetworkProtocolException;
 import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
+import it.polimi.ingsw.common.events.mvevents.UpdateServerUnavailable;
 import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.netevents.ReqWelcome;
 
@@ -31,8 +32,10 @@ public class ClientServerHandler extends NetworkHandler {
 
             listening = true;
             while (listening) {
-                if ((inputLine = in.readLine()) == null)
+                if ((inputLine = in.readLine()) == null) {
+                    dispatch(new UpdateServerUnavailable());
                     break;
+                }
                 try {
                     dispatch(protocol.processInputAsNetEvent(inputLine));
                 } catch (NetworkProtocolException e1) {
