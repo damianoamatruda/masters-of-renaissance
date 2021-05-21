@@ -114,6 +114,7 @@ public class Lobby {
             while (iter.hasNext() && i < Math.min(waiting.size(), newGamePlayersCount)) {
                 View v = iter.next();
                 v.dispatch(new UpdateJoinGame(newGamePlayersCount));
+                i++;
             }
     
             if (waiting.size() >= newGamePlayersCount){
@@ -128,8 +129,10 @@ public class Lobby {
             ConcurrentLinkedQueue<View> gamePlayers = new ConcurrentLinkedQueue<>();
             Iterator<View> iter = waiting.iterator();
             int i = 0;
-            while (iter.hasNext() && i < newGamePlayersCount)
+            while (iter.hasNext() && i < newGamePlayersCount) {
                 gamePlayers.add(iter.next());
+                i++;
+            }
 
             Game newGame = newGamePlayersCount == 1 ?
                     gameFactory.getSoloGame(nicknames.get(waiting.peek())) :
@@ -145,6 +148,8 @@ public class Lobby {
                 joined.put(view, context);
 
                 iter.remove();
+
+                i++;
             }
 
             context.start();    
