@@ -23,4 +23,6 @@ public interface ReducedObjectPrinter {
     void showStrongbox(String player);
 
     void showPlayerSlots(String player);
+
+    void printOwnedLeaders(List<ReducedLeaderCard> leaders);
 }

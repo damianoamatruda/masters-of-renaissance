@@ -220,4 +220,96 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
+
+    public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
+        for(int i = 0; i < leaders.size(); i += 3) {
+            List<ReducedLeaderCard> row = new ArrayList<>();
+            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+                row.add(leaders.get(i + j));
+            }
+            String columnTemplate = "";
+            List<String> format = new ArrayList<>();
+            for(int j = 0; j < row.size(); j++) {
+                columnTemplate += "%-50s ";
+            }
+            columnTemplate += "\n";
+
+            for (ReducedLeaderCard reducedLeaderCard : row) {
+                format.add(String.format("Leader Card ID: %d, type: %s",
+                        reducedLeaderCard.getId(),
+                        reducedLeaderCard.getLeaderType()));
+            }
+            System.out.printf(columnTemplate, format.toArray());
+            format.clear();
+
+            for (ReducedLeaderCard reducedLeaderCard : row) {
+                String res = String.format("%-63s", String.format("BoundResource: %s, VP: %d",
+                        printResource(reducedLeaderCard.getResourceType()),
+//                        reducedLeaderCard.getResourceType(),
+                        reducedLeaderCard.getVictoryPoints()));
+                format.add(res);
+            }
+            System.out.printf(columnTemplate, format.toArray());
+            format.clear();
+
+            for (ReducedLeaderCard reducedLeaderCard : row) {
+                format.add(String.format("Active status: %s, depot ID: %d",
+                        reducedLeaderCard.isActive(),
+                        reducedLeaderCard.getContainerId()));
+            }
+            System.out.printf(columnTemplate, format.toArray());
+            format.clear();
+
+            for (ReducedLeaderCard reducedLeaderCard : row) {
+                format.add(String.format("Production ID: %d, discount: %d",
+                        reducedLeaderCard.getProduction(),
+                        reducedLeaderCard.getDiscount()));
+            }
+            System.out.printf(columnTemplate, format.toArray());
+            format.clear();
+
+            for (ReducedLeaderCard reducedLeaderCard : row) {
+                if (reducedLeaderCard.getDevCardRequirement() != null)
+                    format.add("Requirements (development cards):");
+                else format.add("Requirements (resources):");
+            }
+            System.out.printf(columnTemplate, format.toArray());
+            format.clear();
+
+            int length = row.stream()
+                    .map(l -> l.getResourceRequirement() != null ? l.getResourceRequirement().getRequirements().keySet().size() : l.getDevCardRequirement().getEntries().size())
+                    .reduce(Integer::max).orElseThrow();
+            for(int j = 0; j < length; j++) {
+                for (ReducedLeaderCard reducedLeaderCard : row) {
+                    if (reducedLeaderCard.getDevCardRequirement() != null) {
+                        ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(j);
+                        if(e != null) {
+                            String req = String.format("%-63s", "Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount());
+                            format.add(req);
+                        }
+                        else format.add(" ");
+                    }
+                    else {
+                        List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
+                        if(j < keys.size()) {
+                            String key = keys.get(j);
+                            String req = String.format("%-63s", String.format("Resource type: %s, amount: %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
+                            format.add(req);
+                        }
+                        else
+                            format.add(" ");
+                    }
+                }
+                System.out.printf(columnTemplate, format.toArray());
+                format.clear();
+            }
+            // Productions yet to be printed
+
+            System.out.println();
+//
+//            Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
+//            prod.ifPresent(this::update);
+            System.out.println("\n");
+        }
+    }
 }
