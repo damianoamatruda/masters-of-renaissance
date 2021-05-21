@@ -94,10 +94,18 @@ public class ReducedGame {
         printer.showCurrentPlayer(currentPlayer);
     }
 
+    public ReducedDevCard getDevCard(int id) {
+        return developmentCards.stream().filter(rc -> rc.getId() == id).findAny().orElseThrow();
+    }
+
     public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
         this.developmentCards = developmentCards;
 
         developmentCards.forEach(printer::update);
+    }
+
+    public ReducedDevCardGrid getDevCardGrid() {
+        return devCardGrid;
     }
 
     public void setDevCardGrid(ReducedDevCardGrid devCardGrid) {

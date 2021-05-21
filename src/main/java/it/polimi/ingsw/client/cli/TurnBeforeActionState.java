@@ -16,6 +16,9 @@ public class TurnBeforeActionState extends CliTurnState {
     private ReducedObjectPrinter printer;
     @Override
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
+        this.cache = cache;
+        this.printer = printer;
+        
         System.out.println(Cli.center("\n\nAvailable actions:\n"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
@@ -30,6 +33,10 @@ public class TurnBeforeActionState extends CliTurnState {
 
     private void buyCard(Cli cli, PrintStream out, Scanner in) {
         System.out.println("Buying a development card.");
+
+        printer.update(cache.getDevCardGrid());
+
+        System.out.println("\nChoose parameters:");
         //prompt for parameters
         final Map<Integer, Map<String, Integer>> shelves;
         int level = 0, slot = 0;
