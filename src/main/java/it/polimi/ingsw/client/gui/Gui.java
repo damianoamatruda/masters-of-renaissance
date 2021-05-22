@@ -26,6 +26,14 @@ public class Gui extends Application implements Ui {
         stage.show();
     }
 
+    public static String javaVersion() {
+        return System.getProperty("java.version");
+    }
+
+    public static String javafxVersion() {
+        return System.getProperty("javafx.version");
+    }
+
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/assets/gui/" + fxml + ".fxml"));
         return fxmlLoader.load();

@@ -1,13 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.MainMenuController">
-
-  <Button layoutX="83.0" layoutY="59.0" onAction="#handleSinglePlayer">Single player</Button>
-  <Button layoutX="87.0" layoutY="131.0" onAction="#handleMultiPlayer">Multiplayer</Button>
-  <Button layoutX="94.0" layoutY="96.0" onAction="#handleOptions">Options</Button>
-  <Button layoutX="106.0" layoutY="165.0" onAction="#handleQuit" text="Quit">Quit</Button>
-
-</AnchorPane>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="it.polimi.ingsw.client.gui.MainMenuController"
+            prefHeight="400.0" prefWidth="600.0" id="body" stylesheets="@mainmenu.css">
+  <center>
+    <VBox alignment="CENTER" layoutX="120.0" prefHeight="0.0" prefWidth="360.0">
+      <VBox alignment="CENTER" prefHeight="0.0" prefWidth="100.0">
+        <children>
+          <ImageView fitHeight="135.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+              <Image url="@logo.png"/>
+            </image>
+          </ImageView>
+        </children>
+        <VBox.margin>
+          <Insets bottom="20.0"/>
+        </VBox.margin>
+      </VBox>
+      <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleSinglePlayer" prefWidth="380.0"
+             text="Singleplayer">
+        <font>
+          <Font size="21.0"/>
+        </font>
+        <padding>
+          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
+        </padding>
+      </Label>
+      <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleMultiPlayer" prefWidth="380.0"
+             text="Multiplayer">
+        <font>
+          <Font size="21.0"/>
+        </font>
+        <padding>
+          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
+        </padding>
+        <VBox.margin>
+          <Insets top="8.0"/>
+        </VBox.margin>
+      </Label>
+      <BorderPane maxWidth="-Infinity" prefWidth="380.0">
+        <left>
+          <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleOptions" prefWidth="180.0"
+                 text="Options..." BorderPane.alignment="CENTER">
+            <font>
+              <Font size="21.0"/>
+            </font>
+            <padding>
+              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
+            </padding>
+            <BorderPane.margin>
+              <Insets/>
+            </BorderPane.margin>
+          </Label>
+        </left>
+        <right>
+          <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleQuit" prefWidth="180.0"
+                 text="Quit Game" BorderPane.alignment="CENTER">
+            <font>
+              <Font size="21.0"/>
+            </font>
+            <padding>
+              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
+            </padding>
+            <BorderPane.margin>
+              <Insets/>
+            </BorderPane.margin>
+          </Label>
+        </right>
+        <VBox.margin>
+          <Insets top="14.0"/>
+        </VBox.margin>
+      </BorderPane>
+      <BorderPane.margin>
+        <Insets/>
+      </BorderPane.margin>
+      <padding>
+        <Insets bottom="60.0"/>
+      </padding>
+    </VBox>
+  </center>
+</BorderPane>
