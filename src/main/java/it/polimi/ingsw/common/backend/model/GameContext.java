@@ -342,8 +342,10 @@ public class GameContext {
                 return;
             } catch (IllegalArgumentException e) {
                 view.dispatch(new ErrNoSuchEntity(IDType.MARKETINDEX, index, null));
+                return;
             } catch (NoSuchElementException e) {
                 view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                return;
             }
 
             mandatoryActionDone = true;
@@ -454,6 +456,7 @@ public class GameContext {
                         inputContainers.put(c.get(), translateResMap(container.getValue()));
                     } catch (NoSuchElementException e) {
                         view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                        return;
                     }
                 }
                 
@@ -466,6 +469,7 @@ public class GameContext {
                             inputContainers, player.getStrongbox()));
                 } catch (NoSuchElementException e) {
                     view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                    return;
                 }
             }
 
@@ -508,7 +512,7 @@ public class GameContext {
             try {
                 game.onTurnEnd();
             } catch (NoActivePlayersException e) {
-                throw new RuntimeException("No active players");
+                throw new RuntimeException("No active players"); // TODO: Handle this
             }
     
             mandatoryActionDone = false;
