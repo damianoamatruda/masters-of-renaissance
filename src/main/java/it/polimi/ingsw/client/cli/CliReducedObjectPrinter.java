@@ -97,18 +97,18 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void update(ReducedMarket newObject) {
         System.out.println("Market:");
         System.out.print("╔");
-        for(int i = 0; i < 35; i++) System.out.print("═");
+        for(int i = 0; i < 40; i++) System.out.print("═");
         System.out.println("╗");
 
         newObject.getGrid().forEach(r -> {
-            System.out.print("║\t");
-            r.forEach(res -> System.out.print(printResource(res) + "\t"));
+            System.out.print("║");
+            r.forEach(res -> System.out.printf("%-23s", Cli.centerLine(printResource(res), 23)));
             System.out.print("║");
             System.out.println();
         });
 
         System.out.print("╚");
-        for(int i = 0; i < 35; i++) System.out.print("═");
+        for(int i = 0; i < 40; i++) System.out.print("═");
         System.out.print("╝");
 
         System.out.print("\n");
@@ -209,18 +209,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             cache.getPlayerDevSlots(player).forEach((key, value) -> System.out.println("Slot " + key + ", card ID: " + value));
     }
 
-    private String printColor(String colorName) {
-        if(colorName == null) return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
-        String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
-        return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
-    }
-
-    private String printResource(String resourceType) {
-        if(resourceType == null)  return "Ø";
-        String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
-        return "\u001B[1m" + color + resourceType + "\u001B[0m";
-    }
-
     public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
         for(int i = 0; i < leaders.size(); i += 3) {
             List<List<String>> rows = new ArrayList<>();
@@ -303,4 +291,17 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
         }
     }
+
+    private String printColor(String colorName) {
+        if(colorName == null) return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
+        String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
+        return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
+    }
+
+    private String printResource(String resourceType) {
+        if(resourceType == null)  return "Ø";
+        String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
+        return "\u001B[1m" + color + resourceType + "\u001B[0m";
+    }
+
 }

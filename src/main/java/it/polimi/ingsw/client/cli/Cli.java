@@ -62,6 +62,14 @@ public class Cli extends EventDispatcher implements Ui {
         return s.hasNext() ? s.next() : "";
     }
 
+    public static String centerLine(String s, int width) {
+        int marginLeft = (width - s.length()) / 2;
+
+        StringBuilder stringBuilder = new StringBuilder();
+        s.lines().forEachOrdered(line -> stringBuilder.append(" ".repeat(marginLeft)).append(line));
+        return stringBuilder.toString();
+    }
+
     public static String center(String s) {
         if (s.lines().count() == 0)
             return "";
