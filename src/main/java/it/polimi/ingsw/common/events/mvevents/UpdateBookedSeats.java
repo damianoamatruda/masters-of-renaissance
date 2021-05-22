@@ -1,7 +1,9 @@
 package it.polimi.ingsw.common.events.mvevents;
 
+import it.polimi.ingsw.common.View;
+
 /** Server response to a new game request. */
-public class UpdateBookedSeats implements MVEvent {
+public class UpdateBookedSeats extends ViewEvent {
     /** The number of players that are booked to join before the game is prepared. */
     private final int bookedSeats;
 
@@ -14,7 +16,8 @@ public class UpdateBookedSeats implements MVEvent {
      * @param bookedSeats       the number of players that are booked to join before the game is prepared
      * @param canPrepareNewGame the nickname of the player that can prepare a new game
      */
-    public UpdateBookedSeats(int bookedSeats, String canPrepareNewGame) {
+    public UpdateBookedSeats(View view, int bookedSeats, String canPrepareNewGame) {
+        super(view);
         this.bookedSeats = bookedSeats;
         this.canPrepareNewGame = canPrepareNewGame;
     }

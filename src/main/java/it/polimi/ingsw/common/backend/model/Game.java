@@ -102,35 +102,24 @@ public class Game extends EventDispatcher {
         this.devCardGrid.addEventListener(UpdateDevCardGrid.class, this::dispatch);
         this.market.addEventListener(UpdateMarket.class, this::dispatch);
         this.faithTrack.addEventListener(UpdateVaticanSection.class, this::dispatch);
-
     }
 
-    public void dispatchInitialState() {
-        dispatch(new UpdateGameStart(
+    public void dispatchState(View view) {
+        dispatch(new UpdateGame(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                resourceTypes.stream().map(ResourceType::reduce).toList(),
+                null, /* actionTokens not sent */
                 colors.stream().map(DevCardColor::reduce).toList(),
-                null)); /* actionTokens not sent */
-
-        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+                resourceTypes.stream().map(ResourceType::reduce).toList(),
+                view != null));
+        dispatch(new UpdateCurrentPlayer(view, getCurrentPlayer().getNickname()));
     }
 
-    public void dispatchResumeState(View view) {
-        view.dispatch(new UpdateGameResume(
-                players.stream().map(Player::getNickname).toList(),
-                leaderCards.stream().map(LeaderCard::reduce).toList(),
-                developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().map(ResourceContainer::reduce).toList(),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                resourceTypes.stream().map(ResourceType::reduce).toList(),
-                colors.stream().map(DevCardColor::reduce).toList(),
-                null)); /* actionTokens not sent */
-
-        view.dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+    public void dispatchState() {
+        dispatchState(null);
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {

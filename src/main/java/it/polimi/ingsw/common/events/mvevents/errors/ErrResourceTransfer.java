@@ -1,8 +1,9 @@
 package it.polimi.ingsw.common.events.mvevents.errors;
 
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-public class ErrResourceTransfer implements MVEvent {
+public class ErrResourceTransfer extends ViewEvent {
     private final String resType;
     private final boolean isAdded;
     private final ErrResourceTransferReason reason;
@@ -13,16 +14,16 @@ public class ErrResourceTransfer implements MVEvent {
         CAPACITY_REACHED,
         DUPLICATE_BOUNDED_RESOURCE
     }
+
     /**
      * Class constructor.
-     * 
+     *
      * @param resType
      * @param isAdded
      * @param reason
      */
-    public ErrResourceTransfer(String resType,
-            boolean isAdded,
-            String reason) {
+    public ErrResourceTransfer(View view, String resType, boolean isAdded, String reason) {
+        super(view);
         this.reason = ErrResourceTransferReason.valueOf(reason);
         this.resType = resType;
         this.isAdded = isAdded;

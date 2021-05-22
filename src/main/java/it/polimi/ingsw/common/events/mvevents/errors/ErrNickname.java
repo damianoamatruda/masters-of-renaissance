@@ -1,14 +1,17 @@
 package it.polimi.ingsw.common.events.mvevents.errors;
 
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-public class ErrNickname implements MVEvent {
+public class ErrNickname extends ViewEvent {
     private final ErrNicknameReason reason;
-    
+
     /**
+     * @param view
      * @param reason
      */
-    public ErrNickname(ErrNicknameReason reason) {
+    public ErrNickname(View view, ErrNicknameReason reason) {
+        super(view);
         this.reason = reason;
     }
 

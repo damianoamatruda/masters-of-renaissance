@@ -54,7 +54,7 @@ public class Warehouse {
      */
     public static class WarehouseShelf extends Shelf {
         /** The warehouse containing the shelf. */
-        transient private final Warehouse warehouse;
+        private final transient Warehouse warehouse;
 
         /**
          * Initializes the shelf by specifying the warehouse containing it.
