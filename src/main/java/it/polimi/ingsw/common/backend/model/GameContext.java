@@ -93,7 +93,7 @@ public class GameContext {
             Player player = getPlayerByNickname(nickname);
     
             if (player.getSetup().isDone()) {
-                view.dispatch(new ErrAction(ErrActionReason.LATESETUPACTION));
+                view.dispatch(new ErrAction(ErrActionReason.LATE_SETUP_ACTION));
                 return;
             }
     
@@ -132,7 +132,7 @@ public class GameContext {
             Player player = getPlayerByNickname(nickname);
     
             if (player.getSetup().isDone()) {
-                view.dispatch(new ErrAction(ErrActionReason.LATESETUPACTION));
+                view.dispatch(new ErrAction(ErrActionReason.LATE_SETUP_ACTION));
                 return;
             }
     
@@ -338,7 +338,7 @@ public class GameContext {
                 view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;
             } catch (IllegalArgumentException e) {
-                view.dispatch(new ErrNoSuchEntity(IDType.MARKETINDEX, index, null));
+                view.dispatch(new ErrNoSuchEntity(IDType.MARKET_INDEX, index, null));
             } catch (NoSuchElementException e) {
                 view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
             }
@@ -492,7 +492,7 @@ public class GameContext {
                 return;
     
             if (!mandatoryActionDone) {
-                view.dispatch(new ErrAction(ErrActionReason.EARLYTURNEND));
+                view.dispatch(new ErrAction(ErrActionReason.EARLY_TURN_END));
                 return;
             }
     
@@ -524,7 +524,7 @@ public class GameContext {
      */
     private boolean preliminaryChecks(View view, Player player) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
-            view.dispatch(!player.getSetup().isDone() ? new ErrAction(ErrActionReason.EARLYMANDATORYACTION) : new ErrAction(ErrActionReason.ENDEDGAME));
+            view.dispatch(!player.getSetup().isDone() ? new ErrAction(ErrActionReason.EARLY_MANDATORY_ACTION) : new ErrAction(ErrActionReason.GAME_ENDED));
             return false;
         }
         return true;
@@ -539,7 +539,7 @@ public class GameContext {
      */
     private boolean checkCurrentPlayer(View view, Player player) {
         if (!player.equals(game.getCurrentPlayer())) {
-            view.dispatch(new ErrAction(ErrActionReason.NOTCURRENTPLAYER));
+            view.dispatch(new ErrAction(ErrActionReason.NOT_CURRENT_PLAYER));
             return false;
         }
         return true;
@@ -553,7 +553,7 @@ public class GameContext {
      */
     private boolean checkMandatoryActionNotDone(View view) {
         if (mandatoryActionDone) {
-            view.dispatch(new ErrAction(ErrActionReason.LATEMANDATORYACTION));
+            view.dispatch(new ErrAction(ErrActionReason.LATE_MANDATORY_ACTION));
             return false;
         }
         return true;

@@ -7,12 +7,12 @@ public class ErrAction implements MVEvent {
     private final ErrActionReason reason;
 
     public enum ErrActionReason {
-        LATESETUPACTION,
-        EARLYMANDATORYACTION,
-        LATEMANDATORYACTION,
-        EARLYTURNEND,
-        ENDEDGAME,
-        NOTCURRENTPLAYER
+        LATE_SETUP_ACTION,
+        EARLY_MANDATORY_ACTION,
+        LATE_MANDATORY_ACTION,
+        EARLY_TURN_END,
+        GAME_ENDED,
+        NOT_CURRENT_PLAYER
     }
     /**
      * @param reason

@@ -100,7 +100,7 @@ public class Warehouse {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .anyMatch(r -> r.equals(resType)))
-                throw new IllegalResourceTransferException(resType, true, Kind.DUPLICATEBOUNDEDRESOURCE);
+                throw new IllegalResourceTransferException(resType, true, Kind.DUPLICATE_BOUNDED_RESOURCE);
             super.addResources(resMap);
         }
     }

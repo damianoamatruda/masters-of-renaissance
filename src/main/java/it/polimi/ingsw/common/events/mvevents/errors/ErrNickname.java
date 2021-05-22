@@ -17,9 +17,9 @@ public class ErrNickname implements MVEvent {
     }
 
     public enum ErrNicknameReason {
-        NOTSET,
-        ALREADYSET,
+        NOT_SET,
+        ALREADY_SET,
         TAKEN,
-        NOTINGAME
+        NOT_IN_GAME
     }
 }

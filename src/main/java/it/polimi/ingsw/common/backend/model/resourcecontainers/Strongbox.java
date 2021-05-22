@@ -58,7 +58,7 @@ public class Strongbox extends ResourceContainer {
         if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
             ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
             throw new IllegalArgumentException(
-                new IllegalResourceTransferException(nonStorable, true, Kind.NONSTORABLE));
+                new IllegalResourceTransferException(nonStorable, true, Kind.NON_STORABLE));
         }
         for (ResourceType resType : resMap.keySet())
             resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
@@ -76,17 +76,17 @@ public class Strongbox extends ResourceContainer {
         if (!resMap.keySet().stream().allMatch(resources::containsKey)) {
             ResourceType resType = resMap.keySet().stream().filter(r -> !resources.containsKey(r)).findAny().orElseThrow();
             throw new IllegalArgumentException(
-                new IllegalResourceTransferException(resType, false, Kind.CAPACITYREACHED));
+                new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED));
         }
         if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
             ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
             throw new IllegalArgumentException(
-                new IllegalResourceTransferException(nonStorable, false, Kind.NONSTORABLE));
+                new IllegalResourceTransferException(nonStorable, false, Kind.NON_STORABLE));
         }
         for (ResourceType resType : resMap.keySet())
             if (resources.get(resType) < resMap.get(resType))
                 throw new IllegalArgumentException(
-                    new IllegalResourceTransferException(resType, false, Kind.CAPACITYREACHED));
+                    new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED));
         for (ResourceType resType : resMap.keySet())
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
 

@@ -8,10 +8,10 @@ public class ErrResourceTransfer implements MVEvent {
     private final ErrResourceTransferReason reason;
 
     public enum ErrResourceTransferReason {
-        BOUNDEDRESTYPEDIFFER,
-        NONSTORABLE,
-        CAPACITYREACHED,
-        DUPLICATEBOUNDEDRESOURCE
+        BOUNDED_RESTYPE_DIFFER,
+        NON_STORABLE,
+        CAPACITY_REACHED,
+        DUPLICATE_BOUNDED_RESOURCE
     }
     /**
      * Class constructor.

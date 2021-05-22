@@ -8,7 +8,7 @@ public class ErrNoSuchEntity implements MVEvent {
     private final String code;
     
     public enum IDType {
-        MARKETINDEX,
+        MARKET_INDEX,
         LEADER,
         DEVCARD,
         COLOR,

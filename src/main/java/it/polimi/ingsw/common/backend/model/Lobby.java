@@ -36,11 +36,11 @@ public class Lobby {
     public void joinLobby(View view, String nickname) {
         synchronized(lock) {
             if (nicknames.containsKey(view)) {
-                view.dispatch(new ErrNickname(ErrNicknameReason.ALREADYSET));
+                view.dispatch(new ErrNickname(ErrNicknameReason.ALREADY_SET));
                 return;
             }
             if (nickname == null || nickname.isBlank()) {
-                view.dispatch(new ErrNickname(ErrNicknameReason.NOTSET));
+                view.dispatch(new ErrNickname(ErrNicknameReason.NOT_SET));
                 return;
             }
             if (nicknames.containsValue(nickname)) {
@@ -179,7 +179,7 @@ public class Lobby {
 
     private boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
-            view.dispatch(new ErrNickname(ErrNicknameReason.NOTSET));
+            view.dispatch(new ErrNickname(ErrNicknameReason.NOT_SET));
             return false;
         }
         return true;
@@ -190,7 +190,7 @@ public class Lobby {
             if (!checkNickname(view))
                 return false;
             if (!joined.containsKey(view)) {
-                view.dispatch(new ErrNickname(ErrNicknameReason.NOTINGAME));
+                view.dispatch(new ErrNickname(ErrNicknameReason.NOT_IN_GAME));
                 return false;
             }
             return true;

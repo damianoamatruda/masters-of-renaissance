@@ -12,10 +12,10 @@ public class IllegalResourceTransferException extends Exception {
     private final Kind kind;
     
     public enum Kind {
-        BOUNDEDRESTYPEDIFFER,
-        NONSTORABLE,
-        CAPACITYREACHED,
-        DUPLICATEBOUNDEDRESOURCE
+        BOUNDED_RESTYPE_DIFFER,
+        NON_STORABLE,
+        CAPACITY_REACHED,
+        DUPLICATE_BOUNDED_RESOURCE
     }
 
     /**

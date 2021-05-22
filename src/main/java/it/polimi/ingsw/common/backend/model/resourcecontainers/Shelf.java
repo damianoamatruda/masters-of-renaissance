@@ -121,11 +121,11 @@ public class Shelf extends ResourceContainer {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDEDRESTYPEDIFFER);
+            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDED_RESTYPE_DIFFER);
         if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, true, Kind.NONSTORABLE);
+            throw new IllegalResourceTransferException(resType, true, Kind.NON_STORABLE);
         if (this.quantity + resMap.get(resType) > size)
-            throw new IllegalResourceTransferException(resType, true, Kind.CAPACITYREACHED);
+            throw new IllegalResourceTransferException(resType, true, Kind.CAPACITY_REACHED);
 
         this.resType = resType;
         this.quantity += resMap.get(resType);
@@ -147,11 +147,11 @@ public class Shelf extends ResourceContainer {
         ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
         if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, false, Kind.BOUNDEDRESTYPEDIFFER);
+            throw new IllegalResourceTransferException(resType, false, Kind.BOUNDED_RESTYPE_DIFFER);
         if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, false, Kind.NONSTORABLE);
+            throw new IllegalResourceTransferException(resType, false, Kind.NON_STORABLE);
         if (this.quantity < resMap.get(resType))
-            throw new IllegalResourceTransferException(resType, false, Kind.CAPACITYREACHED);
+            throw new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED);
         if (this.quantity == resMap.get(resType))
             this.resType = null;
         this.quantity -= resMap.get(resType);
