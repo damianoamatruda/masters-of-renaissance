@@ -116,7 +116,6 @@ public class GameContext {
                 player.getSetup().chooseLeaders(game, player, leaders);
             } catch (CannotChooseException e) {
                 view.dispatch(new ErrInitialChoice(true, e.getMissingLeadersCount()));
-                return;
             }
         }
     }
@@ -158,21 +157,14 @@ public class GameContext {
             } catch (IllegalResourceTransactionReplacementsException e) {
                 // illegal replaced resources
                 view.dispatch(new ErrResourceReplacement(e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
-                return;
             } catch (IllegalResourceTransactionContainersException e) {
                 // amount of resources in replaced map is different from shelves mapping
                 view.dispatch(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
-                return;
             } catch (CannotChooseException e1) {
                 // resources already chosen
                 view.dispatch(new ErrInitialChoice(false, 0));
-                return;
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(
-                        e.getResource().getName(),
-                        e.isAdded(),
-                        e.getKind().ordinal()));
-                return;
+                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().ordinal()));
             }
         }
     }
@@ -213,11 +205,7 @@ public class GameContext {
             try {
                 Shelf.swap(shelf1, shelf2);
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(
-                        e.getResource().getName(),
-                        e.isAdded(),
-                        e.getKind().ordinal()));
-                return;
+                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().ordinal()));
             }
         }
     }
@@ -252,10 +240,8 @@ public class GameContext {
                 leader.activate(player);
             } catch (IllegalArgumentException e) {
                 view.dispatch(new ErrObjectNotOwned(leaderId, "LeaderCard"));
-                return;
             } catch (CardRequirementsNotMetException e) {
                 view.dispatch(new ErrCardRequirements(e.getMessage()));
-                return;
             }
         }
     }
@@ -290,10 +276,8 @@ public class GameContext {
                 player.discardLeader(game, leader);
             } catch (IllegalArgumentException e) {
                 view.dispatch(new ErrObjectNotOwned(leaderId, "LeaderCard"));
-                return;
             } catch (ActiveLeaderDiscardException e) {
                 view.dispatch(new ErrActiveLeaderDiscarded());
-                return;
             }
         }
     }
