@@ -26,21 +26,21 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     }
 
     public void registerOnMV(EventDispatcher view) {
+        view.addEventListener(ResQuit.class, this::send);
+        view.addEventListener(UpdateBookedSeats.class, this::send);
+        view.addEventListener(UpdateJoinGame.class, this::send);
+        view.addEventListener(ErrNewGame.class, this::send);
+        view.addEventListener(ErrNickname.class, this::send);
         view.addEventListener(ErrAction.class, this::send);
         view.addEventListener(ErrActiveLeaderDiscarded.class, this::send);
         view.addEventListener(ErrBuyDevCard.class, this::send);
         view.addEventListener(ErrCardRequirements.class, this::send);
         view.addEventListener(ErrInitialChoice.class, this::send);
-        view.addEventListener(ErrNewGame.class, this::send);
-        view.addEventListener(ErrNickname.class, this::send);
         view.addEventListener(ErrObjectNotOwned.class, this::send);
         view.addEventListener(ErrReplacedTransRecipe.class, this::send);
         view.addEventListener(ErrReplacedTransRecipe.class, this::send);
         view.addEventListener(ErrResourceReplacement.class, this::send);
         view.addEventListener(ErrResourceTransfer.class, this::send);
-        view.addEventListener(ResQuit.class, this::send);
-        view.addEventListener(UpdateBookedSeats.class, this::send);
-        view.addEventListener(UpdateJoinGame.class, this::send);
         view.addEventListener(UpdateGame.class, this::send);
         view.addEventListener(UpdateCurrentPlayer.class, this::send);
         view.addEventListener(UpdateSetupDone.class, this::send);
@@ -62,21 +62,21 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     }
 
     public void unregisterOnMV(EventDispatcher view) {
+        view.removeEventListener(ResQuit.class, this::send);
+        view.removeEventListener(UpdateBookedSeats.class, this::send);
+        view.removeEventListener(UpdateJoinGame.class, this::send);
+        view.removeEventListener(ErrNewGame.class, this::send);
+        view.removeEventListener(ErrNickname.class, this::send);
         view.removeEventListener(ErrAction.class, this::send);
         view.removeEventListener(ErrActiveLeaderDiscarded.class, this::send);
         view.removeEventListener(ErrBuyDevCard.class, this::send);
         view.removeEventListener(ErrCardRequirements.class, this::send);
         view.removeEventListener(ErrInitialChoice.class, this::send);
-        view.removeEventListener(ErrNewGame.class, this::send);
-        view.removeEventListener(ErrNickname.class, this::send);
         view.removeEventListener(ErrObjectNotOwned.class, this::send);
         view.removeEventListener(ErrReplacedTransRecipe.class, this::send);
         view.removeEventListener(ErrReplacedTransRecipe.class, this::send);
         view.removeEventListener(ErrResourceReplacement.class, this::send);
         view.removeEventListener(ErrResourceTransfer.class, this::send);
-        view.removeEventListener(ResQuit.class, this::send);
-        view.removeEventListener(UpdateBookedSeats.class, this::send);
-        view.removeEventListener(UpdateJoinGame.class, this::send);
         view.removeEventListener(UpdateGame.class, this::send);
         view.removeEventListener(UpdateCurrentPlayer.class, this::send);
         view.removeEventListener(UpdateSetupDone.class, this::send);

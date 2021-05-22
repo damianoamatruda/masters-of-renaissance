@@ -8,7 +8,7 @@ import java.util.Optional;
  * Event handled as unicast.
  */
 public abstract class ViewEvent implements MVEvent {
-    private final transient View view;
+    private transient View view;
 
     public ViewEvent(View view) {
         this.view = view;
@@ -16,5 +16,9 @@ public abstract class ViewEvent implements MVEvent {
 
     public Optional<View> getView() {
         return Optional.ofNullable(view);
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 }

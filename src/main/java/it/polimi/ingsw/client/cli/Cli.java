@@ -153,21 +153,21 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     public void registerOnMV(EventDispatcher view) {
+        view.addEventListener(ResQuit.class, this::on);
+        view.addEventListener(UpdateBookedSeats.class, this::on);
+        view.addEventListener(UpdateJoinGame.class, this::on);
+        view.addEventListener(ErrNewGame.class, this::on);
+        view.addEventListener(ErrNickname.class, this::on);
         view.addEventListener(ErrAction.class, this::on);
         view.addEventListener(ErrActiveLeaderDiscarded.class, this::on);
         view.addEventListener(ErrBuyDevCard.class, this::on);
         view.addEventListener(ErrCardRequirements.class, this::on);
         view.addEventListener(ErrInitialChoice.class, this::on);
-        view.addEventListener(ErrNewGame.class, this::on);
-        view.addEventListener(ErrNickname.class, this::on);
         view.addEventListener(ErrObjectNotOwned.class, this::on);
         view.addEventListener(ErrReplacedTransRecipe.class, this::on);
         view.addEventListener(ErrReplacedTransRecipe.class, this::on);
         view.addEventListener(ErrResourceReplacement.class, this::on);
         view.addEventListener(ErrResourceTransfer.class, this::on);
-        view.addEventListener(ResQuit.class, this::on);
-        view.addEventListener(UpdateBookedSeats.class, this::on);
-        view.addEventListener(UpdateJoinGame.class, this::on);
         view.addEventListener(UpdateGame.class, this::on);
         view.addEventListener(UpdateCurrentPlayer.class, this::on);
         view.addEventListener(UpdateSetupDone.class, this::on);
@@ -189,21 +189,21 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     public void unregisterOnMV(EventDispatcher view) {
+        view.removeEventListener(ResQuit.class, this::on);
+        view.removeEventListener(UpdateBookedSeats.class, this::on);
+        view.removeEventListener(UpdateJoinGame.class, this::on);
+        view.removeEventListener(ErrNewGame.class, this::on);
+        view.removeEventListener(ErrNickname.class, this::on);
         view.removeEventListener(ErrAction.class, this::on);
         view.removeEventListener(ErrActiveLeaderDiscarded.class, this::on);
         view.removeEventListener(ErrBuyDevCard.class, this::on);
         view.removeEventListener(ErrCardRequirements.class, this::on);
         view.removeEventListener(ErrInitialChoice.class, this::on);
-        view.removeEventListener(ErrNewGame.class, this::on);
-        view.removeEventListener(ErrNickname.class, this::on);
         view.removeEventListener(ErrObjectNotOwned.class, this::on);
         view.removeEventListener(ErrReplacedTransRecipe.class, this::on);
         view.removeEventListener(ErrReplacedTransRecipe.class, this::on);
         view.removeEventListener(ErrResourceReplacement.class, this::on);
         view.removeEventListener(ErrResourceTransfer.class, this::on);
-        view.removeEventListener(ResQuit.class, this::on);
-        view.removeEventListener(UpdateBookedSeats.class, this::on);
-        view.removeEventListener(UpdateJoinGame.class, this::on);
         view.removeEventListener(UpdateGame.class, this::on);
         view.removeEventListener(UpdateCurrentPlayer.class, this::on);
         view.removeEventListener(UpdateSetupDone.class, this::on);
@@ -440,10 +440,13 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateBookedSeats event) {
+        System.out.println("UPDATEBS");
         if (event.canPrepareNewGame().equals(cache.getNickname()) && !(getState() instanceof InputPlayersCountState)) {
-            if (singleplayer)
+            System.out.println("UPDATEIF");
+            if (singleplayer) {
+                System.out.println("SINGLEE");
                 dispatch(new ReqNewGame(1));
-            else
+            } else
                 setState(new InputPlayersCountState());
         } else setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }

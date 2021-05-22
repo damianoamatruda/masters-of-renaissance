@@ -122,6 +122,7 @@ public class View extends EventDispatcher {
     private void on(ViewEvent viewEvent) {
         if (viewEvent.getView().isPresent() && !viewEvent.getView().get().equals(this))
             return;
+        viewEvent.setView(null);
         dispatch(viewEvent);
     }
 

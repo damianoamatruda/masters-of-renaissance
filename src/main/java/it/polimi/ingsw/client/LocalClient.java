@@ -35,6 +35,7 @@ public class LocalClient {
         networkHandler.registerOnVC(view);
 
         View virtualView = new View();
+        virtualView.registerOnModelLobby(model);
         virtualView.registerOnVC(networkHandler);
         controller.registerOnVC(virtualView);
 
