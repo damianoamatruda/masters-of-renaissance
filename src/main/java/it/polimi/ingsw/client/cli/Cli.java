@@ -165,6 +165,7 @@ public class Cli extends EventDispatcher implements Ui {
         view.addEventListener(ErrReplacedTransRecipe.class, this::on);
         view.addEventListener(ErrResourceReplacement.class, this::on);
         view.addEventListener(ErrResourceTransfer.class, this::on);
+        view.addEventListener(ResQuit.class, this::on);
         view.addEventListener(UpdateBookedSeats.class, this::on);
         view.addEventListener(UpdateJoinGame.class, this::on);
         view.addEventListener(UpdateGame.class, this::on);
@@ -200,6 +201,7 @@ public class Cli extends EventDispatcher implements Ui {
         view.removeEventListener(ErrReplacedTransRecipe.class, this::on);
         view.removeEventListener(ErrResourceReplacement.class, this::on);
         view.removeEventListener(ErrResourceTransfer.class, this::on);
+        view.removeEventListener(ResQuit.class, this::on);
         view.removeEventListener(UpdateBookedSeats.class, this::on);
         view.removeEventListener(UpdateJoinGame.class, this::on);
         view.removeEventListener(UpdateGame.class, this::on);
