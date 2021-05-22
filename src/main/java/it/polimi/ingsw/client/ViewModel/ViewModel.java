@@ -52,4 +52,11 @@ public class ViewModel {
     public PlayerData getPlayerData(String nickname) {
         return playerData.get(nickname);
     }
+
+    /**
+     * @param playerData
+     */
+    public void setPlayerData(String nickname, PlayerData playerData) {
+        this.playerData.put(nickname, playerData);
+    }
 }
