@@ -22,8 +22,8 @@ public class ErrResourceTransfer implements MVEvent {
      */
     public ErrResourceTransfer(String resType,
             boolean isAdded,
-            int reason) {
-        this.reason = ErrResourceTransferReason.values()[reason];
+            String reason) {
+        this.reason = ErrResourceTransferReason.valueOf(reason);
         this.resType = resType;
         this.isAdded = isAdded;
     }

@@ -164,7 +164,7 @@ public class GameContext {
                 // resources already chosen
                 view.dispatch(new ErrInitialChoice(false, 0));
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().ordinal()));
+                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
             }
         }
     }
@@ -205,7 +205,7 @@ public class GameContext {
             try {
                 Shelf.swap(shelf1, shelf2);
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().ordinal()));
+                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
             }
         }
     }
@@ -335,10 +335,7 @@ public class GameContext {
                 view.dispatch(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
                 return;
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(
-                        e.getResource().getName(),
-                        e.isAdded(),
-                        e.getKind().ordinal()));
+                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;
             } catch (IllegalArgumentException e) {
                 view.dispatch(new ErrNoSuchEntity(IDType.MARKETINDEX, index, null));
@@ -401,10 +398,7 @@ public class GameContext {
                 view.dispatch(new ErrBuyDevCard(false));
                 return;
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(
-                        e.getResource().getName(),
-                        e.isAdded(),
-                        e.getKind().ordinal()));
+                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;
             }
 
@@ -473,10 +467,7 @@ public class GameContext {
             try {
                 transaction.activate(game, player);
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(
-                        e.getResource().getName(),
-                        e.isAdded(),
-                        e.getKind().ordinal()));
+                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;
             }
 
