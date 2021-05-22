@@ -416,11 +416,6 @@ public class Cli extends EventDispatcher implements Ui {
                 event.getReason().toString()));
     }
 
-    private void on(ReqHeartbeat event) {
-        // handled in the ClientServerHandler
-        // this.on(new ResHeartbeat());
-    }
-
     private void on(ResQuit event) {
         quit();
     }
