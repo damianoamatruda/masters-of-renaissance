@@ -6,9 +6,13 @@ import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.*;
+import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
+import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
+import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.IOException;
@@ -38,7 +42,7 @@ public class Cli extends EventDispatcher implements Ui {
 
     private volatile boolean running;
 
-    private final VCEvent lastReq;
+    private Event lastReq; // TODO: Delete this
 
     private boolean singleplayer;
 
@@ -341,6 +345,13 @@ public class Cli extends EventDispatcher implements Ui {
         stop();
     }
 
+    // TODO: Delete this
+    @Override
+    public <T extends Event> void dispatch(T event) {
+        super.dispatch(event);
+        lastReq = event;
+    }
+
     private void on(ErrAction event) {
         repeatState(event.getReason().toString());
     }
@@ -348,7 +359,8 @@ public class Cli extends EventDispatcher implements Ui {
     private void on(ErrActiveLeaderDiscarded event) {
         int id = -1;
         try {
-            id = ((ReqLeaderAction)lastReq).getLeader();
+            // TODO: Delete this
+            id = ((ReqLeaderAction) lastReq).getLeader();
         } catch (Exception ignored) {}
 
         repeatState(String.format("Active leader %d tried to be discarded.", id));
@@ -447,6 +459,7 @@ public class Cli extends EventDispatcher implements Ui {
 
     private void on(UpdateDevCardSlot event) {
         cache.setPlayerDevSlot(cache.getCurrentPlayer(), event.getDevSlot(), event.getDevCard());
+        // TODO: Delete this
         if (lastReq instanceof ReqBuyDevCard)
             setState(new TurnAfterActionState());
     }
