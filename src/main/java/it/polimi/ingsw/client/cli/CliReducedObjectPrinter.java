@@ -261,6 +261,46 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         }
     }
 
+    private void addRequirementsToPrinter(List<String> column, ReducedLeaderCard reducedLeaderCard) {
+        if (reducedLeaderCard.getDevCardRequirement() != null) {
+            column.add("Requirements (development cards):");
+            for(int k = 0; k < reducedLeaderCard.getDevCardRequirement().getEntries().size(); k++) {
+                ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(k);
+                String req = String.format("%-63s", "Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount());
+                column.add(req);
+            }
+        }
+        if(reducedLeaderCard.getResourceRequirement() != null) {
+            column.add("Requirements (resources):");
+            List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
+            for(String key : keys) {
+                String req = String.format("%-63s", String.format("Resource type: %s, amount: %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
+                column.add(req);
+            }
+        }
+    }
+
+    private void addProductionToPrinter(List<String> column, ReducedCard reducedLeaderCard) {
+        Optional<ReducedResourceTransactionRecipe> r = cache.getProduction(reducedLeaderCard.getProduction());
+        if (r.isPresent()) {
+            column.add(String.format("Production ID: %d",
+                    r.get().getId()));
+            column.add("Input:");
+            r.get().getInput().forEach((key1, value1) -> column.add("Resource type: " + printResource(key1) + ", amount: " + value1));
+            column.add(String.format("Input blanks: %d",
+                    r.get().getInputBlanks()));
+            column.add("Input blanks exclusions:");
+            r.get().getInputBlanksExclusions().forEach(e -> column.add(e + ", "));
+            column.add("Output:");
+            r.get().getOutput().forEach((key, value) -> column.add("Resource type: " + printResource(key) + ", amount: " + value));
+            column.add(String.format("Output blanks: %d",
+                    r.get().getOutputBlanks()));
+            column.add("Output blanks exclusions:");
+            r.get().getInputBlanksExclusions().forEach(e -> column.add(printResource(e) + ", "));
+            column.add(r.get().isDiscardableOutput() ? "Output is discardable" : " ");
+        }
+    }
+
     private String printColor(String colorName) {
         if(colorName == null) return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
         String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
