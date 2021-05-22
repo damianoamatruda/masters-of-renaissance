@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.polimi.ingsw.client.gui.MainMenuController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.MainMenuController">
 
-  <Button onAction="#handleSinglePlayer">Single player</Button>
-  <Button onAction="#handleMultiPlayer">Multiplayer</Button>
-  <Button onAction="#handleOptions">Options</Button>
-  <Button onAction="#handleQuit">Quit</Button>
+  <Button layoutX="83.0" layoutY="59.0" onAction="#handleSinglePlayer">Single player</Button>
+  <Button layoutX="87.0" layoutY="131.0" onAction="#handleMultiPlayer">Multiplayer</Button>
+  <Button layoutX="94.0" layoutY="96.0" onAction="#handleOptions">Options</Button>
+  <Button layoutX="106.0" layoutY="165.0" onAction="#handleQuit" text="Quit">Quit</Button>
 
 </AnchorPane>

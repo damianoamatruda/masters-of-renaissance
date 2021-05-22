@@ -29,7 +29,7 @@ public class Gui extends Application implements Ui {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/assets.gui/" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
