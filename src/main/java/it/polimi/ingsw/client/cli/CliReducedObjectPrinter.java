@@ -223,93 +223,84 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
         for(int i = 0; i < leaders.size(); i += 3) {
-            List<ReducedLeaderCard> row = new ArrayList<>();
-            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
-                row.add(leaders.get(i + j));
-            }
-            String columnTemplate = "";
-            List<String> format = new ArrayList<>();
-            for(int j = 0; j < row.size(); j++) {
-                columnTemplate += "%-50s ";
-            }
-            columnTemplate += "\n";
+            List<List<String>> rows = new ArrayList<>();
 
-            for (ReducedLeaderCard reducedLeaderCard : row) {
-                format.add(String.format("Leader Card ID: %d, type: %s",
+            List<ReducedLeaderCard> cards = new ArrayList<>();
+            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+                cards.add(leaders.get(i + j));
+                rows.add(new ArrayList<>());
+            }
+
+            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+                List<String> column = rows.get(j);
+                ReducedLeaderCard reducedLeaderCard = cards.get(j);
+
+                column.add(String.format("Leader Card ID: %d, type: %s",
                         reducedLeaderCard.getId(),
                         reducedLeaderCard.getLeaderType()));
-            }
-            System.out.printf(columnTemplate, format.toArray());
-            format.clear();
-
-            for (ReducedLeaderCard reducedLeaderCard : row) {
-                String res = String.format("%-63s", String.format("BoundResource: %s, VP: %d",
+                column.add(String.format("%-63s", String.format("BoundResource: %s, VP: %d",
                         printResource(reducedLeaderCard.getResourceType()),
-//                        reducedLeaderCard.getResourceType(),
-                        reducedLeaderCard.getVictoryPoints()));
-                format.add(res);
-            }
-            System.out.printf(columnTemplate, format.toArray());
-            format.clear();
-
-            for (ReducedLeaderCard reducedLeaderCard : row) {
-                format.add(String.format("Active status: %s, depot ID: %d",
+                        reducedLeaderCard.getVictoryPoints())));
+                column.add(String.format("Active status: %s, depot ID: %d",
                         reducedLeaderCard.isActive(),
                         reducedLeaderCard.getContainerId()));
-            }
-            System.out.printf(columnTemplate, format.toArray());
-            format.clear();
-
-            for (ReducedLeaderCard reducedLeaderCard : row) {
-                format.add(String.format("Production ID: %d, discount: %d",
+                column.add(String.format("Production ID: %d, discount: %d",
                         reducedLeaderCard.getProduction(),
                         reducedLeaderCard.getDiscount()));
-            }
-            System.out.printf(columnTemplate, format.toArray());
-            format.clear();
-
-            for (ReducedLeaderCard reducedLeaderCard : row) {
-                if (reducedLeaderCard.getDevCardRequirement() != null)
-                    format.add("Requirements (development cards):");
-                else format.add("Requirements (resources):");
-            }
-            System.out.printf(columnTemplate, format.toArray());
-            format.clear();
-
-            int length = row.stream()
-                    .map(l -> l.getResourceRequirement() != null ? l.getResourceRequirement().getRequirements().keySet().size() : l.getDevCardRequirement().getEntries().size())
-                    .reduce(Integer::max).orElseThrow();
-            for(int j = 0; j < length; j++) {
-                for (ReducedLeaderCard reducedLeaderCard : row) {
-                    if (reducedLeaderCard.getDevCardRequirement() != null) {
-                        ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(j);
-                        if(e != null) {
-                            String req = String.format("%-63s", "Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount());
-                            format.add(req);
-                        }
-                        else format.add(" ");
-                    }
-                    else {
-                        List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
-                        if(j < keys.size()) {
-                            String key = keys.get(j);
-                            String req = String.format("%-63s", String.format("Resource type: %s, amount: %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
-                            format.add(req);
-                        }
-                        else
-                            format.add(" ");
+                if (reducedLeaderCard.getDevCardRequirement() != null) {
+                    column.add("Requirements (development cards):");
+                    for(int k = 0; k < reducedLeaderCard.getDevCardRequirement().getEntries().size(); k++) {
+                        ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(k);
+                        String req = String.format("%-63s", "Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount());
+                        column.add(req);
                     }
                 }
-                System.out.printf(columnTemplate, format.toArray());
-                format.clear();
+                if(reducedLeaderCard.getResourceRequirement() != null) {
+                    column.add("Requirements (resources):");
+                    List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
+                    for(String key : keys) {
+                        String req = String.format("%-63s", String.format("Resource type: %s, amount: %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
+                        column.add(req);
+                    }
+                }
+                Optional<ReducedResourceTransactionRecipe> r = cache.getProduction(reducedLeaderCard.getProduction());
+                if (r.isPresent()) {
+                    column.add(String.format("Production ID: %d",
+                            r.get().getId()));
+                    column.add("Input:");
+                    r.get().getInput().forEach((key1, value1) -> column.add("Resource type: " + printResource(key1) + ", amount: " + value1));
+                    column.add(String.format("Input blanks: %d",
+                            r.get().getInputBlanks()));
+                    column.add("Input blanks exclusions:");
+                    r.get().getInputBlanksExclusions().forEach(e -> column.add(e + ", "));
+                    column.add("Output:");
+                    r.get().getOutput().forEach((key, value) -> column.add("Resource type: " + printResource(key) + ", amount: " + value));
+                    column.add(String.format("Output blanks: %d",
+                            r.get().getOutputBlanks()));
+                    column.add("Output blanks exclusions:");
+                    r.get().getInputBlanksExclusions().forEach(e -> column.add(printResource(e) + ", "));
+                    column.add(r.get().isDiscardableOutput() ? "Output is discardable" : " ");
+                }
             }
-            // Productions yet to be printed
 
-            System.out.println();
-//
-//            Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
-//            prod.ifPresent(this::update);
+            String rowTemplate = "";
+            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+                rowTemplate += "%-50s ";
+            }
+            rowTemplate += "\n";
+
+            int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
+            for(int k = 0; k < length; k++) {
+                List<String> row = new ArrayList<>();
+                for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+                    if(k < rows.get(j).size())
+                        row.add(rows.get(j).get(k));
+                    else row.add("");
+                }
+                System.out.printf(rowTemplate, row.toArray());
+            }
             System.out.println("\n");
+
         }
     }
 }
