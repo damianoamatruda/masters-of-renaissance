@@ -1,7 +1,14 @@
 package it.polimi.ingsw.client.ViewModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 /** Data storage cache on the Masters Of Renaissance client. */
 public class ViewModel {
@@ -58,5 +65,58 @@ public class ViewModel {
      */
     public void setPlayerData(String nickname, PlayerData playerData) {
         this.playerData.put(nickname, playerData);
+    }
+
+    /**
+     * @param nickname
+     * @return the reduced recipes owned by the player, including:
+     *          <ul>
+     *              <li>the base production
+     *              <li>the development cards productions
+     *              <li>the leader cards productions
+     */
+    public List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
+        PlayerData pd = playerData.get(nickname);
+        List<Integer> ids = new ArrayList<>();
+        
+        ids.add(pd.getBaseProduction());
+        getPlayerLeaderCards(nickname).forEach(c -> {
+            if (c.getProduction() >= 0)
+                ids.add(c.getProduction());
+        });
+        getPlayerDevelopmentCards(nickname).forEach(c -> {
+            if (c.getProduction() >= 0)
+                ids.add(c.getProduction());
+        });
+
+        return gameData.getProductions().stream().filter(p -> ids.contains(p.getId())).toList();
+    }
+
+    /**
+     * @param nickname
+     * @return the topmost development cards in the player's slots
+     */
+    private List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
+        return playerData.get(nickname).getDevSlots().stream().map(slot -> gameData.getDevelopmentCard(slot.get(0))).toList();
+    }
+
+    /**
+     * @param nickname
+     * @return the reduced leader cards owned by the player
+     */
+    public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
+        return playerData.get(nickname).getLeadersHand().stream().map(id -> gameData.getLeaderCard(id)).toList();
+    }
+
+    /**
+     * @param nickname
+     * @return the player's reduced containers, including leader depots
+     */
+    public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
+        List<Integer> ids = new ArrayList<>(playerData.get(nickname).getWarehouseShelves());
+
+        playerData.get(nickname).getLeadersHand().forEach(id -> { if (id >= 0) ids.add(gameData.getLeaderCard(id).getContainerId()); });
+
+        return ids.stream().map(id -> gameData.getContainer(id)).toList();
     }
 }

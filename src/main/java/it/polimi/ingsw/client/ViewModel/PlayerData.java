@@ -7,6 +7,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
 public class PlayerData {
     private final int baseProduction;
+    /** Card at index 0 is the topmost. */
     private List<List<Integer>> devSlots;
     private int faithPoints;
     private boolean isActive;
@@ -45,7 +46,10 @@ public class PlayerData {
      * @param devSlots the devSlots to set
      */
     public void setDevSlot(int slot, int cardID) {
-        devSlots.get(slot).add(cardID);
+        if (devSlots.size() - 1 < slot)
+            devSlots.add(slot, new ArrayList<>());
+
+        devSlots.get(slot).add(0, cardID);
     }
 
     /**

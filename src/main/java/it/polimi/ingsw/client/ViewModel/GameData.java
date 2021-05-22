@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.ViewModel;
 
-import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import it.polimi.ingsw.common.reducedmodel.*;
 
@@ -58,8 +58,8 @@ public class GameData {
     /**
      * @return the containers
      */
-    public List<ReducedResourceContainer> getContainers() {
-        return containers;
+    public ReducedResourceContainer getContainer(int id) throws NoSuchElementException {
+        return containers.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
     }
 
     /**
@@ -123,10 +123,11 @@ public class GameData {
     }
 
     /**
-     * @return the developmentCards
+     * @param id the ID of the card to be returned
+     * @return the developmentCard matching the ID
      */
-    public List<ReducedDevCard> getDevelopmentCards() {
-        return developmentCards;
+    public ReducedDevCard getDevelopmentCard(int id) throws NoSuchElementException{
+        return developmentCards.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
     }
 
     /**
@@ -151,24 +152,11 @@ public class GameData {
     }
 
     /**
-     * @param ID the ID of the leader to activate
-     * @throws NoSuchObjectException
+     * @param id the ID of the card to be returned
+     * @return the leaderCard matching the ID
      */
-    public void activateLeader(int ID) throws NoSuchObjectException {
-        ReducedLeaderCard l = leaderCards.stream().filter(c -> c.getId() == ID).findAny().orElseThrow(
-            () ->  new NoSuchObjectException(String.format("Inexistent leader with ID %d", ID)));
-        l.setActive();
-    }
-
-    /**
-     * Returns the game's reduced leader cards.
-     * NOTE: Don't use this to activate a leader card.
-     * GameData has an activateLeader(id) method!
-     * 
-     * @return the leaderCards
-     */
-    public List<ReducedLeaderCard> getLeaderCards() {
-        return leaderCards;
+    public ReducedLeaderCard getLeaderCard(int id) throws NoSuchElementException {
+        return leaderCards.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
     }
 
     /**
