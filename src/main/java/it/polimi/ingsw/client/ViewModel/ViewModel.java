@@ -32,6 +32,10 @@ public class ViewModel {
      */
     private final Map<String, PlayerData> playerData;
 
+    /**
+     * Class constructor.
+     * Initializes empty objects.
+     */
     public ViewModel() {
         this.uiData = new UIData();
         this.gameData = new GameData();
@@ -61,7 +65,9 @@ public class ViewModel {
     }
 
     /**
-     * @param playerData
+     * To be used when receiving the first UpdatePlayer message.
+     * 
+     * @param playerData the player's data
      */
     public void setPlayerData(String nickname, PlayerData playerData) {
         this.playerData.put(nickname, playerData);

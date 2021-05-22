@@ -5,11 +5,16 @@ import java.util.List;
 
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
+/** Data used by the UIs to manage runtime state. */
 public class UIData {
+    /** History of requests sent to the server. */
     private final List<VCEvent> requests;
     private String localPlayerNickname;
     private boolean canPrepareNewGame;
 
+    /**
+     * Class constructor.
+     */
     public UIData() {
         requests = new ArrayList<>();
     }
