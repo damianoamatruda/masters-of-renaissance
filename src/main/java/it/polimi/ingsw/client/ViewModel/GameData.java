@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.ViewModel;
 
+import java.rmi.NoSuchObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +67,17 @@ public class GameData {
      */
     public void setContainers(List<ReducedResourceContainer> containers) {
         this.containers = containers;
+    }
+
+    /**
+     * @param container the container to set
+     */
+    public void setContainer(ReducedResourceContainer container) {
+        containers.stream()
+            .filter(c -> c.getId() == container.getId())
+            .findAny().ifPresent(c -> containers.remove(c));
+
+        containers.add(container);
     }
 
     /**
@@ -139,6 +151,20 @@ public class GameData {
     }
 
     /**
+     * @param ID the ID of the leader to activate
+     * @throws NoSuchObjectException
+     */
+    public void activateLeader(int ID) throws NoSuchObjectException {
+        ReducedLeaderCard l = leaderCards.stream().filter(c -> c.getId() == ID).findAny().orElseThrow(
+            () ->  new NoSuchObjectException(String.format("Inexistent leader with ID %d", ID)));
+        l.setActive();
+    }
+
+    /**
+     * Returns the game's reduced leader cards.
+     * NOTE: Don't use this to activate a leader card.
+     * GameData has an activateLeader(id) method!
+     * 
      * @return the leaderCards
      */
     public List<ReducedLeaderCard> getLeaderCards() {
