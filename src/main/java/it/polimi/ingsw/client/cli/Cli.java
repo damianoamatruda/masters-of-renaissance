@@ -448,13 +448,10 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     private void on(UpdateBookedSeats event) {
-        System.out.println("UPDATEBS");
         if (event.canPrepareNewGame().equals(cache.getNickname()) && !(getState() instanceof InputPlayersCountState)) {
-            System.out.println("UPDATEIF");
-            if (singleplayer) {
-                System.out.println("SINGLEE");
+            if (singleplayer)
                 dispatch(new ReqNewGame(1));
-            } else
+            else
                 setState(new InputPlayersCountState());
         } else setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
