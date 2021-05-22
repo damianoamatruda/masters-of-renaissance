@@ -266,6 +266,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         int j = 0;
 
         for(String key : grid.getGrid().keySet()) {
+            Cli.trackSlimLine();
             topCards.add(grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).toList());
             List<List<String>> lines = new ArrayList<>();
             for(int i = 0; i < topCards.get(j).size(); i++) {
@@ -288,7 +289,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
             String rowTemplate = "";
             for(int i = 0; i < topCards.get(j).size(); i++) {
-                rowTemplate += "%-50s ";
+                rowTemplate += "%-50s |";
             }
             rowTemplate += "\n";
 
@@ -302,9 +303,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 }
                 System.out.printf(rowTemplate, row.toArray());
             }
-            System.out.println();
             j++;
         }
+        Cli.trackSlimLine();
         System.out.println();
 
     }

@@ -102,6 +102,12 @@ public class Cli extends EventDispatcher implements Ui {
         in.nextLine();
     }
 
+    public static void trackSlimLine() {
+        for(int i = 0; i < width; i++)
+            System.out.print("-");
+        System.out.println();
+    }
+
     /**
      * Sets the state.
      *
@@ -149,7 +155,7 @@ public class Cli extends EventDispatcher implements Ui {
 
             System.out.println();
             for (int i = 0; i < width; i++)
-                System.out.print("-");
+                System.out.print("═");
             System.out.println();
             System.out.println("\u001b[31m" + Cli.center(state.getClass().getSimpleName()) + "\u001B[0m");
             state.render(this, System.out, scanner, cache, printer);
