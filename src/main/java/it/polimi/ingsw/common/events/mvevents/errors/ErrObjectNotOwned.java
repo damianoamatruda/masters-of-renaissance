@@ -1,15 +1,18 @@
 package it.polimi.ingsw.common.events.mvevents.errors;
 
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-public class ErrObjectNotOwned implements MVEvent {
+public class ErrObjectNotOwned extends ViewEvent {
     private final int id;
     private final String objectType;
 
     /**
+     * @param view
      * @param id
      */
-    public ErrObjectNotOwned(int id, String objectType) {
+    public ErrObjectNotOwned(View view, int id, String objectType) {
+        super(view);
         this.id = id;
         this.objectType = objectType;
     }

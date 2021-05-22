@@ -44,6 +44,7 @@ public class LocalClient {
         backendView.registerOnVC(networkHandler);
         controller.registerOnVC(backendView);
 
+        view.registerOnModelLobby(backendView);
         view.registerOnModelGame(backendView);
         view.registerOnModelPlayer(backendView);
 
@@ -60,6 +61,7 @@ public class LocalClient {
             controller.unregisterOnVC(view);
 
         if (networkHandler != null) {
+            view.unregisterOnModelLobby(networkHandler);
             view.unregisterOnModelGame(networkHandler);
             view.unregisterOnModelPlayer(networkHandler);
             networkHandler = null;

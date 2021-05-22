@@ -92,13 +92,14 @@ public class Player extends EventDispatcher {
     }
 
     public void dispatchResumeState(View view) {
-        view.dispatch(new UpdatePlayer(
+        dispatch(new UpdatePlayer(
+                view,
                 nickname,
                 baseProduction.getId(),
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
                 setup.reduce()));
-        view.dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
+        dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
     }
 
     /**

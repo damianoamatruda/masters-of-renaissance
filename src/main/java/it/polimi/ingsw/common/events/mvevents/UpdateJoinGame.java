@@ -1,7 +1,9 @@
 package it.polimi.ingsw.common.events.mvevents;
 
+import it.polimi.ingsw.common.View;
+
 /** Server response to a new game request. */
-public class UpdateJoinGame implements MVEvent {
+public class UpdateJoinGame extends ViewEvent {
     /** The number of players the current game is set to. */
     private final int playersCount;
 
@@ -10,7 +12,8 @@ public class UpdateJoinGame implements MVEvent {
      *
      * @param playersCount the number of players the current game is set to
      */
-    public UpdateJoinGame(int playersCount) {
+    public UpdateJoinGame(View view, int playersCount) {
+        super(view);
         this.playersCount = playersCount;
     }
 

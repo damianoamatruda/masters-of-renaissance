@@ -1,12 +1,13 @@
 package it.polimi.ingsw.common.events.mvevents.errors;
 
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-public class ErrNoSuchEntity implements MVEvent {
+public class ErrNoSuchEntity extends ViewEvent {
     private final IDType originalEntity;
     private final int id;
     private final String code;
-    
+
     public enum IDType {
         MARKETINDEX,
         LEADER,
@@ -14,13 +15,15 @@ public class ErrNoSuchEntity implements MVEvent {
         COLOR,
         RESOURCE
     }
-    
+
     /**
+     * @param view
      * @param originalEntity
      * @param id
      * @param code
      */
-    public ErrNoSuchEntity(IDType originalEntity, int id, String code) {
+    public ErrNoSuchEntity(View view, IDType originalEntity, int id, String code) {
+        super(view);
         this.originalEntity = originalEntity;
         this.id = id;
         this.code = code;

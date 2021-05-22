@@ -18,6 +18,7 @@ public class UpdateGameStart implements MVEvent {
     /**
      * Class constructor.
      *
+     * @param view
      * @param leaderCards      leader cards available at play time
      * @param developmentCards development cards available at play time
      * @param resContainers    resource containers available at play time

@@ -87,6 +87,7 @@ public class Server {
             networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
 
             View view = new VirtualView();
+            view.registerOnModelLobby(model); // TODO: Unregister when done
             view.registerOnVC(networkHandler);
             controller.registerOnVC(view);
 

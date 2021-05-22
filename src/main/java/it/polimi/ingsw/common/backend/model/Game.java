@@ -102,7 +102,6 @@ public class Game extends EventDispatcher {
         this.devCardGrid.addEventListener(UpdateDevCardGrid.class, this::dispatch);
         this.market.addEventListener(UpdateMarket.class, this::dispatch);
         this.faithTrack.addEventListener(UpdateVaticanSection.class, this::dispatch);
-
     }
 
     public void dispatchInitialState() {
@@ -120,7 +119,8 @@ public class Game extends EventDispatcher {
     }
 
     public void dispatchResumeState(View view) {
-        view.dispatch(new UpdateGameResume(
+        dispatch(new UpdateGameResume(
+                view,
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
@@ -130,7 +130,7 @@ public class Game extends EventDispatcher {
                 colors.stream().map(DevCardColor::reduce).toList(),
                 null)); /* actionTokens not sent */
 
-        view.dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(view, getCurrentPlayer().getNickname()));
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {

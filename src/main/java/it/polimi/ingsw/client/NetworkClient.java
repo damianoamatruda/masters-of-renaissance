@@ -49,6 +49,7 @@ public class NetworkClient {
 
         networkHandler.registerOnVC(view);
 
+        view.registerOnModelLobby(networkHandler);
         view.registerOnModelGame(networkHandler);
         view.registerOnModelPlayer(networkHandler);
 
@@ -70,6 +71,7 @@ public class NetworkClient {
         }
 
         if (networkHandler != null) {
+            view.unregisterOnModelLobby(networkHandler);
             view.unregisterOnModelGame(networkHandler);
             view.unregisterOnModelPlayer(networkHandler);
             networkHandler.stop();
