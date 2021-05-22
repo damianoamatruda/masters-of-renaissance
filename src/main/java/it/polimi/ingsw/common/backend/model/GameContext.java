@@ -292,10 +292,9 @@ public class GameContext {
                 view.dispatch(new ErrObjectNotOwned(leaderId, "LeaderCard"));
                 return;
             } catch (ActiveLeaderDiscardException e) {
-
-        }
-            view.dispatch(new ErrActiveLeaderDiscarded());
-            return;
+                view.dispatch(new ErrActiveLeaderDiscarded());
+                return;
+            }
         }
     }
 
