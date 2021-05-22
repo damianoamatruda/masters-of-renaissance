@@ -1,9 +1,10 @@
-package it.polimi.ingsw.common.events.mvevents;
+package it.polimi.ingsw.common.events.netevents.errors;
 
 import it.polimi.ingsw.common.NetworkProtocolException;
+import it.polimi.ingsw.common.events.netevents.NetEvent;
 
 /** Error generated upon unsuccessful parsing of a message. */
-public class ErrProtocol implements MVEvent {
+public class ErrProtocol implements NetEvent {
     /** The reason why the message was unparsable */
     private final String msg;
 

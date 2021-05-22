@@ -3,10 +3,10 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.NetworkProtocol;
 import it.polimi.ingsw.common.NetworkProtocolException;
-import it.polimi.ingsw.common.events.mvevents.ErrProtocol;
-import it.polimi.ingsw.common.events.mvevents.ErrRuntime;
 import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.netevents.ReqHeartbeat;
+import it.polimi.ingsw.common.events.netevents.errors.ErrProtocol;
+import it.polimi.ingsw.common.events.netevents.errors.ErrRuntime;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import java.io.BufferedReader;

@@ -1,7 +1,9 @@
-package it.polimi.ingsw.common.events.mvevents;
+package it.polimi.ingsw.common.events.netevents.errors;
+
+import it.polimi.ingsw.common.events.netevents.NetEvent;
 
 /** Error message signaling an uncaught exception. */
-public class ErrRuntime implements MVEvent {
+public class ErrRuntime implements NetEvent {
     /** The message containing the error's reason. */
     private final String msg;
 

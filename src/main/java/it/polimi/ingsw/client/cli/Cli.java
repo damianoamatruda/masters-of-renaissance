@@ -416,14 +416,6 @@ public class Cli extends EventDispatcher implements Ui {
                 event.getReason().toString()));
     }
 
-    private void on(ErrProtocol event) {
-        repeatState("Error. Elaborated input was not sent in a proper JSON format");
-    }
-
-    private void on(ErrRuntime event) {
-        repeatState("Uncaught exception has been thrown. Please retry.");
-    }
-
     private void on(ReqHeartbeat event) {
         // handled in the ClientServerHandler
         // this.on(new ResHeartbeat());
