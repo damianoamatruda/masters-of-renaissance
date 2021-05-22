@@ -24,7 +24,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedDevCard newObject) {
-        System.out.printf("Development Card ID: %d, color: %s%n",
+        System.out.printf("[Development] ID: %d, color: %s%n",
             newObject.getId(),
                 printColor(newObject.getColor())
         );
@@ -38,7 +38,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.println("Requirements (resources):");
 
         newObject.getCost()
-                .getRequirements().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
+                .getRequirements().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
 
         System.out.println();
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
@@ -61,7 +61,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedLeaderCard newObject) {
-        System.out.printf("Leader Card ID: %d, type: %s%n",
+        System.out.printf("[Leader] ID: %d, type: %s%n",
             newObject.getId(),
             newObject.getLeaderType()
         );
@@ -84,7 +84,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         }
         if (newObject.getResourceRequirement() != null) {
             System.out.println("Requirements (resources):");
-            newObject.getResourceRequirement().getRequirements().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
+            newObject.getResourceRequirement().getRequirements().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
         }
 
         System.out.println();
@@ -121,7 +121,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         System.out.printf("Resource Container ID: %d, bounded resource: %s, dimensions: %d%n",
                 newObject.getId(), printResource(newObject.getboundedResType()), newObject.getDimensions());
 
-        newObject.getContent().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
+        newObject.getContent().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
         System.out.println();
     }
     
@@ -131,7 +131,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             newObject.getId());
 
         System.out.println("Input:");
-        newObject.getInput().forEach((key1, value1) -> System.out.println("Resource type: " + printResource(key1) + ", amount: " + value1));
+        newObject.getInput().forEach((key1, value1) -> System.out.println(printResource(key1) + ": " + value1));
 
         System.out.printf("Input blanks: %d%n",
             newObject.getInputBlanks());
@@ -140,7 +140,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
 
         System.out.println("Output:");
-        newObject.getOutput().forEach((key, value) -> System.out.println("Resource type: " + printResource(key) + ", amount: " + value));
+        newObject.getOutput().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
 
         System.out.printf("Output blanks: %d%n",
             newObject.getOutputBlanks());
@@ -223,7 +223,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 List<String> column = rows.get(j);
                 ReducedLeaderCard reducedLeaderCard = cards.get(j);
 
-                column.add(String.format("%-63s", String.format("Leader Card ID: \u001B[1m\u001B[97m%d\u001B[0m, type: %s",
+                column.add(String.format("%-63s", String.format("[Leader] ID: \u001B[1m\u001B[97m%d\u001B[0m, type: %s",
                         reducedLeaderCard.getId(),
                         reducedLeaderCard.getLeaderType())));
                 column.add(String.format("%-63s", String.format("BoundResource: %s, VP: %d",
@@ -272,7 +272,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 ReducedDevCard card = topCards.get(j).get(i);
                 lines.add(new ArrayList<>());
                 List<String> column = lines.get(i);
-                column.add(String.format("%-76s", String.format("Development Card ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
+                column.add(String.format("%-76s", String.format("[Development] ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
                         card.getId(),
                         printColor(card.getColor())
                 )));
@@ -280,12 +280,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                         card.getLevel(),
                         card.getVictoryPoints()
                 ));
-                column.add(String.format("Production ID: %d",
-                        card.getProduction()
-                ));
                 column.add("Requirements (resources):");
                 card.getCost()
-                        .getRequirements().forEach((k, value) ->column.add(String.format("%-63s", "Resource type: " + printResource(k) + ", amount: " + value)));
+                        .getRequirements().forEach((k, value) ->column.add(String.format("%-63s", printResource(k) + ": " + value)));
                 addProductionToPrinter(column, card);
             }
 
@@ -325,7 +322,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             column.add("Requirements (resources):");
             List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
             for(String key : keys) {
-                String req = String.format("%-63s", String.format("Resource type: %s, amount: %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
+                String req = String.format("%-63s", String.format("%s, %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
                 column.add(req);
             }
         }
@@ -337,13 +334,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             column.add(String.format("Production ID: %d",
                     r.get().getId()));
             column.add("Input:");
-            r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-63s", "Resource type: " + printResource(key1) + ", amount: " + value1)));
+            r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-63s", printResource(key1) + ": " + value1)));
             column.add(String.format("Input blanks: %d",
                     r.get().getInputBlanks()));
             column.add("Input blanks exclusions:");
             r.get().getInputBlanksExclusions().forEach(e -> column.add(e + ", "));
             column.add("Output:");
-            r.get().getOutput().forEach((key, value) -> column.add(String.format("%-63s", "Resource type: " + printResource(key) + ", amount: " + value)));
+            r.get().getOutput().forEach((key, value) -> column.add(String.format("%-63s", printResource(key) + ": " + value)));
             column.add(String.format("Output blanks: %d",
                     r.get().getOutputBlanks()));
             column.add("Output blanks exclusions:");
