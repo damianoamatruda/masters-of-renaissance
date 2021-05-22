@@ -5,8 +5,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,7 +27,7 @@ public class Gui extends Application implements Ui {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/assets.gui/" + fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Gui.class.getResource("/assets/gui/" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
