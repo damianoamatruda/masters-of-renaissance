@@ -47,7 +47,10 @@ public class Cli extends EventDispatcher implements Ui {
     private boolean singleplayer;
 
     public Cli() {
-        this.view = new CliView();
+        this.view = new View();
+        view.registerOnVC(this);
+        this.registerOnMV(view);
+
         this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());
 
@@ -222,7 +225,7 @@ public class Cli extends EventDispatcher implements Ui {
     void startNetworkClient(String host, int port) {
         boolean connected = true;
         try {
-            new NetworkClient(host, port, view, this).start();
+            new NetworkClient(view, host, port).start();
         } catch (UnknownHostException e) {
             connected = false;
             System.err.printf("Don't know about host %s%n", host);
@@ -243,7 +246,7 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     void startLocalClient() {
-        new LocalClient(view, this).start();
+        new LocalClient(view).start();
         singleplayer = true;
         setState(new InputNicknameState());
     }

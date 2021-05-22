@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.NetworkProtocol;
 import it.polimi.ingsw.common.View;
@@ -12,20 +11,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class NetworkClient {
+    private final View view;
     private final String host;
     private final int port;
-    private final View view;
-    private final Cli cli; // TODO: Make it compatible with other UIs
     private final ExecutorService executor;
     private final NetworkProtocol protocol;
     private Socket socket;
     private NetworkHandler networkHandler;
 
-    public NetworkClient(String host, int port, View view, Cli cli) {
+    public NetworkClient(View view, String host, int port) {
+        this.view = view;
         this.host = host;
         this.port = port;
-        this.view = view;
-        this.cli = cli;
         this.executor = Executors.newCachedThreadPool();
         this.protocol = new NetworkProtocol();
         this.socket = null;
@@ -44,9 +41,6 @@ public class NetworkClient {
         networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
         networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
 
-        view.registerOnVC(cli);
-        cli.registerOnMV(view);
-
         networkHandler.registerOnVC(view);
 
         view.registerOnModelLobby(networkHandler);
@@ -58,9 +52,6 @@ public class NetworkClient {
 
     public void stop() {
         executor.shutdown();
-
-        view.unregisterOnVC(cli);
-        cli.unregisterOnMV(view);
 
         if (socket != null) {
             try {
