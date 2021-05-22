@@ -261,6 +261,57 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         }
     }
 
+    public void printCardGrid(ReducedDevCardGrid grid) {
+        List<List<ReducedDevCard>> topCards = new ArrayList<>();
+        int j = 0;
+
+        for(String key : grid.getGrid().keySet()) {
+            topCards.add(grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).toList());
+            List<List<String>> lines = new ArrayList<>();
+            for(int i = 0; i < topCards.get(j).size(); i++) {
+                ReducedDevCard card = topCards.get(j).get(i);
+                lines.add(new ArrayList<>());
+                List<String> column = lines.get(i);
+                column.add(String.format("%-63s", String.format("Development Card ID: %d, color: %s",
+                        card.getId(),
+                        printColor(card.getColor())
+                )));
+                column.add(String.format("Level: %d, VP: %d",
+                        card.getLevel(),
+                        card.getVictoryPoints()
+                ));
+                column.add(String.format("Production ID: %d",
+                        card.getProduction()
+                ));
+                column.add("Requirements (resources):");
+                card.getCost()
+                        .getRequirements().forEach((k, value) ->column.add(String.format("%-63s", "Resource type: " + printResource(k) + ", amount: " + value)));
+                addProductionToPrinter(column, card);
+            }
+
+            String rowTemplate = "";
+            for(int i = 0; i < topCards.get(j).size(); i++) {
+                rowTemplate += "%-50s ";
+            }
+            rowTemplate += "\n";
+
+            int length = lines.stream().map(List::size).reduce(Integer::max).orElse(0);
+            for(int k = 0; k < length; k++) {
+                List<String> row = new ArrayList<>();
+                for(int i = 0; i < topCards.get(j).size(); i++) {
+                    if(k < lines.get(i).size())
+                        row.add(lines.get(i).get(k));
+                    else row.add("");
+                }
+                System.out.printf(rowTemplate, row.toArray());
+            }
+            System.out.println();
+            j++;
+        }
+        System.out.println();
+
+    }
+
     private void addRequirementsToPrinter(List<String> column, ReducedLeaderCard reducedLeaderCard) {
         if (reducedLeaderCard.getDevCardRequirement() != null) {
             column.add("Requirements (development cards):");
@@ -286,13 +337,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             column.add(String.format("Production ID: %d",
                     r.get().getId()));
             column.add("Input:");
-            r.get().getInput().forEach((key1, value1) -> column.add("Resource type: " + printResource(key1) + ", amount: " + value1));
+            r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-63s", "Resource type: " + printResource(key1) + ", amount: " + value1)));
             column.add(String.format("Input blanks: %d",
                     r.get().getInputBlanks()));
             column.add("Input blanks exclusions:");
             r.get().getInputBlanksExclusions().forEach(e -> column.add(e + ", "));
             column.add("Output:");
-            r.get().getOutput().forEach((key, value) -> column.add("Resource type: " + printResource(key) + ", amount: " + value));
+            r.get().getOutput().forEach((key, value) -> column.add(String.format("%-63s", "Resource type: " + printResource(key) + ", amount: " + value)));
             column.add(String.format("Output blanks: %d",
                     r.get().getOutputBlanks()));
             column.add("Output blanks exclusions:");

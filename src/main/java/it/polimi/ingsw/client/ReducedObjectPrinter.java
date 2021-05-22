@@ -25,4 +25,5 @@ public interface ReducedObjectPrinter {
     void showPlayerSlots(String player);
 
     void printOwnedLeaders(List<ReducedLeaderCard> leaders);
+    void printCardGrid(ReducedDevCardGrid grid);
 }
