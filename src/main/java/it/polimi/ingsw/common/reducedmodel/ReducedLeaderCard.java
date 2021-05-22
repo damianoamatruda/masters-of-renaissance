@@ -1,8 +1,6 @@
 package it.polimi.ingsw.common.reducedmodel;
 
-public class ReducedLeaderCard {
-    private final int id;
-    private final int victoryPoints;
+public class ReducedLeaderCard extends ReducedCard {
     private final String resourceType;
     private final String leaderType;
     private final ReducedDevCardRequirement devCardRequirement;
@@ -11,7 +9,6 @@ public class ReducedLeaderCard {
 
     private final int containerId;
     private final int discount;
-    private final int production;
 
     /**
      * @param id
@@ -29,8 +26,7 @@ public class ReducedLeaderCard {
             int containerId,
             int discount,
             int production) {
-        this.id = id;
-        this.victoryPoints = victoryPoints;
+        super(id, victoryPoints, production);
         this.resourceType = resourceType;
         this.leaderType = leaderType;
         this.isActive = isActive;
@@ -39,7 +35,6 @@ public class ReducedLeaderCard {
         
         this.containerId = containerId;
         this.discount = discount;
-        this.production = production;
     }
 
     /**
@@ -54,20 +49,6 @@ public class ReducedLeaderCard {
      */
     public ReducedDevCardRequirement getDevCardRequirement() {
         return devCardRequirement;
-    }
-
-    /**
-     * @return the id of the card
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @return the victoryPoints of the card
-     */
-    public int getVictoryPoints() {
-        return victoryPoints;
     }
 
     /**
@@ -109,10 +90,4 @@ public class ReducedLeaderCard {
         return discount;
     }
 
-    /**
-     * @return the ID of the production of the card
-     */
-    public int getProduction() {
-        return production;
-    }
 }
