@@ -1,31 +1,32 @@
 package it.polimi.ingsw.common.events.mvevents.errors;
 
-import it.polimi.ingsw.common.events.mvevents.MVEvent;
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-public class ErrResourceReplacement implements MVEvent {
+public class ErrResourceReplacement extends ViewEvent {
     private final boolean isInput;
     private final boolean isNonStorable;
     private final boolean isExcluded;
     private final int replacedCount, blanks;
+
     /**
+     * @param view
      * @param isInput
      * @param isNonStorable
      * @param isExcluded
      * @param replacedCount
      * @param blanks
      */
-    public ErrResourceReplacement(
-        boolean isInput,
-        boolean isNonStorable,
-        boolean isExcluded,
-        int replacedCount,
-        int blanks) {
+    public ErrResourceReplacement(View view, boolean isInput, boolean isNonStorable, boolean isExcluded,
+                                  int replacedCount, int blanks) {
+        super(view);
         this.isInput = isInput;
         this.isNonStorable = isNonStorable;
         this.isExcluded = isExcluded;
         this.replacedCount = replacedCount;
         this.blanks = blanks;
     }
+
     /**
      * @return the isInput
      */

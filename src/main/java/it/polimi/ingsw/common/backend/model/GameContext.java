@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * This class manages the states and actions of a game.
  */
-public class GameContext {
+public class GameContext extends EventDispatcher {
     private final Object lock;
     /** The game. */
     private final Game game;
@@ -66,18 +67,18 @@ public class GameContext {
             //     System.out.println(n);
             // System.out.println("context.start, players: end of list");
     
-            game.dispatchInitialState();
+            game.dispatchState();
             game.getMarket().dispatchInitialState();
             game.getDevCardGrid().dispatchInitialState();
-            game.getPlayers().forEach(Player::dispatchInitialState);
+            game.getPlayers().forEach(Player::dispatchState);
             game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
         }
     }
 
     public void resume(View view) {
         synchronized(lock) {
-            game.dispatchResumeState(view);
-            game.getPlayers().forEach(p -> p.dispatchResumeState(view));
+            game.dispatchState(view);
+            game.getPlayers().forEach(p -> p.dispatchState(view));
         }
     }
 
@@ -93,19 +94,19 @@ public class GameContext {
             Player player = getPlayerByNickname(nickname);
     
             if (player.getSetup().isDone()) {
-                view.dispatch(new ErrAction(ErrActionReason.LATESETUPACTION));
+                dispatch(new ErrAction(view, ErrActionReason.LATESETUPACTION));
                 return;
             }
     
             Optional<Integer> missing = leaderIds.stream().filter(l -> player.getLeaderById(l).isEmpty()).findAny();
             if (missing.isPresent()) {
-                view.dispatch(new ErrObjectNotOwned(missing.get(), "LeaderCard"));
+                dispatch(new ErrObjectNotOwned(view, missing.get(), "LeaderCard"));
                 return;
             }
 
             int distinctSize = leaderIds.stream().distinct().toList().size();
             if (distinctSize < leaderIds.size()) {
-                view.dispatch(new ErrInitialChoice(true, leaderIds.size() - distinctSize));
+                dispatch(new ErrInitialChoice(view, true, leaderIds.size() - distinctSize));
                 return;
             }
 
@@ -115,7 +116,7 @@ public class GameContext {
             try {
                 player.getSetup().chooseLeaders(game, player, leaders);
             } catch (CannotChooseException e) {
-                view.dispatch(new ErrInitialChoice(true, e.getMissingLeadersCount()));
+                dispatch(new ErrInitialChoice(view, true, e.getMissingLeadersCount()));
             }
         }
     }
@@ -132,7 +133,7 @@ public class GameContext {
             Player player = getPlayerByNickname(nickname);
     
             if (player.getSetup().isDone()) {
-                view.dispatch(new ErrAction(ErrActionReason.LATESETUPACTION));
+                dispatch(new ErrAction(view, ErrActionReason.LATESETUPACTION));
                 return;
             }
     
@@ -141,14 +142,14 @@ public class GameContext {
                 Optional<Shelf> s = player.getShelfById(shelf.getKey());
     
                 if (s.isEmpty()) {
-                    view.dispatch(new ErrObjectNotOwned(shelf.getKey(), "Shelf"));
+                    dispatch(new ErrObjectNotOwned(view, shelf.getKey(), "Shelf"));
                     return;
                 }
     
                 try {
                     shelves.put(s.get(), translateResMap(shelf.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                    dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
                 }
             }
     
@@ -156,15 +157,15 @@ public class GameContext {
                 player.getSetup().chooseResources(game, player, shelves);
             } catch (IllegalResourceTransactionReplacementsException e) {
                 // illegal replaced resources
-                view.dispatch(new ErrResourceReplacement(e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
+                dispatch(new ErrResourceReplacement(view, e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
             } catch (IllegalResourceTransactionContainersException e) {
                 // amount of resources in replaced map is different from shelves mapping
-                view.dispatch(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
+                dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
             } catch (CannotChooseException e1) {
                 // resources already chosen
-                view.dispatch(new ErrInitialChoice(false, 0));
+                dispatch(new ErrInitialChoice(view, false, 0));
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
+                dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
             }
         }
     }
@@ -192,20 +193,20 @@ public class GameContext {
             try {
                 shelf1 = player.getShelfById(shelfId1).get();
             } catch (NoSuchElementException e) {
-                view.dispatch(new ErrObjectNotOwned(shelfId1, "Shelf"));
+                dispatch(new ErrObjectNotOwned(view, shelfId1, "Shelf"));
                 return;
             }
             try {
                 shelf2 = player.getShelfById(shelfId2).get();
             } catch (NoSuchElementException e) {
-                view.dispatch(new ErrObjectNotOwned(shelfId2, "Shelf"));
+                dispatch(new ErrObjectNotOwned(view, shelfId2, "Shelf"));
                 return;
             }
     
             try {
                 Shelf.swap(shelf1, shelf2);
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
+                dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
             }
         }
     }
@@ -232,16 +233,16 @@ public class GameContext {
             try {
                 leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
             } catch (Exception e) {
-                view.dispatch(new ErrObjectNotOwned(leaderId, "LeaderCard"));
+                dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
                 return;
             }
     
             try {
                 leader.activate(player);
             } catch (IllegalArgumentException e) {
-                view.dispatch(new ErrObjectNotOwned(leaderId, "LeaderCard"));
+                dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             } catch (CardRequirementsNotMetException e) {
-                view.dispatch(new ErrCardRequirements(e.getMessage()));
+                dispatch(new ErrCardRequirements(view, e.getMessage()));
             }
         }
     }
@@ -268,16 +269,16 @@ public class GameContext {
             try {
                 leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
             } catch (Exception e) {
-                view.dispatch(new ErrObjectNotOwned(leaderId, "LeaderCard"));
+                dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
                 return;
             }
     
             try {
                 player.discardLeader(game, leader);
             } catch (IllegalArgumentException e) {
-                view.dispatch(new ErrObjectNotOwned(leaderId, "LeaderCard"));
+                dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             } catch (ActiveLeaderDiscardException e) {
-                view.dispatch(new ErrActiveLeaderDiscarded());
+                dispatch(new ErrActiveLeaderDiscarded(view));
             }
         }
     }
@@ -313,14 +314,14 @@ public class GameContext {
                 Optional<Shelf> s = player.getShelfById(shelf.getKey());
 
                 if (s.isEmpty()) {
-                    view.dispatch(new ErrObjectNotOwned(shelf.getKey(), "Shelf"));
+                    dispatch(new ErrObjectNotOwned(view, shelf.getKey(), "Shelf"));
                     return;
                 }
 
                 try {
                     shelves.put(s.get(), translateResMap(shelf.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                    dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
                 }
             }
 
@@ -328,19 +329,21 @@ public class GameContext {
                 game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
             } catch (IllegalResourceTransactionReplacementsException e) {
                 // illegal replaced resources
-                view.dispatch(new ErrResourceReplacement(e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
+                dispatch(new ErrResourceReplacement(view, e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
                 return;
             } catch (IllegalResourceTransactionContainersException e) {
                 // amount of resources in replaced map is different from shelves mapping
-                view.dispatch(new ErrReplacedTransRecipe(e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
+                dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
                 return;
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
+                dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;
             } catch (IllegalArgumentException e) {
-                view.dispatch(new ErrNoSuchEntity(IDType.MARKETINDEX, index, null));
+                dispatch(new ErrNoSuchEntity(view, IDType.MARKETINDEX, index, null));
+                return;
             } catch (NoSuchElementException e) {
-                view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
+                return;
             }
 
             mandatoryActionDone = true;
@@ -375,30 +378,30 @@ public class GameContext {
                 Optional<ResourceContainer> c = player.getResourceContainerById(container.getKey());
 
                 if (c.isEmpty()) {
-                    view.dispatch(new ErrObjectNotOwned(container.getKey(), "ResourceContainer"));
+                    dispatch(new ErrObjectNotOwned(view, container.getKey(), "ResourceContainer"));
                     return;
                 }
 
                 try {
                     resContainers.put(c.get(), translateResMap(container.getValue()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                    dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
                 }
             }
 
             try {
                 game.getDevCardGrid().buyDevCard(game, player, gameFactory.getDevCardColor(color).orElseThrow(), level, slotIndex, resContainers);
             } catch (EmptyStackException e) {
-                view.dispatch(new ErrBuyDevCard(true));
+                dispatch(new ErrBuyDevCard(view, true));
                 return;
             } catch (CardRequirementsNotMetException e) {
-                view.dispatch(new ErrCardRequirements(e.getMessage()));
+                dispatch(new ErrCardRequirements(view, e.getMessage()));
                 return;
             } catch (IllegalCardDepositException e) {
-                view.dispatch(new ErrBuyDevCard(false));
+                dispatch(new ErrBuyDevCard(view, false));
                 return;
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
+                dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;
             }
 
@@ -428,7 +431,7 @@ public class GameContext {
 
             Optional<Integer> missing = reducedProdRequests.stream().map(ReducedProductionRequest::getProduction).filter(p -> player.getProductionById(p).isEmpty()).findAny();
             if (missing.isPresent()) {
-                view.dispatch(new ErrObjectNotOwned(missing.get(), "ReducedProductionRequest"));
+                dispatch(new ErrObjectNotOwned(view, missing.get(), "ReducedProductionRequest"));
                 return;
             }
 
@@ -440,14 +443,15 @@ public class GameContext {
                     Optional<ResourceContainer> c = player.getResourceContainerById(container.getKey());
         
                     if (c.isEmpty()) {
-                        view.dispatch(new ErrObjectNotOwned(container.getKey(), "ResourceContainer"));
+                        dispatch(new ErrObjectNotOwned(view, container.getKey(), "ResourceContainer"));
                         return;
                     }
         
                     try {
                         inputContainers.put(c.get(), translateResMap(container.getValue()));
                     } catch (NoSuchElementException e) {
-                        view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                        dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
+                        return;
                     }
                 }
                 
@@ -459,7 +463,8 @@ public class GameContext {
                             translateResMap(r.getOutputBlanksRep()),
                             inputContainers, player.getStrongbox()));
                 } catch (NoSuchElementException e) {
-                    view.dispatch(new ErrNoSuchEntity(IDType.RESOURCE, -1, e.getMessage()));
+                    dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
+                    return;
                 }
             }
 
@@ -467,7 +472,7 @@ public class GameContext {
             try {
                 transaction.activate(game, player);
             } catch (IllegalResourceTransferException e) {
-                view.dispatch(new ErrResourceTransfer(e.getResource().getName(), e.isAdded(), e.getKind().name()));
+                dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;
             }
 
@@ -492,14 +497,14 @@ public class GameContext {
                 return;
     
             if (!mandatoryActionDone) {
-                view.dispatch(new ErrAction(ErrActionReason.EARLYTURNEND));
+                dispatch(new ErrAction(view, ErrActionReason.EARLYTURNEND));
                 return;
             }
     
             try {
                 game.onTurnEnd();
             } catch (NoActivePlayersException e) {
-                throw new RuntimeException("No active players");
+                throw new RuntimeException("No active players"); // TODO: Handle this
             }
     
             mandatoryActionDone = false;
@@ -524,7 +529,7 @@ public class GameContext {
      */
     private boolean preliminaryChecks(View view, Player player) {
         if (!player.getSetup().isDone() || game.hasEnded()) {
-            view.dispatch(!player.getSetup().isDone() ? new ErrAction(ErrActionReason.EARLYMANDATORYACTION) : new ErrAction(ErrActionReason.ENDEDGAME));
+            dispatch(new ErrAction(view, !player.getSetup().isDone() ? ErrActionReason.EARLYMANDATORYACTION : ErrActionReason.ENDEDGAME));
             return false;
         }
         return true;
@@ -539,7 +544,7 @@ public class GameContext {
      */
     private boolean checkCurrentPlayer(View view, Player player) {
         if (!player.equals(game.getCurrentPlayer())) {
-            view.dispatch(new ErrAction(ErrActionReason.NOTCURRENTPLAYER));
+            dispatch(new ErrAction(view, ErrActionReason.NOTCURRENTPLAYER));
             return false;
         }
         return true;
@@ -553,7 +558,7 @@ public class GameContext {
      */
     private boolean checkMandatoryActionNotDone(View view) {
         if (mandatoryActionDone) {
-            view.dispatch(new ErrAction(ErrActionReason.LATEMANDATORYACTION));
+            dispatch(new ErrAction(view, ErrActionReason.LATEMANDATORYACTION));
             return false;
         }
         return true;

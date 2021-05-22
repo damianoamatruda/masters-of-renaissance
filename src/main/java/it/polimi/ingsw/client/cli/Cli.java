@@ -6,9 +6,13 @@ import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.*;
+import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
+import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
+import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.IOException;
@@ -38,12 +42,15 @@ public class Cli extends EventDispatcher implements Ui {
 
     private volatile boolean running;
 
-    private final VCEvent lastReq;
+    private Event lastReq; // TODO: Delete this
 
     private boolean singleplayer;
 
     public Cli() {
-        this.view = new CliView();
+        this.view = new View();
+        view.registerOnVC(this);
+        this.registerOnMV(view);
+
         this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());
 
@@ -158,12 +165,12 @@ public class Cli extends EventDispatcher implements Ui {
         view.addEventListener(ErrReplacedTransRecipe.class, this::on);
         view.addEventListener(ErrResourceReplacement.class, this::on);
         view.addEventListener(ErrResourceTransfer.class, this::on);
+        view.addEventListener(ResQuit.class, this::on);
         view.addEventListener(UpdateBookedSeats.class, this::on);
         view.addEventListener(UpdateJoinGame.class, this::on);
-        view.addEventListener(UpdateGameStart.class, this::on);
+        view.addEventListener(UpdateGame.class, this::on);
         view.addEventListener(UpdateCurrentPlayer.class, this::on);
         view.addEventListener(UpdateSetupDone.class, this::on);
-        view.addEventListener(UpdateGameResume.class, this::on);
         view.addEventListener(UpdateLastRound.class, this::on);
         view.addEventListener(UpdateGameEnd.class, this::on);
         view.addEventListener(UpdatePlayer.class, this::on);
@@ -194,12 +201,12 @@ public class Cli extends EventDispatcher implements Ui {
         view.removeEventListener(ErrReplacedTransRecipe.class, this::on);
         view.removeEventListener(ErrResourceReplacement.class, this::on);
         view.removeEventListener(ErrResourceTransfer.class, this::on);
+        view.removeEventListener(ResQuit.class, this::on);
         view.removeEventListener(UpdateBookedSeats.class, this::on);
         view.removeEventListener(UpdateJoinGame.class, this::on);
-        view.removeEventListener(UpdateGameStart.class, this::on);
+        view.removeEventListener(UpdateGame.class, this::on);
         view.removeEventListener(UpdateCurrentPlayer.class, this::on);
         view.removeEventListener(UpdateSetupDone.class, this::on);
-        view.removeEventListener(UpdateGameResume.class, this::on);
         view.removeEventListener(UpdateLastRound.class, this::on);
         view.removeEventListener(UpdateGameEnd.class, this::on);
         view.removeEventListener(UpdatePlayer.class, this::on);
@@ -220,7 +227,7 @@ public class Cli extends EventDispatcher implements Ui {
     void startNetworkClient(String host, int port) {
         boolean connected = true;
         try {
-            new NetworkClient(host, port, view, this).start();
+            new NetworkClient(view, host, port).start();
         } catch (UnknownHostException e) {
             connected = false;
             System.err.printf("Don't know about host %s%n", host);
@@ -241,7 +248,7 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     void startLocalClient() {
-        new LocalClient(view, this).start();
+        new LocalClient(view).start();
         singleplayer = true;
         setState(new InputNicknameState());
     }
@@ -341,6 +348,13 @@ public class Cli extends EventDispatcher implements Ui {
         stop();
     }
 
+    // TODO: Delete this
+    @Override
+    public <T extends Event> void dispatch(T event) {
+        super.dispatch(event);
+        lastReq = event;
+    }
+
     private void on(ErrAction event) {
         repeatState(event.getReason().toString());
     }
@@ -348,7 +362,8 @@ public class Cli extends EventDispatcher implements Ui {
     private void on(ErrActiveLeaderDiscarded event) {
         int id = -1;
         try {
-            id = ((ReqLeaderAction)lastReq).getLeader();
+            // TODO: Delete this
+            id = ((ReqLeaderAction) lastReq).getLeader();
         } catch (Exception ignored) {}
 
         repeatState(String.format("Active leader %d tried to be discarded.", id));
@@ -447,6 +462,7 @@ public class Cli extends EventDispatcher implements Ui {
 
     private void on(UpdateDevCardSlot event) {
         cache.setPlayerDevSlot(cache.getCurrentPlayer(), event.getDevSlot(), event.getDevCard());
+        // TODO: Delete this
         if (lastReq instanceof ReqBuyDevCard)
             setState(new TurnAfterActionState());
     }
@@ -460,18 +476,7 @@ public class Cli extends EventDispatcher implements Ui {
         setState(new GameEndState());
     }
 
-    private void on(UpdateGameResume event) {
-        cache.setActionTokens(event.getActionTokens());
-        cache.setContainers(event.getResContainers());
-        cache.setDevelopmentCards(event.getDevelopmentCards());
-        cache.setFaithPoints(0);
-        cache.setLeaderCards(event.getLeaderCards());
-        cache.setPlayers(event.getPlayers());
-        cache.setProductions(event.getProductions());
-        setState(new WaitingAfterTurnState());
-    }
-
-    private void on(UpdateGameStart event) {
+    private void on(UpdateGame event) {
         cache.setActionTokens(event.getActionTokens());
         cache.setContainers(event.getResContainers());
         cache.setDevelopmentCards(event.getDevelopmentCards());
@@ -481,7 +486,11 @@ public class Cli extends EventDispatcher implements Ui {
         cache.setProductions(event.getProductions());
         cache.setColors(event.getColors());
         cache.setResourceTypes(event.getResourceTypes());
-        event.getPlayers().forEach(p -> cache.setVictoryPoints(p, 0));
+
+        if (!event.isResumed())
+            event.getPlayers().forEach(p -> cache.setVictoryPoints(p, 0));
+        else
+            setState(new WaitingAfterTurnState());
     }
 
     private void on(UpdateJoinGame event) {

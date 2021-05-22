@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class Lobby {
+public class Lobby extends EventDispatcher {
     private final Object lock;
     private final GameFactory gameFactory;
     public final Map<View, String> nicknames;
@@ -36,15 +37,15 @@ public class Lobby {
     public void joinLobby(View view, String nickname) {
         synchronized(lock) {
             if (nicknames.containsKey(view)) {
-                view.dispatch(new ErrNickname(ErrNicknameReason.ALREADYSET));
+                dispatch(new ErrNickname(view, ErrNicknameReason.ALREADYSET));
                 return;
             }
             if (nickname == null || nickname.isBlank()) {
-                view.dispatch(new ErrNickname(ErrNicknameReason.NOTSET));
+                dispatch(new ErrNickname(view, ErrNicknameReason.NOTSET));
                 return;
             }
             if (nicknames.containsValue(nickname)) {
-                view.dispatch(new ErrNickname(ErrNicknameReason.TAKEN));
+                dispatch(new ErrNickname(view, ErrNicknameReason.TAKEN));
                 return;
             }
     
@@ -59,7 +60,7 @@ public class Lobby {
                 try {
                     oldContext.setActive(nickname, true);
                 } catch (NoActivePlayersException e) {
-                    // view.dispatch(new ErrAction(e));
+                    // dispatch(new ErrAction(view, e));
                     throw new RuntimeException("No active players after player rejoining.");
                 }
     
@@ -74,10 +75,10 @@ public class Lobby {
                 waiting.add(view);
                 System.out.printf("adding %s, %d waiting\n", nickname, waiting.size());
 
-                waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
+                waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
     
                 if (newGamePlayersCount != 0)
-                    view.dispatch(new UpdateJoinGame(newGamePlayersCount));
+                    dispatch(new UpdateJoinGame(view, newGamePlayersCount));
     
                 if (waiting.size() == newGamePlayersCount) {
                     System.out.printf("%s joining started a new game\n", nicknames.get(view));
@@ -95,19 +96,19 @@ public class Lobby {
     
             if (waiting.indexOf(view) != 0) {
                 System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
-                view.dispatch(new ErrNewGame(false));
+                dispatch(new ErrNewGame(view, false));
                 return;
             }
     
             if (newGamePlayersCount == 0) {
-                view.dispatch(new ErrNewGame(true));
+                dispatch(new ErrNewGame(view, true));
                 return;
             }
     
             System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
             this.newGamePlayersCount = newGamePlayersCount;
 
-            waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> v.dispatch(new UpdateJoinGame(newGamePlayersCount)));
+            waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> dispatch(new UpdateJoinGame(v, newGamePlayersCount)));
     
             if (waiting.size() >= newGamePlayersCount){
                 startNewGame();
@@ -134,7 +135,7 @@ public class Lobby {
             waiting.subList(0, newGamePlayersCount).clear();
             System.out.printf("removed %d waiting %d\n", newGamePlayersCount, waiting.size());
 
-            waiting.forEach(v -> v.dispatch(new UpdateBookedSeats(waiting.size(), nicknames.get(waiting.get(0)))));
+            waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
     
             newGamePlayersCount = 0;
         }
@@ -158,10 +159,9 @@ public class Lobby {
                 }
                 nicknames.remove(view);
 
-                if(waiting.contains(view))
-                    waiting.remove(view);
+                waiting.remove(view);
             }
-            view.dispatch(new ResQuit());
+            dispatch(new ResQuit(view));
         }
     }
 
@@ -179,7 +179,7 @@ public class Lobby {
 
     private boolean checkNickname(View view) {
         if (!nicknames.containsKey(view)) {
-            view.dispatch(new ErrNickname(ErrNicknameReason.NOTSET));
+            dispatch(new ErrNickname(view, ErrNicknameReason.NOTSET));
             return false;
         }
         return true;
@@ -190,7 +190,7 @@ public class Lobby {
             if (!checkNickname(view))
                 return false;
             if (!joined.containsKey(view)) {
-                view.dispatch(new ErrNickname(ErrNicknameReason.NOTINGAME));
+                dispatch(new ErrNickname(view, ErrNicknameReason.NOTINGAME));
                 return false;
             }
             return true;

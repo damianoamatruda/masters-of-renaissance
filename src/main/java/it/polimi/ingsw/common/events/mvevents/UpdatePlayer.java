@@ -1,10 +1,11 @@
 package it.polimi.ingsw.common.events.mvevents;
 
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
 import java.util.List;
 
-public class UpdatePlayer implements MVEvent {
+public class UpdatePlayer extends ViewEvent {
     // TODO commproto docs
     private final String player;
     private final int baseProduction;
@@ -15,13 +16,19 @@ public class UpdatePlayer implements MVEvent {
     /**
      * Class constructor.
      */
-    public UpdatePlayer(String player, int baseProduction, List<Integer> warehouseShelves, int strongbox,
+    public UpdatePlayer(View view, String player, int baseProduction, List<Integer> warehouseShelves, int strongbox,
                         ReducedPlayerSetup playerSetup) {
+        super(view);
         this.player = player;
         this.baseProduction = baseProduction;
         this.warehouseShelves = warehouseShelves;
         this.strongbox = strongbox;
         this.playerSetup = playerSetup;
+    }
+
+    public UpdatePlayer(String player, int baseProduction, List<Integer> warehouseShelves, int strongbox,
+                        ReducedPlayerSetup playerSetup) {
+        this(null, player, baseProduction, warehouseShelves, strongbox, playerSetup);
     }
 
     /**
