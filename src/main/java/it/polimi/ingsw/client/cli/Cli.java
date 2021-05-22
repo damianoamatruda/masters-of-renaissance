@@ -164,10 +164,9 @@ public class Cli extends EventDispatcher implements Ui {
         view.addEventListener(ErrResourceTransfer.class, this::on);
         view.addEventListener(UpdateBookedSeats.class, this::on);
         view.addEventListener(UpdateJoinGame.class, this::on);
-        view.addEventListener(UpdateGameStart.class, this::on);
+        view.addEventListener(UpdateGame.class, this::on);
         view.addEventListener(UpdateCurrentPlayer.class, this::on);
         view.addEventListener(UpdateSetupDone.class, this::on);
-        view.addEventListener(UpdateGameResume.class, this::on);
         view.addEventListener(UpdateLastRound.class, this::on);
         view.addEventListener(UpdateGameEnd.class, this::on);
         view.addEventListener(UpdatePlayer.class, this::on);
@@ -200,10 +199,9 @@ public class Cli extends EventDispatcher implements Ui {
         view.removeEventListener(ErrResourceTransfer.class, this::on);
         view.removeEventListener(UpdateBookedSeats.class, this::on);
         view.removeEventListener(UpdateJoinGame.class, this::on);
-        view.removeEventListener(UpdateGameStart.class, this::on);
+        view.removeEventListener(UpdateGame.class, this::on);
         view.removeEventListener(UpdateCurrentPlayer.class, this::on);
         view.removeEventListener(UpdateSetupDone.class, this::on);
-        view.removeEventListener(UpdateGameResume.class, this::on);
         view.removeEventListener(UpdateLastRound.class, this::on);
         view.removeEventListener(UpdateGameEnd.class, this::on);
         view.removeEventListener(UpdatePlayer.class, this::on);
@@ -473,18 +471,7 @@ public class Cli extends EventDispatcher implements Ui {
         setState(new GameEndState());
     }
 
-    private void on(UpdateGameResume event) {
-        cache.setActionTokens(event.getActionTokens());
-        cache.setContainers(event.getResContainers());
-        cache.setDevelopmentCards(event.getDevelopmentCards());
-        cache.setFaithPoints(0);
-        cache.setLeaderCards(event.getLeaderCards());
-        cache.setPlayers(event.getPlayers());
-        cache.setProductions(event.getProductions());
-        setState(new WaitingAfterTurnState());
-    }
-
-    private void on(UpdateGameStart event) {
+    private void on(UpdateGame event) {
         cache.setActionTokens(event.getActionTokens());
         cache.setContainers(event.getResContainers());
         cache.setDevelopmentCards(event.getDevelopmentCards());
@@ -494,7 +481,11 @@ public class Cli extends EventDispatcher implements Ui {
         cache.setProductions(event.getProductions());
         cache.setColors(event.getColors());
         cache.setResourceTypes(event.getResourceTypes());
-        event.getPlayers().forEach(p -> cache.setVictoryPoints(p, 0));
+
+        if (!event.isResumed())
+            event.getPlayers().forEach(p -> cache.setVictoryPoints(p, 0));
+        else
+            setState(new WaitingAfterTurnState());
     }
 
     private void on(UpdateJoinGame event) {

@@ -81,17 +81,7 @@ public class Player extends EventDispatcher {
         this.winner = false;
     }
 
-    public void dispatchInitialState() {
-        dispatch(new UpdatePlayer(
-                nickname,
-                baseProduction.getId(),
-                warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
-                strongbox.getId(),
-                setup.reduce()));
-        dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
-    }
-
-    public void dispatchResumeState(View view) {
+    public void dispatchState(View view) {
         dispatch(new UpdatePlayer(
                 view,
                 nickname,
@@ -100,6 +90,10 @@ public class Player extends EventDispatcher {
                 strongbox.getId(),
                 setup.reduce()));
         dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
+    }
+
+    public void dispatchState() {
+        dispatchState(null);
     }
 
     /**

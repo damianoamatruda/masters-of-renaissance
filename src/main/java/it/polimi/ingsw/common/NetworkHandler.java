@@ -40,10 +40,9 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
         view.addEventListener(ErrResourceTransfer.class, this::send);
         view.addEventListener(UpdateBookedSeats.class, this::send);
         view.addEventListener(UpdateJoinGame.class, this::send);
-        view.addEventListener(UpdateGameStart.class, this::send);
+        view.addEventListener(UpdateGame.class, this::send);
         view.addEventListener(UpdateCurrentPlayer.class, this::send);
         view.addEventListener(UpdateSetupDone.class, this::send);
-        view.addEventListener(UpdateGameResume.class, this::send);
         view.addEventListener(UpdateLastRound.class, this::send);
         view.addEventListener(UpdateGameEnd.class, this::send);
         view.addEventListener(UpdatePlayer.class, this::send);
@@ -76,10 +75,9 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
         view.removeEventListener(ErrResourceTransfer.class, this::send);
         view.removeEventListener(UpdateBookedSeats.class, this::send);
         view.removeEventListener(UpdateJoinGame.class, this::send);
-        view.removeEventListener(UpdateGameStart.class, this::send);
+        view.removeEventListener(UpdateGame.class, this::send);
         view.removeEventListener(UpdateCurrentPlayer.class, this::send);
         view.removeEventListener(UpdateSetupDone.class, this::send);
-        view.removeEventListener(UpdateGameResume.class, this::send);
         view.removeEventListener(UpdateLastRound.class, this::send);
         view.removeEventListener(UpdateGameEnd.class, this::send);
         view.removeEventListener(UpdatePlayer.class, this::send);

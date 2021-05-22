@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.List;
 
-public class UpdateGameResume extends ViewEvent {
+public class UpdateGame extends ViewEvent {
     // TODO commproto docs
     private final List<String> players;
     private final List<ReducedLeaderCard> leaderCards;
@@ -15,6 +15,7 @@ public class UpdateGameResume extends ViewEvent {
     private final List<ReducedActionToken> actionTokens;
     private final List<ReducedColor> colors;
     private final List<ReducedResourceType> resourceTypes;
+    private final boolean resumed;
 
     /**
      * Class constructor.
@@ -27,13 +28,16 @@ public class UpdateGameResume extends ViewEvent {
      * @param resourceTypes    resource types available at play time
      * @param colors           development card colors available at play time
      */
-    public UpdateGameResume(View view,
-                            List<String> players,
-                            List<ReducedLeaderCard> leaderCards,
-                            List<ReducedDevCard> developmentCards,
-                            List<ReducedResourceContainer> resContainers,
-                            List<ReducedResourceTransactionRecipe> productions,
-                            List<ReducedResourceType> resourceTypes, List<ReducedColor> colors, List<ReducedActionToken> actionTokens) {
+    public UpdateGame(View view,
+                      List<String> players,
+                      List<ReducedLeaderCard> leaderCards,
+                      List<ReducedDevCard> developmentCards,
+                      List<ReducedResourceContainer> resContainers,
+                      List<ReducedResourceTransactionRecipe> productions,
+                      List<ReducedActionToken> actionTokens,
+                      List<ReducedColor> colors,
+                      List<ReducedResourceType> resourceTypes,
+                      boolean resumed) {
         super(view);
         this.players = players;
         this.leaderCards = leaderCards;
@@ -43,6 +47,19 @@ public class UpdateGameResume extends ViewEvent {
         this.actionTokens = actionTokens;
         this.colors = colors;
         this.resourceTypes = resourceTypes;
+        this.resumed = resumed;
+    }
+
+    public UpdateGame(List<String> players,
+                      List<ReducedLeaderCard> leaderCards,
+                      List<ReducedDevCard> developmentCards,
+                      List<ReducedResourceContainer> resContainers,
+                      List<ReducedResourceTransactionRecipe> productions,
+                      List<ReducedActionToken> actionTokens,
+                      List<ReducedColor> colors,
+                      List<ReducedResourceType> resourceTypes,
+                      boolean resumed) {
+        this(null, players, leaderCards, developmentCards, resContainers, productions, actionTokens, colors, resourceTypes, resumed);
     }
 
     /**
@@ -99,5 +116,12 @@ public class UpdateGameResume extends ViewEvent {
      */
     public List<ReducedResourceType> getResourceTypes() {
         return resourceTypes;
+    }
+
+    /**
+     * @return <code>true</code> if the game is resumed; <code>false</code> otherwise.
+     */
+    public boolean isResumed() {
+        return resumed;
     }
 }

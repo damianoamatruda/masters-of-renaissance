@@ -52,33 +52,17 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public void dispatchInitialState() {
-        dispatch(new UpdateGameStart(
+    public void dispatchState(View view) {
+        dispatch(new UpdateGame(
                 players.stream().map(Player::getNickname).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                resourceTypes.stream().map(ResourceType::reduce).toList(),
+                actionTokens.stream().map(ActionToken::reduce).toList(),
                 colors.stream().map(DevCardColor::reduce).toList(),
-                actionTokens.stream().map(ActionToken::reduce).toList()));
-
-        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
-    }
-
-    @Override
-    public void dispatchResumeState(View view) {
-        dispatch(new UpdateGameResume(
-                view,
-                players.stream().map(Player::getNickname).toList(),
-                leaderCards.stream().map(LeaderCard::reduce).toList(),
-                developmentCards.stream().map(DevelopmentCard::reduce).toList(),
-                resContainers.stream().map(ResourceContainer::reduce).toList(),
-                productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 resourceTypes.stream().map(ResourceType::reduce).toList(),
-                colors.stream().map(DevCardColor::reduce).toList(),
-                actionTokens.stream().map(ActionToken::reduce).toList()));
-
+                view != null));
         dispatch(new UpdateCurrentPlayer(view, getCurrentPlayer().getNickname()));
     }
 

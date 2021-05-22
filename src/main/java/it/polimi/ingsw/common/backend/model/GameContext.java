@@ -67,18 +67,18 @@ public class GameContext extends EventDispatcher {
             //     System.out.println(n);
             // System.out.println("context.start, players: end of list");
     
-            game.dispatchInitialState();
+            game.dispatchState();
             game.getMarket().dispatchInitialState();
             game.getDevCardGrid().dispatchInitialState();
-            game.getPlayers().forEach(Player::dispatchInitialState);
+            game.getPlayers().forEach(Player::dispatchState);
             game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
         }
     }
 
     public void resume(View view) {
         synchronized(lock) {
-            game.dispatchResumeState(view);
-            game.getPlayers().forEach(p -> p.dispatchResumeState(view));
+            game.dispatchState(view);
+            game.getPlayers().forEach(p -> p.dispatchState(view));
         }
     }
 
