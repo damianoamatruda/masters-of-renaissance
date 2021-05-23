@@ -12,31 +12,31 @@ public class Controller {
     }
 
     public void registerOnVC(View view) {
-        view.addEventListener(ReqQuit.class, event -> on(view, event));
-        view.addEventListener(ReqJoin.class, event -> on(view, event));
-        view.addEventListener(ReqNewGame.class, event -> on(view, event));
+        view.addEventListener(ReqActivateProduction.class, event -> on(view, event));
+        view.addEventListener(ReqBuyDevCard.class, event -> on(view, event));
         view.addEventListener(ReqChooseLeaders.class, event -> on(view, event));
         view.addEventListener(ReqChooseResources.class, event -> on(view, event));
-        view.addEventListener(ReqSwapShelves.class, event -> on(view, event));
-        view.addEventListener(ReqLeaderAction.class, event -> on(view, event));
-        view.addEventListener(ReqTakeFromMarket.class, event -> on(view, event));
-        view.addEventListener(ReqBuyDevCard.class, event -> on(view, event));
-        view.addEventListener(ReqActivateProduction.class, event -> on(view, event));
         view.addEventListener(ReqEndTurn.class, event -> on(view, event));
+        view.addEventListener(ReqJoin.class, event -> on(view, event));
+        view.addEventListener(ReqLeaderAction.class, event -> on(view, event));
+        view.addEventListener(ReqNewGame.class, event -> on(view, event));
+        view.addEventListener(ReqQuit.class, event -> on(view, event));
+        view.addEventListener(ReqSwapShelves.class, event -> on(view, event));
+        view.addEventListener(ReqTakeFromMarket.class, event -> on(view, event));
     }
 
     public void unregisterOnVC(View view) {
-        view.removeEventListener(ReqQuit.class, event -> on(view, event));
-        view.removeEventListener(ReqJoin.class, event -> on(view, event));
-        view.removeEventListener(ReqNewGame.class, event -> on(view, event));
+        view.removeEventListener(ReqActivateProduction.class, event -> on(view, event));
+        view.removeEventListener(ReqBuyDevCard.class, event -> on(view, event));
         view.removeEventListener(ReqChooseLeaders.class, event -> on(view, event));
         view.removeEventListener(ReqChooseResources.class, event -> on(view, event));
-        view.removeEventListener(ReqSwapShelves.class, event -> on(view, event));
-        view.removeEventListener(ReqLeaderAction.class, event -> on(view, event));
-        view.removeEventListener(ReqTakeFromMarket.class, event -> on(view, event));
-        view.removeEventListener(ReqBuyDevCard.class, event -> on(view, event));
-        view.removeEventListener(ReqActivateProduction.class, event -> on(view, event));
         view.removeEventListener(ReqEndTurn.class, event -> on(view, event));
+        view.removeEventListener(ReqJoin.class, event -> on(view, event));
+        view.removeEventListener(ReqLeaderAction.class, event -> on(view, event));
+        view.removeEventListener(ReqNewGame.class, event -> on(view, event));
+        view.removeEventListener(ReqQuit.class, event -> on(view, event));
+        view.removeEventListener(ReqSwapShelves.class, event -> on(view, event));
+        view.removeEventListener(ReqTakeFromMarket.class, event -> on(view, event));
     }
 
     private void on(View view, ReqQuit event) {

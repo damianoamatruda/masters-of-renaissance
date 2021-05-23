@@ -34,12 +34,12 @@ public class NetworkClient {
 
         networkHandler = new ClientServerHandler(socket, protocol);
 
-        networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
         networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
         networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
+        networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
 
         networkHandler.registerOnVC(view);
 
