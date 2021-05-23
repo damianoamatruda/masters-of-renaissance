@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
@@ -8,7 +9,6 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 public class InputPlayersCountState extends CliState {
-
     @Override
     public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
         int count = 0;
@@ -26,5 +26,9 @@ public class InputPlayersCountState extends CliState {
         cli.dispatch(new ReqNewGame(count));
         //send
         //if goes wrong, this state will be repeated
+    }
+
+    @Override
+    public void on(Cli cli, UpdateBookedSeats event) {
     }
 }

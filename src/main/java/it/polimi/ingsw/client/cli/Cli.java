@@ -6,19 +6,14 @@ import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
-import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
-import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -36,13 +31,11 @@ public class Cli extends EventDispatcher implements Ui {
     private final ReducedGame cache;
     private final ReducedObjectPrinter printer;
 
-    private final Scanner scanner;
+    private final Scanner in;
 
     private final BlockingQueue<CliState> stateQueue;
 
     private volatile boolean running;
-
-    private Event lastReq; // TODO: Delete this
 
     private boolean singleplayer;
 
@@ -57,10 +50,9 @@ public class Cli extends EventDispatcher implements Ui {
         this.cache = new ReducedGame();
         this.printer = new CliReducedObjectPrinter(cache);
         this.cache.setPrinter(printer);
-        this.scanner = new Scanner(System.in);
+        this.in = new Scanner(System.in);
 
         this.running = false;
-        this.lastReq = null;
         this.singleplayer = false;
     }
 
@@ -158,7 +150,7 @@ public class Cli extends EventDispatcher implements Ui {
                 System.out.print("═");
             System.out.println();
             System.out.println("\u001b[31m" + Cli.center(state.getClass().getSimpleName()) + "\u001B[0m");
-            state.render(this, System.out, scanner, cache, printer);
+            state.render(this, System.out, in, cache, printer);
         }
     }
 
@@ -167,107 +159,95 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     public void registerOnMV(EventDispatcher view) {
-        view.addEventListener(ResQuit.class, this::on);
-        view.addEventListener(UpdateBookedSeats.class, this::on);
-        view.addEventListener(UpdateJoinGame.class, this::on);
-        view.addEventListener(ErrNewGame.class, this::on);
-        view.addEventListener(ErrNickname.class, this::on);
-        view.addEventListener(ErrAction.class, this::on);
-        view.addEventListener(ErrActiveLeaderDiscarded.class, this::on);
-        view.addEventListener(ErrBuyDevCard.class, this::on);
-        view.addEventListener(ErrCardRequirements.class, this::on);
-        view.addEventListener(ErrInitialChoice.class, this::on);
-        view.addEventListener(ErrObjectNotOwned.class, this::on);
-        view.addEventListener(ErrReplacedTransRecipe.class, this::on);
-        view.addEventListener(ErrReplacedTransRecipe.class, this::on);
-        view.addEventListener(ErrResourceReplacement.class, this::on);
-        view.addEventListener(ErrResourceTransfer.class, this::on);
-        view.addEventListener(UpdateGame.class, this::on);
-        view.addEventListener(UpdateCurrentPlayer.class, this::on);
-        view.addEventListener(UpdateSetupDone.class, this::on);
-        view.addEventListener(UpdateLastRound.class, this::on);
-        view.addEventListener(UpdateGameEnd.class, this::on);
-        view.addEventListener(UpdatePlayer.class, this::on);
-        view.addEventListener(UpdateLeadersHandCount.class, this::on);
-        view.addEventListener(UpdateFaithPoints.class, this::on);
-        view.addEventListener(UpdateVictoryPoints.class, this::on);
-        view.addEventListener(UpdatePlayerStatus.class, this::on);
-        view.addEventListener(UpdateDevCardSlot.class, this::on);
-        view.addEventListener(UpdateLeader.class, this::on);
-        view.addEventListener(UpdateResourceContainer.class, this::on);
-        view.addEventListener(UpdateDevCardGrid.class, this::on);
-        view.addEventListener(UpdateMarket.class, this::on);
-        view.addEventListener(UpdateVaticanSection.class, this::on);
-        view.addEventListener(UpdateActionToken.class, this::on);
-        view.addEventListener(UpdateLeadersHand.class, this::on);
+        view.addEventListener(ResQuit.class, event -> state.on(this, event));
+        view.addEventListener(UpdateBookedSeats.class, event -> state.on(this, event));
+        view.addEventListener(UpdateJoinGame.class, event -> state.on(this, event));
+        view.addEventListener(ErrNewGame.class, event -> state.on(this, event));
+        view.addEventListener(ErrNickname.class, event -> state.on(this, event));
+        view.addEventListener(ErrAction.class, event -> state.on(this, event));
+        view.addEventListener(ErrActiveLeaderDiscarded.class, event -> state.on(this, event));
+        view.addEventListener(ErrBuyDevCard.class, event -> state.on(this, event));
+        view.addEventListener(ErrCardRequirements.class, event -> state.on(this, event));
+        view.addEventListener(ErrInitialChoice.class, event -> state.on(this, event));
+        view.addEventListener(ErrObjectNotOwned.class, event -> state.on(this, event));
+        view.addEventListener(ErrReplacedTransRecipe.class, event -> state.on(this, event));
+        view.addEventListener(ErrReplacedTransRecipe.class, event -> state.on(this, event));
+        view.addEventListener(ErrResourceReplacement.class, event -> state.on(this, event));
+        view.addEventListener(ErrResourceTransfer.class, event -> state.on(this, event));
+        view.addEventListener(UpdateGame.class, event -> state.on(this, event));
+        view.addEventListener(UpdateCurrentPlayer.class, event -> state.on(this, event));
+        view.addEventListener(UpdateSetupDone.class, event -> state.on(this, event));
+        view.addEventListener(UpdateLastRound.class, event -> state.on(this, event));
+        view.addEventListener(UpdateGameEnd.class, event -> state.on(this, event));
+        view.addEventListener(UpdatePlayer.class, event -> state.on(this, event));
+        view.addEventListener(UpdateLeadersHandCount.class, event -> state.on(this, event));
+        view.addEventListener(UpdateFaithPoints.class, event -> state.on(this, event));
+        view.addEventListener(UpdateVictoryPoints.class, event -> state.on(this, event));
+        view.addEventListener(UpdatePlayerStatus.class, event -> state.on(this, event));
+        view.addEventListener(UpdateDevCardSlot.class, event -> state.on(this, event));
+        view.addEventListener(UpdateLeader.class, event -> state.on(this, event));
+        view.addEventListener(UpdateResourceContainer.class, event -> state.on(this, event));
+        view.addEventListener(UpdateDevCardGrid.class, event -> state.on(this, event));
+        view.addEventListener(UpdateMarket.class, event -> state.on(this, event));
+        view.addEventListener(UpdateVaticanSection.class, event -> state.on(this, event));
+        view.addEventListener(UpdateActionToken.class, event -> state.on(this, event));
+        view.addEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
     }
 
     public void unregisterOnMV(EventDispatcher view) {
-        view.removeEventListener(ResQuit.class, this::on);
-        view.removeEventListener(UpdateBookedSeats.class, this::on);
-        view.removeEventListener(UpdateJoinGame.class, this::on);
-        view.removeEventListener(ErrNewGame.class, this::on);
-        view.removeEventListener(ErrNickname.class, this::on);
-        view.removeEventListener(ErrAction.class, this::on);
-        view.removeEventListener(ErrActiveLeaderDiscarded.class, this::on);
-        view.removeEventListener(ErrBuyDevCard.class, this::on);
-        view.removeEventListener(ErrCardRequirements.class, this::on);
-        view.removeEventListener(ErrInitialChoice.class, this::on);
-        view.removeEventListener(ErrObjectNotOwned.class, this::on);
-        view.removeEventListener(ErrReplacedTransRecipe.class, this::on);
-        view.removeEventListener(ErrReplacedTransRecipe.class, this::on);
-        view.removeEventListener(ErrResourceReplacement.class, this::on);
-        view.removeEventListener(ErrResourceTransfer.class, this::on);
-        view.removeEventListener(UpdateGame.class, this::on);
-        view.removeEventListener(UpdateCurrentPlayer.class, this::on);
-        view.removeEventListener(UpdateSetupDone.class, this::on);
-        view.removeEventListener(UpdateLastRound.class, this::on);
-        view.removeEventListener(UpdateGameEnd.class, this::on);
-        view.removeEventListener(UpdatePlayer.class, this::on);
-        view.removeEventListener(UpdateLeadersHandCount.class, this::on);
-        view.removeEventListener(UpdateFaithPoints.class, this::on);
-        view.removeEventListener(UpdateVictoryPoints.class, this::on);
-        view.removeEventListener(UpdatePlayerStatus.class, this::on);
-        view.removeEventListener(UpdateDevCardSlot.class, this::on);
-        view.removeEventListener(UpdateLeader.class, this::on);
-        view.removeEventListener(UpdateResourceContainer.class, this::on);
-        view.removeEventListener(UpdateDevCardGrid.class, this::on);
-        view.removeEventListener(UpdateMarket.class, this::on);
-        view.removeEventListener(UpdateVaticanSection.class, this::on);
-        view.removeEventListener(UpdateActionToken.class, this::on);
-        view.removeEventListener(UpdateLeadersHand.class, this::on);
+        view.removeEventListener(ResQuit.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateBookedSeats.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateJoinGame.class, event -> state.on(this, event));
+        view.removeEventListener(ErrNewGame.class, event -> state.on(this, event));
+        view.removeEventListener(ErrNickname.class, event -> state.on(this, event));
+        view.removeEventListener(ErrAction.class, event -> state.on(this, event));
+        view.removeEventListener(ErrActiveLeaderDiscarded.class, event -> state.on(this, event));
+        view.removeEventListener(ErrBuyDevCard.class, event -> state.on(this, event));
+        view.removeEventListener(ErrCardRequirements.class, event -> state.on(this, event));
+        view.removeEventListener(ErrInitialChoice.class, event -> state.on(this, event));
+        view.removeEventListener(ErrObjectNotOwned.class, event -> state.on(this, event));
+        view.removeEventListener(ErrReplacedTransRecipe.class, event -> state.on(this, event));
+        view.removeEventListener(ErrReplacedTransRecipe.class, event -> state.on(this, event));
+        view.removeEventListener(ErrResourceReplacement.class, event -> state.on(this, event));
+        view.removeEventListener(ErrResourceTransfer.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateGame.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateCurrentPlayer.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateSetupDone.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateLastRound.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateGameEnd.class, event -> state.on(this, event));
+        view.removeEventListener(UpdatePlayer.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateLeadersHandCount.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateFaithPoints.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateVictoryPoints.class, event -> state.on(this, event));
+        view.removeEventListener(UpdatePlayerStatus.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateDevCardSlot.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateLeader.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateResourceContainer.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateDevCardGrid.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateMarket.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateVaticanSection.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateActionToken.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
     }
 
-    void startNetworkClient(String host, int port) {
+    void startNetworkClient(String host, int port) throws IOException {
         boolean connected = true;
         try {
             new NetworkClient(view, host, port).start();
-        } catch (UnknownHostException e) {
-            connected = false;
-            System.err.printf("Don't know about host %s%n", host);
         } catch (IOException e) {
             connected = false;
-            System.err.printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
+            throw e;
         }
-        if (connected) {
-            singleplayer = false;
-            setState(new InputNicknameState());
-        } else {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ignored) {
-            }
-            setState(new MultiplayerMenuState());
-        }
+        singleplayer = false;
     }
 
     void startLocalClient() {
         new LocalClient(view).start();
         singleplayer = true;
-        setState(new InputNicknameState());
     }
 
-    public Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
+    // TODO: Move this out of this class
+    Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
         System.out.println("Choose mapping shelf-resource-quantity:");
         final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
         int container;
@@ -277,7 +257,7 @@ public class Cli extends EventDispatcher implements Ui {
         String input = "";
         while (!input.equalsIgnoreCase("Y")) {
             input = prompt(out, in, "Which container? (Input an ID, or else Enter to skip)");
-            if(input.isEmpty())
+            if (input.isEmpty())
                 break;
 
             try {
@@ -324,7 +304,8 @@ public class Cli extends EventDispatcher implements Ui {
         return shelves;
     }
 
-    public Map<String, Integer> promptResources(PrintStream out, Scanner in) {
+    // TODO: Move this out of this class
+    Map<String, Integer> promptResources(PrintStream out, Scanner in) {
         System.out.println("Choosing blank resource replacements:");
 
         String resource;
@@ -357,241 +338,20 @@ public class Cli extends EventDispatcher implements Ui {
         return result;
     }
 
-    public void quit() {
+    void quit() {
         Cli.clear(System.out);
         stop();
     }
 
-    // TODO: Delete this
-    @Override
-    public <T extends Event> void dispatch(T event) {
-        super.dispatch(event);
-        lastReq = event;
+    ReducedObjectPrinter getPrinter() {
+        return printer;
     }
 
-    private void on(ErrAction event) {
-        repeatState(event.getReason().toString());
+    ReducedGame getCache() {
+        return cache;
     }
 
-    private void on(ErrActiveLeaderDiscarded event) {
-        int id = -1;
-        try {
-            // TODO: Delete this
-            id = ((ReqLeaderAction) lastReq).getLeader();
-        } catch (Exception ignored) {}
-
-        repeatState(String.format("Active leader %d tried to be discarded.", id));
-    }
-
-    private void on(ErrBuyDevCard event) {
-        repeatState(event.isStackEmpty() ?
-                "Cannot buy development card. Deck is empty." :
-                "Cannot place devcard in slot, level mismatch.");
-    }
-
-    private void on(ErrCardRequirements event) {
-        repeatState(event.getReason());
-    }
-
-    private void on(ErrNoSuchEntity event) {
-        // TODO handle
-        // repeatState(event.getReason());
-    }
-
-    private void on(ErrInitialChoice event) {
-        repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
-                event.getMissingLeadersCount() == 0 ?
-                        "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
-                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
-                "Resources already chosen");          // else it's from the resources choice
-    }
-
-    private void on(ErrNewGame event) {
-        repeatState(event.isInvalidPlayersCount() ?
-                "Invalid players count." :
-                "You are not supposed to choose the players count for the game.");
-    }
-
-    private void on(ErrNickname event) {
-        repeatState("Nickname is invalid. Reason: " + event.getReason().toString().toLowerCase());
-    }
-
-    private void on(ErrObjectNotOwned event) {
-        repeatState(String.format("%s %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
-    }
-
-    private void on(ErrReplacedTransRecipe event) {
-        repeatState(
-                String.format(
-                        "Discrepancy in the transaction recipe.\nResource: %s, replaced count: %d, specified shelfmap count: %d",
-                        event.getResType(), event.getReplacedCount(), event.getShelvesChoiceResCount()));
-    }
-
-    private void on(ErrResourceReplacement event) {
-        if (event.isExcluded() || event.isNonStorable())
-            repeatState(String.format("Error validating transaction request %s: %s resource found.",
-                    event.isInput() ? "input" : "output",
-                    event.isNonStorable() ? "nonstorable" : "excluded"));
-        else
-            repeatState(String.format("Error validating transaction request: %d replaced resources when %d replaceable.",
-                    event.getReplacedCount(),
-                    event.getBlanks()));
-    }
-
-    private void on(ErrResourceTransfer event) {
-        repeatState(String.format("Error transferring resources: resource %s, %s, %s.",
-                event.getResType(),
-                event.isAdded() ? "added" : "removed",
-                event.getReason().toString()));
-    }
-
-    private void on(ResQuit event) {
-        quit();
-    }
-
-    private void on(UpdateActionToken event) {
-        printer.update(cache.getActionToken(event.getActionToken()));
-    }
-
-    private void on(UpdateBookedSeats event) {
-        if (event.canPrepareNewGame().equals(cache.getNickname()) && !(getState() instanceof InputPlayersCountState)) {
-            if (singleplayer)
-                dispatch(new ReqNewGame(1));
-            else
-                setState(new InputPlayersCountState());
-        } else setState(new WaitingBeforeGameState(event.getBookedSeats()));
-    }
-
-    private void on(UpdateCurrentPlayer event) {
-        cache.setCurrentPlayer(event.getPlayer());
-        if (!event.getPlayer().equals(cache.getNickname()))
-            setState(new WaitingAfterTurnState());
-        else if (!(getState() instanceof WaitingBeforeGameState) && !(getState() instanceof TurnBeforeActionState))
-            setState(new TurnBeforeActionState());  // make sure the update never arrives during the own turn
-    }
-
-    private void on(UpdateDevCardGrid event) {
-        cache.setDevCardGrid(event.getCards());
-    }
-
-    private void on(UpdateDevCardSlot event) {
-        cache.setPlayerDevSlot(cache.getCurrentPlayer(), event.getDevSlot(), event.getDevCard());
-        // TODO: Delete this
-        if (lastReq instanceof ReqBuyDevCard)
-            setState(new TurnAfterActionState());
-    }
-
-    private void on(UpdateFaithPoints event) {
-        cache.setFaithPoints(event.getFaithPoints());
-    }
-
-    private void on(UpdateGameEnd event) {
-        cache.setWinner(event.getWinner());
-        setState(new GameEndState());
-    }
-
-    private void on(UpdateGame event) {
-        cache.setActionTokens(event.getActionTokens());
-        cache.setContainers(event.getResContainers());
-        cache.setDevelopmentCards(event.getDevelopmentCards());
-        cache.setFaithPoints(0);
-        cache.setLeaderCards(event.getLeaderCards());
-        cache.setPlayers(event.getPlayers());
-        cache.setProductions(event.getProductions());
-        cache.setColors(event.getColors());
-        cache.setResourceTypes(event.getResourceTypes());
-
-        if (!event.isResumed())
-            event.getPlayers().forEach(p -> cache.setVictoryPoints(p, 0));
-        else
-            setState(new WaitingAfterTurnState());
-    }
-
-    private void on(UpdateJoinGame event) {
-        setState(new WaitingBeforeGameState(event.getPlayersCount()));
-    }
-
-    private void on(UpdateLastRound event) {
-        cache.setLastRound();
-    }
-
-    private void on(UpdateLeader event) {
-        if (event.isActive())
-            cache.setPlayerLeaders(cache.getCurrentPlayer(), event.getLeader());
-    }
-
-    private void on(UpdateLeadersHand event) {
-        /* this message arrives last among the starting events:
-            joingame
-            updategamestart
-            currplayer
-            market
-            devcardgrid
-            player
-            leadershand -> with GS and player has enough info for leader choice */
-
-        event.getLeaders().forEach(id -> cache.setPlayerLeaders(event.getPlayer(), id));
-
-        if(cache.getSetup(cache.getNickname()) != null &&
-                event.getLeaders().size() > cache.getSetup(cache.getNickname()).getChosenLeadersCount()) {
-            setState(new SetupLeadersState(
-                    event.getLeaders().size() - cache.getSetup(cache.getNickname()).getChosenLeadersCount()));
-        }
-        else if(cache.getSetup(cache.getNickname()) != null &&
-                cache.getSetup(cache.getNickname()).getInitialResources() > 0 &&
-                !(getState() instanceof SetupResourcesState)) {
-            setState(new SetupResourcesState(
-                    cache.getSetup(cache.getNickname()).getInitialResources()));
-        }
-        else {
-            if (!(getState() instanceof TurnBeforeActionState))
-                setState(new TurnBeforeActionState());
-        }
-    }
-
-    private void on(UpdateLeadersHandCount event) {
-        cache.setPlayerLeadersCount(event.getPlayer(), event.getLeadersCount());
-    }
-
-    private void on(UpdateMarket event) {
-        cache.setMarket(event.getMarket());
-
-        /* if market update originates from my command and not from others' (base action) */
-        //might be problematic if this command is sent while not current player, but immediately after sb else activates market
-        if(state instanceof TurnBeforeActionState)
-            setState(new TurnAfterActionState());
-    }
-
-    private void on(UpdatePlayer event) {
-        cache.setBaseProduction(event.getPlayer(), event.getBaseProduction());
-        cache.setPlayerWarehouseShelves(event.getPlayer(), event.getWarehouseShelves());
-        cache.setPlayerStrongbox(event.getPlayer(), event.getStrongbox());
-
-        cache.setSetup(event.getPlayer(), event.getPlayerSetup());
-    }
-
-    private void on(UpdatePlayerStatus event) {
-        cache.setPlayerState(event.getPlayer(), event.isActive());
-    }
-
-    private void on(UpdateResourceContainer event) {
-        cache.setContainer(event.getResContainer());
-
-        /* if update comes from my production activation (base action) */
-        if(state instanceof TurnBeforeActionState)
-            setState(new TurnAfterActionState());
-    }
-
-    private void on(UpdateSetupDone event) {
-        if (!(getState() instanceof TurnBeforeActionState))
-            setState(new TurnBeforeActionState());
-    }
-
-    private void on(UpdateVaticanSection event) {
-        cache.setActiveVaticanSection(event.getVaticanSection());
-    }
-
-    private void on(UpdateVictoryPoints event) {
-        cache.setVictoryPoints(event.getPlayer(), event.getVictoryPoints());
+    boolean isSingleplayer() {
+        return singleplayer;
     }
 }

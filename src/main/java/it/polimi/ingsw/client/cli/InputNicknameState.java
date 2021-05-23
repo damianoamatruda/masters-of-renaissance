@@ -16,12 +16,13 @@ public class InputNicknameState extends CliState{
             e.printStackTrace();
         }
 
-        String input = cli.prompt(out, in, "Nickname");
-        cache.setNickname(input);
-        cli.dispatch(new ReqJoin(input));
+        String nickname;
 
-        //send to view
-        //if sth goes wrong, the view will reset this state, thus repeating the prompt.
-        // Otherwise, the receival of a positive event will trigger a change of state (by the view??)
+        do {
+            nickname = cli.prompt(out, in, "Nickname");
+        } while (nickname.isBlank());
+
+        cache.setNickname(nickname);
+        cli.dispatch(new ReqJoin(nickname));
     }
 }

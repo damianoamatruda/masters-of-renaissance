@@ -6,8 +6,10 @@ import it.polimi.ingsw.client.NetworkClient;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -54,6 +56,26 @@ public class MultiplayerMenuState extends CliState {
         }
 
         out.println();
-        cli.startNetworkClient(host, port);
+
+        boolean connected = true;
+        try {
+            cli.startNetworkClient(host, port);
+        } catch (UnknownHostException e) {
+            connected = false;
+            System.err.printf("Don't know about host %s%n", host);
+        } catch (IOException e) {
+            connected = false;
+            System.err.printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
+        }
+
+        if (connected)
+            cli.setState(new InputNicknameState());
+        else {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ignored) {
+            }
+            cli.setState(new MultiplayerMenuState());
+        }
     }
 }

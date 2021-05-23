@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.cli;
 
-import java.io.PrintStream;
-import java.util.Scanner;
-
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.reducedmodel.ReducedGame;
+
+import java.io.PrintStream;
+import java.util.Scanner;
 
 public class SingleplayerMenuState extends CliState {
     @Override
@@ -14,15 +14,7 @@ public class SingleplayerMenuState extends CliState {
         for (int i = 0; i < 2; i++)
             out.println();
 
-        // String nickname;
-
-        // do {
-        //     nickname = Cli.prompt(out, in, "Nickname");
-        // } while (nickname.isBlank());
-
-        // out.println();
-        // out.printf("Welcome, %s!%n", nickname);
-
         cli.startLocalClient();
+        cli.setState(new InputNicknameState());
     }
 }
