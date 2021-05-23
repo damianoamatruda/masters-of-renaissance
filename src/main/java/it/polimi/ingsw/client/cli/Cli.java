@@ -4,12 +4,12 @@ import it.polimi.ingsw.client.LocalClient;
 import it.polimi.ingsw.client.NetworkClient;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.Ui;
+import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
-import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ public class Cli extends EventDispatcher implements Ui {
     /** The current state of the interface. */
     private CliState state;
 
-    private final ReducedGame cache;
+    private final ViewModel viewModel;
     private final ReducedObjectPrinter printer;
 
     private final PrintStream out;
@@ -48,9 +48,8 @@ public class Cli extends EventDispatcher implements Ui {
         this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());
 
-        this.cache = new ReducedGame();
-        this.printer = new CliReducedObjectPrinter(this, cache);
-        this.cache.setPrinter(printer);
+        this.viewModel = new ViewModel();
+        this.printer = new CliReducedObjectPrinter(this, viewModel);
         this.out = System.out;
         this.in = new Scanner(System.in);
 
@@ -213,8 +212,8 @@ public class Cli extends EventDispatcher implements Ui {
         return printer;
     }
 
-    public ReducedGame getCache() {
-        return cache;
+    public ViewModel getCache() {
+        return viewModel;
     }
 
     @Deprecated
