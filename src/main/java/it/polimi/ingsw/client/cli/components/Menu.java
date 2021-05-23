@@ -1,14 +1,10 @@
 package it.polimi.ingsw.client.cli.components;
 
-import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.client.cli.Renderable;
-import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
-import java.io.PrintStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.function.Consumer;
 
 public class Menu implements Renderable {
@@ -19,23 +15,23 @@ public class Menu implements Renderable {
     }
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
+    public void render(Cli cli) {
         // entries.forEach((ch, desc) -> out.printf("[%c] %s%n", ch, desc));
         StringBuilder stringBuilder = new StringBuilder();
         entries.forEach((character, entry) -> stringBuilder.append(String.format("[%c] %s%n", character, entry.description)));
-        out.print(Cli.center(stringBuilder.toString()));
+        cli.getOut().print(Cli.center(stringBuilder.toString()));
         String value;
         do {
-            value = cli.prompt(out, in, "");
+            value = cli.prompt("");
         } while (value.isBlank() || !entries.containsKey(value.charAt(0)));
-        entries.get(value.charAt(0)).action.accept(this);
+        entries.get(value.charAt(0)).action.accept(cli);
     }
 
     public static class Entry {
         private final String description;
-        private final Consumer<Menu> action;
+        private final Consumer<Cli> action;
 
-        public Entry(String description, Consumer<Menu> action) {
+        public Entry(String description, Consumer<Cli> action) {
             this.description = description;
             this.action = action;
         }

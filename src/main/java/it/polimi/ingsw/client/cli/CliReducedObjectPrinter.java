@@ -6,88 +6,90 @@ import it.polimi.ingsw.common.reducedmodel.*;
 import java.util.*;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
+    private final Cli cli;
     private final ReducedGame cache;
 
-    public CliReducedObjectPrinter(ReducedGame cache) {
+    public CliReducedObjectPrinter(Cli cli, ReducedGame cache) {
+        this.cli = cli;
         this.cache = cache;
     }
 
     @Override
     public void update(ReducedActionToken newObject) {
-        System.out.printf("ActionToken ID: %d, kind: %s%n",
-            newObject.getId(),
-            newObject.getKind()
+        cli.getOut().printf("ActionToken ID: %d, kind: %s%n",
+                newObject.getId(),
+                newObject.getKind()
         );
-        System.out.println(newObject.getDiscardedDevCardColor() == null ? "" : 
-            String.format("Color of discarded development card: %s\n", printColor(newObject.getDiscardedDevCardColor())));
+        cli.getOut().println(newObject.getDiscardedDevCardColor() == null ? "" :
+                String.format("Color of discarded development card: %s\n", printColor(newObject.getDiscardedDevCardColor())));
     }
 
     @Override
     public void update(ReducedDevCard newObject) {
-        System.out.printf("[Development] ID: %d, color: %s%n",
-            newObject.getId(),
+        cli.getOut().printf("[Development] ID: %d, color: %s%n",
+                newObject.getId(),
                 printColor(newObject.getColor())
         );
-        System.out.printf("Level: %d, VP: %d%n",
-            newObject.getLevel(),
-            newObject.getVictoryPoints()
+        cli.getOut().printf("Level: %d, VP: %d%n",
+                newObject.getLevel(),
+                newObject.getVictoryPoints()
         );
-        System.out.printf("Production ID: %d%n",
-            newObject.getProduction()
+        cli.getOut().printf("Production ID: %d%n",
+                newObject.getProduction()
         );
-        System.out.println("Requirements (resources):");
+        cli.getOut().println("Requirements (resources):");
 
         newObject.getCost()
-                .getRequirements().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
+                .getRequirements().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
 
-        System.out.println();
+        cli.getOut().println();
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
         prod.ifPresent(this::update);
 
-        System.out.println();
+        cli.getOut().println();
     }
 
     @Override
     public void update(ReducedDevCardGrid newObject) {
-        System.out.println("Development card grid state:");
-        newObject.getGrid().forEach((key, value) -> System.out.println(printColor(key) + ": " + value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
-        
+        cli.getOut().println("Development card grid state:");
+        newObject.getGrid().forEach((key, value) -> cli.getOut().println(printColor(key) + ": " + value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
+
         List<Integer> topCards = new ArrayList<>();
         newObject.getGrid().forEach((key, value) -> topCards.addAll(value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
 
-        System.out.println();
+        cli.getOut().println();
         topCards.forEach(id -> update(cache.getDevCard(id)));
     }
 
     @Override
     public void update(ReducedLeaderCard newObject) {
-        System.out.printf("[Leader] ID: %d, type: %s%n",
-            newObject.getId(),
-            newObject.getLeaderType()
+        cli.getOut().printf("[Leader] ID: %d, type: %s%n",
+                newObject.getId(),
+                newObject.getLeaderType()
         );
-        System.out.printf("BoundResource: %s, VP: %d%n",
-            newObject.getResourceType(),
-            newObject.getVictoryPoints()
+        cli.getOut().printf("BoundResource: %s, VP: %d%n",
+                newObject.getResourceType(),
+                newObject.getVictoryPoints()
         );
-        System.out.printf("Active status: %s, depot ID: %d%n",
-            newObject.isActive(),
-            newObject.getContainerId()
+        cli.getOut().printf("Active status: %s, depot ID: %d%n",
+                newObject.isActive(),
+                newObject.getContainerId()
         );
-        System.out.printf("Production ID: %d, discount: %d%n",
-            newObject.getProduction(),
-            newObject.getDiscount()
+        cli.getOut().printf("Production ID: %d, discount: %d%n",
+                newObject.getProduction(),
+                newObject.getDiscount()
         );
         if (newObject.getDevCardRequirement() != null) {
-            System.out.println("Requirements (development cards):");
+            cli.getOut().println("Requirements (development cards):");
             newObject.getDevCardRequirement().getEntries()
-                .forEach(e -> System.out.println("Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));
+                    .forEach(e -> cli.getOut().println("Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount()));
         }
         if (newObject.getResourceRequirement() != null) {
-            System.out.println("Requirements (resources):");
-            newObject.getResourceRequirement().getRequirements().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
+            cli.getOut().println("Requirements (resources):");
+            newObject.getResourceRequirement().getRequirements().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
         }
 
-        System.out.println();
+        cli.getOut().println();
 
         Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
         prod.ifPresent(this::update);
@@ -95,109 +97,109 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedMarket newObject) {
-        System.out.println("Market:");
-        System.out.print("╔");
-        System.out.print("═".repeat(43));
-        System.out.println("╗");
+        cli.getOut().println("Market:");
+        cli.getOut().print("╔");
+        cli.getOut().print("═".repeat(43));
+        cli.getOut().println("╗");
 
-        for(int i = 0; i < newObject.getGrid().size(); i++) {
+        for (int i = 0; i < newObject.getGrid().size(); i++) {
             List<String> r = newObject.getGrid().get(i);
-            System.out.print("║");
-            for(int j = 0; j < r.size(); j++) {
+            cli.getOut().print("║");
+            for (int j = 0; j < r.size(); j++) {
                 String res = r.get(j);
-                System.out.printf("%-22s", Cli.centerLine(printResource(res), 22));
-                if(j < r.size() - 1) System.out.print(" │");
-                else System.out.print(" ");
+                cli.getOut().printf("%-22s", Cli.centerLine(printResource(res), 22));
+                if (j < r.size() - 1) cli.getOut().print(" │");
+                else cli.getOut().print(" ");
             }
-            System.out.print("║");
-            System.out.println();
-            if (i < newObject.getGrid().size() - 1){
-                System.out.print("║");
-                System.out.print(("─".repeat(10) + "┼").repeat(r.size() - 1) + "─".repeat(10));
-                System.out.println("║");
+            cli.getOut().print("║");
+            cli.getOut().println();
+            if (i < newObject.getGrid().size() - 1) {
+                cli.getOut().print("║");
+                cli.getOut().print(("─".repeat(10) + "┼").repeat(r.size() - 1) + "─".repeat(10));
+                cli.getOut().println("║");
 
             }
         }
 
-        System.out.println("╠" + "═".repeat(5) + "╦" + "═".repeat(37) + "╝");
+        cli.getOut().println("╠" + "═".repeat(5) + "╦" + "═".repeat(37) + "╝");
 
-        System.out.println("║" + " ".repeat(5) + "╚" + "═".repeat(37) + "╗");
-        System.out.print("║" + " ".repeat(33));
-        System.out.printf("%-23s", Cli.centerLine(printResource(newObject.getSlide()), 23));
-        System.out.println("║");
-        System.out.println("╚" + "═".repeat(43) + "╝");
-//        System.out.println("Slide resource: " + printResource(newObject.getSlide()));
-        System.out.println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
+        cli.getOut().println("║" + " ".repeat(5) + "╚" + "═".repeat(37) + "╗");
+        cli.getOut().print("║" + " ".repeat(33));
+        cli.getOut().printf("%-23s", Cli.centerLine(printResource(newObject.getSlide()), 23));
+        cli.getOut().println("║");
+        cli.getOut().println("╚" + "═".repeat(43) + "╝");
+//        cli.getOut().println("Slide resource: " + printResource(newObject.getSlide()));
+        cli.getOut().println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
     }
 
     @Override
     public void update(ReducedResourceContainer newObject) {
-        System.out.printf("Resource Container ID: %d, bounded resource: %s, dimensions: %d%n",
+        cli.getOut().printf("Resource Container ID: %d, bounded resource: %s, dimensions: %d%n",
                 newObject.getId(), printResource(newObject.getboundedResType()), newObject.getDimensions());
 
-        newObject.getContent().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
-        System.out.println();
+        newObject.getContent().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
+        cli.getOut().println();
     }
     
     @Override
     public void update(ReducedResourceTransactionRecipe newObject) {
-        System.out.printf("Production ID: %d%n",
-            newObject.getId());
+        cli.getOut().printf("Production ID: %d%n",
+                newObject.getId());
 
-        System.out.println("Input:");
-        newObject.getInput().forEach((key1, value1) -> System.out.println(printResource(key1) + ": " + value1));
+        cli.getOut().println("Input:");
+        newObject.getInput().forEach((key1, value1) -> cli.getOut().println(printResource(key1) + ": " + value1));
 
-        System.out.printf("Input blanks: %d%n",
-            newObject.getInputBlanks());
-        
-        System.out.println("Input blanks exclusions:");
-        newObject.getInputBlanksExclusions().forEach(e -> System.out.print(e + ", "));
+        cli.getOut().printf("Input blanks: %d%n",
+                newObject.getInputBlanks());
 
-        System.out.println("Output:");
-        newObject.getOutput().forEach((key, value) -> System.out.println(printResource(key) + ": " + value));
+        cli.getOut().println("Input blanks exclusions:");
+        newObject.getInputBlanksExclusions().forEach(e -> cli.getOut().print(e + ", "));
 
-        System.out.printf("Output blanks: %d%n",
-            newObject.getOutputBlanks());
-        
-        System.out.println("Output blanks exclusions:");
-        newObject.getInputBlanksExclusions().forEach(e -> System.out.print(printResource(e) + ", "));
+        cli.getOut().println("Output:");
+        newObject.getOutput().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
 
-        System.out.println(newObject.isDiscardableOutput() ? "Output is discardable\n" : "");
+        cli.getOut().printf("Output blanks: %d%n",
+                newObject.getOutputBlanks());
+
+        cli.getOut().println("Output blanks exclusions:");
+        newObject.getInputBlanksExclusions().forEach(e -> cli.getOut().print(printResource(e) + ", "));
+
+        cli.getOut().println(newObject.isDiscardableOutput() ? "Output is discardable\n" : "");
     }
 
     @Override
     public void showPlayers(List<String> nicknames) {
-        System.out.println("Players:");
-        nicknames.forEach(n -> System.out.print(n + ", "));
+        cli.getOut().println("Players:");
+        nicknames.forEach(n -> cli.getOut().print(n + ", "));
     }
 
     @Override
     public void showCurrentPlayer(String player) {
-        System.out.println("Current player: " + player);
+        cli.getOut().println("Current player: " + player);
     }
 
     @Override
     public void showBaseProductions(Map<String, Integer> baseProductions) {
-        System.out.println("Base productions:");
+        cli.getOut().println("Base productions:");
 
-        baseProductions.forEach((key, value) -> System.out.println("Player: " + key + ", baseprod ID: " + value));
+        baseProductions.forEach((key, value) -> cli.getOut().println("Player: " + key + ", baseprod ID: " + value));
     }
 
     @Override
     public void showLeadersHand(String player, int leaderId) {
-//        System.out.printf("Leader %d now owned by player %s.%n", leaderId, player);
+//        cli.getOut().printf("Leader %d now owned by player %s.%n", leaderId, player);
         // print actual leader
     }
 
     @Override
     public void showWarehouseShelves(String player) {
-        System.out.printf("Showing %s's warehouse shelves:%n", player);
+        cli.getOut().printf("Showing %s's warehouse shelves:%n", player);
         cache.getPlayerWarehouseShelvesIDs(player).forEach(s -> {
             Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == s).findFirst();
             cont.ifPresent(this::update);
         });
 
-        System.out.println("\nShowing leader shelves:");
+        cli.getOut().println("\nShowing leader shelves:");
 
         cache.getLeaderCards().stream()
             .filter(lc -> lc.getContainerId() >= 0 &&
@@ -208,19 +210,19 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void showStrongbox(String player) {
-        System.out.printf("Showing %s's strongbox:%n", player);
+        cli.getOut().printf("Showing %s's strongbox:%n", player);
 
         int id = cache.getPlayerStrongboxID(player);
 
         Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == id).findFirst();
-        cont.ifPresent(reducedResourceContainer -> reducedResourceContainer.getContent().forEach((key, value) -> System.out.println(printResource(key) + ": " + value)));
+        cont.ifPresent(reducedResourceContainer -> reducedResourceContainer.getContent().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value)));
     }
 
     @Override
     public void showPlayerSlots(String player) {
-        System.out.println("Showing" + player + "'s development card slots:");
+        cli.getOut().println("Showing" + player + "'s development card slots:");
         if (cache.getPlayerDevSlots(player) != null)
-            cache.getPlayerDevSlots(player).forEach((key, value) -> System.out.println("Slot " + key + ", card ID: " + value));
+            cache.getPlayerDevSlots(player).forEach((key, value) -> cli.getOut().println("Slot " + key + ", card ID: " + value));
     }
 
     public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
@@ -268,9 +270,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                         row.add(rows.get(j).get(k));
                     else row.add("");
                 }
-                System.out.printf(rowTemplate, row.toArray());
+                cli.getOut().printf(rowTemplate, row.toArray());
             }
-            System.out.println("\n");
+            cli.getOut().println("\n");
 
         }
     }
@@ -280,7 +282,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         int j = 0;
 
         for(String key : grid.getGrid().keySet()) {
-            Cli.trackSlimLine();
+            cli.trackSlimLine();
             topCards.add(grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).toList());
             List<List<String>> lines = new ArrayList<>();
             for(int i = 0; i < topCards.get(j).size(); i++) {
@@ -310,17 +312,17 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             int length = lines.stream().map(List::size).reduce(Integer::max).orElse(0);
             for(int k = 0; k < length; k++) {
                 List<String> row = new ArrayList<>();
-                for(int i = 0; i < topCards.get(j).size(); i++) {
-                    if(k < lines.get(i).size())
+                for (int i = 0; i < topCards.get(j).size(); i++) {
+                    if (k < lines.get(i).size())
                         row.add(lines.get(i).get(k));
                     else row.add("");
                 }
-                System.out.printf(rowTemplate, row.toArray());
+                cli.getOut().printf(rowTemplate, row.toArray());
             }
             j++;
         }
-        Cli.trackSlimLine();
-        System.out.println();
+        cli.trackSlimLine();
+        cli.getOut().println();
 
     }
 

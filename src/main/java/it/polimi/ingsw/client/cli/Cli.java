@@ -31,6 +31,7 @@ public class Cli extends EventDispatcher implements Ui {
     private final ReducedGame cache;
     private final ReducedObjectPrinter printer;
 
+    private final PrintStream out;
     private final Scanner in;
 
     private final BlockingQueue<CliState> stateQueue;
@@ -48,8 +49,9 @@ public class Cli extends EventDispatcher implements Ui {
         this.stateQueue.add(new SplashState());
 
         this.cache = new ReducedGame();
-        this.printer = new CliReducedObjectPrinter(cache);
+        this.printer = new CliReducedObjectPrinter(this, cache);
         this.cache.setPrinter(printer);
+        this.out = System.out;
         this.in = new Scanner(System.in);
 
         this.running = false;
@@ -85,54 +87,6 @@ public class Cli extends EventDispatcher implements Ui {
         return stringBuilder.toString();
     }
 
-    public static void clear(PrintStream out) {
-        out.print("\033[H\033[2J");
-        out.flush();
-    }
-
-    public static void pause(Scanner in) {
-        in.nextLine();
-    }
-
-    public static void trackSlimLine() {
-        for(int i = 0; i < width; i++)
-            System.out.print("─");
-        System.out.println();
-    }
-
-    /**
-     * Sets the state.
-     *
-     * @param state the next state
-     */
-    void setState(CliState state) {
-        stateQueue.add(state);
-    }
-
-    void repeatState(String s) {
-        System.out.println(s);
-        stateQueue.add(this.state);
-    }
-
-    public String prompt(PrintStream out, Scanner in, String prompt, String defaultValue) {
-        out.printf("%s (default: %s): ", prompt, defaultValue);
-        String value = in.nextLine();
-        return !value.isBlank() ? value : defaultValue;
-    }
-
-    public String prompt(PrintStream out, Scanner in, String prompt) {
-        if (!prompt.isEmpty())
-            out.printf("%s: ", prompt);
-        String input = in.nextLine();
-        if (input.toUpperCase().startsWith("Q"))
-            dispatch(new ReqQuit());
-        return input;
-    }
-
-    public CliState getState() {
-        return state;
-    }
-
     @Override
     public void execute() {
         running = true;
@@ -145,12 +99,12 @@ public class Cli extends EventDispatcher implements Ui {
                 break;
             }
 
-            System.out.println();
+            out.println();
             for (int i = 0; i < width; i++)
-                System.out.print("═");
-            System.out.println();
-            System.out.println("\u001b[31m" + Cli.center(state.getClass().getSimpleName()) + "\u001B[0m");
-            state.render(this, System.out, in, cache, printer);
+                out.print("═");
+            out.println();
+            out.println("\u001b[31m" + Cli.center(state.getClass().getSimpleName()) + "\u001B[0m");
+            state.render(this);
         }
     }
 
@@ -230,6 +184,71 @@ public class Cli extends EventDispatcher implements Ui {
         view.removeEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
     }
 
+    public String prompt(String prompt, String defaultValue) {
+        out.printf("%s (default: %s): ", prompt, defaultValue);
+        String value = in.nextLine();
+        return !value.isBlank() ? value : defaultValue;
+    }
+
+    public String prompt(String prompt) {
+        if (!prompt.isEmpty())
+            out.printf("%s: ", prompt);
+        String input = in.nextLine();
+        if (input.toUpperCase().startsWith("Q"))
+            dispatch(new ReqQuit());
+        return input;
+    }
+
+    public PrintStream getOut() {
+        return out;
+    }
+
+    public Scanner getIn() {
+        return in;
+    }
+
+    public ReducedObjectPrinter getPrinter() {
+        return printer;
+    }
+
+    public ReducedGame getCache() {
+        return cache;
+    }
+
+    @Deprecated
+    CliState getState() {
+        return state;
+    }
+
+    /**
+     * Sets the state.
+     *
+     * @param state the next state
+     */
+    void setState(CliState state) {
+        stateQueue.add(state);
+    }
+
+    void clear() {
+        out.print("\033[H\033[2J");
+        out.flush();
+    }
+
+    void pause() {
+        in.nextLine();
+    }
+
+    void trackSlimLine() {
+        for (int i = 0; i < width; i++)
+            out.print("─");
+        out.println();
+    }
+
+    void repeatState(String s) {
+        out.println(s);
+        stateQueue.add(this.state);
+    }
+
     void startNetworkClient(String host, int port) throws IOException {
         boolean connected = true;
         try {
@@ -247,8 +266,8 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     // TODO: Move this out of this class
-    Map<Integer, Map<String, Integer>> promptShelves(PrintStream out, Scanner in) {
-        System.out.println("Choose mapping shelf-resource-quantity:");
+    Map<Integer, Map<String, Integer>> promptShelves() {
+        out.println("Choose mapping shelf-resource-quantity:");
         final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
         int container;
         String resource;
@@ -256,7 +275,7 @@ public class Cli extends EventDispatcher implements Ui {
 
         String input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            input = prompt(out, in, "Which container? (Input an ID, or else Enter to skip)");
+            input = prompt("Which container? (Input an ID, or else Enter to skip)");
             if (input.isEmpty())
                 break;
 
@@ -264,21 +283,21 @@ public class Cli extends EventDispatcher implements Ui {
                 container = Integer.parseInt(input);
 //                int finalContainer = container;
 //                if(cache.getContainers().stream().filter(c -> c.getId() == finalContainer).findAny().isEmpty()) {
-//                    System.out.println("You do not own this container. Try again");
+//                    out.println("You do not own this container. Try again");
 //                    continue;
 //                };
             } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
+                out.println("Please input an integer.");
                 continue;
             }
 
-            resource = prompt(out, in, "Which resource?");
+            resource = prompt("Which resource?");
 
-            input = prompt(out, in, "How many?");
+            input = prompt("How many?");
             try {
                 amount = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
+                out.println("Please input an integer.");
                 continue;
             }
 
@@ -293,9 +312,9 @@ public class Cli extends EventDispatcher implements Ui {
                 resourceMapping.put(resource, amount);
                 shelves.put(container, resourceMapping);
             }
-            input = prompt(out, in, "Are you done choosing? [Y/*]");
+            input = prompt("Are you done choosing? [Y/*]");
         }
-        System.out.println("Building shelves...");
+        out.println("Building shelves...");
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -305,8 +324,8 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     // TODO: Move this out of this class
-    Map<String, Integer> promptResources(PrintStream out, Scanner in) {
-        System.out.println("Choosing blank resource replacements:");
+    Map<String, Integer> promptResources() {
+        out.println("Choosing blank resource replacements:");
 
         String resource;
         int amount;
@@ -315,15 +334,15 @@ public class Cli extends EventDispatcher implements Ui {
 
         input = "";
         while (!input.equalsIgnoreCase("Y")) {
-            resource = prompt(out, in, "Which resource do you want as replacement to Zeros/Blanks? (Enter to skip)");
-            if(resource.isEmpty())
+            resource = prompt("Which resource do you want as replacement to Zeros/Blanks? (Enter to skip)");
+            if (resource.isEmpty())
                 break;
 
-            input = prompt(out, in, "How many blanks would you like to replace?");
+            input = prompt("How many blanks would you like to replace?");
             try {
                 amount = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
+                out.println("Please input an integer.");
                 continue;
             }
 
@@ -333,22 +352,14 @@ public class Cli extends EventDispatcher implements Ui {
                 result.put(resource, amount);
             }
 
-            input = prompt(out, in, "Are you done choosing? [Y/*]");
+            input = prompt("Are you done choosing? [Y/*]");
         }
         return result;
     }
 
     void quit() {
-        Cli.clear(System.out);
+        clear();
         stop();
-    }
-
-    ReducedObjectPrinter getPrinter() {
-        return printer;
-    }
-
-    ReducedGame getCache() {
-        return cache;
     }
 
     boolean isSingleplayer() {

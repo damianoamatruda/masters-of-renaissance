@@ -3,28 +3,25 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 
-import java.io.PrintStream;
-import java.util.Scanner;
-
 public abstract class CliTurnState extends CliState {
     private int leaderId;
 
-    public void leaderAction(Cli cli, PrintStream out, Scanner in) {
+    public void leaderAction(Cli cli) {
         String input;
         do {
-            input = cli.prompt(out, in, "Leader action. A = Activate, D = Discard");
+            input = cli.prompt("Leader action. A = Activate, D = Discard");
         } while (!input.toUpperCase().startsWith("A") && !input.toUpperCase().startsWith("D"));
 
         boolean isActivate = input.toUpperCase().startsWith("A");
 
         while (true) {
-            input = cli.prompt(out, in, "Which leader?");
+            input = cli.prompt("Which leader?");
             try {
                 leaderId = Integer.parseInt(input);
                 cli.dispatch(new ReqLeaderAction(leaderId, isActivate));
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Please input an integer.");
+                cli.getOut().println("Please input an integer.");
             }
         }
     }

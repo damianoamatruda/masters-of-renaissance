@@ -3,25 +3,21 @@ package it.polimi.ingsw.client.cli;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.client.NetworkClient;
-import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.common.reducedmodel.ReducedGame;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.UnknownHostException;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class MultiplayerMenuState extends CliState {
     private final static String jsonConfigPath = "/config/server.json";
 
     @Override
-    public void render(Cli cli, PrintStream out, Scanner in, ReducedGame cache, ReducedObjectPrinter printer) {
-        Cli.clear(out);
-        renderMainTitle(out);
+    public void render(Cli cli) {
+        cli.clear();
+        renderMainTitle(cli);
         for (int i = 0; i < 2; i++)
-            out.println();
+            cli.getOut().println();
 
         JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(NetworkClient.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
 
@@ -31,7 +27,7 @@ public class MultiplayerMenuState extends CliState {
         boolean validAddress = false;
 
         while (!validAddress) {
-            String address = cli.prompt(out, in, "Server address", String.format("%s:%s", host, port));
+            String address = cli.prompt("Server address", String.format("%s:%s", host, port));
 
             if (address.isBlank())
                 validAddress = true;
@@ -55,17 +51,17 @@ public class MultiplayerMenuState extends CliState {
             }
         }
 
-        out.println();
+        cli.getOut().println();
 
         boolean connected = true;
         try {
             cli.startNetworkClient(host, port);
         } catch (UnknownHostException e) {
             connected = false;
-            System.err.printf("Don't know about host %s%n", host);
+            cli.getOut().printf("Don't know about host %s%n", host);
         } catch (IOException e) {
             connected = false;
-            System.err.printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
+            cli.getOut().printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
         }
 
         if (connected)
