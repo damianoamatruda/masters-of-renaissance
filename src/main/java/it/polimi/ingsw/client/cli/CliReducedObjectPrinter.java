@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private final Cli cli;
@@ -97,39 +98,47 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedMarket newObject) {
+        int width = newObject.getGrid().stream().map(List::size).reduce(Integer::max).orElse(0);
+
         cli.getOut().println("Market:");
+        cli.getOut().println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
+
         cli.getOut().print("╔");
-        cli.getOut().print("═".repeat(43));
+        cli.getOut().print("═".repeat(12 * width));
         cli.getOut().println("╗");
+
+        cli.getOut().print("║" + " ".repeat(8));
+        cli.getOut().print((String.format("%-10s", " ")).repeat(width - 1));
+        cli.getOut().printf("%-23s", Cli.centerLine(printResource(newObject.getSlide()), 23));
+        cli.getOut().println("║");
+
+        cli.getOut().println("║" + " ".repeat(4) + "╔" + "═".repeat(12 * width - 5) + "╣");
 
         for (int i = 0; i < newObject.getGrid().size(); i++) {
             List<String> r = newObject.getGrid().get(i);
-            cli.getOut().print("║");
+            cli.getOut().print("║" + " ".repeat(4) + "║");
             for (int j = 0; j < r.size(); j++) {
                 String res = r.get(j);
                 cli.getOut().printf("%-22s", Cli.centerLine(printResource(res), 22));
                 if (j < r.size() - 1) cli.getOut().print(" │");
                 else cli.getOut().print(" ");
             }
-            cli.getOut().print("║");
-            cli.getOut().println();
+            cli.getOut().printf("║ < %d%n", i + 1);
             if (i < newObject.getGrid().size() - 1) {
-                cli.getOut().print("║");
+                cli.getOut().print("║" + " ".repeat(4) + "║");
                 cli.getOut().print(("─".repeat(10) + "┼").repeat(r.size() - 1) + "─".repeat(10));
                 cli.getOut().println("║");
-
             }
         }
 
-        cli.getOut().println("╠" + "═".repeat(5) + "╦" + "═".repeat(37) + "╝");
+        cli.getOut().println("╚" + "═".repeat(4) + "╩" + "═".repeat(12 * width - 5) + "╝");
+        cli.getOut().print(" ".repeat(6));
+        for(int i = 1; i <= width; i++) cli.getOut().printf("%-10s ", Cli.centerLine("^", 10));
+        cli.getOut().print("\n" + " ".repeat(6));
+        for(int i = 1; i <= width; i++) cli.getOut().printf("%-10s ", Cli.centerLine("" + i, 10));
+        System.out.println("\n");
 
-        cli.getOut().println("║" + " ".repeat(5) + "╚" + "═".repeat(37) + "╗");
-        cli.getOut().print("║" + " ".repeat(33));
-        cli.getOut().printf("%-23s", Cli.centerLine(printResource(newObject.getSlide()), 23));
-        cli.getOut().println("║");
-        cli.getOut().println("╚" + "═".repeat(43) + "╝");
 //        cli.getOut().println("Slide resource: " + printResource(newObject.getSlide()));
-        cli.getOut().println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
     }
 
     @Override
