@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
@@ -96,7 +97,10 @@ public class ViewModel {
                 ids.add(c.getProduction());
         });
 
-        return gameData.getProductions().stream().filter(p -> ids.contains(p.getId())).toList();
+        return ids.stream()
+            .map(id -> gameData.getProduction(id).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
     }
 
     /**
@@ -104,7 +108,10 @@ public class ViewModel {
      * @return the topmost development cards in the player's slots
      */
     private List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
-        return playerData.get(nickname).getDevSlots().stream().map(slot -> gameData.getDevelopmentCard(slot.get(0))).toList();
+        return playerData.get(nickname).getDevSlots().stream()
+            .map(slot -> gameData.getDevelopmentCard(slot.get(0)).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
     }
 
     /**
@@ -112,18 +119,28 @@ public class ViewModel {
      * @return the reduced leader cards owned by the player
      */
     public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
-        return playerData.get(nickname).getLeadersHand().stream().map(id -> gameData.getLeaderCard(id)).toList();
+        return playerData.get(nickname).getLeadersHand().stream()
+            .map(id -> gameData.getLeaderCard(id).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
     }
 
     /**
      * @param nickname
-     * @return the player's reduced containers, including leader depots
+     * @return the player's reduced containers, including active leaders' depots
      */
     public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
-        List<Integer> ids = new ArrayList<>(playerData.get(nickname).getWarehouseShelves());
+        List<Integer> ids = new ArrayList<>();
 
-        playerData.get(nickname).getLeadersHand().forEach(id -> { if (id >= 0) ids.add(gameData.getLeaderCard(id).getContainerId()); });
+        playerData.get(nickname).getWarehouseShelves().forEach(id -> ids.add(id));
 
-        return ids.stream().map(id -> gameData.getContainer(id)).toList();
+        getPlayerLeaderCards(nickname).stream()
+            .filter(c -> c.isActive())
+            .forEach(c -> ids.add(c.getContainerId()));
+
+        return ids.stream()
+            .map(id -> gameData.getContainer(id).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
     }
 }
