@@ -41,6 +41,7 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
         view.addEventListener(ErrReplacedTransRecipe.class, this::send);
         view.addEventListener(ErrResourceReplacement.class, this::send);
         view.addEventListener(ErrResourceTransfer.class, this::send);
+        view.addEventListener(UpdateAction.class, this::send);
         view.addEventListener(UpdateGame.class, this::send);
         view.addEventListener(UpdateCurrentPlayer.class, this::send);
         view.addEventListener(UpdateSetupDone.class, this::send);
@@ -77,6 +78,7 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
         view.removeEventListener(ErrReplacedTransRecipe.class, this::send);
         view.removeEventListener(ErrResourceReplacement.class, this::send);
         view.removeEventListener(ErrResourceTransfer.class, this::send);
+        view.removeEventListener(UpdateAction.class, this::send);
         view.removeEventListener(UpdateGame.class, this::send);
         view.removeEventListener(UpdateCurrentPlayer.class, this::send);
         view.removeEventListener(UpdateSetupDone.class, this::send);

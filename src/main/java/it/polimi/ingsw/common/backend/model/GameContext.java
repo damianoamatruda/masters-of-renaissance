@@ -12,6 +12,8 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResource
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ProductionRequest;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransaction;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNoSuchEntity.IDType;
@@ -115,6 +117,7 @@ public class GameContext extends EventDispatcher {
     
             try {
                 player.getSetup().chooseLeaders(game, player, leaders);
+                dispatch(new UpdateAction(nickname, ActionType.CHOOSE_LEADERS));
             } catch (CannotChooseException e) {
                 dispatch(new ErrInitialChoice(view, true, e.getMissingLeadersCount()));
             }
@@ -155,6 +158,7 @@ public class GameContext extends EventDispatcher {
     
             try {
                 player.getSetup().chooseResources(game, player, shelves);
+                dispatch(new UpdateAction(nickname, ActionType.CHOOSE_RESOURCES));
             } catch (IllegalResourceTransactionReplacementsException e) {
                 // illegal replaced resources
                 dispatch(new ErrResourceReplacement(view, e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
@@ -205,6 +209,7 @@ public class GameContext extends EventDispatcher {
     
             try {
                 Shelf.swap(shelf1, shelf2);
+                dispatch(new UpdateAction(nickname, ActionType.SWAP_SHELVES));
             } catch (IllegalResourceTransferException e) {
                 dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
             }
@@ -239,6 +244,7 @@ public class GameContext extends EventDispatcher {
     
             try {
                 leader.activate(player);
+                dispatch(new UpdateAction(nickname, ActionType.ACTIVATE_LEADER));
             } catch (IllegalArgumentException e) {
                 dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             } catch (CardRequirementsNotMetException e) {
@@ -275,6 +281,7 @@ public class GameContext extends EventDispatcher {
     
             try {
                 player.discardLeader(game, leader);
+                dispatch(new UpdateAction(nickname, ActionType.DISCARD_LEADER));
             } catch (IllegalArgumentException e) {
                 dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             } catch (ActiveLeaderDiscardException e) {
@@ -347,6 +354,8 @@ public class GameContext extends EventDispatcher {
             }
 
             mandatoryActionDone = true;
+            
+            dispatch(new UpdateAction(nickname, ActionType.TAKE_MARKET_RESOURCES));
         }
     }
 
@@ -406,6 +415,8 @@ public class GameContext extends EventDispatcher {
             }
 
             mandatoryActionDone = true;
+     
+            dispatch(new UpdateAction(nickname, ActionType.BUY_DEVELOPMENT_CARD));
         }
     }
 
@@ -477,6 +488,8 @@ public class GameContext extends EventDispatcher {
             }
 
             mandatoryActionDone = true;
+         
+            dispatch(new UpdateAction(nickname, ActionType.ACTIVATE_PRODUCTION));
         }
     }
 
@@ -508,6 +521,8 @@ public class GameContext extends EventDispatcher {
             }
     
             mandatoryActionDone = false;
+        
+            dispatch(new UpdateAction(nickname, ActionType.END_TURN));
         }
     }
 

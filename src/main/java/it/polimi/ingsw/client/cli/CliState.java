@@ -85,6 +85,10 @@ public abstract class CliState implements Renderable {
         cli.quit();
     }
 
+    public void on(Cli cli, UpdateAction event) {
+        // TODO: implement
+    }
+
     public void on(Cli cli, UpdateActionToken event) {
         // TODO: Only the cache should be updated here
         cli.getPrinter().update(cli.getCache().getActionToken(event.getActionToken()));

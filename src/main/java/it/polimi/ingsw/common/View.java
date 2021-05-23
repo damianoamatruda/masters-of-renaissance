@@ -34,6 +34,7 @@ public class View extends EventDispatcher {
         game.addEventListener(ErrReplacedTransRecipe.class, this::on);
         game.addEventListener(ErrResourceReplacement.class, this::on);
         game.addEventListener(ErrResourceTransfer.class, this::on);
+        game.addEventListener(UpdateAction.class, this::on);
         game.addEventListener(UpdateGame.class, this::on);
         game.addEventListener(UpdateCurrentPlayer.class, this::on);
         game.addEventListener(UpdateSetupDone.class, this::on);
@@ -64,6 +65,7 @@ public class View extends EventDispatcher {
         game.removeEventListener(ErrReplacedTransRecipe.class, this::on);
         game.removeEventListener(ErrResourceReplacement.class, this::on);
         game.removeEventListener(ErrResourceTransfer.class, this::on);
+        game.removeEventListener(UpdateAction.class, this::on);
         game.removeEventListener(UpdateGame.class, this::on);
         game.removeEventListener(UpdateCurrentPlayer.class, this::on);
         game.removeEventListener(UpdateSetupDone.class, this::on);
