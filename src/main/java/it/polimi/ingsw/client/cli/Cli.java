@@ -250,13 +250,7 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     void startNetworkClient(String host, int port) throws IOException {
-        boolean connected = true;
-        try {
-            new NetworkClient(view, host, port).start();
-        } catch (IOException e) {
-            connected = false;
-            throw e;
-        }
+        new NetworkClient(view, host, port).start();
         singleplayer = false;
     }
 
