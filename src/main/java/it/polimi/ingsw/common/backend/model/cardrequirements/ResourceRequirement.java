@@ -2,15 +2,14 @@ package it.polimi.ingsw.common.backend.model.cardrequirements;
 
 import it.polimi.ingsw.common.backend.model.Player;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
-import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -61,18 +60,12 @@ public class ResourceRequirement implements CardRequirement {
         Map<ResourceType, Integer> discountedRes = getDiscountedCost(player),
                 missingResources = new HashMap<>();
 
-        // get all warehouse shelves
-        List<Shelf> shelves = new ArrayList<>(List.copyOf(player.getWarehouse().getShelves()));
-
-        // add the leaders' depots (they count as warehouse shelves)
-        for (int i = 0; i < player.getLeaders().size(); i++)
-            player.getLeaders().get(i).getDepot().ifPresent(shelves::add);
+        // get all resource containers owned by the player
+        Set<ResourceContainer> resContainers = player.getResContainers();
 
         for (ResourceType r : discountedRes.keySet()) {
-            // get the amount of this resource the player owns from both the strongbox
-            int playerAmount = player.getStrongbox().getResourceQuantity(r);
-            // and every shelf the resource of which matches the currently examined resource
-            playerAmount += shelves.stream().filter(e -> e.getResourceType().isPresent() && e.getResourceType().get().equals(r)).mapToInt(s -> s.getResourceQuantity(r)).sum();
+            // get the amount of this resource the player owns
+            int playerAmount = resContainers.stream().mapToInt(c -> c.getResourceQuantity(r)).sum();
 
             // if the player does not own enough of this resource, the requirements aren't met
             if (discountedRes.get(r) - playerAmount > 0)

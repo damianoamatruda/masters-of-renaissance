@@ -32,7 +32,7 @@ public class DevelopmentCardTest {
     void setup() {
         card = new DevelopmentCard(blue, 1, new ResourceRequirement(Map.of(coin, 1)), null, 0, 0);
         player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(coin, 1), 1, coin), new FaithTrack(Set.of(), Set.of()), 0, 0, null, null);
+        game = new Game(List.of(player), null, null, List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(coin, 1), 1, coin), new FaithTrack(Set.of(), Set.of()), 0, 0);
     }
 
     /**

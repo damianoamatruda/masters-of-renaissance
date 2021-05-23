@@ -83,7 +83,7 @@ public class MarketTest {
                 Map.of(r1, 1, r2, 1, r3, 2, r4, 2, r5, 3, r6, 4), 4, r6);
 
         Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        Game game = new Game(List.of(player), List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), market, new FaithTrack(Set.of(), Set.of()), 0, 0, null, null);
+        Game game = new Game(List.of(player), null, null, List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), market, new FaithTrack(Set.of(), Set.of()), 0, 0);
 
         Map<ResourceType, Shelf> shelves = Map.of(
                 r1, new Shelf(48),     /* market.getRowsCount() * (market.getColsCount() + 1) * market.getColsCount() */

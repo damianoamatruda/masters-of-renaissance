@@ -56,6 +56,8 @@ public class DevCardGridTest {
                 new PlayerSetup(0, 0, 0, Set.of()));
         game = new Game(
                 List.of(buyer),
+                null,
+                null,
                 List.of(),
                 devCards,
                 List.of(),
@@ -64,7 +66,7 @@ public class DevCardGridTest {
                 new Market(Map.of(r1, 1), 1, r1),
                 new FaithTrack(Set.of(), Set.of()),
                 0,
-                2, null, null);
+                2);
     }
 
 

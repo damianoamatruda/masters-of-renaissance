@@ -48,7 +48,7 @@ public class SoloGameTest {
 
         ResourceType r1 = new ResourceType("r1", true);
 
-        game = new SoloGame(player, List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), track, List.of(
+        game = new SoloGame(player, null, null, List.of(), List.of(), List.of(), List.of(), List.of(
                 new ActionToken() {
                     @Override
                     public void trigger(SoloGame game) {
@@ -64,7 +64,7 @@ public class SoloGameTest {
                         return null;
                     }
                 }
-        ), 24, 7, null, null);
+        ), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), track, 24, 7);
 
     }
 

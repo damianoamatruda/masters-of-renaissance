@@ -45,6 +45,8 @@ public class GameTest {
 
         game = new Game(
                 players,
+                null,
+                null,
                 List.of(),
                 List.of(),
                 List.of(),
@@ -59,7 +61,8 @@ public class GameTest {
                         new FaithTrack.YellowTile(18, 12),
                         new FaithTrack.YellowTile(24, 20)
                 )),
-                24, 7, null, null);
+                24,
+                7);
 
         initialOrder = game.getPlayers();
     }

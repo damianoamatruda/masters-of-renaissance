@@ -32,6 +32,10 @@ public class Game extends EventDispatcher {
     /** The productions used in the game. */
     protected final List<ResourceTransactionRecipe> productions;
 
+    protected List<DevCardColor> colors;
+
+    protected List<ResourceType> resourceTypes;
+
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
 
@@ -53,12 +57,12 @@ public class Game extends EventDispatcher {
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
-    protected List<ResourceType> resourceTypes;
-    protected List<DevCardColor> colors;
-
     /**
      * Constructor of Game instances.
-     *  @param players               the list of nicknames of players who joined
+     *
+     * @param players               the list of nicknames of players who joined
+     * @param colors
+     * @param resourceTypes
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
      * @param resContainers         the list of resource containers
@@ -68,13 +72,11 @@ public class Game extends EventDispatcher {
      * @param faithTrack            the faith track
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
-     * @param resourceTypes
-     * @param colors
      */
-    public Game(List<Player> players, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+    public Game(List<Player> players, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
-                DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxFaithPointsCount,
-                int maxObtainableDevCards, List<ResourceType> resourceTypes, List<DevCardColor> colors) {
+                DevCardGrid devCardGrid, Market market,
+                FaithTrack faithTrack, int maxFaithPointsCount, int maxObtainableDevCards) {
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);
@@ -120,18 +122,6 @@ public class Game extends EventDispatcher {
 
     public void dispatchState() {
         dispatchState(null);
-    }
-
-    public Optional<LeaderCard> getLeaderById(int id) {
-        return leaderCards.stream().filter(l -> l.getId() == id).findAny();
-    }
-
-    public Optional<ResourceContainer> getShelfById(int id) {
-        return resContainers.stream().filter(l -> l.getId() == id).findAny();
-    }
-
-    public Optional<ResourceTransactionRecipe> getProductionById(int id) {
-        return productions.stream().filter(l -> l.getId() == id).findAny();
     }
 
     /**
