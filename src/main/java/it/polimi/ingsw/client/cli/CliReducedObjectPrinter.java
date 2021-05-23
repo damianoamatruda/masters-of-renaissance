@@ -97,22 +97,36 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void update(ReducedMarket newObject) {
         System.out.println("Market:");
         System.out.print("╔");
-        for(int i = 0; i < 40; i++) System.out.print("═");
+        System.out.print("═".repeat(43));
         System.out.println("╗");
 
-        newObject.getGrid().forEach(r -> {
+        for(int i = 0; i < newObject.getGrid().size(); i++) {
+            List<String> r = newObject.getGrid().get(i);
             System.out.print("║");
-            r.forEach(res -> System.out.printf("%-23s", Cli.centerLine(printResource(res), 23)));
+            for(int j = 0; j < r.size(); j++) {
+                String res = r.get(j);
+                System.out.printf("%-22s", Cli.centerLine(printResource(res), 22));
+                if(j < r.size() - 1) System.out.print(" │");
+                else System.out.print(" ");
+            }
             System.out.print("║");
             System.out.println();
-        });
+            if (i < newObject.getGrid().size() - 1){
+                System.out.print("║");
+                System.out.print(("─".repeat(10) + "┼").repeat(r.size() - 1) + "─".repeat(10));
+                System.out.println("║");
 
-        System.out.print("╚");
-        for(int i = 0; i < 40; i++) System.out.print("═");
-        System.out.print("╝");
+            }
+        }
 
-        System.out.print("\n");
-        System.out.println("Slide resource: " + printResource(newObject.getSlide()));
+        System.out.println("╠" + "═".repeat(5) + "╦" + "═".repeat(37) + "╝");
+
+        System.out.println("║" + " ".repeat(5) + "╚" + "═".repeat(37) + "╗");
+        System.out.print("║" + " ".repeat(33));
+        System.out.printf("%-23s", Cli.centerLine(printResource(newObject.getSlide()), 23));
+        System.out.println("║");
+        System.out.println("╚" + "═".repeat(43) + "╝");
+//        System.out.println("Slide resource: " + printResource(newObject.getSlide()));
         System.out.println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
     }
 
@@ -289,7 +303,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
             String rowTemplate = "";
             for(int i = 0; i < topCards.get(j).size(); i++) {
-                rowTemplate += "%-50s |";
+                rowTemplate += "%-50s │";
             }
             rowTemplate += "\n";
 

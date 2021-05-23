@@ -104,7 +104,7 @@ public class Cli extends EventDispatcher implements Ui {
 
     public static void trackSlimLine() {
         for(int i = 0; i < width; i++)
-            System.out.print("-");
+            System.out.print("─");
         System.out.println();
     }
 
