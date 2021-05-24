@@ -436,7 +436,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void printFaithTrack(Map<String, Integer> points) {
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
         int maxFaith = cache.getFaithTrack().getMaxFaith();
-        System.out.println(maxFaith);
         List<String> players = new ArrayList<>(points.keySet().stream().toList());
         List<String> nicks = new ArrayList<>();
         for (String p : players) {
@@ -446,20 +445,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         }
 
         StringBuilder output = new StringBuilder(" ");
-        for(int i = 0; i <= /* maxFaith */24; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7) /*+ "yellow tile points"*/));
+        for(int i = 0; i <= maxFaith; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7) /*+ "yellow tile points"*/));
         output.append("\n");
 
-        output.append("┌").append(("─".repeat(cellWidth) + "┬").repeat(/*maxfaith */24)).append("─".repeat(cellWidth)).append("┐\n");
+        output.append("┌").append(("─".repeat(cellWidth) + "┬").repeat(maxFaith)).append("─".repeat(cellWidth)).append("┐\n");
 
         for (int j = 0; j < players.size(); j++) {
             String player = players.get(j);
-            for (int i = 0; i <= /* maxFaith */24; i++) {
+            for (int i = 0; i <= maxFaith; i++) {
                 output.append("│").append(points.get(player) == i ? String.format("%-6s", nicks.get(j)) : " ".repeat(cellWidth));
             }
             output.append("│\n");
         }
 
-        output.append("└").append(("─".repeat(cellWidth) + "┴").repeat(/*maxfaith */24)).append("─".repeat(cellWidth)).append("┘");
+        output.append("└").append(("─".repeat(cellWidth) + "┴").repeat(maxFaith)).append("─".repeat(cellWidth)).append("┘");
 
         System.out.println(output);
 
