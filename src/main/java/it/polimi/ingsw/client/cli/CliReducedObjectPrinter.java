@@ -321,18 +321,22 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     public void printCardGrid(ReducedDevCardGrid grid) {
         List<List<ReducedDevCard>> topCards = new ArrayList<>();
-        int j = 0;
 
-        for(String key : grid.getGrid().keySet()) {
+        for(int i = 1; i <= /*levels*/3; i++){
             cli.trackSlimLine();
-            topCards.add(grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).toList());
             List<List<String>> lines = new ArrayList<>();
-            for(int i = 0; i < topCards.get(j).size(); i++) {
-                ReducedDevCard card = topCards.get(j).get(i);
+            for(String key : grid.getGrid().keySet()) {
+                int index = i;
+                ReducedDevCard card = grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).filter(c -> c.getLevel() == index).findAny().orElseThrow();
+                topCards.add(new ArrayList<>());
+                topCards.get(i - 1).add(card);
+            }
+            for(int j = 0; j < topCards.get(i - 1).size(); j++) {
+                ReducedDevCard card = topCards.get(i - 1).get(j);
                 lines.add(new ArrayList<>());
-                List<String> column = lines.get(i);
+                List<String> column = lines.get(j);
                 column.add("[Development]");
-                column.add(String.format("%-76s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
+                column.add(String.format("%-64s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
                         card.getId(),
                         printColor(card.getColor())
                 )));
@@ -342,27 +346,26 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 ));
                 column.add("Requirements (resources):");
                 card.getCost()
-                        .getRequirements().forEach((k, value) ->column.add(String.format("%-63s", printResource(k) + ": " + value)));
+                        .getRequirements().forEach((key, value) ->column.add(String.format("%-51s", printResource(key) + ": " + value)));
                 addProductionToPrinter(column, card.getProduction());
             }
 
             String rowTemplate = "";
-            for(int i = 0; i < topCards.get(j).size(); i++) {
-                rowTemplate += "%-50s │";
+            for(int j = 0; j < topCards.get(i - 1).size(); j++) {
+                rowTemplate += "%-38s │";
             }
             rowTemplate += "\n";
 
             int length = lines.stream().map(List::size).reduce(Integer::max).orElse(0);
-            for(int k = 0; k < length; k++) {
+            for(int j = 0; j < length; j++) {
                 List<String> row = new ArrayList<>();
-                for (int i = 0; i < topCards.get(j).size(); i++) {
-                    if (k < lines.get(i).size())
-                        row.add(lines.get(i).get(k));
+                for (int l = 0; l < topCards.get(i - 1).size(); l++) {
+                    if (j < lines.get(l).size())
+                        row.add(lines.get(l).get(j));
                     else row.add("");
                 }
                 cli.getOut().printf(rowTemplate, row.toArray());
             }
-            j++;
         }
         cli.trackSlimLine();
         cli.getOut().println();
@@ -374,7 +377,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             column.add("--- Requirements (dev. cards) ---");
             for(int k = 0; k < reducedLeaderCard.getDevCardRequirement().getEntries().size(); k++) {
                 ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(k);
-                String req = String.format("%-63s", "Color: " + printColor(e.getColor()) + ", level: " +
+                String req = String.format("%-51s", "Color: " + printColor(e.getColor()) + ", level: " +
                         (e.getLevel() > 0 ? e.getLevel() : "any") + ", amount: " + e.getAmount());
                 column.add(req);
             }
@@ -395,13 +398,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             column.add(String.format("--- Production ID: %d ---",
                     r.get().getId()));
             column.add("Input:");
-            r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-63s", printResource(key1) + ": " + value1)));
+            r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-51s", printResource(key1) + ": " + value1)));
             column.add(String.format("Input blanks: %d",
                     r.get().getInputBlanks()));
             column.add("Input blanks exclusions:");
             r.get().getInputBlanksExclusions().forEach(e -> column.add(e + ", "));
             column.add("Output:");
-            r.get().getOutput().forEach((key, value) -> column.add(String.format("%-63s", printResource(key) + ": " + value)));
+            r.get().getOutput().forEach((key, value) -> column.add(String.format("%-51s", printResource(key) + ": " + value)));
             column.add(String.format("Output blanks: %d",
                     r.get().getOutputBlanks()));
             column.add("Output blanks exclusions:");
@@ -434,12 +437,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
         List<String> players = new ArrayList<>(points.keySet().stream().toList());
         List<String> nicks = new ArrayList<>();
-        for(int i = 0; i < players.size(); i++) {
-            String p = players.get(i);
+        for (String p : players) {
             if (p.length() > 6) {
                 nicks.add(p.substring(0, 6));
-            }
-            else nicks.add(p);
+            } else nicks.add(p);
         }
 
         StringBuilder output = new StringBuilder(" ");
