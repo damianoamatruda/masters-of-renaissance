@@ -96,32 +96,31 @@ public class Gui extends Application implements Ui {
     }
 
     public void registerOnMV(EventDispatcher view) {
+        view.addEventListener(ResQuit.class, event -> Gui.controller.on(this, event));
+        view.addEventListener(UpdateBookedSeats.class, event -> Gui.controller.on(this, event));
+        view.addEventListener(UpdateJoinGame.class, event -> Gui.controller.on(this, event));
+        view.addEventListener(ErrNewGame.class, event -> Gui.controller.on(this, event));
+        view.addEventListener(ErrNickname.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrAction.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrActiveLeaderDiscarded.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrBuyDevCard.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrCardRequirements.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrInitialChoice.class, event -> Gui.controller.on(this, event));
-        view.addEventListener(ErrNewGame.class, event -> Gui.controller.on(this, event));
-        view.addEventListener(ErrNickname.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrNoSuchEntity.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrObjectNotOwned.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrReplacedTransRecipe.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrResourceReplacement.class, event -> Gui.controller.on(this, event));
         view.addEventListener(ErrResourceTransfer.class, event -> Gui.controller.on(this, event));
-        view.addEventListener(ResQuit.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateAction.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateActionToken.class, event -> Gui.controller.on(this, event));
-        view.addEventListener(UpdateBookedSeats.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateCurrentPlayer.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateDevCardGrid.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateDevCardSlot.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateFaithPoints.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateGame.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateGameEnd.class, event -> Gui.controller.on(this, event));
-        view.addEventListener(UpdateJoinGame.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateLastRound.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateLeader.class, event -> Gui.controller.on(this, event));
-        view.addEventListener(UpdateLeadersHand.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateLeadersHandCount.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateMarket.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdatePlayer.class, event -> Gui.controller.on(this, event));
@@ -130,35 +129,35 @@ public class Gui extends Application implements Ui {
         view.addEventListener(UpdateSetupDone.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateVaticanSection.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateVictoryPoints.class, event -> Gui.controller.on(this, event));
+        view.addEventListener(UpdateLeadersHand.class, event -> Gui.controller.on(this, event));
     }
 
     public void unregisterOnMV(EventDispatcher view) {
+        view.removeEventListener(ResQuit.class, event -> Gui.controller.on(this, event));
+        view.removeEventListener(UpdateBookedSeats.class, event -> Gui.controller.on(this, event));
+        view.removeEventListener(UpdateJoinGame.class, event -> Gui.controller.on(this, event));
+        view.removeEventListener(ErrNewGame.class, event -> Gui.controller.on(this, event));
+        view.removeEventListener(ErrNickname.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrAction.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrActiveLeaderDiscarded.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrBuyDevCard.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrCardRequirements.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrInitialChoice.class, event -> Gui.controller.on(this, event));
-        view.removeEventListener(ErrNewGame.class, event -> Gui.controller.on(this, event));
-        view.removeEventListener(ErrNickname.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrNoSuchEntity.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrObjectNotOwned.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrReplacedTransRecipe.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrResourceReplacement.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(ErrResourceTransfer.class, event -> Gui.controller.on(this, event));
-        view.removeEventListener(ResQuit.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateAction.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateActionToken.class, event -> Gui.controller.on(this, event));
-        view.removeEventListener(UpdateBookedSeats.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateCurrentPlayer.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateDevCardGrid.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateDevCardSlot.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateFaithPoints.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateGame.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateGameEnd.class, event -> Gui.controller.on(this, event));
-        view.removeEventListener(UpdateJoinGame.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateLastRound.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateLeader.class, event -> Gui.controller.on(this, event));
-        view.removeEventListener(UpdateLeadersHand.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateLeadersHandCount.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateMarket.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdatePlayer.class, event -> Gui.controller.on(this, event));
@@ -167,5 +166,6 @@ public class Gui extends Application implements Ui {
         view.removeEventListener(UpdateSetupDone.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateVaticanSection.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateVictoryPoints.class, event -> Gui.controller.on(this, event));
+        view.removeEventListener(UpdateLeadersHand.class, event -> Gui.controller.on(this, event));
     }
 }
