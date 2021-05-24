@@ -1,88 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.MainMenuController"
             id="body" stylesheets="@mainmenu.css">
   <center>
-    <VBox alignment="CENTER" layoutX="120.0" prefHeight="0.0" prefWidth="360.0">
-      <VBox alignment="CENTER" prefHeight="0.0" prefWidth="100.0">
-        <children>
-          <ImageView fitHeight="135.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-              <Image url="@logo.png"/>
-            </image>
-          </ImageView>
-        </children>
+    <VBox alignment="CENTER">
+      <VBox alignment="CENTER">
         <VBox.margin>
-          <Insets bottom="20.0"/>
+          <Insets bottom="40.0"/>
         </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@logo.png"/>
+        </ImageView>
       </VBox>
-      <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleSinglePlayer" prefWidth="380.0"
-             text="Singleplayer">
-        <font>
-          <Font size="21.0"/>
-        </font>
-        <padding>
-          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
-        </padding>
-      </Label>
-      <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleMultiplayer" prefWidth="380.0"
-             text="Multiplayer">
-        <font>
-          <Font size="21.0"/>
-        </font>
-        <padding>
-          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
-        </padding>
+      <Button alignment="CENTER" onAction="#handleSinglePlayer" prefWidth="400.0" text="Singleplayer"/>
+      <Button alignment="CENTER" onAction="#handleMultiplayer" prefWidth="400.0" text="Multiplayer">
         <VBox.margin>
           <Insets top="8.0"/>
         </VBox.margin>
-      </Label>
-      <BorderPane maxWidth="-Infinity" prefWidth="380.0">
+      </Button>
+      <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
-          <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleOptions" prefWidth="180.0"
-                 text="Options..." BorderPane.alignment="CENTER">
-            <font>
-              <Font size="21.0"/>
-            </font>
-            <padding>
-              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
-            </padding>
-            <BorderPane.margin>
-              <Insets/>
-            </BorderPane.margin>
-          </Label>
+          <Button alignment="CENTER" onAction="#handleOptions" prefWidth="190.0" text="Options..."/>
         </left>
         <right>
-          <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleQuit" prefWidth="180.0"
-                 text="Quit Game" BorderPane.alignment="CENTER">
-            <font>
-              <Font size="21.0"/>
-            </font>
-            <padding>
-              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
-            </padding>
-            <BorderPane.margin>
-              <Insets/>
-            </BorderPane.margin>
-          </Label>
+          <Button alignment="CENTER" onAction="#handleQuit" prefWidth="190.0" text="Quit Game"/>
         </right>
         <VBox.margin>
-          <Insets top="14.0"/>
+          <Insets top="30.0"/>
         </VBox.margin>
       </BorderPane>
-      <BorderPane.margin>
-        <Insets/>
-      </BorderPane.margin>
       <padding>
-        <Insets bottom="60.0"/>
+        <Insets bottom="80.0"/>
       </padding>
     </VBox>
   </center>
