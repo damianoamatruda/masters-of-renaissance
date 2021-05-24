@@ -95,7 +95,7 @@ public class Gui extends Application implements Ui {
         primaryStage.show();
     }
 
-    public void registerOnMV(EventDispatcher view) {
+    private void registerOnMV(EventDispatcher view) {
         view.addEventListener(ResQuit.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateBookedSeats.class, event -> Gui.controller.on(this, event));
         view.addEventListener(UpdateJoinGame.class, event -> Gui.controller.on(this, event));
@@ -132,7 +132,7 @@ public class Gui extends Application implements Ui {
         view.addEventListener(UpdateLeadersHand.class, event -> Gui.controller.on(this, event));
     }
 
-    public void unregisterOnMV(EventDispatcher view) {
+    private void unregisterOnMV(EventDispatcher view) {
         view.removeEventListener(ResQuit.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateBookedSeats.class, event -> Gui.controller.on(this, event));
         view.removeEventListener(UpdateJoinGame.class, event -> Gui.controller.on(this, event));

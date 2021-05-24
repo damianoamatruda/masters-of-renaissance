@@ -3,6 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.client.gui.Gui;
 
+import java.util.Arrays;
+
 public class Client {
     private final boolean useGui;
 
@@ -11,7 +13,7 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        boolean useGui = args.length < 1 || !args[0].equals("--cli");
+        boolean useGui = !Arrays.asList(args).contains("--cli");
         new Client(useGui).start();
     }
 
