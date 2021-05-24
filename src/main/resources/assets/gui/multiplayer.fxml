@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -20,18 +21,20 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
+      <Label text="Server Address"/>
       <TextField id="server" fx:id="server" alignment="CENTER" prefWidth="400.0" maxWidth="400.0"
-                 promptText="Server IP:port (default = localhost:1234)" text="127.0.0.1:1234"/>
-      <Button alignment="CENTER" onMouseClicked="#handleServerChoice" prefWidth="400.0" text="Connect">
+                 promptText="Server Address" text="127.0.0.1:1234"/>
+      <BorderPane maxWidth="-Infinity" prefWidth="400.0">
+        <left>
+          <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
+        </left>
+        <right>
+          <Button alignment="CENTER" onAction="#handleServerInput" prefWidth="190.0" text="Join Server"/>
+        </right>
         <VBox.margin>
-          <Insets top="8.0"/>
+          <Insets top="30.0"/>
         </VBox.margin>
-      </Button>
-      <Button alignment="CENTER" onMouseClicked="#handleBack" prefWidth="400.0" text="Back">
-        <VBox.margin>
-          <Insets top="8.0"/>
-        </VBox.margin>
-      </Button>
+      </BorderPane>
       <padding>
         <Insets bottom="80.0"/>
       </padding>

@@ -45,9 +45,6 @@ public class Game extends EventDispatcher {
     /** The "Faith Track", where vatican sections can be activated. */
     protected final FaithTrack faithTrack;
 
-    /** Number of the last reachable faith track tile by a player. */
-    protected final int maxFaithPointsCount;
-
     /** Number of development cards a player can have, before triggering the end of the game. */
     protected final int maxObtainableDevCards;
 
@@ -89,7 +86,6 @@ public class Game extends EventDispatcher {
         this.resourceTypes = resourceTypes;
         this.colors = colors;
 
-        this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
 
@@ -165,7 +161,7 @@ public class Game extends EventDispatcher {
             vaticanSection.activate();
         }
 
-        if (faithPoints == maxFaithPointsCount)
+        if (faithPoints == faithTrack.getMaxFaithPointsCount())
             setLastRound();
     }
 
