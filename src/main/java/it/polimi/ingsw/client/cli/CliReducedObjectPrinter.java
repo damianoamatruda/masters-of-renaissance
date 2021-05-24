@@ -64,7 +64,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedLeaderCard newObject) {
-        cli.getOut().printf("[Leader] ID: %d, type: %s%n",
+        cli.getOut().printf("[Leader]%n ID: %d, type: %s%n",
                 newObject.getId(),
                 newObject.getLeaderType()
         );
@@ -72,14 +72,15 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 newObject.getResourceType(),
                 newObject.getVictoryPoints()
         );
-        cli.getOut().printf("Active status: %s, depot ID: %d%n",
-                newObject.isActive(),
-                newObject.getContainerId()
-        );
-        cli.getOut().printf("Production ID: %d, discount: %d%n",
-                newObject.getProduction(),
-                newObject.getDiscount()
-        );
+        cli.getOut().printf("%-50s", String.format("Active status: %s", newObject.isActive()));
+
+        if(newObject.getContainerId() > -1)
+            cli.getOut().printf("%-50s", String.format("Depot ID: %d", newObject.getContainerId()));
+        if(newObject.getProduction() > -1)
+            cli.getOut().printf("%-50s", String.format("Production ID: %d", newObject.getProduction()));
+        if(newObject.getDiscount() > -1)
+            cli.getOut().printf("%-50s", String.format("Discount: %d", newObject.getDiscount()));
+
         if (newObject.getDevCardRequirement() != null) {
             cli.getOut().println("Requirements (development cards):");
             newObject.getDevCardRequirement().getEntries()
@@ -248,18 +249,25 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 List<String> column = rows.get(j);
                 ReducedLeaderCard reducedLeaderCard = cards.get(j);
 
-                column.add(String.format("%-63s", String.format("[Leader] ID: \u001B[1m\u001B[97m%d\u001B[0m, type: %s",
+                column.add(String.format("%-50s", "[Leader]"));
+
+                column.add(String.format("%-63s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, type: %s",
                         reducedLeaderCard.getId(),
-                        reducedLeaderCard.getLeaderType())));
+                        reducedLeaderCard.getLeaderType()
+                )));
+
                 column.add(String.format("%-63s", String.format("BoundResource: %s, VP: %d",
                         printResource(reducedLeaderCard.getResourceType()),
                         reducedLeaderCard.getVictoryPoints())));
-                column.add(String.format("Active status: %s, depot ID: %d",
-                        reducedLeaderCard.isActive(),
-                        reducedLeaderCard.getContainerId()));
-                column.add(String.format("Production ID: %d, discount: %d",
-                        reducedLeaderCard.getProduction(),
-                        reducedLeaderCard.getDiscount()));
+
+                column.add(String.format("%-50s", String.format("Active status: %s", reducedLeaderCard.isActive())));
+
+                if(reducedLeaderCard.getContainerId() > -1)
+                    column.add(String.format("%-50s", String.format("Depot ID: %d", reducedLeaderCard.getContainerId())));
+                if(reducedLeaderCard.getProduction() > -1)
+                    column.add(String.format("%-50s", String.format("Production ID: %d", reducedLeaderCard.getProduction())));
+                if(reducedLeaderCard.getDiscount() > -1)
+                    column.add(String.format("%-50s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
 
                 addRequirementsToPrinter(column, reducedLeaderCard);
                 addProductionToPrinter(column, reducedLeaderCard);
@@ -298,7 +306,8 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 ReducedDevCard card = topCards.get(j).get(i);
                 lines.add(new ArrayList<>());
                 List<String> column = lines.get(i);
-                column.add(String.format("%-76s", String.format("[Development] ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
+                column.add("[Development]");
+                column.add(String.format("%-76s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
                         card.getId(),
                         printColor(card.getColor())
                 )));
@@ -337,15 +346,16 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     private void addRequirementsToPrinter(List<String> column, ReducedLeaderCard reducedLeaderCard) {
         if (reducedLeaderCard.getDevCardRequirement() != null) {
-            column.add("Requirements (development cards):");
+            column.add("--- Requirements (dev. cards) ---");
             for(int k = 0; k < reducedLeaderCard.getDevCardRequirement().getEntries().size(); k++) {
                 ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(k);
-                String req = String.format("%-63s", "Color: " + printColor(e.getColor()) + ", level: " + e.getLevel() + ", amount: " + e.getAmount());
+                String req = String.format("%-63s", "Color: " + printColor(e.getColor()) + ", level: " +
+                        (e.getLevel() > 0 ? e.getLevel() : "any") + ", amount: " + e.getAmount());
                 column.add(req);
             }
         }
         if(reducedLeaderCard.getResourceRequirement() != null) {
-            column.add("Requirements (resources):");
+            column.add("--- Requirements (resources) ---");
             List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
             for(String key : keys) {
                 String req = String.format("%-63s", String.format("%s, %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
@@ -357,7 +367,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private void addProductionToPrinter(List<String> column, ReducedCard reducedLeaderCard) {
         Optional<ReducedResourceTransactionRecipe> r = cache.getProduction(reducedLeaderCard.getProduction());
         if (r.isPresent()) {
-            column.add(String.format("Production ID: %d",
+            column.add(String.format("--- Production ID: %d ---",
                     r.get().getId()));
             column.add("Input:");
             r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-63s", printResource(key1) + ": " + value1)));
