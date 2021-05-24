@@ -30,20 +30,31 @@
             </font></TextField>
       <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleServerChoice" prefWidth="380.0" text="Connect">
         <font>
-          <Font size="21.0" />
+          <Font size="21.0"/>
         </font>
         <padding>
-          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
+          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
         </padding>
         <VBox.margin>
-          <Insets top="8.0" />
+          <Insets top="8.0"/>
+        </VBox.margin>
+      </Label>
+      <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleBack" prefWidth="380.0" text="Back">
+        <font>
+          <Font size="21.0"/>
+        </font>
+        <padding>
+          <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
+        </padding>
+        <VBox.margin>
+          <Insets top="8.0"/>
         </VBox.margin>
       </Label>
       <BorderPane.margin>
-        <Insets />
+        <Insets/>
       </BorderPane.margin>
       <padding>
-        <Insets bottom="60.0" />
+        <Insets bottom="60.0"/>
       </padding>
     </VBox>
   </center>
