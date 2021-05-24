@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 public abstract class GuiController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Gui.setController(this);
+        Gui.getInstance().setController(this);
     }
 
     public void on(Gui gui, ErrAction event) {

@@ -14,11 +14,13 @@ public class InputNicknameController extends GuiController {
     public TextField nickname;
 
     public void handleNicknameInput(ActionEvent actionEvent) {
-        Gui.dispatch(new ReqJoin(nickname.getText()));
+        Gui gui = Gui.getInstance();
+        gui.dispatch(new ReqJoin(nickname.getText()));
     }
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
-        Gui.setRoot(Gui.isSingleplayer() ? "mainmenu" : "multiplayer");
+        Gui gui = Gui.getInstance();
+        gui.setRoot(gui.isSingleplayer() ? "mainmenu" : "multiplayer");
     }
 
     @Override
@@ -30,11 +32,11 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateBookedSeats event) {
         super.on(gui, event);
-        if (Gui.isSingleplayer())
-            Gui.dispatch(new ReqNewGame(1));
+        if (gui.isSingleplayer())
+            gui.dispatch(new ReqNewGame(1));
         else
             try {
-                Gui.setRoot("waitingbeforegame");
+                gui.setRoot("waitingbeforegame");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -43,9 +45,9 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateGame event) {
         super.on(gui, event);
-        if (Gui.isSingleplayer()) {
+        if (gui.isSingleplayer()) {
             try {
-                Gui.setRoot("setupleaders");
+                gui.setRoot("setupleaders");
             } catch (IOException e) {
                 e.printStackTrace();
             }

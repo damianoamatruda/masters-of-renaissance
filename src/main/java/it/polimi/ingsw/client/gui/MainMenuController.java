@@ -4,12 +4,13 @@ import java.io.IOException;
 
 public class MainMenuController extends GuiController {
     public void handleSinglePlayer() throws IOException {
-        Gui.startLocalClient();
-        Gui.setRoot("inputnickname");
+        Gui gui = Gui.getInstance();
+        gui.startLocalClient();
+        gui.setRoot("inputnickname");
     }
 
     public void handleMultiplayer() throws IOException {
-        Gui.setRoot("multiplayer");
+        Gui.getInstance().setRoot("multiplayer");
     }
 
     public void handleOptions() throws IOException {
@@ -17,6 +18,6 @@ public class MainMenuController extends GuiController {
     }
 
     public void handleQuit() throws IOException {
-        Gui.quit();
+        Gui.getInstance().quit();
     }
 }

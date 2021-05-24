@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.LocalClient;
 import it.polimi.ingsw.client.NetworkClient;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -20,7 +19,7 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class Cli extends EventDispatcher implements Ui {
+public class Cli extends EventDispatcher {
     static final int width = 160;
 
     private final View view;
@@ -58,6 +57,10 @@ public class Cli extends EventDispatcher implements Ui {
         this.singleplayer = false;
     }
 
+    public static void main(String[] args) {
+        new Cli().start(); // new Thread(this::start).start();
+    }
+
     public static String convertStreamToString(InputStream is) {
         Scanner s = new Scanner(is).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
@@ -87,8 +90,7 @@ public class Cli extends EventDispatcher implements Ui {
         return stringBuilder.toString();
     }
 
-    @Override
-    public void execute() {
+    public void start() {
         running = true;
         while (running) {
             try {

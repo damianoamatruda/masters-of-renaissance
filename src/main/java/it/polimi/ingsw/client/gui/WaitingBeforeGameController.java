@@ -24,14 +24,15 @@ public class WaitingBeforeGameController extends GuiController {
         super.on(gui, event);
         System.out.println("Game started.");
         try {
-            Gui.setRoot("setupleaders");
+            gui.setRoot("setupleaders");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void handleNewGame(ActionEvent actionEvent) {
-        // Gui.dispatch(new ReqNewGame((int) group.getSelectedToggle().getProperties().get("text")));
-        Gui.dispatch(new ReqNewGame(2));
+        Gui gui = Gui.getInstance();
+        // gui.dispatch(new ReqNewGame((int) group.getSelectedToggle().getProperties().get("text")));
+        gui.dispatch(new ReqNewGame(2));
     }
 }

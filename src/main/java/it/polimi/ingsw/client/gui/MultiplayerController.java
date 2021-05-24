@@ -12,12 +12,14 @@ public class MultiplayerController extends GuiController {
     private TextField server;
 
     public void handleServerInput() throws IOException {
+        Gui gui = Gui.getInstance();
+
         String host = "127.0.0.1";
         int port = 1234;
 
         boolean connected = true;
         try {
-            Gui.startNetworkClient(host, port);
+            gui.startNetworkClient(host, port);
         } catch (UnknownHostException e) {
             connected = false;
             System.out.printf("Don't know about host %s%n", host);
@@ -27,7 +29,7 @@ public class MultiplayerController extends GuiController {
         }
 
         if (connected)
-            Gui.setRoot("inputnickname");
+            gui.setRoot("inputnickname");
         else {
             try {
                 Thread.sleep(2000);
@@ -38,6 +40,6 @@ public class MultiplayerController extends GuiController {
     }
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
-        Gui.setRoot("mainmenu");
+        Gui.getInstance().setRoot("mainmenu");
     }
 }
