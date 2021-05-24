@@ -20,8 +20,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    private final static String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
-    private final static String gameConfigPath = "/config/config.json"; // TODO: Share this constant with LocalClient
+    private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
+    private static final String gameConfigPath = "/config/config.json"; // TODO: Share this constant with LocalClient
 
     private final int port;
     private final ExecutorService executor;

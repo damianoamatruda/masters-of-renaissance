@@ -10,7 +10,7 @@ public class MainMenuController {
         // Gui.setRoot("singleplayer");
     }
 
-    public void handleMultiPlayer() throws IOException {
+    public void handleMultiplayer() throws IOException {
         System.out.println("Launching multiplayer...");
         Gui.setRoot("multiplayer");
     }

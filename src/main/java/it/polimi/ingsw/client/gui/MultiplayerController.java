@@ -5,13 +5,11 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
-public class MultiPlayerController {
+public class MultiplayerController {
     @FXML
     private TextField server;
 
     public void handleServerChoice() throws IOException {
         System.out.print("Input = " + server.getText());
-//        Gui.setRoot("");
-//      Send request of connection to server
     }
 }
