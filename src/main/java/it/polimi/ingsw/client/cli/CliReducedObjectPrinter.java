@@ -328,7 +328,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             List<List<String>> lines = new ArrayList<>();
             for(String key : grid.getGrid().keySet()) {
                 int index = i;
-                ReducedDevCard card = grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).filter(c -> c.getLevel() == index).findAny().orElseThrow();
+                ReducedDevCard card = grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).filter(c -> c.getLevel() == 4 - index).findAny().orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
@@ -444,8 +444,8 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         List<String> players = new ArrayList<>(points.keySet().stream().toList());
         List<String> nicks = new ArrayList<>();
         for (String p : players) {
-            if (p.length() > 6) {
-                nicks.add(p.substring(0, 6));
+            if (p.length() > cellWidth) {
+                nicks.add(p.substring(0, cellWidth));
             } else nicks.add(p);
         }
 
