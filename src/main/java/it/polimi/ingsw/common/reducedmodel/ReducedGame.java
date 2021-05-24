@@ -14,7 +14,7 @@ public class ReducedGame {
     private String currentPlayer;
     private List<ReducedDevCard> developmentCards;
     private ReducedDevCardGrid devCardGrid;
-    private int faithPoints;
+    private Map<String, Integer> faithPoints;
     private boolean lastRound = false;
     private List<ReducedLeaderCard> leaderCards;
     private ReducedMarket market;
@@ -50,6 +50,7 @@ public class ReducedGame {
         setup = new HashMap<>();
         vaticanSections = new ArrayList<>();
         victoryPoints = new HashMap<>();
+        faithPoints = new HashMap<>();
     }
 
     public void setPrinter(ReducedObjectPrinter printer) {
@@ -117,8 +118,8 @@ public class ReducedGame {
         printer.printCardGrid(devCardGrid);
     }
 
-    public void setFaithPoints(int faithPoints) {
-        this.faithPoints = faithPoints;
+    public void setFaithPoints(String player, int faithPoints) {
+        this.faithPoints.put(player, faithPoints);
     }
 
     public void setLastRound() {
@@ -139,6 +140,8 @@ public class ReducedGame {
         market = mkt;
 
         printer.update(mkt);
+        printer.printFaithTrack(faithPoints);   // this line will be removed from here
+
     }
 
     public String getNickname() {

@@ -121,7 +121,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateFaithPoints event) {
-        cli.getCache().setFaithPoints(event.getFaithPoints());
+        cli.getCache().setFaithPoints(event.getPlayer(), event.getFaithPoints());
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
@@ -133,9 +133,9 @@ public abstract class CliState implements Renderable {
         cli.getCache().setActionTokens(event.getActionTokens());
         cli.getCache().setContainers(event.getResContainers());
         cli.getCache().setDevelopmentCards(event.getDevelopmentCards());
-        cli.getCache().setFaithPoints(0);
         cli.getCache().setLeaderCards(event.getLeaderCards());
         cli.getCache().setPlayers(event.getPlayers());
+        event.getPlayers().stream().forEach(p-> cli.getCache().setFaithPoints(p, 0));
         cli.getCache().setProductions(event.getProductions());
         cli.getCache().setColors(event.getColors());
         cli.getCache().setResourceTypes(event.getResourceTypes());

@@ -26,4 +26,5 @@ public interface ReducedObjectPrinter {
 
     void printOwnedLeaders(List<ReducedLeaderCard> leaders);
     void printCardGrid(ReducedDevCardGrid grid);
+    void printFaithTrack(Map<String, Integer> points);
 }

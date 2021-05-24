@@ -422,4 +422,43 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
 
+    private void printDevelopmentSlots(Map<Integer, Integer> slots) {
+
+        List<ReducedDevCard> cards = new ArrayList<>();
+
+
+
+    }
+
+    public void printFaithTrack(Map<String, Integer> points) {
+        int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
+        List<String> players = new ArrayList<>(points.keySet().stream().toList());
+        List<String> nicks = new ArrayList<>();
+        for(int i = 0; i < players.size(); i++) {
+            String p = players.get(i);
+            if (p.length() > 6) {
+                nicks.add(p.substring(0, 6));
+            }
+        }
+
+        StringBuilder output = new StringBuilder(" ");
+        for(int i = 0; i <= /* maxFaith */24; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7) /*+ "yellow tile points"*/));
+        output.append("\n");
+
+        output.append("┌").append(("─".repeat(cellWidth) + "┬").repeat(/*maxfaith */24)).append("─".repeat(cellWidth)).append("┐\n");
+
+        for (int j = 0; j < players.size(); j++) {
+            String player = players.get(j);
+            for (int i = 0; i <= /* maxFaith */24; i++) {
+                output.append("│").append(points.get(player) == i ? String.format("%-6s", nicks.get(j)) : " ".repeat(cellWidth));
+            }
+            output.append("│\n");
+        }
+
+        output.append("└").append(("─".repeat(cellWidth) + "┴").repeat(/*maxfaith */24)).append("─".repeat(cellWidth)).append("┘");
+
+        System.out.println(output);
+
+    }
+
 }
