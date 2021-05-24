@@ -404,7 +404,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                     r.get().getInputBlanks()));
             if(!r.get().getInputBlanksExclusions().isEmpty()) {
                 column.add("Input blanks exclusions:");
-                r.get().getInputBlanksExclusions().forEach(e -> column.add(e + ", "));
+                r.get().getInputBlanksExclusions().forEach(e -> column.add(printResource(e)));
             }
             column.add("Output:");
             r.get().getOutput().forEach((key, value) -> column.add(String.format("%-51s", printResource(key) + ": " + value)));
@@ -412,7 +412,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                     r.get().getOutputBlanks()));
             if(!r.get().getOutputBlanksExclusions().isEmpty()) {
                 column.add("Output blanks exclusions:");
-                r.get().getOutputBlanksExclusions().forEach(e -> column.add(printResource(e) + ", "));
+                r.get().getOutputBlanksExclusions().forEach(e -> column.add(printResource(e)));
             }
             column.add(r.get().isDiscardableOutput() ? "Output is discardable" : " ");
         }
