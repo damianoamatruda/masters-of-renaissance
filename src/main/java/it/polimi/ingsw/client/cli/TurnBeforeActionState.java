@@ -25,8 +25,8 @@ public class TurnBeforeActionState extends CliTurnState {
         cli.getOut().println(Cli.center("\n\nAvailable actions:\n"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('1', new Menu.Entry("Buy a card", this::buyCard));
-        entries.put('2', new Menu.Entry("Take market resources", this::getResources));
+        entries.put('1', new Menu.Entry("Take market resources", this::getResources));
+        entries.put('2', new Menu.Entry("Buy a card", this::buyCard));
         entries.put('3', new Menu.Entry("Activate production", this::produce));
         entries.put('L', new Menu.Entry("Leader action", this::leaderAction));
         entries.put('S', new Menu.Entry("Swap shelves", this::swapShelves));
