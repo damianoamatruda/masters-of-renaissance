@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="it.polimi.ingsw.client.gui.SetupLeadersController"
+            id="body" stylesheets="@mainmenu.css">
+  <center>
+    <VBox alignment="CENTER">
+      <VBox alignment="CENTER">
+        <VBox.margin>
+          <Insets bottom="40.0"/>
+        </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@logo.png"/>
+        </ImageView>
+      </VBox>
+      <Text>Choosing leaders hand.</Text>
+      <padding>
+        <Insets bottom="80.0"/>
+      </padding>
+    </VBox>
+  </center>
+</BorderPane>

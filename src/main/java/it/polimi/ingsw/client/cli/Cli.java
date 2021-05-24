@@ -42,8 +42,8 @@ public class Cli extends EventDispatcher implements Ui {
 
     public Cli() {
         this.view = new View();
-        view.registerOnVC(this);
-        this.registerOnMV(view);
+        this.view.registerOnVC(this);
+        this.registerOnMV(this.view);
 
         this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());

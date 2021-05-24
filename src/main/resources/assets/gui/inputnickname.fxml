@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="it.polimi.ingsw.client.gui.MultiplayerController"
-            id="body" stylesheets="@multiplayer.css">
+            fx:controller="it.polimi.ingsw.client.gui.InputNicknameController"
+            id="body" stylesheets="@mainmenu.css">
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">
@@ -21,15 +21,15 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
-      <Label text="Server Address"/>
-      <TextField id="server" fx:id="server" alignment="CENTER" prefWidth="400.0" maxWidth="400.0"
-                 promptText="Server Address" text="127.0.0.1:1234"/>
+      <Label text="Nickname"/>
+      <TextField id="nickname" fx:id="nickname" alignment="CENTER" prefWidth="400.0" maxWidth="400.0"
+                 promptText="Nickname"/>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
           <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
         </left>
         <right>
-          <Button alignment="CENTER" onAction="#handleServerInput" prefWidth="190.0" text="Join Server"/>
+          <Button alignment="CENTER" onAction="#handleNicknameInput" prefWidth="190.0" text="Choose"/>
         </right>
         <VBox.margin>
           <Insets top="30.0"/>
