@@ -105,15 +105,15 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         cli.getOut().println("Replaceable resource type: " + printResource(newObject.getReplaceableResType()) + "\n");
 
         cli.getOut().print("╔");
-        cli.getOut().print("═".repeat(12 * width));
+        cli.getOut().print("═".repeat(12 * (width + 1) - 1));
         cli.getOut().println("╗");
 
         cli.getOut().print("║" + " ".repeat(8));
-        cli.getOut().print((String.format("%-10s", " ")).repeat(width - 1));
+        cli.getOut().print((String.format("%-10s", " ")).repeat(width) + " ");
         cli.getOut().printf("%-23s", Cli.centerLine(printResource(newObject.getSlide()), 23));
         cli.getOut().println("║");
 
-        cli.getOut().println("║" + " ".repeat(4) + "╔" + "═".repeat(12 * width - 5) + "╣");
+        cli.getOut().println("║" + " ".repeat(4) + "╔" + "═".repeat(12 * width - 5) + "╦" + "═".repeat(10) + "╝");
 
         for (int i = 0; i < newObject.getGrid().size(); i++) {
             List<String> r = newObject.getGrid().get(i);
