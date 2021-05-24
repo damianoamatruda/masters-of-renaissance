@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
  * @see VaticanSection
  */
 public class FaithTrack extends EventDispatcher {
+    /** Number of the last reachable faith track tile by a player. */
+    private final int maxFaithPointsCount;
+
     /** Maps the end of each Vatican Section to the Vatican Section. */
     private final Map<Integer, VaticanSection> vaticanSectionsMap;
 
@@ -31,11 +34,12 @@ public class FaithTrack extends EventDispatcher {
      * @param vaticanSections the set of the Vatican Sections
      * @param yellowTiles     the set of the Yellow Tiles which will give bonus points at the end
      */
-    public FaithTrack(Set<VaticanSection> vaticanSections, Set<YellowTile> yellowTiles) {
+    public FaithTrack(Set<VaticanSection> vaticanSections, Set<YellowTile> yellowTiles, int maxFaithPointsCount) {
         this.vaticanSectionsMap = vaticanSections.stream()
                 .collect(Collectors.toUnmodifiableMap(VaticanSection::getFaithPointsEnd, Function.identity()));
         this.vaticanSectionsMap.values().forEach(s -> s.addEventListener(UpdateVaticanSection.class, this::dispatch));
         this.yellowTiles = Set.copyOf(yellowTiles);
+        this.maxFaithPointsCount = maxFaithPointsCount;
     }
 
     /**
@@ -81,7 +85,11 @@ public class FaithTrack extends EventDispatcher {
     public ReducedFaithTrack reduce() {
         return new ReducedFaithTrack(
             vaticanSectionsMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().reduce())),
-            yellowTiles.stream().map(t -> t.reduce()).toList());
+            yellowTiles.stream().map(t -> t.reduce()).toList(), maxFaithPointsCount);
+    }
+
+    public int getMaxFaithPointsCount() {
+        return maxFaithPointsCount;
     }
 
     /**

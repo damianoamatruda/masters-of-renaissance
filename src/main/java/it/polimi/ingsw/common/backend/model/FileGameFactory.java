@@ -361,7 +361,7 @@ public class FileGameFactory implements GameFactory {
                     Set<FaithTrack.VaticanSection> sections = gson1.fromJson(jsonObject.get("vaticanSections"), new TypeToken<Set<FaithTrack.VaticanSection>>() {
                     }.getType());
 
-                    return new FaithTrack(sections, tiles);
+                    return new FaithTrack(sections, tiles, maxFaith);
                 })
                 .create();
         return gson.fromJson(rootObject.get("faithTrack"), FaithTrack.class);
