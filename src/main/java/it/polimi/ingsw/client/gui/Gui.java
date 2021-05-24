@@ -88,9 +88,10 @@ public class Gui extends Application implements Ui {
 
         Parent root = loadFXML(initialSceneFxml);
         scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
+        primaryStage.setScene(scene);
         primaryStage.setMinWidth(minWidth);
         primaryStage.setMinHeight(minHeight);
-        primaryStage.setScene(scene);
+        primaryStage.setTitle("Masters of Renaissance");
         primaryStage.show();
     }
 
