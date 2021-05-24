@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 
 
-<fx:root fx:id="devCard" focusTraversable="true" maxHeight="251.0" maxWidth="166.0" minHeight="251.0" minWidth="166.0" opacity="0.5" prefHeight="251.0" prefWidth="166.0" style="-fx-background-color: #853E00;" type="Pane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.guiit.polimi.ingsw.client.gui.DevelopmentCardControllerit.polimi.ingsw.client.guiit.polimi.ingsw.client.gui.DevelopmentCardController">
+<fx:root fx:id="devCard" focusTraversable="true" maxHeight="251.0" maxWidth="166.0" minHeight="251.0" minWidth="166.0" opacity="0.5" prefHeight="251.0" prefWidth="166.0" style="-fx-background-color: #853E00;" type="Pane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <cursor>
       <Cursor fx:constant="OPEN_HAND" />
    </cursor>

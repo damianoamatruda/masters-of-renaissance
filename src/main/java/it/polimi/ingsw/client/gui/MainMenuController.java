@@ -17,7 +17,7 @@ public class MainMenuController {
 
     public void handleOptions() throws IOException {
         System.out.println("Launching options...");
-        // Gui.setRoot("options");
+        Gui.setRoot("playground");
     }
 
     public void handleQuit() throws IOException {

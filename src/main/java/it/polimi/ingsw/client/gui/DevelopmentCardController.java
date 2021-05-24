@@ -17,8 +17,8 @@ public class DevelopmentCardController extends Pane {
     @FXML
     HBox requirement;
 
-    public DevelopmentCardController(int level, DevCardColor color) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("developmentcard.fxml"));
+    public DevelopmentCardController() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/developmentcard.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -27,7 +27,10 @@ public class DevelopmentCardController extends Pane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        
+    }
+
+    public void setData(int level, DevCardColor color) {
+
         this.color.setText(color.getName());
         this.level.setText(Integer.toString(level));
     }
