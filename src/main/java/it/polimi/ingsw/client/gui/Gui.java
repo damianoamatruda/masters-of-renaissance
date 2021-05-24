@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class Gui extends Application implements Ui {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = loadFXML(initialSceneFxml);
-        scene = new Scene(root, minWidth, minHeight);
+        scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
         primaryStage.setMinWidth(minWidth);
         primaryStage.setMinHeight(minHeight);
         primaryStage.setScene(scene);
