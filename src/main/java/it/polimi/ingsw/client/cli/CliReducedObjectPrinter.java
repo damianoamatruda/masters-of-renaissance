@@ -261,53 +261,53 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
-        for(int i = 0; i < leaders.size(); i += 3) {
+        for(int i = 0; i < leaders.size(); i += 4) {
             List<List<String>> rows = new ArrayList<>();
 
             List<ReducedLeaderCard> cards = new ArrayList<>();
-            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+            for(int j = 0; j < 4 && j < leaders.size() - i; j++) {
                 cards.add(leaders.get(i + j));
                 rows.add(new ArrayList<>());
             }
 
-            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+            for(int j = 0; j < 4 && j < leaders.size() - i; j++) {
                 List<String> column = rows.get(j);
                 ReducedLeaderCard reducedLeaderCard = cards.get(j);
 
-                column.add(String.format("%-50s", "[Leader]"));
+                column.add(String.format("%-38s", "[Leader]"));
 
-                column.add(String.format("%-63s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, type: %s",
+                column.add(String.format("%-51s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, type: %s",
                         reducedLeaderCard.getId(),
                         reducedLeaderCard.getLeaderType()
                 )));
 
-                column.add(String.format("%-63s", String.format("BoundResource: %s, VP: %d",
+                column.add(String.format("%-51s", String.format("BoundResource: %s, VP: %d",
                         printResource(reducedLeaderCard.getResourceType()),
                         reducedLeaderCard.getVictoryPoints())));
 
-                column.add(String.format("%-50s", String.format("Active status: %s", reducedLeaderCard.isActive())));
+                column.add(String.format("%-38s", String.format("Active status: %s", reducedLeaderCard.isActive())));
 
                 if(reducedLeaderCard.getContainerId() > -1)
-                    column.add(String.format("%-50s", String.format("Depot ID: %d", reducedLeaderCard.getContainerId())));
+                    column.add(String.format("%-38s", String.format("Depot ID: %d", reducedLeaderCard.getContainerId())));
                 if(reducedLeaderCard.getProduction() > -1)
-                    column.add(String.format("%-50s", String.format("Production ID: %d", reducedLeaderCard.getProduction())));
+                    column.add(String.format("%-38s", String.format("Production ID: %d", reducedLeaderCard.getProduction())));
                 if(reducedLeaderCard.getDiscount() > -1)
-                    column.add(String.format("%-50s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
+                    column.add(String.format("%-38s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
 
                 addRequirementsToPrinter(column, reducedLeaderCard);
                 addProductionToPrinter(column, reducedLeaderCard.getProduction());
             }
 
             String rowTemplate = "";
-            for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
-                rowTemplate += "%-50s ";
+            for(int j = 0; j < 4 && j < leaders.size() - i; j++) {
+                rowTemplate += "%-38s ";
             }
             rowTemplate += "\n";
 
             int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
             for(int k = 0; k < length; k++) {
                 List<String> row = new ArrayList<>();
-                for(int j = 0; j < 3 && j < leaders.size() - i; j++) {
+                for(int j = 0; j < 4 && j < leaders.size() - i; j++) {
                     if(k < rows.get(j).size())
                         row.add(rows.get(j).get(k));
                     else row.add("");
@@ -377,8 +377,8 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             column.add("--- Requirements (dev. cards) ---");
             for(int k = 0; k < reducedLeaderCard.getDevCardRequirement().getEntries().size(); k++) {
                 ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(k);
-                String req = String.format("%-51s", "Color: " + printColor(e.getColor()) + ", level: " +
-                        (e.getLevel() > 0 ? e.getLevel() : "any") + ", amount: " + e.getAmount());
+                String req = String.format("%-51s", e.getAmount() + " " + printColor(e.getColor()) + " card(s) of " +
+                        (e.getLevel() > 0 ? ("level " + e.getLevel()) : "any level"));
                 column.add(req);
             }
         }
@@ -386,7 +386,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             column.add("--- Requirements (resources) ---");
             List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
             for(String key : keys) {
-                String req = String.format("%-63s", String.format("%s, %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
+                String req = String.format("%-51s", String.format("%s, %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
                 column.add(req);
             }
         }
