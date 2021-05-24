@@ -322,13 +322,14 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     public void printCardGrid(ReducedDevCardGrid grid) {
         List<List<ReducedDevCard>> topCards = new ArrayList<>();
+        int levels = grid.getLevelsCount();
 
-        for(int i = 1; i <= /*levels*/3; i++){
+        for(int i = 1; i <= levels; i++){
             cli.trackSlimLine();
             List<List<String>> lines = new ArrayList<>();
             for(String key : grid.getGrid().keySet()) {
                 int index = i;
-                ReducedDevCard card = grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).filter(c -> c.getLevel() == 4 - index).findAny().orElseThrow();
+                ReducedDevCard card = grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).filter(c -> c.getLevel() == levels + 1 - index).findAny().orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
