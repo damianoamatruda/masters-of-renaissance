@@ -61,7 +61,6 @@ public class GameTest {
                         new FaithTrack.YellowTile(18, 12),
                         new FaithTrack.YellowTile(24, 20)
                 ), 24),
-                24,
                 7);
 
         initialOrder = game.getPlayers();

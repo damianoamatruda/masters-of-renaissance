@@ -435,6 +435,8 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     public void printFaithTrack(Map<String, Integer> points) {
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
+        int maxFaith = cache.getFaithTrack().getMaxFaith();
+        System.out.println(maxFaith);
         List<String> players = new ArrayList<>(points.keySet().stream().toList());
         List<String> nicks = new ArrayList<>();
         for (String p : players) {

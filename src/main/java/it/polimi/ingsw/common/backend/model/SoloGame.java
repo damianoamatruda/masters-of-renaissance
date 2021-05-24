@@ -39,14 +39,13 @@ public class SoloGame extends Game {
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
-     * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
     public SoloGame(Player player, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                     List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                     List<ActionToken> actionTokens, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
-                    int maxFaithPointsCount, int maxObtainableDevCards) {
-        super(List.of(player), colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
+                    int maxObtainableDevCards) {
+        super(List.of(player), colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxObtainableDevCards);
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;

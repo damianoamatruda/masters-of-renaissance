@@ -104,7 +104,6 @@ public class FileGameFactory implements GameFactory {
                 new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
                 buildMarket(),
                 buildFaithTrack(),
-                maxFaith,
                 maxDevCards
         );
     }
@@ -127,7 +126,6 @@ public class FileGameFactory implements GameFactory {
                 buildActionTokens(), new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
                 buildMarket(),
                 buildFaithTrack(),
-                maxFaith,
                 maxDevCards
         );
     }
@@ -360,7 +358,6 @@ public class FileGameFactory implements GameFactory {
                     }.getType());
                     Set<FaithTrack.VaticanSection> sections = gson1.fromJson(jsonObject.get("vaticanSections"), new TypeToken<Set<FaithTrack.VaticanSection>>() {
                     }.getType());
-
                     return new FaithTrack(sections, tiles, maxFaith);
                 })
                 .create();

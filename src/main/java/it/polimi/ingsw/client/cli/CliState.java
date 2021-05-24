@@ -137,6 +137,7 @@ public abstract class CliState implements Renderable {
         cli.getCache().setContainers(event.getResContainers());
         cli.getCache().setDevelopmentCards(event.getDevelopmentCards());
         cli.getCache().setLeaderCards(event.getLeaderCards());
+        cli.getCache().setFaithTrack(event.getFaithTrack());
         event.getPlayers().stream().forEach(p-> cli.getCache().setFaithPoints(p, 0));
         cli.getCache().setProductions(event.getProductions());
         cli.getCache().setColors(event.getColors());
