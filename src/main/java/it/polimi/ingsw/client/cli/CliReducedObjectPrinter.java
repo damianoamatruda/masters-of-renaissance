@@ -262,6 +262,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
         for(int i = 0; i < leaders.size(); i += 4) {
+            cli.trackSlimLine();
             List<List<String>> rows = new ArrayList<>();
 
             List<ReducedLeaderCard> cards = new ArrayList<>();
@@ -300,7 +301,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
             String rowTemplate = "";
             for(int j = 0; j < 4 && j < leaders.size() - i; j++) {
-                rowTemplate += "%-38s ";
+                rowTemplate += "%-38s │";
             }
             rowTemplate += "\n";
 
@@ -314,9 +315,9 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 }
                 cli.getOut().printf(rowTemplate, row.toArray());
             }
-            cli.getOut().println("\n");
-
         }
+        cli.trackSlimLine();
+        cli.getOut().println("\n");
     }
 
     public void printCardGrid(ReducedDevCardGrid grid) {
