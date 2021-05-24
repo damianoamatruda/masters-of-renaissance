@@ -18,7 +18,6 @@ public class ReducedGame {
     private boolean lastRound = false;
     private List<ReducedLeaderCard> leaderCards;
     private ReducedMarket market;
-    private List<String> players;
     private final Map<String, Map<Integer, Integer>> playerDevSlots;
     private final Map<String, Boolean> playerState;
     private final Map<String, List<Integer>> playerLeaders;
@@ -27,9 +26,9 @@ public class ReducedGame {
     private final Map<String, List<Integer>> playerWarehouseShelves;
     private List<ReducedResourceTransactionRecipe> productions;
     private final Map<String, ReducedPlayerSetup> setup;
-    private List<Boolean> vaticanSections;
     private final Map<String, Integer> victoryPoints;
     private String winner;
+    private ReducedFaithTrack faithTrack;
 
     private List<ReducedResourceType> resourceTypes;
     private List<ReducedColor> colors;
@@ -39,7 +38,6 @@ public class ReducedGame {
         baseProductions = new HashMap<>();
         containers = new ArrayList<>();
         developmentCards = new ArrayList<>();
-        players = new ArrayList<>();
         playerState = new HashMap<>();
         playerDevSlots = new HashMap<>();
         playerLeaders = new HashMap<>();
@@ -48,9 +46,22 @@ public class ReducedGame {
         playerWarehouseShelves = new HashMap<>();
         productions = new ArrayList<>();
         setup = new HashMap<>();
-        vaticanSections = new ArrayList<>();
         victoryPoints = new HashMap<>();
         faithPoints = new HashMap<>();
+    }
+
+    /**
+     * @return the faithTrack
+     */
+    public ReducedFaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    /**
+     * @param faithTrack the faithTrack to set
+     */
+    public void setFaithTrack(ReducedFaithTrack faithTrack) {
+        this.faithTrack = faithTrack;
     }
 
     public void setPrinter(ReducedObjectPrinter printer) {
@@ -152,13 +163,6 @@ public class ReducedGame {
         this.nickname = nickname;
     }
 
-
-    public void setPlayers(List<String> players) {
-        this.players = players;
-
-        printer.showPlayers(players);
-    }
-
     public void setPlayerState(String player, boolean newState) {
         this.playerState.put(player, newState);
     }
@@ -242,16 +246,8 @@ public class ReducedGame {
         this.setup.put(player, newSetup);
     }
 
-    public void setVaticanSections(List<Boolean> vaticanSections) {
-        this.vaticanSections = vaticanSections;
-    }
-
     public void setVictoryPoints(String player, int pts) {
         victoryPoints.put(player, pts);
-    }
-
-    public void setActiveVaticanSection(int vaticanSection) {
-        vaticanSections.set(vaticanSection, true);
     }
 
     /**

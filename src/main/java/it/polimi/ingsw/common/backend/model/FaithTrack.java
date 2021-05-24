@@ -2,6 +2,9 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.events.mvevents.UpdateVaticanSection;
+import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
+import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
+import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -73,6 +76,12 @@ public class FaithTrack extends EventDispatcher {
      */
     public Set<YellowTile> getYellowTiles() {
         return yellowTiles;
+    }
+
+    public ReducedFaithTrack reduce() {
+        return new ReducedFaithTrack(
+            vaticanSectionsMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().reduce())),
+            yellowTiles.stream().map(t -> t.reduce()).toList());
     }
 
     /**
@@ -157,6 +166,10 @@ public class FaithTrack extends EventDispatcher {
             this.activated = true;
             dispatch(new UpdateVaticanSection(id));
         }
+
+        public ReducedVaticanSection reduce() {
+            return new ReducedVaticanSection(id, faithPointsBeginning, faithPointsEnd, victoryPoints);
+        }
     }
 
     /**
@@ -196,6 +209,10 @@ public class FaithTrack extends EventDispatcher {
          */
         public int getVictoryPoints() {
             return victoryPoints;
+        }
+
+        public ReducedYellowTile reduce() {
+            return new ReducedYellowTile(faithPoints, victoryPoints);
         }
     }
 }

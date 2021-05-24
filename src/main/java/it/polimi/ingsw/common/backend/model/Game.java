@@ -109,13 +109,14 @@ public class Game extends EventDispatcher {
     public void dispatchState(View view) {
         dispatch(new UpdateGame(
                 players.stream().map(Player::getNickname).toList(),
+                colors.stream().map(DevCardColor::reduce).toList(),
+                resourceTypes.stream().map(ResourceType::reduce).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                faithTrack.reduce(),
                 null, /* actionTokens not sent */
-                colors.stream().map(DevCardColor::reduce).toList(),
-                resourceTypes.stream().map(ResourceType::reduce).toList(),
                 view != null));
         dispatch(new UpdateCurrentPlayer(view, getCurrentPlayer().getNickname()));
     }
