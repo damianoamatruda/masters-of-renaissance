@@ -316,33 +316,33 @@ public class Player extends EventDispatcher {
      * @return the total number of resources the player has available
      */
     public int getResourcesCount() {
-        Set<ResourceContainer> resContainers = new HashSet<>();
-        resContainers.add(strongbox);
-        resContainers.addAll(warehouse.getShelves());
-        resContainers.addAll(leaders.stream().map(LeaderCard::getDepot).filter(Optional::isPresent).map(Optional::get).toList());
-        return resContainers.stream().map(ResourceContainer::getQuantity).reduce(0, Integer::sum);
+        return getResContainers().stream().mapToInt(ResourceContainer::getQuantity).sum();
     }
 
     public PlayerSetup getSetup() {
         return setup;
     }
 
-    public Optional<Strongbox> getStrongboxById(int id) {
-        return strongbox.getId() == id ? Optional.of(strongbox) : Optional.empty();
+    public Set<ResourceContainer> getResContainers() {
+        Set<ResourceContainer> resContainers = new HashSet<>();
+        resContainers.add(strongbox);
+        resContainers.addAll(getShelves());
+        return resContainers;
     }
 
-    public Optional<Shelf> getShelfById(int id) {
-        Optional<Shelf> shelf = Optional.ofNullable(warehouse.getShelves().stream().filter(s -> s.getId() == id).findAny().orElse(null));
-        if (shelf.isEmpty())
-            shelf = Optional.ofNullable(leaders.stream().map(LeaderCard::getDepot).filter(Optional::isPresent).map(Optional::get).filter(d -> d.getId() == id).findAny().orElse(null));
-        return shelf;
+    public Set<Shelf> getShelves() {
+        Set<Shelf> shelves = new HashSet<>();
+        shelves.addAll(warehouse.getShelves());
+        shelves.addAll(leaders.stream().map(LeaderCard::getDepot).filter(Optional::isPresent).map(Optional::get).toList());
+        return shelves;
     }
 
     public Optional<ResourceContainer> getResourceContainerById(int id) {
-        Optional<ResourceContainer> resContainer = Optional.ofNullable(getStrongboxById(id).orElse(null));
-        if (resContainer.isEmpty())
-            resContainer = Optional.ofNullable(getShelfById(id).orElse(null));
-        return resContainer;
+        return getResContainers().stream().filter(c -> c.getId() == id).findAny();
+    }
+
+    public Optional<Shelf> getShelfById(int id) {
+        return getShelves().stream().filter(c -> c.getId() == id).findAny();
     }
 
     public Optional<LeaderCard> getLeaderById(int id) {

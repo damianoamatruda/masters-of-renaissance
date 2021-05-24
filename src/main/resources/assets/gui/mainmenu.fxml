@@ -9,7 +9,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.MainMenuController"
-            prefHeight="400.0" prefWidth="600.0" id="body" stylesheets="@mainmenu.css">
+            id="body" stylesheets="@mainmenu.css">
   <center>
     <VBox alignment="CENTER" layoutX="120.0" prefHeight="0.0" prefWidth="360.0">
       <VBox alignment="CENTER" prefHeight="0.0" prefWidth="100.0">
@@ -33,7 +33,7 @@
           <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
         </padding>
       </Label>
-      <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleMultiPlayer" prefWidth="380.0"
+      <Label accessibleRole="BUTTON" alignment="CENTER" onMouseClicked="#handleMultiplayer" prefWidth="380.0"
              text="Multiplayer">
         <font>
           <Font size="21.0"/>

@@ -62,13 +62,10 @@ class ActionTokenDiscardTwoTest {
                 new PlayerSetup(0, 0, 0, Set.of()));
         game = new SoloGame(
                 player,
-                List.of(),
+                null, null, List.of(),
                 devCards,
                 List.of(),
                 List.of(),
-                devCardGrid,
-                new Market(Map.of(r1, 1), 1, r1),
-                new FaithTrack(Set.of(), Set.of()),
                 List.of(new ActionToken() {
                     @Override
                     public void trigger(SoloGame game) {
@@ -83,8 +80,11 @@ class ActionTokenDiscardTwoTest {
                     public ReducedActionToken reduce() {
                         return null;
                     }
-                }), 0,
-                2, null, null);
+                }), devCardGrid,
+                new Market(Map.of(r1, 1), 1, r1),
+                new FaithTrack(Set.of(), Set.of()),
+                0,
+                2);
     }
 
     /**

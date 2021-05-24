@@ -96,7 +96,7 @@ public class FileGameFactory implements GameFactory {
         addDevCardProductions(productions, developmentCards);
         
         return new Game(
-                getPlayers(nicknames, leaderCards, resContainers),
+                getPlayers(nicknames, leaderCards, resContainers), devCardColorMap.values().stream().toList(), resTypeMap.values().stream().toList(),
                 leaderCards,
                 developmentCards,
                 resContainers,
@@ -105,9 +105,7 @@ public class FileGameFactory implements GameFactory {
                 buildMarket(),
                 buildFaithTrack(),
                 maxFaith,
-                maxDevCards,
-                resTypeMap.values().stream().toList(),
-                devCardColorMap.values().stream().toList()
+                maxDevCards
         );
     }
 
@@ -122,18 +120,15 @@ public class FileGameFactory implements GameFactory {
 
         return new SoloGame(
                 getPlayers(List.of(nickname), leaderCards, resContainers).get(0),
-                leaderCards,
+                devCardColorMap.values().stream().toList(), resTypeMap.values().stream().toList(), leaderCards,
                 developmentCards,
                 resContainers,
                 productions,
-                new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
+                buildActionTokens(), new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
                 buildMarket(),
                 buildFaithTrack(),
-                buildActionTokens(),
                 maxFaith,
-                maxDevCards,
-                resTypeMap.values().stream().toList(),
-                devCardColorMap.values().stream().toList()
+                maxDevCards
         );
     }
 

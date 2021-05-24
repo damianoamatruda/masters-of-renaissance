@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LocalClient {
-    private final static String gameConfigPath = "/config/config.json";
+    private static final String gameConfigPath = "/config/config.json";
 
     private final View view;
     private final ExecutorService executor;

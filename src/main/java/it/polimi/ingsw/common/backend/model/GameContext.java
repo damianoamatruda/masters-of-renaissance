@@ -94,12 +94,13 @@ public class GameContext extends EventDispatcher {
     public void chooseLeaders(View view, String nickname, List<Integer> leaderIds) {
         synchronized(lock) {
             Player player = getPlayerByNickname(nickname);
-    
+
             if (player.getSetup().isDone()) {
                 dispatch(new ErrAction(view, ErrActionReason.LATE_SETUP_ACTION));
                 return;
             }
-    
+
+            // TODO: Refactor this
             Optional<Integer> missing = leaderIds.stream().filter(l -> player.getLeaderById(l).isEmpty()).findAny();
             if (missing.isPresent()) {
                 dispatch(new ErrObjectNotOwned(view, missing.get(), "LeaderCard"));
@@ -112,9 +113,9 @@ public class GameContext extends EventDispatcher {
                 return;
             }
 
-    
-            List<LeaderCard> leaders = leaderIds.stream().map(game::getLeaderById).filter(Optional::isPresent).map(Optional::get).toList();
-    
+
+            List<LeaderCard> leaders = leaderIds.stream().map(player::getLeaderById).filter(Optional::isPresent).map(Optional::get).toList();
+
             try {
                 player.getSetup().chooseLeaders(game, player, leaders);
                 dispatch(new UpdateAction(nickname, ActionType.CHOOSE_LEADERS));
@@ -468,11 +469,11 @@ public class GameContext extends EventDispatcher {
                 
                 try {
                     prodRequests.add(
-                        new ProductionRequest(
-                            game.getProductionById(r.getProduction()).orElseThrow(),
-                            translateResMap(r.getInputBlanksRep()),
-                            translateResMap(r.getOutputBlanksRep()),
-                            inputContainers, player.getStrongbox()));
+                            new ProductionRequest(
+                                    player.getProductionById(r.getProduction()).orElseThrow(),
+                                    translateResMap(r.getInputBlanksRep()),
+                                    translateResMap(r.getOutputBlanksRep()),
+                                    inputContainers, player.getStrongbox()));
                 } catch (NoSuchElementException e) {
                     dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
                     return;

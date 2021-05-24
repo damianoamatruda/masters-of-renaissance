@@ -1,0 +1,10 @@
+#body {
+    -fx-background-image: url('background.png');
+    -fx-background-size: 500px;
+    -fx-background-position: center;
+}
+
+#server {
+    -fx-max-width: 300;
+    -fx-max-height: 25;
+}

@@ -9,8 +9,8 @@ import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-public class MultiplayerMenuState extends CliState {
-    private final static String jsonConfigPath = "/config/server.json";
+public class MultiplayerState extends CliState {
+    private static final String jsonConfigPath = "/config/server.json";
 
     @Override
     public void render(Cli cli) {
@@ -71,7 +71,7 @@ public class MultiplayerMenuState extends CliState {
                 Thread.sleep(2000);
             } catch (InterruptedException ignored) {
             }
-            cli.setState(new MultiplayerMenuState());
+            cli.setState(new MultiplayerState());
         }
     }
 }

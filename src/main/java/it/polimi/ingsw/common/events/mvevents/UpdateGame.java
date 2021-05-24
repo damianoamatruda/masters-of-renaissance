@@ -7,36 +7,35 @@ import java.util.List;
 
 public class UpdateGame extends ViewEvent {
     // TODO commproto docs
+    private final List<ReducedColor> colors;
+    private final List<ReducedResourceType> resourceTypes;
     private final List<String> players;
     private final List<ReducedLeaderCard> leaderCards;
     private final List<ReducedDevCard> developmentCards;
     private final List<ReducedResourceContainer> resContainers;
     private final List<ReducedResourceTransactionRecipe> productions;
     private final List<ReducedActionToken> actionTokens;
-    private final List<ReducedColor> colors;
-    private final List<ReducedResourceType> resourceTypes;
     private final boolean resumed;
 
     /**
      * Class constructor.
      *
      * @param view
+     * @param players
+     * @param colors           development card colors available at play time
+     * @param resourceTypes    resource types available at play time
      * @param leaderCards      leader cards available at play time
      * @param developmentCards development cards available at play time
      * @param resContainers    resource containers available at play time
      * @param productions      productions available at play time
-     * @param resourceTypes    resource types available at play time
-     * @param colors           development card colors available at play time
      */
     public UpdateGame(View view,
                       List<String> players,
-                      List<ReducedLeaderCard> leaderCards,
+                      List<ReducedColor> colors, List<ReducedResourceType> resourceTypes, List<ReducedLeaderCard> leaderCards,
                       List<ReducedDevCard> developmentCards,
                       List<ReducedResourceContainer> resContainers,
                       List<ReducedResourceTransactionRecipe> productions,
                       List<ReducedActionToken> actionTokens,
-                      List<ReducedColor> colors,
-                      List<ReducedResourceType> resourceTypes,
                       boolean resumed) {
         super(view);
         this.players = players;
@@ -59,7 +58,7 @@ public class UpdateGame extends ViewEvent {
                       List<ReducedColor> colors,
                       List<ReducedResourceType> resourceTypes,
                       boolean resumed) {
-        this(null, players, leaderCards, developmentCards, resContainers, productions, actionTokens, colors, resourceTypes, resumed);
+        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, actionTokens, resumed);
     }
 
     /**

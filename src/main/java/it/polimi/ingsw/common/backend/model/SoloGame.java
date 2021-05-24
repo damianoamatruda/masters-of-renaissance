@@ -27,25 +27,26 @@ public class SoloGame extends Game {
 
     /**
      * Initializes the solo game with the following parameters.
-     *  @param player                the nickname of the player who joined
+     *
+     * @param player                the nickname of the player who joined
+     * @param colors
+     * @param resourceTypes
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
      * @param resContainers         the list of resource containers
      * @param productions           the list of productions
+     * @param actionTokens          the deck of tokens, of which the top token is activated after each round
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
-     * @param actionTokens          the deck of tokens, of which the top token is activated after each round
      * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
-     * @param resourceTypes
-     * @param colors
      */
-    public SoloGame(Player player, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+    public SoloGame(Player player, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                     List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
-                    DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, List<ActionToken> actionTokens,
-                    int maxFaithPointsCount, int maxObtainableDevCards, List<ResourceType> resourceTypes, List<DevCardColor> colors) {
-        super(List.of(player), leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards, resourceTypes, colors);
+                    List<ActionToken> actionTokens, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
+                    int maxFaithPointsCount, int maxObtainableDevCards) {
+        super(List.of(player), colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxFaithPointsCount, maxObtainableDevCards);
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;
