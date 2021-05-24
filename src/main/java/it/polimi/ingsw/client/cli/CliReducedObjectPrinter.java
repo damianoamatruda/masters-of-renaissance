@@ -439,6 +439,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             if (p.length() > 6) {
                 nicks.add(p.substring(0, 6));
             }
+            else nicks.add(p);
         }
 
         StringBuilder output = new StringBuilder(" ");
