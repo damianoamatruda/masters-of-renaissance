@@ -28,8 +28,8 @@ public class Gui extends Application {
 
     private static Gui instance = null;
 
-    private final EventDispatcher eventDispatcher = new EventDispatcher();
-    private final View view = new View();
+    private final EventDispatcher eventDispatcher;
+    private final View view;
 
     private Scene scene;
     private GuiController controller;
@@ -52,13 +52,19 @@ public class Gui extends Application {
         return System.getProperty("javafx.version");
     }
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
+    public Gui() {
+        super();
         Gui.instance = this;
 
-        view.registerOnVC(eventDispatcher);
-        this.registerOnMV(view);
+        this.eventDispatcher = new EventDispatcher();
 
+        this.view = new View();
+        this.view.registerOnVC(this.eventDispatcher);
+        this.registerOnMV(this.view);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
         Parent root = loadFXML(initialSceneFxml);
         scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
         primaryStage.setScene(scene);
