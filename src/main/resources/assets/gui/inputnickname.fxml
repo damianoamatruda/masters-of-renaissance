@@ -28,7 +28,8 @@
           <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
         </left>
         <right>
-          <Button alignment="CENTER" onAction="#handleNicknameInput" prefWidth="190.0" text="Choose"/>
+          <Button alignment="CENTER" onAction="#handleNicknameInput" prefWidth="190.0" text="Choose"
+                  defaultButton="true"/>
         </right>
         <VBox.margin>
           <Insets top="30.0"/>

@@ -52,7 +52,7 @@
             </HBox.margin>
           </RadioButton>
         </HBox>
-        <Button alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game">
+        <Button alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game" defaultButton="true">
           <VBox.margin>
             <Insets top="8.0"/>
           </VBox.margin>

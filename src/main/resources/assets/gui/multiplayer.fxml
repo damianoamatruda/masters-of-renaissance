@@ -29,7 +29,8 @@
           <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
         </left>
         <right>
-          <Button alignment="CENTER" onAction="#handleServerInput" prefWidth="190.0" text="Join Server"/>
+          <Button alignment="CENTER" onAction="#handleServerInput" prefWidth="190.0" text="Join Server"
+                  defaultButton="true"/>
         </right>
         <VBox.margin>
           <Insets top="30.0"/>
