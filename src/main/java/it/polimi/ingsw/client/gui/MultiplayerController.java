@@ -14,17 +14,24 @@ public class MultiplayerController extends GuiController {
     public void handleServerInput() throws IOException {
         Gui gui = Gui.getInstance();
 
-        String host = "127.0.0.1";
-        int port = 1234;
+        String[] args = server.getText().split(":");
+        String host = "";
+        int port = -1;
 
-        boolean connected = true;
+        boolean connected = false;
         try {
+            host = args[0];
+            port = Integer.parseInt(args[1]);
+            System.out.printf("Connecting to %s...%n", server.getText());
             gui.startNetworkClient(host, port);
+            connected = true;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.printf("%s is not a valid pair IP:port%n", server.getText());
+        } catch (NumberFormatException e) {
+            System.out.printf("Port %s is not a valid port%n", args[1]);
         } catch (UnknownHostException e) {
-            connected = false;
             System.out.printf("Don't know about host %s%n", host);
         } catch (IOException e) {
-            connected = false;
             System.out.printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
         }
 
