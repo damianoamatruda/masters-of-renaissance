@@ -47,3 +47,7 @@ TextField {
 
 TextField:focused {
 }
+
+#playersCount {
+    -fx-alignment: center;
+}
