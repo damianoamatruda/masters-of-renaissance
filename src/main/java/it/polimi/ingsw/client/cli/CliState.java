@@ -33,7 +33,6 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrNoSuchEntity event) {
-        // TODO handle
         // cli.repeatState(event.getReason());
     }
 
@@ -52,7 +51,6 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrNickname event) {
-        cli.repeatState("Nickname is invalid. Reason: " + event.getReason().toString().toLowerCase());
     }
 
     public void on(Cli cli, ErrObjectNotOwned event) {
@@ -89,24 +87,24 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateAction event) {
-        // TODO: implement
+        // DON'T FORGET TO IMPLEMENT IN STATES
     }
 
     public void on(Cli cli, UpdateActionToken event) {
-        // only the cache should be updated here
+        // print only, no cache update
         cli.getCache().getGameData()
             .getActionToken(event.getActionToken())
             .ifPresent(t -> cli.getPrinter().update(t));
     }
 
     public void on(Cli cli, UpdateBookedSeats event) {
-        if (event.canPrepareNewGame().equals(cli.getCache().getUiData().getLocalPlayerNickname())) {
-            if (cli.isSingleplayer())
-                cli.dispatch(new ReqNewGame(1));
-            else
-                cli.setState(new InputPlayersCountState());
-        } else
-            cli.setState(new WaitingBeforeGameState(event.getBookedSeats()));
+        // if (event.canPrepareNewGame().equals(cli.getCache().getUiData().getLocalPlayerNickname())) {
+        //     if (cli.isSingleplayer())
+        //         cli.dispatch(new ReqNewGame(1));
+        //     else
+        //         cli.setState(new InputPlayersCountState());
+        // } else
+        //     cli.setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
 
     public void on(Cli cli, UpdateCurrentPlayer event) {
@@ -132,7 +130,7 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateGameEnd event) {
         cli.getCache().getGameData().setWinner(event.getWinner());
-        cli.setState(new GameEndState());
+        // cli.setState(new GameEndState());
     }
 
     public void on(Cli cli, UpdateGame event) {
@@ -145,13 +143,10 @@ public abstract class CliState implements Renderable {
         cli.getCache().getGameData().setFaithTrack(event.getFaithTrack());
         cli.getCache().getGameData().setDevCardColors(event.getColors());
         cli.getCache().getGameData().setResourceTypes(event.getResourceTypes());
-
-        if (event.isResumed())
-            cli.setState(new WaitingAfterTurnState());
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
-        cli.setState(new WaitingBeforeGameState(event.getPlayersCount()));
+        // cli.setState(new WaitingBeforeGameState(event.getPlayersCount()));
     }
 
     public void on(Cli cli, UpdateLastRound event) {
@@ -225,7 +220,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateSetupDone event) {
-        cli.setState(new TurnBeforeActionState());
+        // cli.setState(new TurnBeforeActionState());
     }
 
     public void on(Cli cli, UpdateVaticanSection event) {
