@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import it.polimi.ingsw.common.reducedmodel.*;
 
@@ -15,6 +16,7 @@ public class GameData {
     private List<ReducedColor> devCardColors;
     private ReducedDevCardGrid devCardGrid;
     private List<ReducedDevCard> developmentCards;
+    private ReducedFaithTrack faithTrack;
     private boolean isLastRound;
     private List<ReducedLeaderCard> leaderCards;
     private ReducedMarket market;
@@ -25,15 +27,16 @@ public class GameData {
     private String winner;
 
     public GameData() {
-        setVaticanSections(new ArrayList<>());
+        vaticanSections = new ArrayList<>();
         isLastRound = false;
     }
 
     /**
-     * @return the actionTokens
+     * @param id the ID of the token to be returned
+     * @return the token associated with the ID
      */
-    public List<ReducedActionToken> getActionTokens() {
-        return actionTokens;
+    public Optional<ReducedActionToken> getActionToken(int id) {
+        return actionTokens.stream().filter(t -> t.getId() == id).findAny();
     }
 
     /**
@@ -143,17 +146,31 @@ public class GameData {
     }
 
     /**
-     * @return the isLastRound
+     * @return the faithTrack
+     */
+    public ReducedFaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    /**
+     * @param faithTrack the faithTrack to set
+     */
+    public void setFaithTrack(ReducedFaithTrack faithTrack) {
+        this.faithTrack = faithTrack;
+    }
+
+    /**
+     * @return whether it's the last round of the match
      */
     public boolean isLastRound() {
         return isLastRound;
     }
 
     /**
-     * @param isLastRound the isLastRound to set
+     * Sets last round to true.
      */
-    public void setLastRound(boolean isLastRound) {
-        this.isLastRound = isLastRound;
+    public void setLastRound() {
+        this.isLastRound = true;
     }
 
     /**
@@ -236,10 +253,12 @@ public class GameData {
     }
 
     /**
-     * @param vaticanSections the vaticanSections to set
+     * @param id the ID of the activated section
      */
-    public void setVaticanSections(List<Boolean> vaticanSections) {
-        this.vaticanSections = vaticanSections;
+    public void setVaticanSection(int id) {
+        faithTrack.getVaticanSections().entrySet().stream()
+            .map(e -> e.getValue())
+            .filter(vs -> vs.getId() == id).findAny().ifPresent(vs -> vs.setActive());
     }
 
     /**
