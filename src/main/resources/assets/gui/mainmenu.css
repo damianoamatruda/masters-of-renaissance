@@ -1,12 +1,9 @@
-* {
-    -fx-font-family: "Arial";
-    -fx-font-size: 21px;
-}
-
 #body {
     -fx-background-image: url('background.png');
     -fx-background-size: 500px;
     -fx-background-position: center;
+    -fx-font-family: "Arial";
+    -fx-font-size: 21px;
 }
 
 Button {
@@ -19,7 +16,7 @@ Button {
     -fx-background-insets: 0, 1, 2, 0;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 4, 0.0, 0, 1);
     -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-padding: 4px 6px 6px 4px;
+    -fx-padding: 6px;
     -fx-pref-height: 40px;
 }
 
@@ -43,9 +40,16 @@ TextField {
     -fx-pref-height: 40px;
     -fx-border: 0;
     -fx-background-color: radial-gradient(center 50% 0%, radius 100%, white, rgb(240, 240, 240));
+    -fx-padding: 6px;
 }
 
 TextField:focused {
+}
+
+Label {
+    -fx-font-size: 19px;
+    -fx-text-fill: linear-gradient(rgb(26, 57, 109), rgb(26, 100, 179));
+    -fx-padding: 6px;
 }
 
 #playersCount {

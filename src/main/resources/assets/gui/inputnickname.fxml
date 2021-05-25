@@ -21,8 +21,10 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
-      <Label text="Nickname"/>
-      <TextField id="nickname" fx:id="nickname" alignment="CENTER" prefWidth="400.0" maxWidth="400.0"/>
+      <VBox maxWidth="-Infinity" prefHeight="0.0">
+        <Label text="Nickname"/>
+        <TextField id="nickname" fx:id="nickname" prefWidth="400.0" maxWidth="400.0"/>
+      </VBox>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
           <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
