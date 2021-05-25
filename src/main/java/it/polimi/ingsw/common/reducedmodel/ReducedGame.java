@@ -152,7 +152,7 @@ public class ReducedGame {
 
         printer.update(mkt);
         printer.printFaithTrack(faithPoints);   // this line will be removed from here
-
+        printer.showPlayerSlots(nickname);
     }
 
     public String getNickname() {
