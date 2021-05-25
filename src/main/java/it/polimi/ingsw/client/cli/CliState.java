@@ -45,12 +45,11 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrNewGame event) {
-        cli.repeatState(event.isInvalidPlayersCount() ?
-                "Invalid players count." :
-                "You are not supposed to choose the players count for the game.");
+        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrNickname event) {
+        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrObjectNotOwned event) {
