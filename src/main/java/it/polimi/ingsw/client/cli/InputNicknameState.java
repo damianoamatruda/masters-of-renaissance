@@ -57,7 +57,7 @@ public class InputNicknameState extends CliState{
         else
             cli.setState(
                 new SetupLeadersState(cli.getCache()
-                    .getPlayerData(cli.getCache().getUiData().getLocalPlayerNickname())
+                    .getLocalPlayerData()
                     .getSetup()
                     .getChosenLeadersCount()));
     }
