@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import it.polimi.ingsw.client.ViewModel.PlayerData;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
@@ -16,7 +15,7 @@ public abstract class CliState implements Renderable {
 
     // TODO review all error states
     public void on(Cli cli, ErrAction event) {
-        cli.repeatState(event.getReason().toString());
+        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrActiveLeaderDiscarded event) {
@@ -37,6 +36,10 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrInitialChoice event) {
+        // repeats either SetupLeadersState or SetupResourcesState
+        // if it doesn't, that's really bad
+        assert(cli.getState() instanceof SetupLeadersState || cli.getState() instanceof SetupResourcesState);
+
         cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
                         "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
@@ -53,7 +56,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrObjectNotOwned event) {
-        cli.repeatState(String.format("%s %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
+        cli.repeatState(String.format("%s with ID %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
     }
 
     public void on(Cli cli, ErrReplacedTransRecipe event) {
