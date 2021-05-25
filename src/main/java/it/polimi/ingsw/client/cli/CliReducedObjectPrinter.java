@@ -243,13 +243,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void showPlayerSlots(String player) {
-        cli.getOut().println("Showing" + player + "'s development card slots:");
-        
-        viewModel.getPlayerData(player).getDevSlots().stream()
-            .map(slot -> slot.get(0))
-            .map(id -> viewModel.getGameData().getDevelopmentCard(id).orElse(null))
-            .filter(Objects::nonNull)
-            .forEach(this::update);
+        cli.getOut().println("Showing " + player + "'s development card slots:");
+//        if (cache.getPlayerDevSlots(player) != null)
+//            cache.getPlayerDevSlots(player).forEach((key, value) -> cli.getOut().println("Slot " + key + ", card ID: " + value));
+        Map<Integer, ReducedDevCard> slots = new HashMap<>();
+        try {
+            IntStream.range(0, viewModel.getPlayerData(player).getDevSlots().size())
+                .forEach(i ->
+                    viewModel.getGameData() // get the topmost card
+                        .getDevelopmentCard(viewModel.getPlayerData(player).getDevSlots().get(i).get(0))
+                        .ifPresent(c -> slots.put(i, c)));
+            printDevelopmentSlots(slots);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
@@ -333,19 +340,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 ReducedDevCard card = topCards.get(i - 1).get(j);
                 lines.add(new ArrayList<>());
                 List<String> column = lines.get(j);
-                column.add("[Development]");
-                column.add(String.format("%-64s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
-                        card.getId(),
-                        printColor(card.getColor())
-                )));
-                column.add(String.format("Level: %d, VP: %d",
-                        card.getLevel(),
-                        card.getVictoryPoints()
-                ));
-                column.add("Requirements (resources):");
-                card.getCost()
-                        .getRequirements().forEach((key, value) ->column.add(String.format("%-51s", printResource(key) + ": " + value)));
-                addProductionToPrinter(column, card.getProduction());
+                addDevToPrinter(column, card);
             }
 
             String rowTemplate = "";
@@ -426,14 +421,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         if(resourceType == null)  return "Ø";
         String color = viewModel.getGameData().getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
-    }
-
-    private void printDevelopmentSlots(Map<Integer, Integer> slots) {
-
-        List<ReducedDevCard> cards = new ArrayList<>();
-
-
-
     }
 
     public void printFaithTrack(Map<String, Integer> points) {
@@ -567,6 +554,64 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         // Print the result
         System.out.println(output);
 
+    }
+
+    private void printDevelopmentSlots(Map<Integer, ReducedDevCard> slots) {
+        for(int i = 0; i < slots.size(); i += 4) {
+            cli.trackSlimLine();
+            List<List<String>> rows = new ArrayList<>();
+
+            List<ReducedDevCard> cards = new ArrayList<>();
+            for(int j = 0; j < 4 && j < slots.size() - i; j++) {
+                cards.add(slots.get(i + j));
+                rows.add(new ArrayList<>());
+            }
+
+            for(int j = 0; j < 4 && j < slots.size() - i; j++) {
+                List<String> column = rows.get(j);
+                ReducedDevCard card = cards.get(j);
+
+                addDevToPrinter(column, card);
+            }
+
+            String rowTemplate = "";
+            for(int j = 0; j < 4 && j < slots.size() - i; j++) {
+                rowTemplate += "%-38s │";
+            }
+            rowTemplate += "\n";
+
+            int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
+            for(int k = 0; k < length; k++) {
+                List<String> row = new ArrayList<>();
+                for(int j = 0; j < 4 && j < slots.size() - i; j++) {
+                    if(k < rows.get(j).size())
+                        row.add(rows.get(j).get(k));
+                    else row.add("");
+                }
+                cli.getOut().printf(rowTemplate, row.toArray());
+            }
+        }
+        cli.trackSlimLine();
+        cli.getOut().println("\n");
+
+    }
+
+    private void addDevToPrinter(List<String> column, ReducedDevCard card){
+        if(card != null) {
+            column.add("[Development]");
+            column.add(String.format("%-64s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
+                    card.getId(),
+                    printColor(card.getColor())
+            )));
+            column.add(String.format("Level: %d, VP: %d",
+                    card.getLevel(),
+                    card.getVictoryPoints()
+            ));
+            column.add("Requirements (resources):");
+            card.getCost()
+                    .getRequirements().forEach((key, value) -> column.add(String.format("%-51s", printResource(key) + ": " + value)));
+            addProductionToPrinter(column, card.getProduction());
+        }
     }
 
 }

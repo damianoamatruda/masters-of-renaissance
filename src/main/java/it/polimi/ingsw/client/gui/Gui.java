@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.LocalClient;
 import it.polimi.ingsw.client.NetworkClient;
+import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.Event;
@@ -34,6 +35,8 @@ public class Gui extends Application {
     private Scene scene;
     private GuiController controller;
 
+    private ViewModel viewModel;
+
     private boolean singleplayer;
 
     public static void main(String[] args) {
@@ -61,6 +64,15 @@ public class Gui extends Application {
         this.view = new View();
         this.view.registerOnVC(this.eventDispatcher);
         this.registerOnMV(this.view);
+
+        this.viewModel = new ViewModel();
+    }
+
+    /**
+     * @return the GUI's viewmodel
+     */
+    public ViewModel getCache() {
+        return viewModel;
     }
 
     @Override
