@@ -21,7 +21,7 @@ class FaithTrackTest {
     void setup() {
         track = new FaithTrack(Set.of(), Set.of(
                 new FaithTrack.YellowTile(3, 1)
-        ));
+        ), 24);
     }
 
     /**

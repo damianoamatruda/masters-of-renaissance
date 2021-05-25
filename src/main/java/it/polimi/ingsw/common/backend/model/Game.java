@@ -45,9 +45,6 @@ public class Game extends EventDispatcher {
     /** The "Faith Track", where vatican sections can be activated. */
     protected final FaithTrack faithTrack;
 
-    /** Number of the last reachable faith track tile by a player. */
-    protected final int maxFaithPointsCount;
-
     /** Number of development cards a player can have, before triggering the end of the game. */
     protected final int maxObtainableDevCards;
 
@@ -59,8 +56,7 @@ public class Game extends EventDispatcher {
 
     /**
      * Constructor of Game instances.
-     *
-     * @param players               the list of nicknames of players who joined
+     *  @param players               the list of nicknames of players who joined
      * @param colors
      * @param resourceTypes
      * @param leaderCards           the list of leader cards
@@ -70,13 +66,12 @@ public class Game extends EventDispatcher {
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
-     * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
     public Game(List<Player> players, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market,
-                FaithTrack faithTrack, int maxFaithPointsCount, int maxObtainableDevCards) {
+                FaithTrack faithTrack, int maxObtainableDevCards) {
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);
@@ -89,7 +84,6 @@ public class Game extends EventDispatcher {
         this.resourceTypes = resourceTypes;
         this.colors = colors;
 
-        this.maxFaithPointsCount = maxFaithPointsCount;
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
 
@@ -109,13 +103,14 @@ public class Game extends EventDispatcher {
     public void dispatchState(View view) {
         dispatch(new UpdateGame(
                 players.stream().map(Player::getNickname).toList(),
+                colors.stream().map(DevCardColor::reduce).toList(),
+                resourceTypes.stream().map(ResourceType::reduce).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
+                faithTrack.reduce(),
                 null, /* actionTokens not sent */
-                colors.stream().map(DevCardColor::reduce).toList(),
-                resourceTypes.stream().map(ResourceType::reduce).toList(),
                 view != null));
         dispatch(new UpdateCurrentPlayer(view, getCurrentPlayer().getNickname()));
     }
@@ -164,7 +159,7 @@ public class Game extends EventDispatcher {
             vaticanSection.activate();
         }
 
-        if (faithPoints == maxFaithPointsCount)
+        if (faithPoints == faithTrack.getMaxFaithPointsCount())
             setLastRound();
     }
 

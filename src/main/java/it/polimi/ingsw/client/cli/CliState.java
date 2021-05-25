@@ -1,8 +1,11 @@
 package it.polimi.ingsw.client.cli;
 
+import java.util.Optional;
+
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
 
 public abstract class CliState implements Renderable {
     protected void renderMainTitle(Cli cli) {
@@ -121,7 +124,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateFaithPoints event) {
-        cli.getCache().setFaithPoints(event.getFaithPoints());
+        cli.getCache().setFaithPoints(event.getPlayer(), event.getFaithPoints());
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
@@ -133,9 +136,9 @@ public abstract class CliState implements Renderable {
         cli.getCache().setActionTokens(event.getActionTokens());
         cli.getCache().setContainers(event.getResContainers());
         cli.getCache().setDevelopmentCards(event.getDevelopmentCards());
-        cli.getCache().setFaithPoints(0);
         cli.getCache().setLeaderCards(event.getLeaderCards());
-        cli.getCache().setPlayers(event.getPlayers());
+        cli.getCache().setFaithTrack(event.getFaithTrack());
+        event.getPlayers().stream().forEach(p-> cli.getCache().setFaithPoints(p, 0));
         cli.getCache().setProductions(event.getProductions());
         cli.getCache().setColors(event.getColors());
         cli.getCache().setResourceTypes(event.getResourceTypes());
@@ -216,7 +219,10 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateVaticanSection event) {
-        cli.getCache().setActiveVaticanSection(event.getVaticanSection());
+        Optional<ReducedVaticanSection> vs = cli.getCache().getFaithTrack().getVaticanSections().entrySet().stream()
+            .filter(e -> e.getValue().getId() == event.getVaticanSection()).map(e -> e.getValue()).findAny();
+        
+        vs.ifPresent(s -> s.setActive());
     }
 
     public void on(Cli cli, UpdateVictoryPoints event) {

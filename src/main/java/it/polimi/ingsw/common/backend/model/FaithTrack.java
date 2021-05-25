@@ -2,6 +2,9 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.events.mvevents.UpdateVaticanSection;
+import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
+import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
+import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -16,6 +19,9 @@ import java.util.stream.Collectors;
  * @see VaticanSection
  */
 public class FaithTrack extends EventDispatcher {
+    /** Number of the last reachable faith track tile by a player. */
+    private final int maxFaithPointsCount;
+
     /** Maps the end of each Vatican Section to the Vatican Section. */
     private final Map<Integer, VaticanSection> vaticanSectionsMap;
 
@@ -28,11 +34,12 @@ public class FaithTrack extends EventDispatcher {
      * @param vaticanSections the set of the Vatican Sections
      * @param yellowTiles     the set of the Yellow Tiles which will give bonus points at the end
      */
-    public FaithTrack(Set<VaticanSection> vaticanSections, Set<YellowTile> yellowTiles) {
+    public FaithTrack(Set<VaticanSection> vaticanSections, Set<YellowTile> yellowTiles, int maxFaithPointsCount) {
         this.vaticanSectionsMap = vaticanSections.stream()
                 .collect(Collectors.toUnmodifiableMap(VaticanSection::getFaithPointsEnd, Function.identity()));
         this.vaticanSectionsMap.values().forEach(s -> s.addEventListener(UpdateVaticanSection.class, this::dispatch));
         this.yellowTiles = Set.copyOf(yellowTiles);
+        this.maxFaithPointsCount = maxFaithPointsCount;
     }
 
     /**
@@ -73,6 +80,16 @@ public class FaithTrack extends EventDispatcher {
      */
     public Set<YellowTile> getYellowTiles() {
         return yellowTiles;
+    }
+
+    public ReducedFaithTrack reduce() {
+        return new ReducedFaithTrack(
+            vaticanSectionsMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().reduce())),
+            yellowTiles.stream().map(t -> t.reduce()).toList(), maxFaithPointsCount);
+    }
+
+    public int getMaxFaithPointsCount() {
+        return maxFaithPointsCount;
     }
 
     /**
@@ -157,6 +174,10 @@ public class FaithTrack extends EventDispatcher {
             this.activated = true;
             dispatch(new UpdateVaticanSection(id));
         }
+
+        public ReducedVaticanSection reduce() {
+            return new ReducedVaticanSection(id, faithPointsBeginning, faithPointsEnd, victoryPoints);
+        }
     }
 
     /**
@@ -196,6 +217,10 @@ public class FaithTrack extends EventDispatcher {
          */
         public int getVictoryPoints() {
             return victoryPoints;
+        }
+
+        public ReducedYellowTile reduce() {
+            return new ReducedYellowTile(faithPoints, victoryPoints);
         }
     }
 }

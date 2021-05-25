@@ -15,6 +15,7 @@ public class UpdateGame extends ViewEvent {
     private final List<ReducedResourceContainer> resContainers;
     private final List<ReducedResourceTransactionRecipe> productions;
     private final List<ReducedActionToken> actionTokens;
+    private final ReducedFaithTrack faithTrack;
     private final boolean resumed;
 
     /**
@@ -28,13 +29,17 @@ public class UpdateGame extends ViewEvent {
      * @param developmentCards development cards available at play time
      * @param resContainers    resource containers available at play time
      * @param productions      productions available at play time
+     * @param faithTrack       the game's faith track
+     * @param actionTokens     the game's action tokens (null if multiplayer)
      */
     public UpdateGame(View view,
                       List<String> players,
-                      List<ReducedColor> colors, List<ReducedResourceType> resourceTypes, List<ReducedLeaderCard> leaderCards,
+                      List<ReducedColor> colors, List<ReducedResourceType> resourceTypes,
+                      List<ReducedLeaderCard> leaderCards,
                       List<ReducedDevCard> developmentCards,
                       List<ReducedResourceContainer> resContainers,
                       List<ReducedResourceTransactionRecipe> productions,
+                      ReducedFaithTrack faithTrack,
                       List<ReducedActionToken> actionTokens,
                       boolean resumed) {
         super(view);
@@ -46,19 +51,20 @@ public class UpdateGame extends ViewEvent {
         this.actionTokens = actionTokens;
         this.colors = colors;
         this.resourceTypes = resourceTypes;
+        this.faithTrack = faithTrack;
         this.resumed = resumed;
     }
 
     public UpdateGame(List<String> players,
+                      List<ReducedColor> colors, List<ReducedResourceType> resourceTypes,
                       List<ReducedLeaderCard> leaderCards,
                       List<ReducedDevCard> developmentCards,
                       List<ReducedResourceContainer> resContainers,
                       List<ReducedResourceTransactionRecipe> productions,
+                      ReducedFaithTrack faithTrack,
                       List<ReducedActionToken> actionTokens,
-                      List<ReducedColor> colors,
-                      List<ReducedResourceType> resourceTypes,
                       boolean resumed) {
-        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, actionTokens, resumed);
+        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, faithTrack, actionTokens, resumed);
     }
 
     /**
@@ -122,5 +128,9 @@ public class UpdateGame extends ViewEvent {
      */
     public boolean isResumed() {
         return resumed;
+    }
+
+    public ReducedFaithTrack getFaithTrack() {
+        return faithTrack;
     }
 }

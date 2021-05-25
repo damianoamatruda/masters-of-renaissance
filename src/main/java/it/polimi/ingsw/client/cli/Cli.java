@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.LocalClient;
 import it.polimi.ingsw.client.NetworkClient;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
@@ -20,7 +19,7 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class Cli extends EventDispatcher implements Ui {
+public class Cli extends EventDispatcher {
     static final int width = 160;
 
     private final View view;
@@ -42,8 +41,8 @@ public class Cli extends EventDispatcher implements Ui {
 
     public Cli() {
         this.view = new View();
-        view.registerOnVC(this);
-        this.registerOnMV(view);
+        this.view.registerOnVC(this);
+        this.registerOnMV(this.view);
 
         this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());
@@ -55,6 +54,10 @@ public class Cli extends EventDispatcher implements Ui {
 
         this.running = false;
         this.singleplayer = false;
+    }
+
+    public static void main(String[] args) {
+        new Cli().start(); // new Thread(this::start).start();
     }
 
     public static String convertStreamToString(InputStream is) {
@@ -86,8 +89,7 @@ public class Cli extends EventDispatcher implements Ui {
         return stringBuilder.toString();
     }
 
-    @Override
-    public void execute() {
+    public void start() {
         running = true;
         while (running) {
             try {
@@ -112,32 +114,31 @@ public class Cli extends EventDispatcher implements Ui {
     }
 
     public void registerOnMV(EventDispatcher view) {
+        view.addEventListener(ResQuit.class, event -> state.on(this, event));
+        view.addEventListener(UpdateBookedSeats.class, event -> state.on(this, event));
+        view.addEventListener(UpdateJoinGame.class, event -> state.on(this, event));
+        view.addEventListener(ErrNewGame.class, event -> state.on(this, event));
+        view.addEventListener(ErrNickname.class, event -> state.on(this, event));
         view.addEventListener(ErrAction.class, event -> state.on(this, event));
         view.addEventListener(ErrActiveLeaderDiscarded.class, event -> state.on(this, event));
         view.addEventListener(ErrBuyDevCard.class, event -> state.on(this, event));
         view.addEventListener(ErrCardRequirements.class, event -> state.on(this, event));
         view.addEventListener(ErrInitialChoice.class, event -> state.on(this, event));
-        view.addEventListener(ErrNewGame.class, event -> state.on(this, event));
-        view.addEventListener(ErrNickname.class, event -> state.on(this, event));
         view.addEventListener(ErrNoSuchEntity.class, event -> state.on(this, event));
         view.addEventListener(ErrObjectNotOwned.class, event -> state.on(this, event));
         view.addEventListener(ErrReplacedTransRecipe.class, event -> state.on(this, event));
         view.addEventListener(ErrResourceReplacement.class, event -> state.on(this, event));
         view.addEventListener(ErrResourceTransfer.class, event -> state.on(this, event));
-        view.addEventListener(ResQuit.class, event -> state.on(this, event));
         view.addEventListener(UpdateAction.class, event -> state.on(this, event));
         view.addEventListener(UpdateActionToken.class, event -> state.on(this, event));
-        view.addEventListener(UpdateBookedSeats.class, event -> state.on(this, event));
         view.addEventListener(UpdateCurrentPlayer.class, event -> state.on(this, event));
         view.addEventListener(UpdateDevCardGrid.class, event -> state.on(this, event));
         view.addEventListener(UpdateDevCardSlot.class, event -> state.on(this, event));
         view.addEventListener(UpdateFaithPoints.class, event -> state.on(this, event));
         view.addEventListener(UpdateGame.class, event -> state.on(this, event));
         view.addEventListener(UpdateGameEnd.class, event -> state.on(this, event));
-        view.addEventListener(UpdateJoinGame.class, event -> state.on(this, event));
         view.addEventListener(UpdateLastRound.class, event -> state.on(this, event));
         view.addEventListener(UpdateLeader.class, event -> state.on(this, event));
-        view.addEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
         view.addEventListener(UpdateLeadersHandCount.class, event -> state.on(this, event));
         view.addEventListener(UpdateMarket.class, event -> state.on(this, event));
         view.addEventListener(UpdatePlayer.class, event -> state.on(this, event));
@@ -146,35 +147,35 @@ public class Cli extends EventDispatcher implements Ui {
         view.addEventListener(UpdateSetupDone.class, event -> state.on(this, event));
         view.addEventListener(UpdateVaticanSection.class, event -> state.on(this, event));
         view.addEventListener(UpdateVictoryPoints.class, event -> state.on(this, event));
+        view.addEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
     }
 
     public void unregisterOnMV(EventDispatcher view) {
+        view.removeEventListener(ResQuit.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateBookedSeats.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateJoinGame.class, event -> state.on(this, event));
+        view.removeEventListener(ErrNewGame.class, event -> state.on(this, event));
+        view.removeEventListener(ErrNickname.class, event -> state.on(this, event));
         view.removeEventListener(ErrAction.class, event -> state.on(this, event));
         view.removeEventListener(ErrActiveLeaderDiscarded.class, event -> state.on(this, event));
         view.removeEventListener(ErrBuyDevCard.class, event -> state.on(this, event));
         view.removeEventListener(ErrCardRequirements.class, event -> state.on(this, event));
         view.removeEventListener(ErrInitialChoice.class, event -> state.on(this, event));
-        view.removeEventListener(ErrNewGame.class, event -> state.on(this, event));
-        view.removeEventListener(ErrNickname.class, event -> state.on(this, event));
         view.removeEventListener(ErrNoSuchEntity.class, event -> state.on(this, event));
         view.removeEventListener(ErrObjectNotOwned.class, event -> state.on(this, event));
         view.removeEventListener(ErrReplacedTransRecipe.class, event -> state.on(this, event));
         view.removeEventListener(ErrResourceReplacement.class, event -> state.on(this, event));
         view.removeEventListener(ErrResourceTransfer.class, event -> state.on(this, event));
-        view.removeEventListener(ResQuit.class, event -> state.on(this, event));
         view.removeEventListener(UpdateAction.class, event -> state.on(this, event));
         view.removeEventListener(UpdateActionToken.class, event -> state.on(this, event));
-        view.removeEventListener(UpdateBookedSeats.class, event -> state.on(this, event));
         view.removeEventListener(UpdateCurrentPlayer.class, event -> state.on(this, event));
         view.removeEventListener(UpdateDevCardGrid.class, event -> state.on(this, event));
         view.removeEventListener(UpdateDevCardSlot.class, event -> state.on(this, event));
         view.removeEventListener(UpdateFaithPoints.class, event -> state.on(this, event));
         view.removeEventListener(UpdateGame.class, event -> state.on(this, event));
         view.removeEventListener(UpdateGameEnd.class, event -> state.on(this, event));
-        view.removeEventListener(UpdateJoinGame.class, event -> state.on(this, event));
         view.removeEventListener(UpdateLastRound.class, event -> state.on(this, event));
         view.removeEventListener(UpdateLeader.class, event -> state.on(this, event));
-        view.removeEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
         view.removeEventListener(UpdateLeadersHandCount.class, event -> state.on(this, event));
         view.removeEventListener(UpdateMarket.class, event -> state.on(this, event));
         view.removeEventListener(UpdatePlayer.class, event -> state.on(this, event));
@@ -183,6 +184,7 @@ public class Cli extends EventDispatcher implements Ui {
         view.removeEventListener(UpdateSetupDone.class, event -> state.on(this, event));
         view.removeEventListener(UpdateVaticanSection.class, event -> state.on(this, event));
         view.removeEventListener(UpdateVictoryPoints.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
     }
 
     public String prompt(String prompt, String defaultValue) {

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController"
+            id="body" stylesheets="@mainmenu.css">
+  <center>
+    <VBox alignment="CENTER">
+      <VBox alignment="CENTER">
+        <VBox.margin>
+          <Insets bottom="40.0"/>
+        </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@logo.png"/>
+        </ImageView>
+      </VBox>
+      <Text>Waiting for a new game...</Text>
+      <Text>Player(s) who joined:</Text>
+      <Text fx:id="bookedSeats">1</Text>
+      <Text>You can prepare a new game!</Text>
+      <HBox>
+        <Label text="Players count">
+          <HBox.margin>
+            <Insets right="30.0"/>
+            <Insets bottom="10.0"/>
+          </HBox.margin>
+        </Label>
+        <RadioButton text="2" selected="true">
+          <toggleGroup>
+            <ToggleGroup fx:id="group"/>
+          </toggleGroup>
+          <HBox.margin>
+            <Insets right="30.0"/>
+            <Insets bottom="10.0"/>
+          </HBox.margin>
+        </RadioButton>
+        <RadioButton text="3" toggleGroup="$group">
+          <HBox.margin>
+            <Insets right="30.0"/>
+            <Insets bottom="10.0"/>
+          </HBox.margin>
+        </RadioButton>
+        <RadioButton text="4" toggleGroup="$group">
+          <HBox.margin>
+            <Insets right="30.0"/>
+            <Insets bottom="10.0"/>
+          </HBox.margin>
+        </RadioButton>
+      </HBox>
+      <Button alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game">
+        <VBox.margin>
+          <Insets top="8.0"/>
+        </VBox.margin>
+      </Button>
+      <padding>
+        <Insets bottom="80.0"/>
+      </padding>
+    </VBox>
+  </center>
+</BorderPane>

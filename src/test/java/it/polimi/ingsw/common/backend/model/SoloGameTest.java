@@ -44,7 +44,7 @@ public class SoloGameTest {
                 new FaithTrack.YellowTile(15, 9),
                 new FaithTrack.YellowTile(18, 12),
                 new FaithTrack.YellowTile(24, 20)
-        ));
+        ), 24);
 
         ResourceType r1 = new ResourceType("r1", true);
 
@@ -64,7 +64,7 @@ public class SoloGameTest {
                         return null;
                     }
                 }
-        ), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), track, 24, 7);
+        ), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), track, 7);
 
     }
 
