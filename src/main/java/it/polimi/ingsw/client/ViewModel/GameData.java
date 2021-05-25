@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import it.polimi.ingsw.common.reducedmodel.*;
@@ -63,10 +62,9 @@ public class GameData {
     /**
      * @param id the id of the container to be returned
      * @return the container corresponding to the id
-     * @throws NoSuchElementException if the container doesn't exist
      */
-    public ReducedResourceContainer getContainer(int id) throws NoSuchElementException {
-        return containers.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedResourceContainer> getContainer(int id) {
+        return containers.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
@@ -132,10 +130,9 @@ public class GameData {
     /**
      * @param id the ID of the card to be returned
      * @return the developmentCard matching the ID
-     * @throws NoSuchElementException if the card doesn't exist
      */
-    public ReducedDevCard getDevelopmentCard(int id) throws NoSuchElementException{
-        return developmentCards.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedDevCard> getDevelopmentCard(int id) {
+        return developmentCards.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
@@ -176,10 +173,9 @@ public class GameData {
     /**
      * @param id the ID of the card to be returned
      * @return the leaderCard matching the ID
-     * @throws NoSuchElementException if the card doesn't exist
      */
-    public ReducedLeaderCard getLeaderCard(int id) throws NoSuchElementException {
-        return leaderCards.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedLeaderCard> getLeaderCard(int id) {
+        return leaderCards.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
@@ -218,10 +214,11 @@ public class GameData {
     }
 
     /**
-     * @return the productions
+     * @param id the ID of the production to be returned
+     * @return the reduced production (transaction recipe)
      */
-    public List<ReducedResourceTransactionRecipe> getProductions() {
-        return productions;
+     public Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
+        return productions.stream().filter(p -> p.getId() == id).findAny();
     }
 
     /**
