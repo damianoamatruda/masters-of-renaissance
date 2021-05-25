@@ -37,7 +37,7 @@ public class TurnBeforeActionState extends CliTurnState {
     private void buyCard(Cli cli) {
         cli.getOut().println("Buying a development card.");
 
-        cli.getPrinter().update(cli.getCache().getDevCardGrid());
+        cli.getPrinter().printCardGrid(cli.getCache().getDevCardGrid());
 
         cli.getOut().println("\nChoose parameters:");
         //prompt for parameters
