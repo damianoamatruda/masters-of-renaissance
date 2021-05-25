@@ -32,7 +32,11 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrNoSuchEntity event) {
-        // cli.repeatState(event.getReason());
+        cli.repeatState(
+            String.format("No such entity %s: ID %d, code %s.",
+                event.getOriginalEntity().toString().toLowerCase(),
+                event.getId(),
+                event.getCode()));
     }
 
     public void on(Cli cli, ErrInitialChoice event) {
