@@ -61,7 +61,7 @@ public class PlayerData {
      * @param cardID the ID of the card to place on top (set at position 0)
      */
     public void setDevSlot(int slot, int cardID) {
-        if (devSlots.size() - 1 < slot)
+        while (devSlots.size() - 1 < slot)
             devSlots.add(slot, new ArrayList<>());
 
         devSlots.get(slot).add(0, cardID);
