@@ -65,6 +65,10 @@ public class ViewModel {
         return playerData.get(nickname);
     }
 
+    public PlayerData getCurrentPlayerData() {
+        return getPlayerData(getGameData().getCurrentPlayer());
+    }
+
     /**
      * To be used when receiving the first UpdatePlayer message.
      * 
