@@ -23,7 +23,7 @@
       </VBox>
       <Label text="Server Address"/>
       <TextField id="server" fx:id="server" alignment="CENTER" prefWidth="400.0" maxWidth="400.0"
-                 promptText="Server Address" text="127.0.0.1:1234"/>
+                 text="127.0.0.1:1234"/>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
           <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
