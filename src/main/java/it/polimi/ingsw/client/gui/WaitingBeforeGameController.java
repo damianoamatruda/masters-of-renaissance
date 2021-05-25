@@ -2,10 +2,12 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
+import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -13,11 +15,29 @@ import java.io.IOException;
 public class WaitingBeforeGameController extends GuiController {
     public Text bookedSeats;
     public ToggleGroup group;
+    public VBox canPrepare;
+
+    private boolean youCanPrepare;
+
+    public WaitingBeforeGameController() {
+        youCanPrepare = false;
+    }
+
+    public void setBookedSeats(int bookedSeatsValue) {
+        bookedSeats.setText(Integer.toString(bookedSeatsValue));
+    }
+
+    public void setCanPrepareNewGame(String canPrepareNewGame) {
+        if (Gui.getInstance().getCache().getUiData().getLocalPlayerNickname().equals(canPrepareNewGame)) {
+            youCanPrepare = true;
+            canPrepare.setVisible(true);
+        }
+    }
 
     @Override
     public void on(Gui gui, UpdateBookedSeats event) {
         super.on(gui, event);
-        bookedSeats.setText(Integer.toString(event.getBookedSeats()));
+        setBookedSeats(event.getBookedSeats());
     }
 
     @Override
@@ -29,6 +49,13 @@ public class WaitingBeforeGameController extends GuiController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void on(Gui gui, UpdateJoinGame event) {
+        super.on(gui, event);
+        if (youCanPrepare)
+            canPrepare.setVisible(false);
     }
 
     public void handleNewGame(ActionEvent actionEvent) {

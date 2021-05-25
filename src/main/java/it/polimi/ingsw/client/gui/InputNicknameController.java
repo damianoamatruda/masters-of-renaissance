@@ -13,9 +13,12 @@ import java.io.IOException;
 public class InputNicknameController extends GuiController {
     public TextField nickname;
 
+    private String nicknameValue;
+
     public void handleNicknameInput(ActionEvent actionEvent) {
         Gui gui = Gui.getInstance();
-        gui.dispatch(new ReqJoin(nickname.getText()));
+        nicknameValue = nickname.getText();
+        gui.dispatch(new ReqJoin(nicknameValue));
     }
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
@@ -32,11 +35,15 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateBookedSeats event) {
         super.on(gui, event);
+        gui.getCache().getUiData().setLocalPlayerNickname(nicknameValue);
         if (gui.isSingleplayer())
             gui.dispatch(new ReqNewGame(1));
         else
             try {
-                gui.setRoot("waitingbeforegame");
+                gui.setRoot("waitingbeforegame", (WaitingBeforeGameController controller) -> {
+                    controller.setBookedSeats(event.getBookedSeats());
+                    controller.setCanPrepareNewGame(event.canPrepareNewGame());
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }

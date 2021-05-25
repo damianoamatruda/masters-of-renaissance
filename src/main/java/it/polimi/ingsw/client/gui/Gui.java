@@ -17,6 +17,7 @@ import javafx.scene.SceneAntialiasing;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 
 /**
@@ -35,7 +36,7 @@ public class Gui extends Application {
     private Scene scene;
     private GuiController controller;
 
-    private ViewModel viewModel;
+    private final ViewModel viewModel;
 
     private boolean singleplayer;
 
@@ -77,7 +78,7 @@ public class Gui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = loadFXML(initialSceneFxml);
+        Parent root = getFxmlLoader(initialSceneFxml).load();
         scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(minWidth);
@@ -99,8 +100,16 @@ public class Gui extends Application {
         singleplayer = false;
     }
 
+    void setRoot(String fxml, Consumer<?> callback) throws IOException {
+        FXMLLoader fxmlLoader = getFxmlLoader(fxml);
+        Parent root = fxmlLoader.load();
+        if (callback != null)
+            callback.accept(fxmlLoader.getController());
+        scene.setRoot(root);
+    }
+
     void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        setRoot(fxml, null);
     }
 
     void startLocalClient() {
@@ -117,9 +126,8 @@ public class Gui extends Application {
         System.exit(0);
     }
 
-    private Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(String.format("/assets/gui/%s.fxml", fxml)));
-        return fxmlLoader.load();
+    private FXMLLoader getFxmlLoader(String fxml) throws IOException {
+        return new FXMLLoader(getClass().getResource(String.format("/assets/gui/%s.fxml", fxml)));
     }
 
     private void registerOnMV(EventDispatcher view) {

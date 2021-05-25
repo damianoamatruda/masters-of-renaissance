@@ -37,13 +37,6 @@ public class MultiplayerController extends GuiController {
 
         if (connected)
             gui.setRoot("inputnickname");
-        else {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
