@@ -438,15 +438,15 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     public void printFaithTrack(Map<String, Integer> points) {
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
-        int maxFaith = cache.getFaithTrack().getMaxFaith();
+        int maxFaith = viewModel.getGameData().getFaithTrack().getMaxFaith();
         // Calculate section tiles and yellow tiles, to match the colors
-        List<ReducedVaticanSection> sections = cache.getFaithTrack().getVaticanSections().values().stream().toList();
+        List<ReducedVaticanSection> sections = viewModel.getGameData().getFaithTrack().getVaticanSections().values().stream().toList();
         List<Integer> sectionBegins = sections.stream().map(ReducedVaticanSection::getFaithPointsBeginning).sorted().toList();
         List<Integer> sectionEnds = sections.stream().map(ReducedVaticanSection::getFaithPointsEnd).sorted().toList();
         List<Integer> sectionTiles = new ArrayList<>();
         for(int i = 0; i < sectionBegins.size(); i++)
             sectionTiles.addAll(IntStream.rangeClosed(sectionBegins.get(i), sectionEnds.get(i)).boxed().toList());
-        List<Integer> yellowTiles = cache.getFaithTrack().getYellowTiles().stream().map(ReducedYellowTile::getFaithPoints).toList();
+        List<Integer> yellowTiles = viewModel.getGameData().getFaithTrack().getYellowTiles().stream().map(ReducedYellowTile::getFaithPoints).toList();
 
         // Shorten nickname to fit the cell width
         List<String> players = new ArrayList<>(points.keySet().stream().toList());
@@ -544,10 +544,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                     overlapped.add(i);
                 if (yellowTiles.contains(i)) {
                     index = yellowTiles.indexOf(i);
-                    output.append(String.format("%-16s", "\u001B[93m" + cache.getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-16s", "\u001B[93m" + viewModel.getGameData().getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else if (sectionEnds.contains(i)) {
-                    output.append(String.format("%-16s", "\u001B[31m" + cache.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-16s", "\u001B[31m" + viewModel.getGameData().getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else
                     output.append("       ");
@@ -555,7 +555,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             output.append("\n");
             for (int i = 0; i <= maxFaith; i++) {
                 if (overlapped.contains(i))
-                    output.append(String.format("%-17s", "\u001B[31m+ " + cache.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-17s", "\u001B[31m+ " + viewModel.getGameData().getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 else
                     output.append("       ");
             }
