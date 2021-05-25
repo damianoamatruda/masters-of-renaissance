@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.event.ActionEvent;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 
@@ -32,7 +33,12 @@ public class WaitingBeforeGameController extends GuiController {
 
     public void handleNewGame(ActionEvent actionEvent) {
         Gui gui = Gui.getInstance();
-        // gui.dispatch(new ReqNewGame((int) group.getSelectedToggle().getProperties().get("text")));
-        gui.dispatch(new ReqNewGame(2));
+        RadioButton inputRadio = (RadioButton) group.getSelectedToggle();
+        try {
+            int count = Integer.parseInt(inputRadio.getText());
+            gui.dispatch(new ReqNewGame(count));
+        } catch (NumberFormatException e) {
+            System.out.println("Not a number");
+        }
     }
 }
