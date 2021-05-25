@@ -51,3 +51,35 @@ TextField:focused {
 #playersCount {
     -fx-alignment: center;
 }
+
+.blueCard {
+    -fx-background-image: url('devcardtemplates/bluecard.png');
+}
+
+.greenCard {
+    -fx-background-image: url('devcardtemplates/greencard.png');
+}
+
+.purpleCard {
+    -fx-background-image: url('devcardtemplates/purplecard.png');
+}
+
+.yellowCard {
+    -fx-background-image: url('devcardtemplates/yellowcard.png');
+}
+
+.depotLeader {
+    -fx-background-image: url('leadertemplates/depotleader.png');
+}
+
+.productionLeader {
+    -fx-background-image: url('leadertemplates/productionleader.png');
+}
+
+.zeroLeader {
+    -fx-background-image: url('leadertemplates/zeroleader.png');
+}
+
+.discountLeader {
+    -fx-background-image: url('leadertemplates/discountleader.png');
+}
