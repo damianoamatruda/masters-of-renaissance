@@ -537,7 +537,35 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         else output.append("\u001B[0m");
         output.append((sectionTiles.contains(maxFaith) ? "═" : "─").repeat(cellWidth)).append(sectionTiles.contains(maxFaith) ? "╝\n" :"┘\n").append("\u001B[0m");
 
-
+        try {
+            // Bonus points on the bottom of the track
+            output.append(" ");
+            List<Integer> overlapped = new ArrayList<>();
+            int index;
+            for (int i = 0; i <= maxFaith; i++) {
+                if (yellowTiles.contains(i) && sectionEnds.contains(i))
+                    overlapped.add(i);
+                if (yellowTiles.contains(i)) {
+                    index = yellowTiles.indexOf(i);
+                    output.append(String.format("%-16s", "\u001B[93m" + cache.getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
+                }
+                else if (sectionEnds.contains(i)) {
+                    output.append(String.format("%-16s", "\u001B[31m" + cache.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                }
+                else
+                    output.append("       ");
+            }
+            output.append("\n");
+            for (int i = 0; i <= maxFaith; i++) {
+                if (overlapped.contains(i))
+                    output.append(String.format("%-17s", "\u001B[31m+ " + cache.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                else
+                    output.append("       ");
+            }
+            output.append("\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Print the result
         System.out.println(output);
