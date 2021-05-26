@@ -19,8 +19,8 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
-      <Button alignment="CENTER" onAction="#handleSinglePlayer" prefWidth="400.0" text="Singleplayer"/>
-      <Button alignment="CENTER" onAction="#handleMultiplayer" prefWidth="400.0" text="Multiplayer">
+      <Button alignment="CENTER" onAction="#handlePlayOffline" prefWidth="400.0" text="Play Offline"/>
+      <Button alignment="CENTER" onAction="#handlePlayOnline" prefWidth="400.0" text="Play Online">
         <VBox.margin>
           <Insets top="8.0"/>
         </VBox.margin>

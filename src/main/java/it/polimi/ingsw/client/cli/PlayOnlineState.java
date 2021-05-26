@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-public class MultiplayerState extends CliState {
+public class PlayOnlineState extends CliState {
     private static final String jsonConfigPath = "/config/server.json";
 
     @Override
@@ -71,7 +71,7 @@ public class MultiplayerState extends CliState {
                 Thread.sleep(2000);
             } catch (InterruptedException ignored) {
             }
-            cli.setState(new MultiplayerState());
+            cli.setState(new PlayOnlineState());
         }
     }
 }

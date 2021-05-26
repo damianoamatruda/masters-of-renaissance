@@ -30,10 +30,16 @@
               <Insets bottom="10.0"/>
             </HBox.margin>
           </Label>
-          <RadioButton selected="true" text="2">
+          <RadioButton selected="true" text="1">
             <toggleGroup>
               <ToggleGroup fx:id="group"/>
             </toggleGroup>
+            <HBox.margin>
+              <Insets right="30.0"/>
+              <Insets bottom="10.0"/>
+            </HBox.margin>
+          </RadioButton>
+          <RadioButton text="2" toggleGroup="$group">
             <HBox.margin>
               <Insets right="30.0"/>
               <Insets bottom="10.0"/>

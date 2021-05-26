@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="it.polimi.ingsw.client.gui.MultiplayerController"
-            id="body" stylesheets="@multiplayer.css">
+            fx:controller="it.polimi.ingsw.client.gui.PlayOnlineController"
+            id="body" stylesheets="@playonline.css">
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">

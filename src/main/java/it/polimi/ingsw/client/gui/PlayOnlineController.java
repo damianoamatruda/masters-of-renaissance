@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-public class MultiplayerController extends GuiController {
+public class PlayOnlineController extends GuiController {
     @FXML
     private TextField server;
 

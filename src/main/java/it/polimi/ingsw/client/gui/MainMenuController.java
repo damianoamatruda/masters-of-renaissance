@@ -35,14 +35,14 @@ public class MainMenuController extends GuiController {
         }
     }
 
-    public void handleSinglePlayer() throws IOException {
+    public void handlePlayOffline() throws IOException {
         Gui gui = Gui.getInstance();
         gui.startLocalClient();
         gui.setRoot("inputnickname");
     }
 
-    public void handleMultiplayer() throws IOException {
-        Gui.getInstance().setRoot("multiplayer");
+    public void handlePlayOnline() throws IOException {
+        Gui.getInstance().setRoot("playonline");
     }
 
     public void handleOptions() throws IOException {
