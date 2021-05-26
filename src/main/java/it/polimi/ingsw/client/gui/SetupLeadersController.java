@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
@@ -30,7 +31,7 @@ public class SetupLeadersController extends GuiController {
         ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
 
         List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
-            LeaderCard leaderCard = new LeaderCard();
+            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
             leaderCard.setResourceType(reducedLeader.getResourceType());
             leaderCard.setProduction(p1);
@@ -38,6 +39,9 @@ public class SetupLeadersController extends GuiController {
         }).toList();
 
         System.out.println(leaderCards);
+
+        leadersContainer.setSpacing(10);
+        leadersContainer.setAlignment(Pos.CENTER);
 
         leadersContainer.getChildren().addAll(leaderCards);
     }

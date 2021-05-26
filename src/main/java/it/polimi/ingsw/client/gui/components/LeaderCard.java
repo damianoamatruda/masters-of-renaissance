@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
@@ -24,10 +25,15 @@ public class LeaderCard extends VBox {
 
     private Production prod;
 
-    public LeaderCard() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/leadercard.fxml"));
+    public LeaderCard(String leaderType) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(/*getBackground(leaderType)*/"/assets/gui/components/leadercard.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
+        this.setStyle("-fx-background-image: url('" + getBackground(leaderType) + "');" +
+                "-fx-background-position: center center;" +
+                "-fx-background-repeat: stretch;" +
+                "-fx-opacity: 1;" +
+                "-fx-background-size: 166 251;");
 
         try {
             fxmlLoader.load();
@@ -53,7 +59,7 @@ public class LeaderCard extends VBox {
     }
 
     public void setLeaderType(String value) {
-        leaderTypeProperty().set(value);
+//        leaderTypeProperty().set(value);
     }
 
     public StringProperty leaderTypeProperty() {
@@ -70,5 +76,9 @@ public class LeaderCard extends VBox {
 
     public StringProperty resourceTypeProperty() {
         return resourceTypeText.textProperty();
+    }
+
+    public String getBackground(String leaderType) {
+        return "/assets/gui/leadertemplates/" + leaderType.toLowerCase() + ".png";
     }
 }
