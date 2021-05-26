@@ -65,7 +65,7 @@ public class Production extends HBox {
             output.getChildren().add(row(production.getOutputBlanks(), blank));
         
         curlyBrace = (ImageView) this.getChildren().get(1);
-        curlyBrace.setImage(new Image(getClass().getResource("/assets/gui/resourcetypes/curlybrace.png").toExternalForm()));
+        curlyBrace.setImage(new Image(getClass().getResource("/assets/gui/resourcetypes/curlybracelight.png").toExternalForm()));
     }
 
     private List<HBox> buildResourceLines(Map<String, Integer> resourceMap) {
