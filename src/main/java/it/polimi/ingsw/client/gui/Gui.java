@@ -39,6 +39,7 @@ public class Gui extends Application {
     private final ViewModel viewModel;
 
     private boolean singleplayer;
+    private boolean musicPlaying;
 
     public static void main(String[] args) {
         launch(args);
@@ -67,6 +68,8 @@ public class Gui extends Application {
         this.registerOnMV(this.view);
 
         this.viewModel = new ViewModel();
+
+        this.musicPlaying = false;
     }
 
     /**
@@ -95,6 +98,11 @@ public class Gui extends Application {
         eventDispatcher.dispatch(event);
     }
 
+    void startLocalClient() {
+        new LocalClient(view).start();
+        singleplayer = true;
+    }
+
     void startNetworkClient(String host, int port) throws IOException {
         new NetworkClient(view, host, port).start();
         singleplayer = false;
@@ -112,13 +120,16 @@ public class Gui extends Application {
         setRoot(fxml, null);
     }
 
-    void startLocalClient() {
-        new LocalClient(view).start();
-        singleplayer = true;
-    }
-
     boolean isSingleplayer() {
         return singleplayer;
+    }
+
+    boolean isMusicPlaying() {
+        return musicPlaying;
+    }
+
+    void setMusicPlaying(boolean musicPlaying) {
+        this.musicPlaying = musicPlaying;
     }
 
     void quit() {

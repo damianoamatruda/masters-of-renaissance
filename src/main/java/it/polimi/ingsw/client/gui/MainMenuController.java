@@ -1,8 +1,40 @@
 package it.polimi.ingsw.client.gui;
 
+import javafx.concurrent.Task;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class MainMenuController extends GuiController {
+    Media media;
+    MediaPlayer player;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
+
+        if (!Gui.getInstance().isMusicPlaying()) {
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    media = new Media(Objects.requireNonNull(getClass().getResource("/assets/gui/music.wav")).toString());
+                    player = new MediaPlayer(media);
+                    player.setCycleCount(MediaPlayer.INDEFINITE);
+                    player.play();
+                    Gui.getInstance().setMusicPlaying(true);
+                    return null;
+                }
+            };
+
+            Thread thread = new Thread(task);
+            thread.start();
+        }
+    }
+
     public void handleSinglePlayer() throws IOException {
         Gui gui = Gui.getInstance();
         gui.startLocalClient();
