@@ -46,6 +46,8 @@ public class Cli extends EventDispatcher {
         this.view.registerOnVC(this);
         this.registerOnMV(this.view);
 
+        this.network = null;
+
         this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());
 
@@ -113,7 +115,8 @@ public class Cli extends EventDispatcher {
     }
 
     public void stop() {
-        network.stop();
+        if (network != null)
+            network.stop();
         running = false;
     }
 

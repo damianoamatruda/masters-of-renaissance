@@ -69,6 +69,8 @@ public class Gui extends Application {
         this.view.registerOnVC(this.eventDispatcher);
         this.registerOnMV(this.view);
 
+        this.network = null;
+
         this.viewModel = new ViewModel();
 
         this.musicPlaying = false;
@@ -94,7 +96,8 @@ public class Gui extends Application {
 
     @Override
     public void stop() {
-        network.stop();
+        if (network != null)
+            network.stop();
     }
 
     void setController(GuiController controller) {
