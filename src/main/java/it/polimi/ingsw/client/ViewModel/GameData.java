@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import it.polimi.ingsw.common.reducedmodel.*;
 
@@ -15,6 +15,7 @@ public class GameData {
     private List<ReducedColor> devCardColors;
     private ReducedDevCardGrid devCardGrid;
     private List<ReducedDevCard> developmentCards;
+    private ReducedFaithTrack faithTrack;
     private boolean isLastRound;
     private List<ReducedLeaderCard> leaderCards;
     private ReducedMarket market;
@@ -25,15 +26,16 @@ public class GameData {
     private String winner;
 
     public GameData() {
-        setVaticanSections(new ArrayList<>());
+        vaticanSections = new ArrayList<>();
         isLastRound = false;
     }
 
     /**
-     * @return the actionTokens
+     * @param id the ID of the token to be returned
+     * @return the token associated with the ID
      */
-    public List<ReducedActionToken> getActionTokens() {
-        return actionTokens;
+    public Optional<ReducedActionToken> getActionToken(int id) {
+        return actionTokens.stream().filter(t -> t.getId() == id).findAny();
     }
 
     /**
@@ -60,10 +62,9 @@ public class GameData {
     /**
      * @param id the id of the container to be returned
      * @return the container corresponding to the id
-     * @throws NoSuchElementException if the container doesn't exist
      */
-    public ReducedResourceContainer getContainer(int id) throws NoSuchElementException {
-        return containers.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedResourceContainer> getContainer(int id) {
+        return containers.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
@@ -129,10 +130,9 @@ public class GameData {
     /**
      * @param id the ID of the card to be returned
      * @return the developmentCard matching the ID
-     * @throws NoSuchElementException if the card doesn't exist
      */
-    public ReducedDevCard getDevelopmentCard(int id) throws NoSuchElementException{
-        return developmentCards.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedDevCard> getDevelopmentCard(int id) {
+        return developmentCards.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
@@ -143,26 +143,39 @@ public class GameData {
     }
 
     /**
-     * @return the isLastRound
+     * @return the faithTrack
+     */
+    public ReducedFaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    /**
+     * @param faithTrack the faithTrack to set
+     */
+    public void setFaithTrack(ReducedFaithTrack faithTrack) {
+        this.faithTrack = faithTrack;
+    }
+
+    /**
+     * @return whether it's the last round of the match
      */
     public boolean isLastRound() {
         return isLastRound;
     }
 
     /**
-     * @param isLastRound the isLastRound to set
+     * Sets last round to true.
      */
-    public void setLastRound(boolean isLastRound) {
-        this.isLastRound = isLastRound;
+    public void setLastRound() {
+        this.isLastRound = true;
     }
 
     /**
      * @param id the ID of the card to be returned
      * @return the leaderCard matching the ID
-     * @throws NoSuchElementException if the card doesn't exist
      */
-    public ReducedLeaderCard getLeaderCard(int id) throws NoSuchElementException {
-        return leaderCards.stream().filter(c -> c.getId() == id).findAny().orElseThrow();
+    public Optional<ReducedLeaderCard> getLeaderCard(int id) {
+        return leaderCards.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
@@ -201,10 +214,11 @@ public class GameData {
     }
 
     /**
-     * @return the productions
+     * @param id the ID of the production to be returned
+     * @return the reduced production (transaction recipe)
      */
-    public List<ReducedResourceTransactionRecipe> getProductions() {
-        return productions;
+     public Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
+        return productions.stream().filter(p -> p.getId() == id).findAny();
     }
 
     /**
@@ -236,10 +250,12 @@ public class GameData {
     }
 
     /**
-     * @param vaticanSections the vaticanSections to set
+     * @param id the ID of the activated section
      */
-    public void setVaticanSections(List<Boolean> vaticanSections) {
-        this.vaticanSections = vaticanSections;
+    public void setVaticanSection(int id) {
+        faithTrack.getVaticanSections().entrySet().stream()
+            .map(e -> e.getValue())
+            .filter(vs -> vs.getId() == id).findAny().ifPresent(vs -> vs.setActive());
     }
 
     /**

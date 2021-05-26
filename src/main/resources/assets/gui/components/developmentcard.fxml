@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<fx:root fx:id="devCard" focusTraversable="true" maxHeight="251.0" maxWidth="166.0" minHeight="251.0" minWidth="166.0" opacity="0.5" prefHeight="251.0" prefWidth="166.0" style="-fx-background-color: #853E00;" type="Pane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.guiit.polimi.ingsw.client.gui.DevelopmentCardControllerit.polimi.ingsw.client.guiit.polimi.ingsw.client.gui.DevelopmentCardController">
+   <cursor>
+      <Cursor fx:constant="OPEN_HAND" />
+   </cursor>
+   <children>
+      <Label fx:id="level" layoutX="5.0" layoutY="9.0" text="LEVEL" />
+      <Label fx:id="color" layoutX="5.0" layoutY="29.0" text="COLOR" />
+      <HBox fx:id="cardRequirement" layoutX="50.0" layoutY="65.0" maxHeight="25.0" maxWidth="70.0" minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="70.0" />
+   </children>
+</fx:root>

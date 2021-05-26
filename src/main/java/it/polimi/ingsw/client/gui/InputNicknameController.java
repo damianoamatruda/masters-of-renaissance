@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
@@ -13,12 +14,17 @@ import java.io.IOException;
 public class InputNicknameController extends GuiController {
     public TextField nickname;
 
+    private String nicknameValue;
+
     public void handleNicknameInput(ActionEvent actionEvent) {
-        Gui.dispatch(new ReqJoin(nickname.getText()));
+        Gui gui = Gui.getInstance();
+        nicknameValue = nickname.getText();
+        gui.dispatch(new ReqJoin(nicknameValue));
     }
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
-        Gui.setRoot(Gui.isSingleplayer() ? "mainmenu" : "multiplayer");
+        Gui gui = Gui.getInstance();
+        gui.setRoot(gui.isOffline() ? "mainmenu" : "multiplayer");
     }
 
     @Override
@@ -30,11 +36,15 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateBookedSeats event) {
         super.on(gui, event);
-        if (Gui.isSingleplayer())
-            Gui.dispatch(new ReqNewGame(1));
+        gui.getViewModel().getUiData().setLocalPlayerNickname(nicknameValue);
+        if (gui.isOffline())
+            gui.dispatch(new ReqNewGame(1));
         else
             try {
-                Gui.setRoot("waitingbeforegame");
+                gui.setRoot("waitingbeforegame", (WaitingBeforeGameController controller) -> {
+                    controller.setBookedSeats(event.getBookedSeats());
+                    controller.setCanPrepareNewGame(event.canPrepareNewGame());
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -43,9 +53,17 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateGame event) {
         super.on(gui, event);
-        if (Gui.isSingleplayer()) {
+        if (gui.isOffline()) {
+            System.out.println("Game started.");
+        }
+    }
+
+    @Override
+    public void on(Gui gui, UpdateLeadersHand event) {
+        super.on(gui, event);
+        if (gui.isOffline()) {
             try {
-                Gui.setRoot("setupleaders");
+                gui.setRoot("setupleaders");
             } catch (IOException e) {
                 e.printStackTrace();
             }

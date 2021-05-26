@@ -37,7 +37,7 @@ public class TurnBeforeActionState extends CliTurnState {
     private void buyCard(Cli cli) {
         cli.getOut().println("Buying a development card.");
 
-        cli.getPrinter().update(cli.getCache().getDevCardGrid());
+        cli.getPrinter().printCardGrid(cli.getViewModel().getDevCardGrid());
 
         cli.getOut().println("\nChoose parameters:");
         //prompt for parameters
@@ -70,8 +70,8 @@ public class TurnBeforeActionState extends CliTurnState {
         cli.getOut().println("Resources need to be paid.");
         cli.getOut().println("Please specify how many resources to take from which container.");
 
-        cli.getPrinter().showWarehouseShelves(cli.getCache().getNickname());
-        cli.getPrinter().showStrongbox(cli.getCache().getNickname());
+        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getNickname());
+        cli.getPrinter().showStrongbox(cli.getViewModel().getNickname());
 
         shelves = cli.promptShelves();
 
@@ -82,8 +82,8 @@ public class TurnBeforeActionState extends CliTurnState {
     private void getResources(Cli cli) {
         cli.getOut().println("Getting resources from the market:");
 
-        cli.getPrinter().update(cli.getCache().getMarket());
-        cli.getPrinter().showWarehouseShelves(cli.getCache().getNickname());
+        cli.getPrinter().update(cli.getViewModel().getMarket());
+        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getNickname());
 
         boolean isValid = false;
         boolean isRow = false;
@@ -145,7 +145,7 @@ public class TurnBeforeActionState extends CliTurnState {
     private void swapShelves(Cli cli) {
         cli.getOut().println("Swapping shelves:");
 
-        cli.getPrinter().showWarehouseShelves(cli.getCache().getNickname());
+        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getNickname());
 
         int shelfid1, shelfid2;
         boolean isValid = false;

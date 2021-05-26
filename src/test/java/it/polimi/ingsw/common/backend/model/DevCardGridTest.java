@@ -65,7 +65,6 @@ public class DevCardGridTest {
                 devCardGrid,
                 new Market(Map.of(r1, 1), 1, r1),
                 new FaithTrack(Set.of(), Set.of(), 24),
-                0,
                 2);
     }
 

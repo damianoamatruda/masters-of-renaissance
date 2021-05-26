@@ -56,8 +56,7 @@ public class Game extends EventDispatcher {
 
     /**
      * Constructor of Game instances.
-     *
-     * @param players               the list of nicknames of players who joined
+     *  @param players               the list of nicknames of players who joined
      * @param colors
      * @param resourceTypes
      * @param leaderCards           the list of leader cards
@@ -67,13 +66,12 @@ public class Game extends EventDispatcher {
      * @param devCardGrid           the development card grid
      * @param market                the resource market
      * @param faithTrack            the faith track
-     * @param maxFaithPointsCount   the number of the last reachable faith track tile by a player
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
     public Game(List<Player> players, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market,
-                FaithTrack faithTrack, int maxFaithPointsCount, int maxObtainableDevCards) {
+                FaithTrack faithTrack, int maxObtainableDevCards) {
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);

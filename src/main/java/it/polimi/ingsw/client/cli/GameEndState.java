@@ -5,10 +5,10 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 public class GameEndState extends CliState {
     @Override
     public void render(Cli cli) {
-        if (cli.getCache().getWinner().equals(cli.getCache().getNickname()))
-            cli.getOut().println("You won with " + cli.getCache().getVictoryPoints(cli.getCache().getWinner()) + " points! CONGRATULATIONS!");
+        if (cli.getViewModel().getWinner().equals(cli.getViewModel().getNickname()))
+            cli.getOut().println("You won with " + cli.getViewModel().getVictoryPoints(cli.getViewModel().getWinner()) + " points! CONGRATULATIONS!");
         else
-            cli.getOut().println(cli.getCache().getWinner() + " is the winner with " + cli.getCache().getVictoryPoints(cli.getCache().getWinner()) + " points. Better luck next time!");
+            cli.getOut().println(cli.getViewModel().getWinner() + " is the winner with " + cli.getViewModel().getVictoryPoints(cli.getViewModel().getWinner()) + " points. Better luck next time!");
 
         cli.dispatch(new ReqQuit());
 

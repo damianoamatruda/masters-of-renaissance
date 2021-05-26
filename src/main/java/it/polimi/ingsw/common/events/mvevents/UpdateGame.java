@@ -129,4 +129,8 @@ public class UpdateGame extends ViewEvent {
     public boolean isResumed() {
         return resumed;
     }
+
+    public ReducedFaithTrack getFaithTrack() {
+        return faithTrack;
+    }
 }

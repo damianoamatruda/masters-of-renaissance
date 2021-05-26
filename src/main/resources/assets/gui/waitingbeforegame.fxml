@@ -5,11 +5,8 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            xmlns="http://javafx.com/javafx"
-            fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController"
-            id="body" stylesheets="@mainmenu.css">
+<?import javafx.scene.text.*?>
+<BorderPane id="body" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController">
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">
@@ -23,41 +20,50 @@
       <Text>Waiting for a new game...</Text>
       <Text>Player(s) who joined:</Text>
       <Text fx:id="bookedSeats">1</Text>
-      <Text>You can prepare a new game!</Text>
-      <HBox>
-        <Label text="Players count">
-          <HBox.margin>
-            <Insets right="30.0"/>
-            <Insets bottom="10.0"/>
-          </HBox.margin>
-        </Label>
-        <RadioButton text="2" selected="true">
-          <toggleGroup>
-            <ToggleGroup fx:id="group"/>
-          </toggleGroup>
-          <HBox.margin>
-            <Insets right="30.0"/>
-            <Insets bottom="10.0"/>
-          </HBox.margin>
-        </RadioButton>
-        <RadioButton text="3" toggleGroup="$group">
-          <HBox.margin>
-            <Insets right="30.0"/>
-            <Insets bottom="10.0"/>
-          </HBox.margin>
-        </RadioButton>
-        <RadioButton text="4" toggleGroup="$group">
-          <HBox.margin>
-            <Insets right="30.0"/>
-            <Insets bottom="10.0"/>
-          </HBox.margin>
-        </RadioButton>
-      </HBox>
-      <Button alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game">
-        <VBox.margin>
-          <Insets top="8.0"/>
-        </VBox.margin>
-      </Button>
+      <VBox alignment="CENTER" fx:id="canPrepare" visible="false">
+        <Text>You can prepare a new game</Text>
+        <Text/>
+        <HBox fx:id="playersCount" spacing="10">
+          <Label text="How many players? ">
+            <HBox.margin>
+              <Insets right="30.0"/>
+              <Insets bottom="10.0"/>
+            </HBox.margin>
+          </Label>
+          <RadioButton selected="true" text="1">
+            <toggleGroup>
+              <ToggleGroup fx:id="group"/>
+            </toggleGroup>
+            <HBox.margin>
+              <Insets right="30.0"/>
+              <Insets bottom="10.0"/>
+            </HBox.margin>
+          </RadioButton>
+          <RadioButton text="2" toggleGroup="$group">
+            <HBox.margin>
+              <Insets right="30.0"/>
+              <Insets bottom="10.0"/>
+            </HBox.margin>
+          </RadioButton>
+          <RadioButton text="3" toggleGroup="$group">
+            <HBox.margin>
+              <Insets right="30.0"/>
+              <Insets bottom="10.0"/>
+            </HBox.margin>
+          </RadioButton>
+          <RadioButton text="4" toggleGroup="$group">
+            <HBox.margin>
+              <Insets right="30.0"/>
+              <Insets bottom="10.0"/>
+            </HBox.margin>
+          </RadioButton>
+        </HBox>
+        <Button alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game" defaultButton="true">
+          <VBox.margin>
+            <Insets top="8.0"/>
+          </VBox.margin>
+        </Button>
+      </VBox>
       <padding>
         <Insets bottom="80.0"/>
       </padding>

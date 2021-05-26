@@ -31,4 +31,8 @@ public class ReducedFaithTrack {
     public Map<Integer, ReducedVaticanSection> getVaticanSections() {
         return vaticanSections;
     }
+
+    public int getMaxFaith() {
+        return maxFaith;
+    }
 }

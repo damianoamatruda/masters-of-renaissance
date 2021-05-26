@@ -1,14 +1,11 @@
 package it.polimi.ingsw.client.ViewModel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+
+import java.util.*;
 
 /** Data storage cache on the Masters Of Renaissance client. */
 public class ViewModel {
@@ -64,6 +61,14 @@ public class ViewModel {
         return playerData.get(nickname);
     }
 
+    public PlayerData getCurrentPlayerData() {
+        return getPlayerData(getGameData().getCurrentPlayer());
+    }
+
+    public PlayerData getLocalPlayerData() {
+        return getPlayerData(getUiData().getLocalPlayerNickname());
+    }
+
     /**
      * To be used when receiving the first UpdatePlayer message.
      * 
@@ -83,6 +88,9 @@ public class ViewModel {
      *          </ul>
      */
     public List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return null;
+        
         PlayerData pd = playerData.get(nickname);
         List<Integer> ids = new ArrayList<>();
         
@@ -96,7 +104,10 @@ public class ViewModel {
                 ids.add(c.getProduction());
         });
 
-        return gameData.getProductions().stream().filter(p -> ids.contains(p.getId())).toList();
+        return ids.stream()
+            .map(id -> gameData.getProduction(id).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
     }
 
     /**
@@ -104,7 +115,13 @@ public class ViewModel {
      * @return the topmost development cards in the player's slots
      */
     private List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
-        return playerData.get(nickname).getDevSlots().stream().map(slot -> gameData.getDevelopmentCard(slot.get(0))).toList();
+        if (!playerData.containsKey(nickname))
+            return null;
+
+        return playerData.get(nickname).getDevSlots().stream()
+            .map(slot -> gameData.getDevelopmentCard(slot.get(0)).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
     }
 
     /**
@@ -112,18 +129,34 @@ public class ViewModel {
      * @return the reduced leader cards owned by the player
      */
     public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
-        return playerData.get(nickname).getLeadersHand().stream().map(id -> gameData.getLeaderCard(id)).toList();
+        if (!playerData.containsKey(nickname))
+            return null;
+
+        return playerData.get(nickname).getLeadersHand().stream()
+                .map(id -> gameData.getLeaderCard(id).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     /**
      * @param nickname
-     * @return the player's reduced containers, including leader depots
+     * @return the player's reduced containers, including active leaders' depots
      */
     public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
-        List<Integer> ids = new ArrayList<>(playerData.get(nickname).getWarehouseShelves());
+        if (!playerData.containsKey(nickname))
+            return null;
+            
+        List<Integer> ids = new ArrayList<>();
 
-        playerData.get(nickname).getLeadersHand().forEach(id -> { if (id >= 0) ids.add(gameData.getLeaderCard(id).getContainerId()); });
+        playerData.get(nickname).getWarehouseShelves().forEach(id -> ids.add(id));
 
-        return ids.stream().map(id -> gameData.getContainer(id)).toList();
+        getPlayerLeaderCards(nickname).stream()
+            .filter(c -> c.isActive())
+            .forEach(c -> ids.add(c.getContainerId()));
+
+        return ids.stream()
+            .map(id -> gameData.getContainer(id).orElse(null))
+            .filter(Objects::nonNull)
+            .toList();
     }
 }
