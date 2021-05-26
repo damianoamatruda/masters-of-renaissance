@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -27,6 +29,7 @@ public class LeaderCard extends VBox {
     public Text victoryPoints;
 
     private Production prod;
+    private CardRequirement requirement;
 
     public LeaderCard(String leaderType) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(/*getBackground(leaderType)*/"/assets/gui/components/leadercard.fxml"));
@@ -52,7 +55,7 @@ public class LeaderCard extends VBox {
         this.prod.maxWidthProperty().bind(resourcePane.maxWidthProperty());
         this.prod.maxHeightProperty().bind(resourcePane.maxHeightProperty());
 
-        this.setStyle("-fx-alignment: ");
+//        this.setAlignment(Pos.BOTTOM_CENTER);
 
         resourcePane.getChildren().add(this.prod);
         resourcePane.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -94,5 +97,23 @@ public class LeaderCard extends VBox {
 
     public String getVictoryPoints() {
         return victoryPoints.getText();
+    }
+
+    public CardRequirement getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(ReducedResourceRequirement requirement) {
+        this.requirement = new CardRequirement();
+
+        this.requirement.setRequirements(requirement);
+        resourcePane.getChildren().addAll(this.requirement);
+    }
+
+    public void setRequirement(ReducedDevCardRequirement requirement) {
+        this.requirement = new CardRequirement();
+
+        this.requirement.setRequirements(requirement);
+        resourcePane.getChildren().addAll(this.requirement);
     }
 }

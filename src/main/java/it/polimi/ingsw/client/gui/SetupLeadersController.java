@@ -35,6 +35,8 @@ public class SetupLeadersController extends GuiController {
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
             leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
             leaderCard.setResourceType(reducedLeader.getResourceType());
+            leaderCard.setRequirement(reducedLeader.getResourceRequirement());
+            leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
             leaderCard.setProduction(p1);
             return leaderCard;
         }).toList();
