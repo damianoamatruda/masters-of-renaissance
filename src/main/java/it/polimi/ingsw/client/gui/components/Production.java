@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.components;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +43,7 @@ public class Production extends HBox {
             production.getInput().entrySet().size() + (production.getInputBlanks() > 0 ? 1 : 0),
             production.getOutput().entrySet().size() + (production.getOutputBlanks() > 0 ? 1 : 0));
 
+        this.setAlignment(Pos.CENTER);
         this.setBorder(new Border(new BorderStroke(Color.VIOLET, 
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         // TODO: exclusions, where png?
@@ -65,7 +67,7 @@ public class Production extends HBox {
             output.getChildren().add(row(production.getOutputBlanks(), blank));
         
         curlyBrace = (ImageView) this.getChildren().get(1);
-        curlyBrace.setImage(new Image(getClass().getResource("/assets/gui/resourcetypes/curlybracelight.png").toExternalForm()));
+        curlyBrace.setImage(new Image(Objects.requireNonNull(getClass().getResource("/assets/gui/resourcetypes/curlybracelight.png")).toExternalForm()));
     }
 
     private List<HBox> buildResourceLines(Map<String, Integer> resourceMap) {

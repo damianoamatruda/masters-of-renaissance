@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui.components;
 
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -16,12 +17,14 @@ import java.io.IOException;
 import java.util.Locale;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import javafx.scene.text.TextAlignment;
 
 public class LeaderCard extends VBox {
     public Pane leaderCard;
     public Text leaderTypeText;
     public Text resourceTypeText;
     public Pane resourcePane;
+    public Text victoryPoints;
 
     private Production prod;
 
@@ -49,8 +52,10 @@ public class LeaderCard extends VBox {
         this.prod.maxWidthProperty().bind(resourcePane.maxWidthProperty());
         this.prod.maxHeightProperty().bind(resourcePane.maxHeightProperty());
 
+        this.setStyle("-fx-alignment: ");
+
         resourcePane.getChildren().add(this.prod);
-        resourcePane.setBorder(new Border(new BorderStroke(Color.BLACK, 
+        resourcePane.setBorder(new Border(new BorderStroke(Color.BLACK,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
@@ -71,7 +76,8 @@ public class LeaderCard extends VBox {
     }
 
     public void setResourceType(String value) {
-        resourceTypeProperty().set(value);
+//        resourceTypeProperty().set(value);
+//        resourceTypeText.setTextAlignment(TextAlignment.JUSTIFY);
     }
 
     public StringProperty resourceTypeProperty() {
@@ -80,5 +86,13 @@ public class LeaderCard extends VBox {
 
     public String getBackground(String leaderType) {
         return "/assets/gui/leadertemplates/" + leaderType.toLowerCase() + ".png";
+    }
+
+    public void setVictoryPoints(String pts) {
+        victoryPoints.setText(pts);
+    }
+
+    public String getVictoryPoints() {
+        return victoryPoints.getText();
     }
 }

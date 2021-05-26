@@ -33,6 +33,7 @@ public class SetupLeadersController extends GuiController {
         List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
+            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
             leaderCard.setResourceType(reducedLeader.getResourceType());
             leaderCard.setProduction(p1);
             return leaderCard;
