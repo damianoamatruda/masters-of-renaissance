@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.NetworkProtocol;
 import it.polimi.ingsw.common.View;
@@ -19,9 +20,9 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class Server implements Network {
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
-    private static final String gameConfigPath = "/config/config.json"; // TODO: Share this constant with LocalClient
+    private static final String gameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
 
     private final int port;
     private final ExecutorService executor;
@@ -99,7 +100,7 @@ public class Server {
     }
 
     public void stop() {
-        executor.shutdown();
+        executor.shutdownNow();
         listening = false;
     }
 

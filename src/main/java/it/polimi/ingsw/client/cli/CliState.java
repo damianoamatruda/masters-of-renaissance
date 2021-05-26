@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client.cli;
 
-import java.util.Optional;
-
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
+
+import java.util.Optional;
 
 public abstract class CliState implements Renderable {
     protected void renderMainTitle(Cli cli) {
@@ -99,7 +99,7 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateBookedSeats event) {
         if (event.canPrepareNewGame().equals(cli.getCache().getNickname())) {
-            if (cli.isSingleplayer())
+            if (cli.isOffline())
                 cli.dispatch(new ReqNewGame(1));
             else
                 cli.setState(new InputPlayersCountState());

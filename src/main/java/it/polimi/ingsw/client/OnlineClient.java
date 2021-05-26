@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.NetworkProtocol;
 import it.polimi.ingsw.common.View;
@@ -10,7 +11,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class NetworkClient {
+public class OnlineClient implements Network {
     private final View view;
     private final String host;
     private final int port;
@@ -19,7 +20,7 @@ public class NetworkClient {
     private Socket socket;
     private NetworkHandler networkHandler;
 
-    public NetworkClient(View view, String host, int port) {
+    public OnlineClient(View view, String host, int port) {
         this.view = view;
         this.host = host;
         this.port = port;
@@ -51,7 +52,7 @@ public class NetworkClient {
     }
 
     public void stop() {
-        executor.shutdown();
+        executor.shutdownNow();
 
         if (socket != null) {
             try {

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.LocalClient;
-import it.polimi.ingsw.client.NetworkClient;
+import it.polimi.ingsw.client.OfflineClient;
+import it.polimi.ingsw.client.OnlineClient;
 import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
+import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -32,13 +33,14 @@ public class Gui extends Application {
 
     private final EventDispatcher eventDispatcher;
     private final View view;
+    private Network network;
 
     private Scene scene;
     private GuiController controller;
 
     private final ViewModel viewModel;
 
-    private boolean singleplayer;
+    private boolean offline;
     private boolean musicPlaying;
 
     public static void main(String[] args) {
@@ -90,6 +92,11 @@ public class Gui extends Application {
         primaryStage.show();
     }
 
+    @Override
+    public void stop() {
+        network.stop();
+    }
+
     void setController(GuiController controller) {
         this.controller = controller;
     }
@@ -98,14 +105,19 @@ public class Gui extends Application {
         eventDispatcher.dispatch(event);
     }
 
-    void startLocalClient() {
-        new LocalClient(view).start();
-        singleplayer = true;
+    void startOfflineClient() {
+        network = new OfflineClient(view);
+        try {
+            network.start();
+        } catch (IOException ignored) {
+        }
+        offline = true;
     }
 
-    void startNetworkClient(String host, int port) throws IOException {
-        new NetworkClient(view, host, port).start();
-        singleplayer = false;
+    void startOnlineClient(String host, int port) throws IOException {
+        network = new OnlineClient(view, host, port);
+        network.start();
+        offline = false;
     }
 
     void setRoot(String fxml, Consumer<?> callback) throws IOException {
@@ -120,8 +132,8 @@ public class Gui extends Application {
         setRoot(fxml, null);
     }
 
-    boolean isSingleplayer() {
-        return singleplayer;
+    boolean isOffline() {
+        return offline;
     }
 
     boolean isMusicPlaying() {

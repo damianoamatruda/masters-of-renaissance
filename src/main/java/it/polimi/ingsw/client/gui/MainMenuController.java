@@ -37,7 +37,7 @@ public class MainMenuController extends GuiController {
 
     public void handlePlayOffline() throws IOException {
         Gui gui = Gui.getInstance();
-        gui.startLocalClient();
+        gui.startOfflineClient();
         gui.setRoot("inputnickname");
     }
 

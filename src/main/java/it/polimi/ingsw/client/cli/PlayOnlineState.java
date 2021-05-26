@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.client.NetworkClient;
+import it.polimi.ingsw.client.OnlineClient;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +19,7 @@ public class PlayOnlineState extends CliState {
         for (int i = 0; i < 2; i++)
             cli.getOut().println();
 
-        JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(NetworkClient.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
+        JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(OnlineClient.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
 
         String host = jsonConfig.get("host").getAsString();
         int port = jsonConfig.get("port").getAsInt();
@@ -55,7 +55,7 @@ public class PlayOnlineState extends CliState {
 
         boolean connected = true;
         try {
-            cli.startNetworkClient(host, port);
+            cli.startOnlineClient(host, port);
         } catch (UnknownHostException e) {
             connected = false;
             cli.getOut().printf("Don't know about host %s%n", host);

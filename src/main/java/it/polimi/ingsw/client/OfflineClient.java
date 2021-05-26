@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.Controller;
@@ -10,7 +11,7 @@ import it.polimi.ingsw.common.backend.model.Lobby;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LocalClient {
+public class OfflineClient implements Network {
     private static final String gameConfigPath = "/config/config.json";
 
     private final View view;
@@ -18,7 +19,7 @@ public class LocalClient {
     private Controller controller;
     private NetworkHandler networkHandler;
 
-    public LocalClient(View view) {
+    public OfflineClient(View view) {
         this.view = view;
         this.executor = Executors.newCachedThreadPool();
         this.controller = null;
@@ -47,7 +48,7 @@ public class LocalClient {
     }
 
     public void stop() {
-        executor.shutdown();
+        executor.shutdownNow();
 
         if (controller != null)
             controller.unregisterOnVC(view);

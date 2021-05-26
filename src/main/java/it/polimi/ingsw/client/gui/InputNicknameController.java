@@ -23,7 +23,7 @@ public class InputNicknameController extends GuiController {
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
         Gui gui = Gui.getInstance();
-        gui.setRoot(gui.isSingleplayer() ? "mainmenu" : "multiplayer");
+        gui.setRoot(gui.isOffline() ? "mainmenu" : "multiplayer");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class InputNicknameController extends GuiController {
     public void on(Gui gui, UpdateBookedSeats event) {
         super.on(gui, event);
         gui.getCache().getUiData().setLocalPlayerNickname(nicknameValue);
-        if (gui.isSingleplayer())
+        if (gui.isOffline())
             gui.dispatch(new ReqNewGame(1));
         else
             try {
@@ -52,7 +52,7 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateGame event) {
         super.on(gui, event);
-        if (gui.isSingleplayer()) {
+        if (gui.isOffline()) {
             try {
                 gui.setRoot("setupleaders");
             } catch (IOException e) {
