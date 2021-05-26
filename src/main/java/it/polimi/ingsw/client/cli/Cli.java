@@ -221,7 +221,7 @@ public class Cli extends EventDispatcher {
         return printer;
     }
 
-    public ReducedGame getCache() {
+    public ReducedGame getViewModel() {
         return cache;
     }
 

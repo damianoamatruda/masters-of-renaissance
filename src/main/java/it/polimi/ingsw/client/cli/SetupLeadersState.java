@@ -23,14 +23,14 @@ public class SetupLeadersState extends CliState {
         cli.getOut().println("\nChoosing leaders hand.");
         cli.getOut().println("Please input leader card IDs from the ones assigned to you.\n");
 
-        if (cli.getCache().getPlayerLeaders(cli.getCache().getNickname()) != null)
-//            cli.getCache().getPlayerLeaders(cli.getCache().getNickname()).forEach(printer::update);
-            cli.getPrinter().printOwnedLeaders(cli.getCache().getPlayerLeaders(cli.getCache().getNickname()));
+        if (cli.getViewModel().getPlayerLeaders(cli.getViewModel().getNickname()) != null)
+//            cli.getViewModel().getPlayerLeaders(cli.getViewModel().getNickname()).forEach(printer::update);
+            cli.getPrinter().printOwnedLeaders(cli.getViewModel().getPlayerLeaders(cli.getViewModel().getNickname()));
 
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while (chosen < cli.getCache().getSetup(cli.getCache().getNickname()).getChosenLeadersCount()) {
+        while (chosen < cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getChosenLeadersCount()) {
             String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen, which would you like to add? ID");
             try {
                 int id = Integer.parseInt(input);

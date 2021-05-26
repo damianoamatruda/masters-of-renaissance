@@ -17,7 +17,7 @@ public class InputNicknameState extends CliState{
             nickname = cli.prompt("Nickname");
         } while (nickname.isBlank());
 
-        cli.getCache().setNickname(nickname);
+        cli.getViewModel().setNickname(nickname);
         cli.dispatch(new ReqJoin(nickname));
     }
 }

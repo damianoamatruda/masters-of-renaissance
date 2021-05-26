@@ -79,7 +79,7 @@ public class Gui extends Application {
     /**
      * @return the GUI's viewmodel
      */
-    public ViewModel getCache() {
+    public ViewModel getViewModel() {
         return viewModel;
     }
 
