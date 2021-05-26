@@ -1,15 +1,11 @@
 package it.polimi.ingsw.client.ViewModel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+
+import java.util.*;
 
 /** Data storage cache on the Masters Of Renaissance client. */
 public class ViewModel {
@@ -123,10 +119,12 @@ public class ViewModel {
      * @return the reduced leader cards owned by the player
      */
     public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return null;
         return playerData.get(nickname).getLeadersHand().stream()
-            .map(id -> gameData.getLeaderCard(id).orElse(null))
-            .filter(Objects::nonNull)
-            .toList();
+                .map(id -> gameData.getLeaderCard(id).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     /**

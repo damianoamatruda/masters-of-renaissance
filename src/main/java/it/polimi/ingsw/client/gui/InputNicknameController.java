@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
@@ -51,6 +52,14 @@ public class InputNicknameController extends GuiController {
 
     @Override
     public void on(Gui gui, UpdateGame event) {
+        super.on(gui, event);
+        if (gui.isOffline()) {
+            System.out.println("Game started.");
+        }
+    }
+
+    @Override
+    public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
         if (gui.isOffline()) {
             try {

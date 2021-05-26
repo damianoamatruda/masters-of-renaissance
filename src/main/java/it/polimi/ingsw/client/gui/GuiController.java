@@ -142,11 +142,11 @@ public abstract class GuiController implements Initializable {
             player
             leadershand -> with GS and player has enough info for leader choice */
 
-        gui.getViewModel().getCurrentPlayerData().setLeadersHand(event.getLeaders());
+        gui.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
     }
 
     public void on(Gui gui, UpdateLeadersHandCount event) {
-        gui.getViewModel().getCurrentPlayerData().setLeadersCount(event.getLeadersCount());
+        gui.getViewModel().getPlayerData(event.getPlayer()).setLeadersCount(event.getLeadersCount());
     }
 
     public void on(Gui gui, UpdateMarket event) {
