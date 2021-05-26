@@ -65,6 +65,10 @@ public class ViewModel {
         return getPlayerData(getGameData().getCurrentPlayer());
     }
 
+    public PlayerData getLocalPlayerData() {
+        return getPlayerData(getUiData().getLocalPlayerNickname());
+    }
+
     /**
      * To be used when receiving the first UpdatePlayer message.
      * 
@@ -84,6 +88,9 @@ public class ViewModel {
      *          </ul>
      */
     public List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return null;
+        
         PlayerData pd = playerData.get(nickname);
         List<Integer> ids = new ArrayList<>();
         
@@ -108,6 +115,9 @@ public class ViewModel {
      * @return the topmost development cards in the player's slots
      */
     private List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return null;
+
         return playerData.get(nickname).getDevSlots().stream()
             .map(slot -> gameData.getDevelopmentCard(slot.get(0)).orElse(null))
             .filter(Objects::nonNull)
@@ -121,6 +131,7 @@ public class ViewModel {
     public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
         if (!playerData.containsKey(nickname))
             return null;
+
         return playerData.get(nickname).getLeadersHand().stream()
                 .map(id -> gameData.getLeaderCard(id).orElse(null))
                 .filter(Objects::nonNull)
@@ -132,6 +143,9 @@ public class ViewModel {
      * @return the player's reduced containers, including active leaders' depots
      */
     public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return null;
+            
         List<Integer> ids = new ArrayList<>();
 
         playerData.get(nickname).getWarehouseShelves().forEach(id -> ids.add(id));
