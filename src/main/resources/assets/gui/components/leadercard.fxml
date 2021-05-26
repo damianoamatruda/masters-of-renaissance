@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="leaderCard" focusTraversable="true" maxHeight="251.0"
-         maxWidth="166.0"
-         minHeight="251.0" minWidth="166.0" opacity="0.5" prefHeight="251.0" prefWidth="166.0"
-         style="-fx-background-color: #853E00;" type="Pane" xmlns="http://javafx.com/javafx/16">
+
+<fx:root fx:id="leaderCard" focusTraversable="true" maxHeight="251.0" maxWidth="166.0" minHeight="251.0" minWidth="166.0" opacity="0.5" prefHeight="251.0" prefWidth="166.0" style="-fx-background-color: #853E00;" type="Pane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <cursor>
-      <Cursor fx:constant="OPEN_HAND"/>
+      <Cursor fx:constant="OPEN_HAND" />
    </cursor>
    <VBox>
       <Text>LEADERCARD</Text>
-      <Text fx:id="leaderTypeText" layoutX="5.0" layoutY="9.0"/>
-      <Text fx:id="resourceTypeText" layoutX="5.0" layoutY="29.0"/>
+      <Text fx:id="leaderTypeText" layoutX="5.0" layoutY="9.0" />
+      <Text fx:id="resourceTypeText" layoutX="5.0" layoutY="29.0" />
       <!--<HBox fx:id="cardRequirement" layoutX="50.0" layoutY="65.0" maxHeight="25.0" maxWidth="70.0" minHeight="25.0"
             minWidth="70.0" prefHeight="25.0" prefWidth="70.0"/>-->
    </VBox>
+   <Pane fx:id="resourcePane" layoutX="33.0" layoutY="151.0" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" prefHeight="100.0" prefWidth="100.0" scaleShape="false" />
 </fx:root>
