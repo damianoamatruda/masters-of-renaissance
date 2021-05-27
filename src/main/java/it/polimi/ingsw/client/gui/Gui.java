@@ -25,9 +25,9 @@ import java.util.function.Consumer;
  * JavaFX App
  */
 public class Gui extends Application {
-    private static final String initialSceneFxml = /*"setupleaders"*/ "mainmenu";
-    private static final double minWidth = 854;
-    private static final double minHeight = 480;
+    private static final String initialSceneFxml = "mainmenu";//"playground"; //"setupleaders";// "mainmenu";
+    private static final double minWidth = 1280;
+    private static final double minHeight = 780;
 
     private static Gui instance = null;
 

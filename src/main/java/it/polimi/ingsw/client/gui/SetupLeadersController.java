@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -25,39 +26,46 @@ public class SetupLeadersController extends GuiController {
 
         Gui gui = Gui.getInstance();
 
+        try {
+                gui.setRoot("playground");
+        } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+
         // if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()) == null)
         //     throw new RuntimeException();
 
-        leadersContainer.setSpacing(10);
-        leadersContainer.setAlignment(Pos.CENTER);
+        // leadersContainer.setSpacing(10);
+        // leadersContainer.setAlignment(Pos.CENTER);
 
 
-        Map<String, Integer> m1 = new HashMap<>();
-        Map<String, Integer> m2 = Map.of("shield", 2);
-        m1.put("coin", 1);
-        m1.put("Shield", 2);
-        m1.put("Servant", 2);
-        ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
+        // Map<String, Integer> m1 = new HashMap<>();
+        // Map<String, Integer> m2 = Map.of("shield", 2);
+        // m1.put("coin", 1);
+        // m1.put("Shield", 2);
+        // m1.put("Servant", 2);
+        // ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
 
-        StackPane pane = new StackPane();
+        // StackPane pane = new StackPane();
 
-        Production prod = new Production();
-        prod.setProduction(p1);
+        // Production prod = new Production();
+        // prod.setProduction(p1);
 
-        List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
-            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
-            leaderCard.setLeaderType(reducedLeader.getLeaderType());
-            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
-            leaderCard.setResourceType(reducedLeader.getResourceType());
-            leaderCard.setRequirement(reducedLeader.getResourceRequirement());
-            leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
-            leaderCard.setProduction(p1);
-            return leaderCard;
-        }).toList();
+        // List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
+        //     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
+        //     leaderCard.setLeaderType(reducedLeader.getLeaderType());
+        //     leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
+        //     leaderCard.setResourceType(reducedLeader.getResourceType());
+        //     leaderCard.setRequirement(reducedLeader.getResourceRequirement());
+        //     leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
+        //     leaderCard.setProduction(p1);
+        //     return leaderCard;
+        // }).toList();
 //
 //        System.out.println(leaderCards);
 
-        leadersContainer.getChildren().addAll(leaderCards);
+        // leadersContainer.getChildren().addAll(leaderCards);
 
         // Warehouse w = new Warehouse();
         // List<ReducedResourceContainer> containers = new ArrayList<>();
@@ -122,5 +130,7 @@ public class SetupLeadersController extends GuiController {
         // m.setContent(rm);
 
         // leadersContainer.getChildren().add(m);
+
+        
     }
 }

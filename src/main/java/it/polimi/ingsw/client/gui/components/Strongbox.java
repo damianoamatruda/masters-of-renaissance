@@ -41,7 +41,13 @@ public class Strongbox extends StackPane {
     }
 
     public void setContent(ReducedResourceContainer c) {
-        // grid.setGridLinesVisible(true);
+        grid.setGridLinesVisible(true);
+        this.setBorder(new Border(new BorderStroke(Color.GREEN, 
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        background.setFitWidth(this.getPrefWidth());
+        background.setFitHeight(this.getPrefHeight());
+
         double height = this.getPrefHeight(), // height of strongbox region
                width = this.getPrefWidth();
 
@@ -68,8 +74,8 @@ public class Strongbox extends StackPane {
             HBox cell = new HBox(cellWidth * 0.2);
             cell.setAlignment(Pos.CENTER);
 
-            // cell.setBorder(new Border(new BorderStroke(Color.RED, 
-            //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            cell.setBorder(new Border(new BorderStroke(Color.RED, 
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
             Resource r = new Resource();
             r.setResourceType(e.getKey());
@@ -85,16 +91,15 @@ public class Strongbox extends StackPane {
             grid.add(cell, col, row);
 
             if (row == sqroot) { // one more row than cols
-                if (grid.getColumnConstraints().size() <= col)
-                    grid.getColumnConstraints().add(cc);
                 col++;
                 row = 0;
             } else {
                 row++;
-                if (grid.getRowConstraints().size() <= row)
-                    grid.getRowConstraints().add(rc);
             }
         }
-        grid.getColumnConstraints().add(cc);
+        while (grid.getColumnConstraints().size() < col)
+            grid.getColumnConstraints().add(cc);
+        while (grid.getRowConstraints().size() < row)
+            grid.getRowConstraints().add(rc);
     }
 }

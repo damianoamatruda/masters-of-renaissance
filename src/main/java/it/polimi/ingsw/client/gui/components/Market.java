@@ -42,9 +42,9 @@ public class Market extends StackPane {
     }
 
     public void setContent(ReducedMarket m) {
-        this.setBorder(new Border(new BorderStroke(Color.RED, 
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        grid.setGridLinesVisible(true);
+        // this.setBorder(new Border(new BorderStroke(Color.RED, 
+        //         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // grid.setGridLinesVisible(true);
         double height = this.getPrefHeight(), // height of market region
                width = this.getPrefWidth();
 
