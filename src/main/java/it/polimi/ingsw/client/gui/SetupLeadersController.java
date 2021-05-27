@@ -1,9 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.components.LeaderCard;
-import it.polimi.ingsw.client.gui.components.Production;
-import it.polimi.ingsw.client.gui.components.Strongbox;
-import it.polimi.ingsw.client.gui.components.Warehouse;
+import it.polimi.ingsw.client.gui.components.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
@@ -46,8 +44,8 @@ public class SetupLeadersController extends GuiController {
 //
 //        System.out.println(leaderCards);
 
-        // leadersContainer.setSpacing(10);
-        // leadersContainer.setAlignment(Pos.CENTER);
+         leadersContainer.setSpacing(10);
+         leadersContainer.setAlignment(Pos.CENTER);
 
 //        leadersContainer.getChildren().addAll(leaderCards);
 
@@ -57,23 +55,20 @@ public class SetupLeadersController extends GuiController {
         // containers.add(new ReducedResourceContainer(0, 2, Map.of("Shield", 2), "Shield"));
         // containers.add(new ReducedResourceContainer(0, 3, Map.of(), null));
 
-        // w.setWarehouseShelves(containers);
-        // leadersContainer.getChildren().add(w);
-        
-        
-        
-        
-        // Map<String, Integer> m1 = new HashMap<>();
-        // Map<String, Integer> m2 = Map.of("shield", 2);
-        // m1.put("coin", 1);
-        // m1.put("Shield", 2);
-        // m1.put("Servant", 2);
-        // ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
+//         w.setWarehouseShelves(containers);
+//         leadersContainer.getChildren().add(w);
 
-        // StackPane pane = new StackPane();
+         Map<String, Integer> m1 = new HashMap<>();
+         Map<String, Integer> m2 = Map.of("shield", 2);
+         m1.put("coin", 1);
+         m1.put("Shield", 2);
+         m1.put("Servant", 2);
+         ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
 
-        // Production prod = new Production();
-        // prod.setProduction(p1);
+         StackPane pane = new StackPane();
+
+         Production prod = new Production();
+         prod.setProduction(p1);
 
         // // prod.maxWidthProperty().bind(pane.maxWidthProperty());
         // // prod.maxHeightProperty().bind(pane.maxHeightProperty());
@@ -88,19 +83,27 @@ public class SetupLeadersController extends GuiController {
 
         // leadersContainer.getChildren().add(pane);
         
-        // Map<String, Integer> content = new HashMap<>();
-        // content.put("Coin", 1);
-        // content.put("Shield", 2);
-        // content.put("Servant", 2);
-        // content.put("Stone", 2);
-        // content.put("Blank", 2);
-        // content.put("Faith", 2);
-        
-        // Strongbox s = new Strongbox();
-        // ReducedResourceContainer c = new ReducedResourceContainer(0, -1, content, null);
+//         Map<String, Integer> content = new HashMap<>();
+//         content.put("Coin", 1);
+//         content.put("Shield", 2);
+//         content.put("Servant", 2);
+//         content.put("Stone", 2);
+//         content.put("Blank", 2);
+//         content.put("Faith", 2);
+//
+//         Strongbox s = new Strongbox();
+//         ReducedResourceContainer c = new ReducedResourceContainer(0, -1, content, null);
+//
+//         s.setContent(c);
+//
+//         leadersContainer.getChildren().add(s);
 
-        // s.setContent(c);
+        ReducedDevCard card = gui.getViewModel().getGameData().getDevelopmentCard(0).orElseThrow();
 
-        // leadersContainer.getChildren().add(s);
+        DevelopmentCard guicard = new DevelopmentCard(card.getColor());
+        guicard.setProduction(p1);
+        guicard.setRequirement(card.getCost());
+        guicard.setVictoryPoints(12+"");
+        leadersContainer.getChildren().add(guicard);
     }
 }
