@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import it.polimi.ingsw.common.reducedmodel.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Border;
@@ -98,12 +95,19 @@ public class SetupLeadersController extends GuiController {
 //
 //         leadersContainer.getChildren().add(s);
 
-        ReducedDevCard card = gui.getViewModel().getGameData().getDevelopmentCard(0).orElseThrow();
+//        ReducedDevCard card = gui.getViewModel().getGameData().getDevelopmentCard(0).orElseThrow();
+//
+//        DevelopmentCard guicard = new DevelopmentCard(card.getColor());
+//        guicard.setProduction(p1);
+//        guicard.setRequirement(card.getCost());
+//        guicard.setVictoryPoints(12+"");
+//        leadersContainer.getChildren().add(guicard);
 
-        DevelopmentCard guicard = new DevelopmentCard(card.getColor());
-        guicard.setProduction(p1);
-        guicard.setRequirement(card.getCost());
-        guicard.setVictoryPoints(12+"");
-        leadersContainer.getChildren().add(guicard);
+        ReducedDevCardGrid grid = gui.getViewModel().getGameData().getDevCardGrid();
+
+        DevCardGrid guigrid = new DevCardGrid();
+        guigrid.setGrid(grid);
+
+        leadersContainer.getChildren().add(guigrid);
     }
 }
