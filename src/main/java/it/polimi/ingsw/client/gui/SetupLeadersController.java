@@ -112,5 +112,15 @@ public class SetupLeadersController extends GuiController {
 //        guigrid.setGrid(grid);
 //
 //        leadersContainer.getChildren().add(guigrid);
+
+        // Market m = new Market();
+
+        // List<String> r0 = List.of("Coin", "Shield", "Servant", "Stone");
+        // List<List<String>> grid = List.of(r0, r0, r0);
+        // ReducedMarket rm = new ReducedMarket(grid, null, "Coin");
+
+        // m.setContent(rm);
+
+        // leadersContainer.getChildren().add(m);
     }
 }

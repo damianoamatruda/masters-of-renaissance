@@ -62,14 +62,14 @@ public class Production extends StackPane {
         input.getChildren().addAll(buildResourceLines(production.getInput()));
 
         if (production.getInputBlanks() > 0) {
-            Resource blank = new Resource(); blank.setResourceType("blank"); // TODO: parameterize
+            Resource blank = new Resource(); blank.setResourceType("Zero"); // TODO: parameterize
             input.getChildren().add(row(production.getInputBlanks(), blank));
         }
 
         output.getChildren().addAll(buildResourceLines(production.getOutput()));
 
         if (production.getOutputBlanks() > 0) {
-            Resource blank = new Resource(); blank.setResourceType("blank"); // TODO: parameterize
+            Resource blank = new Resource(); blank.setResourceType("Zero"); // TODO: parameterize
             output.getChildren().add(row(production.getOutputBlanks(), blank));
         }
         
