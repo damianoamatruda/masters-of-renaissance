@@ -34,4 +34,9 @@ public class DevelopmentCard extends Card {
     public void setLevel(int level){
         // should put as many dots to the side flags as the level of the card
     }
+
+    @Override
+    protected String getFXMLName() {
+        return "developmentcard";
+    }
 }

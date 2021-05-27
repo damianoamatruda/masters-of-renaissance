@@ -65,4 +65,9 @@ public class LeaderCard extends Card {
         this.requirement.setRequirements(requirement);
         resourcePane.getChildren().addAll(this.requirement);
     }
+
+    @Override
+    protected String getFXMLName() {
+        return "leadercard";
+    }
 }

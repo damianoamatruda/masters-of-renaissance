@@ -17,7 +17,7 @@ public abstract class Card extends Pane {
     protected CardRequirement requirement;
 
     protected Card(String type) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(/*getBackground(leaderType)*/"/assets/gui/components/leadercard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/" + getFXMLName() + ".fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         this.setStyle("-fx-background-image: url('" + getBackground(type) + "');" +
@@ -32,6 +32,8 @@ public abstract class Card extends Pane {
             throw new RuntimeException(exception);
         }
     }
+
+    protected abstract String getFXMLName();
 
     public abstract String getBackground(String type);
 
