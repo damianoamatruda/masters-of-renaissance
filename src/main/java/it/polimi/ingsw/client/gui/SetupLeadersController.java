@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Production;
+import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
@@ -45,19 +46,19 @@ public class SetupLeadersController extends GuiController {
 //
 //        System.out.println(leaderCards);
 
-        leadersContainer.setSpacing(10);
-        leadersContainer.setAlignment(Pos.CENTER);
+        // leadersContainer.setSpacing(10);
+        // leadersContainer.setAlignment(Pos.CENTER);
 
 //        leadersContainer.getChildren().addAll(leaderCards);
 
-        Warehouse w = new Warehouse();
-        List<ReducedResourceContainer> containers = new ArrayList<>();
-        containers.add(new ReducedResourceContainer(0, 1, Map.of("Coin", 1), "Coin"));
-        containers.add(new ReducedResourceContainer(0, 2, Map.of("Shield", 2), "Shield"));
-        containers.add(new ReducedResourceContainer(0, 3, Map.of(), null));
+        // Warehouse w = new Warehouse();
+        // List<ReducedResourceContainer> containers = new ArrayList<>();
+        // containers.add(new ReducedResourceContainer(0, 1, Map.of("Coin", 1), "Coin"));
+        // containers.add(new ReducedResourceContainer(0, 2, Map.of("Shield", 2), "Shield"));
+        // containers.add(new ReducedResourceContainer(0, 3, Map.of(), null));
 
-        w.setWarehouseShelves(containers);
-        leadersContainer.getChildren().add(w);
+        // w.setWarehouseShelves(containers);
+        // leadersContainer.getChildren().add(w);
         
         
         

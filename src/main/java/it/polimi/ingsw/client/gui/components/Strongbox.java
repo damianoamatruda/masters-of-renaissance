@@ -41,6 +41,7 @@ public class Strongbox extends StackPane {
     }
 
     public void setContent(ReducedResourceContainer c) {
+        // grid.setGridLinesVisible(true);
         double height = this.getPrefHeight(), // height of strongbox region
                width = this.getPrefWidth();
 
@@ -49,19 +50,17 @@ public class Strongbox extends StackPane {
         // these are used for scalin, caps are arbitrary and looked good on my machine
         double defTextHeight = 20, // got this by trying (it's how big Text appears with no scaling)
                cellHeight = Math.min(80, height / sqroot),
-               cellWidth = width / sqroot,
+               cellWidth = width / (sqroot + 1),
                scaleRatio = 0.8 * (cellHeight / defTextHeight);
         
         Iterator<Entry<String, Integer>> i = c.getContent().entrySet().iterator();
 
         RowConstraints rc = grid.getRowConstraints().get(0);
         rc.setVgrow(Priority.ALWAYS);
-        rc.setMaxHeight(height/(sqroot + 1));
-        rc.setMinHeight(height/(sqroot + 1));
+        rc.setPercentHeight(100d/(sqroot + 1));
         ColumnConstraints cc = grid.getColumnConstraints().get(0);
         cc.setHgrow(Priority.ALWAYS);
-        cc.setMaxWidth(width/sqroot);
-        cc.setMinWidth(width/sqroot);
+        cc.setPercentWidth(100d/(sqroot));
 
         while (i.hasNext()) {
             Entry<String, Integer> e = i.next();
@@ -85,24 +84,17 @@ public class Strongbox extends StackPane {
             
             grid.add(cell, col, row);
 
-            // rc = grid.getRowConstraints().get(row);
-            // rc.setPercentHeight(cellHeight);
-            // cc = grid.getColumnConstraints().get(col);
-            // cc.setPercentWidth(cellWidth);
-
             if (row == sqroot) { // one more row than cols
-                if (grid.getColumnConstraints().size() < col)
+                if (grid.getColumnConstraints().size() <= col)
                     grid.getColumnConstraints().add(cc);
                 col++;
                 row = 0;
             } else {
                 row++;
-                if (grid.getRowConstraints().size() < row)
+                if (grid.getRowConstraints().size() <= row)
                     grid.getRowConstraints().add(rc);
             }
         }
-        
-
-        int x = 0;
+        grid.getColumnConstraints().add(cc);
     }
 }
