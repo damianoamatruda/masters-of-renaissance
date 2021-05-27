@@ -6,24 +6,24 @@ import java.util.Map;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class Production extends HBox {
+public class Production extends StackPane {
     VBox input, output;
     ImageView curlyBrace;
-    private double maxRowHeight;
+    private double maxRowHeight, elementScale, padding = 2;
 
     public Production() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/production.fxml"));
@@ -38,34 +38,42 @@ public class Production extends HBox {
     }
 
     public void setProduction(ReducedResourceTransactionRecipe production) {
-        maxRowHeight = this.getMaxHeight() / Math.max(
+        HBox h = (HBox)this.getChildren().get(0);
+//        h.setSpacing(20);
+        input = (VBox) h.getChildren().get(0);
+        output = (VBox) h.getChildren().get(2);
+        
+        elementScale = (this.getMaxHeight() - (2 * padding)) / this.getMaxHeight();
+        
+        maxRowHeight = (this.getMaxHeight() - (2 * padding)) / Math.max(
             production.getInput().entrySet().size() + (production.getInputBlanks() > 0 ? 1 : 0),
             production.getOutput().entrySet().size() + (production.getOutputBlanks() > 0 ? 1 : 0));
+        
+        input.setSpacing(2);
+        output.setSpacing(2);
 
-        this.setBorder(new Border(new BorderStroke(Color.VIOLET, 
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // input.setScaleX(elementScale);
+        // input.setScaleY(elementScale);
+        // output.setScaleX(elementScale);
+        // output.setScaleY(elementScale);
+        
         // TODO: exclusions, where png?
-        Resource blank = new Resource(); blank.setResourceType("blank"); // TODO: parameterize
-        input = (VBox) this.getChildren().get(0);
-        output = (VBox) this.getChildren().get(2);
-
-        input.setBorder(new Border(new BorderStroke(Color.RED, 
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        output.setBorder(new Border(new BorderStroke(Color.BLUE, 
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         
         input.getChildren().addAll(buildResourceLines(production.getInput()));
 
-        if (production.getInputBlanks() > 0)
+        if (production.getInputBlanks() > 0) {
+            Resource blank = new Resource(); blank.setResourceType("Zero"); // TODO: parameterize
             input.getChildren().add(row(production.getInputBlanks(), blank));
+        }
 
         output.getChildren().addAll(buildResourceLines(production.getOutput()));
 
-        if (production.getOutputBlanks() > 0)
+        if (production.getOutputBlanks() > 0) {
+            Resource blank = new Resource(); blank.setResourceType("Zero"); // TODO: parameterize
             output.getChildren().add(row(production.getOutputBlanks(), blank));
+        }
         
-        curlyBrace = (ImageView) this.getChildren().get(1);
-        curlyBrace.setImage(new Image(getClass().getResource("/assets/gui/resourcetypes/curlybrace.png").toExternalForm()));
+        this.setPadding(new Insets(padding));
     }
 
     private List<HBox> buildResourceLines(Map<String, Integer> resourceMap) {
@@ -78,21 +86,24 @@ public class Production extends HBox {
     }
 
     private HBox row(int key, Resource r) {
-        HBox box = new HBox();
+        HBox box = new HBox(5);
         Text l = new Text(String.valueOf(key));
         box.getChildren().add(l);
         box.getChildren().add(r);
 
         box.setAlignment(Pos.CENTER);
         
-        r.setPreserveRatio(true);
         r.setFitHeight(maxRowHeight);
-        l.maxHeight(maxRowHeight);
+        r.setFitWidth(30);
 
-        box.maxHeight(maxRowHeight);
+        l.setScaleY(elementScale);
+        l.setScaleX(elementScale);
 
-        box.setBorder(new Border(new BorderStroke(Color.GREEN,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        box.setMinHeight(0);
+        box.setMaxHeight(maxRowHeight);
+
+//        box.setBorder(new Border(new BorderStroke(Color.GREEN,
+//            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         return box;
     }
 }

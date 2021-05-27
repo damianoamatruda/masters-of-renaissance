@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 
-<fx:root fx:id="production" alignment="CENTER" maxHeight="60.0" maxWidth="116.0" minHeight="60.0" minWidth="116.0" prefHeight="60.0" prefWidth="116.0" type="HBox" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="production" maxHeight="60.0" maxWidth="116.0" minHeight="60.0" minWidth="116.0" type="StackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox fx:id="input" alignment="CENTER" />
-      <ImageView fx:id="curlyBrace" fitHeight="40.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" />
-      <VBox fx:id="output" alignment="CENTER" />
+      <HBox alignment="CENTER">
+         <children>
+            <VBox fx:id="input" alignment="CENTER" scaleShape="false" />
+            <ImageView fx:id="curlyBrace" fitHeight="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resourcetypes/curlybrace.png" />
+               </image>
+            </ImageView>
+            <VBox fx:id="input1" alignment="CENTER" />
+         </children>
+      </HBox>
    </children>
 </fx:root>

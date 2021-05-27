@@ -335,13 +335,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         for(int i = 1; i <= levels; i++){
             cli.trackSlimLine();
             List<List<String>> lines = new ArrayList<>();
-            for(String key : grid.getGrid().keySet()) {
+            for (String key : grid.getGrid().keySet()) {
                 int index = i;
                 ReducedDevCard card = grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).filter(c -> c.getLevel() == levels + 1 - index).findAny().orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
-            for(int j = 0; j < topCards.get(i - 1).size(); j++) {
+            for (int j = 0; j < topCards.get(i - 1).size(); j++) {
                 ReducedDevCard card = topCards.get(i - 1).get(j);
                 lines.add(new ArrayList<>());
                 List<String> column = lines.get(j);
@@ -349,13 +349,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             }
 
             String rowTemplate = "";
-            for(int j = 0; j < topCards.get(i - 1).size(); j++) {
+            for (int j = 0; j < topCards.get(i - 1).size(); j++) {
                 rowTemplate += "%-38s │";
             }
             rowTemplate += "\n";
 
             int length = lines.stream().map(List::size).reduce(Integer::max).orElse(0);
-            for(int j = 0; j < length; j++) {
+            for (int j = 0; j < length; j++) {
                 List<String> row = new ArrayList<>();
                 for (int l = 0; l < topCards.get(i - 1).size(); l++) {
                     if (j < lines.get(l).size())

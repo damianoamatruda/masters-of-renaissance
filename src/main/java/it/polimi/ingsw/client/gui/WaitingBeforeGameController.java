@@ -51,7 +51,7 @@ public class WaitingBeforeGameController extends GuiController {
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
         try {
-            gui.setRoot("setupleaders");
+            gui.setRoot("playground");
         } catch (IOException e) {
             e.printStackTrace();
         }

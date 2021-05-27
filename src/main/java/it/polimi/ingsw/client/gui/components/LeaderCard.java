@@ -1,28 +1,33 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Locale;
 
-public class LeaderCard extends VBox {
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import javafx.scene.text.TextAlignment;
+
+public class LeaderCard extends Card {
     public Pane leaderCard;
     public Text leaderTypeText;
     public Text resourceTypeText;
 
-    public LeaderCard() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/leadercard.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+    public LeaderCard(String leaderType) {
+        super(leaderType);
     }
 
     public String getLeaderType() {
@@ -30,7 +35,7 @@ public class LeaderCard extends VBox {
     }
 
     public void setLeaderType(String value) {
-        leaderTypeProperty().set(value);
+//        leaderTypeProperty().set(value);
     }
 
     public StringProperty leaderTypeProperty() {
@@ -42,10 +47,37 @@ public class LeaderCard extends VBox {
     }
 
     public void setResourceType(String value) {
-        resourceTypeProperty().set(value);
+//        resourceTypeProperty().set(value);
+//        resourceTypeText.setTextAlignment(TextAlignment.JUSTIFY);
     }
 
     public StringProperty resourceTypeProperty() {
         return resourceTypeText.textProperty();
+    }
+
+    public String getBackground(String leaderType) {
+        return "/assets/gui/leadertemplates/" + leaderType.toLowerCase() + ".png";
+    }
+
+    public void setRequirement(ReducedDevCardRequirement requirement) {
+        this.requirement = new CardRequirement();
+
+        this.requirement.setRequirements(requirement);
+        resourcePane.getChildren().addAll(this.requirement);
+    }
+
+    @Override
+    protected String getFXMLName() {
+        return "leadercard";
+    }
+
+    public void setVictoryPoints(String pts) {
+        super.setVictoryPoints(pts);
+        this.victoryPoints.setLayoutY(158);
+    }
+
+    public void setProduction(ReducedResourceTransactionRecipe prod) {
+        super.setProduction(prod);
+        this.prod.setLayoutY(185);
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -21,7 +22,7 @@ public class Resource extends ImageView {
 
     public void setResourceType(String resourceName) {
         try {
-            Image bg = new Image(getClass().getResource(String.format("/assets/gui/resourcetypes/%s.png", resourceName.toLowerCase())).toExternalForm());
+            Image bg = new Image(Objects.requireNonNull(getClass().getResource(String.format("/assets/gui/resourcetypes/%s.png", resourceName.toLowerCase()))).toExternalForm());
             this.setImage(bg);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(String.format("No image file for resource '%s'.", resourceName));
