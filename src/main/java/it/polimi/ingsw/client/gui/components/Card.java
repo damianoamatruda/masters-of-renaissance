@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 
@@ -41,25 +42,26 @@ public abstract class Card extends Pane {
         this.prod = new Production();
         this.prod.setProduction(prod);
 
-        this.prod.maxWidthProperty().bind(resourcePane.maxWidthProperty());
-        this.prod.maxHeightProperty().bind(resourcePane.maxHeightProperty());
+        this.prod.maxWidthProperty().bind(this.maxWidthProperty());
+        this.prod.maxHeightProperty().bind(this.maxHeightProperty());
 
 //        this.setAlignment(Pos.BOTTOM_CENTER);
 
-        resourcePane.getChildren().add(this.prod);
-        resourcePane.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        this.getChildren().add(this.prod);
+//        this.setBorder(new Border(new BorderStroke(Color.BLACK,
+//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     public void setRequirement(ReducedResourceRequirement requirement) {
         this.requirement = new CardRequirement();
 
         this.requirement.setRequirements(requirement);
-        resourcePane.getChildren().addAll(this.requirement);
+        this.getChildren().addAll(this.requirement);
     }
 
     public void setVictoryPoints(String pts) {
         victoryPoints.setText(pts);
+        victoryPoints.setLayoutX(77);
     }
 
     public String getVictoryPoints() {

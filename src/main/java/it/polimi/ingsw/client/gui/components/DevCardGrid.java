@@ -43,8 +43,8 @@ public class DevCardGrid extends HBox {
                 DevelopmentCard guicard = new DevelopmentCard(card.getColor());
 
                 ReducedResourceTransactionRecipe r = Gui.getInstance().getViewModel().getGameData().getProduction(card.getProduction()).orElseThrow();
-                guicard.setProduction(r);
                 guicard.setRequirement(card.getCost());
+                guicard.setProduction(r);
                 guicard.setVictoryPoints(card.getVictoryPoints()+"");
 
                 column.getChildren().add(guicard);
