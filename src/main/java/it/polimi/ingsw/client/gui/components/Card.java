@@ -46,6 +46,7 @@ public abstract class Card extends Pane {
         this.prod.maxHeightProperty().bind(this.maxHeightProperty());
 
 //        this.setAlignment(Pos.BOTTOM_CENTER);
+        this.prod.setLayoutX(20);
 
         this.getChildren().add(this.prod);
 //        this.setBorder(new Border(new BorderStroke(Color.BLACK,

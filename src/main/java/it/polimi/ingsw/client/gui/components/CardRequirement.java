@@ -87,8 +87,8 @@ public class CardRequirement extends HBox {
 
                 entry.maxHeight(maxRowHeight);
 
-                entry.setBorder(new Border(new BorderStroke(Color.BLACK,
-                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+//                entry.setBorder(new Border(new BorderStroke(Color.BLACK,
+//                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 //            this.requirements.add(entry);
                 this.getChildren().add(entry);

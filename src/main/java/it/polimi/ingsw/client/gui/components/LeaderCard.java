@@ -70,4 +70,14 @@ public class LeaderCard extends Card {
     protected String getFXMLName() {
         return "leadercard";
     }
+
+    public void setVictoryPoints(String pts) {
+        super.setVictoryPoints(pts);
+        this.victoryPoints.setLayoutY(158);
+    }
+
+    public void setProduction(ReducedResourceTransactionRecipe prod) {
+        super.setProduction(prod);
+        this.prod.setLayoutY(185);
+    }
 }

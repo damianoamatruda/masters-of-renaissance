@@ -27,24 +27,37 @@ public class SetupLeadersController extends GuiController {
 
         // if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()) == null)
         //     throw new RuntimeException();
-        
-//        List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
-//            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
-//            leaderCard.setLeaderType(reducedLeader.getLeaderType());
-//            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
-//            leaderCard.setResourceType(reducedLeader.getResourceType());
-//            leaderCard.setRequirement(reducedLeader.getResourceRequirement());
-//            leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
-//            leaderCard.setProduction(p1);
-//            return leaderCard;
-//        }).toList();
+
+        leadersContainer.setSpacing(10);
+        leadersContainer.setAlignment(Pos.CENTER);
+
+
+        Map<String, Integer> m1 = new HashMap<>();
+        Map<String, Integer> m2 = Map.of("shield", 2);
+        m1.put("coin", 1);
+        m1.put("Shield", 2);
+        m1.put("Servant", 2);
+        ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
+
+        StackPane pane = new StackPane();
+
+        Production prod = new Production();
+        prod.setProduction(p1);
+
+        List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
+            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
+            leaderCard.setLeaderType(reducedLeader.getLeaderType());
+            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
+            leaderCard.setResourceType(reducedLeader.getResourceType());
+            leaderCard.setRequirement(reducedLeader.getResourceRequirement());
+            leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
+            leaderCard.setProduction(p1);
+            return leaderCard;
+        }).toList();
 //
 //        System.out.println(leaderCards);
 
-         leadersContainer.setSpacing(10);
-         leadersContainer.setAlignment(Pos.CENTER);
-
-//        leadersContainer.getChildren().addAll(leaderCards);
+        leadersContainer.getChildren().addAll(leaderCards);
 
         // Warehouse w = new Warehouse();
         // List<ReducedResourceContainer> containers = new ArrayList<>();
@@ -55,17 +68,7 @@ public class SetupLeadersController extends GuiController {
 //         w.setWarehouseShelves(containers);
 //         leadersContainer.getChildren().add(w);
 
-         Map<String, Integer> m1 = new HashMap<>();
-         Map<String, Integer> m2 = Map.of("shield", 2);
-         m1.put("coin", 1);
-         m1.put("Shield", 2);
-         m1.put("Servant", 2);
-         ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
 
-         StackPane pane = new StackPane();
-
-         Production prod = new Production();
-         prod.setProduction(p1);
 
         // // prod.maxWidthProperty().bind(pane.maxWidthProperty());
         // // prod.maxHeightProperty().bind(pane.maxHeightProperty());
@@ -103,11 +106,11 @@ public class SetupLeadersController extends GuiController {
 //        guicard.setVictoryPoints(12+"");
 //        leadersContainer.getChildren().add(guicard);
 
-        ReducedDevCardGrid grid = gui.getViewModel().getGameData().getDevCardGrid();
-
-        DevCardGrid guigrid = new DevCardGrid();
-        guigrid.setGrid(grid);
-
-        leadersContainer.getChildren().add(guigrid);
+//        ReducedDevCardGrid grid = gui.getViewModel().getGameData().getDevCardGrid();
+//
+//        DevCardGrid guigrid = new DevCardGrid();
+//        guigrid.setGrid(grid);
+//
+//        leadersContainer.getChildren().add(guigrid);
     }
 }
