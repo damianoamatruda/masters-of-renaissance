@@ -1,12 +1,21 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.LeaderCard;
+import it.polimi.ingsw.client.gui.components.Production;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.*;
@@ -20,15 +29,9 @@ public class SetupLeadersController extends GuiController {
 
         Gui gui = Gui.getInstance();
 
-        if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()) == null)
-            throw new RuntimeException();
+        // if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()) == null)
+        //     throw new RuntimeException();
         
-        Map<String, Integer> m1 = new HashMap<>();
-        Map<String, Integer> m2 = Map.of("shield", 2);
-        m1.put("coin", 1);
-        m1.put("Shield", 2);
-        ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
-
 //        List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
 //            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
 //            leaderCard.setLeaderType(reducedLeader.getLeaderType());
@@ -55,5 +58,33 @@ public class SetupLeadersController extends GuiController {
 
         w.setWarehouseShelves(containers);
         leadersContainer.getChildren().add(w);
+        
+        
+        
+        
+        // Map<String, Integer> m1 = new HashMap<>();
+        // Map<String, Integer> m2 = Map.of("shield", 2);
+        // m1.put("coin", 1);
+        // m1.put("Shield", 2);
+        // m1.put("Servant", 2);
+        // ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
+
+        // StackPane pane = new StackPane();
+
+        // Production prod = new Production();
+        // prod.setProduction(p1);
+
+        // // prod.maxWidthProperty().bind(pane.maxWidthProperty());
+        // // prod.maxHeightProperty().bind(pane.maxHeightProperty());
+
+        // pane.getChildren().add(prod);
+        // pane.setBorder(new Border(new BorderStroke(Color.BLACK, 
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // // System.out.println(leaderCards);
+        // pane.setAlignment(Pos.CENTER);
+        // pane.setPadding(new Insets(2));
+        // pane.setMaxHeight(60);
+
+        // leadersContainer.getChildren().add(pane);
     }
 }
