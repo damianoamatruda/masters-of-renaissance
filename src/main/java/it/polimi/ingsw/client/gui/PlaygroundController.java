@@ -135,6 +135,13 @@ public class PlaygroundController extends GuiController {
         guicard.setRequirement(card.getCost());
         guicard.setVictoryPoints(12+"");
 
+        scaleX = (1280 / canvas.getColumnCount()) / guicard.getPrefWidth();
+        scaleY = (780 / canvas.getRowCount()) / guicard.getPrefHeight();
+        scaleF = 0.9 * Math.min(scaleX, scaleY);
+
+        guicard.setScaleX(scaleF);
+        guicard.setScaleY(scaleF);
+
         GridPane.setHalignment(guicard, HPos.CENTER);
         GridPane.setValignment(guicard, VPos.CENTER);
 
