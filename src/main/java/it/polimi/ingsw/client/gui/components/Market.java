@@ -10,6 +10,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
@@ -63,8 +64,8 @@ public class Market extends StackPane {
         cc.setPercentWidth(100d/marketColumns);
         
         
-        Resource slide = new Resource();
-        slide.setResourceType(m.getSlide());
+        ImageView slide = new ImageView();
+        slide.setImage(new Image(Resource.getMarblePath(m.getSlide())));
         slide.setFitHeight(cellSide);
         slide.setFitWidth(cellSide);
         grid.add(slide, m.getGrid().get(0).size() + 1, 0);
@@ -81,8 +82,8 @@ public class Market extends StackPane {
 
                 String sRes = mRow.get(col);
 
-                Resource r = new Resource();
-                r.setResourceType(sRes);
+                ImageView r = new ImageView();
+                r.setImage(new Image(Resource.getMarblePath(sRes)));
                 r.setFitHeight(cellSide);
                 r.setFitWidth(cellSide);
 

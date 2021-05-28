@@ -28,4 +28,8 @@ public class Resource extends ImageView {
             throw new IllegalArgumentException(String.format("No image file for resource '%s'.", resourceName));
         }
     }
+
+    public static String getMarblePath(String type) {
+        return "/assets/gui/market/" + type.toLowerCase() + "marble.png";
+    }
 }
