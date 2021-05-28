@@ -21,11 +21,11 @@ public class MainMenuController extends GuiController {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    // media = new Media(Objects.requireNonNull(getClass().getResource("/assets/gui/Wonderland - 320bit.mp3")).toString());
-                    // player = new MediaPlayer(media);
-                    // player.setCycleCount(MediaPlayer.INDEFINITE);
-                    // player.play();
-                    // Gui.getInstance().setMusicPlaying(true);
+                    media = new Media(Objects.requireNonNull(getClass().getResource("/assets/gui/Wonderland - 320bit.mp3")).toString());
+                    player = new MediaPlayer(media);
+                    player.setCycleCount(MediaPlayer.INDEFINITE);
+                    player.play();
+                    Gui.getInstance().setMusicPlaying(true);
                     return null;
                 }
             };
