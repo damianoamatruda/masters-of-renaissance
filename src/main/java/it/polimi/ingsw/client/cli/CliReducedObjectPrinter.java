@@ -259,12 +259,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 //        if (cache.getPlayerDevSlots(player) != null)
 //            cache.getPlayerDevSlots(player).forEach((key, value) -> cli.getOut().println("Slot " + key + ", card ID: " + value));
         Map<Integer, ReducedDevCard> slots = new HashMap<>();
-        try {
-            cache.getPlayerDevSlots(player).forEach((key, value) -> slots.put(key, cache.getDevCard(value)));
-            printDevelopmentSlots(slots);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            cache.getPlayerDevSlots(player).forEach((key, value) -> slots.put(key, cache.getDevCard(value)));
+//            printDevelopmentSlots(slots);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 
