@@ -34,7 +34,6 @@ Button {
     -fx-text-fill: linear-gradient(white, #d0d0d0);
     -fx-padding: 6px;
     -fx-pref-height: 40px;
-    -fx-max-height: 40px;
 }
 
 Button:hover {

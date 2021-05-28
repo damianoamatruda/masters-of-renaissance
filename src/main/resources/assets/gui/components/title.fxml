@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         xmlns="http://javafx.com/javafx"
+         stylesheets="@title.css"
+         type="HBox">
+  <ImageView fitHeight="32.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../title-before.png"/>
+  </ImageView>
+  <Text fx:id="titleText"/>
+  <ImageView fitHeight="32.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0">
+    <Image url="@../title-after.png"/>
+  </ImageView>
+</fx:root>

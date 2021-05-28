@@ -1,0 +1,5 @@
+Text {
+    -fx-font-family: 'Caslon Antique Bold Italic';
+    -fx-font-size: 26px;
+    -fx-fill: linear-gradient(#191d22 10%, rgba(0, 0, 0, .8));
+}
