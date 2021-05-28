@@ -55,7 +55,7 @@ Button:pressed {
 TextField {
     -fx-pref-height: 40px;
     -fx-border: 0;
-    -fx-background-color: radial-gradient(center 50% 0%, radius 100%, white, rgb(240, 240, 240));
+    -fx-background-color: radial-gradient(center 50% 0%, radius 100%, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
     -fx-padding: 6px;
 }
 
