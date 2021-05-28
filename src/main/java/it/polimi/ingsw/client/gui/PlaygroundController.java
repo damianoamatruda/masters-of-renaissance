@@ -19,7 +19,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
@@ -76,7 +78,8 @@ public class PlaygroundController extends GuiController {
         leaderCards.get(0).setScaleX(scaleF);
         leaderCards.get(0).setScaleY(scaleF);
 
-
+        GridPane.setHalignment(leaderCards.get(0), HPos.CENTER);
+        GridPane.setValignment(leaderCards.get(0), VPos.CENTER);
         canvas.add(leaderCards.get(0), 0, 0);
 
 
@@ -94,6 +97,9 @@ public class PlaygroundController extends GuiController {
         
         w.setScaleX(scaleF);
         w.setScaleY(scaleF);
+
+        GridPane.setHalignment(w, HPos.CENTER);
+        GridPane.setValignment(w, VPos.CENTER);
 
         canvas.add(w, 0, 1);
 
@@ -128,7 +134,10 @@ public class PlaygroundController extends GuiController {
         guicard.setProduction(p1);
         guicard.setRequirement(card.getCost());
         guicard.setVictoryPoints(12+"");
-        
+
+        GridPane.setHalignment(guicard, HPos.CENTER);
+        GridPane.setValignment(guicard, VPos.CENTER);
+
         canvas.add(guicard, 1, 0);
 
 
