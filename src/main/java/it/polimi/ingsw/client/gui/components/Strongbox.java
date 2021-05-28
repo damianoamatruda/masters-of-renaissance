@@ -41,9 +41,10 @@ public class Strongbox extends StackPane {
     }
 
     public void setContent(ReducedResourceContainer c) {
+        this.grid.setAlignment(Pos.CENTER);
         grid.setGridLinesVisible(true);
-        this.setBorder(new Border(new BorderStroke(Color.GREEN, 
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+//        this.setBorder(new Border(new BorderStroke(Color.GREEN,
+//            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         background.setFitWidth(this.getPrefWidth());
         background.setFitHeight(this.getPrefHeight());
@@ -74,8 +75,8 @@ public class Strongbox extends StackPane {
             HBox cell = new HBox(cellWidth * 0.2);
             cell.setAlignment(Pos.CENTER);
 
-            cell.setBorder(new Border(new BorderStroke(Color.RED, 
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+//            cell.setBorder(new Border(new BorderStroke(Color.RED,
+//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
             Resource r = new Resource();
             r.setResourceType(e.getKey());
