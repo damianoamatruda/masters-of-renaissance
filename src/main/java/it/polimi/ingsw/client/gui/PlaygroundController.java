@@ -11,12 +11,7 @@ import it.polimi.ingsw.client.gui.components.Market;
 import it.polimi.ingsw.client.gui.components.Production;
 import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
-import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -65,7 +60,14 @@ public class PlaygroundController extends GuiController {
             leaderCard.setResourceType(reducedLeader.getResourceType());
             leaderCard.setRequirement(reducedLeader.getResourceRequirement());
             leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
-            leaderCard.setProduction(p1);
+
+            if(reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
+                leaderCard.setZeroReplacement(new ReducedResourceType("Coin", ""));
+            else if(reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
+                leaderCard.setDiscount(new ReducedResourceType("Shield", ""), 1);
+            else
+                leaderCard.setProduction(p1);
+
             return leaderCard;
         }).toList();
 

@@ -1,24 +1,18 @@
 package it.polimi.ingsw.client.gui.components;
 
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
+import it.polimi.ingsw.common.reducedmodel.*;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Locale;
 
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.scene.text.TextAlignment;
 
 public class LeaderCard extends Card {
@@ -81,4 +75,45 @@ public class LeaderCard extends Card {
         super.setProduction(prod);
         this.prod.setLayoutY(185);
     }
+
+    public void setZeroReplacement(ReducedResourceType type) {
+        Resource res = new Resource();
+        res.setResourceType(type.getName());
+
+        res.setLayoutX(100);
+        res.setLayoutY(195);
+
+        res.setFitHeight(50);
+        res.setFitWidth(50);
+
+        this.getChildren().add(res);
+    }
+
+    public void setDiscount(ReducedResourceType type, int discount) {
+        HBox bonus = new HBox();
+        Resource res = new Resource();
+        TextArea amount = new TextArea();
+        amount.setText("-" + discount);
+        amount.setLayoutX(100);
+        amount.setLayoutY(175);
+        //TODO text not showing
+
+        res.setResourceType(type.getName());
+
+        res.setFitHeight(35);
+        res.setFitWidth(35);
+
+        res.setLayoutX(120);
+        res.setLayoutY(175);
+
+        bonus.getChildren().add(amount);
+        bonus.getChildren().add(res);
+
+        this.getChildren().add(res);
+    }
+
+//    public void setDepotContent(ReducedResourceContainer content) {
+//
+//    }
+
 }
