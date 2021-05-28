@@ -62,7 +62,6 @@ public abstract class Card extends Pane {
 
     public void setVictoryPoints(String pts) {
         victoryPoints.setText(pts);
-        victoryPoints.setLayoutX(77);
     }
 
     public String getVictoryPoints() {

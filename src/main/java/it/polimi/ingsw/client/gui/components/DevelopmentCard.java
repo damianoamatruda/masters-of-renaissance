@@ -40,7 +40,8 @@ public class DevelopmentCard extends Card {
 
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
-        victoryPoints.setLayoutY(230);
+        victoryPoints.setLayoutX(76);
+        victoryPoints.setLayoutY(228);
     }
 
     @Override

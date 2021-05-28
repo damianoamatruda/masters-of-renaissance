@@ -73,7 +73,8 @@ public class LeaderCard extends Card {
 
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
-        this.victoryPoints.setLayoutY(158);
+        victoryPoints.setLayoutX(79);
+        this.victoryPoints.setLayoutY(154);
     }
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
