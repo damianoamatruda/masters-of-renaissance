@@ -53,6 +53,8 @@ public class PlaygroundController extends GuiController {
         Production prod = new Production();
         prod.setProduction(p1);
 
+        ReducedResourceContainer cont = new ReducedResourceContainer(0, 1, Map.of("servant", 1), "servant");
+
         List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
@@ -65,8 +67,11 @@ public class PlaygroundController extends GuiController {
                 leaderCard.setZeroReplacement(new ReducedResourceType("Coin", ""));
             else if(reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
                 leaderCard.setDiscount(new ReducedResourceType("Shield", ""), 1);
-            else
+            else if(reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
                 leaderCard.setProduction(p1);
+            else
+                leaderCard.setDepotContent(cont,
+                        reducedLeader.getResourceType());
 
             return leaderCard;
         }).toList();
