@@ -61,8 +61,8 @@ public class Warehouse extends VBox {
 
                     entry.maxHeight(maxRowHeight);
 
-                    entry.setBorder(new Border(new BorderStroke(Color.BLACK,
-                            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                    // entry.setBorder(new Border(new BorderStroke(Color.BLACK,
+                    //         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
                     content.getChildren().add(entry);
                 }

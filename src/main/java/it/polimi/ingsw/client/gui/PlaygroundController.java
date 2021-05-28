@@ -109,9 +109,9 @@ public class PlaygroundController extends GuiController {
         content.put("Coin", 1);
         content.put("Shield", 2);
         content.put("Servant", 2);
-        content.put("Stone", 2);
-        content.put("zero", 2);
-        content.put("Faith", 2);
+        // content.put("Stone", 2);
+        // content.put("zero", 2);
+        // content.put("Faith", 2);
 
         Strongbox s = new Strongbox();
         ReducedResourceContainer c = new ReducedResourceContainer(0, -1, content, null);

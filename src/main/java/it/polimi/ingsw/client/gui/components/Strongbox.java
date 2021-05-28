@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Border;
@@ -42,32 +43,44 @@ public class Strongbox extends StackPane {
 
     public void setContent(ReducedResourceContainer c) {
         this.grid.setAlignment(Pos.CENTER);
-        grid.setGridLinesVisible(true);
-//        this.setBorder(new Border(new BorderStroke(Color.GREEN,
-//            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        this.setPadding(new Insets(5));
+        // grid.setGridLinesVisible(true);
+        // this.setBorder(new Border(new BorderStroke(Color.GREEN,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // background.setBorder(new Border(new BorderStroke(Color.PINK,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        background.setFitWidth(this.getPrefWidth());
-        background.setFitHeight(this.getPrefHeight());
+        // background.setFitWidth(this.getPrefWidth());
+        // background.setFitHeight(this.getPrefHeight());
 
         double height = this.getPrefHeight(), // height of strongbox region
                width = this.getPrefWidth();
 
-        int row = 0, col = 0, sqroot = (int) Math.sqrt(c.getContent().size());
+        double sqroot = Math.sqrt(c.getContent().size() + 1);
+
+        int row = 0, col = 0,
+            sRows = (int) Math.ceil(sqroot),
+            sCols = (int) Math.floor(sqroot);
         
         // these are used for scalin, caps are arbitrary and looked good on my machine
         double defTextHeight = 20, // got this by trying (it's how big Text appears with no scaling)
-               cellHeight = Math.min(80, height / sqroot),
-               cellWidth = width / (sqroot + 1),
+               cellHeight = Math.min(80, height / sRows),
+               cellWidth = width / sCols,
                scaleRatio = 0.8 * (cellHeight / defTextHeight);
         
         Iterator<Entry<String, Integer>> i = c.getContent().entrySet().iterator();
 
-        RowConstraints rc = grid.getRowConstraints().get(0);
-        rc.setVgrow(Priority.ALWAYS);
-        rc.setPercentHeight(100d/(sqroot + 1));
-        ColumnConstraints cc = grid.getColumnConstraints().get(0);
-        cc.setHgrow(Priority.ALWAYS);
-        cc.setPercentWidth(100d/(sqroot));
+        RowConstraints rc = grid.getRowConstraints().remove(0);
+        // rc.setVgrow(Priority.ALWAYS);
+        rc.setPercentHeight(100d/sRows);
+        ColumnConstraints cc = grid.getColumnConstraints().remove(0);
+        // cc.setHgrow(Priority.ALWAYS);
+        cc.setPercentWidth(100d/sCols);
+
+        while (grid.getColumnConstraints().size() < sCols)
+            grid.getColumnConstraints().add(cc);
+        while (grid.getRowConstraints().size() < sRows)
+            grid.getRowConstraints().add(rc);
 
         while (i.hasNext()) {
             Entry<String, Integer> e = i.next();
@@ -75,8 +88,8 @@ public class Strongbox extends StackPane {
             HBox cell = new HBox(cellWidth * 0.2);
             cell.setAlignment(Pos.CENTER);
 
-//            cell.setBorder(new Border(new BorderStroke(Color.RED,
-//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        //    cell.setBorder(new Border(new BorderStroke(Color.RED,
+        //        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
             Resource r = new Resource();
             r.setResourceType(e.getKey());
@@ -91,16 +104,12 @@ public class Strongbox extends StackPane {
             
             grid.add(cell, col, row);
 
-            if (row == sqroot) { // one more row than cols
+            if (row == sRows - 1) { // one more row than cols
                 col++;
                 row = 0;
             } else {
                 row++;
             }
         }
-        while (grid.getColumnConstraints().size() < col)
-            grid.getColumnConstraints().add(cc);
-        while (grid.getRowConstraints().size() < row)
-            grid.getRowConstraints().add(rc);
     }
 }
