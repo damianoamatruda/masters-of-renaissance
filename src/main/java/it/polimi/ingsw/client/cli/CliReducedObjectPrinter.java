@@ -428,6 +428,23 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     public void printFaithTrack(Map<String, Integer> points) {
+        String boldTopLeftCorner = "╔";
+        String slimTopLeftCorner = "┌";
+        String boldTopRightCorner = "╗";
+        String slimTopRightCorner = "┐";
+        String boldBottomLeftCorner = "╚";
+        String slimBottomLeftCorner = "└";
+        String boldBottomRightCorner = "╝";
+        String slimBottomRightCorner = "┘";
+        String boldT = "╦";
+        String slimT = "┬";
+        String boldUpwardsT = "╩";
+        String slimUpwardsT = "┴";
+        String boldHorizontalLine = "═";
+        String slimHorizontalLine = "─";
+        String boldVerticalLine = "║";
+        String slimVerticalLine = "│";
+
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
         int maxFaith = cache.getFaithTrack().getMaxFaith();
         // Calculate section tiles and yellow tiles, to match the colors
@@ -450,34 +467,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
         // Indexes on top of the track
         StringBuilder output = new StringBuilder(" ");
-        for(int i = 0; i <= maxFaith; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7) /*+ "yellow tile points"*/));
+        for(int i = 0; i <= maxFaith; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7)));
         output.append("\n");
 
         // Upper border
-        //First tile
-        if(yellowTiles.contains(0) && sectionTiles.contains(0)) output.append("\033[38;5;208m");
-        else if(yellowTiles.contains(0)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(0)) output.append("\u001B[31m");
-        output.append(sectionTiles.contains(0) ? "╔" :"┌");
-        // Middle tiles
-        for(int i = 0; i < maxFaith; i++){
-            if(yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i)) output.append("\u001B[31m");
-            else output.append("\u001B[0m");
-            output.append((sectionTiles.contains(i) ? "═" : "─").repeat(cellWidth));
-
-            if((yellowTiles.contains(i + 1) && sectionTiles.contains(i)) ||
-                    (sectionTiles.contains(i + 1) && yellowTiles.contains(i)))
-                output.append("\033[38;5;208m");
-            else if(yellowTiles.contains(i + 1) || yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i + 1) || sectionTiles.contains(i)) output.append("\u001B[31m");
-            output.append((sectionTiles.contains(i + 1) || (i > 0 && sectionTiles.contains(i))) ? "╦" : "┬");
-        }
-        //Last tile
-        if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
-        else output.append("\u001B[0m");
-        output.append((sectionTiles.contains(maxFaith) ? "═" : "─").repeat(cellWidth)).append(sectionTiles.contains(maxFaith) ? "╗\n" :"┐\n").append("\u001B[0m");
+        printTrackHorizontalBorder(boldTopLeftCorner, slimTopLeftCorner, boldTopRightCorner, slimTopRightCorner,
+                boldT, slimT, boldHorizontalLine, slimHorizontalLine, cellWidth, maxFaith, sectionTiles, yellowTiles, output);
 
         //Number of lines = number of players
         for (int j = 0; j < players.size(); j++) {
@@ -490,40 +485,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 else if(yellowTiles.contains(i) || yellowTiles.contains(i - 1)) output.append("\u001B[93m");
                 else if(sectionTiles.contains(i) || sectionTiles.contains(i - 1)) output.append("\u001B[31m");
 //                else if (i > 0 && !sectionTiles.contains(i - 1) && !yellowTiles.contains(i - 1)) output.append("\u001B[0m");
-                output.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? "║" : "│")
+                output.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? boldVerticalLine : slimVerticalLine)
                         .append("\u001B[0m").append(points.get(player) == i ? String.format("%-6s", nicks.get(j)) : " ".repeat(cellWidth));
             }
             // Rightmost side border
             if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
             else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
             else output.append("\u001B[0m");
-            output.append(sectionTiles.contains(maxFaith) ? "║\n": "│\n").append("\u001B[0m");
+            output.append(sectionTiles.contains(maxFaith) ? boldVerticalLine: slimVerticalLine).append("\u001B[0m\n");
         }
 
         // Lower border
-        //First tile
-        if(yellowTiles.contains(0) && sectionTiles.contains(0)) output.append("\033[38;5;208m");
-        else if(yellowTiles.contains(0)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(0)) output.append("\u001B[31m");
-        output.append(sectionTiles.contains(0) ? "╚" :"└");
-        for(int i = 0; i < maxFaith; i++){
-            if(yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i)) output.append("\u001B[31m");
-            else output.append("\u001B[0m");
-            output.append((sectionTiles.contains(i) ? "═" : "─").repeat(cellWidth));
-
-            if((yellowTiles.contains(i + 1) && sectionTiles.contains(i)) ||
-                    (sectionTiles.contains(i + 1) && yellowTiles.contains(i)))
-                output.append("\033[38;5;208m");
-            else if(yellowTiles.contains(i + 1) || yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i + 1) || sectionTiles.contains(i)) output.append("\u001B[31m");
-            output.append((sectionTiles.contains(i + 1) || (i > 0 && sectionTiles.contains(i))) ? "╩" : "┴");
-        }
-        //Last tile
-        if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
-        else output.append("\u001B[0m");
-        output.append((sectionTiles.contains(maxFaith) ? "═" : "─").repeat(cellWidth)).append(sectionTiles.contains(maxFaith) ? "╝\n" :"┘\n").append("\u001B[0m");
+        printTrackHorizontalBorder(boldBottomLeftCorner, slimBottomLeftCorner, boldBottomRightCorner,
+                slimBottomRightCorner, boldUpwardsT, slimUpwardsT, boldHorizontalLine, slimHorizontalLine,
+                cellWidth, maxFaith, sectionTiles, yellowTiles, output);
 
         try {
             // Bonus points on the bottom of the track
@@ -558,6 +533,37 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         // Print the result
         System.out.println(output);
 
+    }
+
+    private void printTrackHorizontalBorder(String boldLeftCorner, String slimLeftCorner, String boldRightCorner,
+                                            String slimRightCorner, String boldT, String slimT, String boldHorizontalLine,
+                                            String slimHorizontalLine, int cellWidth, int maxFaith, List<Integer> sectionTiles,
+                                            List<Integer> yellowTiles, StringBuilder output) {
+        //First tile
+        if(yellowTiles.contains(0) && sectionTiles.contains(0)) output.append("\033[38;5;208m");
+        else if(yellowTiles.contains(0)) output.append("\u001B[93m");
+        else if(sectionTiles.contains(0)) output.append("\u001B[31m");
+        output.append(sectionTiles.contains(0) ? boldLeftCorner : slimLeftCorner);
+        // Middle tiles
+        for(int i = 0; i < maxFaith; i++){
+            if(yellowTiles.contains(i)) output.append("\u001B[93m");
+            else if(sectionTiles.contains(i)) output.append("\u001B[31m");
+            else output.append("\u001B[0m");
+            output.append((sectionTiles.contains(i) ? boldHorizontalLine : slimHorizontalLine).repeat(cellWidth));
+
+            if((yellowTiles.contains(i + 1) && sectionTiles.contains(i)) ||
+                    (sectionTiles.contains(i + 1) && yellowTiles.contains(i)))
+                output.append("\033[38;5;208m");
+            else if(yellowTiles.contains(i + 1) || yellowTiles.contains(i)) output.append("\u001B[93m");
+            else if(sectionTiles.contains(i + 1) || sectionTiles.contains(i)) output.append("\u001B[31m");
+            output.append((sectionTiles.contains(i + 1) || (i > 0 && sectionTiles.contains(i))) ? boldT : slimT);
+        }
+        //Last tile
+        if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
+        else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
+        else output.append("\u001B[0m");
+        output.append((sectionTiles.contains(maxFaith) ? boldHorizontalLine : slimHorizontalLine).repeat(cellWidth))
+                .append(sectionTiles.contains(maxFaith) ? boldRightCorner : slimRightCorner).append("\u001B[0m\n");
     }
 
     private void printDevelopmentSlots(Map<Integer, ReducedDevCard> slots) {
