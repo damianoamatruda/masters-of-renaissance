@@ -34,6 +34,10 @@ public class PlaygroundController extends GuiController {
         // fxmlLoader.setController(this);
         Gui gui = Gui.getInstance();
 
+        this.canvas.setStyle("-fx-background-image: url('/assets/gui/playerboard/background.png');" +
+                "-fx-background-repeat: no-repeat;" +
+                "-fx-background-size: cover, auto");
+
         canvas.setGridLinesVisible(true);
 
         canvas.setAlignment(Pos.CENTER);
