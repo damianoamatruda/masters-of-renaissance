@@ -19,6 +19,9 @@ public class BuyDevelopmentCardState extends CliState {
         ReducedDevCardGrid grid = cli.getViewModel().getDevCardGrid();
         cli.getPrinter().printCardGrid(grid);
 
+        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
+        cli.getPrinter().showStrongbox(cli.getViewModel().getLocalPlayerNickname());
+
         cli.getOut().println("\nChoose parameters:");
         //prompt for parameters
         final Map<Integer, Map<String, Integer>> shelves;
