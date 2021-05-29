@@ -114,12 +114,12 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateCurrentPlayer event) {
-        cli.getViewModel().setCurrentPlayer(event.getPlayer());
+        // cli.getViewModel().setCurrentPlayer(event.getPlayer());
 
-        if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
-        else
-            cli.setState(new WaitingAfterTurnState());
+        // if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+        //     cli.setState(new TurnBeforeActionState());
+        // else
+        //     cli.setState(new WaitingAfterTurnState());
     }
 
     public void on(Cli cli, UpdateDevCardGrid event) {
@@ -150,7 +150,7 @@ public abstract class CliState implements Renderable {
         cli.getViewModel().setDevCardColors(event.getColors());
         cli.getViewModel().setResourceTypes(event.getResourceTypes());
 
-        // TODO: resumed
+        cli.getViewModel().setResumedGame(event.isResumed());
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
@@ -176,7 +176,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateLeadersHand event) {
         /* this message arrives last among the starting events:
             joingame
-            updategamestart
+            updategame
             currplayer
             market
             devcardgrid
