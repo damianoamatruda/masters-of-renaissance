@@ -5,8 +5,6 @@ import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.client.ViewModel.PlayerData;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
-import java.util.Optional;
-
 public abstract class CliState implements Renderable {
     protected void renderMainTitle(Cli cli) {
         cli.getOut().print(Cli.center(Cli.convertStreamToString(CliState.class.getResourceAsStream("/assets/cli/title.txt"))));
@@ -33,14 +31,6 @@ public abstract class CliState implements Renderable {
         cli.repeatState(event.getReason());
     }
 
-    public void on(Cli cli, ErrNoSuchEntity event) {
-        cli.repeatState(
-            String.format("No such entity %s: ID %d, code %s.",
-                event.getOriginalEntity().toString().toLowerCase(),
-                event.getId(),
-                event.getCode()));
-    }
-
     public void on(Cli cli, ErrInitialChoice event) {
         // repeats either SetupLeadersState or SetupResourcesState
         // if it doesn't, that's really bad
@@ -59,6 +49,14 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, ErrNickname event) {
         // handled by specific state, leave empty
+    }
+
+    public void on(Cli cli, ErrNoSuchEntity event) {
+        cli.repeatState(
+            String.format("No such entity %s: ID %d, code %s.",
+                event.getOriginalEntity().toString().toLowerCase(),
+                event.getId(),
+                event.getCode()));
     }
 
     public void on(Cli cli, ErrObjectNotOwned event) {

@@ -45,8 +45,8 @@ public class SetupResourcesState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        if (event.getAction() != ActionType.CHOOSE_LEADERS)
-            throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_LEADERS.");
+        if (event.getAction() != ActionType.CHOOSE_RESOURCES)
+            throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
         if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
             cli.setState(new TurnBeforeActionState());
