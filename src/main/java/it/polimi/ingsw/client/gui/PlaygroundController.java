@@ -55,7 +55,7 @@ public class PlaygroundController extends GuiController {
 
         ReducedResourceContainer cont = new ReducedResourceContainer(0, 1, Map.of("servant", 1), "servant");
 
-        List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
+        List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
             leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
@@ -135,7 +135,7 @@ public class PlaygroundController extends GuiController {
         canvas.add(s, 2, 0);
 
 
-        ReducedDevCard card = gui.getViewModel().getGameData().getDevelopmentCard(0).orElseThrow();
+        ReducedDevCard card = gui.getViewModel().getDevelopmentCard(0).orElseThrow();
 
         DevelopmentCard guicard = new DevelopmentCard(card.getColor());
         guicard.setProduction(p1);

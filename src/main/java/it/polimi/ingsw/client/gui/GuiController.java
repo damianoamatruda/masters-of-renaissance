@@ -80,11 +80,11 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateCurrentPlayer event) {
-        gui.getViewModel().getGameData().setCurrentPlayer(event.getPlayer());
+        gui.getViewModel().setCurrentPlayer(event.getPlayer());
     }
 
     public void on(Gui gui, UpdateDevCardGrid event) {
-        gui.getViewModel().getGameData().setDevCardGrid(event.getCards());
+        gui.getViewModel().setDevCardGrid(event.getCards());
     }
 
     public void on(Gui gui, UpdateDevCardSlot event) {
@@ -96,19 +96,19 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateGameEnd event) {
-        gui.getViewModel().getGameData().setWinner(event.getWinner());
+        gui.getViewModel().setWinner(event.getWinner());
     }
 
     public void on(Gui gui, UpdateGame event) {
-        gui.getViewModel().getGameData().setActionTokens(event.getActionTokens());
-        gui.getViewModel().getGameData().setContainers(event.getResContainers());
-        gui.getViewModel().getGameData().setDevelopmentCards(event.getDevelopmentCards());
-        gui.getViewModel().getGameData().setLeaderCards(event.getLeaderCards());
-        gui.getViewModel().getGameData().setPlayerNicknames(event.getPlayers());
-        gui.getViewModel().getGameData().setProductions(event.getProductions());
-        gui.getViewModel().getGameData().setFaithTrack(event.getFaithTrack());
-        gui.getViewModel().getGameData().setDevCardColors(event.getColors());
-        gui.getViewModel().getGameData().setResourceTypes(event.getResourceTypes());
+        gui.getViewModel().setActionTokens(event.getActionTokens());
+        gui.getViewModel().setContainers(event.getResContainers());
+        gui.getViewModel().setDevelopmentCards(event.getDevelopmentCards());
+        gui.getViewModel().setLeaderCards(event.getLeaderCards());
+        gui.getViewModel().setPlayerNicknames(event.getPlayers());
+        gui.getViewModel().setProductions(event.getProductions());
+        gui.getViewModel().setFaithTrack(event.getFaithTrack());
+        gui.getViewModel().setDevCardColors(event.getColors());
+        gui.getViewModel().setResourceTypes(event.getResourceTypes());
 
     }
 
@@ -117,12 +117,12 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateLastRound event) {
-        gui.getViewModel().getGameData().setLastRound();
+        gui.getViewModel().setLastRound();
     }
 
     public void on(Gui gui, UpdateLeader event) {
         if (event.isActive())
-            gui.getViewModel().getGameData()
+            gui.getViewModel()
                     .getLeaderCard(event.getLeader())
                     .ifPresent(ReducedLeaderCard::setActive);
         else
@@ -150,7 +150,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateMarket event) {
-        gui.getViewModel().getGameData().setMarket(event.getMarket());
+        gui.getViewModel().setMarket(event.getMarket());
     }
 
     public void on(Gui gui, UpdatePlayer event) {
@@ -166,7 +166,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateResourceContainer event) {
-        gui.getViewModel().getGameData().setContainer(event.getResContainer());
+        gui.getViewModel().setContainer(event.getResContainer());
     }
 
     public void on(Gui gui, UpdateSetupDone event) {
@@ -174,7 +174,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateVaticanSection event) {
-        gui.getViewModel().getGameData().setVaticanSection(event.getVaticanSection());
+        gui.getViewModel().setVaticanSection(event.getVaticanSection());
     }
 
     public void on(Gui gui, UpdateVictoryPoints event) {

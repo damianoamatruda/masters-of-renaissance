@@ -36,7 +36,7 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateBookedSeats event) {
         super.on(gui, event);
-        gui.getViewModel().getUiData().setLocalPlayerNickname(nicknameValue);
+        gui.getViewModel().setLocalPlayerNickname(nicknameValue);
         if (gui.isOffline())
             gui.dispatch(new ReqNewGame(1));
         else

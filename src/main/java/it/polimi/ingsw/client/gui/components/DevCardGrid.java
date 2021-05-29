@@ -34,7 +34,7 @@ public class DevCardGrid extends HBox {
 
                 try {
                     int cardid = grid.getGrid().get(color).get(i).peek();
-                    card = Gui.getInstance().getViewModel().getGameData().getDevelopmentCard(cardid).orElseThrow(NullPointerException::new);
+                    card = Gui.getInstance().getViewModel().getDevelopmentCard(cardid).orElseThrow(NullPointerException::new);
                 } catch (NullPointerException e) {
                     column.getChildren().add(new Label());
                     continue;
@@ -42,7 +42,7 @@ public class DevCardGrid extends HBox {
 
                 DevelopmentCard guicard = new DevelopmentCard(card.getColor());
 
-                ReducedResourceTransactionRecipe r = Gui.getInstance().getViewModel().getGameData().getProduction(card.getProduction()).orElseThrow();
+                ReducedResourceTransactionRecipe r = Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow();
                 guicard.setRequirement(card.getCost());
                 guicard.setProduction(r);
                 guicard.setVictoryPoints(card.getVictoryPoints()+"");

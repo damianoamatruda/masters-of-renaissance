@@ -29,7 +29,7 @@ public class WaitingBeforeGameController extends GuiController {
     }
 
     public void setCanPrepareNewGame(String canPrepareNewGame) {
-        if (Gui.getInstance().getViewModel().getUiData().getLocalPlayerNickname().equals(canPrepareNewGame)) {
+        if (Gui.getInstance().getViewModel().getLocalPlayerNickname().equals(canPrepareNewGame)) {
             youCanPrepare = true;
             canPrepare.setVisible(true);
         }
