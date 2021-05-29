@@ -41,7 +41,7 @@ public class Controller {
 
     private void on(View view, ReqQuit event) {
         unregisterOnVC(view);
-        model.exit(view);
+        model.quit(view);
     }
 
     private void on(View view, ReqJoin event) {
