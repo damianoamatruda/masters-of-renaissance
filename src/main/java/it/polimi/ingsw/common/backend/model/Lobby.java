@@ -54,20 +54,21 @@ public class Lobby extends EventDispatcher {
     
             if (disconnected.containsKey(nickname)) {
                 System.out.printf("Player \"%s\" rejoined%n", nickname);
-    
+
                 /* Get the match the nickname was previously in and set the player back to active */
-                GameContext oldContext = disconnected.get(nickname);
+                GameContext context = disconnected.get(nickname);
                 try {
-                    oldContext.setActive(nickname, true);
+                    context.setActive(nickname, true);
                 } catch (NoActivePlayersException e) {
                     // dispatch(new ErrAction(view, e));
                     throw new RuntimeException("No active players after player rejoining.");
                 }
-    
+
                 /* Resuming routine (observer registrations and state messages) */
-                oldContext.resume(view);
-                oldContext.registerViewToModel(view, nickname);
-                joined.put(view, oldContext);
+                context.resume(view);
+                view.registerOnModelGameContext(context);
+                context.registerViewToModel(view, nickname);
+                joined.put(view, context);
                 disconnected.remove(nickname);
             } else {
                 System.out.printf("Set nickname \"%s\".%n", nickname);
@@ -125,6 +126,7 @@ public class Lobby extends EventDispatcher {
     
             GameContext context = new GameContext(newGame, gameFactory);
             waiting.subList(0, newGamePlayersCount).forEach(view -> {
+                view.registerOnModelGameContext(context);
                 context.registerViewToModel(view, nicknames.get(view));
                 joined.put(view, context);
             });
@@ -141,14 +143,15 @@ public class Lobby extends EventDispatcher {
         }
     }
 
-    public void exit(View view) {
-        synchronized(lock) {
+    public void quit(View view) {
+        synchronized (lock) {
             String nickname = nicknames.get(view);
             if (nickname != null) {
                 GameContext context = joined.get(view);
                 if (context != null) {
+                    view.unregisterOnModelGameContext(context);
                     context.unregisterViewToModel(view, nickname);
-    
+
                     try {
                         context.setActive(nickname, false);
                         disconnected.put(nickname, context);

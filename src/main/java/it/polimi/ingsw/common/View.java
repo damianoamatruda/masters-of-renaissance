@@ -23,18 +23,35 @@ public class View extends EventDispatcher {
         lobby.removeEventListener(ErrNickname.class, this::on);
     }
 
+    public void registerOnModelGameContext(EventDispatcher gameContext) {
+        gameContext.addEventListener(ErrAction.class, this::on);
+        gameContext.addEventListener(ErrActiveLeaderDiscarded.class, this::on);
+        gameContext.addEventListener(ErrBuyDevCard.class, this::on);
+        gameContext.addEventListener(ErrCardRequirements.class, this::on);
+        gameContext.addEventListener(ErrInitialChoice.class, this::on);
+        gameContext.addEventListener(ErrNoSuchEntity.class, this::on);
+        gameContext.addEventListener(ErrObjectNotOwned.class, this::on);
+        gameContext.addEventListener(ErrReplacedTransRecipe.class, this::on);
+        gameContext.addEventListener(ErrResourceReplacement.class, this::on);
+        gameContext.addEventListener(ErrResourceTransfer.class, this::on);
+        gameContext.addEventListener(UpdateAction.class, this::on);
+    }
+
+    public void unregisterOnModelGameContext(EventDispatcher gameContext) {
+        gameContext.removeEventListener(ErrAction.class, this::on);
+        gameContext.removeEventListener(ErrActiveLeaderDiscarded.class, this::on);
+        gameContext.removeEventListener(ErrBuyDevCard.class, this::on);
+        gameContext.removeEventListener(ErrCardRequirements.class, this::on);
+        gameContext.removeEventListener(ErrInitialChoice.class, this::on);
+        gameContext.removeEventListener(ErrNoSuchEntity.class, this::on);
+        gameContext.removeEventListener(ErrObjectNotOwned.class, this::on);
+        gameContext.removeEventListener(ErrReplacedTransRecipe.class, this::on);
+        gameContext.removeEventListener(ErrResourceReplacement.class, this::on);
+        gameContext.removeEventListener(ErrResourceTransfer.class, this::on);
+        gameContext.removeEventListener(UpdateAction.class, this::on);
+    }
+
     public void registerOnModelGame(EventDispatcher game) {
-        game.addEventListener(ErrAction.class, this::on);
-        game.addEventListener(ErrActiveLeaderDiscarded.class, this::on);
-        game.addEventListener(ErrBuyDevCard.class, this::on);
-        game.addEventListener(ErrCardRequirements.class, this::on);
-        game.addEventListener(ErrInitialChoice.class, this::on);
-        game.addEventListener(ErrNoSuchEntity.class, this::on);
-        game.addEventListener(ErrObjectNotOwned.class, this::on);
-        game.addEventListener(ErrReplacedTransRecipe.class, this::on);
-        game.addEventListener(ErrResourceReplacement.class, this::on);
-        game.addEventListener(ErrResourceTransfer.class, this::on);
-        game.addEventListener(UpdateAction.class, this::on);
         game.addEventListener(UpdateActionToken.class, this::on);
         game.addEventListener(UpdateCurrentPlayer.class, this::on);
         game.addEventListener(UpdateDevCardGrid.class, this::on);
@@ -55,17 +72,6 @@ public class View extends EventDispatcher {
     }
 
     public void unregisterOnModelGame(EventDispatcher game) {
-        game.removeEventListener(ErrAction.class, this::on);
-        game.removeEventListener(ErrActiveLeaderDiscarded.class, this::on);
-        game.removeEventListener(ErrBuyDevCard.class, this::on);
-        game.removeEventListener(ErrCardRequirements.class, this::on);
-        game.removeEventListener(ErrInitialChoice.class, this::on);
-        game.removeEventListener(ErrNoSuchEntity.class, this::on);
-        game.removeEventListener(ErrObjectNotOwned.class, this::on);
-        game.removeEventListener(ErrReplacedTransRecipe.class, this::on);
-        game.removeEventListener(ErrResourceReplacement.class, this::on);
-        game.removeEventListener(ErrResourceTransfer.class, this::on);
-        game.removeEventListener(UpdateAction.class, this::on);
         game.removeEventListener(UpdateActionToken.class, this::on);
         game.removeEventListener(UpdateCurrentPlayer.class, this::on);
         game.removeEventListener(UpdateDevCardGrid.class, this::on);

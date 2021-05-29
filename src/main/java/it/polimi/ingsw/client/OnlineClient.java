@@ -45,6 +45,7 @@ public class OnlineClient implements Network {
         networkHandler.registerOnVC(view);
 
         view.registerOnModelLobby(networkHandler);
+        view.registerOnModelGameContext(networkHandler);
         view.registerOnModelGame(networkHandler);
         view.registerOnModelPlayer(networkHandler);
 
@@ -64,6 +65,7 @@ public class OnlineClient implements Network {
 
         if (networkHandler != null) {
             view.unregisterOnModelLobby(networkHandler);
+            view.unregisterOnModelGameContext(networkHandler);
             view.unregisterOnModelGame(networkHandler);
             view.unregisterOnModelPlayer(networkHandler);
             networkHandler.stop();
