@@ -383,6 +383,7 @@ public class Cli extends EventDispatcher {
             });
 
             allocResCount += count;
+            totalRes.compute(res, (k, v) -> v - c);
         }
 
         return shelves;
