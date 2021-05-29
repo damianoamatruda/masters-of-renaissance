@@ -1,10 +1,11 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.LocalClient;
-import it.polimi.ingsw.client.NetworkClient;
+import it.polimi.ingsw.client.OfflineClient;
+import it.polimi.ingsw.client.OnlineClient;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
 import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
+import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
@@ -23,6 +24,7 @@ public class Cli extends EventDispatcher {
     static final int width = 160;
 
     private final View view;
+    private Network network;
 
     /** The current state of the interface. */
     private CliState state;
@@ -37,12 +39,14 @@ public class Cli extends EventDispatcher {
 
     private volatile boolean running;
 
-    private boolean singleplayer;
+    private boolean offline;
 
     public Cli() {
         this.view = new View();
         this.view.registerOnVC(this);
         this.registerOnMV(this.view);
+
+        this.network = null;
 
         this.stateQueue = new LinkedBlockingDeque<>();
         this.stateQueue.add(new SplashState());
@@ -53,7 +57,7 @@ public class Cli extends EventDispatcher {
         this.in = new Scanner(System.in);
 
         this.running = false;
-        this.singleplayer = false;
+        this.offline = false;
     }
 
     public static void main(String[] args) {
@@ -110,6 +114,8 @@ public class Cli extends EventDispatcher {
     }
 
     public void stop() {
+        if (network != null)
+            network.stop();
         running = false;
     }
 
@@ -214,7 +220,7 @@ public class Cli extends EventDispatcher {
         return printer;
     }
 
-    public ViewModel getCache() {
+    public ViewModel getViewModel() {
         return viewModel;
     }
 
@@ -252,14 +258,19 @@ public class Cli extends EventDispatcher {
         stateQueue.add(this.state);
     }
 
-    void startNetworkClient(String host, int port) throws IOException {
-        new NetworkClient(view, host, port).start();
-        singleplayer = false;
+    void startOfflineClient() {
+        network = new OfflineClient(view);
+        try {
+            network.start();
+        } catch (IOException ignored) {
+        }
+        offline = true;
     }
 
-    void startLocalClient() {
-        new LocalClient(view).start();
-        singleplayer = true;
+    void startOnlineClient(String host, int port) throws IOException {
+        network = new OnlineClient(view, host, port);
+        network.start();
+        offline = false;
     }
 
     // TODO: Move this out of this class
@@ -355,11 +366,11 @@ public class Cli extends EventDispatcher {
     }
 
     void quit() {
-        clear();
         stop();
+        clear();
     }
 
-    boolean isSingleplayer() {
-        return singleplayer;
+    boolean isOffline() {
+        return offline;
     }
 }

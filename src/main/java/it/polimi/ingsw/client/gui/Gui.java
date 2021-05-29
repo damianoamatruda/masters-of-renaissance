@@ -1,9 +1,10 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.LocalClient;
-import it.polimi.ingsw.client.NetworkClient;
+import it.polimi.ingsw.client.OfflineClient;
+import it.polimi.ingsw.client.OnlineClient;
 import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
+import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -17,27 +18,30 @@ import javafx.scene.SceneAntialiasing;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 
 /**
  * JavaFX App
  */
 public class Gui extends Application {
-    private static final String initialSceneFxml = "mainmenu";
-    private static final double minWidth = 854;
-    private static final double minHeight = 480;
+    private static final String initialSceneFxml = "mainmenu";//"playground"; //"setupleaders";// "mainmenu";
+    private static final double minWidth = 1280;
+    private static final double minHeight = 780;
 
     private static Gui instance = null;
 
     private final EventDispatcher eventDispatcher;
     private final View view;
+    private Network network;
 
     private Scene scene;
     private GuiController controller;
 
-    private ViewModel viewModel;
+    private final ViewModel viewModel;
 
-    private boolean singleplayer;
+    private boolean offline;
+    private boolean musicPlaying;
 
     public static void main(String[] args) {
         launch(args);
@@ -65,25 +69,35 @@ public class Gui extends Application {
         this.view.registerOnVC(this.eventDispatcher);
         this.registerOnMV(this.view);
 
+        this.network = null;
+
         this.viewModel = new ViewModel();
+
+        this.musicPlaying = false;
     }
 
     /**
      * @return the GUI's viewmodel
      */
-    public ViewModel getCache() {
+    public ViewModel getViewModel() {
         return viewModel;
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = loadFXML(initialSceneFxml);
+        Parent root = getFxmlLoader(initialSceneFxml).load();
         scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(minWidth);
         primaryStage.setMinHeight(minHeight);
         primaryStage.setTitle("Masters of Renaissance");
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        if (network != null)
+            network.stop();
     }
 
     void setController(GuiController controller) {
@@ -94,22 +108,43 @@ public class Gui extends Application {
         eventDispatcher.dispatch(event);
     }
 
-    void startNetworkClient(String host, int port) throws IOException {
-        new NetworkClient(view, host, port).start();
-        singleplayer = false;
+    void startOfflineClient() {
+        network = new OfflineClient(view);
+        try {
+            network.start();
+        } catch (IOException ignored) {
+        }
+        offline = true;
+    }
+
+    void startOnlineClient(String host, int port) throws IOException {
+        network = new OnlineClient(view, host, port);
+        network.start();
+        offline = false;
+    }
+
+    void setRoot(String fxml, Consumer<?> callback) throws IOException {
+        FXMLLoader fxmlLoader = getFxmlLoader(fxml);
+        Parent root = fxmlLoader.load();
+        if (callback != null)
+            callback.accept(fxmlLoader.getController());
+        scene.setRoot(root);
     }
 
     void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        setRoot(fxml, null);
     }
 
-    void startLocalClient() {
-        new LocalClient(view).start();
-        singleplayer = true;
+    boolean isOffline() {
+        return offline;
     }
 
-    boolean isSingleplayer() {
-        return singleplayer;
+    boolean isMusicPlaying() {
+        return musicPlaying;
+    }
+
+    void setMusicPlaying(boolean musicPlaying) {
+        this.musicPlaying = musicPlaying;
     }
 
     void quit() {
@@ -117,9 +152,8 @@ public class Gui extends Application {
         System.exit(0);
     }
 
-    private Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(String.format("/assets/gui/%s.fxml", fxml)));
-        return fxmlLoader.load();
+    private FXMLLoader getFxmlLoader(String fxml) throws IOException {
+        return new FXMLLoader(getClass().getResource(String.format("/assets/gui/%s.fxml", fxml)));
     }
 
     private void registerOnMV(EventDispatcher view) {

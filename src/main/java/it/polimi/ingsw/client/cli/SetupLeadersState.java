@@ -25,10 +25,10 @@ public class SetupLeadersState extends CliState {
             e1.printStackTrace();
         }
         
-        if (cli.getCache().getCurrentPlayerData().getLeadersHand() != null)
+        if (cli.getViewModel().getCurrentPlayerData().getLeadersHand() != null)
             cli.getPrinter().printOwnedLeaders(
-                cli.getCache().getLocalPlayerData().getLeadersHand().stream()
-                .map(id -> cli.getCache().getGameData().getLeaderCard(id).orElse(null))
+                cli.getViewModel().getLocalPlayerData().getLeadersHand().stream()
+                .map(id -> cli.getViewModel().getLeaderCard(id).orElse(null))
                 .filter(Objects::nonNull).toList());
 
         cli.getOut().println("\nChoosing starting leaders hand.");
@@ -37,7 +37,7 @@ public class SetupLeadersState extends CliState {
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while (chosen < cli.getCache().getLocalPlayerData().getSetup().getChosenLeadersCount()) {
+        while (chosen < cli.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()) {
             String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen, which would you like to add? ID");
             try {
                 int id = Integer.parseInt(input);
@@ -56,7 +56,7 @@ public class SetupLeadersState extends CliState {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
             
-        if (cli.getCache().getGameData().getCurrentPlayer() == cli.getCache().getUiData().getLocalPlayerNickname())
+        if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
@@ -67,11 +67,11 @@ public class SetupLeadersState extends CliState {
         if (event.getAction() != ActionType.CHOOSE_LEADERS)
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
-        int choosable = cli.getCache().getLocalPlayerData().getSetup().getInitialResources();
+        int choosable = cli.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
 
         if (choosable > 0)
             cli.setState(new SetupResourcesState(choosable));
-        else if (cli.getCache().getGameData().getCurrentPlayer() == cli.getCache().getUiData().getLocalPlayerNickname())
+        else if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());

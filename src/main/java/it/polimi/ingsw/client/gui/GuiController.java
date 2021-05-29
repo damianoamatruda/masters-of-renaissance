@@ -80,35 +80,35 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateCurrentPlayer event) {
-        gui.getCache().getGameData().setCurrentPlayer(event.getPlayer());
+        gui.getViewModel().setCurrentPlayer(event.getPlayer());
     }
 
     public void on(Gui gui, UpdateDevCardGrid event) {
-        gui.getCache().getGameData().setDevCardGrid(event.getCards());
+        gui.getViewModel().setDevCardGrid(event.getCards());
     }
 
     public void on(Gui gui, UpdateDevCardSlot event) {
-        gui.getCache().getCurrentPlayerData().setDevSlot(event.getDevSlot(), event.getDevCard());
+        gui.getViewModel().getCurrentPlayerData().setDevSlot(event.getDevSlot(), event.getDevCard());
     }
 
     public void on(Gui gui, UpdateFaithPoints event) {
-        gui.getCache().getCurrentPlayerData().setFaithPoints(event.getFaithPoints());
+        gui.getViewModel().getCurrentPlayerData().setFaithPoints(event.getFaithPoints());
     }
 
     public void on(Gui gui, UpdateGameEnd event) {
-        gui.getCache().getGameData().setWinner(event.getWinner());
+        gui.getViewModel().setWinner(event.getWinner());
     }
 
     public void on(Gui gui, UpdateGame event) {
-        gui.getCache().getGameData().setActionTokens(event.getActionTokens());
-        gui.getCache().getGameData().setContainers(event.getResContainers());
-        gui.getCache().getGameData().setDevelopmentCards(event.getDevelopmentCards());
-        gui.getCache().getGameData().setLeaderCards(event.getLeaderCards());
-        gui.getCache().getGameData().setPlayerNicknames(event.getPlayers());
-        gui.getCache().getGameData().setProductions(event.getProductions());
-        gui.getCache().getGameData().setFaithTrack(event.getFaithTrack());
-        gui.getCache().getGameData().setDevCardColors(event.getColors());
-        gui.getCache().getGameData().setResourceTypes(event.getResourceTypes());
+        gui.getViewModel().setActionTokens(event.getActionTokens());
+        gui.getViewModel().setContainers(event.getResContainers());
+        gui.getViewModel().setDevelopmentCards(event.getDevelopmentCards());
+        gui.getViewModel().setLeaderCards(event.getLeaderCards());
+        gui.getViewModel().setPlayerNicknames(event.getPlayers());
+        gui.getViewModel().setProductions(event.getProductions());
+        gui.getViewModel().setFaithTrack(event.getFaithTrack());
+        gui.getViewModel().setDevCardColors(event.getColors());
+        gui.getViewModel().setResourceTypes(event.getResourceTypes());
 
     }
 
@@ -117,19 +117,19 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateLastRound event) {
-        gui.getCache().getGameData().setLastRound();
+        gui.getViewModel().setLastRound();
     }
 
     public void on(Gui gui, UpdateLeader event) {
         if (event.isActive())
-        gui.getCache().getGameData()
-            .getLeaderCard(event.getLeader())
-            .ifPresent(ReducedLeaderCard::setActive);
-        else 
+            gui.getViewModel()
+                    .getLeaderCard(event.getLeader())
+                    .ifPresent(ReducedLeaderCard::setActive);
+        else
             // is a discard move (well, technically never used as such,
             // see constructor references and UpdateLeadersHandCount)
-            gui.getCache().getCurrentPlayerData().setLeadersCount(
-                    gui.getCache().getCurrentPlayerData().getLeadersCount() - 1);
+            gui.getViewModel().getCurrentPlayerData().setLeadersCount(
+                    gui.getViewModel().getCurrentPlayerData().getLeadersCount() - 1);
     }
 
     public void on(Gui gui, UpdateLeadersHand event) {
@@ -142,31 +142,31 @@ public abstract class GuiController implements Initializable {
             player
             leadershand -> with GS and player has enough info for leader choice */
 
-        gui.getCache().getCurrentPlayerData().setLeadersHand(event.getLeaders());
+        gui.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
     }
 
     public void on(Gui gui, UpdateLeadersHandCount event) {
-        gui.getCache().getCurrentPlayerData().setLeadersCount(event.getLeadersCount());
+        gui.getViewModel().getPlayerData(event.getPlayer()).setLeadersCount(event.getLeadersCount());
     }
 
     public void on(Gui gui, UpdateMarket event) {
-        gui.getCache().getGameData().setMarket(event.getMarket());
+        gui.getViewModel().setMarket(event.getMarket());
     }
 
     public void on(Gui gui, UpdatePlayer event) {
-        gui.getCache().setPlayerData(event.getPlayer(), new PlayerData(
-            event.getBaseProduction(),
-            event.getPlayerSetup(),
-            event.getStrongbox(),
-            event.getWarehouseShelves()));
+        gui.getViewModel().setPlayerData(event.getPlayer(), new PlayerData(
+                event.getBaseProduction(),
+                event.getPlayerSetup(),
+                event.getStrongbox(),
+                event.getWarehouseShelves()));
     }
 
     public void on(Gui gui, UpdatePlayerStatus event) {
-        gui.getCache().getCurrentPlayerData().setActive(event.isActive());
+        gui.getViewModel().getCurrentPlayerData().setActive(event.isActive());
     }
 
     public void on(Gui gui, UpdateResourceContainer event) {
-        gui.getCache().getGameData().setContainer(event.getResContainer());
+        gui.getViewModel().setContainer(event.getResContainer());
     }
 
     public void on(Gui gui, UpdateSetupDone event) {
@@ -174,10 +174,10 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateVaticanSection event) {
-        gui.getCache().getGameData().setVaticanSection(event.getVaticanSection());
+        gui.getViewModel().setVaticanSection(event.getVaticanSection());
     }
 
     public void on(Gui gui, UpdateVictoryPoints event) {
-        gui.getCache().getCurrentPlayerData().setVictoryPoints(event.getVictoryPoints());
+        gui.getViewModel().getCurrentPlayerData().setVictoryPoints(event.getVictoryPoints());
     }
 }

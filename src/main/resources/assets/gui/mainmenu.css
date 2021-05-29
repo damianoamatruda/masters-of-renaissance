@@ -1,12 +1,29 @@
-* {
-    -fx-font-family: "Arial";
-    -fx-font-size: 21px;
+@font-face {
+    src: url('CaslonAntique.ttf');
+}
+
+@font-face {
+    src: url('CaslonAntique-Bold.ttf');
+}
+
+@font-face {
+    src: url('CaslonAntique-Italic.ttf');
+}
+
+@font-face {
+    src: url('CaslonAntique-BoldItalic.ttf');
 }
 
 #body {
     -fx-background-image: url('background.png');
     -fx-background-size: 500px;
     -fx-background-position: center;
+    -fx-font-family: 'Caslon Antique Bold';
+    -fx-font-size: 22px;
+}
+
+Text {
+    -fx-font-family: 'Caslon Antique Bold';
 }
 
 Button {
@@ -19,7 +36,7 @@ Button {
     -fx-background-insets: 0, 1, 2, 0;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 4, 0.0, 0, 1);
     -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-padding: 4px 6px 6px 4px;
+    -fx-padding: 6px;
     -fx-pref-height: 40px;
 }
 
@@ -42,8 +59,52 @@ Button:pressed {
 TextField {
     -fx-pref-height: 40px;
     -fx-border: 0;
-    -fx-background-color: radial-gradient(center 50% 0%, radius 100%, white, rgb(240, 240, 240));
+    -fx-background-color: radial-gradient(center 50% 0%, radius 100%, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
+    -fx-padding: 6px;
 }
 
 TextField:focused {
+    -fx-font-family: 'Caslon Antique';
+}
+
+Label {
+    -fx-font-size: 21px;
+    -fx-text-fill: linear-gradient(rgb(26, 57, 109), rgb(26, 100, 179));
+    -fx-padding: 0px 6px 0px 6px;
+}
+
+#playersCount {
+    -fx-alignment: center;
+}
+
+.blueCard {
+    -fx-background-image: url('devcardtemplates/bluecard.png');
+}
+
+.greenCard {
+    -fx-background-image: url('devcardtemplates/greencard.png');
+}
+
+.purpleCard {
+    -fx-background-image: url('devcardtemplates/purplecard.png');
+}
+
+.yellowCard {
+    -fx-background-image: url('devcardtemplates/yellowcard.png');
+}
+
+.depotLeader {
+    -fx-background-image: url('leadertemplates/depotleader.png');
+}
+
+.productionLeader {
+    -fx-background-image: url('leadertemplates/productionleader.png');
+}
+
+.zeroLeader {
+    -fx-background-image: url('leadertemplates/zeroleader.png');
+}
+
+.discountLeader {
+    -fx-background-image: url('leadertemplates/discountleader.png');
 }

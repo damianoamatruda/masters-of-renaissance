@@ -60,7 +60,7 @@ public class InputPlayersCountState extends CliState {
             cli.setState(new WaitingAfterTurnState());
         else
             cli.setState(
-                new SetupLeadersState(cli.getCache()
+                new SetupLeadersState(cli.getViewModel()
                     .getLocalPlayerData()
                     .getSetup()
                     .getChosenLeadersCount()));

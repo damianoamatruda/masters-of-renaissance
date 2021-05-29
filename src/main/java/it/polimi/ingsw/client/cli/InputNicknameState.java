@@ -22,7 +22,7 @@ public class InputNicknameState extends CliState{
             nickname = cli.prompt("Nickname");
         } while (nickname.isBlank());
 
-        cli.getCache().getUiData().setLocalPlayerNickname(nickname);
+        cli.getViewModel().setLocalPlayerNickname(nickname);
         cli.dispatch(new ReqJoin(nickname));
     }
 
@@ -34,10 +34,10 @@ public class InputNicknameState extends CliState{
 
     @Override
     public void on(Cli cli, UpdateBookedSeats event) {
-        if (cli.isSingleplayer())
+        if (cli.isOffline())
             cli.dispatch(new ReqNewGame(1));
         else {
-            if (event.canPrepareNewGame() == cli.getCache().getUiData().getLocalPlayerNickname())
+            if (event.canPrepareNewGame() == cli.getViewModel().getLocalPlayerNickname())
                 cli.setState(new InputPlayersCountState());
             else
                 cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
@@ -56,7 +56,7 @@ public class InputNicknameState extends CliState{
             cli.setState(new WaitingAfterTurnState());
         else
             cli.setState(
-                new SetupLeadersState(cli.getCache()
+                new SetupLeadersState(cli.getViewModel()
                     .getLocalPlayerData()
                     .getSetup()
                     .getChosenLeadersCount()));

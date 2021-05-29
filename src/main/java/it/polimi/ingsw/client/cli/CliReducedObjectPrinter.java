@@ -45,7 +45,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 .getRequirements().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
 
         cli.getOut().println();
-        Optional<ReducedResourceTransactionRecipe> prod = viewModel.getGameData().getProduction(newObject.getProduction());
+        Optional<ReducedResourceTransactionRecipe> prod = viewModel.getProduction(newObject.getProduction());
         prod.ifPresent(this::update);
 
         cli.getOut().println();
@@ -60,7 +60,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         newObject.getGrid().forEach((key, value) -> topCards.addAll(value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
 
         cli.getOut().println();
-        topCards.forEach(id -> viewModel.getGameData().getDevelopmentCard(id).ifPresent(this::update));
+        topCards.forEach(id -> viewModel.getDevelopmentCard(id).ifPresent(this::update));
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
         cli.getOut().println();
 
-        Optional<ReducedResourceTransactionRecipe> prod = viewModel.getGameData().getProduction(newObject.getProduction());
+        Optional<ReducedResourceTransactionRecipe> prod = viewModel.getProduction(newObject.getProduction());
         prod.ifPresent(this::update);
     }
 
@@ -238,7 +238,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     public void showStrongbox(String player) {
         cli.getOut().printf("Showing %s's strongbox:%n", player);
 
-        viewModel.getGameData().getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(this::update);
+        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(this::update);
     }
 
     @Override
@@ -247,16 +247,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 //        if (cache.getPlayerDevSlots(player) != null)
 //            cache.getPlayerDevSlots(player).forEach((key, value) -> cli.getOut().println("Slot " + key + ", card ID: " + value));
         Map<Integer, ReducedDevCard> slots = new HashMap<>();
-        try {
-            IntStream.range(0, viewModel.getPlayerData(player).getDevSlots().size())
-                .forEach(i ->
-                    viewModel.getGameData() // get the topmost card
-                        .getDevelopmentCard(viewModel.getPlayerData(player).getDevSlots().get(i).get(0))
-                        .ifPresent(c -> slots.put(i, c)));
-            printDevelopmentSlots(slots);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            cache.getPlayerDevSlots(player).forEach((key, value) -> slots.put(key, cache.getDevCard(value)));
+//            printDevelopmentSlots(slots);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
@@ -326,17 +323,17 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         for(int i = 1; i <= levels; i++){
             cli.trackSlimLine();
             List<List<String>> lines = new ArrayList<>();
-            for(String key : grid.getGrid().keySet()) {
+            for (String key : grid.getGrid().keySet()) {
                 int index = i;
                 ReducedDevCard card = grid.getGrid().get(key).stream()
                     .filter(Objects::nonNull).map(Stack::peek)
-                    .map(id -> viewModel.getGameData().getDevelopmentCard(id).orElse(null))
+                    .map(id -> viewModel.getDevelopmentCard(id).orElse(null))
                     .filter(Objects::nonNull)
                     .filter(c -> c.getLevel() == levels + 1 - index).findAny().orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
-            for(int j = 0; j < topCards.get(i - 1).size(); j++) {
+            for (int j = 0; j < topCards.get(i - 1).size(); j++) {
                 ReducedDevCard card = topCards.get(i - 1).get(j);
                 lines.add(new ArrayList<>());
                 List<String> column = lines.get(j);
@@ -344,13 +341,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             }
 
             String rowTemplate = "";
-            for(int j = 0; j < topCards.get(i - 1).size(); j++) {
+            for (int j = 0; j < topCards.get(i - 1).size(); j++) {
                 rowTemplate += "%-38s │";
             }
             rowTemplate += "\n";
 
             int length = lines.stream().map(List::size).reduce(Integer::max).orElse(0);
-            for(int j = 0; j < length; j++) {
+            for (int j = 0; j < length; j++) {
                 List<String> row = new ArrayList<>();
                 for (int l = 0; l < topCards.get(i - 1).size(); l++) {
                     if (j < lines.get(l).size())
@@ -386,7 +383,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     private void addProductionToPrinter(List<String> column, int productionID) {
-        Optional<ReducedResourceTransactionRecipe> r = viewModel.getGameData().getProduction(productionID);
+        Optional<ReducedResourceTransactionRecipe> r = viewModel.getProduction(productionID);
 
         if (r.isPresent()) {
             column.add(String.format("--- Production ID: %d ---",
@@ -413,27 +410,44 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     private String printColor(String colorName) {
         if(colorName == null) return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
-        String color = viewModel.getGameData().getDevCardColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
+        String color = viewModel.getDevCardColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
     }
 
     private String printResource(String resourceType) {
         if(resourceType == null)  return "Ø";
-        String color = viewModel.getGameData().getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
+        String color = viewModel.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
 
     public void printFaithTrack(Map<String, Integer> points) {
+        String boldTopLeftCorner = "╔";
+        String slimTopLeftCorner = "┌";
+        String boldTopRightCorner = "╗";
+        String slimTopRightCorner = "┐";
+        String boldBottomLeftCorner = "╚";
+        String slimBottomLeftCorner = "└";
+        String boldBottomRightCorner = "╝";
+        String slimBottomRightCorner = "┘";
+        String boldT = "╦";
+        String slimT = "┬";
+        String boldUpwardsT = "╩";
+        String slimUpwardsT = "┴";
+        String boldHorizontalLine = "═";
+        String slimHorizontalLine = "─";
+        String boldVerticalLine = "║";
+        String slimVerticalLine = "│";
+
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
-        int maxFaith = viewModel.getGameData().getFaithTrack().getMaxFaith();
+        int maxFaith = viewModel.getFaithTrack().getMaxFaith();
         // Calculate section tiles and yellow tiles, to match the colors
-        List<ReducedVaticanSection> sections = viewModel.getGameData().getFaithTrack().getVaticanSections().values().stream().toList();
+        List<ReducedVaticanSection> sections = viewModel.getFaithTrack().getVaticanSections().values().stream().toList();
         List<Integer> sectionBegins = sections.stream().map(ReducedVaticanSection::getFaithPointsBeginning).sorted().toList();
         List<Integer> sectionEnds = sections.stream().map(ReducedVaticanSection::getFaithPointsEnd).sorted().toList();
         List<Integer> sectionTiles = new ArrayList<>();
         for(int i = 0; i < sectionBegins.size(); i++)
             sectionTiles.addAll(IntStream.rangeClosed(sectionBegins.get(i), sectionEnds.get(i)).boxed().toList());
-        List<Integer> yellowTiles = viewModel.getGameData().getFaithTrack().getYellowTiles().stream().map(ReducedYellowTile::getFaithPoints).toList();
+        List<Integer> yellowTiles = viewModel.getFaithTrack().getYellowTiles().stream().map(ReducedYellowTile::getFaithPoints).toList();
 
         // Shorten nickname to fit the cell width
         List<String> players = new ArrayList<>(points.keySet().stream().toList());
@@ -446,34 +460,12 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
         // Indexes on top of the track
         StringBuilder output = new StringBuilder(" ");
-        for(int i = 0; i <= maxFaith; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7) /*+ "yellow tile points"*/));
+        for(int i = 0; i <= maxFaith; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7)));
         output.append("\n");
 
         // Upper border
-        //First tile
-        if(yellowTiles.contains(0) && sectionTiles.contains(0)) output.append("\033[38;5;208m");
-        else if(yellowTiles.contains(0)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(0)) output.append("\u001B[31m");
-        output.append(sectionTiles.contains(0) ? "╔" :"┌");
-        // Middle tiles
-        for(int i = 0; i < maxFaith; i++){
-            if(yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i)) output.append("\u001B[31m");
-            else output.append("\u001B[0m");
-            output.append((sectionTiles.contains(i) ? "═" : "─").repeat(cellWidth));
-
-            if((yellowTiles.contains(i + 1) && sectionTiles.contains(i)) ||
-                    (sectionTiles.contains(i + 1) && yellowTiles.contains(i)))
-                output.append("\033[38;5;208m");
-            else if(yellowTiles.contains(i + 1) || yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i + 1) || sectionTiles.contains(i)) output.append("\u001B[31m");
-            output.append((sectionTiles.contains(i + 1) || (i > 0 && sectionTiles.contains(i))) ? "╦" : "┬");
-        }
-        //Last tile
-        if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
-        else output.append("\u001B[0m");
-        output.append((sectionTiles.contains(maxFaith) ? "═" : "─").repeat(cellWidth)).append(sectionTiles.contains(maxFaith) ? "╗\n" :"┐\n").append("\u001B[0m");
+        printTrackHorizontalBorder(boldTopLeftCorner, slimTopLeftCorner, boldTopRightCorner, slimTopRightCorner,
+                boldT, slimT, boldHorizontalLine, slimHorizontalLine, cellWidth, maxFaith, sectionTiles, yellowTiles, output);
 
         //Number of lines = number of players
         for (int j = 0; j < players.size(); j++) {
@@ -486,40 +478,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 else if(yellowTiles.contains(i) || yellowTiles.contains(i - 1)) output.append("\u001B[93m");
                 else if(sectionTiles.contains(i) || sectionTiles.contains(i - 1)) output.append("\u001B[31m");
 //                else if (i > 0 && !sectionTiles.contains(i - 1) && !yellowTiles.contains(i - 1)) output.append("\u001B[0m");
-                output.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? "║" : "│")
+                output.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? boldVerticalLine : slimVerticalLine)
                         .append("\u001B[0m").append(points.get(player) == i ? String.format("%-6s", nicks.get(j)) : " ".repeat(cellWidth));
             }
             // Rightmost side border
             if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
             else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
             else output.append("\u001B[0m");
-            output.append(sectionTiles.contains(maxFaith) ? "║\n": "│\n").append("\u001B[0m");
+            output.append(sectionTiles.contains(maxFaith) ? boldVerticalLine: slimVerticalLine).append("\u001B[0m\n");
         }
 
         // Lower border
-        //First tile
-        if(yellowTiles.contains(0) && sectionTiles.contains(0)) output.append("\033[38;5;208m");
-        else if(yellowTiles.contains(0)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(0)) output.append("\u001B[31m");
-        output.append(sectionTiles.contains(0) ? "╚" :"└");
-        for(int i = 0; i < maxFaith; i++){
-            if(yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i)) output.append("\u001B[31m");
-            else output.append("\u001B[0m");
-            output.append((sectionTiles.contains(i) ? "═" : "─").repeat(cellWidth));
-
-            if((yellowTiles.contains(i + 1) && sectionTiles.contains(i)) ||
-                    (sectionTiles.contains(i + 1) && yellowTiles.contains(i)))
-                output.append("\033[38;5;208m");
-            else if(yellowTiles.contains(i + 1) || yellowTiles.contains(i)) output.append("\u001B[93m");
-            else if(sectionTiles.contains(i + 1) || sectionTiles.contains(i)) output.append("\u001B[31m");
-            output.append((sectionTiles.contains(i + 1) || (i > 0 && sectionTiles.contains(i))) ? "╩" : "┴");
-        }
-        //Last tile
-        if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
-        else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
-        else output.append("\u001B[0m");
-        output.append((sectionTiles.contains(maxFaith) ? "═" : "─").repeat(cellWidth)).append(sectionTiles.contains(maxFaith) ? "╝\n" :"┘\n").append("\u001B[0m");
+        printTrackHorizontalBorder(boldBottomLeftCorner, slimBottomLeftCorner, boldBottomRightCorner,
+                slimBottomRightCorner, boldUpwardsT, slimUpwardsT, boldHorizontalLine, slimHorizontalLine,
+                cellWidth, maxFaith, sectionTiles, yellowTiles, output);
 
         try {
             // Bonus points on the bottom of the track
@@ -531,10 +503,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                     overlapped.add(i);
                 if (yellowTiles.contains(i)) {
                     index = yellowTiles.indexOf(i);
-                    output.append(String.format("%-16s", "\u001B[93m" + viewModel.getGameData().getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-16s", "\u001B[93m" + viewModel.getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else if (sectionEnds.contains(i)) {
-                    output.append(String.format("%-16s", "\u001B[31m" + viewModel.getGameData().getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-16s", "\u001B[31m" + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else
                     output.append("       ");
@@ -542,7 +514,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             output.append("\n");
             for (int i = 0; i <= maxFaith; i++) {
                 if (overlapped.contains(i))
-                    output.append(String.format("%-17s", "\u001B[31m+ " + viewModel.getGameData().getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-17s", "\u001B[31m+ " + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 else
                     output.append("       ");
             }
@@ -554,6 +526,37 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         // Print the result
         System.out.println(output);
 
+    }
+
+    private void printTrackHorizontalBorder(String boldLeftCorner, String slimLeftCorner, String boldRightCorner,
+                                            String slimRightCorner, String boldT, String slimT, String boldHorizontalLine,
+                                            String slimHorizontalLine, int cellWidth, int maxFaith, List<Integer> sectionTiles,
+                                            List<Integer> yellowTiles, StringBuilder output) {
+        //First tile
+        if(yellowTiles.contains(0) && sectionTiles.contains(0)) output.append("\033[38;5;208m");
+        else if(yellowTiles.contains(0)) output.append("\u001B[93m");
+        else if(sectionTiles.contains(0)) output.append("\u001B[31m");
+        output.append(sectionTiles.contains(0) ? boldLeftCorner : slimLeftCorner);
+        // Middle tiles
+        for(int i = 0; i < maxFaith; i++){
+            if(yellowTiles.contains(i)) output.append("\u001B[93m");
+            else if(sectionTiles.contains(i)) output.append("\u001B[31m");
+            else output.append("\u001B[0m");
+            output.append((sectionTiles.contains(i) ? boldHorizontalLine : slimHorizontalLine).repeat(cellWidth));
+
+            if((yellowTiles.contains(i + 1) && sectionTiles.contains(i)) ||
+                    (sectionTiles.contains(i + 1) && yellowTiles.contains(i)))
+                output.append("\033[38;5;208m");
+            else if(yellowTiles.contains(i + 1) || yellowTiles.contains(i)) output.append("\u001B[93m");
+            else if(sectionTiles.contains(i + 1) || sectionTiles.contains(i)) output.append("\u001B[31m");
+            output.append((sectionTiles.contains(i + 1) || (i > 0 && sectionTiles.contains(i))) ? boldT : slimT);
+        }
+        //Last tile
+        if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
+        else if(sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
+        else output.append("\u001B[0m");
+        output.append((sectionTiles.contains(maxFaith) ? boldHorizontalLine : slimHorizontalLine).repeat(cellWidth))
+                .append(sectionTiles.contains(maxFaith) ? boldRightCorner : slimRightCorner).append("\u001B[0m\n");
     }
 
     private void printDevelopmentSlots(Map<Integer, ReducedDevCard> slots) {

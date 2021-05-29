@@ -30,7 +30,7 @@ public class SetupResourcesState extends CliState {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Resources setup: ErrAction received with reason not LATE_SETUP_ACTION.");
             
-        if (cli.getCache().getGameData().getCurrentPlayer() == cli.getCache().getUiData().getLocalPlayerNickname())
+        if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
@@ -48,7 +48,7 @@ public class SetupResourcesState extends CliState {
         if (event.getAction() != ActionType.CHOOSE_LEADERS)
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
-        if (cli.getCache().getGameData().getCurrentPlayer() == cli.getCache().getUiData().getLocalPlayerNickname())
+        if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());

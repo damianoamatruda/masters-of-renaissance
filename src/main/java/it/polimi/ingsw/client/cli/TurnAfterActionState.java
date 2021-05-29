@@ -13,6 +13,12 @@ public class TurnAfterActionState extends CliTurnState {
         entries.put('L', new Menu.Entry("Leader action", this::leaderAction));
         entries.put('E', new Menu.Entry("End turn", this::endTurn));
 
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         new Menu(entries).render(cli);
     }
 

@@ -84,8 +84,8 @@ public class FaithTrack extends EventDispatcher {
 
     public ReducedFaithTrack reduce() {
         return new ReducedFaithTrack(
-            vaticanSectionsMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().reduce())),
-            yellowTiles.stream().map(t -> t.reduce()).toList(), maxFaithPointsCount);
+                vaticanSectionsMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().reduce())),
+                yellowTiles.stream().map(t -> t.reduce()).toList(), maxFaithPointsCount);
     }
 
     public int getMaxFaithPointsCount() {

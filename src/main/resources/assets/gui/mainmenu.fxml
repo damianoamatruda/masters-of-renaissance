@@ -19,15 +19,15 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
-      <Button alignment="CENTER" onAction="#handleSinglePlayer" prefWidth="400.0" text="Singleplayer"/>
-      <Button alignment="CENTER" onAction="#handleMultiplayer" prefWidth="400.0" text="Multiplayer">
+      <Button alignment="CENTER" onAction="#handlePlayOffline" prefWidth="400.0" text="Play Offline"/>
+      <Button alignment="CENTER" onAction="#handlePlayOnline" prefWidth="400.0" text="Play Online">
         <VBox.margin>
           <Insets top="8.0"/>
         </VBox.margin>
       </Button>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
-          <Button alignment="CENTER" onAction="#handleOptions" prefWidth="190.0" text="Options..."/>
+          <Button alignment="CENTER" onAction="#handlePlayground" prefWidth="190.0" text="Playground"/>
         </left>
         <right>
           <Button alignment="CENTER" onAction="#handleQuit" prefWidth="190.0" text="Quit Game"/>
