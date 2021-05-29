@@ -114,7 +114,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateCurrentPlayer event) {
-        // cli.getViewModel().setCurrentPlayer(event.getPlayer());
+        cli.getViewModel().setCurrentPlayer(event.getPlayer());
 
         // if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
         //     cli.setState(new TurnBeforeActionState());
@@ -131,7 +131,10 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateFaithPoints event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
+        if (event.isBlackCross())
+            cli.getViewModel().setBlackCrossFP(event.getFaithPoints());
+        else
+            cli.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
@@ -228,7 +231,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateSetupDone event) {
-        // cli.setState(new TurnBeforeActionState());
+        cli.getViewModel().setSetupDone(true);
     }
 
     public void on(Cli cli, UpdateVaticanSection event) {
