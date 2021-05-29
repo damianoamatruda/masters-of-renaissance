@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateMarket;
-import it.polimi.ingsw.common.events.mvevents.UpdateResourceContainer;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
@@ -81,7 +77,7 @@ public class TakeFromMarketState extends CliState {
                                c.getLeaderType() == ZeroLeader.class.getSimpleName()).toList();
             
             if (zeroLeaders.size() > 0) {
-                cli.getPrinter().printOwnedLeaders(zeroLeaders);
+                cli.getPrinter().showLeaders(zeroLeaders);
                 cli.getOut().println("These are the active leaders you can use to replace blank resources.");
                 
 
@@ -117,20 +113,4 @@ public class TakeFromMarketState extends CliState {
     public void on(Cli cli, UpdateAction event) {
         cli.setState(new TurnAfterActionState());
     }
-
-    @Override
-    public void on(Cli cli, UpdateResourceContainer event) {
-        super.on(cli, event);
-
-        cli.getPrinter().update(event.getResContainer());
-    }
-
-    @Override
-    public void on(Cli cli, UpdateMarket event) {
-        super.on(cli, event);
-
-        cli.getPrinter().update(event.getMarket());
-    }
-
-    // UpdateFaithPoints
 }

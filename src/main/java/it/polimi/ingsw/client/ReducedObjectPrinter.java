@@ -17,14 +17,13 @@ public interface ReducedObjectPrinter {
     void showPlayers(List<String> nicknames);
     void showCurrentPlayer(String player);
     void showBaseProductions(Map<String, Integer> baseProductions);
-    void showLeadersHand(String player, int leaderId);
     void showWarehouseShelves(String player);
 
     void showStrongbox(String player);
 
     void showPlayerSlots(String player);
 
-    void printOwnedLeaders(List<ReducedLeaderCard> leaders);
+    void showLeaders(List<ReducedLeaderCard> leaders);
     void printCardGrid(ReducedDevCardGrid grid);
-    void printFaithTrack(Map<String, Integer> points);
+    void printFaithTrack();
 }

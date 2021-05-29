@@ -34,11 +34,11 @@ public class TurnBeforeActionState extends CliTurnState {
 
     @Override
     public void on(Cli cli, UpdateSetupDone event) {
+        /* if the client got here it means it has finished the local setup and
+           it switched to this state (it happens when the local player is the current player).
+           When it got here, other players' setup was still ongoing,
+           therefore this message is handled here */
+        super.on(cli, event);
         cli.setState(new TurnBeforeActionState());
-    }
-
-    @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        System.out.println("updcurrpl turnbeforeaction");
     }
 }

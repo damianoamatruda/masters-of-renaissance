@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
@@ -222,12 +223,6 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     @Override
-    public void showLeadersHand(String player, int leaderId) {
-//        cli.getOut().printf("Leader %d now owned by player %s.%n", leaderId, player);
-        // print actual leader
-    }
-
-    @Override
     public void showWarehouseShelves(String player) {
         cli.getOut().printf("Showing %s's shelves (depot leaders' included):%n", player);
 
@@ -256,7 +251,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     }
 
-    public void printOwnedLeaders(List<ReducedLeaderCard> leaders) {
+    public void showLeaders(List<ReducedLeaderCard> leaders) {
         for(int i = 0; i < leaders.size(); i += 4) {
             cli.trackSlimLine();
             List<List<String>> rows = new ArrayList<>();
@@ -420,7 +415,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
 
-    public void printFaithTrack(Map<String, Integer> points) {
+    @Override
+    public void printFaithTrack() {
+        Map<String, Integer> points = viewModel.getPlayerNicknames().stream()
+            .collect(Collectors.toMap(nick -> nick, nick -> viewModel.getPlayerData(nick).getFaithPoints()));
+
         String boldTopLeftCorner = "╔";
         String slimTopLeftCorner = "┌";
         String boldTopRightCorner = "╗";

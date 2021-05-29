@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SetupLeadersState extends CliState {
     private final int leadersToChoose;
@@ -24,12 +24,12 @@ public class SetupLeadersState extends CliState {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+
+        ViewModel vm = cli.getViewModel();
         
-        if (cli.getViewModel().getLocalPlayerData().getLeadersHand() != null)
-            cli.getPrinter().printOwnedLeaders(
-                cli.getViewModel().getLocalPlayerData().getLeadersHand().stream()
-                .map(id -> cli.getViewModel().getLeaderCard(id).orElse(null))
-                .filter(Objects::nonNull).toList());
+        if (vm.getLocalPlayerData().getLeadersHand() != null)
+            cli.getPrinter().showLeaders(
+                vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()));
 
         cli.getOut().println("\nChoosing starting leaders hand.");
         cli.getOut().println("Please input leader card IDs from the ones assigned to you.\n");
@@ -37,7 +37,7 @@ public class SetupLeadersState extends CliState {
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while (chosen < cli.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()) {
+        while (chosen < vm.getLocalPlayerData().getSetup().getChosenLeadersCount()) {
             String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen");
             try {
                 int id = Integer.parseInt(input);
