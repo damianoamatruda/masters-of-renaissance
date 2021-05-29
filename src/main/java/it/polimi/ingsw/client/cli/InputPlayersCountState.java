@@ -1,14 +1,22 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 
 public class InputPlayersCountState extends CliState {
     @Override
     public void render(Cli cli) {
+        if (cli.isOffline()) {
+            cli.getOut().println("Preparing a new game...");
+            cli.dispatch(new ReqNewGame(1));
+            return;
+        }
+
         int count = 0;
         boolean isNumber = false;
         while (!isNumber) {
@@ -54,29 +62,30 @@ public class InputPlayersCountState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateGame event) {
-        super.on(cli, event); // need to update the cache
-        if (event.isResumed())
-            cli.setState(new WaitingAfterTurnState());
-        else
-            cli.setState(
-                new SetupLeadersState(cli.getViewModel()
-                    .getLocalPlayerData()
-                    .getSetup()
-                    .getChosenLeadersCount()));
+    public void on(Cli cli, UpdateCurrentPlayer event) {
+        // having this overriding may prove necessary:
+        // if the setState isn't fast enough, the next event after UpdateGame is CurrentPlayer and
+        // this means it might not get handled in WaitingAfterTurnState
+
+        if (cli.getViewModel().isResumedGame()) {
+            if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+                cli.setState(new TurnBeforeActionState());
+            else
+                cli.setState(new WaitingAfterTurnState());
+        }
     }
 
-    // decided to implement it at the CliState level, if issues bring it down a level
-    // @Override
-    // public void on(Cli cli, UpdateCurrentPlayer event) {
-    //     // having this overriding may prove necessary:
-    //     // if the setState isn't fast enough, the next event after UpdateGame is CurrentPlayer and
-    //     // this means it might not get handled in WaitingAfterTurnState
-    //     super.on(cli, event);
+    @Override
+    public void on(Cli cli, UpdateLeadersHand event) {
+        super.on(cli, event);
 
-    //     if (event.getPlayer().equals(cli.getCache().getUiData().getLocalPlayerNickname()))
-    //         cli.setState(new TurnBeforeActionState());
-    //     else
-    //         cli.setState(new WaitingAfterTurnState());
-    // }
+        if (cli.getViewModel().isResumedGame())
+            throw new RuntimeException("UpdateLeadersHand after resumed game.");
+        
+        cli.setState(
+            new SetupLeadersState(cli.getViewModel()
+                .getLocalPlayerData()
+                .getSetup()
+                .getChosenLeadersCount()));
+    }
 }
