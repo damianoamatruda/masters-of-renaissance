@@ -76,9 +76,15 @@ public class TakeFromMarketState extends CliState {
                 cli.getPrinter().printOwnedLeaders(zeroLeaders);
                 cli.getOut().println("These are the active leaders you can use to replace blank resources.");
                 
-                replacements = promptResources(cli,
-                    blanksCount,
-                    zeroLeaders.stream().map(c -> c.getResourceType()).toList());
+
+                input = "";
+                while (input != "y" || input != "n")
+                    input = cli.prompt("Replace resources? [y/n]");
+                if (input == "n") {
+                    replacements = cli.promptResources(
+                        blanksCount,
+                        zeroLeaders.stream().map(c -> c.getResourceType()).toList());
+                }
             }
         }
 
@@ -88,10 +94,7 @@ public class TakeFromMarketState extends CliState {
         Map<String, Integer> totalRes = new HashMap<>(replacements);
         chosenResources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
-        cli.getPrinter().showWarehouseShelves(vm.getLocalPlayerNickname());
-        cli.getOut().println("These are your shelves.");
-
-        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, promptShelves(cli, totalRes)));
+        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(totalRes)));
     }
 
     // ErrObjectNotOwned handled in clistate
@@ -103,83 +106,5 @@ public class TakeFromMarketState extends CliState {
     @Override
     public void on(Cli cli, UpdateAction event) {
         cli.setState(new TurnAfterActionState());
-    }
-
-
-    private Map<Integer, Map<String, Integer>> promptShelves(Cli cli, Map<String, Integer> totalRes) {
-        Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
-
-        totalRes.keySet().forEach(r -> cli.getOut().println(r));
-        cli.getOut().println("These are the resource types to be stored.");
-
-        // prompt user for resource -> count -> shelf to put it in
-        int totalResCount = totalRes.entrySet().stream().mapToInt(e -> e.getValue().intValue()).sum(),
-            allocResCount = 0;
-        while (allocResCount < totalResCount) { // does not check for overshooting
-            int count = 0, shelfID = -1; String res = "";
-            while (!totalRes.keySet().contains(res))
-                res = cli.prompt("Resource to store");
-            
-            while (count < 1) {
-                String input = cli.prompt("How many? Count (> 0):");
-            
-                try {
-                    count = Integer.parseInt(input);
-                } catch (Exception e) { }
-            }
-
-            while (shelfID < 0) {
-                String input = cli.prompt("How many? Count (> 0):");
-            
-                try {
-                    shelfID = Integer.parseInt(input);
-                } catch (Exception e) { }
-            }
-
-            String r = res; int c = count; // rMap.put below complained they weren't final
-            shelves.compute(shelfID, (sid, rMap) -> {
-                if (rMap == null)
-                    rMap = new HashMap<>();
-
-                rMap.compute(r, (k, v) -> v == null ? c : c + v);
-                return rMap;
-            });
-        }
-
-        return shelves;
-    }
-
-    Map<String, Integer> promptResources(Cli cli, int replaceable, List<String> replacements) {
-        Map<String, Integer> replacedRes = new HashMap<>();
-
-        String input = "";
-        while (input != "y" || input != "n")
-            input = cli.prompt("Replace resources? [y/n]");
-        if (input == "n")
-            return null;
-
-        List<String> resourceNames = cli.getViewModel().getResourceTypes().stream().map(r -> r.getName()).toList();
-        
-        resourceNames.forEach(n -> cli.getOut().println(n));
-        cli.getOut().println("These are the resources you can replace blanks with.");
-        while (replaceable > 0) {
-            int count = 0; String res = "";
-
-            while (!resourceNames.contains(res))
-                res = cli.prompt("Choose a replacement resource");
-
-            while (count < 1) {
-                input = cli.prompt("How many blanks should this replace? Count (> 0):");
-            
-                try {
-                    count = Integer.parseInt(input);
-                } catch (Exception e) { }
-            }
-            
-            replacedRes.put(res, count);
-            replaceable -= count; // does not check the "too many" scenario
-        }
-
-        return replacedRes;
     }
 }
