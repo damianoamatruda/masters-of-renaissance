@@ -236,6 +236,13 @@ public class Cli extends EventDispatcher {
      * @param state the next state
      */
     void setState(CliState state) {
+        while (stateQueue.size() > 0) {
+            try {
+                stateQueue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         stateQueue.add(state);
     }
 
@@ -256,7 +263,7 @@ public class Cli extends EventDispatcher {
 
     void repeatState(String s) {
         out.println(s);
-        stateQueue.add(this.state);
+        setState(this.state);
     }
 
     void startOfflineClient() {
