@@ -65,6 +65,7 @@ public class InputPlayersCountState extends CliState {
         // having this overriding may prove necessary:
         // if the setState isn't fast enough, the next event after UpdateGame is CurrentPlayer and
         // this means it might not get handled in WaitingAfterTurnState
+        super.on(cli, event);
 
         if (cli.getViewModel().isResumedGame()) {
             if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
