@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
-import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.ArrayList;
@@ -70,8 +69,8 @@ public class TurnBeforeActionState extends CliTurnState {
         cli.getOut().println("Resources need to be paid.");
         cli.getOut().println("Please specify how many resources to take from which container.");
 
-        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getNickname());
-        cli.getPrinter().showStrongbox(cli.getViewModel().getNickname());
+        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
+        cli.getPrinter().showStrongbox(cli.getViewModel().getLocalPlayerNickname());
 
         shelves = cli.promptShelves();
 
@@ -109,7 +108,7 @@ public class TurnBeforeActionState extends CliTurnState {
     private void swapShelves(Cli cli) {
         cli.getOut().println("Swapping shelves:");
 
-        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getNickname());
+        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
 
         int shelfid1, shelfid2;
         boolean isValid = false;
