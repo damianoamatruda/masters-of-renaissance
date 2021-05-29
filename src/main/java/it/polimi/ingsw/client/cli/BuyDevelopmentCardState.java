@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
@@ -64,5 +65,10 @@ public class BuyDevelopmentCardState extends CliState {
 
         //build request event
         cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));
+    }
+
+    @Override
+    public void on(Cli cli, UpdateAction event) {
+        cli.setState(new TurnAfterActionState());
     }
 }

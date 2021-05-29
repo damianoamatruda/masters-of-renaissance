@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.Menu;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 
 import java.util.LinkedHashMap;
@@ -24,5 +25,13 @@ public class TurnAfterActionState extends CliTurnState {
 
     private void endTurn(Cli cli) {
         cli.dispatch(new ReqEndTurn());
+    }
+
+    @Override
+    public void on(Cli cli, UpdateAction event) {
+        if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+            cli.setState(new TurnBeforeActionState());
+        else
+            cli.setState(new WaitingAfterTurnState());
     }
 }

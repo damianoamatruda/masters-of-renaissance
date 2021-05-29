@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.polimi.ingsw.client.ViewModel.ViewModel;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
@@ -60,5 +61,10 @@ public class ActivateProductionsState extends CliState {
         }
 
         cli.dispatch(new ReqActivateProduction(requests));
+    }
+
+    @Override
+    public void on(Cli cli, UpdateAction event) {
+        cli.setState(new TurnAfterActionState());
     }
 }
