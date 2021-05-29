@@ -25,7 +25,7 @@ public class TurnBeforeActionState extends CliTurnState {
         cli.getOut().println(Cli.center("\n\nAvailable actions:\n"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('1', new Menu.Entry("Take market resources", this::getResources));
+        entries.put('1', new Menu.Entry("Take market resources", cli1 -> cli.setState(new TakeFromMarketState())));
         entries.put('2', new Menu.Entry("Buy a card", this::buyCard));
         entries.put('3', new Menu.Entry("Activate production", this::produce));
         entries.put('L', new Menu.Entry("Leader action", this::leaderAction));
@@ -77,42 +77,6 @@ public class TurnBeforeActionState extends CliTurnState {
 
         //build request event
         cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));
-    }
-
-    private void getResources(Cli cli) {
-        cli.getOut().println("Getting resources from the market:");
-
-        cli.getPrinter().update(cli.getViewModel().getMarket());
-        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getNickname());
-
-        boolean isValid = false;
-        boolean isRow = false;
-        int index = -1;
-        String input;
-
-        while (!isValid) {
-            isValid = true;
-            input = cli.prompt("Choose a row or a column (example: row 1)");
-            String[] splitInput = input.split(" ", 2);
-            if(splitInput[0].equalsIgnoreCase("row")) {
-                isRow = true;
-            }
-            else if(splitInput[0].equalsIgnoreCase("col")) {
-                isRow = false;
-            }
-            else isValid = false;
-
-            try {
-                index = Integer.parseInt(splitInput[1]) - 1;
-            } catch (Exception e) {
-                isValid = false;
-            }
-        }
-
-        // if has ZeroLeaders active: (if branch to be implemented)
-        Map<String, Integer> replacements = cli.promptResources();
-
-        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves()));
     }
 
     private void produce(Cli cli) {
