@@ -116,6 +116,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateCurrentPlayer event) {
         cli.getViewModel().setCurrentPlayer(event.getPlayer());
 
+        cli.getOut().println(String.format("Current player: ", event.getPlayer()));
         // if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
         //     cli.setState(new TurnBeforeActionState());
         // else
