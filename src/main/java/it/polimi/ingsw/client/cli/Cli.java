@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
@@ -273,38 +274,93 @@ public class Cli extends EventDispatcher {
         offline = false;
     }
 
-    // TODO: Move this out of this class
-    Map<String, Integer> promptResources() {
-        out.println("Choosing blank resource replacements:");
+    Map<String, Integer> promptResources(int replaceable, List<String> allowedReplacements) {
+        Map<String, Integer> replacedRes = new HashMap<>();
+        
+        this.getOut().println("These are the resources you can replace blanks with:");
+        allowedReplacements.forEach(n -> this.getOut().println(n));
 
-        String resource;
-        int amount;
-        String input;
-        Map<String, Integer> result = new HashMap<>();
+        String input = "";
+        while (replaceable > 0) {
+            int count = 0; String res = "";
 
-        input = "";
-        while (!input.equalsIgnoreCase("Y")) {
-            resource = prompt("Which resource do you want as replacement to Zeros/Blanks? (Enter to skip)");
-            if (resource.isEmpty())
+            while (!allowedReplacements.contains(res)) {
+                res = this.prompt("Replacement resource (B to go back)");
+                if (res.equalsIgnoreCase("B"))
+                    break;
+            }
+            if (res.equalsIgnoreCase("B"))
                 break;
 
-            input = prompt("How many blanks would you like to replace?");
-            try {
-                amount = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                out.println("Please input an integer.");
-                continue;
+            while (count < 1) {
+                input = this.prompt("Amount replaced (> 0, B to go back):");
+            
+                if (input.equalsIgnoreCase("B"))
+                    break;
+                try {
+                    count = Integer.parseInt(input);
+                    if (replaceable - count < 0) {
+                        this.getOut().println(String.format("Too many chosen: %d available", replaceable));
+                        count = 0;
+                    }
+                } catch (Exception e) { }
             }
+            if (input.equalsIgnoreCase("B"))
+                break;
 
-            if(result.containsKey(resource)) {
-                result.replace(resource, result.get(resource) + amount);
-            } else {
-                result.put(resource, amount);
-            }
-
-            input = prompt("Are you done choosing? [Y/*]");
+            replacedRes.put(res, count);
+            replaceable -= count;
         }
-        return result;
+
+        return replacedRes;
+    }
+
+    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> totalRes) {
+        Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
+
+        this.getPrinter().showWarehouseShelves(this.getViewModel().getLocalPlayerNickname());
+        this.getOut().println("These are your shelves.");
+
+        totalRes.keySet().forEach(r -> this.getOut().println(r));
+        this.getOut().println("These are the resource types to be moved.");
+
+        // prompt user for resource -> count -> shelf to put it in
+        int totalResCount = totalRes.entrySet().stream().mapToInt(e -> e.getValue().intValue()).sum(),
+            allocResCount = 0;
+        while (allocResCount < totalResCount) { // does not check for overshooting
+            int count = 0, shelfID = -1; String res = "";
+            while (!totalRes.keySet().contains(res))
+                res = this.prompt("Resource");
+            
+            while (count < 1) {
+                String input = this.prompt("Amount (> 0)");
+            
+                try {
+                    count = Integer.parseInt(input);
+                } catch (Exception e) { }
+            }
+
+            while (shelfID < 0) {
+                String input = this.prompt("Shelf ID");
+            
+                try {
+                    shelfID = Integer.parseInt(input);
+                } catch (Exception e) { }
+            }
+
+            String r = res; int c = count; // rMap.put below complained they weren't final
+            shelves.compute(shelfID, (sid, rMap) -> {
+                if (rMap == null)
+                    rMap = new HashMap<>();
+
+                rMap.compute(r, (k, v) -> v == null ? c : c + v);
+                return rMap;
+            });
+
+            allocResCount += count;
+        }
+
+        return shelves;
     }
 
     void quit() {
