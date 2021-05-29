@@ -274,64 +274,6 @@ public class Cli extends EventDispatcher {
     }
 
     // TODO: Move this out of this class
-    Map<Integer, Map<String, Integer>> promptShelves() {
-        out.println("Choose mapping shelf-resource-quantity:");
-        final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
-        int container;
-        String resource;
-        int amount;
-
-        String input = "";
-        while (!input.equalsIgnoreCase("Y")) {
-            input = prompt("Which container? (Input an ID, or else Enter to skip)");
-            if (input.isEmpty())
-                break;
-
-            try {
-                container = Integer.parseInt(input);
-//                int finalContainer = container;
-//                if(cache.getContainers().stream().filter(c -> c.getId() == finalContainer).findAny().isEmpty()) {
-//                    out.println("You do not own this container. Try again");
-//                    continue;
-//                };
-            } catch (NumberFormatException e) {
-                out.println("Please input an integer.");
-                continue;
-            }
-
-            resource = prompt("Which resource?");
-
-            input = prompt("How many?");
-            try {
-                amount = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                out.println("Please input an integer.");
-                continue;
-            }
-
-            if(shelves.containsKey(container)) {
-                if(shelves.get(container).containsKey(resource)) {
-                    shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);
-                } else {
-                    shelves.get(container).put(resource, amount);
-                }
-            } else {
-                Map<String, Integer> resourceMapping = new HashMap<>();
-                resourceMapping.put(resource, amount);
-                shelves.put(container, resourceMapping);
-            }
-            input = prompt("Are you done choosing? [Y/*]");
-        }
-        out.println("Building shelves...");
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return shelves;
-    }
-
-    // TODO: Move this out of this class
     Map<String, Integer> promptResources() {
         out.println("Choosing blank resource replacements:");
 
