@@ -117,4 +117,20 @@ public class TakeFromMarketState extends CliState {
     public void on(Cli cli, UpdateAction event) {
         cli.setState(new TurnAfterActionState());
     }
+
+    @Override
+    public void on(Cli cli, UpdateResourceContainer event) {
+        super.on(cli, event);
+
+        cli.getPrinter().update(event.getResContainer());
+    }
+
+    @Override
+    public void on(Cli cli, UpdateMarket event) {
+        super.on(cli, event);
+
+        cli.getPrinter().update(event.getMarket());
+    }
+
+    // UpdateFaithPoints
 }
