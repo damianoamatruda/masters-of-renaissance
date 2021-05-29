@@ -25,7 +25,7 @@ public class SetupLeadersState extends CliState {
             e1.printStackTrace();
         }
         
-        if (cli.getViewModel().getCurrentPlayerData().getLeadersHand() != null)
+        if (cli.getViewModel().getLocalPlayerData().getLeadersHand() != null)
             cli.getPrinter().printOwnedLeaders(
                 cli.getViewModel().getLocalPlayerData().getLeadersHand().stream()
                 .map(id -> cli.getViewModel().getLeaderCard(id).orElse(null))
@@ -38,7 +38,7 @@ public class SetupLeadersState extends CliState {
 
         int chosen = 0;
         while (chosen < cli.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()) {
-            String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen, which would you like to add? ID");
+            String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen");
             try {
                 int id = Integer.parseInt(input);
                 leaders.add(id);
