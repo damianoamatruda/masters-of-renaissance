@@ -2,12 +2,10 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
-import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 
 public class InputNicknameState extends CliState{
     @Override
@@ -38,7 +36,7 @@ public class InputNicknameState extends CliState{
     public void on(Cli cli, UpdateBookedSeats event) {
         if (event.canPrepareNewGame().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.setState(new InputPlayersCountState());
-        else
+        else if (!cli.getViewModel().getLocalPlayerNickname().equals(""))
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
 
@@ -46,5 +44,33 @@ public class InputNicknameState extends CliState{
     public void on(Cli cli, UpdateJoinGame event) {
         if (!cli.isOffline())
             cli.getOut().printf("A new player joined the game! Getting to %d...", event.getPlayersCount());
+    }
+
+    @Override
+    public void on(Cli cli, UpdateCurrentPlayer event) {
+        // having this overriding may prove necessary:
+        // if the setState isn't fast enough, the next event after UpdateGame is CurrentPlayer and
+        // this means it might not get handled in WaitingAfterTurnState
+
+        if (cli.getViewModel().isResumedGame()) {
+            if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+                cli.setState(new TurnBeforeActionState());
+            else
+                cli.setState(new WaitingAfterTurnState());
+        }
+    }
+    
+    @Override
+    public void on(Cli cli, UpdateLeadersHand event) {
+        super.on(cli, event);
+
+        if (cli.getViewModel().isResumedGame())
+            throw new RuntimeException("UpdateLeadersHand after resumed game.");
+        
+        cli.setState(
+            new SetupLeadersState(cli.getViewModel()
+                .getLocalPlayerData()
+                .getSetup()
+                .getChosenLeadersCount()));
     }
 }
