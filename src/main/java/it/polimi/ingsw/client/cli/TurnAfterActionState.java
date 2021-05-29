@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.Menu;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateDevCardGrid;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 
 import java.util.LinkedHashMap;
@@ -34,5 +35,10 @@ public class TurnAfterActionState extends CliTurnState {
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
+    }
+
+    @Override
+    public void on(Cli cli, UpdateDevCardGrid event) {
+        cli.getPrinter().update(cli.getViewModel().getDevCardGrid());
     }
 }
