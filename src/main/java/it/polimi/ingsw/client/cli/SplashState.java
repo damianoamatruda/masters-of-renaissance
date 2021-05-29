@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.cli;
 public class SplashState extends CliState {
     @Override
     public void render(Cli cli) {
-        cli.clear();
+        // cli.clear();
         renderMainTitle(cli);
         for (int i = 0; i < 2; i++)
             cli.getOut().println();
@@ -12,7 +12,7 @@ public class SplashState extends CliState {
         renderCastle(cli);
         cli.getOut().println();
         pausePressEnter(cli);
-        cli.clear();
+        // cli.clear();
         cli.setState(new MainMenuState());
     }
 

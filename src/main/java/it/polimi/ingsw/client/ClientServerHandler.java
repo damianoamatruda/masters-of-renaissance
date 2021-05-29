@@ -36,6 +36,7 @@ public class ClientServerHandler extends NetworkHandler {
                     dispatch(new UpdateServerUnavailable());
                     break;
                 }
+                System.out.println(inputLine);
                 try {
                     dispatch(protocol.processInputAsNetEvent(inputLine));
                 } catch (NetworkProtocolException e1) {

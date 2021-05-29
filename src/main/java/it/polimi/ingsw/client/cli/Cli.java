@@ -246,10 +246,10 @@ public class Cli extends EventDispatcher {
         stateQueue.add(state);
     }
 
-    void clear() {
-        out.print("\033[H\033[2J");
-        out.flush();
-    }
+    // void clear() {
+    //     out.print("\033[H\033[2J");
+    //     out.flush();
+    // }
 
     void pause() {
         in.nextLine();
@@ -391,7 +391,7 @@ public class Cli extends EventDispatcher {
 
     void quit() {
         stop();
-        clear();
+        // clear();
     }
 
     boolean isOffline() {

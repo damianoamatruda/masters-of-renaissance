@@ -79,6 +79,8 @@ public class NetworkProtocol {
     }
 
     public String processOutput(Event event) {
-        return outputGson.toJson(event);
+        String str = outputGson.toJson(event);
+        System.out.println(str);
+        return str;
     }
 }

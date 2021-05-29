@@ -14,7 +14,7 @@ public class PlayOnlineState extends CliState {
 
     @Override
     public void render(Cli cli) {
-        cli.clear();
+        // cli.clear();
         renderMainTitle(cli);
         for (int i = 0; i < 2; i++)
             cli.getOut().println();
