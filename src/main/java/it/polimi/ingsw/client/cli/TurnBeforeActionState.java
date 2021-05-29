@@ -15,6 +15,11 @@ import java.util.Map;
 public class TurnBeforeActionState extends CliTurnState {
     @Override
     public void render(Cli cli) {
+        if (!cli.getViewModel().isSetupDone()) {
+            cli.getOut().println("Waiting for all players to finish their setup...");
+            return;
+        }
+
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
@@ -139,28 +144,13 @@ public class TurnBeforeActionState extends CliTurnState {
     }
 
     @Override
-    public void on(Cli cli, UpdateDevCardSlot event) {
-        super.on(cli, event);
-        cli.setState(new TurnAfterActionState());
-    }
-
-    @Override
-    public void on(Cli cli, UpdateMarket event) {
-        super.on(cli, event);
-        cli.setState(new TurnAfterActionState());
-    }
-
-    @Override
-    public void on(Cli cli, UpdateResourceContainer event) {
-        super.on(cli, event);
-        cli.setState(new TurnAfterActionState()); /* Update comes from my production activation (base action) */
-    }
-
-    @Override
     public void on(Cli cli, UpdateSetupDone event) {
+        cli.getViewModel().setSetupDone(true);
+        cli.setState(new TurnBeforeActionState());
     }
 
     @Override
     public void on(Cli cli, UpdateCurrentPlayer event) {
+        
     }
 }
