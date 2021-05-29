@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
@@ -8,11 +9,11 @@ import java.util.stream.IntStream;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private final Cli cli;
-    private final ReducedGame cache;
+    private final ViewModel viewModel;
 
-    public CliReducedObjectPrinter(Cli cli, ReducedGame cache) {
+    public CliReducedObjectPrinter(Cli cli, ViewModel viewModel) {
         this.cli = cli;
-        this.cache = cache;
+        this.viewModel = viewModel;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 .getRequirements().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
 
         cli.getOut().println();
-        Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
+        Optional<ReducedResourceTransactionRecipe> prod = viewModel.getProduction(newObject.getProduction());
         prod.ifPresent(this::update);
 
         cli.getOut().println();
@@ -59,7 +60,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         newObject.getGrid().forEach((key, value) -> topCards.addAll(value.stream().filter(Objects::nonNull).map(Stack::peek).toList()));
 
         cli.getOut().println();
-        topCards.forEach(id -> update(cache.getDevCard(id)));
+        topCards.forEach(id -> viewModel.getDevelopmentCard(id).ifPresent(this::update));
     }
 
     @Override
@@ -93,7 +94,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
         cli.getOut().println();
 
-        Optional<ReducedResourceTransactionRecipe> prod = cache.getProduction(newObject.getProduction());
+        Optional<ReducedResourceTransactionRecipe> prod = viewModel.getProduction(newObject.getProduction());
         prod.ifPresent(this::update);
     }
 
@@ -228,29 +229,16 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void showWarehouseShelves(String player) {
-        cli.getOut().printf("Showing %s's warehouse shelves:%n", player);
-        cache.getPlayerWarehouseShelvesIDs(player).forEach(s -> {
-            Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == s).findFirst();
-            cont.ifPresent(this::update);
-        });
+        cli.getOut().printf("Showing %s's shelves (depot leaders' included):%n", player);
 
-        cli.getOut().println("\nShowing leader shelves:");
-
-        cache.getLeaderCards().stream()
-            .filter(lc -> lc.getContainerId() >= 0 &&
-                          cache.getPlayerLeadersId(cache.getNickname()).contains(lc.getId()) &&
-                          lc.isActive())
-            .forEach(lc -> update(cache.getContainers().stream().filter(c -> c.getId() == lc.getContainerId()).findFirst().orElseThrow()));
+        viewModel.getPlayerShelves(player).forEach(this::update);
     }
 
     @Override
     public void showStrongbox(String player) {
         cli.getOut().printf("Showing %s's strongbox:%n", player);
 
-        int id = cache.getPlayerStrongboxID(player);
-
-        Optional<ReducedResourceContainer> cont = cache.getContainers().stream().filter(c -> c.getId() == id).findFirst();
-        cont.ifPresent(reducedResourceContainer -> reducedResourceContainer.getContent().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value)));
+        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(this::update);
     }
 
     @Override
@@ -337,7 +325,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             List<List<String>> lines = new ArrayList<>();
             for (String key : grid.getGrid().keySet()) {
                 int index = i;
-                ReducedDevCard card = grid.getGrid().get(key).stream().filter(Objects::nonNull).map(Stack::peek).map(cache::getDevCard).filter(c -> c.getLevel() == levels + 1 - index).findAny().orElseThrow();
+                ReducedDevCard card = grid.getGrid().get(key).stream()
+                    .filter(Objects::nonNull).map(Stack::peek)
+                    .map(id -> viewModel.getDevelopmentCard(id).orElse(null))
+                    .filter(Objects::nonNull)
+                    .filter(c -> c.getLevel() == levels + 1 - index).findAny().orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
@@ -391,7 +383,8 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     private void addProductionToPrinter(List<String> column, int productionID) {
-        Optional<ReducedResourceTransactionRecipe> r = cache.getProduction(productionID);
+        Optional<ReducedResourceTransactionRecipe> r = viewModel.getProduction(productionID);
+
         if (r.isPresent()) {
             column.add(String.format("--- Production ID: %d ---",
                     r.get().getId()));
@@ -417,13 +410,13 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     private String printColor(String colorName) {
         if(colorName == null) return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
-        String color = cache.getColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
+        String color = viewModel.getDevCardColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
     }
 
     private String printResource(String resourceType) {
         if(resourceType == null)  return "Ø";
-        String color = cache.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
+        String color = viewModel.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
 
@@ -446,15 +439,15 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         String slimVerticalLine = "│";
 
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
-        int maxFaith = cache.getFaithTrack().getMaxFaith();
+        int maxFaith = viewModel.getFaithTrack().getMaxFaith();
         // Calculate section tiles and yellow tiles, to match the colors
-        List<ReducedVaticanSection> sections = cache.getFaithTrack().getVaticanSections().values().stream().toList();
+        List<ReducedVaticanSection> sections = viewModel.getFaithTrack().getVaticanSections().values().stream().toList();
         List<Integer> sectionBegins = sections.stream().map(ReducedVaticanSection::getFaithPointsBeginning).sorted().toList();
         List<Integer> sectionEnds = sections.stream().map(ReducedVaticanSection::getFaithPointsEnd).sorted().toList();
         List<Integer> sectionTiles = new ArrayList<>();
         for(int i = 0; i < sectionBegins.size(); i++)
             sectionTiles.addAll(IntStream.rangeClosed(sectionBegins.get(i), sectionEnds.get(i)).boxed().toList());
-        List<Integer> yellowTiles = cache.getFaithTrack().getYellowTiles().stream().map(ReducedYellowTile::getFaithPoints).toList();
+        List<Integer> yellowTiles = viewModel.getFaithTrack().getYellowTiles().stream().map(ReducedYellowTile::getFaithPoints).toList();
 
         // Shorten nickname to fit the cell width
         List<String> players = new ArrayList<>(points.keySet().stream().toList());
@@ -510,10 +503,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                     overlapped.add(i);
                 if (yellowTiles.contains(i)) {
                     index = yellowTiles.indexOf(i);
-                    output.append(String.format("%-16s", "\u001B[93m" + cache.getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-16s", "\u001B[93m" + viewModel.getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else if (sectionEnds.contains(i)) {
-                    output.append(String.format("%-16s", "\u001B[31m" + cache.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-16s", "\u001B[31m" + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else
                     output.append("       ");
@@ -521,7 +514,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
             output.append("\n");
             for (int i = 0; i <= maxFaith; i++) {
                 if (overlapped.contains(i))
-                    output.append(String.format("%-17s", "\u001B[31m+ " + cache.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-17s", "\u001B[31m+ " + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 else
                     output.append("       ");
             }

@@ -16,7 +16,8 @@ public class ViewModel {
 
     // UI DATA
     private String localPlayerNickname;
-    private boolean canPrepareNewGame;
+    private boolean isResumedGame;
+    private boolean isSetupDone;
 
 
     // GAME DATA
@@ -48,6 +49,7 @@ public class ViewModel {
 
         vaticanSections = new ArrayList<>();
         isLastRound = false;
+        isSetupDone = false;
     }
     
     /**
@@ -408,17 +410,31 @@ public class ViewModel {
     // UI DATA
     
     /**
-     * @return whether the local player can prepare a new game
+     * @return whether the game is resumed
      */
-    public boolean canPrepareNewGame() {
-        return canPrepareNewGame;
+    public boolean isResumedGame() {
+        return isResumedGame;
     }
 
     /**
-     * @param canPrepareNewGame whether the local player can prepare a new game
+     * @param isResumedGame whether the game is resumed
      */
-    public void setCanPrepareNewGame(boolean canPrepareNewGame) {
-        this.canPrepareNewGame = canPrepareNewGame;
+    public void setSetupDone(boolean isSetupDone) {
+        this.isSetupDone = isSetupDone;
+    }
+
+    /**
+     * @return whether the player setup is done
+     */
+    public boolean isSetupDone() {
+        return isResumedGame || isSetupDone; // when resuming setup is still false
+    }
+
+    /**
+     * @param isResumedGame whether the game is resumed
+     */
+    public void setResumedGame(boolean isResumedGame) {
+        this.isResumedGame = isResumedGame;
     }
 
     /**

@@ -1,9 +1,14 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SetupLeadersState extends CliState {
     private final int leadersToChoose;
@@ -19,19 +24,21 @@ public class SetupLeadersState extends CliState {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+        
+        if (cli.getViewModel().getLocalPlayerData().getLeadersHand() != null)
+            cli.getPrinter().printOwnedLeaders(
+                cli.getViewModel().getLocalPlayerData().getLeadersHand().stream()
+                .map(id -> cli.getViewModel().getLeaderCard(id).orElse(null))
+                .filter(Objects::nonNull).toList());
 
-        cli.getOut().println("\nChoosing leaders hand.");
+        cli.getOut().println("\nChoosing starting leaders hand.");
         cli.getOut().println("Please input leader card IDs from the ones assigned to you.\n");
-
-        if (cli.getViewModel().getPlayerLeaders(cli.getViewModel().getNickname()) != null)
-//            cli.getViewModel().getPlayerLeaders(cli.getViewModel().getNickname()).forEach(printer::update);
-            cli.getPrinter().printOwnedLeaders(cli.getViewModel().getPlayerLeaders(cli.getViewModel().getNickname()));
 
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while (chosen < cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getChosenLeadersCount()) {
-            String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen, which would you like to add? ID");
+        while (chosen < cli.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()) {
+            String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen");
             try {
                 int id = Integer.parseInt(input);
                 leaders.add(id);
@@ -42,7 +49,31 @@ public class SetupLeadersState extends CliState {
         }
 
         cli.dispatch(new ReqChooseLeaders(leaders));
-        //build event and send
-        //if error from server, repeat
+    }
+
+    @Override
+    public void on(Cli cli, ErrAction event) {
+        if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
+            throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
+            
+        if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
+            cli.setState(new TurnBeforeActionState());
+        else
+            cli.setState(new WaitingAfterTurnState());
+    }
+
+    @Override
+    public void on(Cli cli, UpdateAction event) {
+        if (event.getAction() != ActionType.CHOOSE_LEADERS)
+            throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
+
+        int choosable = cli.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
+
+        if (choosable > 0)
+            cli.setState(new SetupResourcesState(choosable));
+        else if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+            cli.setState(new TurnBeforeActionState());
+        else
+            cli.setState(new WaitingAfterTurnState());
     }
 }

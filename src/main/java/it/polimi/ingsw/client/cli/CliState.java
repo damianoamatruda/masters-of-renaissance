@@ -2,10 +2,8 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
-import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
-
-import java.util.Optional;
+import it.polimi.ingsw.client.ViewModel.PlayerData;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 public abstract class CliState implements Renderable {
     protected void renderMainTitle(Cli cli) {
@@ -15,8 +13,9 @@ public abstract class CliState implements Renderable {
     @Override
     public abstract void render(Cli cli);
 
+    // TODO review all error states
     public void on(Cli cli, ErrAction event) {
-        cli.repeatState(event.getReason().toString());
+        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrActiveLeaderDiscarded event) {
@@ -32,12 +31,11 @@ public abstract class CliState implements Renderable {
         cli.repeatState(event.getReason());
     }
 
-    public void on(Cli cli, ErrNoSuchEntity event) {
-        // TODO handle
-        // cli.repeatState(event.getReason());
-    }
-
     public void on(Cli cli, ErrInitialChoice event) {
+        // repeats either SetupLeadersState or SetupResourcesState
+        // if it doesn't, that's really bad
+        assert(cli.getState() instanceof SetupLeadersState || cli.getState() instanceof SetupResourcesState);
+
         cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
                         "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
@@ -46,17 +44,23 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrNewGame event) {
-        cli.repeatState(event.isInvalidPlayersCount() ?
-                "Invalid players count." :
-                "You are not supposed to choose the players count for the game.");
+        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrNickname event) {
-        cli.repeatState("Nickname is invalid. Reason: " + event.getReason().toString().toLowerCase());
+        // handled by specific state, leave empty
+    }
+
+    public void on(Cli cli, ErrNoSuchEntity event) {
+        cli.repeatState(
+            String.format("No such entity %s: ID %d, code %s.",
+                event.getOriginalEntity().toString().toLowerCase(),
+                event.getId(),
+                event.getCode()));
     }
 
     public void on(Cli cli, ErrObjectNotOwned event) {
-        cli.repeatState(String.format("%s %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
+        cli.repeatState(String.format("%s with ID %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
     }
 
     public void on(Cli cli, ErrReplacedTransRecipe event) {
@@ -89,30 +93,34 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateAction event) {
-        // TODO: implement
+        // DON'T FORGET TO IMPLEMENT IN STATES
     }
 
     public void on(Cli cli, UpdateActionToken event) {
-        // TODO: Only the cache should be updated here
-        cli.getPrinter().update(cli.getViewModel().getActionToken(event.getActionToken()));
+        // print only, no cache update
+        cli.getViewModel()
+            .getActionToken(event.getActionToken())
+            .ifPresent(t -> cli.getPrinter().update(t));
     }
 
     public void on(Cli cli, UpdateBookedSeats event) {
-        if (event.canPrepareNewGame().equals(cli.getViewModel().getNickname())) {
-            if (cli.isOffline())
-                cli.dispatch(new ReqNewGame(1));
-            else
-                cli.setState(new InputPlayersCountState());
-        } else
-            cli.setState(new WaitingBeforeGameState(event.getBookedSeats()));
+        // if (event.canPrepareNewGame().equals(cli.getCache().getUiData().getLocalPlayerNickname())) {
+        //     if (cli.isSingleplayer())
+        //         cli.dispatch(new ReqNewGame(1));
+        //     else
+        //         cli.setState(new InputPlayersCountState());
+        // } else
+        //     cli.setState(new WaitingBeforeGameState(event.getBookedSeats()));
     }
 
     public void on(Cli cli, UpdateCurrentPlayer event) {
         cli.getViewModel().setCurrentPlayer(event.getPlayer());
-        if (event.getPlayer().equals(cli.getViewModel().getNickname()))
-            cli.setState(new TurnBeforeActionState());
-        else
-            cli.setState(new WaitingAfterTurnState());
+
+        cli.getOut().println(String.format("Current player: ", event.getPlayer()));
+        // if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+        //     cli.setState(new TurnBeforeActionState());
+        // else
+        //     cli.setState(new WaitingAfterTurnState());
     }
 
     public void on(Cli cli, UpdateDevCardGrid event) {
@@ -120,16 +128,19 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateDevCardSlot event) {
-        cli.getViewModel().setPlayerDevSlot(cli.getViewModel().getCurrentPlayer(), event.getDevSlot(), event.getDevCard());
+        cli.getViewModel().getCurrentPlayerData().setDevSlot(event.getDevSlot(), event.getDevCard());
     }
 
     public void on(Cli cli, UpdateFaithPoints event) {
-        cli.getViewModel().setFaithPoints(event.getPlayer(), event.getFaithPoints());
+        if (event.isBlackCross())
+            cli.getViewModel().setBlackCrossFP(event.getFaithPoints());
+        else
+            cli.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
         cli.getViewModel().setWinner(event.getWinner());
-        cli.setState(new GameEndState());
+        // cli.setState(new GameEndState());
     }
 
     public void on(Cli cli, UpdateGame event) {
@@ -137,20 +148,17 @@ public abstract class CliState implements Renderable {
         cli.getViewModel().setContainers(event.getResContainers());
         cli.getViewModel().setDevelopmentCards(event.getDevelopmentCards());
         cli.getViewModel().setLeaderCards(event.getLeaderCards());
-        cli.getViewModel().setFaithTrack(event.getFaithTrack());
-        event.getPlayers().stream().forEach(p -> cli.getViewModel().setFaithPoints(p, 0));
+        cli.getViewModel().setPlayerNicknames(event.getPlayers());
         cli.getViewModel().setProductions(event.getProductions());
-        cli.getViewModel().setColors(event.getColors());
+        cli.getViewModel().setFaithTrack(event.getFaithTrack());
+        cli.getViewModel().setDevCardColors(event.getColors());
         cli.getViewModel().setResourceTypes(event.getResourceTypes());
 
-        if (!event.isResumed())
-            event.getPlayers().forEach(p -> cli.getViewModel().setVictoryPoints(p, 0));
-        else
-            cli.setState(new WaitingAfterTurnState());
+        cli.getViewModel().setResumedGame(event.isResumed());
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
-        cli.setState(new WaitingBeforeGameState(event.getPlayersCount()));
+        // cli.setState(new WaitingBeforeGameState(event.getPlayersCount()));
     }
 
     public void on(Cli cli, UpdateLastRound event) {
@@ -159,40 +167,48 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateLeader event) {
         if (event.isActive())
-            cli.getViewModel().setPlayerLeaders(cli.getViewModel().getCurrentPlayer(), event.getLeader());
+            cli.getViewModel()
+                .getLeaderCard(event.getLeader())
+                .ifPresent(ReducedLeaderCard::setActive);
+        else 
+            // is a discard move (well, technically never used as such,
+            // see constructor references and UpdateLeadersHandCount)
+            cli.getViewModel().getCurrentPlayerData().setLeadersCount(
+                    cli.getViewModel().getCurrentPlayerData().getLeadersCount() - 1);
     }
 
     public void on(Cli cli, UpdateLeadersHand event) {
         /* this message arrives last among the starting events:
             joingame
-            updategamestart
+            updategame
             currplayer
             market
             devcardgrid
             player
             leadershand -> with GS and player has enough info for leader choice */
 
-        event.getLeaders().forEach(id -> cli.getViewModel().setPlayerLeaders(event.getPlayer(), id));
-
+        cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
+        
         // TODO: Completely refactor this, splitting it into the right states
+        // TODO distinguish hand based on player nickname
 
-        if (cli.getViewModel().getSetup(cli.getViewModel().getNickname()) != null &&
-                event.getLeaders().size() > cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getChosenLeadersCount()) {
-            cli.setState(new SetupLeadersState(
-                    event.getLeaders().size() - cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getChosenLeadersCount()));
-        } else if (cli.getViewModel().getSetup(cli.getViewModel().getNickname()) != null &&
-                cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getInitialResources() > 0 &&
-                !(cli.getState() instanceof SetupResourcesState)) {
-            cli.setState(new SetupResourcesState(
-                    cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getInitialResources()));
-        } else {
-            if (!(cli.getState() instanceof TurnBeforeActionState))
-                cli.setState(new TurnBeforeActionState());
-        }
+        // if (cli.getViewModel().getSetup(cli.getViewModel().getNickname()) != null &&
+        //         event.getLeaders().size() > cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getChosenLeadersCount()) {
+        //     cli.setState(new SetupLeadersState(
+        //             event.getLeaders().size() - cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getChosenLeadersCount()));
+        // } else if (cli.getViewModel().getSetup(cli.getViewModel().getNickname()) != null &&
+        //         cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getInitialResources() > 0 &&
+        //         !(cli.getState() instanceof SetupResourcesState)) {
+        //     cli.setState(new SetupResourcesState(
+        //             cli.getViewModel().getSetup(cli.getViewModel().getNickname()).getInitialResources()));
+        // } else {
+        //     if (!(cli.getState() instanceof TurnBeforeActionState))
+        //         cli.setState(new TurnBeforeActionState());
+        // }
     }
 
     public void on(Cli cli, UpdateLeadersHandCount event) {
-        cli.getViewModel().setPlayerLeadersCount(event.getPlayer(), event.getLeadersCount());
+        cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersCount(event.getLeadersCount());
     }
 
     public void on(Cli cli, UpdateMarket event) {
@@ -200,14 +216,15 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdatePlayer event) {
-        cli.getViewModel().setBaseProduction(event.getPlayer(), event.getBaseProduction());
-        cli.getViewModel().setPlayerWarehouseShelves(event.getPlayer(), event.getWarehouseShelves());
-        cli.getViewModel().setPlayerStrongbox(event.getPlayer(), event.getStrongbox());
-        cli.getViewModel().setSetup(event.getPlayer(), event.getPlayerSetup());
+        cli.getViewModel().setPlayerData(event.getPlayer(), new PlayerData(
+            event.getBaseProduction(),
+            event.getPlayerSetup(),
+            event.getStrongbox(),
+            event.getWarehouseShelves()));
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
-        cli.getViewModel().setPlayerState(event.getPlayer(), event.isActive());
+        cli.getViewModel().getPlayerData(event.getPlayer()).setActive(event.isActive());
     }
 
     public void on(Cli cli, UpdateResourceContainer event) {
@@ -215,17 +232,14 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateSetupDone event) {
-        cli.setState(new TurnBeforeActionState());
+        cli.getViewModel().setSetupDone(true);
     }
 
     public void on(Cli cli, UpdateVaticanSection event) {
-        Optional<ReducedVaticanSection> vs = cli.getViewModel().getFaithTrack().getVaticanSections().entrySet().stream()
-                .filter(e -> e.getValue().getId() == event.getVaticanSection()).map(e -> e.getValue()).findAny();
-
-        vs.ifPresent(s -> s.setActive());
+        cli.getViewModel().setVaticanSection(event.getVaticanSection());
     }
 
     public void on(Cli cli, UpdateVictoryPoints event) {
-        cli.getViewModel().setVictoryPoints(event.getPlayer(), event.getVictoryPoints());
+        cli.getViewModel().getPlayerData(event.getPlayer()).setVictoryPoints(event.getVictoryPoints());
     }
 }
