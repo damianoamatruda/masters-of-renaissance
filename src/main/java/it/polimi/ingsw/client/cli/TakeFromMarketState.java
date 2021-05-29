@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import it.polimi.ingsw.client.ViewModel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateMarket;
+import it.polimi.ingsw.common.events.mvevents.UpdateResourceContainer;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
@@ -49,7 +53,7 @@ public class TakeFromMarketState extends CliState {
             try {
                 index = Integer.parseInt(input) - 1;
 
-                if (index > 0)
+                if (index >= 0)
                     isValid = true;
             } catch (Exception e) {
             }
@@ -66,7 +70,11 @@ public class TakeFromMarketState extends CliState {
 
         // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
         int blanksCount = (int) chosenResources.stream().filter(r -> r == vm.getMarket().getReplaceableResType()).count();
-        Map<String, Integer> replacements = null;
+        Map<String, Integer> replacements = new HashMap<>();
+
+        // for (String res : chosenResources)
+        //     replacements.compute(res, (k, v) -> v == null ? 1 : v++);
+
         if (blanksCount > 0) {
             List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                 .filter(c -> c.isActive() &&
@@ -88,8 +96,10 @@ public class TakeFromMarketState extends CliState {
             }
         }
 
+        // replacements = replacements.entrySet().stream().filter(e -> e.getKey().equals(cli.getViewModel().getMarket().getReplaceableResType())).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+
         // remove the replaceable resources from the selected ones
-        chosenResources = chosenResources.stream().filter(r -> r != vm.getMarket().getReplaceableResType()).toList();
+        chosenResources = chosenResources.stream().filter(r -> !r.equals(vm.getMarket().getReplaceableResType())).toList();
 
         Map<String, Integer> totalRes = new HashMap<>(replacements);
         chosenResources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
