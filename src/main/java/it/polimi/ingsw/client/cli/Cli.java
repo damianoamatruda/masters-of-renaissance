@@ -326,35 +326,53 @@ public class Cli extends EventDispatcher {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         this.getPrinter().showWarehouseShelves(this.getViewModel().getLocalPlayerNickname());
-        this.getOut().println("These are your shelves.");
-
-        totalRes.keySet().forEach(r -> this.getOut().println(r));
-        this.getOut().println("These are the resource types to be moved.");
+        this.getOut().println("These are your shelves. You can finish at any time by pressing B.");
 
         // prompt user for resource -> count -> shelf to put it in
         int totalResCount = totalRes.entrySet().stream().mapToInt(e -> e.getValue().intValue()).sum(),
             allocResCount = 0;
         while (allocResCount < totalResCount) { // does not check for overshooting
+            this.getOut().println("Remaining:");
+            totalRes.entrySet().forEach(e -> this.getOut().println(String.format("%s: %d", e.getKey(), e.getValue())));
+            
             int count = 0, shelfID = -1; String res = "";
-            while (!totalRes.keySet().contains(res))
+            while (!totalRes.keySet().contains(res)) {
                 res = this.prompt("Resource");
-            
+
+                res = res.substring(0, 1).toUpperCase() + res.substring(1);
+                if (res.equalsIgnoreCase("B"))
+                    break;
+            }
+            if (res.equalsIgnoreCase("B"))
+                break;
+
+            String input = "";
             while (count < 1) {
-                String input = this.prompt("Amount (> 0)");
-            
+                input = this.prompt("Amount (> 0)");
+                
+                if (input.equalsIgnoreCase("B"))
+                    break;
                 try {
                     count = Integer.parseInt(input);
+                    if (count > totalRes.get(res))
+                        count = 0;
                 } catch (Exception e) { }
             }
+            if (input.equalsIgnoreCase("B"))
+                break;
 
             while (shelfID < 0) {
-                String input = this.prompt("Shelf ID");
-            
+                input = this.prompt("Shelf ID");
+
+                if (input.equalsIgnoreCase("B"))
+                    break;
                 try {
                     shelfID = Integer.parseInt(input);
                 } catch (Exception e) { }
             }
-
+            if (input.equalsIgnoreCase("B"))
+                break;
+            
             String r = res; int c = count; // rMap.put below complained they weren't final
             shelves.compute(shelfID, (sid, rMap) -> {
                 if (rMap == null)
