@@ -71,7 +71,7 @@ public class SetupLeadersState extends CliState {
 
         if (choosable > 0)
             cli.setState(new SetupResourcesState(choosable));
-        else if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
+        else if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
