@@ -233,9 +233,9 @@ public class ShelfTest {
         shelf2.addResources(Map.of(r2, 5));
 
         if (direct)
-            Shelf.swap(shelf1, shelf2);
+            ResourceContainer.swap(shelf1, shelf2);
         else
-            Shelf.swap(shelf2, shelf1);
+            ResourceContainer.swap(shelf2, shelf1);
 
         assertAll("shelves",
                 () -> assertAll("shelf1",
@@ -263,7 +263,7 @@ public class ShelfTest {
         Shelf shelf2 = new Shelf(5);
         shelf2.addResources(Map.of(r, 5));
 
-        assertThrows(IllegalResourceTransferException.class, () -> Shelf.swap(shelf1, shelf2));
+        assertThrows(IllegalResourceTransferException.class, () -> ResourceContainer.swap(shelf1, shelf2));
     }
 
     @Test
@@ -277,8 +277,8 @@ public class ShelfTest {
         Shelf shelf2 = new Shelf(13);
         shelf2.addResources(Map.of(r2, 5));
 
-        Shelf.swap(shelf1, shelf2);
-        Shelf.swap(shelf1, shelf2);
+        ResourceContainer.swap(shelf1, shelf2);
+        ResourceContainer.swap(shelf1, shelf2);
 
         assertAll("shelves",
                 () -> assertAll("shelf1",

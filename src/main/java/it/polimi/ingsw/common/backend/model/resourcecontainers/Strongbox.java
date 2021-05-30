@@ -30,6 +30,7 @@ public class Strongbox extends ResourceContainer {
      * @param strongbox the strongbox to copy
      */
     public Strongbox(Strongbox strongbox) {
+        super();
         resources = new HashMap<>(strongbox.resources);
     }
 
@@ -46,6 +47,11 @@ public class Strongbox extends ResourceContainer {
     @Override
     public int getQuantity() {
         return resources.values().stream().reduce(0, Integer::sum);
+    }
+
+    @Override
+    public Map<ResourceType, Integer> getResourceMap() {
+        return Map.copyOf(resources);
     }
 
     @Override

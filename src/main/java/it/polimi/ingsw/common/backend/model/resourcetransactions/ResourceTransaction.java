@@ -4,6 +4,8 @@ import it.polimi.ingsw.common.backend.model.Game;
 import it.polimi.ingsw.common.backend.model.Player;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainerGeneralGroup;
+import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainerGroup;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 
 import java.util.*;
@@ -77,6 +79,21 @@ public class ResourceTransaction {
         Map<ResourceContainer, ResourceContainer> clonedContainers = allContainers.stream()
                 .collect(Collectors.toMap(Function.identity(), ResourceContainer::copy));
 
+        /* Make map of clones of all resource container groups */
+        Map<ResourceContainerGroup, ResourceContainerGeneralGroup> clonedContainerGroups = allContainers.stream()
+                .map(ResourceContainer::getGroup)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toMap(Function.identity(), ResourceContainerGeneralGroup::new));
+
+        // TODO: Add tests of this with WarehouseShelf
+        clonedContainerGroups.values().forEach(g -> g.getResourceContainers().forEach(c -> {
+            if (clonedContainers.containsKey(c)) {
+                g.replaceResourceContainer(c, clonedContainers.get(c));
+                clonedContainers.get(c).setGroup(g);
+            }
+        }));
+
         /* Try removing all input storable resources from cloned resource containers.
          * If a resource transfer exception is thrown, the requested activation is not possible. */
         for (ResourceContainer resContainer : inputContainers.keySet())
@@ -89,21 +106,21 @@ public class ResourceTransaction {
 
         /* Remove all input storable resources from real resource containers.
          * This should be possible, as it worked with cloned resource containers */
-        for (ResourceContainer resContainer : inputContainers.keySet())
-            try {
+        try {
+            for (ResourceContainer resContainer : inputContainers.keySet())
                 resContainer.removeResources(inputContainers.get(resContainer));
-            } catch (IllegalResourceTransferException e) {
-                throw new RuntimeException("Implementation error when removing all input storable resources from real resource containers", e);
-            }
+        } catch (IllegalResourceTransferException e) {
+            throw new RuntimeException("Implementation error when removing all input storable resources from real resource containers", e);
+        }
 
         /* Add all output storable resources into real resource containers.
          * This should be possible, as it worked with cloned resource containers. */
-        for (ResourceContainer resContainer : outputContainers.keySet())
-            try {
+        try {
+            for (ResourceContainer resContainer : outputContainers.keySet())
                 resContainer.addResources(outputContainers.get(resContainer));
-            } catch (IllegalResourceTransferException e) {
-                throw new RuntimeException("Implementation error when adding all output storable resources into real resource containers.", e);
-            }
+        } catch (IllegalResourceTransferException e) {
+            throw new RuntimeException("Implementation error when adding all output storable resources into real resource containers.", e);
+        }
 
         /* Discard the chosen resources to be discarded */
         player.discardResources(game, discardedOutput.values().stream().reduce(0, Integer::sum));

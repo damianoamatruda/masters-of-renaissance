@@ -209,7 +209,7 @@ public class GameContext extends EventDispatcher {
             }
     
             try {
-                Shelf.swap(shelf1, shelf2);
+                ResourceContainer.swap(shelf1, shelf2);
                 dispatch(new UpdateAction(nickname, ActionType.SWAP_SHELVES));
             } catch (IllegalResourceTransferException e) {
                 dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));

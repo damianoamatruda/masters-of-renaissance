@@ -277,18 +277,18 @@ public class WarehouseTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
 
-        Warehouse warehouse1 = new Warehouse(7);
-        Warehouse.WarehouseShelf warehouseShelf1 = warehouse1.getShelves().get(6);
+        Warehouse warehouse = new Warehouse(13);
+
+        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(6);
         warehouseShelf1.addResources(Map.of(r1, 3));
 
-        Warehouse warehouse2 = new Warehouse(13);
-        Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
+        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(12);
         warehouseShelf2.addResources(Map.of(r2, 5));
 
         if (direct)
-            Shelf.swap(warehouseShelf1, warehouseShelf2);
+            ResourceContainer.swap(warehouseShelf1, warehouseShelf2);
         else
-            Shelf.swap(warehouseShelf2, warehouseShelf1);
+            ResourceContainer.swap(warehouseShelf2, warehouseShelf1);
 
         assertAll("shelves",
                 () -> assertAll("warehouseShelf1",
@@ -308,15 +308,18 @@ public class WarehouseTest {
 
     @Test
     void swapShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r2 = new ResourceType("r2", true);
 
-        ResourceShelf warehouseShelf1 = new ResourceShelf(r, 3);
-        warehouseShelf1.addResources(Map.of(r, 3));
+        Warehouse warehouse = new Warehouse(6);
 
-        ResourceShelf warehouseShelf2 = new ResourceShelf(r, 5);
-        warehouseShelf2.addResources(Map.of(r, 5));
+        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(2);
+        warehouseShelf1.addResources(Map.of(r1, 3));
 
-        assertThrows(IllegalResourceTransferException.class, () -> Shelf.swap(warehouseShelf1, warehouseShelf2));
+        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(4);
+        warehouseShelf2.addResources(Map.of(r2, 5));
+
+        assertThrows(IllegalResourceTransferException.class, () -> ResourceContainer.swap(warehouseShelf1, warehouseShelf2));
     }
 
     @Test
@@ -326,15 +329,15 @@ public class WarehouseTest {
 
         Warehouse warehouse1 = new Warehouse(7);
         Warehouse.WarehouseShelf warehouseShelf1a = warehouse1.getShelves().get(5);
-        warehouseShelf1a.addResources(Map.of(r2, 2));
+        warehouseShelf1a.addResources(Map.of(r1, 2));
         Warehouse.WarehouseShelf warehouseShelf1b = warehouse1.getShelves().get(6);
-        warehouseShelf1b.addResources(Map.of(r1, 3));
+        warehouseShelf1b.addResources(Map.of(r2, 3));
 
         Warehouse warehouse2 = new Warehouse(13);
         Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
-        warehouseShelf2.addResources(Map.of(r2, 5));
+        warehouseShelf2.addResources(Map.of(r1, 5));
 
-        assertThrows(IllegalResourceTransferException.class, () -> Shelf.swap(warehouseShelf1b, warehouseShelf2));
+        assertThrows(IllegalResourceTransferException.class, () -> ResourceContainer.swap(warehouseShelf1b, warehouseShelf2));
     }
 
     @Test
@@ -342,16 +345,16 @@ public class WarehouseTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
 
-        Warehouse warehouse1 = new Warehouse(7);
-        Warehouse.WarehouseShelf warehouseShelf1 = warehouse1.getShelves().get(6);
+        Warehouse warehouse = new Warehouse(13);
+
+        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(6);
         warehouseShelf1.addResources(Map.of(r1, 3));
 
-        Warehouse warehouse2 = new Warehouse(13);
-        Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
+        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(12);
         warehouseShelf2.addResources(Map.of(r2, 5));
 
-        Shelf.swap(warehouseShelf1, warehouseShelf2);
-        Shelf.swap(warehouseShelf1, warehouseShelf2);
+        ResourceContainer.swap(warehouseShelf1, warehouseShelf2);
+        ResourceContainer.swap(warehouseShelf1, warehouseShelf2);
 
         assertAll("shelves",
                 () -> assertAll("warehouseShelf1",

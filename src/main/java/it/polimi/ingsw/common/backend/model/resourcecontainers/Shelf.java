@@ -28,6 +28,7 @@ public class Shelf extends ResourceContainer {
      * @param size the maximum quantity of resources in the shelf
      */
     public Shelf(int size) {
+        super();
         this.size = size;
         this.resType = null;
         this.quantity = 0;
@@ -42,35 +43,6 @@ public class Shelf extends ResourceContainer {
         size = shelf.size;
         resType = shelf.resType;
         quantity = shelf.quantity;
-    }
-
-    /**
-     * Swaps the content of two shelves.
-     *
-     * @param shelf1 the first shelf
-     * @param shelf2 the second shelf
-     * @throws IllegalResourceTransferException if the shelves cannot be swapped
-     */
-    public static void swap(Shelf shelf1, Shelf shelf2) throws IllegalResourceTransferException {
-        ResourceContainer clone1 = shelf1.copy();
-        ResourceContainer clone2 = shelf2.copy();
-
-        // TODO: Make checks of null resource types in resource maps also in other methods using resource maps
-        if (shelf1.resType != null)
-            clone1.removeResources(Map.of(shelf1.resType, shelf1.quantity));
-        if (shelf2.resType != null)
-            clone2.removeResources(Map.of(shelf2.resType, shelf2.quantity));
-
-        if (shelf2.resType != null)
-            clone1.addResources(Map.of(shelf2.resType, shelf2.quantity));
-        if (shelf1.resType != null)
-            clone2.addResources(Map.of(shelf1.resType, shelf1.quantity));
-
-        shelf1.resType = clone1.getResourceTypes().stream().findAny().orElse(null);
-        shelf1.quantity = clone1.getQuantity();
-
-        shelf2.resType = clone2.getResourceTypes().stream().findAny().orElse(null);
-        shelf2.quantity = clone2.getQuantity();
     }
 
     @Override
@@ -107,6 +79,11 @@ public class Shelf extends ResourceContainer {
     }
 
     @Override
+    public Map<ResourceType, Integer> getResourceMap() {
+        return Map.of(resType, quantity);
+    }
+
+    @Override
     public int getResourceQuantity(ResourceType resType) {
         return resType.equals(this.resType) ? quantity : 0;
     }
@@ -114,6 +91,7 @@ public class Shelf extends ResourceContainer {
     @Override
     public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
         // TODO: Share this portion with other methods
+        // TODO: Make checks of null resource types in resource maps
         if (resMap.values().stream().noneMatch(v -> v > 0))
             return;
         if (resMap.values().stream().filter(v -> v > 0).count() != 1)

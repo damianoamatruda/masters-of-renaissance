@@ -6,14 +6,14 @@ import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
- * This class represents a container of shelves of growing size.
+ * This class represents a group of warehouse shelves of growing size.
  *
+ * @see ResourceContainerGroup
  * @see WarehouseShelf
  */
-public class Warehouse {
+public class Warehouse implements ResourceContainerGroup {
     /** The shelves inside the warehouse. */
     private final List<WarehouseShelf> shelves;
 
@@ -28,19 +28,15 @@ public class Warehouse {
             shelves.add(new WarehouseShelf(this, i));
     }
 
-    /**
-     * Initializes the warehouse based on the given warehouse shelves.
-     *
-     * @param shelves the warehouse shelves
-     */
-    public Warehouse(List<WarehouseShelf> shelves) {
-        this.shelves = new ArrayList<>(shelves);
+    @Override
+    public List<ResourceContainer> getResourceContainers() {
+        return List.copyOf(shelves);
     }
 
     /**
      * Returns the shelves inside the warehouse
      *
-     * @return a list of the shelves
+     * @return the list of the shelves
      */
     public List<WarehouseShelf> getShelves() {
         return List.copyOf(shelves);
@@ -53,9 +49,6 @@ public class Warehouse {
      * @see Warehouse
      */
     public static class WarehouseShelf extends Shelf {
-        /** The warehouse containing the shelf. */
-        private final transient Warehouse warehouse;
-
         /**
          * Initializes the shelf by specifying the warehouse containing it.
          *
@@ -64,7 +57,7 @@ public class Warehouse {
          */
         public WarehouseShelf(Warehouse warehouse, int size) {
             super(size);
-            this.warehouse = warehouse;
+            this.group = warehouse;
         }
 
         /**
@@ -74,11 +67,7 @@ public class Warehouse {
          */
         public WarehouseShelf(WarehouseShelf warehouseShelf) {
             super(warehouseShelf);
-            /* Create new Warehouse by replacing original shelf with its copy. This allows addResources to continue
-             * working using .equals() */
-            List<WarehouseShelf> shelves = new ArrayList<>(warehouseShelf.warehouse.shelves);
-            shelves.replaceAll(s -> s.equals(warehouseShelf) ? this : s);
-            warehouse = new Warehouse(shelves);
+            group = warehouseShelf.group;
         }
 
         @Override
@@ -94,12 +83,10 @@ public class Warehouse {
                 throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
             ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
 
-            if (warehouse.shelves.stream()
-                    .filter(s -> !s.equals(this))
-                    .map(Shelf::getResourceType)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .anyMatch(r -> r.equals(resType)))
+            if (group.getResourceContainers().stream()
+                    .filter(c -> !c.equals(this))
+                    .map(ResourceContainer::getResourceTypes)
+                    .anyMatch(resTypes -> resTypes.contains(resType)))
                 throw new IllegalResourceTransferException(resType, true, Kind.DUPLICATE_BOUNDED_RESOURCE);
             super.addResources(resMap);
         }
