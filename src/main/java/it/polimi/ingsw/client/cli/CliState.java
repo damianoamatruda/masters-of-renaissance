@@ -1,11 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-
-import java.util.Objects;
-
-import it.polimi.ingsw.client.ViewModel.PlayerData;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 public abstract class CliState implements Renderable {

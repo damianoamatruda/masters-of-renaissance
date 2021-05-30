@@ -1,15 +1,15 @@
-package it.polimi.ingsw.client.ViewModel;
+package it.polimi.ingsw.client.viewmodel;
+
+import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
 /** Data relative to a player's objects. */
 public class PlayerData {
     private final int baseProduction;
     /** Card at index 0 is the topmost. */
-    private List<List<Integer>> devSlots;
+    private final List<List<Integer>> devSlots;
     private int faithPoints;
     private boolean isActive;
     /** When not activated, cards are hidden.

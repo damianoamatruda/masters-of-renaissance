@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.ViewModel;
+package it.polimi.ingsw.client.viewmodel;
 
 import it.polimi.ingsw.common.reducedmodel.*;
 
@@ -35,7 +35,7 @@ public class ViewModel {
     private List<String> playerNicknames;
     private List<ReducedResourceTransactionRecipe> productions;
     private List<ReducedResourceType> resourceTypes;
-    private List<Boolean> vaticanSections;
+    private final List<Boolean> vaticanSections;
     private String winner;
 
 
@@ -417,7 +417,7 @@ public class ViewModel {
     }
 
     /**
-     * @param isResumedGame whether the game is resumed
+     * @param isSetupDone whether the player setup is done
      */
     public void setSetupDone(boolean isSetupDone) {
         this.isSetupDone = isSetupDone;

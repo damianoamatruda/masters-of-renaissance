@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
 import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.client.ViewModel.ViewModel;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
@@ -336,7 +336,7 @@ public class Cli extends EventDispatcher {
             totalRes.entrySet().forEach(e -> this.getOut().println(String.format("%s: %d", e.getKey(), e.getValue())));
             
             int count = 0, shelfID = -1; String res = "";
-            while (!totalRes.keySet().contains(res)) {
+            while (!totalRes.containsKey(res)) {
                 res = this.prompt("Resource");
 
                 res = res.substring(0, 1).toUpperCase() + res.substring(1);

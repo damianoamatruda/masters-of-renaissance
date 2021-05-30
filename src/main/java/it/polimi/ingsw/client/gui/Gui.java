@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
-import it.polimi.ingsw.client.ViewModel.ViewModel;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;

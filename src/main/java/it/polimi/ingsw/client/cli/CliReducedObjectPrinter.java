@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.ReducedObjectPrinter;
-import it.polimi.ingsw.client.ViewModel.ViewModel;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
