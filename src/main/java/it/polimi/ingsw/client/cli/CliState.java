@@ -115,7 +115,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateDevCardGrid event) {
         cli.getViewModel().setDevCardGrid(event.getCards());
 
-        cli.getPrinter().update(cli.getViewModel().getDevCardGrid());
+        cli.getPrinter().printCardGrid(cli.getViewModel().getDevCardGrid());
     }
 
     public void on(Cli cli, UpdateDevCardSlot event) {
