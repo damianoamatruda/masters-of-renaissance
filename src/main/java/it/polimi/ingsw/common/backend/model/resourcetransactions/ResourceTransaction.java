@@ -84,7 +84,7 @@ public class ResourceTransaction {
                 .map(ResourceContainer::getGroup)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toMap(Function.identity(), ResourceContainerGeneralGroup::new));
+                .collect(Collectors.toMap(Function.identity(), ResourceContainerGeneralGroup::new, (g1, g2) -> g1));
 
         // TODO: Add tests of this with WarehouseShelf
         clonedContainerGroups.values().forEach(g -> g.getResourceContainers().forEach(c -> {

@@ -80,7 +80,7 @@ public class Shelf extends ResourceContainer {
 
     @Override
     public Map<ResourceType, Integer> getResourceMap() {
-        return Map.of(resType, quantity);
+        return resType != null ? Map.of(resType, quantity) : Map.of();
     }
 
     @Override
