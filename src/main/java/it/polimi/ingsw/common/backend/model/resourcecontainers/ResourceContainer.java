@@ -1,7 +1,9 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.EventDispatcher;
+import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.Map;
@@ -23,6 +25,11 @@ public abstract class ResourceContainer extends EventDispatcher {
     public ResourceContainer() {
         this.id = idCounter.getAndIncrement();
         this.group = null;
+    }
+
+    public ResourceContainer(int id, ResourceContainerGroup group) {
+        this.id = id;
+        this.group = group;
     }
 
     /**

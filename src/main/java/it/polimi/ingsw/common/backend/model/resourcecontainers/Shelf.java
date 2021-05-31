@@ -40,6 +40,7 @@ public class Shelf extends ResourceContainer {
      * @param shelf the shelf to copy
      */
     public Shelf(Shelf shelf) {
+        super(shelf.getId(), shelf.group);
         size = shelf.size;
         resType = shelf.resType;
         quantity = shelf.quantity;

@@ -30,7 +30,7 @@ public class Strongbox extends ResourceContainer {
      * @param strongbox the strongbox to copy
      */
     public Strongbox(Strongbox strongbox) {
-        super();
+        super(strongbox.getId(), strongbox.group);
         resources = new HashMap<>(strongbox.resources);
     }
 
