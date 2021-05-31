@@ -1,34 +1,28 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
+import it.polimi.ingsw.client.gui.components.LeaderCard;
+import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
-import it.polimi.ingsw.common.events.vcevents.ReqJoin;
-import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
-import it.polimi.ingsw.common.reducedmodel.*;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.geometry.Insets;
+import javafx.css.PseudoClass;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class SetupLeadersController extends GuiController {
-    public HBox leadersContainer;
+    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
-    private List<Integer> chosen = new ArrayList<>();
+    public HBox leadersContainer;
+    private final List<LeaderCard> selection = new ArrayList<>();
+    public Button choiceButton;
+    public Title titleComponent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -36,17 +30,19 @@ public class SetupLeadersController extends GuiController {
 
         Gui gui = Gui.getInstance();
 
-         if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()) == null)
-             throw new RuntimeException();
+        if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()) == null)
+            throw new RuntimeException();
 
-         leadersContainer.setSpacing(10);
-         leadersContainer.setAlignment(Pos.CENTER);
+        titleComponent.setText(String.format("Choose %d leader cards.", gui.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()));
+
+        leadersContainer.setSpacing(10);
+        leadersContainer.setAlignment(Pos.CENTER);
 
         List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
             leaderCard.setLeaderId(reducedLeader.getId());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
-            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
+            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
             leaderCard.setResourceType(reducedLeader.getResourceType().getName());
             leaderCard.setRequirement(reducedLeader.getResourceRequirement());
             leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
@@ -62,23 +58,28 @@ public class SetupLeadersController extends GuiController {
                         reducedLeader.getResourceType().getName());
 
             leaderCard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                Optional<Integer> id = chosen.stream().filter(l -> leaderCard.getLeaderId() == l).findAny();
-                if(id.isEmpty()) chosen.add(leaderCard.getLeaderId());
-                else chosen.remove(Integer.valueOf(leaderCard.getLeaderId()));
+                if (selection.contains(leaderCard)) {
+                    selection.remove(leaderCard);
+                    leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
+                    updateChoiceButton();
+                } else if (selection.size() != gui.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()) {
+                    selection.add(leaderCard);
+                    leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
+                    updateChoiceButton();
+                }
             });
 
             return leaderCard;
         }).toList();
 
-        System.out.println(leaderCards.stream().map(LeaderCard::getLeaderId).toList());
-
         leadersContainer.getChildren().addAll(leaderCards);
 
+        updateChoiceButton();
     }
 
     public void handleChoice(){
         Gui gui = Gui.getInstance();
-        gui.dispatch(new ReqChooseLeaders(chosen));
+        gui.dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
     }
 
     @Override
@@ -89,5 +90,9 @@ public class SetupLeadersController extends GuiController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void updateChoiceButton() {
+        choiceButton.setDisable(selection.size() != Gui.getInstance().getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount());
     }
 }

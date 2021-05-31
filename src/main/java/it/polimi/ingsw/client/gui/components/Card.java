@@ -3,10 +3,8 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 
@@ -21,11 +19,7 @@ public abstract class Card extends Pane {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/" + getFXMLName() + ".fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        this.setStyle("-fx-background-image: url('" + getBackground(type) + "');" +
-                "-fx-background-position: center center;" +
-                "-fx-background-repeat: stretch;" +
-                "-fx-opacity: 1;" +
-                "-fx-background-size: 166 251;");
+        this.getStyleClass().add(type.toLowerCase());
 
         try {
             fxmlLoader.load();

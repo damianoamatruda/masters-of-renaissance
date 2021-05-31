@@ -77,34 +77,46 @@ Label {
     -fx-alignment: center;
 }
 
-.blueCard {
-    -fx-background-image: url('devcardtemplates/bluecard.png');
+.blue {
+    -fx-background-image: url('devcardtemplates/blue.png');
 }
 
-.greenCard {
-    -fx-background-image: url('devcardtemplates/greencard.png');
+.green {
+    -fx-background-image: url('devcardtemplates/green.png');
 }
 
-.purpleCard {
-    -fx-background-image: url('devcardtemplates/purplecard.png');
+.purple {
+    -fx-background-image: url('devcardtemplates/purple.png');
 }
 
-.yellowCard {
-    -fx-background-image: url('devcardtemplates/yellowcard.png');
+.yellow {
+    -fx-background-image: url('devcardtemplates/yellow.png');
 }
 
-.depotLeader {
+.depotleader {
     -fx-background-image: url('leadertemplates/depotleader.png');
 }
 
-.productionLeader {
+.productionleader {
     -fx-background-image: url('leadertemplates/productionleader.png');
 }
 
-.zeroLeader {
+.zeroleader {
     -fx-background-image: url('leadertemplates/zeroleader.png');
 }
 
-.discountLeader {
+.discountleader {
     -fx-background-image: url('leadertemplates/discountleader.png');
+}
+
+LeaderCard, DevelopmentCard {
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+    -fx-opacity: 1;
+    -fx-background-size: 166 251;
+}
+
+LeaderCard:selected {
+    -fx-border-color: linear-gradient(rgb(250, 236, 72) 70%, white);
+    -fx-border-width: 3px;
 }

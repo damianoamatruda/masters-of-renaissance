@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import it.polimi.ingsw.client.gui.components.Title?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.control.Button?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.SetupLeadersController"
@@ -20,12 +20,20 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
-      <Text>Choosing leaders hand.</Text>
+      <Title fx:id="titleComponent" maxWidth="-Infinity">
+        <VBox.margin>
+          <Insets bottom="30.0"/>
+        </VBox.margin>
+      </Title>
       <HBox fx:id="leadersContainer"/>
       <padding>
         <Insets bottom="80.0"/>
       </padding>
-      <Button onMouseClicked="#handleChoice" text="Choose"/>
+      <Button fx:id="choiceButton" onMouseClicked="#handleChoice" prefWidth="250.0" text="Choose">
+        <VBox.margin>
+          <Insets top="20.0"/>
+        </VBox.margin>
+      </Button>
     </VBox>
   </center>
 </BorderPane>
