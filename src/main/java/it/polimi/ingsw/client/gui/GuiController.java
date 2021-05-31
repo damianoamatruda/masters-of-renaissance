@@ -76,7 +76,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateBookedSeats event) {
-        // TODO: show (doesn't update the VM)
+        // TODO: handle
     }
 
     public void on(Gui gui, UpdateCurrentPlayer event) {
@@ -92,7 +92,10 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateFaithPoints event) {
-        gui.getViewModel().getCurrentPlayerData().setFaithPoints(event.getFaithPoints());
+        if (event.isBlackCross())
+            gui.getViewModel().setBlackCrossFP(event.getFaithPoints());
+        else
+            gui.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
     }
 
     public void on(Gui gui, UpdateGameEnd event) {
@@ -110,6 +113,7 @@ public abstract class GuiController implements Initializable {
         gui.getViewModel().setDevCardColors(event.getColors());
         gui.getViewModel().setResourceTypes(event.getResourceTypes());
 
+        gui.getViewModel().setResumedGame(event.isResumed());
     }
 
     public void on(Gui gui, UpdateJoinGame event) {
@@ -162,7 +166,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdatePlayerStatus event) {
-        gui.getViewModel().getCurrentPlayerData().setActive(event.isActive());
+        gui.getViewModel().getPlayerData(event.getPlayer()).setActive(event.isActive());
     }
 
     public void on(Gui gui, UpdateResourceContainer event) {
@@ -170,7 +174,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateSetupDone event) {
-        // TODO: handle
+        gui.getViewModel().setSetupDone(true);
     }
 
     public void on(Gui gui, UpdateVaticanSection event) {
@@ -178,6 +182,6 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateVictoryPoints event) {
-        gui.getViewModel().getCurrentPlayerData().setVictoryPoints(event.getVictoryPoints());
+        gui.getViewModel().getPlayerData(event.getPlayer()).setVictoryPoints(event.getVictoryPoints());
     }
 }
