@@ -57,9 +57,6 @@ public class FileGameFactory implements GameFactory {
     /** The base production shared by all players. */
     private ResourceTransactionRecipe baseProduction;
 
-    /** The setups of the players. */
-    private List<PlayerSetup> playerSetups;
-
     /**
      * Instantiates a new Game factory that is able to build Game instances based on parameters parsed from a config
      * file.
@@ -188,7 +185,7 @@ public class FileGameFactory implements GameFactory {
         List<LeaderCard> shuffledLeaderCards = new ArrayList<>(leaderCards);
         Collections.shuffle(shuffledLeaderCards);
 
-        playerSetups = buildPlayerSetups();
+        List<PlayerSetup> playerSetups = buildPlayerSetups();
 
         for (int i = 0; i < shuffledNicknames.size(); i++) {
             Warehouse warehouse = new Warehouse(warehouseShelvesCount);
