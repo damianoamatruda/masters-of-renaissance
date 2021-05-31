@@ -231,20 +231,14 @@ public class Cli extends EventDispatcher {
      * @param state the next state
      */
     void setState(CliState state) {
-        while (stateQueue.size() > 0) {
-            try {
-                stateQueue.take();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        clear();
         stateQueue.add(state);
     }
 
-    // void clear() {
-    //     out.print("\033[H\033[2J");
-    //     out.flush();
-    // }
+    void clear() {
+        out.print("\033[H\033[2J");
+        out.flush();
+    }
 
     void pause() {
         in.nextLine();
@@ -386,7 +380,7 @@ public class Cli extends EventDispatcher {
 
     void quit() {
         stop();
-        // clear();
+        clear();
     }
 
     boolean isOffline() {
