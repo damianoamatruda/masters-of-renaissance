@@ -118,7 +118,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         cli.getOut().println("║" + " ".repeat(4) + "╔" + "═".repeat(12 * width - 5) + "╦" + "═".repeat(10) + "╝");
 
         for (int i = 0; i < newObject.getGrid().size(); i++) {
-            List<String> r = newObject.getGrid().get(i);
+            List<String> r = newObject.getGrid().get(i).stream().map(ReducedResourceType::getName).toList();
             cli.getOut().print("║" + " ".repeat(4) + "║");
             for (int j = 0; j < r.size(); j++) {
                 String res = r.get(j);
@@ -411,7 +411,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     private String printResource(String resourceType) {
         if(resourceType == null)  return "Ø";
-        String color = viewModel.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getcolorValue).findAny().orElseThrow();
+        String color = viewModel.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getColorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
 

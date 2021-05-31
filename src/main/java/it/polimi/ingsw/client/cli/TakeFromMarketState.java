@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,18 +57,17 @@ public class TakeFromMarketState extends CliState {
         }
 
         // get a list with the selected resources
-        List<String> chosenResources = new ArrayList<>();
+        List<ReducedResourceType> chosenResources = new ArrayList<>();
         if (isRow)
             chosenResources = vm.getMarket().getGrid().get(index);
         else {
-            for (List<String> row : vm.getMarket().getGrid())
+            for (List<ReducedResourceType> row : vm.getMarket().getGrid())
                 chosenResources.add(row.get(index));
         }
-//        int faith = (int) chosenResources.stream().map(s -> s.equalsIgnoreCase("faith")).count();
-        chosenResources = chosenResources.stream().filter(s -> !s.equalsIgnoreCase("faith")).toList();
+        List<String> chosenResourcesNames = chosenResources.stream().filter(ReducedResourceType::isStorable).map(ReducedResourceType::getName).toList();
 
         // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
-        int blanksCount = (int) chosenResources.stream().filter(r -> r.equals(vm.getMarket().getReplaceableResType())).count();
+        int blanksCount = (int) chosenResourcesNames.stream().filter(r -> r.equals(vm.getMarket().getReplaceableResType())).count();
         Map<String, Integer> replacements = new HashMap<>();
 
         // for (String res : chosenResources)
@@ -97,10 +97,10 @@ public class TakeFromMarketState extends CliState {
         // replacements = replacements.entrySet().stream().filter(e -> e.getKey().equals(cli.getViewModel().getMarket().getReplaceableResType())).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
 
         // remove the replaceable resources from the selected ones
-        chosenResources = chosenResources.stream().filter(r -> !r.equals(vm.getMarket().getReplaceableResType())).toList();
+        chosenResourcesNames = chosenResourcesNames.stream().filter(r -> !r.equals(vm.getMarket().getReplaceableResType())).toList();
 
         Map<String, Integer> totalRes = new HashMap<>(replacements);
-        chosenResources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
+        chosenResourcesNames.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
         cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(totalRes)));
     }

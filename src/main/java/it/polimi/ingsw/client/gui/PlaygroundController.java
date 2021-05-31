@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import it.polimi.ingsw.client.gui.components.DevCardGrid;
 import it.polimi.ingsw.client.gui.components.DevelopmentCard;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Market;
@@ -13,12 +11,10 @@ import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.common.reducedmodel.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 public class PlaygroundController extends GuiController {
     @FXML
@@ -64,9 +60,9 @@ public class PlaygroundController extends GuiController {
             leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
 
             if(reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
-                leaderCard.setZeroReplacement(new ReducedResourceType("Coin", ""));
+                leaderCard.setZeroReplacement(new ReducedResourceType("Coin", "", true));
             else if(reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
-                leaderCard.setDiscount(new ReducedResourceType("Shield", ""), 1);
+                leaderCard.setDiscount(new ReducedResourceType("Shield", "", true), 1);
             else if(reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
                 leaderCard.setProduction(p1);
             else
@@ -158,8 +154,11 @@ public class PlaygroundController extends GuiController {
 
         Market m = new Market();
 
-        List<String> r0 = List.of("Coin", "Shield", "Servant", "Stone");
-        List<List<String>> mgrid = List.of(r0, r0, r0);
+        List<ReducedResourceType> r0 = List.of(new ReducedResourceType("Coin", "", true),
+                new ReducedResourceType("Shield", "", true),
+                new ReducedResourceType("Servant", "", true),
+                new ReducedResourceType("Stone", "", true));
+        List<List<ReducedResourceType>> mgrid = List.of(r0, r0, r0);
         ReducedMarket rm = new ReducedMarket(mgrid, null, "Coin");
 
         m.setContent(rm);

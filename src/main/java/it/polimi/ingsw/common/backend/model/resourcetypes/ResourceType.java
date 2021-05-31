@@ -11,6 +11,7 @@ public class ResourceType {
     /** The name of the resource type. */
     private final String name;
 
+    /** The string value of the resource color */
     private final String colorValue;
 
     /**
@@ -49,6 +50,10 @@ public class ResourceType {
      */
     public final boolean isStorable() {
         return storable;
+    }
+
+    public String getColorValue() {
+        return colorValue;
     }
 
     /**
@@ -96,6 +101,6 @@ public class ResourceType {
     }
 
     public ReducedResourceType reduce() {
-        return new ReducedResourceType(name, colorValue);
+        return new ReducedResourceType(name, colorValue, storable);
     }
 }

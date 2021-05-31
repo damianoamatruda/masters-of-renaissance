@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -72,7 +73,7 @@ public class Market extends StackPane {
 
         
         while (row < m.getGrid().size()) {
-            List<String> mRow = m.getGrid().get(row);
+            List<String> mRow = m.getGrid().get(row).stream().map(ReducedResourceType::getName).toList();
 
             while (col < mRow.size()) {
                 // StackPane sp = new StackPane();
