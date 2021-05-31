@@ -394,17 +394,47 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         if (r.isPresent()) {
             column.add(String.format("--- Production ID: %d ---", r.get().getId()));
             column.add("Input:");
-            r.get().getInput().forEach((key1, value1) -> column.add(String.format("  %-49s", printResource(key1) + ": " + value1)));
-            if (r.get().getInputBlanks() > 0)
-                column.add(String.format("Blanks: %d", r.get().getInputBlanks()));
+
+            String row = "";
+            for(int i = 0; i < r.get().getInput().size(); i++) {
+                List<String> keys = r.get().getInput().keySet().stream().toList();
+                if(i % 2 == 0)
+                    row = String.format("  %-24s", printResource(keys.get(i)) + ": " + r.get().getInput().get(keys.get(i)));
+                else {
+                    row += String.format("  %-36s", printResource(keys.get(i)) + ": " + r.get().getInput().get(keys.get(i)));
+                    column.add(row);
+                    row = "";
+                }
+
+            }
+            if (r.get().getInputBlanks() > 0) {
+                row += String.format("  %-23s", String.format("Blanks: %d", r.get().getInputBlanks()));
+                column.add(row);
+            }
+            else if(row.length() > 0) column.add(row + " ".repeat(25));
             if (!r.get().getInputBlanksExclusions().isEmpty()) {
                 column.add("B. exclusions:");
                 r.get().getInputBlanksExclusions().forEach(e -> column.add(printResource(e)));
             }
             column.add("Output:");
-            r.get().getOutput().forEach((key, value) -> column.add(String.format("  %-49s", printResource(key) + ": " + value)));
-            if (r.get().getOutputBlanks() > 0)
-                column.add(String.format("Blanks: %d", r.get().getOutputBlanks()));
+
+
+            for(int i = 0; i < r.get().getOutput().size(); i++) {
+                List<String> keys = r.get().getOutput().keySet().stream().toList();
+                if(i % 2 == 0)
+                    row = String.format("  %-24s", printResource(keys.get(i)) + ": " + r.get().getOutput().get(keys.get(i)));
+                else {
+                    row += String.format("  %-36s", printResource(keys.get(i)) + ": " + r.get().getOutput().get(keys.get(i)));
+                    column.add(row);
+                    row = "";
+                }
+
+            }
+            if (r.get().getOutputBlanks() > 0) {
+                row += String.format("  %-23s", String.format("Blanks: %d", r.get().getOutputBlanks()));
+                column.add(row);
+            }
+            else if(row.length() > 0) column.add(row + " ".repeat(25));
             if (!r.get().getOutputBlanksExclusions().isEmpty()) {
                 column.add("B. exclusions:");
                 r.get().getOutputBlanksExclusions().forEach(e -> column.add(printResource(e)));
