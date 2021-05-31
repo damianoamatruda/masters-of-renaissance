@@ -1,10 +1,12 @@
 package it.polimi.ingsw.client.cli;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
@@ -16,11 +18,13 @@ public class BuyDevelopmentCardState extends CliState {
     public void render(Cli cli) {
         cli.getOut().println("Buying a development card.");
 
-        ReducedDevCardGrid grid = cli.getViewModel().getDevCardGrid();
+        ViewModel vm = cli.getViewModel();
+
+        ReducedDevCardGrid grid = vm.getDevCardGrid();
         cli.getPrinter().printCardGrid(grid);
 
-        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
-        cli.getPrinter().showStrongbox(cli.getViewModel().getLocalPlayerNickname());
+        cli.getPrinter().showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.getPrinter().showStrongbox(vm.getLocalPlayerNickname());
 
         cli.getOut().println("\nChoose parameters:");
         //prompt for parameters
@@ -53,7 +57,7 @@ public class BuyDevelopmentCardState extends CliState {
         int lev = level;
         ReducedDevCard card = grid.getGrid().get(color).stream()
                 .filter(Objects::nonNull).map(Stack::peek)
-                .map(id -> cli.getViewModel().getDevelopmentCard(id).orElse(null))
+                .map(id -> vm.getDevelopmentCard(id).orElse(null))
                 .filter(Objects::nonNull)
                 .filter(c -> c.getLevel() == lev).findAny().orElseThrow();
         Map<String, Integer> cost = new HashMap<>(card.getCost().getRequirements());
@@ -61,10 +65,11 @@ public class BuyDevelopmentCardState extends CliState {
         cli.getOut().println("Resources need to be paid.");
         cli.getOut().println("Please specify how many resources to take from which container.");
 
-        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
-        cli.getPrinter().showStrongbox(cli.getViewModel().getLocalPlayerNickname());
+        cli.getPrinter().showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.getPrinter().showStrongbox(vm.getLocalPlayerNickname());
 
-        shelves = cli.promptShelves(cost);
+        List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(c -> c.getId()).toList();
+        shelves = cli.promptShelves(cost, allowedShelvesIDs);
 
         //build request event
         cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));

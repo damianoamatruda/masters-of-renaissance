@@ -308,7 +308,7 @@ public class Cli extends EventDispatcher {
         return replacedRes;
     }
 
-    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> totalRes) {
+    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> totalRes, List<Integer> allowedShelvesIDs) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         this.getPrinter().showWarehouseShelves(this.getViewModel().getLocalPlayerNickname());
@@ -354,6 +354,9 @@ public class Cli extends EventDispatcher {
                     break;
                 try {
                     shelfID = Integer.parseInt(input);
+                    
+                    if (!allowedShelvesIDs.contains(shelfID))
+                        shelfID = -1;
                 } catch (Exception e) { }
             }
             if (input.equalsIgnoreCase("B"))

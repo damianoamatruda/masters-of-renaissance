@@ -53,7 +53,8 @@ public class ActivateProductionsState extends CliState {
             inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 
             cli.getOut().println("-- Containers to take resources from --");
-            Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(totalRes);
+            List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(c -> c.getId()).toList();
+            Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(totalRes, allowedShelvesIDs);
 
             requests.add(new ReducedProductionRequest(productionid, inputReplacement, outputReplacement, shelves));
             

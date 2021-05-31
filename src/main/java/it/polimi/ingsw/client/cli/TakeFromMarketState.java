@@ -102,7 +102,8 @@ public class TakeFromMarketState extends CliState {
         Map<String, Integer> totalRes = new HashMap<>(replacements);
         chosenResourcesNames.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
-        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(totalRes)));
+        List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(c -> c.getId()).toList();
+        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(totalRes, allowedShelvesIDs)));
     }
 
     // ErrObjectNotOwned handled in clistate
