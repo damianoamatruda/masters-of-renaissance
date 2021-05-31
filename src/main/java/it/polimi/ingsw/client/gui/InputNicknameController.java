@@ -63,7 +63,7 @@ public class InputNicknameController extends GuiController {
         super.on(gui, event);
         if (gui.isOffline()) {
             try {
-                gui.setRoot("playground");
+                gui.setRoot("setupleaders");
             } catch (IOException e) {
                 e.printStackTrace();
             }
