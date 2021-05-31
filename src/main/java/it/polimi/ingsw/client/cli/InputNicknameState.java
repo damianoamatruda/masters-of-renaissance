@@ -43,7 +43,7 @@ public class InputNicknameState extends CliState{
     @Override
     public void on(Cli cli, UpdateJoinGame event) {
         if (!cli.isOffline())
-            cli.getOut().printf("A new player joined the game! Getting to %d...", event.getPlayersCount());
+            cli.getOut().printf("A new player joined the game! Getting to %d...%n%n", event.getPlayersCount());
     }
 
     @Override
