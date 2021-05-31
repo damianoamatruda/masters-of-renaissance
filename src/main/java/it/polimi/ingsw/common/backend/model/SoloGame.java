@@ -64,7 +64,7 @@ public class SoloGame extends Game {
                 faithTrack.reduce(),
                 actionTokens.stream().map(ActionToken::reduce).toList(),
                 view != null));
-        dispatch(new UpdateCurrentPlayer(view, getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
     }
 
     @Override

@@ -72,6 +72,9 @@ public class Game extends EventDispatcher {
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market,
                 FaithTrack faithTrack, int maxObtainableDevCards) {
+        if (players.size() == 0)
+            throw new IllegalArgumentException(); // TODO: Add description
+
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
         this.developmentCards = List.copyOf(developmentCards);
@@ -112,7 +115,7 @@ public class Game extends EventDispatcher {
                 faithTrack.reduce(),
                 null, /* actionTokens not sent */
                 view != null));
-        dispatch(new UpdateCurrentPlayer(view, getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
     }
 
     public void dispatchState() {
@@ -222,13 +225,11 @@ public class Game extends EventDispatcher {
         if (players.stream().noneMatch(Player::isActive))
             throw new NoActivePlayersException();
 
-        Player nextPlayer;
-        do {
+        do
             players.add(players.remove(0));
-            nextPlayer = players.get(0);
-        } while (!nextPlayer.isActive());
+        while (!players.get(0).isActive());
 
-        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
+        dispatch(new UpdateCurrentPlayer(players.get(0).getNickname()));
 
         if (lastRound)
             end();
