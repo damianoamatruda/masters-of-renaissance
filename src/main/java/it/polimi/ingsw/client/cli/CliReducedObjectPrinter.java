@@ -268,7 +268,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
                 column.add(String.format("%-38s", "[Leader]"));
 
-                column.add(String.format("%-51s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, type: %s",
+                column.add(String.format("%-51s", String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, type: %s",
                         reducedLeaderCard.getId(),
                         reducedLeaderCard.getLeaderType()
                 )));
@@ -601,7 +601,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     private void addDevToPrinter(List<String> column, ReducedDevCard card){
         if(card != null) {
             column.add("[Development]");
-            column.add(String.format("%-64s", String.format("ID: \u001B[1m\u001B[97m%d\u001B[0m, color: %s",
+            column.add(String.format("%-64s", String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, color: %s",
                     card.getId(),
                     printColor(card.getColor())
             )));

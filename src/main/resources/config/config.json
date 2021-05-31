@@ -39,7 +39,7 @@
     {
       "name": "Zero",
       "storable": false,
-      "colorValue": "\u001B[97m"
+      "colorValue": "\u001B[37m"
     },
     {
       "name": "Shield",
