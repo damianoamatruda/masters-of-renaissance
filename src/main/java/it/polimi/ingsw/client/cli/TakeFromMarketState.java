@@ -33,11 +33,11 @@ public class TakeFromMarketState extends CliState {
         // get user input, parse row/col and index
         while (!isValid) {
             isValid = true;
-            input = cli.prompt("'row' or 'column'? Your choice");
+            input = cli.prompt("[row/col]");
             
             if(input.equalsIgnoreCase("row"))
                 isRow = true;
-            else if(!(input.equalsIgnoreCase("col") || input.equalsIgnoreCase("column"))) {
+            else if(!(input.equalsIgnoreCase("col"))) {
                 isValid = false;
             }
         }
