@@ -36,10 +36,9 @@ public class TakeFromMarketState extends CliState {
             
             if(input.equalsIgnoreCase("row"))
                 isRow = true;
-            else if(input.equalsIgnoreCase("column"))
-                isRow = false;
-            else
+            else if(!(input.equalsIgnoreCase("col") || input.equalsIgnoreCase("column"))) {
                 isValid = false;
+            }
         }
         isValid = false;
 
