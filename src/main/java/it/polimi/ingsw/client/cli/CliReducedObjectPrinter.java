@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CliReducedObjectPrinter implements ReducedObjectPrinter {
@@ -155,28 +154,24 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     
     @Override
     public void update(ReducedResourceTransactionRecipe newObject) {
-        cli.getOut().printf("Production ID: %d%n",
-                newObject.getId());
-
+        cli.getOut().printf("--- Production ID: %d ---", newObject.getId());
         cli.getOut().println("Input:");
         newObject.getInput().forEach((key1, value1) -> cli.getOut().println(printResource(key1) + ": " + value1));
-
-        cli.getOut().printf("Input blanks: %d%n",
-                newObject.getInputBlanks());
-
-        cli.getOut().println("Input blanks exclusions:");
-        newObject.getInputBlanksExclusions().forEach(e -> cli.getOut().print(e + ", "));
-
+        if (newObject.getInputBlanks() > 0)
+            cli.getOut().printf("Blanks: %d%n", newObject.getInputBlanks());
+        if (!newObject.getInputBlanksExclusions().isEmpty()) {
+            cli.getOut().println("B. exclusions:");
+            newObject.getInputBlanksExclusions().forEach(e -> cli.getOut().print(e + ", "));
+        }
         cli.getOut().println("Output:");
         newObject.getOutput().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
-
-        cli.getOut().printf("Output blanks: %d%n",
-                newObject.getOutputBlanks());
-
-        cli.getOut().println("Output blanks exclusions:");
-        newObject.getInputBlanksExclusions().forEach(e -> cli.getOut().print(printResource(e) + ", "));
-
-        cli.getOut().println(newObject.isDiscardableOutput() ? "Output is discardable\n" : "");
+        if (newObject.getOutputBlanks() > 0)
+            cli.getOut().printf("Blanks: %d%n", newObject.getOutputBlanks());
+        if (!newObject.getInputBlanksExclusions().isEmpty()) {
+            cli.getOut().println("Output blanks exclusions:");
+            newObject.getInputBlanksExclusions().forEach(e -> cli.getOut().print(printResource(e) + ", "));
+        }
+        cli.getOut().println(newObject.isDiscardableOutput() ? "Output is discardable" : "");
     }
 
     @Override
@@ -382,22 +377,21 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         Optional<ReducedResourceTransactionRecipe> r = viewModel.getProduction(productionID);
 
         if (r.isPresent()) {
-            column.add(String.format("--- Production ID: %d ---",
-                    r.get().getId()));
+            column.add(String.format("--- Production ID: %d ---", r.get().getId()));
             column.add("Input:");
             r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-51s", printResource(key1) + ": " + value1)));
-            column.add(String.format("Input blanks: %d",
-                    r.get().getInputBlanks()));
-            if(!r.get().getInputBlanksExclusions().isEmpty()) {
-                column.add("Input blanks exclusions:");
+            if (r.get().getInputBlanks() > 0)
+                column.add(String.format("Blanks: %d", r.get().getInputBlanks()));
+            if (!r.get().getInputBlanksExclusions().isEmpty()) {
+                column.add("B. exclusions:");
                 r.get().getInputBlanksExclusions().forEach(e -> column.add(printResource(e)));
             }
             column.add("Output:");
             r.get().getOutput().forEach((key, value) -> column.add(String.format("%-51s", printResource(key) + ": " + value)));
-            column.add(String.format("Output blanks: %d",
-                    r.get().getOutputBlanks()));
-            if(!r.get().getOutputBlanksExclusions().isEmpty()) {
-                column.add("Output blanks exclusions:");
+            if (r.get().getOutputBlanks() > 0)
+                column.add(String.format("Blanks: %d", r.get().getOutputBlanks()));
+            if (!r.get().getOutputBlanksExclusions().isEmpty()) {
+                column.add("B. exclusions:");
                 r.get().getOutputBlanksExclusions().forEach(e -> column.add(printResource(e)));
             }
             column.add(r.get().isDiscardableOutput() ? "Output is discardable" : " ");
