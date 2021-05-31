@@ -199,9 +199,9 @@ public abstract class CliState implements Renderable {
             leadershand -> client has enough info for leader choice */
 
         cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
-        
+
+        cli.getOut().printf("%s's leader cards:%n", event.getPlayer());
         cli.getPrinter().showLeaders(cli.getViewModel().getPlayerLeaderCards(event.getPlayer()));
-        cli.getOut().printf("%s's leader cards.%n", event.getPlayer());
     }
 
     public void on(Cli cli, UpdateLeadersHandCount event) {

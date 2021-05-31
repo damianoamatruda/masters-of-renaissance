@@ -131,11 +131,11 @@ public class Lobby extends EventDispatcher {
                 joined.put(view, context);
             });
             context.start();
-            System.out.printf("started context, waiting list %d\n", waiting.size());
+//            System.out.printf("started context, waiting list %d\n", waiting.size());
     
             /* Remove players who joined from waiting list */
             waiting.subList(0, newGamePlayersCount).clear();
-            System.out.printf("removed %d waiting %d\n", newGamePlayersCount, waiting.size());
+//            System.out.printf("removed %d waiting %d\n", newGamePlayersCount, waiting.size());
 
             waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
     
