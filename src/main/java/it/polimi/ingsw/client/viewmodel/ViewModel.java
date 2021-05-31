@@ -204,7 +204,7 @@ public class ViewModel {
      * @param containers the containers to set
      */
     public void setContainers(List<ReducedResourceContainer> containers) {
-        this.containers = containers;
+        this.containers = new ArrayList<>(containers);
     }
 
     /**
