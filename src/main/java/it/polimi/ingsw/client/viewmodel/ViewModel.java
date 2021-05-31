@@ -45,9 +45,18 @@ public class ViewModel {
      * Initializes empty objects.
      */
     public ViewModel() {
+        actionTokens = new ArrayList<>();
+        containers = new ArrayList<>();
+        devCardColors = new ArrayList<>();
+        developmentCards = new ArrayList<>();
+        leaderCards = new ArrayList<>();
+        playerNicknames = new ArrayList<>();
+        productions = new ArrayList<>();
+        resourceTypes = new ArrayList<>();
+        vaticanSections = new ArrayList<>();
+
         this.playerData = new HashMap<>();
 
-        vaticanSections = new ArrayList<>();
         isLastRound = false;
         isSetupDone = false;
     }
@@ -159,10 +168,6 @@ public class ViewModel {
             .toList();
     }
 
-
-
-    // GAME DATA
-
     /**
      * @param id the ID of the token to be returned
      * @return the token associated with the ID
@@ -175,7 +180,7 @@ public class ViewModel {
      * @param actionTokens the actionTokens to set
      */
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
-        this.actionTokens = actionTokens;
+        this.actionTokens = new ArrayList<>(actionTokens);
     }
 
     /**
@@ -211,11 +216,7 @@ public class ViewModel {
      * @param container the container to set
      */
     public void setContainer(ReducedResourceContainer container) {
-        containers.stream()
-            .filter(c -> c.getId() == container.getId())
-            .findAny().ifPresent(c -> containers.remove(c));
-
-        containers.add(container);
+        containers.replaceAll(c -> c.getId() == container.getId() ? container : c);
     }
 
     /**
@@ -243,7 +244,7 @@ public class ViewModel {
      * @param devCardColors the devCardColors to set
      */
     public void setDevCardColors(List<ReducedColor> devCardColors) {
-        this.devCardColors = devCardColors;
+        this.devCardColors = new ArrayList<>(devCardColors);
     }
 
     /**
@@ -272,7 +273,7 @@ public class ViewModel {
      * @param developmentCards the developmentCards to set
      */
     public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
-        this.developmentCards = developmentCards;
+        this.developmentCards = new ArrayList<>(developmentCards);
     }
 
     /**
@@ -315,7 +316,7 @@ public class ViewModel {
      * @param leaderCards the leaderCards to set
      */
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
-        this.leaderCards = leaderCards;
+        this.leaderCards = new ArrayList<>(leaderCards);
     }
 
     /**
@@ -343,7 +344,7 @@ public class ViewModel {
      * @param playerNicknames the playerNicknames to set
      */
     public void setPlayerNicknames(List<String> playerNicknames) {
-        this.playerNicknames = playerNicknames;
+        this.playerNicknames = new ArrayList<>(playerNicknames);
     }
 
     /**
@@ -358,7 +359,7 @@ public class ViewModel {
      * @param productions the productions to set
      */
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
-        this.productions = productions;
+        this.productions = new ArrayList<>(productions);
     }
 
     /**
@@ -372,7 +373,7 @@ public class ViewModel {
      * @param resourceTypes the resourceTypes to set
      */
     public void setResourceTypes(List<ReducedResourceType> resourceTypes) {
-        this.resourceTypes = resourceTypes;
+        this.resourceTypes = new ArrayList<>(resourceTypes);
     }
 
     /**
@@ -405,10 +406,6 @@ public class ViewModel {
         this.winner = winner;
     }
 
-
-
-    // UI DATA
-    
     /**
      * @return whether the game is resumed
      */
