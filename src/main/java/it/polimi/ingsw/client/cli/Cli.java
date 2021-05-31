@@ -105,11 +105,9 @@ public class Cli extends EventDispatcher {
                 break;
             }
 
+            clear();
             out.println();
-            for (int i = 0; i < width; i++)
-                out.print("═");
-            out.println();
-            out.println("\u001b[31m" + Cli.center(state.getClass().getSimpleName()) + "\u001B[0m");
+            out.println(Cli.center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
             state.render(this);
         }
     }
@@ -231,7 +229,6 @@ public class Cli extends EventDispatcher {
      * @param state the next state
      */
     void setState(CliState state) {
-        clear();
         stateQueue.add(state);
     }
 
