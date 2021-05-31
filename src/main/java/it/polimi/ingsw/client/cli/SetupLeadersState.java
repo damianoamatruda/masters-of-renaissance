@@ -27,10 +27,6 @@ public class SetupLeadersState extends CliState {
 
         ViewModel vm = cli.getViewModel();
         
-        if (vm.getLocalPlayerData().getLeadersHand() != null)
-            cli.getPrinter().showLeaders(
-                vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()));
-
         cli.getOut().println("\nChoosing starting leaders hand.");
         cli.getOut().println("Please input leader card IDs from the ones assigned to you.\n");
 
