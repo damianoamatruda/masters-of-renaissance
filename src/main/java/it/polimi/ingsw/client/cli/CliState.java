@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import it.polimi.ingsw.client.viewmodel.PlayerData;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
@@ -145,22 +146,28 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateGame event) {
-        cli.getViewModel().setActionTokens(event.getActionTokens());
-        cli.getViewModel().setContainers(event.getResContainers());
-        cli.getViewModel().setDevelopmentCards(event.getDevelopmentCards());
-        cli.getViewModel().setLeaderCards(event.getLeaderCards());
-        cli.getViewModel().setPlayerNicknames(event.getPlayers());
-        cli.getViewModel().setProductions(event.getProductions());
-        cli.getViewModel().setFaithTrack(event.getFaithTrack());
-        cli.getViewModel().setDevCardColors(event.getColors());
-        cli.getViewModel().setResourceTypes(event.getResourceTypes());
+        ViewModel vm = cli.getViewModel();
 
-        cli.getViewModel().setResumedGame(event.isResumed());
+        vm.setActionTokens(event.getActionTokens());
+        vm.setContainers(event.getResContainers());
+        vm.setDevelopmentCards(event.getDevelopmentCards());
+        vm.setLeaderCards(event.getLeaderCards());
+        vm.setPlayerNicknames(event.getPlayers());
+        vm.setProductions(event.getProductions());
+        vm.setFaithTrack(event.getFaithTrack());
+        vm.setDevCardColors(event.getColors());
+        vm.setResourceTypes(event.getResourceTypes());
 
-        Map<String, Integer> points = cli.getViewModel().getPlayerNicknames().stream()
+        vm.setResumedGame(event.isResumed());
+
+        Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));
         cli.getPrinter().printFaithTrack(points);
-        cli.getViewModel().getContainers().forEach(c -> cli.getPrinter().update(c));
+        
+        vm.getPlayerNicknames().forEach(nick -> {
+            cli.getOut().println(String.format("%s's containers:", nick));
+            vm.getPlayerShelves(nick).forEach(c -> cli.getPrinter().update(c));
+        });
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
