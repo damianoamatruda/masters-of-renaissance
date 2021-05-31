@@ -45,14 +45,7 @@ public class InputPlayersCountState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateBookedSeats event) {
-        // if (cli.isSingleplayer())
-        //     cli.dispatch(new ReqNewGame(1));
-        // else {
-            // if (event.canPrepareNewGame() == cli.getCache().getUiData().getLocalPlayerNickname())
-            //     cli.setState(new InputPlayersCountState());
-            // else
-                cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
-        // }
+        cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
 
     @Override
