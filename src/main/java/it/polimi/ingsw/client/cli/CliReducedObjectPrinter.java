@@ -414,16 +414,11 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     private String printColor(String colorName) {
-        if (colorName == null)
-            return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
         String color = viewModel.getDevCardColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
     }
 
     private String printResource(String resourceType) {
-        // FIXME: Placeholder for null is now unnecessary
-        if (resourceType == null)
-            return "Ø";
         String color = viewModel.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getColorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
