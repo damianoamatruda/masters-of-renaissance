@@ -63,6 +63,8 @@ public class TakeFromMarketState extends CliState {
             for (List<String> row : vm.getMarket().getGrid())
                 chosenResources.add(row.get(index));
         }
+//        int faith = (int) chosenResources.stream().map(s -> s.equalsIgnoreCase("faith")).count();
+        chosenResources = chosenResources.stream().filter(s -> !s.equalsIgnoreCase("faith")).toList();
 
         // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
         int blanksCount = (int) chosenResources.stream().filter(r -> r.equals(vm.getMarket().getReplaceableResType())).count();
