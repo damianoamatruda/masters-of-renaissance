@@ -163,11 +163,6 @@ public abstract class CliState implements Renderable {
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));
         cli.getPrinter().printFaithTrack(points);
-        
-        vm.getPlayerNicknames().forEach(nick -> {
-            cli.getOut().println(String.format("%s's containers:", nick));
-            vm.getPlayerShelves(nick).forEach(c -> cli.getPrinter().update(c));
-        });
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
@@ -229,6 +224,11 @@ public abstract class CliState implements Renderable {
             event.getPlayerSetup(),
             event.getStrongbox(),
             event.getWarehouseShelves()));
+
+        cli.getViewModel().getPlayerNicknames().forEach(nick -> {
+            cli.getOut().println(String.format("%s's containers:", nick));
+            cli.getViewModel().getPlayerShelves(nick).forEach(c -> cli.getPrinter().update(c));
+        });
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
