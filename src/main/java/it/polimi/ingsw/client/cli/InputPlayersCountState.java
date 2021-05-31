@@ -71,7 +71,7 @@ public class InputPlayersCountState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateLeadersHand event) {
-        super.on(cli, event);
+        cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
 
         if (cli.getViewModel().isResumedGame())
             throw new RuntimeException("UpdateLeadersHand after resumed game.");
