@@ -13,14 +13,10 @@ public class ViewModel {
      */
     private final Map<String, PlayerData> playerData;
 
-
-    // UI DATA
     private String localPlayerNickname;
     private boolean isResumedGame;
     private boolean isSetupDone;
 
-
-    // GAME DATA
     private List<ReducedActionToken> actionTokens;
     private int blackCrossFP;
     private List<ReducedResourceContainer> containers;
@@ -36,8 +32,6 @@ public class ViewModel {
     private List<ReducedResourceTransactionRecipe> productions;
     private List<ReducedResourceType> resourceTypes;
     private String winner;
-
-
 
     /**
      * Class constructor.
