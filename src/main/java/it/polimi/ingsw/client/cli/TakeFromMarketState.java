@@ -89,7 +89,7 @@ public class TakeFromMarketState extends CliState {
                 if (input.equals("n")) {
                     replacements = cli.promptResources(
                         blanksCount,
-                        zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).toList());
+                        zeroLeaders.stream().map(l -> l.getResourceType().getName()).toList());
                 }
             }
         }

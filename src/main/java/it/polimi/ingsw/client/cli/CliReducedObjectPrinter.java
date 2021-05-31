@@ -274,7 +274,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 )));
 
                 column.add(String.format("%-51s", String.format("BoundResource: %s, VP: %d",
-                        printResource(reducedLeaderCard.getResourceType()),
+                        printResource(reducedLeaderCard.getResourceType().getName()),
                         reducedLeaderCard.getVictoryPoints())));
 
                 column.add(String.format("%-38s", String.format("Active status: %s", reducedLeaderCard.isActive())));

@@ -55,7 +55,7 @@ public class PlaygroundController extends GuiController {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
             leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints()+"");
-            leaderCard.setResourceType(reducedLeader.getResourceType());
+            leaderCard.setResourceType(reducedLeader.getResourceType().getName());
             leaderCard.setRequirement(reducedLeader.getResourceRequirement());
             leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
 
@@ -67,7 +67,7 @@ public class PlaygroundController extends GuiController {
                 leaderCard.setProduction(p1);
             else
                 leaderCard.setDepotContent(cont,
-                        reducedLeader.getResourceType());
+                        reducedLeader.getResourceType().getName());
 
             return leaderCard;
         }).toList();
