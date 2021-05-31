@@ -225,11 +225,6 @@ public class Cli extends EventDispatcher {
         return viewModel;
     }
 
-    @Deprecated
-    CliState getState() {
-        return state;
-    }
-
     /**
      * Sets the state.
      *

@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client.cli;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class CliState implements Renderable {
     protected void renderMainTitle(Cli cli) {
@@ -38,8 +38,6 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, ErrInitialChoice event) {
         // repeats either SetupLeadersState or SetupResourcesState
         // if it doesn't, that's really bad
-        assert(cli.getState() instanceof SetupLeadersState || cli.getState() instanceof SetupResourcesState);
-
         cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
                         "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
