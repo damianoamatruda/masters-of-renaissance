@@ -32,8 +32,11 @@ public class ProductionLeader extends LeaderCard {
     }
 
     @Override
-    public Optional<ResourceTransactionRecipe> getProduction() {
-        return isActive() ? Optional.of(production) : super.getProduction();
+    public Optional<ResourceTransactionRecipe> getProduction(boolean isFactoryAsking) {
+        if (isFactoryAsking)
+            return Optional.of(production);
+
+        return isActive() ? Optional.of(production) : super.getProduction(isFactoryAsking);
     }
 
     @Override

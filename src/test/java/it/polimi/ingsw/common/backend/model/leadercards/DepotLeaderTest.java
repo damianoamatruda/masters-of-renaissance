@@ -32,7 +32,7 @@ public class DepotLeaderTest {
 
         assertDoesNotThrow(() -> leader.activate(p));
 
-        assertNotNull(leader.getDepot());
+        assertNotNull(leader.getDepot(false));
     }
 
     /**
@@ -45,6 +45,6 @@ public class DepotLeaderTest {
 
         assertDoesNotThrow(() -> leader.activate(p));
 
-        assertNotNull(leader.getDepot());
+        assertNotNull(leader.getDepot(false));
     }
 }

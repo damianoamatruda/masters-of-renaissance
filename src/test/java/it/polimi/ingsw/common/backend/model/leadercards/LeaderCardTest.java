@@ -87,7 +87,7 @@ public class LeaderCardTest {
      */
     @Test
     void getDepot() {
-        assertTrue(leader.getDepot().isEmpty());
+        assertTrue(leader.getDepot(false).isEmpty());
     }
 
     /**
@@ -105,7 +105,7 @@ public class LeaderCardTest {
      */
     @Test
     void getProduction() {
-        assertTrue(leader.getProduction().isEmpty());
+        assertTrue(leader.getProduction(false).isEmpty());
     }
 
     /**

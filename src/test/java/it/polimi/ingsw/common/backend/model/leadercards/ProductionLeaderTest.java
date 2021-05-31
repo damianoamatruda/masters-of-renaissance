@@ -32,7 +32,7 @@ public class ProductionLeaderTest {
         
         assertDoesNotThrow(() -> leader.activate(p));
 
-        assertTrue(leader.getProduction().isPresent());
-        assertEquals(prod, leader.getProduction().get());
+        assertTrue(leader.getProduction(false).isPresent());
+        assertEquals(prod, leader.getProduction(false).get());
     }
 }

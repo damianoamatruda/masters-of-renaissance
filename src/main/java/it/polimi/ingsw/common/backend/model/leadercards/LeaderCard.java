@@ -82,7 +82,7 @@ public abstract class LeaderCard extends Card {
     /**
      * @return the shelf pertaining to the leader.
      */
-    public Optional<ResourceShelf> getDepot() {
+    public Optional<ResourceShelf> getDepot(boolean isFactoryAsking) {
         return Optional.empty();
     }
 
@@ -99,7 +99,7 @@ public abstract class LeaderCard extends Card {
     /**
      * @return the Production object of the leader card.
      */
-    public Optional<ResourceTransactionRecipe> getProduction() {
+    public Optional<ResourceTransactionRecipe> getProduction(boolean isFactoryAsking) {
         return Optional.empty();
     }
 

@@ -220,7 +220,7 @@ public class FileGameFactory implements GameFactory {
      */
     private List<ResourceContainer> getResContainers(List<LeaderCard> leaderCards) {
         return new ArrayList<>(leaderCards.stream()
-                .map(LeaderCard::getDepot)
+                .map(lc -> lc.getDepot(true))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList());

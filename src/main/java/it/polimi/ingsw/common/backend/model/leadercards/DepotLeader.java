@@ -30,8 +30,11 @@ public class DepotLeader extends LeaderCard {
     }
 
     @Override
-    public Optional<ResourceShelf> getDepot() {
-        return isActive() ? Optional.of(shelf) : super.getDepot();
+    public Optional<ResourceShelf> getDepot(boolean isFactoryAsking) {
+        if (isFactoryAsking)
+            return Optional.of(shelf);
+
+        return isActive() ? Optional.of(shelf) : super.getDepot(isFactoryAsking);
     }
 
     @Override
