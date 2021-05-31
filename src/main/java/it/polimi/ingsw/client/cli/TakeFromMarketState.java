@@ -51,6 +51,7 @@ public class TakeFromMarketState extends CliState {
                 if (index >= 0)
                     isValid = true;
             } catch (Exception e) {
+                cli.getOut().println("Please input an integer.");
             }
         }
 
@@ -64,7 +65,7 @@ public class TakeFromMarketState extends CliState {
         }
 
         // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
-        int blanksCount = (int) chosenResources.stream().filter(r -> r == vm.getMarket().getReplaceableResType()).count();
+        int blanksCount = (int) chosenResources.stream().filter(r -> r.equals(vm.getMarket().getReplaceableResType())).count();
         Map<String, Integer> replacements = new HashMap<>();
 
         // for (String res : chosenResources)
@@ -73,7 +74,7 @@ public class TakeFromMarketState extends CliState {
         if (blanksCount > 0) {
             List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                 .filter(c -> c.isActive() &&
-                               c.getLeaderType() == ZeroLeader.class.getSimpleName()).toList();
+                        c.getLeaderType().equals(ZeroLeader.class.getSimpleName())).toList();
             
             if (zeroLeaders.size() > 0) {
                 cli.getPrinter().showLeaders(zeroLeaders);
@@ -81,12 +82,12 @@ public class TakeFromMarketState extends CliState {
                 
 
                 input = "";
-                while (input != "y" || input != "n")
+                while (!input.equals("y") && !input.equals("n"))
                     input = cli.prompt("Replace resources? [y/n]");
-                if (input == "n") {
+                if (input.equals("n")) {
                     replacements = cli.promptResources(
                         blanksCount,
-                        zeroLeaders.stream().map(c -> c.getResourceType()).toList());
+                        zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).toList());
                 }
             }
         }
