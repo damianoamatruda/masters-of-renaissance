@@ -145,8 +145,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     @Override
     public void update(ReducedResourceContainer newObject) {
-        cli.getOut().printf("Resource Container ID: %d, bounded resource: %s, dimensions: %d%n",
-                newObject.getId(), printResource(newObject.getboundedResType()), newObject.getDimensions());
+        cli.getOut().printf("Resource Container ID: %d", newObject.getId());
+        if (newObject.getboundedResType() != null)
+            cli.getOut().printf(", bounded resource: %s", printResource(newObject.getboundedResType()));
+        cli.getOut().printf(", size: %d%n", newObject.getSize());
 
         newObject.getContent().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
         cli.getOut().println();
@@ -399,13 +401,16 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     private String printColor(String colorName) {
-        if(colorName == null) return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
+        if (colorName == null)
+            return /*"\u001B[1m" +*/ "Ø" /*+ "\u001B[0m"*/;
         String color = viewModel.getDevCardColors().stream().filter(c -> c.getName().equals(colorName)).map(ReducedColor::getcolorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + colorName + "\u001B[0m"; // "⚫"
     }
 
     private String printResource(String resourceType) {
-        if(resourceType == null)  return "Ø";
+        // FIXME: Placeholder for null is now unnecessary
+        if (resourceType == null)
+            return "Ø";
         String color = viewModel.getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getColorValue).findAny().orElseThrow();
         return "\u001B[1m" + color + resourceType + "\u001B[0m";
     }
