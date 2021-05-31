@@ -35,7 +35,6 @@ public class ViewModel {
     private List<String> playerNicknames;
     private List<ReducedResourceTransactionRecipe> productions;
     private List<ReducedResourceType> resourceTypes;
-    private final List<Boolean> vaticanSections;
     private String winner;
 
 
@@ -53,7 +52,6 @@ public class ViewModel {
         playerNicknames = new ArrayList<>();
         productions = new ArrayList<>();
         resourceTypes = new ArrayList<>();
-        vaticanSections = new ArrayList<>();
 
         this.playerData = new HashMap<>();
 
@@ -203,6 +201,13 @@ public class ViewModel {
      */
     public Optional<ReducedResourceContainer> getContainer(int id) {
         return containers.stream().filter(c -> c.getId() == id).findAny();
+    }
+
+    /**
+     * @return the containers
+     */
+    public List<ReducedResourceContainer> getContainers() {
+        return containers;
     }
 
     /**
@@ -379,17 +384,18 @@ public class ViewModel {
     /**
      * @return the vaticanSections
      */
-    public List<Boolean> getVaticanSections() {
-        return vaticanSections;
+    public Map<Integer, ReducedVaticanSection> getVaticanSections() {
+        return faithTrack == null ? null : faithTrack.getVaticanSections();
     }
 
     /**
      * @param id the ID of the activated section
      */
     public void setVaticanSection(int id) {
-        faithTrack.getVaticanSections().entrySet().stream()
-            .map(e -> e.getValue())
-            .filter(vs -> vs.getId() == id).findAny().ifPresent(vs -> vs.setActive());
+        if (faithTrack != null)
+            faithTrack.getVaticanSections().entrySet().stream()
+                .map(e -> e.getValue())
+                .filter(vs -> vs.getId() == id).findAny().ifPresent(vs -> vs.setActive());
     }
 
     /**
