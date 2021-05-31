@@ -151,6 +151,9 @@ public abstract class CliState implements Renderable {
         cli.getViewModel().setResourceTypes(event.getResourceTypes());
 
         cli.getViewModel().setResumedGame(event.isResumed());
+
+        cli.getPrinter().printFaithTrack();
+        cli.getViewModel().getContainers().forEach(c -> cli.getPrinter().update(c));
     }
 
     public void on(Cli cli, UpdateJoinGame event) {

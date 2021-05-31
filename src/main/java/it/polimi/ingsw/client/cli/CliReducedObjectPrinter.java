@@ -437,7 +437,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         String boldVerticalLine = "║";
         String slimVerticalLine = "│";
 
-        int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/6;
+        int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/5;
         int maxFaith = viewModel.getFaithTrack().getMaxFaith();
         // Calculate section tiles and yellow tiles, to match the colors
         List<ReducedVaticanSection> sections = viewModel.getFaithTrack().getVaticanSections().values().stream().toList();
@@ -459,7 +459,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
         // Indexes on top of the track
         StringBuilder output = new StringBuilder(" ");
-        for(int i = 0; i <= maxFaith; i++) output.append(String.format("%-7s", Cli.centerLine(String.valueOf(i), 7)));
+        for(int i = 0; i <= maxFaith; i++) output.append(String.format("%-6s", Cli.centerLine(String.valueOf(i), 6)));
         output.append("\n");
 
         // Upper border
@@ -478,7 +478,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 else if(sectionTiles.contains(i) || sectionTiles.contains(i - 1)) output.append("\u001B[31m");
 //                else if (i > 0 && !sectionTiles.contains(i - 1) && !yellowTiles.contains(i - 1)) output.append("\u001B[0m");
                 output.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? boldVerticalLine : slimVerticalLine)
-                        .append("\u001B[0m").append(points.get(player) == i ? String.format("%-6s", nicks.get(j)) : " ".repeat(cellWidth));
+                        .append("\u001B[0m").append(points.get(player) == i ? String.format("%-5s", nicks.get(j)) : " ".repeat(cellWidth));
             }
             // Rightmost side border
             if(yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
@@ -502,20 +502,20 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                     overlapped.add(i);
                 if (yellowTiles.contains(i)) {
                     index = yellowTiles.indexOf(i);
-                    output.append(String.format("%-16s", "\u001B[93m" + viewModel.getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-15s", "\u001B[93m" + viewModel.getFaithTrack().getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else if (sectionEnds.contains(i)) {
-                    output.append(String.format("%-16s", "\u001B[31m" + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-15s", "\u001B[31m" + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 }
                 else
-                    output.append("       ");
+                    output.append("      ");
             }
             output.append("\n");
             for (int i = 0; i <= maxFaith; i++) {
                 if (overlapped.contains(i))
-                    output.append(String.format("%-17s", "\u001B[31m+ " + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                    output.append(String.format("%-16s", "\u001B[31m+ " + viewModel.getFaithTrack().getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
                 else
-                    output.append("       ");
+                    output.append("      ");
             }
             output.append("\n");
         } catch (Exception e) {
