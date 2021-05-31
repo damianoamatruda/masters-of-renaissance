@@ -116,6 +116,8 @@ public class FileGameFactory implements GameFactory {
         List<DevelopmentCard> developmentCards = buildDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
         addDevCardProductions(productions, developmentCards);
+        List<ActionToken> actionTokens = buildActionTokens();
+        Collections.shuffle(actionTokens);
 
         return new SoloGame(
                 getPlayers(List.of(nickname), leaderCards, resContainers).get(0),
@@ -123,16 +125,13 @@ public class FileGameFactory implements GameFactory {
                 developmentCards,
                 resContainers,
                 productions,
-                buildActionTokens(), new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
+                actionTokens,
+                new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
                 buildMarket(),
                 buildFaithTrack(),
                 maxDevCards
         );
     }
-
-
-    // ALSO VATICAN SECTIONS IN FAITH TRACKKKKKKKKKK
-
 
     /**
      * Getter of a development card color in the game by its name.
