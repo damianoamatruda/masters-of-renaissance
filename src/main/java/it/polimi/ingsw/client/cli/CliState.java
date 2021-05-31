@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
@@ -130,7 +133,9 @@ public abstract class CliState implements Renderable {
         else
             cli.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
 
-        cli.getPrinter().printFaithTrack();
+        Map<String, Integer> points = cli.getViewModel().getPlayerNicknames().stream()
+            .collect(Collectors.toMap(nick -> nick, nick -> cli.getViewModel().getPlayerData(nick).getFaithPoints()));
+        cli.getPrinter().printFaithTrack(points);
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
@@ -152,7 +157,9 @@ public abstract class CliState implements Renderable {
 
         cli.getViewModel().setResumedGame(event.isResumed());
 
-        cli.getPrinter().printFaithTrack();
+        Map<String, Integer> points = cli.getViewModel().getPlayerNicknames().stream()
+            .collect(Collectors.toMap(nick -> nick, nick -> 0));
+        cli.getPrinter().printFaithTrack(points);
         cli.getViewModel().getContainers().forEach(c -> cli.getPrinter().update(c));
     }
 

@@ -416,9 +416,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
     }
 
     @Override
-    public void printFaithTrack() {
-        Map<String, Integer> points = viewModel.getPlayerNicknames().stream()
-            .collect(Collectors.toMap(nick -> nick, nick -> viewModel.getPlayerData(nick).getFaithPoints()));
+    public void printFaithTrack(Map<String, Integer> points) {
 
         String boldTopLeftCorner = "╔";
         String slimTopLeftCorner = "┌";
