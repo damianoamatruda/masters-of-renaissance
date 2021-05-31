@@ -15,8 +15,13 @@ public class LeaderCard extends Card {
     public Text leaderTypeText;
     public Text resourceTypeText;
 
+    private double height;
+    private double width;
+
     public LeaderCard(String leaderType) {
         super(leaderType);
+        height = 251;   //TODO remove hardcoding
+        width = 166;
     }
 
     public String getLeaderType() {
@@ -62,24 +67,24 @@ public class LeaderCard extends Card {
 
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
-        victoryPoints.setLayoutX(79);
-        this.victoryPoints.setLayoutY(154);
+        victoryPoints.setLayoutX(width / 2.1);
+        this.victoryPoints.setLayoutY(height / 1.63);
     }
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
-        this.prod.setLayoutY(185);
+        this.prod.setLayoutY(height / 1.3567);
     }
 
     public void setZeroReplacement(ReducedResourceType type) {
         Resource res = new Resource();
         res.setResourceType(type.getName());
 
-        res.setLayoutX(100);
-        res.setLayoutY(195);
+        res.setLayoutX(width / 1.66);
+        res.setLayoutY(height / 1.3);
 
-        res.setFitHeight(50);
-        res.setFitWidth(50);
+        res.setFitHeight(height / 5);
+        res.setFitWidth(height / 5);
 
         this.getChildren().add(res);
     }
@@ -89,17 +94,17 @@ public class LeaderCard extends Card {
         Resource res = new Resource();
         TextArea amount = new TextArea();
         amount.setText("-" + discount);
-        amount.setLayoutX(100);
-        amount.setLayoutY(175);
+        amount.setLayoutX(width / 1.66);
+        amount.setLayoutY(height / 1.4342);
         //TODO text not showing
 
         res.setResourceType(type.getName());
 
-        res.setFitHeight(35);
-        res.setFitWidth(35);
+        res.setFitHeight(height / 7.17);
+        res.setFitWidth(height / 7.17);
 
-        res.setLayoutX(120);
-        res.setLayoutY(175);
+        res.setLayoutX(width / 1.383);
+        res.setLayoutY(height / 1.4342);
 
         bonus.getChildren().add(amount);
         bonus.getChildren().add(res);
@@ -108,7 +113,7 @@ public class LeaderCard extends Card {
     }
 
     public void setDepotContent(ReducedResourceContainer container, String boundRes) {
-        int x1 = 35, x2 = 100, y = 200;
+        double x1 = width / 4.6, x2 = width / 1.7, y = height / 1.255;
 
         if(container == null) {
             fillDepot(x1, y, boundRes, true);
@@ -131,13 +136,13 @@ public class LeaderCard extends Card {
         fillDepot(x2, y, resourceType, size < 2);
     }
 
-    private void fillDepot(int x, int y, String boundRes, boolean isEmpty) {
+    private void fillDepot(double x, double y, String boundRes, boolean isEmpty) {
         ImageView img = new ImageView(new Image(getResourcePlaceholderPath(boundRes, isEmpty)));
         img.setX(x);
         img.setY(y);
 
-        img.setFitHeight(35);
-        img.setFitWidth(35);
+        img.setFitHeight(height / 7.17);
+        img.setFitWidth(height / 7.17);
         this.getChildren().add(img);
     }
 
