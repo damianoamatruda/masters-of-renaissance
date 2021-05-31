@@ -39,10 +39,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         cli.getOut().printf("Production ID: %d%n",
                 newObject.getProduction()
         );
-        cli.getOut().println("Requirements (resources):");
 
-        newObject.getCost()
-                .getRequirements().forEach((key, value) -> cli.getOut().println(printResource(key) + ": " + value));
+        List<String> cols = new ArrayList<>();
+        addResRequirementsToPrinter(cols, newObject.getCost());
+        cols.forEach(s -> cli.getOut().println(s));
 
         cli.getOut().println();
         Optional<ReducedResourceTransactionRecipe> prod = viewModel.getProduction(newObject.getProduction());
@@ -284,7 +284,10 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 if(reducedLeaderCard.getDiscount() > -1)
                     column.add(String.format("%-38s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
 
-                addRequirementsToPrinter(column, reducedLeaderCard);
+                if (reducedLeaderCard.getDevCardRequirement() != null)
+                    addCardRequirementsToPrinter(column, reducedLeaderCard.getDevCardRequirement());
+                if (reducedLeaderCard.getResourceRequirement() != null)
+                    addResRequirementsToPrinter(column, reducedLeaderCard.getResourceRequirement());
                 addProductionToPrinter(column, reducedLeaderCard.getProduction());
             }
 
@@ -355,23 +358,33 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
 
     }
 
-    private void addRequirementsToPrinter(List<String> column, ReducedLeaderCard reducedLeaderCard) {
-        if (reducedLeaderCard.getDevCardRequirement() != null) {
-            column.add("--- Requirements (dev. cards) ---");
-            for(int k = 0; k < reducedLeaderCard.getDevCardRequirement().getEntries().size(); k++) {
-                ReducedDevCardRequirementEntry e = reducedLeaderCard.getDevCardRequirement().getEntries().get(k);
-                String req = String.format("%-51s", e.getAmount() + " " + printColor(e.getColor()) + " card(s) of " +
-                        (e.getLevel() > 0 ? ("level " + e.getLevel()) : "any level"));
-                column.add(req);
-            }
+    private void addCardRequirementsToPrinter(List<String> column, ReducedDevCardRequirement requirement) {
+        column.add("--- Requirements (dev. cards) ---");
+        for(int k = 0; k < requirement.getEntries().size(); k++) {
+            ReducedDevCardRequirementEntry e = requirement.getEntries().get(k);
+            String req = String.format("  %-49s", e.getAmount() + " " + printColor(e.getColor()) + " card(s) of " +
+                    (e.getLevel() > 0 ? ("level " + e.getLevel()) : "any level"));
+            column.add(req);
         }
-        if(reducedLeaderCard.getResourceRequirement() != null) {
-            column.add("--- Requirements (resources) ---");
-            List<String> keys = reducedLeaderCard.getResourceRequirement().getRequirements().keySet().stream().toList();
-            for(String key : keys) {
-                String req = String.format("%-51s", String.format("%s, %d", printResource(key), reducedLeaderCard.getResourceRequirement().getRequirements().get(key)));
+    }
+
+    private void addResRequirementsToPrinter(List<String> column, ReducedResourceRequirement requirement) {
+        column.add("--- Requirements (resources) ---");
+        List<String> keys = requirement.getRequirements().keySet().stream().toList();
+        int i = 0;
+        String req = "";
+        for(String key : keys) {
+            if(i % 2 == 0)
+                req = String.format("  %-24s", String.format("%s, %d", printResource(key), requirement.getRequirements().get(key)));
+            else {
+                req += String.format("  %-36s", String.format("%s, %d", printResource(key), requirement.getRequirements().get(key)));
                 column.add(req);
             }
+            i++;
+        }
+        if(keys.size() % 2 != 0){
+            req += " ".repeat(25);
+            column.add(req);
         }
     }
 
@@ -381,7 +394,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
         if (r.isPresent()) {
             column.add(String.format("--- Production ID: %d ---", r.get().getId()));
             column.add("Input:");
-            r.get().getInput().forEach((key1, value1) -> column.add(String.format("%-51s", printResource(key1) + ": " + value1)));
+            r.get().getInput().forEach((key1, value1) -> column.add(String.format("  %-49s", printResource(key1) + ": " + value1)));
             if (r.get().getInputBlanks() > 0)
                 column.add(String.format("Blanks: %d", r.get().getInputBlanks()));
             if (!r.get().getInputBlanksExclusions().isEmpty()) {
@@ -389,7 +402,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                 r.get().getInputBlanksExclusions().forEach(e -> column.add(printResource(e)));
             }
             column.add("Output:");
-            r.get().getOutput().forEach((key, value) -> column.add(String.format("%-51s", printResource(key) + ": " + value)));
+            r.get().getOutput().forEach((key, value) -> column.add(String.format("  %-49s", printResource(key) + ": " + value)));
             if (r.get().getOutputBlanks() > 0)
                 column.add(String.format("Blanks: %d", r.get().getOutputBlanks()));
             if (!r.get().getOutputBlanksExclusions().isEmpty()) {
@@ -607,9 +620,7 @@ public class CliReducedObjectPrinter implements ReducedObjectPrinter {
                     card.getLevel(),
                     card.getVictoryPoints()
             ));
-            column.add("Requirements (resources):");
-            card.getCost()
-                    .getRequirements().forEach((key, value) -> column.add(String.format("%-51s", printResource(key) + ": " + value)));
+            addResRequirementsToPrinter(column, card.getCost());
             addProductionToPrinter(column, card.getProduction());
         }
     }
