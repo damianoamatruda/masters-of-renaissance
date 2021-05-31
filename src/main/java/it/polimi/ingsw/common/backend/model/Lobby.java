@@ -53,7 +53,8 @@ public class Lobby extends EventDispatcher {
             nicknames.put(view, nickname);
     
             if (disconnected.containsKey(nickname)) {
-                System.out.printf("Player \"%s\" rejoined%n", nickname);
+                // TODO: Add logger
+                // System.out.printf("Player \"%s\" rejoined%n", nickname);
 
                 /* Get the match the nickname was previously in and set the player back to active */
                 GameContext context = disconnected.get(nickname);
@@ -71,18 +72,22 @@ public class Lobby extends EventDispatcher {
                 joined.put(view, context);
                 disconnected.remove(nickname);
             } else {
-                System.out.printf("Set nickname \"%s\".%n", nickname);
-    
+                // TODO: Add logger
+                // System.out.printf("Set nickname \"%s\".%n", nickname);
+
                 waiting.add(view);
-                System.out.printf("adding %s, %d waiting\n", nickname, waiting.size());
+
+                // TODO: Add logger
+                // System.out.printf("Adding %s, %d waiting\n", nickname, waiting.size());
 
                 waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
-    
+
                 if (newGamePlayersCount != 0)
                     dispatch(new UpdateJoinGame(view, newGamePlayersCount));
-    
+
                 if (waiting.size() == newGamePlayersCount) {
-                    System.out.printf("%s joining started a new game\n", nicknames.get(view));
+                    // TODO: Add logger
+                    // System.out.printf("%s joining started a new game\n", nicknames.get(view));
                     startNewGame();
                 }
             }
@@ -96,24 +101,27 @@ public class Lobby extends EventDispatcher {
                 return;
     
             if (waiting.indexOf(view) != 0) {
-                System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+                // TODO: Add logger
+                // System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
                 dispatch(new ErrNewGame(view, false));
                 return;
             }
-    
+
             if (newGamePlayersCount == 0) {
                 dispatch(new ErrNewGame(view, true));
                 return;
             }
-    
-            System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+
+            // TODO: Add logger
+            // System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
             this.newGamePlayersCount = newGamePlayersCount;
 
             waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> dispatch(new UpdateJoinGame(v, newGamePlayersCount)));
-    
-            if (waiting.size() >= newGamePlayersCount){
+
+            if (waiting.size() >= newGamePlayersCount) {
+                // TODO: Add logger
+                // System.out.printf("%s prepared a new game\n", nicknames.get(view));
                 startNewGame();
-                System.out.printf("%s prepared a new game\n", nicknames.get(view));
             }
         }
     }
@@ -123,7 +131,7 @@ public class Lobby extends EventDispatcher {
             Game newGame = newGamePlayersCount == 1 ?
                     gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
                     gameFactory.getMultiGame(waiting.subList(0, newGamePlayersCount).stream().map(nicknames::get).toList());
-    
+
             GameContext context = new GameContext(newGame, gameFactory);
             waiting.subList(0, newGamePlayersCount).forEach(view -> {
                 view.registerOnModelGameContext(context);
@@ -131,14 +139,18 @@ public class Lobby extends EventDispatcher {
                 joined.put(view, context);
             });
             context.start();
-//            System.out.printf("started context, waiting list %d\n", waiting.size());
-    
+
+            // TODO: Add logger
+            // System.out.printf("started context, waiting list %d\n", waiting.size());
+
             /* Remove players who joined from waiting list */
             waiting.subList(0, newGamePlayersCount).clear();
-//            System.out.printf("removed %d waiting %d\n", newGamePlayersCount, waiting.size());
+
+            // TODO: Add logger
+            // System.out.printf("Removed %d waiting %d\n", newGamePlayersCount, waiting.size());
 
             waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
-    
+
             newGamePlayersCount = 0;
         }
     }
