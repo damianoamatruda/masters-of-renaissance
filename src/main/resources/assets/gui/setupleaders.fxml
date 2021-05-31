@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.SetupLeadersController"
@@ -24,6 +25,7 @@
       <padding>
         <Insets bottom="80.0"/>
       </padding>
+      <Button onMouseClicked="#handleChoice" text="Choose"/>
     </VBox>
   </center>
 </BorderPane>

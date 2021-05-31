@@ -72,7 +72,7 @@ public class PlaygroundController extends GuiController {
             return leaderCard;
         }).toList();
 
-        System.out.println(leaderCards);
+        System.out.println(leaderCards.stream().map(LeaderCard::getLeaderId).toList());
 
         scaleX = (1280 / canvas.getColumnCount()) / leaderCards.get(0).getPrefWidth();
         scaleY = (780 / canvas.getRowCount()) / leaderCards.get(0).getPrefHeight();

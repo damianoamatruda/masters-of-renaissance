@@ -18,6 +18,8 @@ public class LeaderCard extends Card {
     private double height;
     private double width;
 
+    private int leaderId;
+
     public LeaderCard(String leaderType) {
         super(leaderType);
         height = 251;   //TODO remove hardcoding
@@ -152,4 +154,11 @@ public class LeaderCard extends Card {
         return "/assets/gui/resourcetypes/" + resourceType.toLowerCase() + ".png";
     }
 
+    public int getLeaderId() {
+        return leaderId;
+    }
+
+    public void setLeaderId(int leaderId) {
+        this.leaderId = leaderId;
+    }
 }
