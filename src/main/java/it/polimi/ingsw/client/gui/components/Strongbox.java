@@ -64,7 +64,7 @@ public class Strongbox extends StackPane {
         
         // these are used for scalin, caps are arbitrary and looked good on my machine
         double defTextHeight = 20, // got this by trying (it's how big Text appears with no scaling)
-               cellHeight = Math.min(80, height / sRows),
+               cellHeight = height / sRows,
                cellWidth = width / sCols,
                scaleRatio = 0.8 * (cellHeight / defTextHeight);
         
