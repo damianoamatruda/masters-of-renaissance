@@ -44,6 +44,7 @@ public class Gui extends Application {
     private boolean musicPlaying;
 
     public static void main(String[] args) {
+        // Platform.setImplicitExit(false); // makes the runLater invocations not fail
         launch(args);
     }
 
@@ -88,8 +89,8 @@ public class Gui extends Application {
         Parent root = getFxmlLoader(initialSceneFxml).load();
         scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(minWidth);
-        primaryStage.setMinHeight(minHeight);
+        primaryStage.setWidth(minWidth);
+        primaryStage.setHeight(minHeight);
         primaryStage.setTitle("Masters of Renaissance");
         primaryStage.show();
     }
