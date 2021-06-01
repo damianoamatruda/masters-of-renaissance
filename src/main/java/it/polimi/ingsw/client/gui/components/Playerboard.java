@@ -23,27 +23,27 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class Playerboard extends StackPane {
-    @FXML private AnchorPane board;
+    @FXML private GridPane board;
 
     private StackPane canvas;
     private Warehouse w;
 
     private double bgPixelWidth = 908,
                    bgPixelHeight = 443,
-                   warehousePixelSize = 140,
-                   baseProdPixelSize = 94,
-                   strongboxPixelWidth = 165,
-                   strongboxPixelHeight = 140,
-                   devSlotPixelWidth = 158,
-                   devSlotPixelHeight = 335;
-
-    public Playerboard(Warehouse w) {
+                   bgRatio = bgPixelWidth / bgPixelHeight;
+                //    warehousePixelSize = 140,
+                //    baseProdPixelSize = 94,
+                //    strongboxPixelWidth = 165,
+                //    strongboxPixelHeight = 140,
+                //    devSlotPixelWidth = 158,
+                //    devSlotPixelHeight = 335;
         this.w = w;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
@@ -56,50 +56,32 @@ public class Playerboard extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        // w.setBorder(new Border(new BorderStroke(Color.RED,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        board.setBorder(new Border(new BorderStroke(Color.RED,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        board.setGridLinesVisible(true);
 
         setBackground();
 
-        board.getChildren().add(w);
+        board.add(w, 1, 0);
 
         canvas = this;
-        // this.widthProperty().addListener((observable, oldValue, newValue) -> {
-        //     setPositionAndSize(board, w, 0.04, 0.145, 0.176, 0.361);
-        // });
-        // this.heightProperty().addListener((observable, oldValue, newValue) -> {
-        //     setPositionAndSize(board, w, 0.04, 0.145, 0.176, 0.361);
-        // });
+        this.widthProperty().addListener(this::changedSize);
+        this.heightProperty().addListener(this::changedSize);
     }
 
-    /**
-     * Sets the position and scaling of the child node
-     * given the parameters relative to the parent.
-     * 
-     * @param parent                    the parent AnchorPane
-     * @param n                         the child
-     * @param leftMarginPercent         the margin from the left border of the parent
-     *                                  to the left border of the child, expressed as the
-     *                                  percentage (ratio) of the width of the parent used by the margin
-     * @param topMarginPercent          the margin from the top border of the parent
-     *                                  to the top border of the child, expressed as the
-     *                                  percentage (ratio) of the height of the parent used by the margin
-     * @param childWidthParentPercent   the width of the child, expressed as
-     *                                  the percentage of the width of the parent that the child should take
-     * @param childHeightParentPercent  the height of the child, expressed as
-     *                                  the percentage of the height of the parent that the child should take
-     */
-    private static void setPositionAndSize(AnchorPane parent, Region n,
-        double leftMarginPercent, double topMarginPercent,
-        double childWidthParentPercent, double childHeightParentPercent) {
+    private static void setSize(Region r) {
+        double scaleY = r.getWidth() / r.getPrefWidth();
+        r.setScaleY(scaleY);
+    }
 
-        AnchorPane.setLeftAnchor(n, parent.getWidth() * leftMarginPercent);
-        AnchorPane.setTopAnchor(n, parent.getHeight() * topMarginPercent);
-    
-        double scalex = childWidthParentPercent * parent.getWidth() / n.getPrefWidth(),
-               scaley = childHeightParentPercent * parent.getHeight() / n.getPrefHeight();
-        n.setScaleX(scalex);
-        n.setScaleX(scaley);
+    private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+        double newDimRatio = this.getWidth() / this.getHeight();
+
+        board.setMaxHeight(newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / (bgRatio));
+        board.setMaxWidth(newDimRatio > bgRatio ? this.getHeight() * (bgRatio) :this.getWidth());
+
+        setSize(w);
     }
 
     private void setBackground() {

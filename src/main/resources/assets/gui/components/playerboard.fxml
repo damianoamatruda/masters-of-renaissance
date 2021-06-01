@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1280.0" type="StackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="board" />
+      <GridPane fx:id="board" alignment="CENTER" StackPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" percentWidth="3.96" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="18.2" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+          <ColumnConstraints hgrow="SOMETIMES" percentWidth="10.6" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="1.54" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="17.62" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="1.32" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="17.62" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="1.54" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="17.62" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="5.06" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
    </children>
 </fx:root>
