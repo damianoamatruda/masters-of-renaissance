@@ -27,13 +27,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class Playerboard extends StackPane {
+    @FXML private StackPane canvas;
     @FXML private GridPane board;
-
-    private StackPane canvas;
+    @FXML private GridPane storageColumn;
+    
     private Warehouse w;
+    private Strongbox s;
+    private Production p;
+    private DevSlot slot;
 
     private double bgPixelWidth = 908,
                    bgPixelHeight = 443,
@@ -44,7 +49,12 @@ public class Playerboard extends StackPane {
                 //    strongboxPixelHeight = 140,
                 //    devSlotPixelWidth = 158,
                 //    devSlotPixelHeight = 335;
+
+    public Playerboard(Warehouse w, Strongbox s, Production p, DevSlot slot) {
         this.w = w;
+        this.s = s;
+        this.p = p;
+        this.slot = slot;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
         fxmlLoader.setRoot(this);
@@ -56,32 +66,65 @@ public class Playerboard extends StackPane {
             throw new RuntimeException(exception);
         }
 
+        board.setGridLinesVisible(true);
         board.setBorder(new Border(new BorderStroke(Color.RED,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        
+        storageColumn.setGridLinesVisible(true);
+        storageColumn.setBorder(new Border(new BorderStroke(Color.GREEN,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        board.setGridLinesVisible(true);
+        w.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        s.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        p.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        slot.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setBackground();
 
-        board.add(w, 1, 0);
+        storageColumn.add(w, 0, 1);
+        storageColumn.add(s, 0, 3);
+
+        board.add(p, 3, 0);
+        board.add(slot, 5, 0);
 
         canvas = this;
         this.widthProperty().addListener(this::changedSize);
         this.heightProperty().addListener(this::changedSize);
     }
 
-    private static void setSize(Region r) {
-        double scaleY = r.getWidth() / r.getPrefWidth();
-        r.setScaleY(scaleY);
+    private static void setSize(GridPane parent, Region child, double parentWidth, boolean isStorage) {
+        Integer colIndex = GridPane.getColumnIndex(child);
+
+        if (isStorage)
+            colIndex = 1;
+
+        double colPercentWidth = parent.getColumnConstraints().get(colIndex).getPercentWidth(),
+               colWidth = parentWidth * colPercentWidth / 100,
+               scaleX = colWidth / child.getWidth(),
+               scaleY = colWidth / child.getPrefWidth();
+        child.setScaleX(scaleX > 0 ? scaleX : 1);
+        child.setScaleY(scaleY > 0 ? scaleY : 1);
     }
 
     private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
         double newDimRatio = this.getWidth() / this.getHeight();
 
-        board.setMaxHeight(newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / (bgRatio));
-        board.setMaxWidth(newDimRatio > bgRatio ? this.getHeight() * (bgRatio) :this.getWidth());
+        if (this.getHeight() <= 0 || this.getWidth() <= 0) {
+            board.setMaxHeight(canvas.getPrefHeight());
+            board.setMaxWidth(canvas.getPrefWidth());
+        } else {
+            board.setMaxHeight(newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / (bgRatio));
+            board.setMaxWidth(newDimRatio > bgRatio ? this.getHeight() * (bgRatio) : this.getWidth());
+        }
 
-        setSize(w);
+        setSize(board, w, board.getMaxWidth(), true);
+        setSize(board, s, board.getMaxWidth(), true);
+        setSize(board, p, board.getMaxWidth(), false);
+        setSize(board, slot, board.getMaxWidth(), false);
     }
 
     private void setBackground() {

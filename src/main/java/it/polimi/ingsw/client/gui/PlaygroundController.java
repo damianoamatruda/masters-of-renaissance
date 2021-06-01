@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui;
 import java.net.URL;
 import java.util.*;
 
+import it.polimi.ingsw.client.gui.components.DevSlot;
 import it.polimi.ingsw.client.gui.components.DevelopmentCard;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Market;
@@ -49,16 +50,16 @@ public class PlaygroundController extends GuiController {
         // double scaleX, scaleY, scaleF;
 
 
-        // Map<String, Integer> m1 = new HashMap<>();
-        // Map<String, Integer> m2 = Map.of("shield", 2);
-        // m1.put("coin", 1);
-        // m1.put("Shield", 2);
-        // m1.put("Servant", 2);
-        // ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
+        Map<String, Integer> m1 = new HashMap<>();
+        Map<String, Integer> m2 = Map.of("shield", 2);
+        m1.put("coin", 1);
+        m1.put("Shield", 2);
+        m1.put("Servant", 2);
+        ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
 
 
-        // Production prod = new Production();
-        // prod.setProduction(p1);
+        Production prod = new Production();
+        prod.setProduction(p1);
 
         // List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getUiData().getLocalPlayerNickname()).stream().map(reducedLeader -> {
         //     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
@@ -103,18 +104,18 @@ public class PlaygroundController extends GuiController {
 
 
         
-        // Map<String, Integer> content = new HashMap<>();
-        // content.put("Coin", 1);
-        // content.put("Shield", 2);
-        // content.put("Servant", 2);
-        // content.put("Stone", 2);
-        // content.put("zero", 2);
-        // content.put("Faith", 2);
+        Map<String, Integer> content = new HashMap<>();
+        content.put("Coin", 1);
+        content.put("Shield", 2);
+        content.put("Servant", 2);
+        content.put("Stone", 2);
+        content.put("zero", 2);
+        content.put("Faith", 2);
 
-        // Strongbox s = new Strongbox();
-        // ReducedResourceContainer c = new ReducedResourceContainer(0, -1, content, null);
+        Strongbox s = new Strongbox();
+        ReducedResourceContainer c = new ReducedResourceContainer(0, -1, content, null);
 
-        // s.setContent(c);
+        s.setContent(c);
 
         // scaleX = (1280 / canvas.getColumnCount()) / s.getPrefWidth();
         // scaleY = (780 / canvas.getRowCount()) / s.getPrefHeight();
@@ -126,12 +127,20 @@ public class PlaygroundController extends GuiController {
         // canvas.add(s, 2, 0);
 
 
-        // ReducedDevCard card = gui.getViewModel().getGameData().getDevelopmentCard(0).orElseThrow();
+        ReducedDevCard card = gui.getViewModel().getDevelopmentCard(0).orElseThrow();
 
-        // DevelopmentCard guicard = new DevelopmentCard(card.getColor());
-        // guicard.setProduction(p1);
-        // guicard.setRequirement(card.getCost());
-        // guicard.setVictoryPoints(12+"");
+        DevelopmentCard guicard = new DevelopmentCard(card.getColor());
+        guicard.setProduction(p1);
+        guicard.setRequirement(card.getCost());
+        guicard.setVictoryPoints(12+"");
+        DevelopmentCard guicard2 = new DevelopmentCard(card.getColor());
+        guicard2.setProduction(p1);
+        guicard2.setRequirement(card.getCost());
+        guicard2.setVictoryPoints(12+"");
+        DevelopmentCard guicard3 = new DevelopmentCard(card.getColor());
+        guicard3.setProduction(p1);
+        guicard3.setRequirement(card.getCost());
+        guicard3.setVictoryPoints(12+"");
         
         // canvas.add(guicard, 1, 0);
 
@@ -147,7 +156,10 @@ public class PlaygroundController extends GuiController {
 
         // canvas.add(m, 2, 1);
 
-        Playerboard pboard = new Playerboard(w);
+        DevSlot slot = new DevSlot();
+        slot.setDevCards(List.of(guicard, guicard2, guicard3));
+
+        Playerboard pboard = new Playerboard(w, s, prod, slot);
 
         canvas.getChildren().add(pboard);
 

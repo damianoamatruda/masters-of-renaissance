@@ -42,8 +42,8 @@ public class Strongbox extends StackPane {
     }
 
     public void setContent(ReducedResourceContainer c) {
-        this.grid.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(5));
+        grid.setAlignment(Pos.CENTER);
+        grid.setPadding(new Insets(5));
         // grid.setGridLinesVisible(true);
         // this.setBorder(new Border(new BorderStroke(Color.GREEN,
         //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
