@@ -12,10 +12,12 @@ import it.polimi.ingsw.client.gui.components.Production;
 import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.common.reducedmodel.*;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
@@ -25,12 +27,12 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class PlaygroundController extends GuiController {
-    @FXML
-    private AnchorPane canvas;
+    @FXML private AnchorPane canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -172,5 +174,13 @@ public class PlaygroundController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+    
+        // canvas.widthProperty().addListener(this::changedSize);
+        // canvas.heightProperty().addListener(this::changedSize);
     }
+
+    // private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
+    //     playerBoard.setMinWidth(canvas.getWidth());
+    //     playerBoard.setMinHeight(canvas.getHeight() - 20);
+    // }
 }

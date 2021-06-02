@@ -96,35 +96,27 @@ public class Playerboard extends StackPane {
         this.heightProperty().addListener(this::changedSize);
     }
 
-    private static void setSize(GridPane parent, Region child, double parentWidth, boolean isStorage) {
-        Integer colIndex = GridPane.getColumnIndex(child);
-
-        if (isStorage)
-            colIndex = 1;
-
-        double colPercentWidth = parent.getColumnConstraints().get(colIndex).getPercentWidth(),
-               colWidth = parentWidth * colPercentWidth / 100,
-               scaleX = colWidth / child.getWidth(),
-               scaleY = colWidth / child.getPrefWidth();
-        child.setScaleX(scaleX > 0 ? scaleX : 1);
-        child.setScaleY(scaleY > 0 ? scaleY : 1);
-    }
-
     private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-        double newDimRatio = this.getWidth() / this.getHeight();
-
-        if (this.getHeight() <= 0 || this.getWidth() <= 0) {
-            board.setMaxHeight(canvas.getPrefHeight());
-            board.setMaxWidth(canvas.getPrefWidth());
-        } else {
+        if (this.getHeight() > 0 || this.getWidth() > 0) {
+            double newDimRatio = this.getWidth() / this.getHeight();
             board.setMaxHeight(newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / (bgRatio));
             board.setMaxWidth(newDimRatio > bgRatio ? this.getHeight() * (bgRatio) : this.getWidth());
+            
+            scalePreservingRatio(w, storageColumn.getWidth(), w.getPrefWidth());
+            scalePreservingRatio(s, storageColumn.getWidth(), s.getPrefWidth());
+            
+            scalePreservingRatio(p, board.getColumnConstraints().get(3).getPercentWidth() * board.getWidth() / 100, p.getMaxWidth());
+            scalePreservingRatio(slot, board.getColumnConstraints().get(5).getPercentWidth() * board.getWidth() / 100, slot.getPrefWidth());
         }
+    }
 
-        setSize(board, w, board.getMaxWidth(), true);
-        setSize(board, s, board.getMaxWidth(), true);
-        setSize(board, p, board.getMaxWidth(), false);
-        setSize(board, slot, board.getMaxWidth(), false);
+    private static void scalePreservingRatio(Pane child,
+        double parentSizeLimit,
+        double childCorrespondingSize) {
+            
+            double scaleRatio = parentSizeLimit / childCorrespondingSize;
+            child.setScaleX(scaleRatio);
+            child.setScaleY(scaleRatio);
     }
 
     private void setBackground() {
