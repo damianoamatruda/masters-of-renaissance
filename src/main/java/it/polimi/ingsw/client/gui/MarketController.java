@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.gui;
 
+import java.net.URL;
+import java.util.*;
+
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.DepotLeader;
@@ -11,16 +14,19 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-
-import java.net.URL;
-import java.util.*;
 
 public class MarketController extends GuiController {
     @FXML private AnchorPane canvas;
@@ -40,6 +46,15 @@ public class MarketController extends GuiController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
+
+        Image backBGImage = new Image(
+            Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
+        
+        BackgroundImage backBG = new BackgroundImage(backBGImage,
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+            new BackgroundSize(1.0, 1.0, true, true, false, true));
+        Background bg = new Background(backBG);
+        this.canvas.setBackground(bg);
 
         Gui gui = Gui.getInstance();
         ViewModel vm = gui.getViewModel();
@@ -263,6 +278,7 @@ public class MarketController extends GuiController {
         Gui.getInstance().dispatch(new ReqTakeFromMarket(isRow, index, null, selection));
     }
 
+    @Override
     public void on(Gui gui, UpdateAction event) {
         // try {
         //     gui.setRoot("turnafteraction");
