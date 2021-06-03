@@ -111,7 +111,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateCurrentPlayer event) {
         cli.getViewModel().setCurrentPlayer(event.getPlayer());
 
-        cli.getOut().println(String.format("Current player: ", event.getPlayer()));
+        cli.getOut().println(String.format("Current player: %s", event.getPlayer()));
     }
 
     public void on(Cli cli, UpdateDevCardGrid event) {
@@ -217,22 +217,21 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdatePlayer event) {
-        cli.getViewModel().setPlayerData(event.getPlayer(), new PlayerData(
+        ViewModel vm = cli.getViewModel();
+        vm.setPlayerData(event.getPlayer(), new PlayerData(
             event.getBaseProduction(),
             event.getPlayerSetup(),
             event.getStrongbox(),
             event.getWarehouseShelves()));
 
-        cli.getViewModel().getPlayerNicknames().forEach(nick -> {
-            cli.getOut().println(String.format("%s's containers:", nick));
-            cli.getViewModel().getPlayerShelves(nick).forEach(c -> cli.getPrinter().update(c));
-        });
+        cli.getOut().println(String.format("%s's containers:", event.getPlayer()));
+        vm.getPlayerShelves(event.getPlayer()).forEach(c -> cli.getPrinter().update(c));
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
         cli.getViewModel().getPlayerData(event.getPlayer()).setActive(event.isActive());
 
-        cli.getOut().printf("Player %d became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
+        cli.getOut().printf("Player %s became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
     }
 
     public void on(Cli cli, UpdateResourceContainer event) {

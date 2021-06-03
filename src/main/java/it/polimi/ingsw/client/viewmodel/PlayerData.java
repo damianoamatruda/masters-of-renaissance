@@ -120,7 +120,8 @@ public class PlayerData {
      * @param leadersHand the leadersHand to set
      */
     public void setLeadersHand(List<Integer> leadersHand) {
-        this.leadersHand = leadersHand;
+        if (leadersHand != null)
+            this.leadersHand = new ArrayList<>(leadersHand);
     }
 
     /**

@@ -89,7 +89,7 @@ public class ViewModel {
      */
     public List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
         if (!playerData.containsKey(nickname))
-            return null;
+            return new ArrayList<>();
         
         PlayerData pd = playerData.get(nickname);
         List<Integer> ids = new ArrayList<>();
@@ -116,7 +116,7 @@ public class ViewModel {
      */
     private List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
         if (!playerData.containsKey(nickname))
-            return null;
+            return new ArrayList<>();
 
         return playerData.get(nickname).getDevSlots().stream()
             .map(slot -> getDevelopmentCard(slot.get(0)).orElse(null))
@@ -130,7 +130,7 @@ public class ViewModel {
      */
     public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
         if (!playerData.containsKey(nickname))
-            return null;
+            return new ArrayList<>();
 
         return playerData.get(nickname).getLeadersHand().stream()
                 .map(id -> getLeaderCard(id).orElse(null))
@@ -144,7 +144,7 @@ public class ViewModel {
      */
     public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
         if (!playerData.containsKey(nickname))
-            return null;
+            return new ArrayList<>();
             
         List<Integer> ids = new ArrayList<>();
 
@@ -176,7 +176,8 @@ public class ViewModel {
      * @param actionTokens the actionTokens to set
      */
     public void setActionTokens(List<ReducedActionToken> actionTokens) {
-        this.actionTokens = new ArrayList<>(actionTokens);
+        if (actionTokens != null)
+            this.actionTokens = new ArrayList<>(actionTokens);
     }
 
     /**
@@ -212,7 +213,8 @@ public class ViewModel {
      * @param containers the containers to set
      */
     public void setContainers(List<ReducedResourceContainer> containers) {
-        this.containers = new ArrayList<>(containers);
+        if (containers != null)
+            this.containers = new ArrayList<>(containers);
     }
 
     /**
@@ -247,7 +249,8 @@ public class ViewModel {
      * @param devCardColors the devCardColors to set
      */
     public void setDevCardColors(List<ReducedColor> devCardColors) {
-        this.devCardColors = new ArrayList<>(devCardColors);
+        if (devCardColors != null)
+            this.devCardColors = new ArrayList<>(devCardColors);
     }
 
     /**
@@ -276,7 +279,8 @@ public class ViewModel {
      * @param developmentCards the developmentCards to set
      */
     public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
-        this.developmentCards = new ArrayList<>(developmentCards);
+        if (developmentCards != null)
+            this.developmentCards = new ArrayList<>(developmentCards);
     }
 
     /**
@@ -319,7 +323,8 @@ public class ViewModel {
      * @param leaderCards the leaderCards to set
      */
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
-        this.leaderCards = new ArrayList<>(leaderCards);
+        if (leaderCards != null)
+            this.leaderCards = new ArrayList<>(leaderCards);
     }
 
     /**
@@ -347,7 +352,8 @@ public class ViewModel {
      * @param playerNicknames the playerNicknames to set
      */
     public void setPlayerNicknames(List<String> playerNicknames) {
-        this.playerNicknames = new ArrayList<>(playerNicknames);
+        if (playerNicknames != null)
+            this.playerNicknames = new ArrayList<>(playerNicknames);
     }
 
     /**
@@ -362,7 +368,8 @@ public class ViewModel {
      * @param productions the productions to set
      */
     public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
-        this.productions = new ArrayList<>(productions);
+        if (productions != null)
+            this.productions = new ArrayList<>(productions);
     }
 
     /**
@@ -376,7 +383,8 @@ public class ViewModel {
      * @param resourceTypes the resourceTypes to set
      */
     public void setResourceTypes(List<ReducedResourceType> resourceTypes) {
-        this.resourceTypes = new ArrayList<>(resourceTypes);
+        if (resourceTypes!= null)
+            this.resourceTypes = new ArrayList<>(resourceTypes);
     }
 
     /**
