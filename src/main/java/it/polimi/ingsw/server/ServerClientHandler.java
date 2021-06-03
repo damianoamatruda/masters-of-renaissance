@@ -39,6 +39,7 @@ public class ServerClientHandler extends NetworkHandler {
             while (listening) {
                 try {
                     if ((inputLine = in.readLine()) == null) {
+                        System.out.println("NULL READLINE");
                         dispatch(new ReqQuit());
                         break;
                     }
@@ -54,6 +55,7 @@ public class ServerClientHandler extends NetworkHandler {
                             try {
                                 dispatch(protocol.processInputAsVCEvent(inputLine));
                             } catch (NetworkProtocolException e2) {
+                                e2.printStackTrace();
                                 send(new ErrProtocol(e2));
                             }
                         }
@@ -66,6 +68,7 @@ public class ServerClientHandler extends NetworkHandler {
                         send(new ReqHeartbeat());
                         halfTimeout++;
                     } else {
+                        e.printStackTrace();
                         send(new ReqGoodbye());
                         dispatch(new ReqQuit());
                         break;
@@ -74,6 +77,7 @@ public class ServerClientHandler extends NetworkHandler {
             }
             socket.close();
         } catch (IOException e) {
+            e.printStackTrace();
             // System.err.println("Exception caught when listening for a connection");
             // System.err.println(e.getMessage());
             dispatch(new ReqQuit());
