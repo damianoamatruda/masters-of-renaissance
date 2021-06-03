@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
@@ -60,11 +61,11 @@
             </HBox.margin>
           </RadioButton>
         </HBox>
-        <Button alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game" defaultButton="true">
+        <SButton alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game" defaultButton="true">
           <VBox.margin>
             <Insets top="8.0"/>
           </VBox.margin>
-        </Button>
+        </SButton>
       </VBox>
       <padding>
         <Insets bottom="80.0"/>

@@ -11,6 +11,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainMenuController extends GuiController {
+    private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
+
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
@@ -21,7 +23,7 @@ public class MainMenuController extends GuiController {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    Media media = new Media(Objects.requireNonNull(getClass().getResource("/assets/gui/Wonderland - 320bit.mp3")).toString());
+                    Media media = new Media(Objects.requireNonNull(getClass().getResource(musicPath)).toString());
                     MediaPlayer player = new MediaPlayer(media);
                     player.setCycleCount(MediaPlayer.INDEFINITE);
                     player.play();

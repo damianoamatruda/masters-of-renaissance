@@ -18,15 +18,14 @@ public class InputNicknameController extends GuiController {
 
     @FXML
     private void handleNicknameInput() {
-        Gui gui = Gui.getInstance();
         nicknameValue = nickname.getText();
-        gui.dispatch(new ReqJoin(nicknameValue));
+        Gui.getInstance().dispatch(new ReqJoin(nicknameValue));
     }
 
     @FXML
     private void handleBack() throws IOException {
         Gui gui = Gui.getInstance();
-        gui.setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/multiplayer.fxml"));
+        Gui.getInstance().setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/multiplayer.fxml"));
     }
 
     @Override

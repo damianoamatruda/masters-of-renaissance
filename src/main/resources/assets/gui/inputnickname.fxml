@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -27,11 +27,11 @@
       </VBox>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
-          <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
+          <SButton alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
         </left>
         <right>
-          <Button alignment="CENTER" onAction="#handleNicknameInput" prefWidth="190.0" text="Choose"
-                  defaultButton="true"/>
+          <SButton alignment="CENTER" onAction="#handleNicknameInput" prefWidth="190.0" text="Choose"
+                   defaultButton="true"/>
         </right>
         <VBox.margin>
           <Insets top="30.0"/>

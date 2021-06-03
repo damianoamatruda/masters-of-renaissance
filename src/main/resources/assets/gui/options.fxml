@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
+<?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import it.polimi.ingsw.client.gui.components.Title?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -47,7 +49,7 @@
             <Label text="Sound Effects"/>
             <BorderPane maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0">
                <left>
-                  <Slider fx:id="soundFxSlider" prefWidth="350.0" maxWidth="350.0"/>
+                  <Slider fx:id="soundFxSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
                </left>
                <right>
                   <Text fx:id="soundFxText" onMouseClicked="#handleSoundFxClick">
@@ -61,11 +63,11 @@
                <Insets top="30.0"/>
             </VBox.margin>
          </VBox>
-         <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back">
+         <SButton alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back">
             <VBox.margin>
                <Insets top="30.0"/>
             </VBox.margin>
-         </Button>
+         </SButton>
          <padding>
             <Insets bottom="80.0"/>
          </padding>

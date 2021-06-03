@@ -26,7 +26,7 @@ Text {
     -fx-font-family: 'Caslon Antique Bold';
 }
 
-Button {
+Button, SButton {
     -fx-background-color: #090a0c,
     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
     linear-gradient(rgb(26, 57, 109), #191d22),
@@ -40,7 +40,7 @@ Button {
     -fx-pref-height: 40px;
 }
 
-Button:hover {
+Button:hover, SButton:hover {
     -fx-background-color: #090a0c,
     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
     linear-gradient(rgb(26, 57, 109), #191d22),
@@ -48,7 +48,7 @@ Button:hover {
     -fx-text-fill: linear-gradient(rgb(250, 236, 72) 60%, white);
 }
 
-Button:pressed {
+Button:pressed, SButton:pressed {
     -fx-background-color: #090a0c,
     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
     linear-gradient(rgb(26, 57, 109), #191d22),

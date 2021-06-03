@@ -43,10 +43,9 @@ public class Gui extends Application {
 
     private final ViewModel viewModel;
 
-    private final boolean musicPlaying;
-
     private boolean offline;
     private MediaPlayer musicPlayer;
+    private double soundFxVolume;
 
     public static void main(String[] args) {
         // Platform.setImplicitExit(false); // makes the runLater invocations not fail
@@ -80,8 +79,7 @@ public class Gui extends Application {
         this.viewModel = new ViewModel();
 
         this.musicPlayer = null;
-
-        this.musicPlaying = false;
+        this.soundFxVolume = 1;
     }
 
     /**
@@ -149,6 +147,14 @@ public class Gui extends Application {
 
     void setMusicPlayer(MediaPlayer musicPlayer) {
         this.musicPlayer = musicPlayer;
+    }
+
+    public double getSoundFxVolume() {
+        return soundFxVolume;
+    }
+
+    public void setSoundFxVolume(double soundFxVolume) {
+        this.soundFxVolume = soundFxVolume;
     }
 
     boolean isOffline() {

@@ -83,8 +83,7 @@ public class SetupLeadersController extends GuiController {
 
     @FXML
     private void handleChoice() {
-        Gui gui = Gui.getInstance();
-        gui.dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
+        Gui.getInstance().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
     }
 
     @Override

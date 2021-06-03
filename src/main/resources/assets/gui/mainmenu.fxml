@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
@@ -19,18 +19,18 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
-      <Button alignment="CENTER" onAction="#handlePlayOffline" prefWidth="400.0" text="Play Offline"/>
-      <Button alignment="CENTER" onAction="#handlePlayOnline" prefWidth="400.0" text="Play Online">
+      <SButton alignment="CENTER" onAction="#handlePlayOffline" prefWidth="400.0" text="Play Offline"/>
+      <SButton alignment="CENTER" onAction="#handlePlayOnline" prefWidth="400.0" text="Play Online">
         <VBox.margin>
           <Insets top="8.0"/>
         </VBox.margin>
-      </Button>
+      </SButton>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
-          <Button alignment="CENTER" onAction="#handleOptions" prefWidth="190.0" text="Options..."/>
+          <SButton alignment="CENTER" onAction="#handleOptions" prefWidth="190.0" text="Options..."/>
         </left>
         <right>
-          <Button alignment="CENTER" onAction="#handleQuit" prefWidth="190.0" text="Quit Game"/>
+          <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="190.0" text="Quit Game"/>
         </right>
         <VBox.margin>
           <Insets top="30.0"/>

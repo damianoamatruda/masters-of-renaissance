@@ -20,6 +20,10 @@ public class OptionsController extends GuiController {
     private double oldMusicVolume;
     private double oldSoundFxVolume;
 
+    private static String getPercentage(double value) {
+        return String.format("%d%%", (int) (value * 100));
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Gui gui = Gui.getInstance();
@@ -30,32 +34,44 @@ public class OptionsController extends GuiController {
                 p.setVolume(value);
                 p.setMute(value == 0);
             });
-            musicText.setText(String.format("%d%%", (int) (value * 100)));
+            musicText.setText(getPercentage(value));
         });
-        gui.getMusicPlayer().ifPresent(p -> musicSlider.setValue(p.getVolume()));
+        gui.getMusicPlayer().ifPresent(p -> {
+            musicSlider.setValue(p.getVolume());
+            musicText.setText(getPercentage(p.getVolume()));
+        });
+
+        soundFxSlider.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            double value = newValue.doubleValue();
+            gui.setSoundFxVolume(value);
+            soundFxText.setText(getPercentage(value));
+        });
+        soundFxSlider.setValue(gui.getSoundFxVolume());
+        soundFxText.setText(getPercentage(gui.getSoundFxVolume()));
     }
 
     @FXML
     private void handleBack() throws IOException {
-        Gui gui = Gui.getInstance();
-        gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 
     @FXML
     private void handleMusicClick() {
-        Gui.getInstance().getMusicPlayer().ifPresent(p -> {
-            if (p.isMute())
-                musicSlider.setValue(oldMusicVolume);
-            else {
-                oldMusicVolume = p.getVolume();
-                musicSlider.setValue(0);
-                p.setVolume(0);
-                p.setMute(true);
-            }
-        });
+        if (musicSlider.getValue() == 0)
+            musicSlider.setValue(oldMusicVolume);
+        else {
+            oldMusicVolume = musicSlider.getValue();
+            musicSlider.setValue(0);
+        }
     }
 
     @FXML
     private void handleSoundFxClick() {
+        if (soundFxSlider.getValue() == 0)
+            soundFxSlider.setValue(oldMusicVolume);
+        else {
+            oldMusicVolume = soundFxSlider.getValue();
+            soundFxSlider.setValue(0);
+        }
     }
 }
