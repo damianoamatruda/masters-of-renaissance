@@ -275,7 +275,7 @@ public class MarketController extends GuiController {
     }
 
     private void submitPressed(ActionEvent actionEvent) {
-        Gui.getInstance().dispatch(new ReqTakeFromMarket(isRow, index, null, selection));
+        Gui.getInstance().dispatch(new ReqTakeFromMarket(isRow, index, new HashMap<>(), selection));
     }
 
     @Override
