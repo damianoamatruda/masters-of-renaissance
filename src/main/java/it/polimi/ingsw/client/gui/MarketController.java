@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -15,10 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -35,6 +33,7 @@ public class MarketController extends GuiController {
     @FXML private HBox leaderCardsBox;
     @FXML private HBox resourcesBox;
     @FXML private Button submitBtn;
+    @FXML private Button back;
 
     private boolean isRow;
     private int index;
@@ -69,6 +68,9 @@ public class MarketController extends GuiController {
 
         submitBtn.setDefaultButton(true);
         submitBtn.setOnAction(this::submitPressed);
+
+        back.setOnMouseClicked(this::back);
+
     }
 
     private void marketSelected(int index, boolean isRow) {
@@ -276,6 +278,14 @@ public class MarketController extends GuiController {
 
     private void submitPressed(ActionEvent actionEvent) {
         Gui.getInstance().dispatch(new ReqTakeFromMarket(isRow, index, new HashMap<>(), selection));
+    }
+
+    private void back(MouseEvent mouseEvent) {
+        try {
+            Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

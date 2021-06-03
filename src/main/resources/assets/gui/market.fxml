@@ -2,6 +2,7 @@
 
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
 <AnchorPane fx:id="canvas" prefHeight="780.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.MarketController">
    <children>
       <Pane fx:id="marketPane" layoutX="20.0" layoutY="20.0" prefHeight="450.0" prefWidth="620.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" />
@@ -9,5 +10,6 @@
       <HBox fx:id="leaderCardsBox" alignment="CENTER" prefHeight="250.0" prefWidth="320.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
       <HBox fx:id="resourcesBox" layoutX="104.0" layoutY="585.0" prefHeight="100.0" prefWidth="880.0" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="20.0" />
       <SButton fx:id="submitBtn" layoutX="824.0" layoutY="697.0" mnemonicParsing="false" text="Submit"/>
+      <Button fx:id="back" text="Back" layoutX="1100.0" layoutY="697.0"/>
    </children>
 </AnchorPane>

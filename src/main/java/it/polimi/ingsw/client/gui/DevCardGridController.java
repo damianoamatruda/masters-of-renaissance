@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -49,6 +51,7 @@ public class DevCardGridController extends GuiController {
     @FXML private HBox devSlotsBox;
     @FXML private ChoiceBox<Integer> devSlotChoicePicker;
     @FXML private Button submitBtn;
+    @FXML private Button back;
 
     private ViewModel vm;
     private DevCardGrid devCardGrid;
@@ -97,6 +100,8 @@ public class DevCardGridController extends GuiController {
 
         submitBtn.setDefaultButton(true);
         submitBtn.setOnAction(this::submitPressed);
+
+        back.setOnMouseClicked(this::back);
 
         resetWarehouse();
         resetStrongbox();
@@ -220,6 +225,14 @@ public class DevCardGridController extends GuiController {
 
     private void submitPressed(ActionEvent e) {
         Gui.getInstance().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
+    }
+
+    private void back(MouseEvent mouseEvent) {
+        try {
+            Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
