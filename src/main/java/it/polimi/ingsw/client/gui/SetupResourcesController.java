@@ -1,15 +1,20 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
+import it.polimi.ingsw.client.gui.components.Resource;
+import it.polimi.ingsw.client.gui.components.Shelf;
+import it.polimi.ingsw.client.gui.components.Title;
+import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.css.PseudoClass;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -170,7 +175,7 @@ public class SetupResourcesController extends GuiController {
         if(event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
                 && event.getPlayer().equals(gui.getViewModel().getCurrentPlayer())) {
             try {
-                gui.setRoot("playground");
+                gui.setRoot(getClass().getResource("/assets/gui/playground.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

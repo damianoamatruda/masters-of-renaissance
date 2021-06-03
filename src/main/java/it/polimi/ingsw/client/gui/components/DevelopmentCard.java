@@ -1,16 +1,8 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-
 import it.polimi.ingsw.common.backend.model.DevCardColor;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
 public class DevelopmentCard extends Card {
 //    @FXML
@@ -31,7 +23,7 @@ public class DevelopmentCard extends Card {
     }
 
     public String getBackground(String color) {
-        return "/assets/gui/devcardtemplates/" + color.toLowerCase() + "card.png";
+        return String.format("/assets/gui/devcardtemplates/%scard.png", color.toLowerCase());
     }
 
     public void setLevel(int level){

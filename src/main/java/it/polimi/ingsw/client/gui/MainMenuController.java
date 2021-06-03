@@ -38,15 +38,15 @@ public class MainMenuController extends GuiController {
     public void handlePlayOffline() throws IOException {
         Gui gui = Gui.getInstance();
         gui.startOfflineClient();
-        gui.setRoot("inputnickname");
+        gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"));
     }
 
     public void handlePlayOnline() throws IOException {
-        Gui.getInstance().setRoot("playonline");
+        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playonline.fxml"));
     }
 
     public void handlePlayground() throws IOException {
-        Gui.getInstance().setRoot("playground");
+        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playground.fxml"));
     }
 
     public void handleQuit() throws IOException {

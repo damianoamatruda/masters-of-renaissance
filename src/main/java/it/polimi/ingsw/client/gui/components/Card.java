@@ -16,7 +16,7 @@ public abstract class Card extends Pane {
     protected CardRequirement requirement;
 
     protected Card(String type) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/" + getFXMLName() + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(String.format("/assets/gui/components/%s.fxml", getFXMLName())));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         this.getStyleClass().add(type.toLowerCase());

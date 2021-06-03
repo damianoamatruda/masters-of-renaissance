@@ -18,6 +18,7 @@ import javafx.scene.SceneAntialiasing;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.function.Consumer;
 
 
@@ -25,7 +26,7 @@ import java.util.function.Consumer;
  * JavaFX App
  */
 public class Gui extends Application {
-    private static final String initialSceneFxml = "mainmenu";//"playground"; //"setupleaders";// "mainmenu";
+    private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
     private static final double minWidth = 1280;
     private static final double minHeight = 780;
 
@@ -86,7 +87,7 @@ public class Gui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = getFxmlLoader(initialSceneFxml).load();
+        Parent root = new FXMLLoader(getClass().getResource(initialSceneFxml)).load();
         scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
         primaryStage.setScene(scene);
         primaryStage.setWidth(minWidth);
@@ -124,15 +125,15 @@ public class Gui extends Application {
         offline = false;
     }
 
-    void setRoot(String fxml, Consumer<?> callback) throws IOException {
-        FXMLLoader fxmlLoader = getFxmlLoader(fxml);
+    void setRoot(URL fxml, Consumer<?> callback) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(fxml);
         Parent root = fxmlLoader.load();
         if (callback != null)
             callback.accept(fxmlLoader.getController());
         scene.setRoot(root);
     }
 
-    void setRoot(String fxml) throws IOException {
+    void setRoot(URL fxml) throws IOException {
         setRoot(fxml, null);
     }
 
@@ -151,10 +152,6 @@ public class Gui extends Application {
     void quit() {
         Platform.exit();
         System.exit(0);
-    }
-
-    private FXMLLoader getFxmlLoader(String fxml) throws IOException {
-        return new FXMLLoader(getClass().getResource(String.format("/assets/gui/%s.fxml", fxml)));
     }
 
     private void registerOnMV(EventDispatcher view) {

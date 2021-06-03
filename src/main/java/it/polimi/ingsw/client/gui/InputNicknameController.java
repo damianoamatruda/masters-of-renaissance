@@ -24,7 +24,7 @@ public class InputNicknameController extends GuiController {
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
         Gui gui = Gui.getInstance();
-        gui.setRoot(gui.isOffline() ? "mainmenu" : "multiplayer");
+        gui.setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/multiplayer.fxml"));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class InputNicknameController extends GuiController {
             gui.dispatch(new ReqNewGame(1));
         else
             try {
-                gui.setRoot("waitingbeforegame", (WaitingBeforeGameController controller) -> {
+                gui.setRoot(getClass().getResource("/assets/gui/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
                     controller.setBookedSeats(event.getBookedSeats());
                     controller.setCanPrepareNewGame(event.canPrepareNewGame());
                 });
@@ -63,7 +63,7 @@ public class InputNicknameController extends GuiController {
         super.on(gui, event);
         if (gui.isOffline()) {
             try {
-                gui.setRoot("setupleaders");
+                gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

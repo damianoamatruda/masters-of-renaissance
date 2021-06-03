@@ -1,11 +1,15 @@
 package it.polimi.ingsw.client.gui.components;
 
-import it.polimi.ingsw.common.reducedmodel.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.util.Map;
@@ -15,8 +19,8 @@ public class LeaderCard extends Card {
     public Text leaderTypeText;
     public Text resourceTypeText;
 
-    private double height;
-    private double width;
+    private final double height;
+    private final double width;
 
     private int leaderId;
 
@@ -52,7 +56,7 @@ public class LeaderCard extends Card {
     }
 
     public String getBackground(String leaderType) {
-        return "/assets/gui/leadertemplates/" + leaderType.toLowerCase() + ".png";
+        return String.format("/assets/gui/leadertemplates/%s.png", leaderType.toLowerCase());
     }
 
     public void setRequirement(ReducedDevCardRequirement requirement) {
@@ -149,9 +153,9 @@ public class LeaderCard extends Card {
     }
 
     private String getResourcePlaceholderPath(String resourceType, boolean isEmpty) {
-        if(isEmpty)
-            return "/assets/gui/leadertemplates/" + resourceType.toLowerCase() + "depot.png";
-        return "/assets/gui/resourcetypes/" + resourceType.toLowerCase() + ".png";
+        if (isEmpty)
+            return String.format("/assets/gui/leadertemplates/%sdepot.png", resourceType.toLowerCase());
+        return String.format("/assets/gui/resourcetypes/%s.png", resourceType.toLowerCase());
     }
 
     public int getLeaderId() {

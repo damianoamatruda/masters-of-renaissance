@@ -36,10 +36,10 @@ public class PlayOnlineController extends GuiController {
         }
 
         if (connected)
-            gui.setRoot("inputnickname");
+            gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"));
     }
 
     public void handleBack(ActionEvent actionEvent) throws IOException {
-        Gui.getInstance().setRoot("mainmenu");
+        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }

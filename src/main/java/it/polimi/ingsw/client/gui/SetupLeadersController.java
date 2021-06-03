@@ -1,16 +1,11 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.cli.Cli;
-import it.polimi.ingsw.client.cli.SetupResourcesState;
-import it.polimi.ingsw.client.cli.TurnBeforeActionState;
-import it.polimi.ingsw.client.cli.WaitingAfterTurnState;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import javafx.css.PseudoClass;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -93,7 +88,7 @@ public class SetupLeadersController extends GuiController {
         super.on(gui, event);
         if(gui.isOffline()) {
             try {
-                gui.setRoot("market");
+                gui.setRoot(getClass().getResource("/assets/gui/market.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -110,12 +105,12 @@ public class SetupLeadersController extends GuiController {
 
         try {
             if (choosable > 0) {
-                gui.setRoot("setupresources");
+                gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
             }
             else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-                gui.setRoot("playground");
+                gui.setRoot(getClass().getResource("/assets/gui/playground.fxml"));
             else
-                gui.setRoot("playground");
+                gui.setRoot(getClass().getResource("/assets/gui/playground.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

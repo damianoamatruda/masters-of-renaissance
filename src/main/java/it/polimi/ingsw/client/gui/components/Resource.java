@@ -1,14 +1,15 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-import java.util.Objects;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.IOException;
+import java.util.Objects;
+
 public class Resource extends ImageView {
     private String name;
+
     public Resource() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/resource.fxml"));
         fxmlLoader.setRoot(this);
@@ -36,6 +37,6 @@ public class Resource extends ImageView {
     }
 
     public static String getMarblePath(String type) {
-        return "/assets/gui/market/" + type.toLowerCase() + "marble.png";
+        return String.format("/assets/gui/market/%smarble.png", type.toLowerCase());
     }
 }
