@@ -117,7 +117,17 @@ public class PlaygroundController extends GuiController {
         AnchorPane.setLeftAnchor(pboard, 0d);
         AnchorPane.setRightAnchor(pboard, 0d);
 
-        Button left = new Button();
+        FaithTrack f = new FaithTrack(gui.getViewModel().getFaithTrack());
+        Group g = new Group(f);
+        g.setAutoSizeChildren(true);
+        g.setScaleX(g.getScaleX() * 0.85);
+        g.setScaleY(g.getScaleY() * 0.85);
+        canvas.getChildren().add(g);
+        AnchorPane.setLeftAnchor(canvas.getChildren().get(1), -250.0);
+        AnchorPane.setTopAnchor(canvas.getChildren().get(1), -20.0);
+
+
+        Button left = new SButton();
 //        left.setAlignment(Pos.BOTTOM_LEFT);
         left.setText("Market");
         left.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
@@ -129,7 +139,7 @@ public class PlaygroundController extends GuiController {
         });
         canvas.getChildren().add(left);
 
-        Button right = new Button();
+        Button right = new SButton();
 //        right.setAlignment(Pos.CENTER_RIGHT);
         right.setText("Grid");
         right.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
@@ -140,18 +150,10 @@ public class PlaygroundController extends GuiController {
             }
         });
         canvas.getChildren().add(right);
-        AnchorPane.setRightAnchor(canvas.getChildren().get(2), 0.0);
+        AnchorPane.setRightAnchor(canvas.getChildren().get(3), 0.0);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), this.canvas.getHeight()/2);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(2), 100.0);
 
-        FaithTrack f = new FaithTrack(gui.getViewModel().getFaithTrack());
-        Group g = new Group(f);
-        g.setAutoSizeChildren(true);
-        g.setScaleX(g.getScaleX() * 0.85);
-        g.setScaleY(g.getScaleY() * 0.85);
-        canvas.getChildren().add(g);
-        AnchorPane.setLeftAnchor(canvas.getChildren().get(3), -250.0);
-        AnchorPane.setTopAnchor(canvas.getChildren().get(3), -20.0);
 
 
         canvas.setBorder(new Border(new BorderStroke(Color.PINK,
