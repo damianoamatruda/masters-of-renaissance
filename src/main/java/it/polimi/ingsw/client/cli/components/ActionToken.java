@@ -13,11 +13,9 @@ public class ActionToken implements Renderable {
 
     @Override
     public void render(Cli cli) {
-        cli.getOut().printf("ActionToken ID: \u001B[1m\u001B[37m%d\u001B[0m, kind: %s%n",
-                reducedActionToken.getId(),
-                reducedActionToken.getKind()
-        );
-        cli.getOut().println(reducedActionToken.getDiscardedDevCardColor() == null ? "" :
-                String.format("Color of discarded development card: %s\n", new DevCardColor(reducedActionToken.getDiscardedDevCardColor()).getString(cli)));
+        cli.getOut().printf("--- ActionToken (ID: \u001B[1m\u001B[37m%d\u001B[0m)%n", reducedActionToken.getId());
+        cli.getOut().printf("Kind: %s%n", reducedActionToken.getKind());
+        if (reducedActionToken.getDiscardedDevCardColor() != null)
+            cli.getOut().printf("Discarded development card of color %s%n", new DevCardColor(reducedActionToken.getDiscardedDevCardColor()).getString(cli));
     }
 }
