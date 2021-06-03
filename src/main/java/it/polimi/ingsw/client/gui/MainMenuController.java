@@ -15,7 +15,9 @@ public class MainMenuController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        if (!Gui.getInstance().isMusicPlaying()) {
+        Gui gui = Gui.getInstance();
+
+        if (gui.getMusicPlayer().isEmpty()) {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
@@ -23,8 +25,7 @@ public class MainMenuController extends GuiController {
                     MediaPlayer player = new MediaPlayer(media);
                     player.setCycleCount(MediaPlayer.INDEFINITE);
                     player.play();
-                    Gui.getInstance().getMediaPlayers().add(player);
-                    Gui.getInstance().setMusicPlaying(true);
+                    gui.setMusicPlayer(player);
                     return null;
                 }
             };

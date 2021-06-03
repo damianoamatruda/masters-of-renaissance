@@ -20,8 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 
@@ -44,10 +43,10 @@ public class Gui extends Application {
 
     private final ViewModel viewModel;
 
-    private final List<MediaPlayer> mediaPlayers;
+    private final boolean musicPlaying;
 
     private boolean offline;
-    private boolean musicPlaying;
+    private MediaPlayer musicPlayer;
 
     public static void main(String[] args) {
         // Platform.setImplicitExit(false); // makes the runLater invocations not fail
@@ -80,7 +79,7 @@ public class Gui extends Application {
 
         this.viewModel = new ViewModel();
 
-        this.mediaPlayers = new ArrayList<>();
+        this.musicPlayer = null;
 
         this.musicPlaying = false;
     }
@@ -144,20 +143,16 @@ public class Gui extends Application {
         setRoot(fxml, null);
     }
 
-    List<MediaPlayer> getMediaPlayers() {
-        return mediaPlayers;
+    Optional<MediaPlayer> getMusicPlayer() {
+        return Optional.ofNullable(musicPlayer);
+    }
+
+    void setMusicPlayer(MediaPlayer musicPlayer) {
+        this.musicPlayer = musicPlayer;
     }
 
     boolean isOffline() {
         return offline;
-    }
-
-    boolean isMusicPlaying() {
-        return musicPlaying;
-    }
-
-    void setMusicPlaying(boolean musicPlaying) {
-        this.musicPlaying = musicPlaying;
     }
 
     void quit() {

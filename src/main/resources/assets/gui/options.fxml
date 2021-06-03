@@ -1,53 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+
+<?import it.polimi.ingsw.client.gui.components.Title?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.OptionsController">
-   <children>
-      <Text layoutX="451.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Options" textAlignment="CENTER">
-         <font>
-            <Font size="96.0" />
-         </font>
-      </Text>
-      <VBox layoutX="316.0" layoutY="288.0" prefHeight="400.0" prefWidth="600.0">
-         <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="600.0" spacing="100.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Music">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="it.polimi.ingsw.client.gui.OptionsController"
+            id="body" stylesheets="@index.css">
+   <center>
+      <VBox alignment="CENTER">
+         <VBox alignment="CENTER">
+            <VBox.margin>
+               <Insets bottom="40.0"/>
+            </VBox.margin>
+            <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@logo.png"/>
+            </ImageView>
+         </VBox>
+         <Title maxWidth="-Infinity" text="Options">
+            <VBox.margin>
+               <Insets bottom="30.0"/>
+            </VBox.margin>
+         </Title>
+         <VBox maxWidth="-Infinity" prefHeight="0.0">
+            <Label text="Music"/>
+            <BorderPane maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0">
+               <left>
+                  <Slider fx:id="musicSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
+               </left>
+               <right>
+                  <Text fx:id="musicText" onMouseClicked="#handleMusicClick">
+                     <cursor>
+                        <Cursor fx:constant="HAND"/>
+                     </cursor>
                   </Text>
-                  <Slider fx:id="musicSlider" prefHeight="51.0" prefWidth="301.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="600.0" spacing="100.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sound FX">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
+               </right>
+            </BorderPane>
+         </VBox>
+         <VBox maxWidth="-Infinity" prefHeight="0.0">
+            <Label text="Sound Effects"/>
+            <BorderPane maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0">
+               <left>
+                  <Slider fx:id="soundFxSlider" prefWidth="350.0" maxWidth="350.0"/>
+               </left>
+               <right>
+                  <Text fx:id="soundFxText" onMouseClicked="#handleSoundFxClick">
+                     <cursor>
+                        <Cursor fx:constant="HAND"/>
+                     </cursor>
                   </Text>
-                  <Slider fx:id="soundFXSlider" prefHeight="51.0" prefWidth="301.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="100.0">
-               <children>
-                  <Button fx:id="configBtn" mnemonicParsing="false" text="Load custom config">
-                     <font>
-                        <Font size="40.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
+               </right>
+            </BorderPane>
+            <VBox.margin>
+               <Insets top="30.0"/>
+            </VBox.margin>
+         </VBox>
+         <Button alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back">
+            <VBox.margin>
+               <Insets top="30.0"/>
+            </VBox.margin>
+         </Button>
+         <padding>
+            <Insets bottom="80.0"/>
+         </padding>
       </VBox>
-   </children>
-</AnchorPane>
+   </center>
+</BorderPane>
