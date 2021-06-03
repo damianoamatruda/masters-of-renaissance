@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Text?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="leaderCard" focusTraversable="true" maxHeight="251.0"
          maxWidth="166.0" minHeight="251.0" minWidth="166.0" prefHeight="251.0" prefWidth="166.0" type="Pane"
-         xmlns="http://javafx.com/javafx/16" stylesheets="@../mainmenu.css">
+         xmlns="http://javafx.com/javafx/16" stylesheets="@../index.css">
    <cursor>
       <Cursor fx:constant="OPEN_HAND"/>
    </cursor>

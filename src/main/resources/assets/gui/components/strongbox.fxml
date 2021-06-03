@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="345.0" prefWidth="411.0" type="StackPane"
-         xmlns="http://javafx.com/javafx/16" stylesheets="@../mainmenu.css">
+         xmlns="http://javafx.com/javafx/16" stylesheets="@../index.css">
   <children>
     <ImageView fx:id="background" fitHeight="345.0" fitWidth="411.0" pickOnBounds="true" preserveRatio="true">
       <image>

@@ -11,7 +11,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.PlayOnlineController"
-            id="body" stylesheets="@mainmenu.css">
+            id="body" stylesheets="@index.css">
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">

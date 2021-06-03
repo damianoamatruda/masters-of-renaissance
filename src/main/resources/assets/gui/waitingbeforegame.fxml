@@ -6,7 +6,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane id="body" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" id="body" stylesheets="@index.css"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController">
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">
