@@ -167,7 +167,8 @@ public class SetupResourcesController extends GuiController {
     @Override
     public void on(Gui gui, UpdateAction event) {
         super.on(gui, event);
-        if(gui.isOffline()) {
+        if(event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
+                && event.getPlayer().equals(gui.getViewModel().getCurrentPlayer())) {
             try {
                 gui.setRoot("playground");
             } catch (IOException e) {
