@@ -17,7 +17,7 @@ public class ResourceTransactionRecipe extends StringComponent {
     public String getString(Cli cli) {
         List<String> column = new ArrayList<>();
 
-        column.add(String.format("--- Production (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---", reducedResourceTransactionRecipe.getId()));
+        column.add(String.format("%-51s", String.format("--- Production (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---", reducedResourceTransactionRecipe.getId())));
 
         String row;
 

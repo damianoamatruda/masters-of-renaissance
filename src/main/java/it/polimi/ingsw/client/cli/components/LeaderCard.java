@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LeaderCard extends StringComponent {
@@ -34,10 +35,20 @@ public class LeaderCard extends StringComponent {
         if (reducedLeaderCard.getDiscount() >= 0)
             column.add(String.format("%-38s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
 
-        if (reducedLeaderCard.getDevCardRequirement() != null)
-            column.add(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement()).getString(cli));
-        if (reducedLeaderCard.getResourceRequirement() != null)
-            column.add(new ResourceRequirement(reducedLeaderCard.getResourceRequirement()).getString(cli));
+        if (reducedLeaderCard.getDevCardRequirement() != null) {
+            List<String> s = Arrays.stream(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement()).getString(cli).split("\\R"))
+                    .filter(st -> !st.contains("\r") && !st.startsWith("\n"))
+                    .map(st -> st.replaceFirst(" ".repeat(17), ""))
+                    .toList();
+            column.addAll(s);
+        }
+        if (reducedLeaderCard.getResourceRequirement() != null) {
+            List<String> s = Arrays.stream(new ResourceRequirement(reducedLeaderCard.getResourceRequirement()).getString(cli).split("\\R"))
+                    .filter(st -> !st.contains("\r") && !st.startsWith("\n"))
+                    .map(st -> st.replaceFirst(" ".repeat(17), ""))
+                    .toList();
+            column.addAll(s);
+        }
 
         cli.getViewModel().getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->
                 column.add(new ResourceContainer(c).getString(cli)));

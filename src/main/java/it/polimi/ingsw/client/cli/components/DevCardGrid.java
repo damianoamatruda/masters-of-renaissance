@@ -36,7 +36,7 @@ public class DevCardGrid implements Renderable {
                 ReducedDevCard card = topCards.get(i - 1).get(j);
                 lines.add(new ArrayList<>());
                 List<String> column = lines.get(j);
-                column.addAll(Arrays.asList(new DevelopmentCard(card).getString(cli).split("\n")));
+                column.addAll(Arrays.asList(new DevelopmentCard(card).getString(cli).split("\\R")));
             }
 
             String rowTemplate = "";

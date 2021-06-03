@@ -29,7 +29,7 @@ public class BaseProductions implements Renderable {
                 rows.add(new ArrayList<>());
                 List<String> column = rows.get(j);
                 cli.getViewModel().getProduction(baseProds.get(3 * i + j)).ifPresent(p ->
-                        column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\n"))));
+                        column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\\R"))));
                 rowTemplate += "%-50s ";
             }
             rowTemplate += "\n";

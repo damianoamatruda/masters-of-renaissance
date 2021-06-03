@@ -12,6 +12,6 @@ public class ResourceRequirement extends StringComponent {
 
     @Override
     public String getString(Cli cli) {
-        return String.format("--- Requirements ---%n%s%n", new ResourceMap(reducedResourceRequirement.getRequirements()).getString(cli));
+        return String.format("%-38s", "--- Requirements ---\n") + String.format("%s%n", new ResourceMap(reducedResourceRequirement.getRequirements()).getString(cli));
     }
 }

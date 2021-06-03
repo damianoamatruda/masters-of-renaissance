@@ -28,9 +28,13 @@ public class DevelopmentCard extends StringComponent {
                     reducedDevCard.getLevel(),
                     reducedDevCard.getVictoryPoints()
             ));
-            column.addAll(Arrays.asList(new ResourceRequirement(reducedDevCard.getCost()).getString(cli).split("\n")));
+            List<String> s = Arrays.stream(new ResourceRequirement(reducedDevCard.getCost()).getString(cli).split("\\R"))
+                    .filter(st -> !st.contains("\r") && !st.startsWith("\n"))
+                    .map(st -> st.replaceFirst(" ".repeat(17), ""))
+                    .toList();
+            column.addAll(s);
             cli.getViewModel().getProduction(reducedDevCard.getProduction()).ifPresent(p ->
-                    column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\n"))));
+                    column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\\R"))));
         }
 
         return String.join("\n", column);

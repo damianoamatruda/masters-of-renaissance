@@ -29,7 +29,7 @@ public class LeadersHand implements Renderable {
             }
 
             for (int j = 0; j < 4 && j < leaders.size() - i; j++)
-                rows.get(j).addAll(Arrays.asList(new LeaderCard(cards.get(j)).getString(cli).split("\n")));
+                rows.get(j).addAll(Arrays.asList(new LeaderCard(cards.get(j)).getString(cli).split("\\R")));
 
             String rowTemplate = "";
             for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
