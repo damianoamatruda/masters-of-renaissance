@@ -46,7 +46,9 @@ public class TakeFromMarketState extends CliState {
         while (!isValid) {
             try {
                 index = cli.promptInt("Number") - 1;
-                if (index >= 0)
+                if (index >= 0
+                        && (isRow && index < cli.getViewModel().getMarket().getGrid().size()
+                        || !isRow && cli.getViewModel().getMarket().getGrid().size() > 0 && index < cli.getViewModel().getMarket().getGrid().get(0).size()))
                     isValid = true;
             } catch (Exception e) {
                 cli.getOut().println("Please input an integer greater than 0.");
