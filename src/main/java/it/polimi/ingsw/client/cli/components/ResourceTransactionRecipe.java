@@ -17,7 +17,7 @@ public class ResourceTransactionRecipe extends StringComponent {
     public String getString(Cli cli) {
         List<String> column = new ArrayList<>();
 
-        column.add(String.format("--- Production ID: %d ---", reducedResourceTransactionRecipe.getId()));
+        column.add(String.format("--- Production (ID: %d) ---", reducedResourceTransactionRecipe.getId()));
         column.add("Input:");
 
         String row = "";

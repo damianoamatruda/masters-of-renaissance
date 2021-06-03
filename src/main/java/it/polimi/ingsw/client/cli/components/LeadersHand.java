@@ -28,37 +28,8 @@ public class LeadersHand implements Renderable {
                 rows.add(new ArrayList<>());
             }
 
-            for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
-                List<String> column = rows.get(j);
-                ReducedLeaderCard reducedLeaderCard = cards.get(j);
-
-                column.add(String.format("%-38s", "[Leader]"));
-
-                column.add(String.format("%-51s", String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, type: %s",
-                        reducedLeaderCard.getId(),
-                        reducedLeaderCard.getLeaderType()
-                )));
-
-                column.add(String.format("%-51s", String.format("BoundResource: %s, VP: %d",
-                        new Resource(reducedLeaderCard.getResourceType().getName()).getString(cli),
-                        reducedLeaderCard.getVictoryPoints())));
-
-                column.add(String.format("%-38s", String.format("Active status: %s", reducedLeaderCard.isActive())));
-
-                if (reducedLeaderCard.getContainerId() > -1)
-                    column.add(String.format("%-38s", String.format("Depot ID: %d", reducedLeaderCard.getContainerId())));
-                if (reducedLeaderCard.getProduction() > -1)
-                    column.add(String.format("%-38s", String.format("Production ID: %d", reducedLeaderCard.getProduction())));
-                if (reducedLeaderCard.getDiscount() > -1)
-                    column.add(String.format("%-38s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
-
-                if (reducedLeaderCard.getDevCardRequirement() != null)
-                    column.addAll(Arrays.asList(new CardRequirements(reducedLeaderCard.getDevCardRequirement()).getString(cli).split("\n")));
-                if (reducedLeaderCard.getResourceRequirement() != null)
-                    column.addAll(Arrays.asList(new ResRequirements(reducedLeaderCard.getResourceRequirement()).getString(cli).split("\n")));
-                cli.getViewModel().getProduction(reducedLeaderCard.getProduction()).ifPresent(p ->
-                        column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\n"))));
-            }
+            for (int j = 0; j < 4 && j < leaders.size() - i; j++)
+                rows.get(j).addAll(Arrays.asList(new LeaderCard(cards.get(j)).getString(cli).split("\n")));
 
             String rowTemplate = "";
             for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
