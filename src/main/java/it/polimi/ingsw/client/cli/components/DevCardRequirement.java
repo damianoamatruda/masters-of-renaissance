@@ -7,10 +7,10 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardRequirements extends StringComponent {
+public class DevCardRequirement extends StringComponent {
     private final ReducedDevCardRequirement reducedDevCardRequirement;
 
-    public CardRequirements(ReducedDevCardRequirement reducedDevCardRequirement) {
+    public DevCardRequirement(ReducedDevCardRequirement reducedDevCardRequirement) {
         this.reducedDevCardRequirement = reducedDevCardRequirement;
     }
 
@@ -18,7 +18,7 @@ public class CardRequirements extends StringComponent {
     public String getString(Cli cli) {
         List<String> column = new ArrayList<>();
 
-        column.add("--- Requirements (dev. cards) ---");
+        column.add("--- Requirements ---");
         for (int k = 0; k < reducedDevCardRequirement.getEntries().size(); k++) {
             ReducedDevCardRequirementEntry e = reducedDevCardRequirement.getEntries().get(k);
             String req = String.format("  %-49s", e.getAmount() + " " + new Color(e.getColor()).getString(cli) + " card(s) of " +
@@ -26,6 +26,6 @@ public class CardRequirements extends StringComponent {
             column.add(req);
         }
 
-        return String.join("\n", column) + "\n";
+        return String.join("\n", column);
     }
 }

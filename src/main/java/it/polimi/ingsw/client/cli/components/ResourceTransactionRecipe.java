@@ -66,6 +66,6 @@ public class ResourceTransactionRecipe extends StringComponent {
         }
         column.add(reducedResourceTransactionRecipe.isDiscardableOutput() ? "Output is discardable" : " ");
 
-        return String.join("\n", column) + "\n";
+        return String.join("\n", column);
     }
 }

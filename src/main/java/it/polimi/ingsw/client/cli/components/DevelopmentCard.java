@@ -28,11 +28,11 @@ public class DevelopmentCard extends StringComponent {
                     reducedDevCard.getLevel(),
                     reducedDevCard.getVictoryPoints()
             ));
-            column.addAll(Arrays.asList(new ResRequirements(reducedDevCard.getCost()).getString(cli).split("\n")));
+            column.addAll(Arrays.asList(new ResourceRequirement(reducedDevCard.getCost()).getString(cli).split("\n")));
             cli.getViewModel().getProduction(reducedDevCard.getProduction()).ifPresent(p ->
                     column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\n"))));
         }
 
-        return String.join("\n", column) + "\n";
+        return String.join("\n", column);
     }
 }

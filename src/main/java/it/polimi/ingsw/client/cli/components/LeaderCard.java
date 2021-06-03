@@ -35,16 +35,16 @@ public class LeaderCard extends StringComponent {
             column.add(String.format("%-38s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
 
         if (reducedLeaderCard.getDevCardRequirement() != null)
-            column.add(new CardRequirements(reducedLeaderCard.getDevCardRequirement()).getString(cli));
+            column.add(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement()).getString(cli));
         if (reducedLeaderCard.getResourceRequirement() != null)
-            column.add(new ResRequirements(reducedLeaderCard.getResourceRequirement()).getString(cli));
+            column.add(new ResourceRequirement(reducedLeaderCard.getResourceRequirement()).getString(cli));
 
         cli.getViewModel().getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->
-                column.add(String.format("%-38s", new ResourceContainer(c).getString(cli))));
+                column.add(new ResourceContainer(c).getString(cli)));
 
         cli.getViewModel().getProduction(reducedLeaderCard.getProduction()).ifPresent(p ->
-                column.add(String.format("%-38s", new ResourceTransactionRecipe(p).getString(cli))));
+                column.add(new ResourceTransactionRecipe(p).getString(cli)));
 
-        return String.join("\n", column) + "\n";
+        return String.join("\n", column);
     }
 }

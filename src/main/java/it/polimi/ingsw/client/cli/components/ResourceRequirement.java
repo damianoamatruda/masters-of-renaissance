@@ -6,10 +6,10 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResRequirements extends StringComponent {
+public class ResourceRequirement extends StringComponent {
     private final ReducedResourceRequirement reducedResourceRequirement;
 
-    public ResRequirements(ReducedResourceRequirement reducedResourceRequirement) {
+    public ResourceRequirement(ReducedResourceRequirement reducedResourceRequirement) {
         this.reducedResourceRequirement = reducedResourceRequirement;
     }
 
@@ -18,7 +18,7 @@ public class ResRequirements extends StringComponent {
     public String getString(Cli cli) {
         List<String> column = new ArrayList<>();
 
-        column.add("--- Requirements (resources) ---");
+        column.add("--- Requirements ---");
         List<String> keys = reducedResourceRequirement.getRequirements().keySet().stream().toList();
         int i = 0;
         String req = "";
@@ -36,6 +36,6 @@ public class ResRequirements extends StringComponent {
             column.add(req);
         }
 
-        return String.join("\n", column) + "\n";
+        return String.join("\n", column);
     }
 }
