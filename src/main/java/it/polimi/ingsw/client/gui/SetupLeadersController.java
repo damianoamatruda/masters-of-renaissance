@@ -28,7 +28,7 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private Title titleComponent;
 
-    @Override
+    @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
@@ -81,7 +81,8 @@ public class SetupLeadersController extends GuiController {
         updateChoiceButton();
     }
 
-    public void handleChoice(){
+    @FXML
+    private void handleChoice() {
         Gui gui = Gui.getInstance();
         gui.dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
     }
@@ -89,7 +90,7 @@ public class SetupLeadersController extends GuiController {
     @Override
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
-        if(gui.isOffline()) {
+        if (gui.isOffline()) {
             try {
                 gui.setRoot(getClass().getResource("/assets/gui/market.fxml"));
             } catch (IOException e) {

@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -17,13 +16,15 @@ public class InputNicknameController extends GuiController {
     private TextField nickname;
     private String nicknameValue;
 
-    public void handleNicknameInput(ActionEvent actionEvent) {
+    @FXML
+    private void handleNicknameInput() {
         Gui gui = Gui.getInstance();
         nicknameValue = nickname.getText();
         gui.dispatch(new ReqJoin(nicknameValue));
     }
 
-    public void handleBack(ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void handleBack() throws IOException {
         Gui gui = Gui.getInstance();
         gui.setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/multiplayer.fxml"));
     }

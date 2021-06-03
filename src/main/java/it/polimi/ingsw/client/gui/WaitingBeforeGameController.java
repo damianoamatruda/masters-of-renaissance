@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -67,7 +66,8 @@ public class WaitingBeforeGameController extends GuiController {
             canPrepare.setVisible(false);
     }
 
-    public void handleNewGame(ActionEvent actionEvent) {
+    @FXML
+    private void handleNewGame() {
         Gui gui = Gui.getInstance();
         RadioButton inputRadio = (RadioButton) group.getSelectedToggle();
         try {

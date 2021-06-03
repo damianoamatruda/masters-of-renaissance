@@ -4,13 +4,14 @@ import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class GuiController implements Initializable {
-    @Override
+    @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Gui.getInstance().setController(this);
     }

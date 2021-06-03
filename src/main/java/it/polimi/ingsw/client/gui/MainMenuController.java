@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainMenuController extends GuiController {
-    @Override
+    @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
@@ -35,21 +35,25 @@ public class MainMenuController extends GuiController {
         }
     }
 
-    public void handlePlayOffline() throws IOException {
+    @FXML
+    private void handlePlayOffline() throws IOException {
         Gui gui = Gui.getInstance();
         gui.startOfflineClient();
         gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"));
     }
 
-    public void handlePlayOnline() throws IOException {
+    @FXML
+    private void handlePlayOnline() throws IOException {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playonline.fxml"));
     }
 
-    public void handleOptions(ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void handleOptions() throws IOException {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/options.fxml"));
     }
 
-    public void handleQuit() throws IOException {
+    @FXML
+    private void handleQuit() throws IOException {
         Gui.getInstance().quit();
     }
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -11,7 +10,8 @@ public class PlayOnlineController extends GuiController {
     @FXML
     private TextField server;
 
-    public void handleServerInput() throws IOException {
+    @FXML
+    private void handleServerInput() throws IOException {
         Gui gui = Gui.getInstance();
 
         String[] args = server.getText().split(":");
@@ -39,7 +39,8 @@ public class PlayOnlineController extends GuiController {
             gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"));
     }
 
-    public void handleBack(ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void handleBack() throws IOException {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }

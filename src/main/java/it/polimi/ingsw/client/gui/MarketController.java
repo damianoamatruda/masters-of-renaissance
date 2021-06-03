@@ -1,13 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.DepotLeader;
@@ -28,9 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MarketController extends GuiController {
     @FXML private AnchorPane canvas;
@@ -269,7 +259,7 @@ public class MarketController extends GuiController {
         selection = new HashMap<>();
     }
 
-    private void submitPressed(ActionEvent e) {
+    private void submitPressed(ActionEvent actionEvent) {
         Gui.getInstance().dispatch(new ReqTakeFromMarket(isRow, index, null, selection));
     }
 
