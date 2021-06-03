@@ -30,7 +30,7 @@ public abstract class CliTurnState extends CliState {
     void swapShelves(Cli cli) {
         cli.getOut().println("Swapping shelves:");
 
-        cli.getPrinter().showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
+        cli.showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
 
         int shelfid1, shelfid2;
         boolean isValid = false;

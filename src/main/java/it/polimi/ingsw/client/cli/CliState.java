@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -101,8 +102,8 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateActionToken event) {
         // print only, no cache update
         cli.getViewModel()
-            .getActionToken(event.getActionToken())
-            .ifPresent(t -> cli.getPrinter().update(t));
+                .getActionToken(event.getActionToken())
+                .ifPresent(t -> new ActionToken(t).render(cli));
     }
 
     public void on(Cli cli, UpdateBookedSeats event) {
@@ -110,14 +111,12 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateCurrentPlayer event) {
         cli.getViewModel().setCurrentPlayer(event.getPlayer());
-
-        cli.getOut().println(String.format("Current player: %s", event.getPlayer()));
+        cli.getOut().printf("Current player: %s%n", event.getPlayer());
     }
 
     public void on(Cli cli, UpdateDevCardGrid event) {
         cli.getViewModel().setDevCardGrid(event.getCards());
-
-        cli.getPrinter().printCardGrid(cli.getViewModel().getDevCardGrid());
+        new DevCardGrid(cli.getViewModel().getDevCardGrid()).render(cli);
     }
 
     public void on(Cli cli, UpdateDevCardSlot event) {
@@ -134,7 +133,7 @@ public abstract class CliState implements Renderable {
 
         Map<String, Integer> points = cli.getViewModel().getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> cli.getViewModel().getPlayerData(nick).getFaithPoints()));
-        cli.getPrinter().printFaithTrack(points);
+        new FaithTrack(cli.getViewModel().getFaithTrack(), points);
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
@@ -160,7 +159,7 @@ public abstract class CliState implements Renderable {
 
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));
-        cli.getPrinter().printFaithTrack(points);
+        new FaithTrack(cli.getViewModel().getFaithTrack(), points);
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
@@ -184,7 +183,7 @@ public abstract class CliState implements Renderable {
             cli.getViewModel().getCurrentPlayerData().setLeadersCount(
                     cli.getViewModel().getCurrentPlayerData().getLeadersCount() - 1);
 
-        cli.getPrinter().update(cli.getViewModel().getLeaderCard(event.getLeader()).orElseThrow());
+        new LeaderCard(cli.getViewModel().getLeaderCard(event.getLeader()).orElseThrow()).render(cli);
         cli.getOut().printf("Leader %d is now %s.%n", event.getLeader(), event.isActive() ? "active" : "discarded");
     }
 
@@ -201,7 +200,7 @@ public abstract class CliState implements Renderable {
         cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
 
         cli.getOut().printf("%s's leader cards:%n", event.getPlayer());
-        cli.getPrinter().showLeaders(cli.getViewModel().getPlayerLeaderCards(event.getPlayer()));
+        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(event.getPlayer())).render(cli);
     }
 
     public void on(Cli cli, UpdateLeadersHandCount event) {
@@ -212,8 +211,7 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateMarket event) {
         cli.getViewModel().setMarket(event.getMarket());
-
-        cli.getPrinter().update(event.getMarket());
+        new Market(event.getMarket()).render(cli);
     }
 
     public void on(Cli cli, UpdatePlayer event) {
@@ -225,7 +223,7 @@ public abstract class CliState implements Renderable {
             event.getWarehouseShelves()));
 
         cli.getOut().println(String.format("%s's containers:", event.getPlayer()));
-        vm.getPlayerShelves(event.getPlayer()).forEach(c -> cli.getPrinter().update(c));
+        vm.getPlayerShelves(event.getPlayer()).forEach(c -> new ResourceContainer(c).render(cli));
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
@@ -236,8 +234,7 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateResourceContainer event) {
         cli.getViewModel().setContainer(event.getResContainer());
-
-        cli.getPrinter().update(event.getResContainer());
+        new ResourceContainer(event.getResContainer()).render(cli);
     }
 
     public void on(Cli cli, UpdateSetupDone event) {

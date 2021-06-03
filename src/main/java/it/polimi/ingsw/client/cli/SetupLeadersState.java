@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
@@ -28,9 +29,7 @@ public class SetupLeadersState extends CliState {
         ViewModel vm = cli.getViewModel();
 
         if (vm.getLocalPlayerData().getLeadersHand() != null)
-            cli.getPrinter().showLeaders(
-                    vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()));
-
+            new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname())).render(cli);
 
         cli.getOut().println("\nChoosing starting leaders hand.");
         cli.getOut().println("Please input leader card IDs from the ones assigned to you.\n");

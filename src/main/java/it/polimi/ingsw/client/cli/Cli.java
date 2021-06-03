@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
-import it.polimi.ingsw.client.ReducedObjectPrinter;
+import it.polimi.ingsw.client.cli.components.ResourceContainer;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.Network;
@@ -31,7 +31,6 @@ public class Cli extends EventDispatcher {
     private CliState state;
 
     private final ViewModel viewModel;
-    private final ReducedObjectPrinter printer;
 
     private final PrintStream out;
     private final Scanner in;
@@ -53,7 +52,6 @@ public class Cli extends EventDispatcher {
         this.stateQueue.add(new SplashState());
 
         this.viewModel = new ViewModel();
-        this.printer = new CliReducedObjectPrinter(this, viewModel);
         this.out = System.out;
         this.in = new Scanner(System.in);
 
@@ -215,10 +213,6 @@ public class Cli extends EventDispatcher {
         return in;
     }
 
-    public ReducedObjectPrinter getPrinter() {
-        return printer;
-    }
-
     public ViewModel getViewModel() {
         return viewModel;
     }
@@ -241,7 +235,7 @@ public class Cli extends EventDispatcher {
         in.nextLine();
     }
 
-    void trackSlimLine() {
+    public void trackSlimLine() {
         for (int i = 0; i < width; i++)
             out.print("─");
         out.println();
@@ -308,19 +302,20 @@ public class Cli extends EventDispatcher {
         return replacedRes;
     }
 
+    // TODO: Maybe make it a component, like Menu
     Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> totalRes, List<Integer> allowedShelvesIDs) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
-        this.getPrinter().showWarehouseShelves(this.getViewModel().getLocalPlayerNickname());
+        this.showWarehouseShelves(this.getViewModel().getLocalPlayerNickname());
         this.getOut().println("These are your shelves. You can finish at any time by pressing B.");
 
         // prompt user for resource -> count -> shelf to put it in
         int totalResCount = totalRes.entrySet().stream().mapToInt(e -> e.getValue().intValue()).sum(),
-            allocResCount = 0;
+                allocResCount = 0;
         while (allocResCount < totalResCount) { // does not check for overshooting
             this.getOut().println("Remaining:");
             totalRes.entrySet().forEach(e -> this.getOut().println(String.format("%s: %d", e.getKey(), e.getValue())));
-            
+
             int count = 0, shelfID = -1; String res = "";
             while (!totalRes.containsKey(res)) {
                 res = this.prompt("Resource");
@@ -335,7 +330,7 @@ public class Cli extends EventDispatcher {
             String input = "";
             while (count < 1) {
                 input = this.prompt("Amount (> 0)");
-                
+
                 if (input.equalsIgnoreCase("B"))
                     break;
                 try {
@@ -354,14 +349,14 @@ public class Cli extends EventDispatcher {
                     break;
                 try {
                     shelfID = Integer.parseInt(input);
-                    
+
                     if (!allowedShelvesIDs.contains(shelfID))
                         shelfID = -1;
                 } catch (Exception e) { }
             }
             if (input.equalsIgnoreCase("B"))
                 break;
-            
+
             String r = res; int c = count; // rMap.put below complained they weren't final
             shelves.compute(shelfID, (sid, rMap) -> {
                 if (rMap == null)
@@ -376,6 +371,18 @@ public class Cli extends EventDispatcher {
         }
 
         return shelves;
+    }
+
+    @Deprecated
+    void showWarehouseShelves(String player) {
+        out.printf("Showing %s's shelves (depot leaders' included):%n", player);
+        viewModel.getPlayerShelves(player).forEach(c -> new ResourceContainer(c).render(this));
+    }
+
+    @Deprecated
+    void showStrongbox(String player) {
+        out.printf("Showing %s's strongbox:%n", player);
+        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c -> new ResourceContainer(c).render(this));
     }
 
     void quit() {

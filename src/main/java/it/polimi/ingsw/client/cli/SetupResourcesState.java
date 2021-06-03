@@ -59,7 +59,7 @@ public class SetupResourcesState extends CliState {
     Map<Integer, Map<String, Integer>> promptShelves(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
-        cli.getPrinter().showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.showWarehouseShelves(vm.getLocalPlayerNickname());
         vm.getResourceTypes().forEach(r -> cli.getOut().println(r.getName()));
 
         cli.getOut().println("Choose mapping shelf-resource-quantity:");

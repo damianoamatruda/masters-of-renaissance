@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.ResourceTransactionRecipe;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
@@ -16,12 +17,12 @@ public class ActivateProductionsState extends CliState {
     @Override
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
-        
+
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getPlayerProductions(vm.getLocalPlayerNickname());
-        
-        allowedProds.forEach(p -> cli.getPrinter().update(p));
+
+        allowedProds.forEach(p -> new ResourceTransactionRecipe(p).render(cli));
         cli.getOut().println("These are the available productions. Choose which ones to activate:");
-        
+
         List<ReducedProductionRequest> requests = new ArrayList<>();
         int productionid = -1;
         String input = "";

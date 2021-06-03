@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.LeadersHand;
+import it.polimi.ingsw.client.cli.components.Market;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
@@ -20,9 +22,9 @@ public class TakeFromMarketState extends CliState {
 
 
         // print market and shelves
-        cli.getPrinter().update(vm.getMarket());
-        cli.getPrinter().showWarehouseShelves(vm.getLocalPlayerNickname());
-        
+        new Market(vm.getMarket()).render(cli);
+        cli.showWarehouseShelves(vm.getLocalPlayerNickname());
+
         cli.getOut().println("Getting resources from the market:");
 
         boolean isValid = false;
@@ -79,7 +81,7 @@ public class TakeFromMarketState extends CliState {
                         c.getLeaderType().equals(ZeroLeader.class.getSimpleName())).toList();
             
             if (zeroLeaders.size() > 0) {
-                cli.getPrinter().showLeaders(zeroLeaders);
+                new LeadersHand(zeroLeaders).render(cli);
                 cli.getOut().println("These are the active leaders you can use to replace blank resources.");
                 
 

@@ -1,16 +1,13 @@
 package it.polimi.ingsw.client.cli;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Stack;
-
+import it.polimi.ingsw.client.cli.components.DevCardGrid;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
+
+import java.util.*;
 
 public class BuyDevelopmentCardState extends CliState {
 
@@ -21,10 +18,10 @@ public class BuyDevelopmentCardState extends CliState {
         ViewModel vm = cli.getViewModel();
 
         ReducedDevCardGrid grid = vm.getDevCardGrid();
-        cli.getPrinter().printCardGrid(grid);
+        new DevCardGrid(grid).render(cli);
 
-        cli.getPrinter().showWarehouseShelves(vm.getLocalPlayerNickname());
-        cli.getPrinter().showStrongbox(vm.getLocalPlayerNickname());
+        cli.showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.showStrongbox(vm.getLocalPlayerNickname());
 
         cli.getOut().println("\nChoose parameters:");
         //prompt for parameters
@@ -65,8 +62,8 @@ public class BuyDevelopmentCardState extends CliState {
         cli.getOut().println("Resources need to be paid.");
         cli.getOut().println("Please specify how many resources to take from which container.");
 
-        cli.getPrinter().showWarehouseShelves(vm.getLocalPlayerNickname());
-        cli.getPrinter().showStrongbox(vm.getLocalPlayerNickname());
+        cli.showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.showStrongbox(vm.getLocalPlayerNickname());
 
         List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(c -> c.getId()).toList();
         shelves = cli.promptShelves(cost, allowedShelvesIDs);
