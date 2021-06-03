@@ -24,9 +24,9 @@ public class ResRequirements extends StringComponent {
         String req = "";
         for (String key : keys) {
             if (i % 2 == 0)
-                req = String.format("  %-24s", String.format("%s, %d", new Resource(key).getString(cli), reducedResourceRequirement.getRequirements().get(key)));
+                req = String.format("  %-24s", String.format("%s: %d", new Resource(key).getString(cli), reducedResourceRequirement.getRequirements().get(key)));
             else {
-                req += String.format("  %-36s", String.format("%s, %d", new Resource(key).getString(cli), reducedResourceRequirement.getRequirements().get(key)));
+                req += String.format("  %-36s", String.format("%s: %d", new Resource(key).getString(cli), reducedResourceRequirement.getRequirements().get(key)));
                 column.add(req);
             }
             i++;
