@@ -96,7 +96,7 @@ public class ViewModel {
         
         ids.add(pd.getBaseProduction());
         getPlayerLeaderCards(nickname).forEach(c -> {
-            if (c.getProduction() >= 0)
+            if (c.getProduction() >= 0 && c.isActive())
                 ids.add(c.getProduction());
         });
         getPlayerDevelopmentCards(nickname).forEach(c -> {
@@ -114,7 +114,7 @@ public class ViewModel {
      * @param nickname
      * @return the topmost development cards in the player's slots
      */
-    private List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
+    public List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
