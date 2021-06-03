@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainer;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
@@ -321,16 +322,18 @@ public class Cli extends EventDispatcher {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         this.showWarehouseShelves(this.getViewModel().getLocalPlayerNickname());
-        this.getOut().println("These are your shelves. You can finish at any time by pressing B.");
+        out.println("These are your shelves. You can finish at any time by pressing B.");
 
         // prompt user for resource -> count -> shelf to put it in
-        int totalResCount = totalRes.entrySet().stream().mapToInt(e -> e.getValue().intValue()).sum(),
+        int totalResCount = totalRes.values().stream().mapToInt(Integer::intValue).sum(),
                 allocResCount = 0;
         while (allocResCount < totalResCount) { // does not check for overshooting
-            this.getOut().println("Remaining:");
-            totalRes.entrySet().forEach(e -> this.getOut().println(String.format("%s: %d", e.getKey(), e.getValue())));
+            out.println("\nRemaining:");
+            totalRes.forEach((key, value) -> out.printf("%s: %d%n", new Resource(key).getString(this), value));
+            out.println();
 
-            int count = 0, shelfID = -1; String res = "";
+            int count = 0, shelfID = -1;
+            String res = "";
             while (!totalRes.containsKey(res)) {
                 res = this.prompt("Resource");
 
@@ -343,7 +346,7 @@ public class Cli extends EventDispatcher {
 
             String input = "";
             while (count < 1) {
-                input = this.prompt("Amount (> 0)");
+                input = this.prompt("Amount");
 
                 if (input.equalsIgnoreCase("B"))
                     break;
