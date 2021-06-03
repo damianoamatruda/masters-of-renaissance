@@ -8,7 +8,7 @@ import javafx.scene.media.AudioClip;
 import java.util.Objects;
 
 public class SButton extends Button {
-    private static final String soundPath = "/assets/gui/soundfx.wav";
+    private static final String soundPath = "/assets/gui/29301__junggle__btn121.wav";
     private final AudioClip clip;
 
     public SButton() {
