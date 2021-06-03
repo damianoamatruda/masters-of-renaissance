@@ -15,10 +15,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 
@@ -40,6 +43,8 @@ public class Gui extends Application {
     private GuiController controller;
 
     private final ViewModel viewModel;
+
+    private final List<MediaPlayer> mediaPlayers;
 
     private boolean offline;
     private boolean musicPlaying;
@@ -74,6 +79,8 @@ public class Gui extends Application {
         this.network = null;
 
         this.viewModel = new ViewModel();
+
+        this.mediaPlayers = new ArrayList<>();
 
         this.musicPlaying = false;
     }
@@ -135,6 +142,10 @@ public class Gui extends Application {
 
     void setRoot(URL fxml) throws IOException {
         setRoot(fxml, null);
+    }
+
+    List<MediaPlayer> getMediaPlayers() {
+        return mediaPlayers;
     }
 
     boolean isOffline() {

@@ -10,9 +10,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainMenuController extends GuiController {
-    private Media media;
-    private MediaPlayer player;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
@@ -21,10 +18,11 @@ public class MainMenuController extends GuiController {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    media = new Media(Objects.requireNonNull(getClass().getResource("/assets/gui/Wonderland - 320bit.mp3")).toString());
-                    player = new MediaPlayer(media);
+                    Media media = new Media(Objects.requireNonNull(getClass().getResource("/assets/gui/Wonderland - 320bit.mp3")).toString());
+                    MediaPlayer player = new MediaPlayer(media);
                     player.setCycleCount(MediaPlayer.INDEFINITE);
                     player.play();
+                    Gui.getInstance().getMediaPlayers().add(player);
                     Gui.getInstance().setMusicPlaying(true);
                     return null;
                 }
