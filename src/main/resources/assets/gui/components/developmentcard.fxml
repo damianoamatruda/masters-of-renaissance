@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.layout.HBox?>
 <fx:root fx:id="devCard" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="251.0" minWidth="166.0" opacity="0.5" prefHeight="251.0" prefWidth="166.0" stylesheets="@../index.css" type="Pane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <cursor>
       <Cursor fx:constant="OPEN_HAND" />
