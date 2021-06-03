@@ -180,7 +180,7 @@ public class SetupResourcesController extends GuiController {
         if(event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
                 && event.getPlayer().equals(gui.getViewModel().getCurrentPlayer())) {
             try {
-                gui.setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
             }

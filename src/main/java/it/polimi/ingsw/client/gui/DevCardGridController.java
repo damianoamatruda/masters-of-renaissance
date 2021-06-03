@@ -229,7 +229,7 @@ public class DevCardGridController extends GuiController {
 
     private void back(MouseEvent mouseEvent) {
         try {
-            Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+            Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -237,10 +237,11 @@ public class DevCardGridController extends GuiController {
 
     @Override
     public void on(Gui gui, UpdateAction event) {
-        // try {
-        //     gui.setRoot("turnafteraction");
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+        super.on(gui, event);
+        try {
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

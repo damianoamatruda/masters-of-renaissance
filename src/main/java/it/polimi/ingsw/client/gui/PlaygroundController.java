@@ -11,6 +11,7 @@ import it.polimi.ingsw.client.gui.components.Production;
 import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.gui.components.*;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
@@ -26,9 +27,9 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-public class PlaygroundController extends GuiController {
+public abstract class PlaygroundController extends GuiController {
     @FXML
-    private AnchorPane canvas;
+    protected AnchorPane canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,27 +70,6 @@ public class PlaygroundController extends GuiController {
 
         s.setContent(c);
 
-
-//        ReducedDevCard card = gui.getViewModel().getDevelopmentCard(0).orElseThrow();
-//
-//        DevelopmentCard guicard = new DevelopmentCard(card.getColor());
-//        guicard.setProduction(p1);
-//        guicard.setRequirement(card.getCost());
-//        guicard.setVictoryPoints(12+"");
-//        DevelopmentCard guicard2 = new DevelopmentCard(card.getColor());
-//        guicard2.setProduction(p1);
-//        guicard2.setRequirement(card.getCost());
-//        guicard2.setVictoryPoints(12+"");
-//        DevelopmentCard guicard3 = new DevelopmentCard(card.getColor());
-//        guicard3.setProduction(p1);
-//        guicard3.setRequirement(card.getCost());
-//        guicard3.setVictoryPoints(12+"");
-//
-//        List<DevSlot> slots = new ArrayList<>();
-//        DevSlot slot = new DevSlot();
-//        slot.setDevCards(List.of(guicard, guicard2, guicard3));
-//        slots.add(slot);
-//        slots.add(new DevSlot());
         List<DevSlot> slots = new ArrayList<>();
 
         List<List<Integer>> modelSlots = gui.getViewModel().getPlayerData(gui.getViewModel().getLocalPlayerNickname()).getDevSlots();
@@ -124,35 +104,6 @@ public class PlaygroundController extends GuiController {
         canvas.getChildren().add(g);
         AnchorPane.setLeftAnchor(canvas.getChildren().get(1), -250.0);
         AnchorPane.setTopAnchor(canvas.getChildren().get(1), -20.0);
-
-
-        Button left = new SButton();
-//        left.setAlignment(Pos.BOTTOM_LEFT);
-        left.setText("Market");
-        left.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/market.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        canvas.getChildren().add(left);
-
-        Button right = new SButton();
-//        right.setAlignment(Pos.CENTER_RIGHT);
-        right.setText("Grid");
-        right.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/devcardgrid.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        canvas.getChildren().add(right);
-        AnchorPane.setRightAnchor(canvas.getChildren().get(3), 0.0);
-//        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), this.canvas.getHeight()/2);
-//        AnchorPane.setBottomAnchor(canvas.getChildren().get(2), 100.0);
-
 
         canvas.setBorder(new Border(new BorderStroke(Color.PINK,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));

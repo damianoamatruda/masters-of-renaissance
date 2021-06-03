@@ -111,9 +111,9 @@ public class SetupLeadersController extends GuiController {
                 gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
             }
             else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-                gui.setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
             else
-                gui.setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

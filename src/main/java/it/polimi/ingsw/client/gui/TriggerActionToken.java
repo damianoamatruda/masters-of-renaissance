@@ -5,12 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class TriggerActionToken extends GuiController{
+public class TriggerActionToken extends GuiController {
     @FXML
     ImageView token;
     @FXML
@@ -24,10 +26,12 @@ public class TriggerActionToken extends GuiController{
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
-        message = new Text("This token has been triggered.");
+//        message = new Text("This token has been triggered.");
+        message.setTextAlignment(TextAlignment.CENTER);
+        AnchorPane.setTopAnchor(message, 20.0);
         next.setOnMouseClicked((event) -> {
             try {
-                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
