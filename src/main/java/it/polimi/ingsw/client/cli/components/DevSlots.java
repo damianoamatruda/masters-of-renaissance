@@ -25,12 +25,8 @@ public class DevSlots implements Renderable {
                 rows.add(new ArrayList<>());
             }
 
-            for (int j = 0; j < 4 && j < slots.size() - i; j++) {
-                List<String> column = rows.get(j);
-                ReducedDevCard card = cards.get(j);
-
-                column.addAll(Arrays.asList(new DevelopmentCard(card).getString(cli).split("\n")));
-            }
+            for (int j = 0; j < 4 && j < slots.size() - i; j++)
+                rows.get(j).addAll(Arrays.asList(new DevelopmentCard(cards.get(j)).getString(cli).split("\n")));
 
             String rowTemplate = "";
             for (int j = 0; j < 4 && j < slots.size() - i; j++) {
