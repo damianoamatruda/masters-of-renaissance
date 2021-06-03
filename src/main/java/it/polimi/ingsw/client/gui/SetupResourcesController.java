@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.css.PseudoClass;
@@ -35,16 +36,14 @@ public class SetupResourcesController extends GuiController {
         super.initialize(url, resourceBundle);
 
         Gui gui = Gui.getInstance();
+        ViewModel vm = gui.getViewModel();
 
         titleComponent.setText(String.format("Choose %d resources.", gui.getViewModel().getLocalPlayerData().getSetup().getInitialResources()));
 
         resourceTypesContainer.setSpacing(40);
         resourceTypesContainer.setAlignment(Pos.CENTER);
 
-        choosableResources = List.of(new ReducedResourceType("Coin", "", true),
-                new ReducedResourceType("Shield", "", true),
-                new ReducedResourceType("Servant", "", true),
-                new ReducedResourceType("Stone", "", true)); // TODO remove hardcoding
+        choosableResources = vm.getResourceTypes();
 
         choosableResources.forEach(res -> {
             Resource r = new Resource();
@@ -62,7 +61,7 @@ public class SetupResourcesController extends GuiController {
             resourceTypesContainer.getChildren().add(r);
         });
 
-        warehouse.setWarehouseShelves(Gui.getInstance().getViewModel().getPlayerShelves());
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()));
 
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
                     Dragboard db = event.getDragboard();

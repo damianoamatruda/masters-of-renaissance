@@ -160,10 +160,6 @@ public class ViewModel {
             .toList();
     }
 
-    public List<ReducedResourceContainer> getPlayerShelves() {
-        return getPlayerShelves(localPlayerNickname);
-    }
-
     /**
      * @param id the ID of the token to be returned
      * @return the token associated with the ID
