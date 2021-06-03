@@ -1,8 +1,11 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 import java.util.Objects;
 
@@ -21,9 +24,6 @@ public class FaithTile extends StackPane {
             else template = "/assets/gui/faithtrack/faithtile.png";
 
         Image bgimg = new Image(Objects.requireNonNull(getClass().getResource(template)).toExternalForm());
-//        BackgroundImage i = new BackgroundImage(bgimg,
-//                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-//                new BackgroundSize(1.0, 1.0, true, true, true, false));
 
         ImageView bg = new ImageView(bgimg);
         this.getChildren().add(bg);
@@ -32,6 +32,20 @@ public class FaithTile extends StackPane {
             v.setScaleX(bg.getScaleX() / 1.5);
             v.setScaleY(bg.getScaleY() / 1.5);
             this.getChildren().add(v);
+        }
+
+        if(isYellow) {
+            ImageView bonusPts = new ImageView(new Image("/assets/gui/faithtrack/victorypointmark.png"));
+            bonusPts.setScaleX(bg.getScaleX() / 2);
+            bonusPts.setScaleY(bg.getScaleY() / 2);
+            bonusPts.setLayoutY(bg.getScaleX() - bonusPts.getScaleY() / 2);
+            this.getChildren().add(bonusPts);
+
+            ReducedYellowTile y = Gui.getInstance().getViewModel().getFaithTrack().getYellowTiles().stream().filter(yt -> yt.getFaithPoints() == tileId).findAny().orElseThrow();
+            Text t = new Text(y.getVictoryPoints()+"");
+            t.setScaleX(bg.getScaleY()*2);
+            t.setScaleY(bg.getScaleY()*2);
+            this.getChildren().add(t);
         }
 
     }

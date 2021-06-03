@@ -23,7 +23,7 @@ public class FaithTrack extends VBox {
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
             if(i % 10 >= 3 && i % 10 <= 6) {
-                hBox.getChildren().add(new FaithTile(2, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
+                hBox.getChildren().add(new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
             }
             else if(i % 10 == 0 || i % 10 == 9) {
                 hBox.getChildren().add(new FaithTile());
@@ -36,7 +36,7 @@ public class FaithTrack extends VBox {
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
             if(i % 5 == 2) {
-                hBox.getChildren().add(new FaithTile(2, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
+                hBox.getChildren().add(new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
             }
             else if(i % 10 == 0 || i % 10 == 9 || i % 10 == 4 || i % 10 == 5) {
                 hBox.getChildren().add(new FaithTile());
@@ -50,7 +50,7 @@ public class FaithTrack extends VBox {
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
             if(i % 10 >= 8 || i % 10 <= 1) {
-                  hBox.getChildren().add(new FaithTile(2, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
+                  hBox.getChildren().add(new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
             }
             else if(i % 10 == 4 || i % 10 == 5) {
                 hBox.getChildren().add(new FaithTile());
