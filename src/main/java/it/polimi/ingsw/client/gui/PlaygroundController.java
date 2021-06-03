@@ -143,6 +143,10 @@ public class PlaygroundController extends GuiController {
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), this.canvas.getHeight()/2);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(2), 100.0);
 
+        FaithTrack f = new FaithTrack(gui.getViewModel().getFaithTrack());
+        canvas.getChildren().add(f);
+        AnchorPane.setLeftAnchor(canvas.getChildren().get(3), -250.0);
+        AnchorPane.setTopAnchor(canvas.getChildren().get(3), 40.0);
 
 
         canvas.setBorder(new Border(new BorderStroke(Color.PINK,
