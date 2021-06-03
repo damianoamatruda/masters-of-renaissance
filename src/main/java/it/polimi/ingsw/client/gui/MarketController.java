@@ -1,9 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.DepotLeader;
@@ -17,14 +13,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
 public class MarketController extends GuiController {
     @FXML private AnchorPane canvas;
@@ -231,7 +224,7 @@ public class MarketController extends GuiController {
                                     ReducedResourceContainer lCont = leaderCard.getContainer();
                                     Map<String, Integer> content = lCont.getContent();
                                     content.compute(resource, (k, v) -> v == null ? 1 : v++);
-                                    ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getboundedResType());
+                                    ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getBoundedResType());
 
                                     leaderCard.setDepotContent(newContainer, reducedLeader.getResourceType().getName());
 

@@ -52,7 +52,7 @@ public class ReducedResourceContainer {
     /**
      * @return the resource binding the container's contents
      */
-    public String getboundedResType() {
+    public String getBoundedResType() {
         return boundedResType;
     }
 }

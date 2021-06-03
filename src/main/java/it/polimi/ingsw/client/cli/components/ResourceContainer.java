@@ -16,8 +16,8 @@ public class ResourceContainer extends StringComponent {
 
         stringBuilder.append(String.format("--- Resource Container (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---%n", reducedResourceContainer.getId()));
 
-        if (reducedResourceContainer.getboundedResType() != null)
-            stringBuilder.append(String.format("Bounded resource: %s%n", new Resource(reducedResourceContainer.getboundedResType()).getString(cli)));
+        if (reducedResourceContainer.getBoundedResType() != null)
+            stringBuilder.append(String.format("Bounded resource: %s%n", new Resource(reducedResourceContainer.getBoundedResType()).getString(cli)));
 
         if (reducedResourceContainer.getSize() >= 0)
             stringBuilder.append(String.format("Size: %d%n", reducedResourceContainer.getSize()));

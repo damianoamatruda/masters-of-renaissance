@@ -22,7 +22,7 @@ public class DevelopmentCard extends StringComponent {
             column.add("[Development]");
             column.add(String.format("%-64s", String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, color: %s",
                     reducedDevCard.getId(),
-                    new Color(reducedDevCard.getColor()).getString(cli)
+                    new DevCardColor(reducedDevCard.getColor()).getString(cli)
             )));
             column.add(String.format("Level: %d, VP: %d",
                     reducedDevCard.getLevel(),

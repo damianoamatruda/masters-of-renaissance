@@ -13,6 +13,6 @@ public class Resource extends StringComponent {
     @Override
     public String getString(Cli cli) {
         String color = cli.getViewModel().getResourceTypes().stream().filter(c -> c.getName().equals(resourceType)).map(ReducedResourceType::getColorValue).findAny().orElseThrow();
-        return "\u001B[1m" + color + resourceType + "\u001B[0m";
+        return String.format("\u001B[1m%s%s\u001B[0m", color, resourceType);
     }
 }

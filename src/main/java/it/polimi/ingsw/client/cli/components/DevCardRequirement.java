@@ -21,7 +21,7 @@ public class DevCardRequirement extends StringComponent {
         column.add("--- Requirements ---");
         for (int k = 0; k < reducedDevCardRequirement.getEntries().size(); k++) {
             ReducedDevCardRequirementEntry e = reducedDevCardRequirement.getEntries().get(k);
-            String req = String.format("  %-49s", e.getAmount() + " " + new Color(e.getColor()).getString(cli) + " card(s) of " +
+            String req = String.format("  %-49s", e.getAmount() + " " + new DevCardColor(e.getColor()).getString(cli) + " card(s) of " +
                     (e.getLevel() > 0 ? ("level " + e.getLevel()) : "any level"));
             column.add(req);
         }

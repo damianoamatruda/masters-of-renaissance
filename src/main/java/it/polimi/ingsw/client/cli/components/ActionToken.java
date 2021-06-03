@@ -18,6 +18,6 @@ public class ActionToken implements Renderable {
                 reducedActionToken.getKind()
         );
         cli.getOut().println(reducedActionToken.getDiscardedDevCardColor() == null ? "" :
-                String.format("Color of discarded development card: %s\n", new Color(reducedActionToken.getDiscardedDevCardColor()).getString(cli)));
+                String.format("Color of discarded development card: %s\n", new DevCardColor(reducedActionToken.getDiscardedDevCardColor()).getString(cli)));
     }
 }
