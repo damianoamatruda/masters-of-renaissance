@@ -7,8 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -17,8 +16,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class CardRequirement extends HBox {
-    List<HBox> requirements;
-    private double maxRowHeight;
+    private final double maxRowHeight;
+    private List<HBox> requirements;
 
     public CardRequirement() {
         maxRowHeight = 30; //TODO parameterize

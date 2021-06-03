@@ -1,10 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Market;
 import it.polimi.ingsw.client.gui.components.Warehouse;
@@ -17,12 +12,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 public class MarketController extends GuiController {
     @FXML private AnchorPane canvas;
     @FXML private Pane marketPane;
     @FXML private Pane warehousePane;
     @FXML private HBox leaderCardsBox;
-
     private List<ReducedResourceContainer> shelves;
     
     @Override

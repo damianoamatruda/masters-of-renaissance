@@ -8,9 +8,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 public class Shelf extends HBox {
-    private int shelfId;
-    private int size;
-    private HBox content = new HBox();
+    private final int shelfId;
+    private final int size;
+    private final HBox content = new HBox();
 
     public Shelf(ReducedResourceContainer shelf) {
         this.shelfId = shelf.getId();

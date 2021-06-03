@@ -3,7 +3,8 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,9 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Warehouse extends VBox {
-    int maxRowHeight;
-
-    private Map<Integer, Shelf> shelves = new HashMap<>();
+    private final int maxRowHeight;
+    private final Map<Integer, Shelf> shelves = new HashMap<>();
 
     public Warehouse() {
         maxRowHeight = 100; //TODO parameterize

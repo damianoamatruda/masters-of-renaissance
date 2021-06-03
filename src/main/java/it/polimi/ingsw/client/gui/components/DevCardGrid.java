@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -13,7 +12,6 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 public class DevCardGrid extends HBox {
-
     public DevCardGrid() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devcardgrid.fxml"));
         fxmlLoader.setRoot(this);

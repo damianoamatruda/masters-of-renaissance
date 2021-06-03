@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
@@ -14,10 +15,12 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 
 public class WaitingBeforeGameController extends GuiController {
-    public Text bookedSeats;
-    public ToggleGroup group;
-    public VBox canPrepare;
-
+    @FXML
+    private Text bookedSeats;
+    @FXML
+    private ToggleGroup group;
+    @FXML
+    private VBox canPrepare;
     private boolean youCanPrepare;
 
     public WaitingBeforeGameController() {

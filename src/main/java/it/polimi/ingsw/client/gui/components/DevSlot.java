@@ -1,19 +1,14 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
+import java.util.List;
 
 public class DevSlot extends StackPane {
     // @FXML private GridPane grid;
-
     private List<DevelopmentCard> cards;
 
     public DevSlot() {

@@ -1,50 +1,34 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.BiConsumer;
-
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.layout.*;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.function.BiConsumer;
 
 public class Market extends StackPane {
-    @FXML private ImageView background;
-    @FXML private GridPane grid;
+    @FXML
+    private ImageView background;
+    @FXML
+    private GridPane grid;
 
     private BiConsumer<Integer, Boolean> controllerListener;
 
     ToggleGroup indexSelectors = new ToggleGroup();
 
-    private int selectedIndex = 0;
-    private boolean isColumnSelected = false;
+    private final int selectedIndex = 0;
+    private final boolean isColumnSelected = false;
 
     public Market() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/market.fxml"));
@@ -134,15 +118,15 @@ public class Market extends StackPane {
         indexSelectors.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
                 if (indexSelectors.getSelectedToggle() != null)
-                    controllerListener.accept(((IndexRadioButton)newToggle).getIndex(), ((IndexRadioButton)newToggle).isRow());
+                    controllerListener.accept(((IndexRadioButton) newToggle).getIndex(), ((IndexRadioButton) newToggle).isRow());
             }
         });
     }
 
-    private class IndexRadioButton extends RadioButton {
-        private boolean isRow;
-        private int index;
-        
+    private static class IndexRadioButton extends RadioButton {
+        private final boolean isRow;
+        private final int index;
+
         public IndexRadioButton(String label, int index, boolean isRow) {
             super(label);
             this.index = index;

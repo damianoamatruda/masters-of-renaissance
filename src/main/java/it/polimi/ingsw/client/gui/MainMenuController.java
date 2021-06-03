@@ -10,8 +10,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainMenuController extends GuiController {
-    Media media;
-    MediaPlayer player;
+    private Media media;
+    private MediaPlayer player;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

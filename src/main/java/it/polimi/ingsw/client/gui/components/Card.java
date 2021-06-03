@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -9,9 +10,10 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 
 public abstract class Card extends Pane {
-    public Pane resourcePane;
-    public Text victoryPoints;
-
+    @FXML
+    protected Pane resourcePane;
+    @FXML
+    protected Text victoryPoints;
     protected Production prod;
     protected CardRequirement requirement;
 

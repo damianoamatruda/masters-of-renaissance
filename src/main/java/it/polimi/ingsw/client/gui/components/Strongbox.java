@@ -1,33 +1,23 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 public class Strongbox extends StackPane {
-    @FXML ImageView background;
-    @FXML GridPane grid;
+    @FXML
+    private ImageView background;
+    @FXML
+    private GridPane grid;
 
     public Strongbox() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/strongbox.fxml"));

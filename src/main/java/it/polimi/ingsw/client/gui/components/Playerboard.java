@@ -1,54 +1,36 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-import java.util.Objects;
-
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.control.Control;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class Playerboard extends StackPane {
-    @FXML private StackPane canvas;
-    @FXML private GridPane board;
-    @FXML private GridPane storageColumn;
-    
-    private Warehouse w;
-    private Strongbox s;
-    private Production p;
-    private DevSlot slot;
+import java.io.IOException;
+import java.util.Objects;
 
-    private double bgPixelWidth = 908,
-                   bgPixelHeight = 443,
-                   bgRatio = bgPixelWidth / bgPixelHeight;
-                //    warehousePixelSize = 140,
-                //    baseProdPixelSize = 94,
-                //    strongboxPixelWidth = 165,
-                //    strongboxPixelHeight = 140,
-                //    devSlotPixelWidth = 158,
-                //    devSlotPixelHeight = 335;
+public class Playerboard extends StackPane {
+    @FXML
+    private final StackPane canvas;
+    @FXML
+    private GridPane board;
+    @FXML
+    private GridPane storageColumn;
+    private final Warehouse w;
+    private final Strongbox s;
+    private final Production p;
+    private final DevSlot slot;
+
+    private final double bgPixelWidth = 908;
+    private final double bgPixelHeight = 443;
+    private final double bgRatio = bgPixelWidth / bgPixelHeight;
+    //    warehousePixelSize = 140,
+    //    baseProdPixelSize = 94,
+    //    strongboxPixelWidth = 165,
+    //    strongboxPixelHeight = 140,
+    //    devSlotPixelWidth = 158,
+    //    devSlotPixelHeight = 335;
 
     public Playerboard(Warehouse w, Strongbox s, Production p, DevSlot slot) {
         this.w = w;

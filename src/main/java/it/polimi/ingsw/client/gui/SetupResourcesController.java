@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.css.PseudoClass;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
@@ -27,14 +28,18 @@ import java.util.ResourceBundle;
 
 public class SetupResourcesController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
-    private List<ReducedResourceType> choosableResources;
-
-    public HBox resourceTypesContainer;
-    public Warehouse warehouse;
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
-    public Button choiceButton;
-    public Title titleComponent;
-    public BorderPane window;
+    private List<ReducedResourceType> choosableResources;
+    @FXML
+    private HBox resourceTypesContainer;
+    @FXML
+    private Warehouse warehouse;
+    @FXML
+    private Button choiceButton;
+    @FXML
+    private Title titleComponent;
+    @FXML
+    private BorderPane window;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

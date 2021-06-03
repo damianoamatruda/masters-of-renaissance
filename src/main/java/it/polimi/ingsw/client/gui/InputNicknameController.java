@@ -7,13 +7,14 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
 public class InputNicknameController extends GuiController {
-    public TextField nickname;
-
+    @FXML
+    private TextField nickname;
     private String nicknameValue;
 
     public void handleNicknameInput(ActionEvent actionEvent) {

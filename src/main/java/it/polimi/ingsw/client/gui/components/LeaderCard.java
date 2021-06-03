@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.beans.property.StringProperty;
+import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,13 +16,14 @@ import javafx.scene.text.Text;
 import java.util.Map;
 
 public class LeaderCard extends Card {
-    public Pane leaderCard;
-    public Text leaderTypeText;
-    public Text resourceTypeText;
-
     private final double height;
     private final double width;
-
+    @FXML
+    private Pane leaderCard;
+    @FXML
+    private Text leaderTypeText;
+    @FXML
+    private Text resourceTypeText;
     private int leaderId;
 
     public LeaderCard(String leaderType) {

@@ -1,29 +1,28 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 public class Production extends StackPane {
-    VBox input, output;
-    ImageView curlyBrace;
-    private double maxRowHeight, elementScale, padding = 2;
+    private final double padding = 2;
+    @FXML
+    private VBox input, output;
+    @FXML
+    private ImageView curlyBrace;
+    private double maxRowHeight;
+    private double elementScale;
 
     public Production() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/production.fxml"));

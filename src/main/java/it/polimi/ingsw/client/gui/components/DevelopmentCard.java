@@ -5,19 +5,15 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 public class DevelopmentCard extends Card {
-//    @FXML
-//    Label level;
-//    @FXML
-//    Label color;
-//    @FXML
-//    HBox requirement;
+//    @FXML private Label level;
+//    @FXML private Label color;
+//    @FXML private HBox requirement;
 
     public DevelopmentCard(String color) {
         super(color);
     }
 
     public void setData(int level, DevCardColor color) {
-
 //        this.color.setText(color.getName());
 //        this.level.setText(Integer.toString(level));
     }
