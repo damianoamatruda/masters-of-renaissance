@@ -27,7 +27,7 @@
       </Button>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
-          <Button alignment="CENTER" onAction="#handlePlayground" prefWidth="190.0" text="Playground"/>
+          <Button alignment="CENTER" onAction="#handleOptions" prefWidth="190.0" text="Options..."/>
         </left>
         <right>
           <Button alignment="CENTER" onAction="#handleQuit" prefWidth="190.0" text="Quit Game"/>

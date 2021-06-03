@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -43,8 +44,8 @@ public class MainMenuController extends GuiController {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playonline.fxml"));
     }
 
-    public void handlePlayground() throws IOException {
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playground.fxml"));
+    public void handleOptions(ActionEvent actionEvent) throws IOException {
+        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/options.fxml"));
     }
 
     public void handleQuit() throws IOException {
