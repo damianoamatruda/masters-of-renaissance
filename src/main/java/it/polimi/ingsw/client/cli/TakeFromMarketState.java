@@ -22,7 +22,7 @@ public class TakeFromMarketState extends CliState {
 
         // print market and shelves
         new Market(vm.getMarket()).render(cli);
-        cli.showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.showShelves(vm.getLocalPlayerNickname());
 
         cli.getOut().println("Getting resources from the market:");
 

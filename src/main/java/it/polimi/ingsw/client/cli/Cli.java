@@ -321,7 +321,7 @@ public class Cli extends EventDispatcher {
     Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> totalRes, List<Integer> allowedShelvesIDs) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
-        this.showWarehouseShelves(this.getViewModel().getLocalPlayerNickname());
+        this.showShelves(this.getViewModel().getLocalPlayerNickname());
         out.println("These are your shelves. You can finish at any time by pressing B.");
 
         // prompt user for resource -> count -> shelf to put it in
@@ -391,15 +391,31 @@ public class Cli extends EventDispatcher {
     }
 
     @Deprecated
-    void showWarehouseShelves(String player) {
-        out.printf("Showing %s's shelves (depot leaders' included):%n", player);
-        viewModel.getPlayerShelves(player).forEach(c -> new ResourceContainer(c).render(this));
+    void showShelves(String player) {
+        if (viewModel.getPlayerWarehouseShelves(player).size() > 0) {
+            out.printf("Showing %s's warehouse shelves:%n", player);
+            viewModel.getPlayerWarehouseShelves(player).forEach(c -> {
+                new ResourceContainer(c).render(this);
+                out.println();
+            });
+        }
+        if (viewModel.getPlayerDepots(player).size() > 0) {
+            out.println();
+            out.printf("Showing %s's available leader depots:%n", player);
+            viewModel.getPlayerDepots(player).forEach(c -> {
+                new ResourceContainer(c).render(this);
+                out.println();
+            });
+        }
     }
 
     @Deprecated
     void showStrongbox(String player) {
         out.printf("Showing %s's strongbox:%n", player);
-        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c -> new ResourceContainer(c).render(this));
+        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c -> {
+            new ResourceContainer(c).render(this);
+            out.println();
+        });
     }
 
     void quit() {

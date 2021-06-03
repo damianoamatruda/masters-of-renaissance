@@ -140,24 +140,48 @@ public class ViewModel {
 
     /**
      * @param nickname
-     * @return the player's reduced containers, including active leaders' depots
+     * @return the player's reduced containers
      */
     public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
-            
-        List<Integer> ids = new ArrayList<>();
 
-        playerData.get(nickname).getWarehouseShelves().forEach(id -> ids.add(id));
+        List<ReducedResourceContainer> containers = new ArrayList<>();
+        containers.addAll(getPlayerWarehouseShelves(nickname));
+        containers.addAll(getPlayerDepots(nickname));
+        return containers;
+    }
 
-        getPlayerLeaderCards(nickname).stream()
-            .filter(c -> c.isActive())
-            .forEach(c -> ids.add(c.getContainerId()));
+    /**
+     * @param nickname
+     * @return the player's warehouse shelves
+     */
+    public List<ReducedResourceContainer> getPlayerWarehouseShelves(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return new ArrayList<>();
 
-        return ids.stream()
-            .map(id -> getContainer(id).orElse(null))
-            .filter(Objects::nonNull)
-            .toList();
+        return playerData.get(nickname).getWarehouseShelves().stream()
+                .map(this::getContainer)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+    }
+
+    /**
+     * @param nickname
+     * @return the player's active leaders' depots
+     */
+    public List<ReducedResourceContainer> getPlayerDepots(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return new ArrayList<>();
+
+        return getPlayerLeaderCards(nickname).stream()
+                .filter(ReducedLeaderCard::isActive)
+                .map(ReducedLeaderCard::getContainerId)
+                .map(this::getContainer)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
     }
 
     /**

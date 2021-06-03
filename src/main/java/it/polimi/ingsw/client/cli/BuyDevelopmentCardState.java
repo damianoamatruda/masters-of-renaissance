@@ -21,7 +21,7 @@ public class BuyDevelopmentCardState extends CliState {
         ReducedDevCardGrid grid = vm.getDevCardGrid();
 
         new DevCardGrid(grid).render(cli);
-        cli.showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.showShelves(vm.getLocalPlayerNickname());
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
         String color = cli.prompt("Card color");
@@ -38,7 +38,7 @@ public class BuyDevelopmentCardState extends CliState {
         cli.getOut().println("Resources need to be paid.");
         cli.getOut().println("Please specify how many resources to take from which container.");
 
-        cli.showWarehouseShelves(vm.getLocalPlayerNickname());
+        cli.showShelves(vm.getLocalPlayerNickname());
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
         List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).toList();
