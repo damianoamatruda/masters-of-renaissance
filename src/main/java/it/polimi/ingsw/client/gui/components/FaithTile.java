@@ -2,33 +2,46 @@ package it.polimi.ingsw.client.gui.components;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 
 import java.util.Objects;
 
-public class FaithTile extends ImageView {
+public class FaithTile extends StackPane {
     private int tileId;
 
-    public FaithTile(int tileId, boolean isYellow, boolean isSectionEnd) {
+    public FaithTile(int tileId, boolean isYellow, boolean isSection, boolean isSectionEnd) {
         this.tileId = tileId;
-        Image bgimg;
+        String template;
 
         if (isYellow) {
-            bgimg = new Image(
-                    Objects.requireNonNull(getClass().getResource("/assets/gui/faithtrack/yellowtile.png")).toExternalForm());
+            if(isSection) template = "/assets/gui/faithtrack/yellowsectiontile.png";
+            else template = "/assets/gui/faithtrack/yellowtile.png";
         } else
-            bgimg = new Image(
-                    Objects.requireNonNull(getClass().getResource("/assets/gui/faithtrack/faithtile.png")).toExternalForm());
+            if(isSection) template = "/assets/gui/faithtrack/sectiontile.png";
+            else template = "/assets/gui/faithtrack/faithtile.png";
 
-        this.setImage(bgimg);
+        Image bgimg = new Image(Objects.requireNonNull(getClass().getResource(template)).toExternalForm());
+//        BackgroundImage i = new BackgroundImage(bgimg,
+//                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+//                new BackgroundSize(1.0, 1.0, true, true, true, false));
+
+        ImageView bg = new ImageView(bgimg);
+        this.getChildren().add(bg);
+        if(isSectionEnd) {
+            ImageView v = new ImageView("/assets/gui/faithtrack/vaticanreport.png");
+            v.setScaleX(bg.getScaleX() / 1.5);
+            v.setScaleY(bg.getScaleY() / 1.5);
+            this.getChildren().add(v);
+        }
 
     }
 
-    public FaithTile() {
-        Image bgimg;
-        bgimg = new Image(
-                Objects.requireNonNull(getClass().getResource("/assets/gui/faithtrack/faithtile.png")).toExternalForm());
+    public int getTileId() {
+        return tileId;
+    }
 
-        this.setImage(bgimg);
+    public FaithTile() {
+        this(0, false, false, false);
         this.setOpacity(0);
     }
 }
