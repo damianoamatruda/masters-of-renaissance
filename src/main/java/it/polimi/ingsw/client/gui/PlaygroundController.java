@@ -21,6 +21,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
@@ -144,9 +145,13 @@ public class PlaygroundController extends GuiController {
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(2), 100.0);
 
         FaithTrack f = new FaithTrack(gui.getViewModel().getFaithTrack());
-        canvas.getChildren().add(f);
+        Group g = new Group(f);
+        g.setAutoSizeChildren(true);
+        g.setScaleX(g.getScaleX() * 0.85);
+        g.setScaleY(g.getScaleY() * 0.85);
+        canvas.getChildren().add(g);
         AnchorPane.setLeftAnchor(canvas.getChildren().get(3), -250.0);
-        AnchorPane.setTopAnchor(canvas.getChildren().get(3), 40.0);
+        AnchorPane.setTopAnchor(canvas.getChildren().get(3), -20.0);
 
 
         canvas.setBorder(new Border(new BorderStroke(Color.PINK,
