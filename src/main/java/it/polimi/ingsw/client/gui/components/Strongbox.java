@@ -75,24 +75,7 @@ public class Strongbox extends StackPane {
         while (i.hasNext()) {
             Entry<String, Integer> e = i.next();
 
-            HBox cell = new HBox(cellWidth * 0.2);
-            cell.setAlignment(Pos.CENTER);
-
-        //    cell.setBorder(new Border(new BorderStroke(Color.RED,
-        //        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-            Resource r = new Resource();
-            r.setResourceType(e.getKey());
-            r.setFitHeight(cellHeight);
-
-            Text t = new Text(String.valueOf(e.getValue()));
-            t.setScaleX(scaleRatio);
-            t.setScaleY(scaleRatio);
-
-            cell.getChildren().add(t);
-            cell.getChildren().add(r);
-            
-            grid.add(cell, col, row);
+            grid.add(new Cell(e.getKey(), e.getValue(), cellWidth, cellHeight, scaleRatio), col, row);
 
             if (row == sRows - 1) { // one more row than cols
                 col++;
@@ -101,5 +84,48 @@ public class Strongbox extends StackPane {
                 row++;
             }
         }
+    }
+
+    private class Cell extends HBox {
+        private int count;
+        private String resource;
+
+        public Cell(String resource, int count, double cellWidth, double cellHeight, double scaleRatio) {
+            this.resource = resource;
+            this.count = count;
+
+            this.setSpacing(cellWidth * 0.2);
+            this.setAlignment(Pos.CENTER);
+
+        //    cell.setBorder(new Border(new BorderStroke(Color.RED,
+        //        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+            Resource r = new Resource();
+            r.setResourceType(resource);
+            r.setFitHeight(cellHeight);
+
+            Text t = new Text(String.valueOf(count));
+            t.setScaleX(scaleRatio);
+            t.setScaleY(scaleRatio);
+
+            this.getChildren().add(t);
+            this.getChildren().add(r);
+        }
+
+        public String getResource() {
+            return resource;
+        }
+        public int getCount() {
+            return count;
+        }
+        public void setCount(int count) {
+            this.count = count;
+            ((Text)this.getChildren().get(0)).setText(String.valueOf(count));
+        }
+    }
+
+    public void refreshRemove(String resource) {
+        Cell cell = grid.getChildren().stream().map(n -> (Cell)n).filter(c -> c.getResource().equals(resource)).findAny().orElseThrow();
+        cell.setCount(cell.getCount() - 1);
     }
 }

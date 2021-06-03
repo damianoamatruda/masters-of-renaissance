@@ -6,12 +6,23 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class DevCardGrid extends HBox {
+    private BiConsumer<ReducedDevCard, DevelopmentCard> controllerListener;
+
     public DevCardGrid() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devcardgrid.fxml"));
         fxmlLoader.setRoot(this);
@@ -24,9 +35,13 @@ public class DevCardGrid extends HBox {
         }
     }
 
+    public void setControllerListener(BiConsumer<ReducedDevCard, DevelopmentCard> f) {
+        controllerListener = f;
+    }
+
     public void setGrid(ReducedDevCardGrid grid) {
         for(String color : grid.getGrid().keySet()) {
-            VBox column = new VBox();
+            VBox column = new VBox(5);
             for(int i = 1; i <= grid.getLevelsCount(); i++) {
                 ReducedDevCard card;
 
@@ -45,6 +60,12 @@ public class DevCardGrid extends HBox {
                 guicard.setProduction(r);
                 guicard.setVictoryPoints(card.getVictoryPoints()+"");
 
+                guicard.setBorder(new Border(new BorderStroke(Color.BLUE,
+                    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+                guicard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                    controllerListener.accept(card, guicard);
+                });
                 column.getChildren().add(guicard);
             }
             this.getChildren().add(column);

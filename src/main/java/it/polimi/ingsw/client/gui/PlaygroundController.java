@@ -131,13 +131,13 @@ public class PlaygroundController extends GuiController {
         Button right = new Button();
 //        right.setAlignment(Pos.CENTER_RIGHT);
         right.setText("Grid");
-//        right.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-//            try {
-//                gui.setRoot("grid");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
+        right.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
+            try {
+                gui.setRoot(getClass().getResource("/assets/gui/devcardgrid.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         canvas.getChildren().add(right);
         AnchorPane.setRightAnchor(canvas.getChildren().get(2), 0.0);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), this.canvas.getHeight()/2);

@@ -90,13 +90,13 @@ public class SetupLeadersController extends GuiController {
     @Override
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
-        if (gui.isOffline()) {
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/market.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // if (gui.isOffline()) {
+        //     try {
+        //         gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
+        //     } catch (IOException e) {
+        //         e.printStackTrace();
+        //     }
+        // }
     }
 
     @Override
