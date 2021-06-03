@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.Menu;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
@@ -22,6 +23,7 @@ public abstract class CliTurnState extends CliState {
     }
 
     private void executeAction(Cli cli, boolean isActivate) {
+        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render(cli);
         leaderId = cli.promptInt("Leader");
         cli.dispatch(new ReqLeaderAction(leaderId, isActivate));
     }
