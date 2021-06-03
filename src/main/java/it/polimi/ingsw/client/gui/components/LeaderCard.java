@@ -24,6 +24,9 @@ public class LeaderCard extends Card {
     private Text leaderTypeText;
     @FXML
     private Text resourceTypeText;
+    
+    private ReducedResourceContainer content;
+
     private int leaderId;
 
     public LeaderCard(String leaderType) {
@@ -120,7 +123,13 @@ public class LeaderCard extends Card {
         this.getChildren().add(res);
     }
 
+    public ReducedResourceContainer getContainer() {
+        return content;
+    }
+
     public void setDepotContent(ReducedResourceContainer container, String boundRes) {
+        content = container;
+
         double x1 = width / 4.6, x2 = width / 1.7, y = height / 1.255;
 
         if(container == null) {
