@@ -1,6 +1,15 @@
 package it.polimi.ingsw.client.gui.components;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
@@ -15,6 +24,15 @@ public class DevSlot extends StackPane {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devslot.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
+
+        Image bgimg = new Image(
+                Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/devslot.PNG")).toExternalForm());
+
+        BackgroundImage bg = new BackgroundImage(bgimg,
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                new BackgroundSize(1.0, 1.0, true, true, true, false));
+
+        this.setBackground(new Background(bg));
 
         try {
             fxmlLoader.load();

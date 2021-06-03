@@ -1,9 +1,38 @@
 package it.polimi.ingsw.client.gui.components;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+
+import it.polimi.ingsw.client.gui.Gui;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -11,32 +40,26 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Playerboard extends StackPane {
-    @FXML
-    private final StackPane canvas;
-    @FXML
-    private GridPane board;
-    @FXML
-    private GridPane storageColumn;
-    private final Warehouse w;
-    private final Strongbox s;
-    private final Production p;
-    private final DevSlot slot;
+    @FXML private StackPane canvas;
+    @FXML private GridPane board;
+    @FXML private GridPane storageColumn;
+//    @FXML private Button left;
+//    @FXML private Button right;
 
-    private final double bgPixelWidth = 908;
-    private final double bgPixelHeight = 443;
-    private final double bgRatio = bgPixelWidth / bgPixelHeight;
-    //    warehousePixelSize = 140,
-    //    baseProdPixelSize = 94,
-    //    strongboxPixelWidth = 165,
-    //    strongboxPixelHeight = 140,
-    //    devSlotPixelWidth = 158,
-    //    devSlotPixelHeight = 335;
+    private Warehouse w;
+    private Strongbox s;
+    private Production p;
+    private List<DevSlot> slots;
 
-    public Playerboard(Warehouse w, Strongbox s, Production p, DevSlot slot) {
+    private double bgPixelWidth = 908,
+                   bgPixelHeight = 646,
+                   bgRatio = bgPixelWidth / bgPixelHeight;
+
+    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots) {
         this.w = w;
         this.s = s;
         this.p = p;
-        this.slot = slot;
+        this.slots = slots;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
         fxmlLoader.setRoot(this);
@@ -62,16 +85,19 @@ public class Playerboard extends StackPane {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         p.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        slot.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        slots.forEach(sl -> sl.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
 
         setBackground();
 
         storageColumn.add(w, 0, 1);
         storageColumn.add(s, 0, 3);
 
-        board.add(p, 3, 0);
-        board.add(slot, 5, 0);
+        board.add(p, 3, 1);
+        for(int i = 0; i < slots.size(); i++){
+            slots.get(i).setAlignment(Pos.BOTTOM_CENTER);
+            board.add(slots.get(i), 5 + 2 * i, 1);
+        }
 
         canvas = this;
         this.widthProperty().addListener(this::changedSize);
@@ -84,11 +110,11 @@ public class Playerboard extends StackPane {
             board.setMaxHeight(newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / (bgRatio));
             board.setMaxWidth(newDimRatio > bgRatio ? this.getHeight() * (bgRatio) : this.getWidth());
             
-            scalePreservingRatio(w, storageColumn.getWidth(), w.getPrefWidth());
+//            scalePreservingRatio(w, storageColumn.getWidth(), w.getPrefWidth());
             scalePreservingRatio(s, storageColumn.getWidth(), s.getPrefWidth());
-            
-            scalePreservingRatio(p, board.getColumnConstraints().get(3).getPercentWidth() * board.getWidth() / 100, p.getMaxWidth());
-            scalePreservingRatio(slot, board.getColumnConstraints().get(5).getPercentWidth() * board.getWidth() / 100, slot.getPrefWidth());
+//
+//            scalePreservingRatio(p, board.getColumnConstraints().get(3).getPercentWidth() * board.getWidth() / 100, p.getMaxWidth());
+            slots.forEach(sl -> scalePreservingRatio(sl, board.getColumnConstraints().get(5).getPercentWidth() * board.getWidth() / 100, sl.getPrefWidth()));
         }
     }
 
@@ -103,7 +129,7 @@ public class Playerboard extends StackPane {
 
     private void setBackground() {
         Image frontBGImage = new Image(
-            Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background_no_faith_track.png")).toExternalForm());
+            Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background.png")).toExternalForm());
         Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
         
@@ -116,4 +142,5 @@ public class Playerboard extends StackPane {
         Background bg = new Background(backBG, frontBG);
         this.setBackground(bg);
     }
+
 }

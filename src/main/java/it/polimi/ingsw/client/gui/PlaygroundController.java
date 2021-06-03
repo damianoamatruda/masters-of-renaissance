@@ -1,10 +1,41 @@
 package it.polimi.ingsw.client.gui;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+
+import it.polimi.ingsw.client.gui.components.DevSlot;
+import it.polimi.ingsw.client.gui.components.DevelopmentCard;
+import it.polimi.ingsw.client.gui.components.LeaderCard;
+import it.polimi.ingsw.client.gui.components.Market;
+import it.polimi.ingsw.client.gui.components.Playerboard;
+import it.polimi.ingsw.client.gui.components.Production;
+import it.polimi.ingsw.client.gui.components.Strongbox;
+import it.polimi.ingsw.client.gui.components.Warehouse;
+import it.polimi.ingsw.common.reducedmodel.*;
+import javafx.beans.value.ObservableValue;
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TabPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -28,15 +59,18 @@ public class PlaygroundController extends GuiController {
         ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
 
         Production prod = new Production();
+        prod.setStyle("-fx-background-image: url('/assets/gui/playerboard/baseproduction.png');" +
+                "-fx-background-position: center center;" +
+                "-fx-alignment: center;" +
+                "-fx-background-repeat: stretch;" +
+                "-fx-opacity: 1;" +
+                "-fx-background-size: 100 100;");
         prod.setProduction(p1);
 
-        Warehouse w = new Warehouse();
-        List<ReducedResourceContainer> containers = new ArrayList<>();
-        containers.add(new ReducedResourceContainer(0, 1, Map.of("Coin", 1), "Coin"));
-        containers.add(new ReducedResourceContainer(0, 2, Map.of("Shield", 2), "Shield"));
-        containers.add(new ReducedResourceContainer(0, 3, Map.of(), null));
 
-        w.setWarehouseShelves(containers);
+        Warehouse warehouse = new Warehouse();
+        warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getLocalPlayerNickname()));
+
         
         Map<String, Integer> content = new HashMap<>();
         content.put("Coin", 1);
@@ -50,6 +84,7 @@ public class PlaygroundController extends GuiController {
         ReducedResourceContainer c = new ReducedResourceContainer(0, -1, content, null);
 
         s.setContent(c);
+
 
         ReducedDevCard card = gui.getViewModel().getDevelopmentCard(0).orElseThrow();
 
@@ -66,10 +101,13 @@ public class PlaygroundController extends GuiController {
         guicard3.setRequirement(card.getCost());
         guicard3.setVictoryPoints(12+"");
 
+        List<DevSlot> slots = new ArrayList<>();
         DevSlot slot = new DevSlot();
         slot.setDevCards(List.of(guicard, guicard2, guicard3));
+        slots.add(slot);
+        slots.add(new DevSlot());
 
-        Playerboard pboard = new Playerboard(w, s, prod, slot);
+        Playerboard pboard = new Playerboard(warehouse, s, prod, slots);
 
         canvas.getChildren().add(pboard);
 
@@ -78,9 +116,40 @@ public class PlaygroundController extends GuiController {
         AnchorPane.setLeftAnchor(pboard, 0d);
         AnchorPane.setRightAnchor(pboard, 0d);
 
+        Button left = new Button();
+//        left.setAlignment(Pos.BOTTOM_LEFT);
+        left.setText("Market");
+        left.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
+            try {
+                gui.setRoot(getClass().getResource("/assets/gui/market.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        canvas.getChildren().add(left);
+
+        Button right = new Button();
+//        right.setAlignment(Pos.CENTER_RIGHT);
+        right.setText("Grid");
+//        right.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
+//            try {
+//                gui.setRoot("grid");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+        canvas.getChildren().add(right);
+        AnchorPane.setRightAnchor(canvas.getChildren().get(2), 0.0);
+//        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), this.canvas.getHeight()/2);
+//        AnchorPane.setBottomAnchor(canvas.getChildren().get(2), 100.0);
+
+
+
         canvas.setBorder(new Border(new BorderStroke(Color.PINK,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
     }
+
 }
