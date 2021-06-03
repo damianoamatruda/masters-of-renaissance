@@ -205,6 +205,19 @@ public class Cli extends EventDispatcher {
         return input;
     }
 
+    public int promptInt(String prompt) {
+        int value;
+        while (true) {
+            String input = prompt(prompt);
+            try {
+                value = Integer.parseInt(input);
+                break;
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return value;
+    }
+
     public PrintStream getOut() {
         return out;
     }
@@ -261,9 +274,10 @@ public class Cli extends EventDispatcher {
         offline = false;
     }
 
+    // TODO: Maybe make it a component, like Menu
     Map<String, Integer> promptResources(int replaceable, List<String> allowedReplacements) {
         Map<String, Integer> replacedRes = new HashMap<>();
-        
+
         this.getOut().println("These are the resources you can replace blanks with:");
         allowedReplacements.forEach(n -> this.getOut().println(n));
 
@@ -281,7 +295,7 @@ public class Cli extends EventDispatcher {
 
             while (count < 1) {
                 input = this.prompt("Amount replaced (> 0, B to go back):");
-            
+
                 if (input.equalsIgnoreCase("B"))
                     break;
                 try {

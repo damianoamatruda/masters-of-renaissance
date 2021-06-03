@@ -31,26 +31,26 @@ public class SetupResourcesState extends CliState {
     public void on(Cli cli, ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Resources setup: ErrAction received with reason not LATE_SETUP_ACTION.");
-            
+
         if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
     }
 
-    // ErrObjectNotOwned handled in clistate
-    // ErrNoSuchEntity handled in clistate
-    // ErrResourceReplacement handled in clistate
-    // ErrReplacedTransRecipe handled in clistate
-    // ErrInitialChoice handled in clistate
-    // ErrResourceTransfer handled in clistate
+    // ErrObjectNotOwned handled in CliState
+    // ErrNoSuchEntity handled in CliState
+    // ErrResourceReplacement handled in CliState
+    // ErrReplacedTransRecipe handled in CliState
+    // ErrInitialChoice handled in CliState
+    // ErrResourceTransfer handled in CliState
 
     @Override
     public void on(Cli cli, UpdateAction event) {
         if (event.getAction() != ActionType.CHOOSE_RESOURCES)
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
-        if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
+        if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
@@ -71,16 +71,12 @@ public class SetupResourcesState extends CliState {
         String input = "";
         while (!input.equalsIgnoreCase("Y")) {
             input = cli.prompt("Which container? (Input an ID, or else Enter to skip)");
+
             if (input.isEmpty())
                 break;
 
             try {
                 container = Integer.parseInt(input);
-            //    int finalContainer = container;
-            //    if(cache.getContainers().stream().filter(c -> c.getId() == finalContainer).findAny().isEmpty()) {
-            //        cli.getOut().println("You do not own this container. Try again");
-            //        continue;
-            //    };
             } catch (NumberFormatException e) {
                 cli.getOut().println("Please input an integer.");
                 continue;
@@ -88,20 +84,13 @@ public class SetupResourcesState extends CliState {
 
             resource = cli.prompt("Resource type");
 
-            input = cli.prompt("Resource amount");
-            try {
-                amount = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                cli.getOut().println("Please input an integer.");
-                continue;
-            }
+            amount = cli.promptInt("Resource amount");
 
-            if(shelves.containsKey(container)) {
-                if(shelves.get(container).containsKey(resource)) {
+            if (shelves.containsKey(container)) {
+                if (shelves.get(container).containsKey(resource))
                     shelves.get(container).replace(resource, shelves.get(container).get(resource) + amount);
-                } else {
+                else
                     shelves.get(container).put(resource, amount);
-                }
             } else {
                 Map<String, Integer> resourceMapping = new HashMap<>();
                 resourceMapping.put(resource, amount);

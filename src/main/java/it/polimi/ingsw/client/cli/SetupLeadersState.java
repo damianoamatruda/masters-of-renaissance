@@ -38,14 +38,9 @@ public class SetupLeadersState extends CliState {
 
         int chosen = 0;
         while (chosen < vm.getLocalPlayerData().getSetup().getChosenLeadersCount()) {
-            String input = cli.prompt((leadersToChoose - chosen) + " leader cards left to be chosen");
-            try {
-                int id = Integer.parseInt(input);
-                leaders.add(id);
-                chosen++;
-            } catch (NumberFormatException e) {
-                cli.getOut().println("Please input a numerical ID.");
-            }
+            int id = cli.promptInt((leadersToChoose - chosen) + " leader cards left to be chosen");
+            leaders.add(id);
+            chosen++;
         }
 
         cli.dispatch(new ReqChooseLeaders(leaders));
@@ -55,8 +50,8 @@ public class SetupLeadersState extends CliState {
     public void on(Cli cli, ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
-            
-        if (cli.getViewModel().getCurrentPlayer() == cli.getViewModel().getLocalPlayerNickname())
+
+        if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());

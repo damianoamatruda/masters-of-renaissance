@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.*;
 
@@ -18,45 +19,20 @@ public class BuyDevelopmentCardState extends CliState {
         ViewModel vm = cli.getViewModel();
 
         ReducedDevCardGrid grid = vm.getDevCardGrid();
-        new DevCardGrid(grid).render(cli);
 
+        new DevCardGrid(grid).render(cli);
         cli.showWarehouseShelves(vm.getLocalPlayerNickname());
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
-        cli.getOut().println("\nChoose parameters:");
-        //prompt for parameters
-        final Map<Integer, Map<String, Integer>> shelves;
-        int level = 0, slot = 0;
-
         String color = cli.prompt("Card color");
-        boolean isNumber = false;
-        while (!isNumber) {
-            try {
-                String input = cli.prompt("Card level");
-                level = Integer.parseInt(input);
-                isNumber = true;
-            } catch (NumberFormatException e) {
-                cli.getOut().println("Please input an integer.");
-            }
-        }
+        int level = cli.promptInt("Card level");
+        int slot = cli.promptInt("Player board slot to assign to the card");
 
-        isNumber = false;
-        while (!isNumber) {
-            try {
-                String input = cli.prompt("Player board slot to assign to the card");
-                slot = Integer.parseInt(input);
-                isNumber = true;
-            } catch (NumberFormatException e) {
-                cli.getOut().println("Please input an integer.");
-            }
-        }
-
-        int lev = level;
         ReducedDevCard card = grid.getGrid().get(color).stream()
                 .filter(Objects::nonNull).map(Stack::peek)
                 .map(id -> vm.getDevelopmentCard(id).orElse(null))
                 .filter(Objects::nonNull)
-                .filter(c -> c.getLevel() == lev).findAny().orElseThrow();
+                .filter(c -> c.getLevel() == level).findAny().orElseThrow();
         Map<String, Integer> cost = new HashMap<>(card.getCost().getRequirements());
 
         cli.getOut().println("Resources need to be paid.");
@@ -65,10 +41,10 @@ public class BuyDevelopmentCardState extends CliState {
         cli.showWarehouseShelves(vm.getLocalPlayerNickname());
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
-        List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(c -> c.getId()).toList();
-        shelves = cli.promptShelves(cost, allowedShelvesIDs);
+        List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).toList();
 
-        //build request event
+        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(cost, allowedShelvesIDs);
+
         cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));
     }
 

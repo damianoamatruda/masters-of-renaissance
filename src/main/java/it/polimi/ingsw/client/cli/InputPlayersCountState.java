@@ -20,12 +20,9 @@ public class InputPlayersCountState extends CliState {
         boolean isNumber = false;
         while (!isNumber) {
             try {
-                String input = cli.prompt("You are the first player of the match. Please choose the players count");
-                count = Integer.parseInt(input);
-                
+                count = cli.promptInt("You are the first player of the match. Please choose the players count");
                 if (count <= 0)
                     throw new NumberFormatException();
-                
                 isNumber = true;
             } catch (NumberFormatException e) {
                 cli.getOut().println("Please input an integer greater than 0.");

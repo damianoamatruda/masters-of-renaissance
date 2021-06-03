@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.Menu;
-import it.polimi.ingsw.common.events.mvevents.*;
+import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class TurnBeforeActionState extends CliTurnState {
         entries.put('1', new Menu.Entry("Take market resources", cli1 -> cli.setState(new TakeFromMarketState())));
         entries.put('2', new Menu.Entry("Buy a card", cli1 -> cli.setState(new BuyDevelopmentCardState())));
         entries.put('3', new Menu.Entry("Activate production", cli1 -> cli.setState(new ActivateProductionsState())));
-        entries.put('L', new Menu.Entry("Leader action", this::leaderAction));
+        entries.put('L', new Menu.Entry("Leader actions", this::leaderActions));
         entries.put('S', new Menu.Entry("Swap shelves", this::swapShelves));
 
         new Menu(entries).render(cli);

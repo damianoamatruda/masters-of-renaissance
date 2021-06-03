@@ -11,15 +11,9 @@ public class TurnAfterActionState extends CliTurnState {
     @Override
     public void render(Cli cli) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('L', new Menu.Entry("Leader action", this::leaderAction));
+        entries.put('L', new Menu.Entry("Leader actions", this::leaderActions));
         entries.put('S', new Menu.Entry("Swap shelves", this::swapShelves));
         entries.put('E', new Menu.Entry("End turn", this::endTurn));
-
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         new Menu(entries).render(cli);
     }

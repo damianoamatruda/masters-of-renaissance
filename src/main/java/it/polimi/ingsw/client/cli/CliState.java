@@ -239,8 +239,8 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateSetupDone event) {
         cli.getViewModel().setSetupDone(true);
-
-        cli.getOut().println("All players have finished their setup! Game starting...");
+        if (cli.getViewModel().getPlayerNicknames().size() > 1)
+            cli.getOut().println("All players have finished their setup! Game starting...");
     }
 
     public void on(Cli cli, UpdateVaticanSection event) {

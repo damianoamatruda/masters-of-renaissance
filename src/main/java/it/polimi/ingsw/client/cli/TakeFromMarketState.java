@@ -20,7 +20,6 @@ public class TakeFromMarketState extends CliState {
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
-
         // print market and shelves
         new Market(vm.getMarket()).render(cli);
         cli.showWarehouseShelves(vm.getLocalPlayerNickname());
@@ -32,29 +31,25 @@ public class TakeFromMarketState extends CliState {
         int index = -1;
         String input;
 
-        // get user input, parse row/col and index
         while (!isValid) {
             isValid = true;
+
             input = cli.prompt("[row/col]");
             
-            if(input.equalsIgnoreCase("row"))
+            if (input.equalsIgnoreCase("row"))
                 isRow = true;
-            else if(!(input.equalsIgnoreCase("col"))) {
+            else if (!input.equalsIgnoreCase("col"))
                 isValid = false;
-            }
         }
         isValid = false;
 
         while (!isValid) {
-            input = cli.prompt("Index (1-based)");
-            
             try {
-                index = Integer.parseInt(input) - 1;
-
+                index = cli.promptInt("Number") - 1;
                 if (index >= 0)
                     isValid = true;
             } catch (Exception e) {
-                cli.getOut().println("Please input an integer.");
+                cli.getOut().println("Please input an integer greater than 0.");
             }
         }
 

@@ -1,61 +1,38 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.Menu;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public abstract class CliTurnState extends CliState {
     private int leaderId;
 
-    public void leaderAction(Cli cli) {
-        String input;
-        do {
-            input = cli.prompt("Leader action. A = Activate, D = Discard");
-        } while (!input.toUpperCase().startsWith("A") && !input.toUpperCase().startsWith("D"));
+    public void leaderActions(Cli cli) {
+        cli.getOut().println(Cli.center("\n\nLeader actions:\n"));
 
-        boolean isActivate = input.toUpperCase().startsWith("A");
+        Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
+        entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeAction(cli, true)));
+        entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeAction(cli, false)));
 
-        while (true) {
-            input = cli.prompt("Which leader?");
-            try {
-                leaderId = Integer.parseInt(input);
-                cli.dispatch(new ReqLeaderAction(leaderId, isActivate));
-                break;
-            } catch (NumberFormatException e) {
-                cli.getOut().println("Please input an integer.");
-            }
-        }
+        new Menu(entries).render(cli);
+    }
+
+    private void executeAction(Cli cli, boolean isActivate) {
+        leaderId = cli.promptInt("Leader");
+        cli.dispatch(new ReqLeaderAction(leaderId, isActivate));
     }
 
     void swapShelves(Cli cli) {
         cli.getOut().println("Swapping shelves:");
-
         cli.showWarehouseShelves(cli.getViewModel().getLocalPlayerNickname());
 
-        int shelfid1, shelfid2;
-        boolean isValid = false;
-
-
-        while (!isValid) {
-            String input = cli.prompt("Choose shelf 1");
-            try {
-                shelfid1 = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                cli.getOut().println("Please input an integer.");
-                continue;
-            }
-
-            input = cli.prompt("Choose shelf 2");
-            try {
-                shelfid2 = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                cli.getOut().println("Please input an integer.");
-                continue;
-            }
-
-            isValid = true;
-            cli.dispatch(new ReqSwapShelves(shelfid1, shelfid2));
-        }
+        int shelfId1 = cli.promptInt("First shelf");
+        int shelfId2 = cli.promptInt("Second shelf");
+        cli.dispatch(new ReqSwapShelves(shelfId1, shelfId2));
     }
 
     @Override
