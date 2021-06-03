@@ -24,9 +24,7 @@ public class ResourceContainer extends StringComponent {
 
         if (reducedResourceContainer.getContent().size() > 0) {
             stringBuilder.append("Content:\n");
-
-            reducedResourceContainer.getContent().forEach((key, value) ->
-                    stringBuilder.append(String.format("  %s: %d%n", new Resource(key).getString(cli), value)));
+            stringBuilder.append(new ResourceMap(reducedResourceContainer.getContent()).getString(cli));
         } else
             stringBuilder.append("(Empty)\n");
 

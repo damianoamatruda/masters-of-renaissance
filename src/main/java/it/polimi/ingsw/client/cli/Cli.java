@@ -2,8 +2,8 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
-import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainer;
+import it.polimi.ingsw.client.cli.components.ResourceMap;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.Network;
@@ -329,7 +329,7 @@ public class Cli extends EventDispatcher {
                 allocResCount = 0;
         while (allocResCount < totalResCount) { // does not check for overshooting
             out.println("\nRemaining:");
-            totalRes.forEach((key, value) -> out.printf("%s: %d%n", new Resource(key).getString(this), value));
+            new ResourceMap(totalRes).render(this);
             out.println();
 
             int count = 0, shelfID = -1;
