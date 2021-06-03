@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Resource extends ImageView {
+    private String name;
     public Resource() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/resource.fxml"));
         fxmlLoader.setRoot(this);
@@ -21,12 +22,17 @@ public class Resource extends ImageView {
     }
 
     public void setResourceType(String resourceName) {
+        this.name = resourceName;
         try {
             Image bg = new Image(Objects.requireNonNull(getClass().getResource(String.format("/assets/gui/resourcetypes/%s.png", resourceName.toLowerCase()))).toExternalForm());
             this.setImage(bg);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(String.format("No image file for resource '%s'.", resourceName));
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public static String getMarblePath(String type) {

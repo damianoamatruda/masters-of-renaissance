@@ -1,10 +1,16 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.cli.Cli;
+import it.polimi.ingsw.client.cli.SetupResourcesState;
+import it.polimi.ingsw.client.cli.TurnBeforeActionState;
+import it.polimi.ingsw.client.cli.WaitingAfterTurnState;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import javafx.css.PseudoClass;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -85,8 +91,31 @@ public class SetupLeadersController extends GuiController {
     @Override
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
+        if(gui.isOffline()) {
+            try {
+                gui.setRoot("market");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void on(Gui gui, UpdateAction event) {
+        super.on(gui, event);
+        if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS)
+            throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
+
+        int choosable = gui.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
+
         try {
-            gui.setRoot("market");
+            if (choosable > 0) {
+                gui.setRoot("setupresources");
+            }
+            else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+                gui.setRoot("playground");
+            else
+                gui.setRoot("playground");
         } catch (IOException e) {
             e.printStackTrace();
         }

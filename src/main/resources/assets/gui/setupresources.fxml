@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import it.polimi.ingsw.client.gui.components.Title?>
+<?import it.polimi.ingsw.client.gui.components.Warehouse?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="it.polimi.ingsw.client.gui.SetupResourcesController"
+            fx:id="window"
+            id="body" stylesheets="@mainmenu.css">
+
+  <center>
+    <VBox alignment="CENTER">
+      <VBox alignment="CENTER">
+        <VBox.margin>
+          <Insets bottom="40.0"/>
+        </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@logo.png"/>
+        </ImageView>
+      </VBox>
+      <Title fx:id="titleComponent" maxWidth="-Infinity">
+        <VBox.margin>
+          <Insets bottom="30.0"/>
+        </VBox.margin>
+      </Title>
+      <HBox fx:id="resourceTypesContainer"/>
+      <Warehouse fx:id="warehouse"/>
+      <padding>
+        <Insets bottom="80.0"/>
+      </padding>
+      <Button fx:id="choiceButton" onMouseClicked="#handleChoice" prefWidth="250.0" text="Choose">
+        <VBox.margin>
+          <Insets top="20.0"/>
+        </VBox.margin>
+      </Button>
+    </VBox>
+  </center>
+</BorderPane>

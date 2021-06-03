@@ -71,7 +71,7 @@
     {
       "initialFaithPoints": 0,
       "chosenLeadersCount": 2,
-      "initialResources": 0,
+      "initialResources": 3,
       "initialExcludedResources": [
         "Faith"
       ]
