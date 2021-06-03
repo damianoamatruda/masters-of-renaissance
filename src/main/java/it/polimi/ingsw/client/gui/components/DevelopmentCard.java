@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.backend.model.DevCardColor;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
@@ -11,6 +13,13 @@ public class DevelopmentCard extends Card {
 
     public DevelopmentCard(String color) {
         super(color);
+    }
+
+    public DevelopmentCard(ReducedDevCard card) {
+        super(card.getColor());
+        setRequirement(card.getCost());
+        setProduction(Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow());
+        setVictoryPoints(card.getVictoryPoints()+"");
     }
 
     public void setData(int level, DevCardColor color) {

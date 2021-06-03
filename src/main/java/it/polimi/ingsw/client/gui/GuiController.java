@@ -113,6 +113,7 @@ public abstract class GuiController implements Initializable {
         gui.getViewModel().setFaithTrack(event.getFaithTrack());
         gui.getViewModel().setDevCardColors(event.getColors());
         gui.getViewModel().setResourceTypes(event.getResourceTypes());
+        gui.getViewModel().setSlotsCount(event.getSlotsCount());
 
         gui.getViewModel().setResumedGame(event.isResumed());
     }

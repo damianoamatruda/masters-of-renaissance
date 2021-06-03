@@ -44,8 +44,8 @@ public class SoloGame extends Game {
     public SoloGame(Player player, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                     List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                     List<ActionToken> actionTokens, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
-                    int maxObtainableDevCards) {
-        super(List.of(player), colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxObtainableDevCards);
+                    int maxObtainableDevCards, int slotsCount) {
+        super(List.of(player), colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxObtainableDevCards, slotsCount);
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;
@@ -62,6 +62,7 @@ public class SoloGame extends Game {
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 faithTrack.reduce(),
+                slotsCount,
                 actionTokens.stream().map(ActionToken::reduce).toList(),
                 view != null));
         dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));

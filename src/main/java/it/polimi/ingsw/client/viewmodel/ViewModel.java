@@ -32,6 +32,7 @@ public class ViewModel {
     private List<ReducedResourceTransactionRecipe> productions;
     private List<ReducedResourceType> resourceTypes;
     private String winner;
+    private int slotsCount;
 
     /**
      * Class constructor.
@@ -478,5 +479,13 @@ public class ViewModel {
      */
     public void setLocalPlayerNickname(String localPlayerNickname) {
         this.localPlayerNickname = localPlayerNickname;
+    }
+
+    public int getSlotsCount() {
+        return slotsCount;
+    }
+
+    public void setSlotsCount(int slotsCount) {
+        this.slotsCount = slotsCount;
     }
 }

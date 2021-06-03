@@ -64,7 +64,7 @@ public class SoloGameTest {
                         return null;
                     }
                 }
-        ), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), track, 7);
+        ), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), track, 7, 3);
 
     }
 

@@ -6,42 +6,25 @@ import java.util.*;
 
 import it.polimi.ingsw.client.gui.components.DevSlot;
 import it.polimi.ingsw.client.gui.components.DevelopmentCard;
-import it.polimi.ingsw.client.gui.components.LeaderCard;
-import it.polimi.ingsw.client.gui.components.Market;
 import it.polimi.ingsw.client.gui.components.Playerboard;
 import it.polimi.ingsw.client.gui.components.Production;
 import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
-import it.polimi.ingsw.common.reducedmodel.*;
-import javafx.beans.value.ObservableValue;
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
-import java.net.URL;
-import java.util.*;
 
 public class PlaygroundController extends GuiController {
     @FXML
@@ -87,26 +70,42 @@ public class PlaygroundController extends GuiController {
         s.setContent(c);
 
 
-        ReducedDevCard card = gui.getViewModel().getDevelopmentCard(0).orElseThrow();
-
-        DevelopmentCard guicard = new DevelopmentCard(card.getColor());
-        guicard.setProduction(p1);
-        guicard.setRequirement(card.getCost());
-        guicard.setVictoryPoints(12+"");
-        DevelopmentCard guicard2 = new DevelopmentCard(card.getColor());
-        guicard2.setProduction(p1);
-        guicard2.setRequirement(card.getCost());
-        guicard2.setVictoryPoints(12+"");
-        DevelopmentCard guicard3 = new DevelopmentCard(card.getColor());
-        guicard3.setProduction(p1);
-        guicard3.setRequirement(card.getCost());
-        guicard3.setVictoryPoints(12+"");
-
+//        ReducedDevCard card = gui.getViewModel().getDevelopmentCard(0).orElseThrow();
+//
+//        DevelopmentCard guicard = new DevelopmentCard(card.getColor());
+//        guicard.setProduction(p1);
+//        guicard.setRequirement(card.getCost());
+//        guicard.setVictoryPoints(12+"");
+//        DevelopmentCard guicard2 = new DevelopmentCard(card.getColor());
+//        guicard2.setProduction(p1);
+//        guicard2.setRequirement(card.getCost());
+//        guicard2.setVictoryPoints(12+"");
+//        DevelopmentCard guicard3 = new DevelopmentCard(card.getColor());
+//        guicard3.setProduction(p1);
+//        guicard3.setRequirement(card.getCost());
+//        guicard3.setVictoryPoints(12+"");
+//
+//        List<DevSlot> slots = new ArrayList<>();
+//        DevSlot slot = new DevSlot();
+//        slot.setDevCards(List.of(guicard, guicard2, guicard3));
+//        slots.add(slot);
+//        slots.add(new DevSlot());
         List<DevSlot> slots = new ArrayList<>();
-        DevSlot slot = new DevSlot();
-        slot.setDevCards(List.of(guicard, guicard2, guicard3));
-        slots.add(slot);
-        slots.add(new DevSlot());
+
+        List<List<Integer>> modelSlots = gui.getViewModel().getPlayerData(gui.getViewModel().getLocalPlayerNickname()).getDevSlots();
+        for (List<Integer> modelSlot : modelSlots) {
+            DevSlot slot = new DevSlot();
+
+            List<DevelopmentCard> cards = modelSlot.stream()
+                    .map(i -> new DevelopmentCard(gui.getViewModel().getDevelopmentCard(i).orElseThrow()))
+                    .toList();
+            slot.setDevCards(cards);
+
+            slots.add(slot);
+        }
+        for(int i = 0; i < gui.getViewModel().getSlotsCount() - modelSlots.size(); i++){
+            slots.add(new DevSlot());
+        }
 
         Playerboard pboard = new Playerboard(warehouse, s, prod, slots);
 
@@ -153,7 +152,6 @@ public class PlaygroundController extends GuiController {
         AnchorPane.setRightAnchor(canvas.getChildren().get(3), 0.0);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), this.canvas.getHeight()/2);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(2), 100.0);
-
 
 
         canvas.setBorder(new Border(new BorderStroke(Color.PINK,

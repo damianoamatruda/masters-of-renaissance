@@ -17,6 +17,7 @@ public class UpdateGame extends ViewEvent {
     private final List<ReducedActionToken> actionTokens;
     private final ReducedFaithTrack faithTrack;
     private final boolean resumed;
+    private final int slotsCount;
 
     /**
      * Class constructor.
@@ -40,6 +41,7 @@ public class UpdateGame extends ViewEvent {
                       List<ReducedResourceContainer> resContainers,
                       List<ReducedResourceTransactionRecipe> productions,
                       ReducedFaithTrack faithTrack,
+                      int slotsCount,
                       List<ReducedActionToken> actionTokens,
                       boolean resumed) {
         super(view);
@@ -53,6 +55,7 @@ public class UpdateGame extends ViewEvent {
         this.resourceTypes = resourceTypes;
         this.faithTrack = faithTrack;
         this.resumed = resumed;
+        this.slotsCount = slotsCount;
     }
 
     public UpdateGame(List<String> players,
@@ -62,9 +65,10 @@ public class UpdateGame extends ViewEvent {
                       List<ReducedResourceContainer> resContainers,
                       List<ReducedResourceTransactionRecipe> productions,
                       ReducedFaithTrack faithTrack,
+                      int slotsCount,
                       List<ReducedActionToken> actionTokens,
                       boolean resumed) {
-        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, faithTrack, actionTokens, resumed);
+        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, faithTrack, slotsCount, actionTokens, resumed);
     }
 
     /**
@@ -132,5 +136,9 @@ public class UpdateGame extends ViewEvent {
 
     public ReducedFaithTrack getFaithTrack() {
         return faithTrack;
+    }
+
+    public int getSlotsCount() {
+        return slotsCount;
     }
 }

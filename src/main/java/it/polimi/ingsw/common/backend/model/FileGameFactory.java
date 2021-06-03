@@ -101,7 +101,8 @@ public class FileGameFactory implements GameFactory {
                 new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
                 buildMarket(),
                 buildFaithTrack(),
-                maxDevCards
+                maxDevCards,
+                slotsCount
         );
     }
 
@@ -126,7 +127,8 @@ public class FileGameFactory implements GameFactory {
                 new DevCardGrid(developmentCards, levelsCount, devCardColorMap.size()),
                 buildMarket(),
                 buildFaithTrack(),
-                maxDevCards
+                maxDevCards,
+                slotsCount
         );
     }
 

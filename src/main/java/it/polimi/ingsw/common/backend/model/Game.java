@@ -54,6 +54,8 @@ public class Game extends EventDispatcher {
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
+    protected int slotsCount;
+
     /**
      * Constructor of Game instances.
      *  @param players               the list of nicknames of players who joined
@@ -71,7 +73,7 @@ public class Game extends EventDispatcher {
     public Game(List<Player> players, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market,
-                FaithTrack faithTrack, int maxObtainableDevCards) {
+                FaithTrack faithTrack, int maxObtainableDevCards, int slotsCount) {
         if (players.size() == 0)
             throw new IllegalArgumentException(); // TODO: Add description
 
@@ -89,6 +91,7 @@ public class Game extends EventDispatcher {
 
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
+        this.slotsCount = slotsCount;
 
         this.players.forEach(p -> p.addEventListener(UpdatePlayer.class, this::dispatch));
         this.players.forEach(p -> p.addEventListener(UpdateLeadersHandCount.class, this::dispatch));
@@ -113,6 +116,7 @@ public class Game extends EventDispatcher {
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
                 faithTrack.reduce(),
+                slotsCount,
                 null, /* actionTokens not sent */
                 view != null));
         dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
