@@ -27,12 +27,9 @@ public class ResourceMap extends StringComponent {
             i++;
         }
         if (reducedResourceMap.size() % 2 != 0) {
-//            req += " ".repeat(25);
-            stringBuilder.append(req).append(" ".repeat(25));
-
-            stringBuilder.append("\n");
+            req += " ".repeat(25);
+            stringBuilder.append(req).append("\n");
         }
-
 
         return stringBuilder.toString();
     }

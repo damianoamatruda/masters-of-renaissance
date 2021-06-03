@@ -31,6 +31,7 @@ public class DevelopmentCard extends StringComponent {
             List<String> s = Arrays.stream(new ResourceRequirement(reducedDevCard.getCost()).getString(cli).split("\\R"))
                     .filter(st -> !st.contains("\r") && !st.startsWith("\n"))
                     .map(st -> st.replaceFirst(" ".repeat(17), ""))
+                    .map(st -> st.length() == 34 ? st + " ".repeat(17) : st)
                     .toList();
             column.addAll(s);
             cli.getViewModel().getProduction(reducedDevCard.getProduction()).ifPresent(p ->
