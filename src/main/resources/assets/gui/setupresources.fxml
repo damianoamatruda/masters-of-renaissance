@@ -30,7 +30,7 @@
         </VBox.margin>
       </Title>
       <HBox fx:id="resourceTypesContainer"/>
-      <Warehouse fx:id="warehouse"/>
+      <Warehouse fx:id="warehouse" alignment="CENTER"/>
       <padding>
         <Insets bottom="80.0"/>
       </padding>

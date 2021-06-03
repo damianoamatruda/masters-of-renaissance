@@ -5,28 +5,46 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 public class Shelf extends HBox {
     private int shelfId;
+    private int size;
+    private HBox content = new HBox();
 
     public Shelf(ReducedResourceContainer shelf) {
         this.shelfId = shelf.getId();
+        this.size = shelf.getSize();
+        this.setSpacing(20);
+        this.setMaxWidth(400);
+
+        content.setPrefHeight(100);
+        content.setPrefWidth(300);
+        content.setStyle("-fx-background-image: url('/assets/gui/playerboard/warehouseshelf.png');" +
+                "-fx-background-position: center center;" +
+                "-fx-background-repeat: stretch;" +
+                "-fx-alignment: center;" +
+                "-fx-opacity: 1;" +
+                "-fx-background-size: 300 100;");
+
+        this.getChildren().add(new Text("Size: " + shelf.getSize()));
+        this.getChildren().add(content);
     }
 
     public void addResource(String resource) {
         Resource r = new Resource();
         r.setResourceType(resource);
-        this.getChildren().add(r);
+        ((HBox) this.getChildren().get(1)).getChildren().add(r);
         r.setPreserveRatio(true);
 
         r.setOnDragDetected((event) -> {
-                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(r.getImage());
-                    content.putString(shelfId+"");
-                    db.setContent(content);
-                    event.consume();
-                }
+                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(r.getImage());
+                content.putString(shelfId+"");
+                db.setContent(content);
+                event.consume();
+            }
         );
     }
 
@@ -34,7 +52,11 @@ public class Shelf extends HBox {
         return shelfId;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     public void removeResource() {
-        this.getChildren().remove(this.getChildren().size() - 1);
+        ((HBox) this.getChildren().get(1)).getChildren().remove(((HBox) this.getChildren().get(1)).getChildren().size() - 1);
     }
 }

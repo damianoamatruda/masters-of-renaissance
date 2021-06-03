@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.*;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.css.PseudoClass;
@@ -10,6 +12,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -77,19 +80,20 @@ public class SetupResourcesController extends GuiController {
                             int id = ((Shelf) shelf).getShelfId();
                             String resource = ((Resource) event.getGestureSource()).getName();
 
-                            try {
-                                int amount = selection.get(id).get(resource) + 1;
-                                selection.get(id).put(resource, amount);
-                                success = true;
-                            } catch (NullPointerException e) {
-                                if(selection.get(id) == null || selection.get(id).keySet().size() == 0) {
-                                    Map<String, Integer> entry = new HashMap<>();
-                                    entry.put(resource, 1);
-                                    selection.put(id, entry);
+                            if(selection.get(id) == null || selection.get(id).get(resource) == null ||((Shelf) shelf).getSize() > selection.get(id).get(resource))
+                                try {
+                                    int amount = selection.get(id).get(resource) + 1;
+                                    selection.get(id).put(resource, amount);
                                     success = true;
-                                }
+                                } catch (NullPointerException e) {
+                                    if(selection.get(id) == null || selection.get(id).keySet().size() == 0) {
+                                        Map<String, Integer> entry = new HashMap<>();
+                                        entry.put(resource, 1);
+                                        selection.put(id, entry);
+                                        success = true;
+                                    }
 
-                            }
+                                }
                             if(success) warehouse.refreshShelfAdd(id, resource);
                             updateChoiceButton();
 
@@ -98,7 +102,6 @@ public class SetupResourcesController extends GuiController {
                         }
                     }
                     if(db.hasString() && success) {
-                        success = false;
                         int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                         String resource = ((Resource) event.getGestureSource()).getName();
 
@@ -109,7 +112,6 @@ public class SetupResourcesController extends GuiController {
                             selection.get(id).remove(resource);
 
                         warehouse.refreshShelfRemove(id, resource);
-                        success = false;
                     }
                     event.setDropCompleted(success);
                     event.consume();
@@ -141,8 +143,8 @@ public class SetupResourcesController extends GuiController {
                     updateChoiceButton();
 
                     success = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
                 }
 
                 event.setDropCompleted(success);
@@ -161,5 +163,17 @@ public class SetupResourcesController extends GuiController {
 
     public void handleChoice() {
         Gui.getInstance().dispatch(new ReqChooseResources(selection));
+    }
+
+    @Override
+    public void on(Gui gui, UpdateAction event) {
+        super.on(gui, event);
+        if(gui.isOffline()) {
+            try {
+                gui.setRoot("playground");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

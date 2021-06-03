@@ -32,14 +32,8 @@ public class Warehouse extends VBox {
         if(shelves != null) {
             for (ReducedResourceContainer shelf : shelves) {
                 Shelf content = new Shelf(shelf);
-                content.setPrefHeight(100);
-                content.setPrefWidth(300);
-                content.setStyle("-fx-background-image: url('/assets/gui/playerboard/warehouseshelf.png');" +
-                        "-fx-background-position: center center;" +
-                        "-fx-background-repeat: stretch;" +
-                        "-fx-alignment: center;" +
-                        "-fx-opacity: 1;" +
-                        "-fx-background-size: 300 100;");
+                content.setAlignment(Pos.CENTER);
+
                 for(String resource : shelf.getContent().keySet()) {
                     HBox entry = new HBox();
 
@@ -48,10 +42,7 @@ public class Warehouse extends VBox {
                     entry.maxHeight(maxRowHeight);
 
                     for(int i = 0; i < shelf.getContent().get(resource); i++) {
-                        Resource r = new Resource();
-                        r.setResourceType(resource);
-                        entry.getChildren().add(r);
-                        r.setPreserveRatio(true);
+                        content.addResource(resource);
                     }
 
                     content.getChildren().add(entry);
