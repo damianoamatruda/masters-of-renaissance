@@ -43,7 +43,7 @@ public class SetupResourcesController extends GuiController {
         resourceTypesContainer.setSpacing(40);
         resourceTypesContainer.setAlignment(Pos.CENTER);
 
-        choosableResources = vm.getResourceTypes();
+        choosableResources = vm.getResourceTypes().stream().filter(r -> r.isStorable() && !r.getName().equalsIgnoreCase("Faith")).toList();
 
         choosableResources.forEach(res -> {
             Resource r = new Resource();
