@@ -19,6 +19,8 @@ public class Strongbox extends StackPane {
     @FXML
     private GridPane grid;
 
+    private ReducedResourceContainer c;
+
     public Strongbox() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/strongbox.fxml"));
         fxmlLoader.setRoot(this);
@@ -29,9 +31,13 @@ public class Strongbox extends StackPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        this.prefWidthProperty().addListener((o, old, newP) -> { if (c != null) setContent(c); });
+        this.prefHeightProperty().addListener((o, old, newP) -> { if (c != null) setContent(c); });
     }
 
     public void setContent(ReducedResourceContainer c) {
+        this.c = c;
         grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(5));
         // grid.setGridLinesVisible(true);
@@ -72,6 +78,8 @@ public class Strongbox extends StackPane {
         while (grid.getRowConstraints().size() < sRows)
             grid.getRowConstraints().add(rc);
 
+        grid.getChildren().clear();
+        
         while (i.hasNext()) {
             Entry<String, Integer> e = i.next();
 
