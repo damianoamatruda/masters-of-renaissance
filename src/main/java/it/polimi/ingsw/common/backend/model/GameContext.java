@@ -64,6 +64,7 @@ public class GameContext extends EventDispatcher {
 
     public void start() {
         synchronized(lock) {
+            // TODO: Add logger
             // System.out.println("context.start, players:");
             // for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
             //     System.out.println(n);

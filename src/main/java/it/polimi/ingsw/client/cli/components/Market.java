@@ -54,6 +54,6 @@ public class Market implements Renderable {
         for (int i = 1; i <= width; i++) cli.getOut().printf("%-10s ", Cli.centerLine("^", 10));
         cli.getOut().print("\n" + " ".repeat(6));
         for (int i = 1; i <= width; i++) cli.getOut().printf("%-10s ", Cli.centerLine("" + i, 10));
-        System.out.println("\n");
+        cli.getOut().println();
     }
 }

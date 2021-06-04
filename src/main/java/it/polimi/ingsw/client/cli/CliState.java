@@ -15,8 +15,8 @@ public abstract class CliState implements Renderable {
     public abstract void render(Cli cli);
 
     // TODO review all error states
+
     public void on(Cli cli, ErrAction event) {
-        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrActiveLeaderDiscarded event) {
@@ -43,11 +43,9 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrNewGame event) {
-        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrNickname event) {
-        // handled by specific state, leave empty
     }
 
     public void on(Cli cli, ErrNoSuchEntity event) {
@@ -92,7 +90,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateAction event) {
-        // DON'T FORGET TO IMPLEMENT IN STATES
+        // TODO: IMPLEMENT IN STATES
     }
 
     public void on(Cli cli, UpdateActionToken event) {
@@ -117,8 +115,7 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateDevCardSlot event) {
         cli.getViewModel().getCurrentPlayerData().setDevSlot(event.getDevSlot(), event.getDevCard());
-
-        // TODO print
+        // TODO: print
     }
 
     public void on(Cli cli, UpdateFaithPoints event) {
@@ -126,7 +123,6 @@ public abstract class CliState implements Renderable {
             cli.getViewModel().setBlackCrossFP(event.getFaithPoints());
         else
             cli.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
-
         Map<String, Integer> points = cli.getViewModel().getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> cli.getViewModel().getPlayerData(nick).getFaithPoints()));
         new FaithTrack(cli.getViewModel().getFaithTrack(), points).render(cli);
@@ -134,7 +130,6 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateGameEnd event) {
         cli.getViewModel().setWinner(event.getWinner());
-        
         cli.getOut().println("Game ended!");
     }
 
@@ -150,7 +145,6 @@ public abstract class CliState implements Renderable {
         vm.setFaithTrack(event.getFaithTrack());
         vm.setDevCardColors(event.getColors());
         vm.setResourceTypes(event.getResourceTypes());
-
         vm.setResumedGame(event.isResumed());
 
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
@@ -164,7 +158,6 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateLastRound event) {
         cli.getViewModel().setLastRound();
-
         cli.getOut().println("Last round!");
     }
 
@@ -217,14 +210,12 @@ public abstract class CliState implements Renderable {
             event.getPlayerSetup(),
             event.getStrongbox(),
             event.getWarehouseShelves()));
-
         cli.getOut().printf("%s's containers:%n", event.getPlayer());
         vm.getPlayerShelves(event.getPlayer()).forEach(c -> new ResourceContainer(c).render(cli));
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
         cli.getViewModel().getPlayerData(event.getPlayer()).setActive(event.isActive());
-
         cli.getOut().printf("Player %s became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
     }
 
@@ -241,13 +232,11 @@ public abstract class CliState implements Renderable {
 
     public void on(Cli cli, UpdateVaticanSection event) {
         cli.getViewModel().setVaticanSection(event.getVaticanSection());
-
         cli.getOut().printf("Activated vatican section %d%n", event.getVaticanSection()); // TODO: improve
     }
 
     public void on(Cli cli, UpdateVictoryPoints event) {
         cli.getViewModel().getPlayerData(event.getPlayer()).setVictoryPoints(event.getVictoryPoints());
-
         cli.getOut().printf("Victory points for %s: %d.%n", event.getPlayer(), event.getVictoryPoints());
     }
 }

@@ -18,26 +18,27 @@ public class PlayOnlineController extends GuiController {
         String host = "";
         int port = -1;
 
-        boolean connected = false;
         try {
             host = args[0];
             port = Integer.parseInt(args[1]);
             System.out.printf("Connecting to %s...%n", server.getText());
             gui.startOnlineClient(host, port);
-            connected = true;
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.printf("%s is not a valid pair IP:port%n", server.getText());
+            return;
         } catch (NumberFormatException e) {
             System.out.printf("Port %s is not a valid port%n", args[1]);
+            return;
         } catch (UnknownHostException e) {
             System.out.printf("Don't know about host %s%n", host);
+            return;
         } catch (IOException e) {
             System.out.printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
+            return;
         }
 
-        if (connected)
-            gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
-                    controller.setTitle("Play Online"));
+        gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
+                controller.setTitle("Play Online"));
     }
 
     @FXML

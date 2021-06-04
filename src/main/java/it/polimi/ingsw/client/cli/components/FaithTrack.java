@@ -95,47 +95,44 @@ public class FaithTrack implements Renderable {
                 slimBottomRightCorner, boldUpwardsT, slimUpwardsT, boldHorizontalLine, slimHorizontalLine,
                 cellWidth, maxFaith, sectionTiles, yellowTiles, output);
 
-        try {
-            // Bonus points on the bottom of the track
-            output.append(" ");
-            List<Integer> overlapped = new ArrayList<>();
-            int index;
-            for (int i = 0; i <= maxFaith; i++) {
-                if (yellowTiles.contains(i) && sectionEnds.contains(i))
-                    overlapped.add(i);
-                if (yellowTiles.contains(i)) {
-                    index = yellowTiles.indexOf(i);
-                    output.append(String.format("%-15s", "\u001B[93m" + reducedFaithTrack.getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
-                } else if (sectionEnds.contains(i)) {
-                    output.append(String.format("%-15s", "\u001B[31m" + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
-                } else
-                    output.append("      ");
-            }
-            output.append("\n");
-            for (int i = 0; i <= maxFaith; i++) {
-                if (overlapped.contains(i))
-                    output.append(String.format("%-16s", "\u001B[31m+ " + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
-                else
-                    output.append("      ");
-            }
-            output.append("\n");
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Bonus points on the bottom of the track
+        output.append(" ");
+        List<Integer> overlapped = new ArrayList<>();
+        int index;
+        for (int i = 0; i <= maxFaith; i++) {
+            if (yellowTiles.contains(i) && sectionEnds.contains(i))
+                overlapped.add(i);
+            if (yellowTiles.contains(i)) {
+                index = yellowTiles.indexOf(i);
+                output.append(String.format("%-15s", "\u001B[93m" + reducedFaithTrack.getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
+            } else if (sectionEnds.contains(i)) {
+                output.append(String.format("%-15s", "\u001B[31m" + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+            } else
+                output.append("      ");
         }
+        output.append("\n");
+        for (int i = 0; i <= maxFaith; i++) {
+            if (overlapped.contains(i))
+                output.append(String.format("%-16s", "\u001B[31m+ " + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+            else
+                output.append("      ");
+        }
+        output.append("\n");
 
         // Print the result
-        System.out.println(output);
+        cli.getOut().println(output);
     }
 
     private void printTrackHorizontalBorder(String boldLeftCorner, String slimLeftCorner, String boldRightCorner,
                                             String slimRightCorner, String boldT, String slimT, String boldHorizontalLine,
                                             String slimHorizontalLine, int cellWidth, int maxFaith, List<Integer> sectionTiles,
                                             List<Integer> yellowTiles, StringBuilder output) {
-        //First tile
+        // First tile
         if (yellowTiles.contains(0) && sectionTiles.contains(0)) output.append("\033[38;5;208m");
         else if (yellowTiles.contains(0)) output.append("\u001B[93m");
         else if (sectionTiles.contains(0)) output.append("\u001B[31m");
         output.append(sectionTiles.contains(0) ? boldLeftCorner : slimLeftCorner);
+
         // Middle tiles
         for (int i = 0; i < maxFaith; i++) {
             if (yellowTiles.contains(i)) output.append("\u001B[93m");
@@ -150,7 +147,8 @@ public class FaithTrack implements Renderable {
             else if (sectionTiles.contains(i + 1) || sectionTiles.contains(i)) output.append("\u001B[31m");
             output.append((sectionTiles.contains(i + 1) || (i > 0 && sectionTiles.contains(i))) ? boldT : slimT);
         }
-        //Last tile
+
+        // Last tile
         if (yellowTiles.contains(maxFaith)) output.append("\u001B[93m");
         else if (sectionTiles.contains(maxFaith)) output.append("\u001B[31m");
         else output.append("\u001B[0m");

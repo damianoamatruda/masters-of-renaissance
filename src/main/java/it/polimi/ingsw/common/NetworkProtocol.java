@@ -80,6 +80,7 @@ public class NetworkProtocol {
 
     public String processOutput(Event event) {
         String str = outputGson.toJson(event);
+        // TODO: Add logger
         System.out.println(str);
         return str;
     }

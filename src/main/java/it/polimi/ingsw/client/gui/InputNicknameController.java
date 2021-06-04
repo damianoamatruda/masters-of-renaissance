@@ -57,9 +57,8 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateGame event) {
         super.on(gui, event);
-        if (gui.isOffline()) {
+        if (gui.isOffline())
             System.out.println("Game started.");
-        }
     }
 
     @Override
