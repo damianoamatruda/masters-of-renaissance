@@ -138,6 +138,7 @@ public class Gui extends Application {
                 callback.accept(fxmlLoader.getController());
             Platform.runLater(() -> scene.setRoot(root));
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
