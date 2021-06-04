@@ -27,7 +27,7 @@
       <VBox alignment="CENTER" fx:id="canPrepare" visible="false">
         <Text>You can prepare a new game</Text>
         <Text/>
-        <HBox fx:id="playersCount" alignment="CENTER" spacing="10">
+        <HBox alignment="CENTER" spacing="10">
           <Label text="How many players? ">
             <HBox.margin>
               <Insets right="30.0"/>

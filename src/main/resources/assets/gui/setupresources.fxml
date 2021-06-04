@@ -12,7 +12,6 @@
             fx:controller="it.polimi.ingsw.client.gui.SetupResourcesController"
             fx:id="window"
             stylesheets="@index.css">
-
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">

@@ -11,9 +11,10 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,14 +40,14 @@ public class MarketController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        Image backBGImage = new Image(
+        /*Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
         
         BackgroundImage backBG = new BackgroundImage(backBGImage,
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
             new BackgroundSize(1.0, 1.0, true, true, false, true));
         Background bg = new Background(backBG);
-        this.canvas.setBackground(bg);
+        this.canvas.setBackground(bg);*/
 
         Gui gui = Gui.getInstance();
         ViewModel vm = gui.getViewModel();

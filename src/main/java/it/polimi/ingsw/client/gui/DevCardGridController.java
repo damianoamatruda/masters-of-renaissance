@@ -12,12 +12,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.image.Image;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,14 +51,14 @@ public class DevCardGridController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        Image backBGImage = new Image(
+        /*Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
         
         BackgroundImage backBG = new BackgroundImage(backBGImage,
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
             new BackgroundSize(1.0, 1.0, true, true, false, true));
         Background bg = new Background(backBG);
-        this.canvas.setBackground(bg);
+        this.canvas.setBackground(bg);*/
     
         Gui gui = Gui.getInstance();
         vm = gui.getViewModel();

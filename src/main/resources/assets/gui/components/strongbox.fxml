@@ -6,19 +6,15 @@
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="345.0" prefWidth="411.0" type="StackPane"
          xmlns="http://javafx.com/javafx/16" stylesheets="@../index.css">
-  <children>
-    <ImageView fx:id="background" fitHeight="345.0" fitWidth="411.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-        <Image url="@../playerboard/strongbox.png"/>
-      </image>
-    </ImageView>
-    <GridPane fx:id="grid">
-      <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-      </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
-   </children>
+  <ImageView fx:id="background" fitHeight="345.0" fitWidth="411.0" pickOnBounds="true" preserveRatio="true">
+    <Image url="@../playerboard/strongbox.png"/>
+  </ImageView>
+  <GridPane fx:id="grid">
+    <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+  </GridPane>
 </fx:root>
