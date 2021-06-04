@@ -20,12 +20,6 @@ public class SetupLeadersState extends CliState {
 
     @Override
     public void render(Cli cli) {
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-
         ViewModel vm = cli.getViewModel();
 
         if (vm.getLocalPlayerData().getLeadersHand() != null)

@@ -51,14 +51,13 @@ public class PlayOnlineState extends CliState {
 
         cli.getOut().println();
 
-        boolean connected = true;
+        boolean connected = false;
         try {
             cli.startOnlineClient(host, port);
+            connected = true;
         } catch (UnknownHostException e) {
-            connected = false;
             cli.getOut().printf("Don't know about host %s%n", host);
         } catch (IOException e) {
-            connected = false;
             cli.getOut().printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
         }
 
@@ -66,7 +65,7 @@ public class PlayOnlineState extends CliState {
             cli.setState(new InputNicknameState());
         else {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             } catch (InterruptedException ignored) {
             }
             cli.setState(new PlayOnlineState());

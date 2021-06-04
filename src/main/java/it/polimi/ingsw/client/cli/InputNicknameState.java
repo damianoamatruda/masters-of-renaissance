@@ -10,12 +10,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 public class InputNicknameState extends CliState{
     @Override
     public void render(Cli cli) {
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         String nickname;
 
         do {

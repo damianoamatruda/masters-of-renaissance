@@ -14,12 +14,6 @@ public class TurnBeforeActionState extends CliTurnState {
             return;
         }
 
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         cli.getOut().println(Cli.center("\n\nAvailable actions:\n"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();

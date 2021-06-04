@@ -12,11 +12,10 @@ public class GameEndState extends CliState {
 
         cli.dispatch(new ReqQuit());
 
-        // show game end message for a little longer
+        /* Show game end message for a little longer */
         try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.sleep(5000);
+        } catch (InterruptedException ignored) {
         }
     }
 }
