@@ -135,7 +135,7 @@ public class Gui extends Application {
         Parent root = fxmlLoader.load();
         if (callback != null)
             callback.accept(fxmlLoader.getController());
-        scene.setRoot(root);
+        Platform.runLater(() -> scene.setRoot(root));
     }
 
     void setRoot(URL fxml) throws IOException {
