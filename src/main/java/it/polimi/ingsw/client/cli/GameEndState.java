@@ -11,11 +11,6 @@ public class GameEndState extends CliState {
             cli.getOut().println(cli.getViewModel().getWinner() + " is the winner with " + cli.getViewModel().getPlayerData(cli.getViewModel().getWinner()).getVictoryPoints() + " points!");
 
         cli.dispatch(new ReqQuit());
-
-        /* Show game end message for a little longer */
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ignored) {
-        }
+        cli.pause();
     }
 }

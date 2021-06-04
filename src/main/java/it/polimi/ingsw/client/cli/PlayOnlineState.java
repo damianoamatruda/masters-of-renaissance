@@ -64,10 +64,7 @@ public class PlayOnlineState extends CliState {
         if (connected)
             cli.setState(new InputNicknameState());
         else {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ignored) {
-            }
+            cli.pause();
             cli.setState(new PlayOnlineState());
         }
     }
