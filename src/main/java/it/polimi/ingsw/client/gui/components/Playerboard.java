@@ -78,7 +78,9 @@ public class Playerboard extends HBox {
 
         setBackground();
 
-        storageColumn.add(w, 0, 1);
+        Group wh = new Group(w);
+
+        storageColumn.add(wh, 0, 1);
         storageColumn.add(s, 0, 3);
 
         board.add(p, 3, 1);
@@ -89,10 +91,6 @@ public class Playerboard extends HBox {
         }
 
         Group g = new Group(faithTrack);
-        // faithTrack.setLayoutX(-250);
-        // g.setAutoSizeChildren(true);
-        // g.setScaleX(g.getScaleX() * 0.85);
-        // g.setScaleY(g.getScaleY() * 0.85);
         board.add(g, 1, 0);
 
         leadersBox.getChildren().addAll(leaders);
@@ -126,7 +124,11 @@ public class Playerboard extends HBox {
         frontBG.setFitWidth(boardWidth);
         frontBG.setFitHeight(boardHeight);
 
-        scalePreservingRatio(w, storageColWidth, w.getPrefWidth() / w.getPrefHeight());
+        // scalePreservingRatio(w, storageColWidth, w.getPrefWidth() / w.getPrefHeight());
+        double whWidth = w.getWidth() > 0 ? w.getWidth() : w.getPrefWidth();
+        double whScaleFactor = storageColWidth / whWidth;
+        w.setScaleX(whScaleFactor);
+        w.setScaleY(whScaleFactor);
         
         scalePreservingRatio(s, storageColWidth, s.getPrefWidth() / s.getPrefHeight());
 
