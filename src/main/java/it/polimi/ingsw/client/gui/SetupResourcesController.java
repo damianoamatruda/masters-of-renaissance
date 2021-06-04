@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.css.PseudoClass;
@@ -175,11 +176,22 @@ public class SetupResourcesController extends GuiController {
         Gui.getInstance().dispatch(new ReqChooseResources(selection));
     }
 
+//    @Override
+//    public void on(Gui gui, UpdateAction event) {
+//        super.on(gui, event);
+//        if (event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
+//                && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+//            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+//    }
+
     @Override
-    public void on(Gui gui, UpdateAction event) {
+    public void on(Gui gui, UpdateSetupDone event) {
         super.on(gui, event);
-        if (event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
-                && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+
+        super.on(gui, event);
+        if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+
     }
 }

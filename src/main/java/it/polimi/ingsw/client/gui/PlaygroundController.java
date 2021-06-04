@@ -11,6 +11,8 @@ import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -130,4 +132,15 @@ public abstract class PlaygroundController extends GuiController {
 //        super.on(gui, event);
 //        pboard.updateFaithPoints(event);
 //    }
+
+
+    @Override
+    public void on(Gui gui, UpdateCurrentPlayer event) {
+        super.on(gui, event);
+        if(event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        else
+            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+
+    }
 }

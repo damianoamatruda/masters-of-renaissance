@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
+import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -108,10 +109,18 @@ public class SetupLeadersController extends GuiController {
 
             if (choosable > 0)
                 gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
-            else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-            else
-                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        }
+    }
+
+    @Override
+    public void on(Gui gui, UpdateSetupDone event) {
+        super.on(gui, event);
+
+        if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        else {
+            System.out.println(gui.getViewModel().getCurrentPlayer() + gui.getViewModel().getLocalPlayerNickname());
+            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
         }
     }
 
