@@ -19,7 +19,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -177,13 +176,8 @@ public class SetupResourcesController extends GuiController {
     @Override
     public void on(Gui gui, UpdateAction event) {
         super.on(gui, event);
-        if(event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
-                && event.getPlayer().equals(gui.getViewModel().getCurrentPlayer())) {
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        if (event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
+                && event.getPlayer().equals(gui.getViewModel().getCurrentPlayer()))
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 }

@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -38,7 +37,7 @@ public class MainMenuController extends GuiController {
     }
 
     @FXML
-    private void handlePlayOffline() throws IOException {
+    private void handlePlayOffline() {
         Gui gui = Gui.getInstance();
         gui.startOfflineClient();
         gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
@@ -46,17 +45,17 @@ public class MainMenuController extends GuiController {
     }
 
     @FXML
-    private void handlePlayOnline() throws IOException {
+    private void handlePlayOnline() {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playonline.fxml"));
     }
 
     @FXML
-    private void handleOptions() throws IOException {
+    private void handleOptions() {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/options.fxml"));
     }
 
     @FXML
-    private void handleQuit() throws IOException {
+    private void handleQuit() {
         Gui.getInstance().quit();
     }
 }

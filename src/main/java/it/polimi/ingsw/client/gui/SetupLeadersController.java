@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,17 +105,12 @@ public class SetupLeadersController extends GuiController {
 
         int choosable = gui.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
 
-        try {
-            if (choosable > 0) {
-                gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
-            }
-            else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-            else
-                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (choosable > 0)
+            gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
+        else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        else
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     private void updateChoiceButton() {

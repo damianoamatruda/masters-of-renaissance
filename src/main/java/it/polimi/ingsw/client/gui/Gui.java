@@ -130,15 +130,19 @@ public class Gui extends Application {
         offline = false;
     }
 
-    void setRoot(URL fxml, Consumer<?> callback) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(fxml);
-        Parent root = fxmlLoader.load();
-        if (callback != null)
-            callback.accept(fxmlLoader.getController());
-        Platform.runLater(() -> scene.setRoot(root));
+    void setRoot(URL fxml, Consumer<?> callback) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(fxml);
+            Parent root = fxmlLoader.load();
+            if (callback != null)
+                callback.accept(fxmlLoader.getController());
+            Platform.runLater(() -> scene.setRoot(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    void setRoot(URL fxml) throws IOException {
+    void setRoot(URL fxml) {
         setRoot(fxml, null);
     }
 

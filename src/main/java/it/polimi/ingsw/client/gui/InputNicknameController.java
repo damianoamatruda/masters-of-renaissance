@@ -48,14 +48,10 @@ public class InputNicknameController extends GuiController {
         if (gui.isOffline())
             gui.dispatch(new ReqNewGame(1));
         else
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
-                    controller.setBookedSeats(event.getBookedSeats());
-                    controller.setCanPrepareNewGame(event.canPrepareNewGame());
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            gui.setRoot(getClass().getResource("/assets/gui/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
+                controller.setBookedSeats(event.getBookedSeats());
+                controller.setCanPrepareNewGame(event.canPrepareNewGame());
+            });
     }
 
     @Override
@@ -69,12 +65,7 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
-        if (gui.isOffline()) {
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        if (gui.isOffline())
+            gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
     }
 }

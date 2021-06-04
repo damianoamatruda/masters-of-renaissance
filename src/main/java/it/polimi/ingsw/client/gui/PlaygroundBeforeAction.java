@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,25 +19,15 @@ public class PlaygroundBeforeAction extends PlaygroundController{
         Button left = new SButton();
 //        left.setAlignment(Pos.BOTTOM_LEFT);
         left.setText("Market");
-        left.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/market.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        left.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
+                gui.setRoot(getClass().getResource("/assets/gui/market.fxml")));
         canvas.getChildren().add(left);
 
         Button right = new SButton();
 //        right.setAlignment(Pos.CENTER_RIGHT);
         right.setText("Grid");
-        right.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            try {
-                gui.setRoot(getClass().getResource("/assets/gui/devcardgrid.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        right.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
+                gui.setRoot(getClass().getResource("/assets/gui/devcardgrid.fxml")));
         canvas.getChildren().add(right);
 
         AnchorPane.setLeftAnchor(left, 0d);
@@ -53,10 +42,6 @@ public class PlaygroundBeforeAction extends PlaygroundController{
     @Override
     public void on(Gui gui, UpdateAction event) {
         super.on(gui, event);
-        try {
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
     }
 }

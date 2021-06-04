@@ -11,8 +11,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
-
 public class WaitingBeforeGameController extends GuiController {
     @FXML
     private Text bookedSeats;
@@ -52,11 +50,7 @@ public class WaitingBeforeGameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
-        try {
-            gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
     }
 
     @Override

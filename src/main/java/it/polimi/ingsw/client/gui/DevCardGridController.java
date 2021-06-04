@@ -20,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -233,20 +232,12 @@ public class DevCardGridController extends GuiController {
     }
 
     private void back(MouseEvent mouseEvent) {
-        try {
-            Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     @Override
     public void on(Gui gui, UpdateAction event) {
         super.on(gui, event);
-        try {
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
     }
 }

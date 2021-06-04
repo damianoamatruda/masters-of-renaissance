@@ -11,7 +11,7 @@ public class PlayOnlineController extends GuiController {
     private TextField server;
 
     @FXML
-    private void handleServerInput() throws IOException {
+    private void handleServerInput() {
         Gui gui = Gui.getInstance();
 
         String[] args = server.getText().split(":");
