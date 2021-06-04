@@ -37,7 +37,7 @@ public class SetupLeadersController extends GuiController {
         if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()) == null)
             throw new RuntimeException();
 
-        titleComponent.setText(String.format("Choose %d leader cards.", gui.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()));
+        titleComponent.setText(String.format("Choose %d leader cards", gui.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()));
 
         leadersContainer.setSpacing(10);
         leadersContainer.setAlignment(Pos.CENTER);

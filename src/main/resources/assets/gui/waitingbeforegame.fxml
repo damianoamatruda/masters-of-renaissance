@@ -7,9 +7,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" id="body" stylesheets="@index.css"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController">
+            fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController"
+            stylesheets="@index.css">
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">
@@ -26,7 +27,7 @@
       <VBox alignment="CENTER" fx:id="canPrepare" visible="false">
         <Text>You can prepare a new game</Text>
         <Text/>
-        <HBox fx:id="playersCount" spacing="10">
+        <HBox fx:id="playersCount" alignment="CENTER" spacing="10">
           <Label text="How many players? ">
             <HBox.margin>
               <Insets right="30.0"/>

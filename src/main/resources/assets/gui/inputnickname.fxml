@@ -10,7 +10,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.InputNicknameController"
-            id="body" stylesheets="@index.css">
+            stylesheets="@index.css">
   <center>
     <VBox alignment="CENTER">
       <VBox alignment="CENTER">
@@ -23,7 +23,7 @@
       </VBox>
       <VBox maxWidth="-Infinity" prefHeight="0.0">
         <Label text="Nickname"/>
-        <TextField id="nickname" fx:id="nickname" prefWidth="400.0" maxWidth="400.0"/>
+        <TextField fx:id="nickname" prefWidth="400.0" maxWidth="400.0"/>
       </VBox>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>

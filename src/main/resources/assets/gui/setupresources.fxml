@@ -11,7 +11,7 @@
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.SetupResourcesController"
             fx:id="window"
-            id="body" stylesheets="@index.css">
+            stylesheets="@index.css">
 
   <center>
     <VBox alignment="CENTER">

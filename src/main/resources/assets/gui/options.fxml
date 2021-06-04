@@ -14,7 +14,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.OptionsController"
-            id="body" stylesheets="@index.css">
+            stylesheets="@index.css">
    <center>
       <VBox alignment="CENTER">
          <VBox alignment="CENTER">

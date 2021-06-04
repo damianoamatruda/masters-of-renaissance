@@ -14,7 +14,7 @@
     src: url('CaslonAntique-BoldItalic.ttf');
 }
 
-#body {
+.root {
     -fx-background-image: url('background.png');
     -fx-background-size: 500px;
     -fx-background-position: center;
@@ -22,11 +22,11 @@
     -fx-font-size: 22px;
 }
 
-Text {
+.text {
     -fx-font-family: 'Caslon Antique Bold';
 }
 
-Button, SButton {
+.button {
     -fx-background-color: #090a0c,
     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
     linear-gradient(rgb(26, 57, 109), #191d22),
@@ -40,7 +40,7 @@ Button, SButton {
     -fx-pref-height: 40px;
 }
 
-Button:hover, SButton:hover {
+.button:hover {
     -fx-background-color: #090a0c,
     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
     linear-gradient(rgb(26, 57, 109), #191d22),
@@ -48,7 +48,7 @@ Button:hover, SButton:hover {
     -fx-text-fill: linear-gradient(rgb(250, 236, 72) 60%, white);
 }
 
-Button:pressed, SButton:pressed {
+.button:pressed {
     -fx-background-color: #090a0c,
     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
     linear-gradient(rgb(26, 57, 109), #191d22),
@@ -56,25 +56,32 @@ Button:pressed, SButton:pressed {
     -fx-text-fill: linear-gradient(rgb(250, 236, 72), white);
 }
 
-TextField {
+.text-field {
     -fx-pref-height: 40px;
     -fx-border: 0;
     -fx-background-color: radial-gradient(center 50% 0%, radius 100%, rgba(255, 255, 255, 0.9), rgba(240, 240, 240, 0.9));
     -fx-padding: 6px;
 }
 
-TextField:focused {
+.text-field:focused {
     -fx-font-family: 'Caslon Antique';
 }
 
-Label {
+.label {
     -fx-font-size: 21px;
     -fx-text-fill: linear-gradient(rgb(26, 57, 109), rgb(26, 100, 179));
     -fx-padding: 0px 6px 0px 6px;
 }
 
-#playersCount {
-    -fx-alignment: center;
+.card {
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+    -fx-background-size: 166 251;
+}
+
+.card:selected {
+    -fx-border-color: linear-gradient(rgb(250, 236, 72) 70%, white);
+    -fx-border-width: 3px;
 }
 
 .blue {
@@ -107,16 +114,4 @@ Label {
 
 .discountleader {
     -fx-background-image: url('leadertemplates/discountleader.png');
-}
-
-LeaderCard, DevelopmentCard {
-    -fx-background-position: center center;
-    -fx-background-repeat: stretch;
-    -fx-opacity: 1;
-    -fx-background-size: 166 251;
-}
-
-LeaderCard:selected {
-    -fx-border-color: linear-gradient(rgb(250, 236, 72) 70%, white);
-    -fx-border-width: 3px;
 }
