@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 
 public abstract class Card extends Pane {
-    private static final int backgroundRadius = 40;
+    private static final double backgroundRadius = 16.6;
     @FXML
     protected Pane resourcePane;
     @FXML
