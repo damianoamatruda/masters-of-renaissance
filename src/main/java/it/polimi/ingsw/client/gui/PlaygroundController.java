@@ -136,9 +136,9 @@ public abstract class PlaygroundController extends GuiController {
 
     }
 
-    @Override
-    public void on(Gui gui, UpdateFaithPoints event) {
-        super.on(gui, event);
-        pboard.updateFaithPoints(event);
-    }
+//    @Override
+//    public void on(Gui gui, UpdateFaithPoints event) {
+//        super.on(gui, event);
+//        pboard.updateFaithPoints(event);
+//    }
 }

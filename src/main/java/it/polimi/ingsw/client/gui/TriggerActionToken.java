@@ -38,13 +38,11 @@ public class TriggerActionToken extends GuiController {
 
         AnchorPane.setTopAnchor(this.token, 200.0);
 
-
-
     }
 
 
     private String getTokenImage(ReducedActionToken token) {
-        return "/assets/gui/actiontokens/" + token.getKind() +
-                (token.getDiscardedDevCardColor() != null ? token.getDiscardedDevCardColor() : "") + ".png";
+        return "/assets/gui/actiontokens/" + token.getKind().toLowerCase() +
+                (token.getDiscardedDevCardColor() != null ? token.getDiscardedDevCardColor().toLowerCase() : "") + ".png";
     }
 }
