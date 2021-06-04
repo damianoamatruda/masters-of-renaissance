@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 
 public class Cli extends EventDispatcher {
     static final int width = 160;
@@ -34,10 +32,6 @@ public class Cli extends EventDispatcher {
     private final PrintStream out;
     private final Scanner in;
 
-    private final BlockingQueue<CliState> stateQueue;
-
-    private volatile boolean running;
-
     private InputStream gameConfigStream;
     private boolean offline;
 
@@ -48,14 +42,10 @@ public class Cli extends EventDispatcher {
 
         this.network = null;
 
-        this.stateQueue = new LinkedBlockingDeque<>();
-        this.stateQueue.add(new SplashState());
-
         this.viewModel = new ViewModel();
         this.out = System.out;
         this.in = new Scanner(System.in);
 
-        this.running = false;
         this.gameConfigStream = null;
         this.offline = false;
     }
@@ -94,27 +84,12 @@ public class Cli extends EventDispatcher {
     }
 
     public void start() {
-        running = true;
-        while (running) {
-            try {
-                state = stateQueue.take();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                running = false;
-                break;
-            }
-
-            clear();
-            out.println();
-            out.println(Cli.center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
-            state.render(this);
-        }
+        setState(new SplashState());
     }
 
     public void stop() {
         if (network != null)
             network.stop();
-        running = false;
     }
 
     public void registerOnMV(EventDispatcher view) {
@@ -242,7 +217,11 @@ public class Cli extends EventDispatcher {
      * @param state the next state
      */
     void setState(CliState state) {
-        stateQueue.add(state);
+        this.state = state;
+        clear();
+        out.println();
+        out.println(Cli.center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
+        state.render(this);
     }
 
     void clear() {
