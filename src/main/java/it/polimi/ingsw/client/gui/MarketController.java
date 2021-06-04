@@ -134,7 +134,7 @@ public class MarketController extends GuiController {
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
             if (db.hasImage()) {
-                event.acceptTransferModes(TransferMode.COPY);
+                event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
         }));
@@ -158,7 +158,6 @@ public class MarketController extends GuiController {
                 }
             }
             if(db.hasString() && success) {
-                success = false;
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                 String resource = ((Resource) event.getGestureSource()).getName();
 
@@ -169,15 +168,61 @@ public class MarketController extends GuiController {
                     selection.get(id).remove(resource);
 
                 warehouse.refreshShelfRemove(id, resource);
-                success = false;
             }
             event.setDropCompleted(success);
             event.consume();
         }));
 
+        setDnDCanvas();
+
         warehousePane.getChildren().clear();
         warehousePane.getChildren().add(warehouse);
     }
+
+    private void setDnDCanvas() {
+        this.canvas.setOnDragOver((event) -> {
+                Dragboard db = event.getDragboard();
+                if (db.hasImage()) {
+                    event.acceptTransferModes(TransferMode.ANY);
+                }
+                event.consume();
+            }
+        );
+        this.canvas.setOnDragDropped((event) -> {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                try {
+                    int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
+                    Resource res = (Resource) event.getGestureSource();
+                    String resource = res.getName();
+
+                    int amount = selection.get(id).get(res.getName()) - 1;
+                    if(amount > 0)
+                        selection.get(id).put(resource, amount);
+                    else
+                        selection.get(id).remove(resource);
+
+                    warehouse.refreshShelfRemove(id, resource);
+                    resourcesBox.getChildren().add(res);
+                    res.setOnDragDetected((evt) -> {
+                        Dragboard resdb = res.startDragAndDrop(TransferMode.ANY);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putImage(res.getImage());
+                        resdb.setContent(content);
+                        evt.consume();
+                    });
+
+                    success = true;
+                } catch (NumberFormatException | NullPointerException e) {
+//                    e.printStackTrace();
+                }
+
+                event.setDropCompleted(success);
+                event.consume();
+            }
+        );
+    }
+
 
     private void resetLeaders() {
         Gui gui = Gui.getInstance();
