@@ -336,6 +336,8 @@ public class Cli extends EventDispatcher {
             String res = "";
             while (!totalRes.containsKey(res)) {
                 res = this.prompt("Resource");
+                if (res.length() < 1)
+                    continue;
 
                 res = res.substring(0, 1).toUpperCase() + res.substring(1);
                 if (res.equalsIgnoreCase("B"))
