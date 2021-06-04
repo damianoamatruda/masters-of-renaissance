@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.MainTitle;
 import it.polimi.ingsw.client.cli.components.Menu;
 
 import java.util.LinkedHashMap;
@@ -8,9 +9,7 @@ import java.util.Map;
 public class MainMenuState extends CliState {
     @Override
     public void render(Cli cli) {
-        renderMainTitle(cli);
-        for (int i = 0; i < 2; i++)
-            cli.getOut().println();
+        new MainTitle().render(cli);
         renderMainMenu(cli);
     }
 

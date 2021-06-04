@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.cli.components.MainTitle;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,9 +15,7 @@ public class PlayOnlineState extends CliState {
 
     @Override
     public void render(Cli cli) {
-        renderMainTitle(cli);
-        for (int i = 0; i < 2; i++)
-            cli.getOut().println();
+        new MainTitle().render(cli);
 
         JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(OnlineClient.class.getResourceAsStream(jsonConfigPath))), JsonObject.class);
 

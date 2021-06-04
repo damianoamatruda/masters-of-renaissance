@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.MainTitle;
+
 public class SplashState extends CliState {
     @Override
     public void render(Cli cli) {
-        renderMainTitle(cli);
-        for (int i = 0; i < 2; i++)
-            cli.getOut().println();
+        new MainTitle().render(cli);
         renderCredits(cli);
         cli.getOut().println();
         renderCastle(cli);

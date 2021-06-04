@@ -11,10 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class CliState implements Renderable {
-    protected void renderMainTitle(Cli cli) {
-        cli.getOut().print(Cli.center(Cli.convertStreamToString(CliState.class.getResourceAsStream("/assets/cli/title.txt"))));
-    }
-
     @Override
     public abstract void render(Cli cli);
 
@@ -222,7 +218,7 @@ public abstract class CliState implements Renderable {
             event.getStrongbox(),
             event.getWarehouseShelves()));
 
-        cli.getOut().println(String.format("%s's containers:", event.getPlayer()));
+        cli.getOut().printf("%s's containers:%n", event.getPlayer());
         vm.getPlayerShelves(event.getPlayer()).forEach(c -> new ResourceContainer(c).render(cli));
     }
 
