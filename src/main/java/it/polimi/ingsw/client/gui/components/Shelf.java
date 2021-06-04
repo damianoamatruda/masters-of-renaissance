@@ -59,4 +59,13 @@ public class Shelf extends HBox {
     public void removeResource() {
         ((HBox) this.getChildren().get(1)).getChildren().remove(((HBox) this.getChildren().get(1)).getChildren().size() - 1);
     }
+
+    public int getContentSize() {
+        return content.getChildren().size();
+    }
+
+    public String getBoundResource() {
+        if (content.getChildren().size() <= 0) return null;
+        return ((Resource)content.getChildren().get(0)).getName();
+    }
 }

@@ -63,4 +63,8 @@ public class Warehouse extends VBox {
         Shelf shelf = shelves.get(id);
         shelf.removeResource();
     }
+
+    public Shelf getShelf(int id) {
+        return shelves.get(id);
+    }
 }

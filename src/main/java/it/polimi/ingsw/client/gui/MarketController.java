@@ -105,7 +105,7 @@ public class MarketController extends GuiController {
             selection.get(shelfID).put(resource, amount);
             success = true;
         } catch (NullPointerException e) {
-            if(selection.get(shelfID) == null || selection.get(shelfID).keySet().size() == 0) {
+            if(warehouse.getShelf(shelfID).getContentSize() == 0) {
                 Map<String, Integer> entry = new HashMap<>();
                 entry.put(resource, 1);
                 selection.put(shelfID, entry);
@@ -144,13 +144,17 @@ public class MarketController extends GuiController {
             boolean success = false;
             if (db.hasImage()) {
                 try {
-                    int id = ((Shelf) shelf).getShelfId();
+                    int shelfID = ((Shelf) shelf).getShelfId();
                     String resource = ((Resource) event.getGestureSource()).getName();
 
-                    success = putChoice(resource, id);
-                    if(success) {
-                        warehouse.refreshShelfAdd(id, resource);
-                        removeResourceFromBox(resource);
+                    Shelf s = warehouse.getShelf(shelfID);
+
+                    if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource))) {
+                        success = putChoice(resource, shelfID);
+                        if (success) {
+                            warehouse.refreshShelfAdd(shelfID, resource);
+                            removeResourceFromBox(resource);
+                        }
                     }
 
                 } catch (Exception e) { // TODO remove this catch once debugged
@@ -260,25 +264,22 @@ public class MarketController extends GuiController {
                         Dragboard db = event.getDragboard();
                         boolean success = false;
                         if (db.hasImage()) {
-                            try {
-                                int id = reducedLeader.getContainerId();
-                                String resource = ((Resource) event.getGestureSource()).getName();
-            
-                                success = putChoice(resource, id);
-                                if(success) { // TODO check edge cases, ex adding more than 2 resources
-                                    ReducedResourceContainer lCont = leaderCard.getContainer();
-                                    Map<String, Integer> content = lCont.getContent();
-                                    content.compute(resource, (k, v) -> v == null ? 1 : v++);
-                                    ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getBoundedResType());
+                            
+                            int id = reducedLeader.getContainerId();
+                            String resource = ((Resource) event.getGestureSource()).getName();
 
-                                    leaderCard.setDepotContent(newContainer, reducedLeader.getResourceType().getName());
+                            success = putChoice(resource, id);
+                            if(success) { // TODO check edge cases, ex adding more than 2 resources
+                                ReducedResourceContainer lCont = leaderCard.getContainer();
+                                Map<String, Integer> content = lCont.getContent();
+                                content.compute(resource, (k, v) -> v == null ? 1 : v++);
+                                ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getBoundedResType());
 
-                                    removeResourceFromBox(resource);
-                                }
-            
-                            } catch (Exception e) { // TODO remove this catch once debugged
-                                e.printStackTrace();
+                                leaderCard.setDepotContent(newContainer, reducedLeader.getResourceType().getName());
+
+                                removeResourceFromBox(resource);
                             }
+                                
                         }
                         if(db.hasString() && success) {
                             success = false;
