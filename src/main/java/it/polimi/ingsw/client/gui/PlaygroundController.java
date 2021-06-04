@@ -42,12 +42,7 @@ public abstract class PlaygroundController extends GuiController {
 
         ViewModel vm = gui.getViewModel();
 
-        Map<String, Integer> m1 = new HashMap<>();
-        Map<String, Integer> m2 = Map.of("shield", 2);
-        m1.put("coin", 1);
-        m1.put("Shield", 2);
-        m1.put("Servant", 2);
-        ReducedResourceTransactionRecipe p1 = new ReducedResourceTransactionRecipe(0, m1, 1, null, m2, 2, null, false);
+        int baseProdId = gui.getViewModel().getCurrentPlayerData().getBaseProduction();
 
         Production prod = new Production();
         prod.setStyle("-fx-background-image: url('/assets/gui/playerboard/baseproduction.png');" +
@@ -56,20 +51,12 @@ public abstract class PlaygroundController extends GuiController {
                 "-fx-background-repeat: stretch;" +
                 "-fx-opacity: 1;" +
                 "-fx-background-size: 100 100;");
-        prod.setProduction(p1);
+        prod.setProduction(gui.getViewModel().getProduction(baseProdId).orElseThrow());
 
 
         Warehouse warehouse = new Warehouse();
         warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()));
 
-        
-        Map<String, Integer> content = new HashMap<>();
-        content.put("Coin", 1);
-        content.put("Shield", 2);
-        content.put("Servant", 2);
-        content.put("Stone", 2);
-        content.put("zero", 2);
-        content.put("Faith", 2);
 
         Strongbox s = new Strongbox();
         int sbId = gui.getViewModel().getPlayerData(gui.getViewModel().getLocalPlayerNickname()).getStrongbox();
