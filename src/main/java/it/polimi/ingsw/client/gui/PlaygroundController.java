@@ -133,13 +133,4 @@ public abstract class PlaygroundController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
     }
-
-    @Override
-    public void on(Gui gui, UpdateFaithPoints event) {
-        super.on(gui, event);
-        if (event.isBlackCross())
-            ((FaithTrack) ((Group) canvas.getChildren().get(1)).getChildren().get(0)).updateBlackMarker(event.getFaithPoints());
-        else
-            ((FaithTrack) ((Group) canvas.getChildren().get(1)).getChildren().get(0)).updatePlayerMarker(event.getFaithPoints());
-    }
 }
