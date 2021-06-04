@@ -33,6 +33,7 @@ public class ViewModel {
     private List<ReducedResourceType> resourceTypes;
     private String winner;
     private int slotsCount;
+    private ReducedActionToken latestToken;
 
     /**
      * Class constructor.
@@ -487,5 +488,13 @@ public class ViewModel {
 
     public void setSlotsCount(int slotsCount) {
         this.slotsCount = slotsCount;
+    }
+
+    public ReducedActionToken getLatestToken() {
+        return latestToken;
+    }
+
+    public void setLatestToken(ReducedActionToken latestToken) {
+        this.latestToken = latestToken;
     }
 }

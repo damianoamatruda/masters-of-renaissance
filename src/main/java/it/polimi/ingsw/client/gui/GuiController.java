@@ -73,7 +73,8 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateActionToken event) {
-        // TODO: show (doesn't update the VM)
+        // TODO: show
+        gui.getViewModel().setLatestToken(gui.getViewModel().getActionToken(event.getActionToken()).orElseThrow());
     }
 
     public void on(Gui gui, UpdateBookedSeats event) {

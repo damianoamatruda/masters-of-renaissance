@@ -5,12 +5,21 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Text?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="it.polimi.ingsw.client.gui.TriggerActionToken"
+            prefHeight="400.0" prefWidth="600.0" fx:id="canvas"
+            id="body" stylesheets="@index.css">
 
-  <ImageView fx:id="token" layoutY="200" layoutX="300"/>
-  <Text fx:id="message" text="This token has been triggered." textAlignment="CENTER"/>
-  <Button fx:id="next" text="Next" alignment="BOTTOM_CENTER"/>
-
-</AnchorPane>
+  <center>
+    <VBox alignment="CENTER" spacing="30">
+      <Text fx:id="message" text="This token has been triggered." textAlignment="CENTER"/>
+      <ImageView fx:id="token" layoutY="200" layoutX="300"/>
+      <Button fx:id="next" text="Continue" alignment="BOTTOM_CENTER"/>
+      <padding>
+        <Insets bottom="80.0"/>
+      </padding>
+    </VBox>
+  </center>
+</BorderPane>
