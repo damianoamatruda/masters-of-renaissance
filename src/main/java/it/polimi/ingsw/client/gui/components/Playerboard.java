@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
+
 public class Playerboard extends HBox {
     @FXML private HBox canvas;
     @FXML private ImageView frontBG;
@@ -153,5 +156,12 @@ public class Playerboard extends HBox {
                 Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background.png")).toExternalForm());
 
         frontBG.setImage(frontBGImage);
+    }
+
+    public void updateFaithPoints(UpdateFaithPoints event) {
+        if (event.isBlackCross())
+            faithTrack.updateBlackMarker(event.getFaithPoints());
+        else if (Gui.getInstance().getViewModel().getLocalPlayerNickname().equals(event.getPlayer()))
+            faithTrack.updatePlayerMarker(event.getFaithPoints());
     }
 }

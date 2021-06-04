@@ -32,6 +32,8 @@ import javafx.scene.paint.Color;
 public abstract class PlaygroundController extends GuiController {
     @FXML
     protected AnchorPane canvas;
+    @FXML
+    protected Playerboard pboard;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -117,7 +119,7 @@ public abstract class PlaygroundController extends GuiController {
                 return leaderCard;
             }).toList();
 
-        Playerboard pboard = new Playerboard(warehouse, s, prod, slots, f, leaders);
+        pboard = new Playerboard(warehouse, s, prod, slots, f, leaders);
 
         canvas.getChildren().add(pboard);
 
@@ -134,16 +136,9 @@ public abstract class PlaygroundController extends GuiController {
 
     }
 
-//    @Override
-//    public void on(Gui gui, UpdateFaithPoints event) {
-//        try {
-//            super.on(gui, event);
-//            if (event.isBlackCross())
-//                ((FaithTrack) ((Group) canvas.getChildren().get(1)).getChildren().get(0)).updateBlackMarker(event.getFaithPoints());
-//            else
-//                ((FaithTrack) ((Group) canvas.getChildren().get(1)).getChildren().get(0)).updatePlayerMarker(event.getFaithPoints());
-//        } catch (Exception e) { //TODO remove catch after debugging
-//            e.printStackTrace();
-//        }
-//    }
+    @Override
+    public void on(Gui gui, UpdateFaithPoints event) {
+        super.on(gui, event);
+        pboard.updateFaithPoints(event);
+    }
 }
