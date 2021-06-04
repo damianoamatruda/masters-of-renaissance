@@ -10,6 +10,7 @@ import it.polimi.ingsw.client.gui.components.Playerboard;
 import it.polimi.ingsw.client.gui.components.Production;
 import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
@@ -37,6 +38,8 @@ public abstract class PlaygroundController extends GuiController {
         super.initialize(url, resourceBundle);
         Gui gui = Gui.getInstance();
 
+        ViewModel vm = gui.getViewModel();
+
         Map<String, Integer> m1 = new HashMap<>();
         Map<String, Integer> m2 = Map.of("shield", 2);
         m1.put("coin", 1);
@@ -55,7 +58,7 @@ public abstract class PlaygroundController extends GuiController {
 
 
         Warehouse warehouse = new Warehouse();
-        warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getLocalPlayerNickname()));
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()));
 
         
         Map<String, Integer> content = new HashMap<>();
@@ -73,24 +76,48 @@ public abstract class PlaygroundController extends GuiController {
 
         List<DevSlot> slots = new ArrayList<>();
 
-        List<List<Integer>> modelSlots = gui.getViewModel().getPlayerData(gui.getViewModel().getLocalPlayerNickname()).getDevSlots();
+        List<List<Integer>> modelSlots = vm.getPlayerData(vm.getLocalPlayerNickname()).getDevSlots();
         for (List<Integer> modelSlot : modelSlots) {
             DevSlot slot = new DevSlot();
 
             List<DevelopmentCard> cards = modelSlot.stream()
-                    .map(i -> new DevelopmentCard(gui.getViewModel().getDevelopmentCard(i).orElseThrow()))
+                    .map(i -> new DevelopmentCard(vm.getDevelopmentCard(i).orElseThrow()))
                     .toList();
             slot.setDevCards(cards);
 
             slots.add(slot);
         }
-        for(int i = 0; i < gui.getViewModel().getSlotsCount() - modelSlots.size(); i++){
+        for(int i = 0; i < vm.getSlotsCount() - modelSlots.size(); i++){
             slots.add(new DevSlot());
         }
 
-        FaithTrack f = new FaithTrack(gui.getViewModel().getFaithTrack());
-        
-        Playerboard pboard = new Playerboard(warehouse, s, prod, slots, f);
+        FaithTrack f = new FaithTrack(vm.getFaithTrack());
+
+        List<LeaderCard> leaders = vm.getPlayerData(vm.getLocalPlayerNickname()).getLeadersHand().stream()
+            .map(id -> vm.getLeaderCard(id).orElseThrow())
+            .map(reducedLeader -> {
+                LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
+                leaderCard.setLeaderId(reducedLeader.getId());
+                leaderCard.setLeaderType(reducedLeader.getLeaderType());
+                leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
+                leaderCard.setResourceType(reducedLeader.getResourceType().getName());
+                leaderCard.setRequirement(reducedLeader.getResourceRequirement());
+                leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
+
+                if(reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
+                    leaderCard.setZeroReplacement(reducedLeader.getResourceType());
+                else if(reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
+                    leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
+                else if(reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
+                    leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
+                else
+                    leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
+                            reducedLeader.getResourceType().getName());
+            
+                return leaderCard;
+            }).toList();
+
+        Playerboard pboard = new Playerboard(warehouse, s, prod, slots, f, leaders);
 
         canvas.getChildren().add(pboard);
 

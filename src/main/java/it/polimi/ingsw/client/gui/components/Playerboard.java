@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -13,13 +14,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class Playerboard extends StackPane {
-    @FXML
-    private final StackPane canvas;
-    @FXML
-    private GridPane board;
-    @FXML
-    private GridPane storageColumn;
+public class Playerboard extends HBox {
+    @FXML private HBox canvas;
+    @FXML private ImageView frontBG;
+    @FXML private GridPane board;
+    @FXML private GridPane storageColumn;
+    @FXML private VBox leadersBox;
 //    @FXML private Button left;
 //    @FXML private Button right;
 
@@ -28,17 +28,19 @@ public class Playerboard extends StackPane {
     private final Production p;
     private final List<DevSlot> slots;
     private final FaithTrack faithTrack;
+    private final List<LeaderCard> leaders;
 
     private final double bgPixelWidth = 908;
     private final double bgPixelHeight = 646;
     private final double bgRatio = bgPixelWidth / bgPixelHeight;
 
-    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots, FaithTrack faithTrack) {
+    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots, FaithTrack faithTrack, List<LeaderCard> leaders) {
         this.w = w;
         this.s = s;
         this.p = p;
         this.slots = slots;
         this.faithTrack = faithTrack;
+        this.leaders = leaders;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
         fxmlLoader.setRoot(this);
@@ -68,6 +70,8 @@ public class Playerboard extends StackPane {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
         faithTrack.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        leadersBox.setBorder(new Border(new BorderStroke(Color.RED,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setBackground();
 
@@ -87,6 +91,8 @@ public class Playerboard extends StackPane {
         // g.setScaleX(g.getScaleX() * 0.85);
         // g.setScaleY(g.getScaleY() * 0.85);
         board.add(g, 1, 0);
+
+        leadersBox.getChildren().addAll(leaders);
 
         changedSize(null, 0, 0);
 
@@ -114,6 +120,9 @@ public class Playerboard extends StackPane {
             storageColWidth = storageColumn.getWidth();
         }
 
+        frontBG.setFitWidth(boardWidth);
+        frontBG.setFitHeight(boardHeight);
+
         scalePreservingRatio(w, storageColWidth, w.getPrefWidth() / w.getPrefHeight());
         
         scalePreservingRatio(s, storageColWidth, s.getPrefWidth() / s.getPrefHeight());
@@ -128,12 +137,6 @@ public class Playerboard extends StackPane {
                 sl.getPrefWidth() / sl.getPrefHeight());  
         }
         
-        // double fth = board.getRowConstraints().get(0).getPercentHeight() / 100 * board.getHeight();
-        // double ftw = boardWidth;
-        // faithTrack.setMinWidth(ftw);
-        // faithTrack.setMaxWidth(ftw);
-        // faithTrack.setMinHeight(fth);
-        // faithTrack.setMaxHeight(fth);
         double ftWidth = faithTrack.getWidth() > 0 ? (faithTrack.getWidth()) : 1768;
         double ftScaleFactor = boardWidth / ftWidth;
         faithTrack.setScaleX(ftScaleFactor);
@@ -148,18 +151,7 @@ public class Playerboard extends StackPane {
     private void setBackground() {
         Image frontBGImage = new Image(
                 Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background.png")).toExternalForm());
-        /*Image backBGImage = new Image(
-            Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());*/
 
-        BackgroundImage frontBG = new BackgroundImage(frontBGImage,
-                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-                new BackgroundSize(1.0, 1.0, true, true, true, false));
-        /*BackgroundImage backBG = new BackgroundImage(backBGImage,
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-            new BackgroundSize(1.0, 1.0, true, true, false, true));
-        Background bg = new Background(backBG, frontBG);*/
-        Background bg = new Background(frontBG);
-        this.setBackground(bg);
+        frontBG.setImage(frontBGImage);
     }
-
 }
