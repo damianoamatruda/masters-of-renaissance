@@ -474,7 +474,7 @@ public class GameContext extends EventDispatcher {
                         return;
                     }
                 }
-                
+
                 try {
                     prodRequests.add(
                             new ProductionRequest(
@@ -482,6 +482,14 @@ public class GameContext extends EventDispatcher {
                                     translateResMap(r.getInputBlanksRep()),
                                     translateResMap(r.getOutputBlanksRep()),
                                     inputContainers, player.getStrongbox()));
+                } catch (IllegalResourceTransactionReplacementsException e) {
+                    // illegal replaced resources
+                    dispatch(new ErrResourceReplacement(view, e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
+                    return;
+                } catch (IllegalResourceTransactionContainersException e) {
+                    // amount of resources in replaced map is different from shelves mapping
+                    dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
+                    return;
                 } catch (NoSuchElementException e) {
                     dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
                     return;
