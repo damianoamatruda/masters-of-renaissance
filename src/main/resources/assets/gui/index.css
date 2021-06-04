@@ -74,9 +74,8 @@
 }
 
 .card {
-    -fx-background-position: center center;
     -fx-background-repeat: stretch;
-    -fx-background-size: 166 251;
+    -fx-background-size: cover;
 }
 
 .card:selected {

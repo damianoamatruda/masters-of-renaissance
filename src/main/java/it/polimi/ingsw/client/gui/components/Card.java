@@ -5,11 +5,13 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 
 public abstract class Card extends Pane {
+    private static final int backgroundRadius = 40;
     @FXML
     protected Pane resourcePane;
     @FXML
@@ -17,7 +19,7 @@ public abstract class Card extends Pane {
     protected Production prod;
     protected CardRequirement requirement;
 
-    protected Card(String type) {
+    public Card(String type) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(String.format("/assets/gui/components/%s.fxml", getFXMLName())));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -28,11 +30,19 @@ public abstract class Card extends Pane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        setWidth(getPrefWidth());
+        setHeight(getPrefHeight());
+
+        Rectangle r = new Rectangle(getWidth(), getHeight());
+        r.setArcHeight(backgroundRadius);
+        r.setArcWidth(backgroundRadius);
+        widthProperty().addListener(p -> r.setWidth(getWidth()));
+        heightProperty().addListener(p -> r.setWidth(getHeight()));
+        setShape(r);
     }
 
     protected abstract String getFXMLName();
-
-    public abstract String getBackground(String type);
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         this.prod = new Production();

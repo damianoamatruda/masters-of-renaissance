@@ -27,10 +27,6 @@ public class DevelopmentCard extends Card {
 //        this.level.setText(Integer.toString(level));
     }
 
-    public String getBackground(String color) {
-        return String.format("/assets/gui/devcardtemplates/%scard.png", color.toLowerCase());
-    }
-
     public void setLevel(int level){
         // should put as many dots to the side flags as the level of the card
     }
