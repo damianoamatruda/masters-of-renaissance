@@ -40,8 +40,8 @@ public class Strongbox extends StackPane {
         // background.setBorder(new Border(new BorderStroke(Color.PINK,
         //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        // background.setFitWidth(this.getPrefWidth());
-        // background.setFitHeight(this.getPrefHeight());
+        background.setFitWidth(this.getPrefWidth());
+        background.setFitHeight(this.getPrefHeight());
 
         double height = this.getPrefHeight(), // height of strongbox region
                width = this.getPrefWidth();

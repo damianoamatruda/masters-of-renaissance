@@ -60,11 +60,12 @@ public class DevCardGrid extends HBox {
                 guicard.setProduction(r);
                 guicard.setVictoryPoints(card.getVictoryPoints()+"");
 
-                guicard.setBorder(new Border(new BorderStroke(Color.BLUE,
-                    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                // guicard.setBorder(new Border(new BorderStroke(Color.BLUE,
+                //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
                 guicard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                     controllerListener.accept(card, guicard);
+                    mouseEvent.consume();
                 });
                 column.getChildren().add(guicard);
             }

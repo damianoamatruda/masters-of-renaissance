@@ -12,11 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Warehouse extends VBox {
-    private final int maxRowHeight;
+    private double maxRowHeight;
     private final Map<Integer, Shelf> shelves = new HashMap<>();
 
     public Warehouse() {
-        maxRowHeight = 100; //TODO parameterize
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/warehouse.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -29,6 +28,7 @@ public class Warehouse extends VBox {
     }
 
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves) {
+        maxRowHeight = getPrefHeight() / shelves.size(); // TODO: check that it works with more than 3 shelves
         if(shelves != null) {
             for (ReducedResourceContainer shelf : shelves) {
                 Shelf content = new Shelf(shelf);

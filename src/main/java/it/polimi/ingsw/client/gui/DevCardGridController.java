@@ -39,15 +39,15 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class DevCardGridController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     @FXML private AnchorPane canvas;
-    @FXML private Pane devCardGridPane;
-    @FXML private Pane warehousePane;
-    @FXML private Pane strongboxPane;
+    @FXML private StackPane devCardGridPane;
+    @FXML private HBox containersBox;
     @FXML private HBox devSlotsBox;
     @FXML private ChoiceBox<Integer> devSlotChoicePicker;
     @FXML private Button submitBtn;
@@ -85,16 +85,21 @@ public class DevCardGridController extends GuiController {
         devCardGrid.setGrid(vm.getDevCardGrid());
         devCardGrid.setControllerListener(this::devCardPressed);
         
-        devCardGrid.setBorder(new Border(new BorderStroke(Color.GREEN,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // devCardGrid.setBorder(new Border(new BorderStroke(Color.GREEN,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        devCardGridPane.setBorder(new Border(new BorderStroke(Color.RED,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-    
-        devCardGrid.setScaleX(0.5);
-        devCardGrid.setScaleY(0.5);
+        // devCardGridPane.setBorder(new Border(new BorderStroke(Color.RED,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        devCardGridPane.getChildren().add(new Group(devCardGrid));
+        // containersBox.setBorder(new Border(new BorderStroke(Color.RED,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        // doesn't actually do anything about the layoutBounds issue
+        Group g = new Group(devCardGrid);
+        g.setScaleX(0.9);
+        g.setScaleY(0.9);
+
+        devCardGridPane.getChildren().add(g);
 
         devSlotChoicePicker.getItems().addAll(List.of(0, 1, 2));
 
@@ -106,6 +111,11 @@ public class DevCardGridController extends GuiController {
         resetWarehouse();
         resetStrongbox();
         resetSlots();
+
+        // warehouse.setBorder(new Border(new BorderStroke(Color.BLUE,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // strongbox.setBorder(new Border(new BorderStroke(Color.GREEN,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         this.canvas.setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
@@ -180,22 +190,35 @@ public class DevCardGridController extends GuiController {
     private void resetWarehouse() {
         warehouse = new Warehouse();
 
+        warehouse.setPrefHeight(245);
+        warehouse.setPrefWidth(301);
+
         List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).getWarehouseShelves().stream()
             .map(id -> vm.getContainer(id).orElseThrow()).toList();
             
         warehouse.setWarehouseShelves(whShelves);
-
-        warehousePane.getChildren().clear();
-        warehousePane.getChildren().add(warehouse);
+        
+        if (containersBox.getChildren().size() >= 1)
+            containersBox.getChildren().remove(0);
+        containersBox.getChildren().add(0, warehouse);
+        // warehouse.setScaleX(0.62);
+        // warehouse.setScaleY(0.62);
     }
 
     private void resetStrongbox() {
         strongbox = new Strongbox();
+        
+        strongbox.setPrefHeight(245);
+        strongbox.setPrefWidth(291);
 
         strongbox.setContent(vm.getContainer(vm.getPlayerData(vm.getLocalPlayerNickname()).getStrongbox()).orElseThrow());
 
-        strongboxPane.getChildren().clear();
-        strongboxPane.getChildren().add(strongbox);
+        if (containersBox.getChildren().size() == 2)
+            containersBox.getChildren().remove(1);
+        containersBox.getChildren().add(strongbox);
+        
+        // strongbox.setScaleX(0.71);
+        // strongbox.setScaleY(0.71);
     }
 
     private void resetSlots() {
