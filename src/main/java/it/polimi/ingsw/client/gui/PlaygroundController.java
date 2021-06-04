@@ -70,9 +70,9 @@ public abstract class PlaygroundController extends GuiController {
         content.put("Faith", 2);
 
         Strongbox s = new Strongbox();
-        ReducedResourceContainer c = new ReducedResourceContainer(0, -1, content, null);
+        int sbId = gui.getViewModel().getPlayerData(gui.getViewModel().getLocalPlayerNickname()).getStrongbox();
 
-        s.setContent(c);
+        s.setContent(gui.getViewModel().getContainer(sbId).orElseThrow());
 
         List<DevSlot> slots = new ArrayList<>();
 
