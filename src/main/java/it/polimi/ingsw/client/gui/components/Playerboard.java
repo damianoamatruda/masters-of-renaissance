@@ -55,26 +55,26 @@ public class Playerboard extends HBox {
             throw new RuntimeException(exception);
         }
 
-        board.setGridLinesVisible(true);
-        board.setBorder(new Border(new BorderStroke(Color.RED,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // board.setGridLinesVisible(true);
+        // board.setBorder(new Border(new BorderStroke(Color.RED,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         
-        storageColumn.setGridLinesVisible(true);
-        storageColumn.setBorder(new Border(new BorderStroke(Color.GREEN,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // storageColumn.setGridLinesVisible(true);
+        // storageColumn.setBorder(new Border(new BorderStroke(Color.GREEN,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        w.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        s.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        p.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        slots.forEach(sl -> sl.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
-        faithTrack.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        leadersBox.setBorder(new Border(new BorderStroke(Color.RED,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // w.setBorder(new Border(new BorderStroke(Color.BLUE,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // s.setBorder(new Border(new BorderStroke(Color.BLUE,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // p.setBorder(new Border(new BorderStroke(Color.BLUE,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // slots.forEach(sl -> sl.setBorder(new Border(new BorderStroke(Color.BLUE,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
+        // faithTrack.setBorder(new Border(new BorderStroke(Color.BLUE,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // leadersBox.setBorder(new Border(new BorderStroke(Color.RED,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setBackground();
 
