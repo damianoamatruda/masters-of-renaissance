@@ -103,14 +103,16 @@ public class SetupLeadersController extends GuiController {
         if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS)
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
-        int choosable = gui.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
+        if(event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname())) {
+            int choosable = gui.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
 
-        if (choosable > 0)
-            gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
-        else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-        else
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+            if (choosable > 0)
+                gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
+            else if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+            else
+                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        }
     }
 
     private void updateChoiceButton() {
