@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -50,16 +51,18 @@ public class Playerboard extends StackPane {
     private Strongbox s;
     private Production p;
     private List<DevSlot> slots;
+    private FaithTrack faithTrack;
 
     private double bgPixelWidth = 908,
                    bgPixelHeight = 646,
                    bgRatio = bgPixelWidth / bgPixelHeight;
 
-    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots) {
+    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots, FaithTrack faithTrack) {
         this.w = w;
         this.s = s;
         this.p = p;
         this.slots = slots;
+        this.faithTrack = faithTrack;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
         fxmlLoader.setRoot(this);
@@ -87,6 +90,8 @@ public class Playerboard extends StackPane {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         slots.forEach(sl -> sl.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
+        faithTrack.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setBackground();
 
@@ -94,10 +99,20 @@ public class Playerboard extends StackPane {
         storageColumn.add(s, 0, 3);
 
         board.add(p, 3, 1);
+
         for(int i = 0; i < slots.size(); i++){
             slots.get(i).setAlignment(Pos.BOTTOM_CENTER);
-            board.add(slots.get(i), 5 + 2 * i, 1);
+            board.add(slots.get(i), 4 + i, 1);
         }
+
+        Group g = new Group(faithTrack);
+        // faithTrack.setLayoutX(-250);
+        // g.setAutoSizeChildren(true);
+        // g.setScaleX(g.getScaleX() * 0.85);
+        // g.setScaleY(g.getScaleY() * 0.85);
+        board.add(g, 1, 0);
+
+        changedSize(null, 0, 0);
 
         canvas = this;
         this.widthProperty().addListener(this::changedSize);
@@ -105,26 +120,53 @@ public class Playerboard extends StackPane {
     }
 
     private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-        if (this.getHeight() > 0 || this.getWidth() > 0) {
+        double boardWidth = 1050, boardHeight = 745,
+               storageColWidth = 232;
+
+        if (this.getHeight() > 0 && this.getWidth() > 0) {
             double newDimRatio = this.getWidth() / this.getHeight();
-            board.setMaxHeight(newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / (bgRatio));
-            board.setMaxWidth(newDimRatio > bgRatio ? this.getHeight() * (bgRatio) : this.getWidth());
-            
-//            scalePreservingRatio(w, storageColumn.getWidth(), w.getPrefWidth());
-            scalePreservingRatio(s, storageColumn.getWidth(), s.getPrefWidth());
-//
-//            scalePreservingRatio(p, board.getColumnConstraints().get(3).getPercentWidth() * board.getWidth() / 100, p.getMaxWidth());
-            slots.forEach(sl -> scalePreservingRatio(sl, board.getColumnConstraints().get(5).getPercentWidth() * board.getWidth() / 100, sl.getPrefWidth()));
+            double newBoardHeight = newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / bgRatio;
+            double newBoardWidth = newDimRatio > bgRatio ? this.getHeight() * bgRatio : this.getWidth();
+            board.setMinHeight(newBoardHeight);
+            board.setMinWidth(newBoardWidth);
+            board.setMaxHeight(newBoardHeight);
+            board.setMaxWidth(newBoardWidth);
         }
+        if (board.getHeight() > 0 && board.getWidth() > 0) {
+            boardWidth = board.getWidth();
+            boardHeight = board.getHeight();
+            storageColWidth = storageColumn.getWidth();
+        }
+
+        scalePreservingRatio(w, storageColWidth, w.getPrefWidth() / w.getPrefHeight());
+        
+        scalePreservingRatio(s, storageColWidth, s.getPrefWidth() / s.getPrefHeight());
+
+        scalePreservingRatio(p,
+            board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100,
+            p.getMaxWidth() / p.getMaxHeight());
+
+        for (DevSlot sl : slots) {
+            scalePreservingRatio(sl,
+                board.getColumnConstraints().get(5).getPercentWidth() * boardWidth / 100,
+                sl.getPrefWidth() / sl.getPrefHeight());  
+        }
+        
+        // double fth = board.getRowConstraints().get(0).getPercentHeight() / 100 * board.getHeight();
+        // double ftw = boardWidth;
+        // faithTrack.setMinWidth(ftw);
+        // faithTrack.setMaxWidth(ftw);
+        // faithTrack.setMinHeight(fth);
+        // faithTrack.setMaxHeight(fth);
+        double ftWidth = faithTrack.getWidth() > 0 ? (faithTrack.getWidth()) : 1768;
+        double ftScaleFactor = boardWidth / ftWidth;
+        faithTrack.setScaleX(ftScaleFactor);
+        faithTrack.setScaleY(ftScaleFactor);
     }
 
-    private static void scalePreservingRatio(Pane child,
-        double parentSizeLimit,
-        double childCorrespondingSize) {
-            
-            double scaleRatio = parentSizeLimit / childCorrespondingSize;
-            child.setScaleX(scaleRatio);
-            child.setScaleY(scaleRatio);
+    private static void scalePreservingRatio(Pane child, double parentSizeLimitWidth, double componentRatio) {
+        child.setPrefWidth(parentSizeLimitWidth);
+        child.setPrefHeight(parentSizeLimitWidth / componentRatio);
     }
 
     private void setBackground() {

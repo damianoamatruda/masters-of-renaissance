@@ -40,7 +40,12 @@ public class PlaygroundBeforeAction extends PlaygroundController{
             }
         });
         canvas.getChildren().add(right);
-        AnchorPane.setRightAnchor(canvas.getChildren().get(3), 0.0);
+
+        AnchorPane.setLeftAnchor(left, 0d);
+        AnchorPane.setTopAnchor(left, 0d);
+        AnchorPane.setRightAnchor(right, 0d);
+        AnchorPane.setTopAnchor(right, 0d);
+        // AnchorPane.setRightAnchor(canvas.getChildren().get(3), 0.0);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), this.canvas.getHeight()/2);
 //        AnchorPane.setBottomAnchor(canvas.getChildren().get(2), 100.0);
     }

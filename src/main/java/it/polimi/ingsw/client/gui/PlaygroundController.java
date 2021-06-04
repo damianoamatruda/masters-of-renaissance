@@ -87,7 +87,9 @@ public abstract class PlaygroundController extends GuiController {
             slots.add(new DevSlot());
         }
 
-        Playerboard pboard = new Playerboard(warehouse, s, prod, slots);
+        FaithTrack f = new FaithTrack(gui.getViewModel().getFaithTrack());
+        
+        Playerboard pboard = new Playerboard(warehouse, s, prod, slots, f);
 
         canvas.getChildren().add(pboard);
 
@@ -96,14 +98,6 @@ public abstract class PlaygroundController extends GuiController {
         AnchorPane.setLeftAnchor(pboard, 0d);
         AnchorPane.setRightAnchor(pboard, 0d);
 
-        FaithTrack f = new FaithTrack(gui.getViewModel().getFaithTrack());
-        Group g = new Group(f);
-        g.setAutoSizeChildren(true);
-        g.setScaleX(g.getScaleX() * 0.85);
-        g.setScaleY(g.getScaleY() * 0.85);
-        canvas.getChildren().add(g);
-        AnchorPane.setLeftAnchor(canvas.getChildren().get(1), -250.0);
-        AnchorPane.setTopAnchor(canvas.getChildren().get(1), -20.0);
 
         canvas.setBorder(new Border(new BorderStroke(Color.PINK,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
