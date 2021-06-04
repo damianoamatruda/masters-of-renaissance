@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.Menu;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 
 import java.util.LinkedHashMap;
@@ -24,6 +25,11 @@ public class TurnBeforeActionState extends CliTurnState {
         entries.put('S', new Menu.Entry("Swap shelves", this::swapShelves));
 
         new Menu(entries).render(cli);
+    }
+
+    @Override
+    public void on(Cli cli, UpdateAction event) {
+        cli.setState(new TurnBeforeActionState());
     }
 
     @Override
