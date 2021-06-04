@@ -88,7 +88,7 @@ public class SetupResourcesController extends GuiController {
                             int id = ((Shelf) shelf).getShelfId();
                             String resource = ((Resource) event.getGestureSource()).getName();
 
-                            if(selection.get(id) == null || selection.get(id).get(resource) == null ||((Shelf) shelf).getSize() > selection.get(id).get(resource))
+                            if(selection.get(id) == null || selection.get(id).get(resource) == null || ((Shelf) shelf).getSize() > selection.get(id).get(resource))
                                 try {
                                     int amount = selection.get(id).get(resource) + 1;
                                     selection.get(id).put(resource, amount);
@@ -120,6 +120,8 @@ public class SetupResourcesController extends GuiController {
                             selection.get(id).remove(resource);
 
                         warehouse.refreshShelfRemove(id, resource);
+                        updateChoiceButton();
+
                     }
                     event.setDropCompleted(success);
                     event.consume();
