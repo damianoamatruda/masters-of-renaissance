@@ -233,6 +233,11 @@ public class Cli extends EventDispatcher {
         in.nextLine();
     }
 
+    void promptPause() {
+        out.println("[Press ENTER to continue]");
+        pause();
+    }
+
     public void trackSlimLine() {
         for (int i = 0; i < width; i++)
             out.print("─");
@@ -241,6 +246,7 @@ public class Cli extends EventDispatcher {
 
     void repeatState(String s) {
         out.println(s);
+        promptPause();
         setState(this.state);
     }
 
