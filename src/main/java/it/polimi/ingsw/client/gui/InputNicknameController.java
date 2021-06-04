@@ -28,7 +28,7 @@ public class InputNicknameController extends GuiController {
     @FXML
     private void handleBack() throws IOException {
         Gui gui = Gui.getInstance();
-        Gui.getInstance().setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/multiplayer.fxml"));
+        Gui.getInstance().setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
     }
 
     public void setTitle(String value) {
