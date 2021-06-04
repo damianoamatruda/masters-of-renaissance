@@ -133,7 +133,7 @@ public abstract class CliState implements Renderable {
 
         Map<String, Integer> points = cli.getViewModel().getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> cli.getViewModel().getPlayerData(nick).getFaithPoints()));
-        new FaithTrack(cli.getViewModel().getFaithTrack(), points);
+        new FaithTrack(cli.getViewModel().getFaithTrack(), points).render(cli);
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
@@ -159,7 +159,7 @@ public abstract class CliState implements Renderable {
 
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));
-        new FaithTrack(cli.getViewModel().getFaithTrack(), points);
+        new FaithTrack(cli.getViewModel().getFaithTrack(), points).render(cli);
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
