@@ -15,7 +15,6 @@ public class OptionsState extends CliState {
         new MainTitle().render(cli);
 
         cli.getOut().println(Cli.center("Offline Play Config:"));
-        cli.getOut().println();
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('D', new Menu.Entry("Default Config", this::defaultConfig));

@@ -36,7 +36,7 @@ public class Server implements Network {
 
     public Server(int port, InputStream gameConfigStream) {
         this.port = port;
-        this.gameConfigStream = gameConfigStream;
+        this.gameConfigStream = gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath);
         this.executor = Executors.newCachedThreadPool();
         this.protocol = new NetworkProtocol();
         this.serverSocket = null;
@@ -77,6 +77,7 @@ public class Server implements Network {
         if (gameConfigPath != null) {
             try {
                 gameConfigStream = new FileInputStream(gameConfigPath);
+                System.out.println("Loaded custom config");
             } catch (FileNotFoundException e) {
                 System.err.printf("Couldn't access to file %s.%n", gameConfigPath);
                 return;
@@ -93,7 +94,7 @@ public class Server implements Network {
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
 
-        GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream(defaultGameConfigPath));
+        GameFactory gameFactory = new FileGameFactory(gameConfigStream);
         Lobby model = new Lobby(gameFactory);
         Controller controller = new Controller(model);
 
