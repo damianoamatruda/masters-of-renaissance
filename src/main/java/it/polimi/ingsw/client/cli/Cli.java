@@ -12,13 +12,11 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -40,6 +38,7 @@ public class Cli extends EventDispatcher {
 
     private volatile boolean running;
 
+    private InputStream gameConfigStream;
     private boolean offline;
 
     public Cli() {
@@ -57,6 +56,7 @@ public class Cli extends EventDispatcher {
         this.in = new Scanner(System.in);
 
         this.running = false;
+        this.gameConfigStream = null;
         this.offline = false;
     }
 
@@ -219,6 +219,11 @@ public class Cli extends EventDispatcher {
         return value;
     }
 
+    public File promptFile(String prompt) {
+        String path = prompt(prompt);
+        return new File(path);
+    }
+
     public PrintStream getOut() {
         return out;
     }
@@ -261,7 +266,7 @@ public class Cli extends EventDispatcher {
     }
 
     void startOfflineClient() {
-        network = new OfflineClient(view);
+        network = new OfflineClient(view, gameConfigStream);
         try {
             network.start();
         } catch (IOException ignored) {
@@ -423,6 +428,14 @@ public class Cli extends EventDispatcher {
     void quit() {
         stop();
         clear();
+    }
+
+    Optional<InputStream> getGameConfigStream() {
+        return Optional.ofNullable(gameConfigStream);
+    }
+
+    void setGameConfigStream(InputStream gameConfigStream) {
+        this.gameConfigStream = gameConfigStream;
     }
 
     boolean isOffline() {

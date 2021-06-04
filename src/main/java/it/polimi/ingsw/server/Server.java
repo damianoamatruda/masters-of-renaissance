@@ -12,8 +12,7 @@ import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
 import it.polimi.ingsw.common.events.netevents.*;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
@@ -25,17 +24,19 @@ import java.util.function.Supplier;
 
 public class Server implements Network {
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
-    private static final String gameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
+    private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
 
     private final int port;
+    private final InputStream gameConfigStream;
     private final ExecutorService executor;
     private final NetworkProtocol protocol;
     private ServerSocket serverSocket;
     // private final Map<Socket, View> views;
     private volatile boolean listening;
 
-    public Server(int port) {
+    public Server(int port, InputStream gameConfigStream) {
         this.port = port;
+        this.gameConfigStream = gameConfigStream;
         this.executor = Executors.newCachedThreadPool();
         this.protocol = new NetworkProtocol();
         this.serverSocket = null;
@@ -44,6 +45,8 @@ public class Server implements Network {
 
     public static void main(String[] args) {
         int port = -1;
+        String gameConfigPath = null;
+        InputStream gameConfigStream = null;
 
         Supplier<JsonObject> serverConfigSupplier = new Supplier<>() {
             private JsonObject object;
@@ -66,17 +69,31 @@ public class Server implements Network {
         if (port == -1)
             port = serverConfigSupplier.get().get("port").getAsInt();
 
+        if (arguments.contains("--config")) {
+            if (arguments.indexOf("--config") + 1 < arguments.size())
+                gameConfigPath = arguments.get(arguments.indexOf("--config") + 1);
+        }
+
+        if (gameConfigPath != null) {
+            try {
+                gameConfigStream = new FileInputStream(gameConfigPath);
+            } catch (FileNotFoundException e) {
+                System.err.printf("Couldn't access to file %s.%n", gameConfigPath);
+                return;
+            }
+        }
+
         try {
-            new Server(port).start();
+            new Server(port, gameConfigStream).start();
         } catch (IOException e) {
-            System.err.printf("Exception caught when trying to listen on port %d%n", port);
+            System.err.printf("Couldn't listen on port %d.%n", port);
         }
     }
 
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
 
-        GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream(gameConfigPath));
+        GameFactory gameFactory = new FileGameFactory(getClass().getResourceAsStream(defaultGameConfigPath));
         Lobby model = new Lobby(gameFactory);
         Controller controller = new Controller(model);
 
@@ -88,7 +105,7 @@ public class Server implements Network {
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
-                // System.err.println("Exception caught when listening for a connection");
+                // System.err.println("Couldn't listen for a connection.");
                 // System.err.println(e.getMessage());
                 continue;
             }

@@ -33,7 +33,7 @@ public class PlayOnlineController extends GuiController {
             System.out.printf("Don't know about host %s%n", host);
             return;
         } catch (IOException e) {
-            System.out.printf("Couldn't get I/O for the connection to %s when creating the socket%n", host);
+            System.out.printf("Couldn't get I/O for the connection to %s when creating the socket.%n", host);
             return;
         }
 
@@ -42,7 +42,7 @@ public class PlayOnlineController extends GuiController {
     }
 
     @FXML
-    private void handleBack() throws IOException {
+    private void handleBack() {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }

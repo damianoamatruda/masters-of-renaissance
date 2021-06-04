@@ -19,6 +19,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -40,16 +41,17 @@ public class Gui extends Application {
     private Network network;
 
     private Scene scene;
+    private Stage stage;
     private GuiController controller;
 
     private final ViewModel viewModel;
 
+    private InputStream gameConfigStream;
     private boolean offline;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
 
     public static void main(String[] args) {
-        // Platform.setImplicitExit(false); // makes the runLater invocations not fail
         launch(args);
     }
 
@@ -79,6 +81,8 @@ public class Gui extends Application {
 
         this.viewModel = new ViewModel();
 
+        this.offline = false;
+        this.gameConfigStream = null;
         this.musicPlayer = null;
         this.soundFxVolume = 1;
     }
@@ -99,6 +103,7 @@ public class Gui extends Application {
         primaryStage.setHeight(minHeight);
         primaryStage.setTitle(title);
         primaryStage.show();
+        this.stage = primaryStage;
     }
 
     @Override
@@ -116,7 +121,7 @@ public class Gui extends Application {
     }
 
     void startOfflineClient() {
-        network = new OfflineClient(view);
+        network = new OfflineClient(view, gameConfigStream);
         try {
             network.start();
         } catch (IOException ignored) {
@@ -147,6 +152,27 @@ public class Gui extends Application {
         setRoot(fxml, null);
     }
 
+    Stage getStage() {
+        return stage;
+    }
+
+    void quit() {
+        Platform.exit();
+        System.exit(0);
+    }
+
+    Optional<InputStream> getGameConfigStream() {
+        return Optional.ofNullable(gameConfigStream);
+    }
+
+    void setGameConfigStream(InputStream gameConfigStream) {
+        this.gameConfigStream = gameConfigStream;
+    }
+
+    boolean isOffline() {
+        return offline;
+    }
+
     Optional<MediaPlayer> getMusicPlayer() {
         return Optional.ofNullable(musicPlayer);
     }
@@ -161,15 +187,6 @@ public class Gui extends Application {
 
     public void setSoundFxVolume(double soundFxVolume) {
         this.soundFxVolume = soundFxVolume;
-    }
-
-    boolean isOffline() {
-        return offline;
-    }
-
-    void quit() {
-        Platform.exit();
-        System.exit(0);
     }
 
     private void registerOnMV(EventDispatcher view) {

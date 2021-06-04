@@ -1,10 +1,14 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.components.SButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -17,6 +21,8 @@ public class OptionsController extends GuiController {
     private Text musicText;
     @FXML
     private Text soundFxText;
+    @FXML
+    private SButton resetConfigButton;
     private double oldMusicVolume;
     private double oldSoundFxVolume;
 
@@ -48,10 +54,13 @@ public class OptionsController extends GuiController {
         });
         soundFxSlider.setValue(gui.getSoundFxVolume());
         soundFxText.setText(getPercentage(gui.getSoundFxVolume()));
+
+        if (Gui.getInstance().getGameConfigStream().isEmpty())
+            resetConfigButton.setDisable(true);
     }
 
     @FXML
-    private void handleBack() throws IOException {
+    private void handleBack() {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 
@@ -73,5 +82,28 @@ public class OptionsController extends GuiController {
             oldMusicVolume = soundFxSlider.getValue();
             soundFxSlider.setValue(0);
         }
+    }
+
+    @FXML
+    private void handleConfig() {
+        Gui gui = Gui.getInstance();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open custom config.json");
+        File gameConfigFile = fileChooser.showOpenDialog(gui.getStage());
+        if (gameConfigFile != null) {
+            try {
+                gui.setGameConfigStream(new FileInputStream(gameConfigFile));
+                resetConfigButton.setDisable(false);
+            } catch (FileNotFoundException e) {
+                System.out.printf("Couldn't access to file %s.%n", gameConfigFile.getPath());
+            }
+        }
+    }
+
+    @FXML
+    private void handleResetConfig() {
+        Gui.getInstance().setGameConfigStream(null);
+        resetConfigButton.setDisable(true);
     }
 }

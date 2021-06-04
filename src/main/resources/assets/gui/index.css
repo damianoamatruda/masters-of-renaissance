@@ -38,6 +38,7 @@
     -fx-text-fill: linear-gradient(white, #d0d0d0);
     -fx-padding: 6px;
     -fx-pref-height: 40px;
+    -fx-alignment: center;
 }
 
 .button:hover {

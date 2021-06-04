@@ -10,8 +10,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-
 public class InputNicknameController extends GuiController {
     @FXML
     private Title titleComponent;
@@ -26,9 +24,9 @@ public class InputNicknameController extends GuiController {
     }
 
     @FXML
-    private void handleBack() throws IOException {
+    private void handleBack() {
         Gui gui = Gui.getInstance();
-        Gui.getInstance().setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
+        gui.setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
     }
 
     public void setTitle(String value) {
