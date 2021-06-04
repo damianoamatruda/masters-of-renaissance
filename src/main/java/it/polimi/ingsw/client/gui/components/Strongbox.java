@@ -110,7 +110,7 @@ public class Strongbox extends StackPane {
 
             Resource r = new Resource();
             r.setResourceType(resource);
-            r.setFitHeight(cellHeight);
+            r.setFitHeight(cellHeight * 0.8);
 
             Text t = new Text(String.valueOf(count));
             t.setScaleX(scaleRatio);
