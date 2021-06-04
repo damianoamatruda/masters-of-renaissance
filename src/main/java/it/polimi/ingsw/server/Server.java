@@ -16,9 +16,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 public class Server implements Network {
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
@@ -40,20 +43,32 @@ public class Server implements Network {
     }
 
     public static void main(String[] args) {
-        int port;
+        int port = -1;
 
-        if (args.length >= 1)
-            port = Integer.parseInt(args[0]);
-        else {
-            JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(Server.class.getResourceAsStream(serverConfigPath))), JsonObject.class);
-            port = jsonConfig.get("port").getAsInt();
+        Supplier<JsonObject> serverConfigSupplier = new Supplier<>() {
+            private JsonObject object;
+
+            @Override
+            public JsonObject get() {
+                if (object == null)
+                    object = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(Server.class.getResourceAsStream(serverConfigPath))), JsonObject.class);
+                return object;
+            }
+        };
+
+        List<String> arguments = Arrays.asList(args);
+
+        if (arguments.contains("--port")) {
+            if (arguments.indexOf("--port") + 1 < arguments.size())
+                port = Integer.parseUnsignedInt(arguments.get(arguments.indexOf("--port") + 1));
         }
 
-        boolean connected = true;
+        if (port == -1)
+            port = serverConfigSupplier.get().get("port").getAsInt();
+
         try {
             new Server(port).start();
         } catch (IOException e) {
-            connected = false;
             System.err.printf("Exception caught when trying to listen on port %d%n", port);
         }
     }
