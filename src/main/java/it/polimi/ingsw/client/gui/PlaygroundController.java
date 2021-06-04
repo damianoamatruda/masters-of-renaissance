@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -12,21 +11,9 @@ import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
+import javafx.geometry.Pos;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 public abstract class PlaygroundController extends GuiController {
@@ -34,6 +21,9 @@ public abstract class PlaygroundController extends GuiController {
     protected AnchorPane canvas;
     @FXML
     protected Playerboard pboard;
+
+    private VBox leadersBox = new VBox();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,17 +45,17 @@ public abstract class PlaygroundController extends GuiController {
 
 
         Warehouse warehouse = new Warehouse();
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()));
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()));
 
 
         Strongbox s = new Strongbox();
-        int sbId = gui.getViewModel().getPlayerData(gui.getViewModel().getLocalPlayerNickname()).getStrongbox();
+        int sbId = gui.getViewModel().getCurrentPlayerData().getStrongbox();
 
         s.setContent(gui.getViewModel().getContainer(sbId).orElseThrow());
 
         List<DevSlot> slots = new ArrayList<>();
 
-        List<List<Integer>> modelSlots = vm.getPlayerData(vm.getLocalPlayerNickname()).getDevSlots();
+        List<List<Integer>> modelSlots = vm.getCurrentPlayerData().getDevSlots();
         for (List<Integer> modelSlot : modelSlots) {
             DevSlot slot = new DevSlot();
 
@@ -82,7 +72,7 @@ public abstract class PlaygroundController extends GuiController {
 
         FaithTrack f = new FaithTrack(vm.getFaithTrack());
 
-        List<LeaderCard> leaders = vm.getPlayerData(vm.getLocalPlayerNickname()).getLeadersHand().stream()
+        List<LeaderCard> leaders = vm.getCurrentPlayerData().getLeadersHand().stream()
             .map(id -> vm.getLeaderCard(id).orElseThrow())
             .map(reducedLeader -> {
                 LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
@@ -106,9 +96,16 @@ public abstract class PlaygroundController extends GuiController {
                 return leaderCard;
             }).toList();
 
-        pboard = new Playerboard(warehouse, s, prod, slots, f, leaders);
+        pboard = new Playerboard(warehouse, s, prod, slots, f);
 
         canvas.getChildren().add(pboard);
+        leadersBox.setAlignment(Pos.CENTER);
+        leadersBox.setPrefWidth(166);
+        leadersBox.setSpacing(20);
+        leadersBox.getChildren().addAll(leaders);
+        canvas.getChildren().add(leadersBox);
+        AnchorPane.setRightAnchor(leadersBox, 10.0);
+        AnchorPane.setBottomAnchor(leadersBox, 50.0);
 
         AnchorPane.setBottomAnchor(pboard, 0d);
         AnchorPane.setTopAnchor(pboard, 0d);

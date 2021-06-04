@@ -22,28 +22,23 @@ public class Playerboard extends HBox {
     @FXML private ImageView frontBG;
     @FXML private GridPane board;
     @FXML private GridPane storageColumn;
-    @FXML private VBox leadersBox;
-//    @FXML private Button left;
-//    @FXML private Button right;
 
     private final Warehouse w;
     private final Strongbox s;
     private final Production p;
     private final List<DevSlot> slots;
     private final FaithTrack faithTrack;
-    private final List<LeaderCard> leaders;
 
     private final double bgPixelWidth = 908;
     private final double bgPixelHeight = 646;
     private final double bgRatio = bgPixelWidth / bgPixelHeight;
 
-    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots, FaithTrack faithTrack, List<LeaderCard> leaders) {
+    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots, FaithTrack faithTrack) {
         this.w = w;
         this.s = s;
         this.p = p;
         this.slots = slots;
         this.faithTrack = faithTrack;
-        this.leaders = leaders;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
         fxmlLoader.setRoot(this);
@@ -54,27 +49,6 @@ public class Playerboard extends HBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-
-        // board.setGridLinesVisible(true);
-        // board.setBorder(new Border(new BorderStroke(Color.RED,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        
-        // storageColumn.setGridLinesVisible(true);
-        // storageColumn.setBorder(new Border(new BorderStroke(Color.GREEN,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        // w.setBorder(new Border(new BorderStroke(Color.BLUE,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        // s.setBorder(new Border(new BorderStroke(Color.BLUE,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        // p.setBorder(new Border(new BorderStroke(Color.BLUE,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        // slots.forEach(sl -> sl.setBorder(new Border(new BorderStroke(Color.BLUE,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
-        // faithTrack.setBorder(new Border(new BorderStroke(Color.BLUE,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        // leadersBox.setBorder(new Border(new BorderStroke(Color.RED,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setBackground();
 
@@ -93,7 +67,6 @@ public class Playerboard extends HBox {
         Group g = new Group(faithTrack);
         board.add(g, 1, 0);
 
-        leadersBox.getChildren().addAll(leaders);
 
         changedSize(null, 0, 0);
 

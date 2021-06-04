@@ -39,5 +39,4 @@
           </GridPane>
         </children>
     </StackPane>
-    <VBox fx:id="leadersBox" alignment="CENTER" prefWidth="166.0" spacing="20.0" />
 </fx:root>
