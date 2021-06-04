@@ -32,7 +32,7 @@ public class ResourceTransactionRequest {
                                       Map<ResourceType, Integer> inputBlanksRep,
                                       Map<ResourceType, Integer> outputBlanksRep,
                                       Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                                      Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) {
+                                      Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
         validate(recipe, inputBlanksRep, outputBlanksRep, inputContainers, outputContainers);
         this.recipe = recipe;
         this.inputBlanksRep = Map.copyOf(inputBlanksRep);

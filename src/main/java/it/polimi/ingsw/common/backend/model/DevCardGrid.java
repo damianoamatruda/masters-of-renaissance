@@ -4,6 +4,8 @@ import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionContainersException;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionReplacementsException;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.UpdateDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
@@ -130,7 +132,7 @@ public class DevCardGrid extends EventDispatcher {
      */
     public void buyDevCard(Game game, Player player, DevCardColor color, int level, int slotIndex,
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
-            throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException, IllegalResourceTransferException {
+            throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
 
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {

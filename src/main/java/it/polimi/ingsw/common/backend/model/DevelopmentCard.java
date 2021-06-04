@@ -5,9 +5,7 @@ import it.polimi.ingsw.common.backend.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.common.backend.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRequest;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransaction;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 
@@ -80,15 +78,15 @@ public class DevelopmentCard extends Card {
      * @param game          the game the player is playing in
      * @param player        the player to assign the card to and to take the resources from
      * @param resContainers selection map specifying where to take the resources from
-     * @throws CardRequirementsNotMetException if the player does not own the required resources
+     * @throws CardRequirementsNotMetException  if the player does not own the required resources
      * @throws IllegalResourceTransferException if the player cannot pay for the card
      */
-    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalResourceTransferException {
+    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         cost.checkRequirements(player);
         new ResourceTransaction(List.of(
-            new ResourceTransactionRequest(
-                    new ResourceTransactionRecipe(cost.getDiscountedCost(player), 0, Map.of(), 0),
-                    Map.of(), Map.of(), resContainers, Map.of())
+                new ResourceTransactionRequest(
+                        new ResourceTransactionRecipe(cost.getDiscountedCost(player), 0, Map.of(), 0),
+                        Map.of(), Map.of(), resContainers, Map.of())
         )).activate(game, player);
     }
 

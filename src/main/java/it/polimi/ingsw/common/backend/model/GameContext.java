@@ -410,6 +410,14 @@ public class GameContext extends EventDispatcher {
             } catch (IllegalCardDepositException e) {
                 dispatch(new ErrBuyDevCard(view, false));
                 return;
+            } catch (IllegalResourceTransactionReplacementsException e) {
+                // illegal replaced resources
+                dispatch(new ErrResourceReplacement(view, e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));
+                return;
+            } catch (IllegalResourceTransactionContainersException e) {
+                // amount of resources in replaced map is different from shelves mapping
+                dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount()));
+                return;
             } catch (IllegalResourceTransferException e) {
                 dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
                 return;

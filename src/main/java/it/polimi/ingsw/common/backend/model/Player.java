@@ -5,6 +5,8 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.*;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionContainersException;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionReplacementsException;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -286,7 +288,7 @@ public class Player extends EventDispatcher {
      * @throws IllegalResourceTransferException if the player cannot pay for the card
      */
     public void addToDevSlot(Game game, int devSlotIndex, DevelopmentCard devCard,
-                             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
+                             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         Stack<DevelopmentCard> slot = devSlots.get(devSlotIndex);
         if ((slot.isEmpty() && devCard.getLevel() != 1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel() - 1))
             throw new IllegalCardDepositException();
