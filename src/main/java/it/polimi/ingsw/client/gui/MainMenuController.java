@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 public class MainMenuController extends GuiController {
     private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
 
-    @FXML
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
@@ -41,7 +41,8 @@ public class MainMenuController extends GuiController {
     private void handlePlayOffline() throws IOException {
         Gui gui = Gui.getInstance();
         gui.startOfflineClient();
-        gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"));
+        gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
+                controller.setTitle("Play Offline"));
     }
 
     @FXML

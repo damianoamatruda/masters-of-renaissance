@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import it.polimi.ingsw.client.gui.components.SButton?>
+<?import it.polimi.ingsw.client.gui.components.Title?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -21,6 +22,11 @@
           <Image url="@logo.png"/>
         </ImageView>
       </VBox>
+      <Title fx:id="titleComponent" maxWidth="-Infinity">
+        <VBox.margin>
+          <Insets bottom="30.0"/>
+        </VBox.margin>
+      </Title>
       <VBox maxWidth="-Infinity" prefHeight="0.0">
         <Label text="Nickname"/>
         <TextField fx:id="nickname" prefWidth="400.0" maxWidth="400.0"/>

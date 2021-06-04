@@ -36,7 +36,8 @@ public class PlayOnlineController extends GuiController {
         }
 
         if (connected)
-            gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"));
+            gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
+                    controller.setTitle("Play Online"));
     }
 
     @FXML

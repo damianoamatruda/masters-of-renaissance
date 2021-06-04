@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
@@ -12,6 +13,8 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 public class InputNicknameController extends GuiController {
+    @FXML
+    private Title titleComponent;
     @FXML
     private TextField nickname;
     private String nicknameValue;
@@ -26,6 +29,10 @@ public class InputNicknameController extends GuiController {
     private void handleBack() throws IOException {
         Gui gui = Gui.getInstance();
         Gui.getInstance().setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/multiplayer.fxml"));
+    }
+
+    public void setTitle(String value) {
+        titleComponent.setText(value);
     }
 
     @Override

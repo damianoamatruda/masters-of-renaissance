@@ -28,7 +28,7 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private Title titleComponent;
 
-    @FXML
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
