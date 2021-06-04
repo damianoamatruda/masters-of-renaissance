@@ -1,15 +1,19 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 import javafx.scene.layout.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
 public class FaithTrack extends VBox {
+    Map<Integer, FaithTile> tiles = new HashMap<>();
+
     public FaithTrack(ReducedFaithTrack track) {
         List<ReducedYellowTile> yellowTiles = track.getYellowTiles();
         List<Integer> yellowTilesIndexes = yellowTiles.stream().map(ReducedYellowTile::getFaithPoints).toList();
@@ -23,7 +27,9 @@ public class FaithTrack extends VBox {
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
             if(i % 10 >= 3 && i % 10 <= 6) {
-                hBox.getChildren().add(new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
+                FaithTile tile = new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i));
+                hBox.getChildren().add(tile);
+                tiles.put(i, tile);
             }
             else if(i % 10 == 0 || i % 10 == 9) {
                 hBox.getChildren().add(new FaithTile());
@@ -36,7 +42,9 @@ public class FaithTrack extends VBox {
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
             if(i % 5 == 2) {
-                hBox.getChildren().add(new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
+                FaithTile tile = new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i));
+                hBox.getChildren().add(tile);
+                tiles.put(i, tile);
             }
             else if(i % 10 == 0 || i % 10 == 9 || i % 10 == 4 || i % 10 == 5) {
                 hBox.getChildren().add(new FaithTile());
@@ -50,12 +58,25 @@ public class FaithTrack extends VBox {
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
             if(i % 10 >= 8 || i % 10 <= 1) {
-                  hBox.getChildren().add(new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i)));
+                FaithTile tile = new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i));
+                hBox.getChildren().add(tile);
+                tiles.put(i, tile);
             }
             else if(i % 10 == 4 || i % 10 == 5) {
                 hBox.getChildren().add(new FaithTile());
             }
         }
         this.getChildren().add(hBox);
+
+        updateBlackMarker(Gui.getInstance().getViewModel().getBlackCrossFP());
+        updatePlayerMarker(Gui.getInstance().getViewModel().getPlayerData(Gui.getInstance().getViewModel().getLocalPlayerNickname()).getFaithPoints());
+    }
+
+    public void updatePlayerMarker(int faithPoints) {
+        tiles.get(faithPoints).addPlayerMarker();
+    }
+
+    public void updateBlackMarker(int blackPoints) {
+        tiles.get(blackPoints).addBlackMarker();
     }
 }

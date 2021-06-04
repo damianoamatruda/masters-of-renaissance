@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class FaithTile extends StackPane {
     private int tileId;
+    private ImageView bg;
 
     public FaithTile(int tileId, boolean isYellow, boolean isSection, boolean isSectionEnd) {
         this.tileId = tileId;
@@ -26,6 +27,7 @@ public class FaithTile extends StackPane {
         Image bgimg = new Image(Objects.requireNonNull(getClass().getResource(template)).toExternalForm());
 
         ImageView bg = new ImageView(bgimg);
+        this.bg = bg;
         this.getChildren().add(bg);
         if(isSectionEnd) {
             ImageView v = new ImageView("/assets/gui/faithtrack/vaticanreport.png");
@@ -50,12 +52,26 @@ public class FaithTile extends StackPane {
 
     }
 
-    public int getTileId() {
-        return tileId;
-    }
+//    public int getTileId() {
+//        return tileId;
+//    }
 
     public FaithTile() {
         this(0, false, false, false);
         this.setOpacity(0);
+    }
+
+    public void addPlayerMarker() {
+        ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/faithmarker.png"));
+        marker.setScaleX(bg.getScaleX() / 1.5);
+        marker.setScaleY(bg.getScaleY() / 1.5);
+        this.getChildren().add(marker);
+    }
+
+    public void addBlackMarker() {
+        ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/blackcross.png"));
+        marker.setScaleX(bg.getScaleX() / 1.2);
+        marker.setScaleY(bg.getScaleY() / 1.2);
+        this.getChildren().add(marker);
     }
 }

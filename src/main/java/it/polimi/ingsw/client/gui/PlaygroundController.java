@@ -12,6 +12,7 @@ import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
@@ -106,4 +107,12 @@ public abstract class PlaygroundController extends GuiController {
 
     }
 
+    @Override
+    public void on(Gui gui, UpdateFaithPoints event) {
+        super.on(gui, event);
+        if (event.isBlackCross())
+            ((FaithTrack) ((Group) canvas.getChildren().get(1)).getChildren().get(0)).updateBlackMarker(event.getFaithPoints());
+        else
+            ((FaithTrack) ((Group) canvas.getChildren().get(1)).getChildren().get(0)).updatePlayerMarker(event.getFaithPoints());
+    }
 }
