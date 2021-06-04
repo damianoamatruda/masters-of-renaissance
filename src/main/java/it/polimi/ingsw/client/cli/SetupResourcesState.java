@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
@@ -59,8 +60,10 @@ public class SetupResourcesState extends CliState {
     Map<Integer, Map<String, Integer>> promptShelves(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
+        cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
-        vm.getResourceTypes().forEach(r -> cli.getOut().println(r.getName()));
+        cli.getOut().println();
+        vm.getResourceTypes().forEach(r -> new Resource(r.getName()).render(cli));
 
         cli.getOut().println("Choose mapping shelf-resource-quantity:");
         final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();

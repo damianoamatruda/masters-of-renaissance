@@ -7,12 +7,11 @@ import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TakeFromMarketState extends CliState {
 
@@ -20,10 +19,12 @@ public class TakeFromMarketState extends CliState {
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
-        // print market and shelves
+        cli.getOut().println();
         new Market(vm.getMarket()).render(cli);
+        cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
 
+        cli.getOut().println();
         cli.getOut().println("Getting resources from the market:");
 
         boolean isValid = false;
@@ -101,7 +102,7 @@ public class TakeFromMarketState extends CliState {
         Map<String, Integer> totalRes = new HashMap<>(replacements);
         chosenResourcesNames.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
-        List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(c -> c.getId()).toList();
+        Set<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).collect(Collectors.toUnmodifiableSet());
         cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(totalRes, allowedShelvesIDs)));
     }
 

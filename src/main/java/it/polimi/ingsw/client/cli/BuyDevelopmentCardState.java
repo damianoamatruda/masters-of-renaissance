@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BuyDevelopmentCardState extends CliState {
 
@@ -21,7 +22,9 @@ public class BuyDevelopmentCardState extends CliState {
         ReducedDevCardGrid grid = vm.getDevCardGrid();
 
         new DevCardGrid(grid).render(cli);
+        cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
+        cli.getOut().println();
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
         String color = cli.prompt("Card color");
@@ -38,10 +41,12 @@ public class BuyDevelopmentCardState extends CliState {
         cli.getOut().println("Resources need to be paid.");
         cli.getOut().println("Please specify how many resources to take from which container.");
 
+        cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
+        cli.getOut().println();
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
-        List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).toList();
+        Set<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).collect(Collectors.toUnmodifiableSet());
 
         Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(cost, allowedShelvesIDs);
 

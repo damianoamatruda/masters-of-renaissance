@@ -30,8 +30,9 @@ public abstract class CliTurnState extends CliState {
 
     void swapShelves(Cli cli) {
         cli.getOut().println("Swapping shelves:");
+        cli.getOut().println();
         cli.showShelves(cli.getViewModel().getLocalPlayerNickname());
-
+        cli.getOut().println();
         int shelfId1 = cli.promptInt("First shelf");
         int shelfId2 = cli.promptInt("Second shelf");
         cli.dispatch(new ReqSwapShelves(shelfId1, shelfId2));

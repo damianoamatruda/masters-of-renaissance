@@ -5,12 +5,11 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ActivateProductionsState extends CliState {
 
@@ -54,7 +53,7 @@ public class ActivateProductionsState extends CliState {
             inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 
             cli.getOut().println("-- Containers to take resources from --");
-            List<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(c -> c.getId()).toList();
+            Set<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).collect(Collectors.toUnmodifiableSet());
             Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(totalRes, allowedShelvesIDs);
 
             requests.add(new ReducedProductionRequest(productionid, inputReplacement, outputReplacement, shelves));

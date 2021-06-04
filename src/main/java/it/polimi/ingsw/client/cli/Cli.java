@@ -83,6 +83,10 @@ public class Cli extends EventDispatcher {
         return stringBuilder.toString();
     }
 
+    /* public static String spaced(String s) {
+        return String.format("%n%s%n", s);
+    } */
+
     public void start() {
         setState(new SplashState());
     }
@@ -292,7 +296,7 @@ public class Cli extends EventDispatcher {
                 try {
                     count = Integer.parseInt(input);
                     if (replaceable - count < 0) {
-                        this.getOut().println(String.format("Too many chosen: %d available", replaceable));
+                        this.getOut().printf("Too many chosen: %d available%n", replaceable);
                         count = 0;
                     }
                 } catch (Exception e) { }
@@ -308,102 +312,118 @@ public class Cli extends EventDispatcher {
     }
 
     // TODO: Maybe make it a component, like Menu
-    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> totalRes, List<Integer> allowedShelvesIDs) {
+    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelvesIDs) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
-        this.showShelves(this.getViewModel().getLocalPlayerNickname());
-        out.println("These are your shelves. You can finish at any time by pressing B.");
+        showShelves(this.getViewModel().getLocalPlayerNickname());
 
-        // prompt user for resource -> count -> shelf to put it in
-        int totalResCount = totalRes.values().stream().mapToInt(Integer::intValue).sum(),
-                allocResCount = 0;
-        while (allocResCount < totalResCount) { // does not check for overshooting
-            out.println("\nRemaining:");
-            new ResourceMap(totalRes).render(this);
+        int totalResCount = resMap.values().stream().mapToInt(Integer::intValue).sum();
+        int allocResCount = 0;
+        // TODO: Check for overshooting
+        while (allocResCount < totalResCount) {
+            out.println();
+            out.println("Remaining:");
+            new ResourceMap(resMap).render(this);
             out.println();
 
-            int count = 0, shelfID = -1;
-            String res = "";
-            while (!totalRes.containsKey(res)) {
-                res = this.prompt("Resource");
-                if (res.length() < 1)
-                    continue;
+            out.println("You can finish at any time by pressing B.");
+            out.println();
 
-                res = res.substring(0, 1).toUpperCase() + res.substring(1);
-                if (res.equalsIgnoreCase("B"))
-                    break;
-            }
-            if (res.equalsIgnoreCase("B"))
-                break;
+            String res = promptResource(resMap.keySet());
+            if (res == null)
+                return shelves;
 
-            String input = "";
-            while (count < 1) {
-                input = this.prompt("Amount");
+            int quantity = promptQuantity(resMap.get(res));
+            if (quantity < 0)
+                return shelves;
 
-                if (input.equalsIgnoreCase("B"))
-                    break;
-                try {
-                    count = Integer.parseInt(input);
-                    if (count > totalRes.get(res))
-                        count = 0;
-                } catch (Exception e) { }
-            }
-            if (input.equalsIgnoreCase("B"))
-                break;
+            int shelfId = promptShelfId(allowedShelvesIDs);
+            if (shelfId < 0)
+                return shelves;
 
-            while (shelfID < 0) {
-                input = this.prompt("Shelf ID");
-
-                if (input.equalsIgnoreCase("B"))
-                    break;
-                try {
-                    shelfID = Integer.parseInt(input);
-
-                    if (!allowedShelvesIDs.contains(shelfID))
-                        shelfID = -1;
-                } catch (Exception e) { }
-            }
-            if (input.equalsIgnoreCase("B"))
-                break;
-
-            String r = res; int c = count; // rMap.put below complained they weren't final
-            shelves.compute(shelfID, (sid, rMap) -> {
+            shelves.compute(shelfId, (sid, rMap) -> {
                 if (rMap == null)
                     rMap = new HashMap<>();
-
-                rMap.compute(r, (k, v) -> v == null ? c : c + v);
+                rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
                 return rMap;
             });
 
-            allocResCount += count;
-            totalRes.compute(res, (k, v) -> v - c);
+            allocResCount += quantity;
+            resMap.computeIfPresent(res, (k, v) -> v - quantity);
         }
 
         return shelves;
     }
 
+    private String promptResource(Set<String> resTypes) {
+        Optional<String> resType;
+        do {
+            String input = prompt("Resource");
+            if (input.equalsIgnoreCase("B"))
+                return null;
+            resType = resTypes.stream().filter(r -> r.equalsIgnoreCase(input)).findAny();
+        } while (resType.isEmpty());
+        return resType.get();
+    }
+
+    private int promptQuantity(int maxQuantity) {
+        int quantity = -1;
+        String input;
+        while (quantity < 1) {
+            input = prompt("Quantity");
+            if (input.equalsIgnoreCase("B"))
+                return -1;
+            try {
+                quantity = Integer.parseInt(input);
+                if (quantity > maxQuantity)
+                    quantity = -1;
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return quantity;
+    }
+
+    private int promptShelfId(Set<Integer> allowedShelvesIDs) {
+        int shelfId = -1;
+        String input;
+        while (shelfId < 0) {
+            input = prompt("Shelf ID");
+            if (input.equalsIgnoreCase("B"))
+                return -1;
+            try {
+                shelfId = Integer.parseInt(input);
+                if (!allowedShelvesIDs.contains(shelfId))
+                    shelfId = -1;
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return shelfId;
+    }
+
     @Deprecated
     void showShelves(String player) {
         if (viewModel.getPlayerWarehouseShelves(player).size() > 0) {
-            out.printf("Showing %s's warehouse shelves:%n", player);
+            out.printf("%s's warehouse shelves:%n", player);
             viewModel.getPlayerWarehouseShelves(player).forEach(c -> {
-                new ResourceContainer(c).render(this);
                 out.println();
+                new ResourceContainer(c).render(this);
             });
         }
         if (viewModel.getPlayerDepots(player).size() > 0) {
             out.println();
-            out.printf("Showing %s's available leader depots:%n", player);
+            out.printf("%s's available leader depots:%n", player);
             viewModel.getPlayerDepots(player).forEach(c -> {
-                new ResourceContainer(c).render(this);
                 out.println();
+                new ResourceContainer(c).render(this);
+
             });
         }
     }
 
     @Deprecated
     void showStrongbox(String player) {
-        out.printf("Showing %s's strongbox:%n", player);
+        out.printf("%s's strongbox:%n", player);
+        out.println();
         viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c -> {
             new ResourceContainer(c).render(this);
             out.println();
