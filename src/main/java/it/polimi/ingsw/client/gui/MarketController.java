@@ -11,7 +11,10 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -62,8 +65,7 @@ public class MarketController extends GuiController {
         submitBtn.setDefaultButton(true);
         submitBtn.setOnAction(this::submitPressed);
 
-        back.setOnMouseClicked(this::back);
-
+        back.setOnAction(this::back);
     }
 
     private void marketSelected(int index, boolean isRow) {
@@ -319,7 +321,7 @@ public class MarketController extends GuiController {
         Gui.getInstance().dispatch(new ReqTakeFromMarket(isRow, index, new HashMap<>(), selection));
     }
 
-    private void back(MouseEvent mouseEvent) {
+    private void back(ActionEvent actionEvent) {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 

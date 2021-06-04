@@ -28,7 +28,7 @@ public class TriggerActionToken extends GuiController {
 
 //        message.setTextAlignment(TextAlignment.CENTER);
 
-        next.setOnMouseClicked(mouseEvent ->
+        next.setOnAction(actionEvent ->
                 Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml")));
 
         AnchorPane.setTopAnchor(message, 20.0);

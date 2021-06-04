@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -52,20 +51,20 @@ public class DevCardGridController extends GuiController {
 
         /*Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
-        
+
         BackgroundImage backBG = new BackgroundImage(backBGImage,
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
             new BackgroundSize(1.0, 1.0, true, true, false, true));
         Background bg = new Background(backBG);
         this.canvas.setBackground(bg);*/
-    
+
         Gui gui = Gui.getInstance();
         vm = gui.getViewModel();
 
         devCardGrid = new DevCardGrid();
         devCardGrid.setGrid(vm.getDevCardGrid());
         devCardGrid.setControllerListener(this::devCardPressed);
-        
+
         // devCardGrid.setBorder(new Border(new BorderStroke(Color.GREEN,
         //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
@@ -87,7 +86,7 @@ public class DevCardGridController extends GuiController {
         submitBtn.setDefaultButton(true);
         submitBtn.setOnAction(this::submitPressed);
 
-        back.setOnMouseClicked(this::back);
+        back.setOnAction(this::back);
 
         resetWarehouse();
         resetStrongbox();
@@ -176,9 +175,9 @@ public class DevCardGridController extends GuiController {
 
         List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).getWarehouseShelves().stream()
             .map(id -> vm.getContainer(id).orElseThrow()).toList();
-            
+
         warehouse.setWarehouseShelves(whShelves);
-        
+
         if (containersBox.getChildren().size() >= 1)
             containersBox.getChildren().remove(0);
         containersBox.getChildren().add(0, warehouse);
@@ -188,7 +187,7 @@ public class DevCardGridController extends GuiController {
 
     private void resetStrongbox() {
         strongbox = new Strongbox();
-        
+
         strongbox.setPrefHeight(245);
         strongbox.setPrefWidth(291);
 
@@ -197,7 +196,7 @@ public class DevCardGridController extends GuiController {
         if (containersBox.getChildren().size() == 2)
             containersBox.getChildren().remove(1);
         containersBox.getChildren().add(strongbox);
-        
+
         // strongbox.setScaleX(0.71);
         // strongbox.setScaleY(0.71);
     }
@@ -227,11 +226,11 @@ public class DevCardGridController extends GuiController {
         devSlotsBox.getChildren().addAll(devSlots);
     }
 
-    private void submitPressed(ActionEvent e) {
+    private void submitPressed(ActionEvent actionEvent) {
         Gui.getInstance().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
     }
 
-    private void back(MouseEvent mouseEvent) {
+    private void back(ActionEvent actionEvent) {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
