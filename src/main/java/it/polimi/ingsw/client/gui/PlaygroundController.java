@@ -11,6 +11,7 @@ import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
@@ -72,6 +73,25 @@ public abstract class PlaygroundController extends GuiController {
 
         FaithTrack f = new FaithTrack(vm.getFaithTrack());
 
+        pboard = new Playerboard(warehouse, s, prod, slots, f);
+
+        canvas.getChildren().add(pboard);
+
+        AnchorPane.setBottomAnchor(pboard, 0d);
+        AnchorPane.setTopAnchor(pboard, 0d);
+        AnchorPane.setLeftAnchor(pboard, 0d);
+        AnchorPane.setRightAnchor(pboard, 0d);
+
+
+        canvas.setBorder(new Border(new BorderStroke(Color.PINK,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+    }
+
+    protected void setLeadersBox() {
+        ViewModel vm = Gui.getInstance().getViewModel();
         List<LeaderCard> leaders = vm.getCurrentPlayerData().getLeadersHand().stream()
             .map(id -> vm.getLeaderCard(id).orElseThrow())
             .map(reducedLeader -> {
@@ -92,13 +112,10 @@ public abstract class PlaygroundController extends GuiController {
                 else
                     leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
                             reducedLeader.getResourceType().getName());
-            
+
                 return leaderCard;
             }).toList();
 
-        pboard = new Playerboard(warehouse, s, prod, slots, f);
-
-        canvas.getChildren().add(pboard);
         leadersBox.setAlignment(Pos.CENTER);
         leadersBox.setPrefWidth(166);
         leadersBox.setSpacing(20);
@@ -106,18 +123,6 @@ public abstract class PlaygroundController extends GuiController {
         canvas.getChildren().add(leadersBox);
         AnchorPane.setRightAnchor(leadersBox, 10.0);
         AnchorPane.setBottomAnchor(leadersBox, 50.0);
-
-        AnchorPane.setBottomAnchor(pboard, 0d);
-        AnchorPane.setTopAnchor(pboard, 0d);
-        AnchorPane.setLeftAnchor(pboard, 0d);
-        AnchorPane.setRightAnchor(pboard, 0d);
-
-
-        canvas.setBorder(new Border(new BorderStroke(Color.PINK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
     }
 
 //    @Override

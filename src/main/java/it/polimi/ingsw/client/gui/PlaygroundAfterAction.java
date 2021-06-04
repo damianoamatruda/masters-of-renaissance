@@ -25,6 +25,8 @@ public class PlaygroundAfterAction extends PlaygroundController{
         AnchorPane.setBottomAnchor(canvas.getChildren().get(1), 0.0);
         AnchorPane.setRightAnchor(canvas.getChildren().get(1), canvas.getWidth() / 2);
 
+        setLeadersBox();
+
     }
 
     @Override
