@@ -11,13 +11,12 @@ import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public abstract class PlaygroundController extends GuiController {
     @FXML
@@ -26,6 +25,8 @@ public abstract class PlaygroundController extends GuiController {
     protected Playerboard pboard;
 
     private VBox leadersBox = new VBox();
+
+    @FXML protected Text topText = new Text();
 
 
     @Override
@@ -125,6 +126,7 @@ public abstract class PlaygroundController extends GuiController {
         canvas.getChildren().add(leadersBox);
         AnchorPane.setRightAnchor(leadersBox, 10.0);
         AnchorPane.setBottomAnchor(leadersBox, 50.0);
+
     }
 
 //    @Override
