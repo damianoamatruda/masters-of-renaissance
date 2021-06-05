@@ -69,15 +69,17 @@ public class FaithTrack extends VBox {
         this.getChildren().add(hBox);
 
         if(Gui.getInstance().getViewModel().getPlayerNicknames().size() == 1)
-            updateBlackMarker(Gui.getInstance().getViewModel().getBlackCrossFP());
-        updatePlayerMarker(Gui.getInstance().getViewModel().getPlayerData(Gui.getInstance().getViewModel().getLocalPlayerNickname()).getFaithPoints());
+            updateBlackMarker(Gui.getInstance().getViewModel().getBlackCrossFP(), -1);
+        updatePlayerMarker(Gui.getInstance().getViewModel().getPlayerData(Gui.getInstance().getViewModel().getLocalPlayerNickname()).getFaithPoints(), -1);
     }
 
-    public void updatePlayerMarker(int faithPoints) {
+    public void updatePlayerMarker(int faithPoints, int oldPts) {
+        if(oldPts >= 0) tiles.get(oldPts).removePlayerMarker();
         tiles.get(faithPoints).addPlayerMarker();
     }
 
-    public void updateBlackMarker(int blackPoints) {
+    public void updateBlackMarker(int blackPoints, int oldPts) {
+        if(oldPts >= 0) tiles.get(oldPts).removeBlackMarker();
         tiles.get(blackPoints).addBlackMarker();
     }
 }

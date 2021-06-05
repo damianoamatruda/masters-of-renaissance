@@ -133,10 +133,10 @@ public class Playerboard extends HBox {
         frontBG.setImage(frontBGImage);
     }
 
-    public void updateFaithPoints(UpdateFaithPoints event) {
+    public void updateFaithPoints(UpdateFaithPoints event, int oldPts) {
         if (event.isBlackCross())
-            faithTrack.updateBlackMarker(event.getFaithPoints());
+            faithTrack.updateBlackMarker(event.getFaithPoints(), oldPts);
         else if (Gui.getInstance().getViewModel().getLocalPlayerNickname().equals(event.getPlayer()))
-            faithTrack.updatePlayerMarker(event.getFaithPoints());
+            faithTrack.updatePlayerMarker(event.getFaithPoints(), oldPts);
     }
 }

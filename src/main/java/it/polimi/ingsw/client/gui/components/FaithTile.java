@@ -74,4 +74,12 @@ public class FaithTile extends StackPane {
         marker.setScaleY(bg.getScaleY() / 1.2);
         this.getChildren().add(marker);
     }
+
+    public void removePlayerMarker() {
+        this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("faithmarker"));
+    }
+
+    public void removeBlackMarker() {
+        this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("blackcross"));
+    }
 }

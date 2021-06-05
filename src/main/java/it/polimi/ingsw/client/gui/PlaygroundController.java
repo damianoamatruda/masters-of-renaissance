@@ -12,12 +12,10 @@ import it.polimi.ingsw.client.gui.components.Strongbox;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeader;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHandCount;
+import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -163,11 +161,19 @@ public abstract class PlaygroundController extends GuiController {
 
     }
 
-//    @Override
-//    public void on(Gui gui, UpdateFaithPoints event) {
-//        super.on(gui, event);
-//        pboard.updateFaithPoints(event);
-//    }
+    @Override
+    public void on(Gui gui, UpdateFaithPoints event) {
+        int oldPts;
+
+        if(!event.isBlackCross())
+            oldPts = gui.getViewModel().getPlayerData(event.getPlayer()).getFaithPoints();
+        else oldPts = gui.getViewModel().getBlackCrossFP();
+
+        super.on(gui, event);
+
+        Platform.runLater(() -> pboard.updateFaithPoints(event, oldPts));
+
+    }
 
 
     @Override
