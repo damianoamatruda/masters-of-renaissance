@@ -65,6 +65,8 @@ public class Playerboard extends HBox {
         }
 
         Group g = new Group(faithTrack);
+        g.setScaleX(g.getScaleX() * 1.3);
+        g.setScaleY(g.getScaleY() * 1.3);
         board.add(g, 1, 0);
 
 
