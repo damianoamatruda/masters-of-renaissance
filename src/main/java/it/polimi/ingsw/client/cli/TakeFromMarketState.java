@@ -88,8 +88,8 @@ public class TakeFromMarketState extends CliState {
                     input = cli.prompt("Replace resources? [y/n]");
                 if (input.equals("n")) {
                     replacements = cli.promptResources(
-                        blanksCount,
-                        zeroLeaders.stream().map(l -> l.getResourceType().getName()).toList());
+                            blanksCount,
+                            zeroLeaders.stream().map(l -> l.getResourceType().getName()).collect(Collectors.toUnmodifiableSet()));
                 }
             }
         }

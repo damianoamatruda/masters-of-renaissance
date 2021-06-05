@@ -22,7 +22,7 @@ public class SetupResourcesState extends CliState {
     public void render(Cli cli) {
         cli.getOut().println("\nChoosing starting resources.");
         cli.getOut().println("You can choose " + choosable + " resources. What's your choice?");
-        
+
         Map<Integer, Map<String, Integer>> shelves = promptShelves(cli);
 
         cli.dispatch(new ReqChooseResources(shelves));
@@ -63,7 +63,10 @@ public class SetupResourcesState extends CliState {
         cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
         cli.getOut().println();
-        vm.getResourceTypes().forEach(r -> new Resource(r.getName()).render(cli));
+        vm.getResourceTypes().forEach(r -> {
+            new Resource(r.getName()).render(cli);
+            cli.getOut().println();
+        });
 
         cli.getOut().println("Choose mapping shelf-resource-quantity:");
         final Map<Integer, Map<String, Integer>> shelves = new HashMap<>();

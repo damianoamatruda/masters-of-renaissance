@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainer;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
@@ -270,42 +271,32 @@ public class Cli extends EventDispatcher {
     }
 
     // TODO: Maybe make it a component, like Menu
-    Map<String, Integer> promptResources(int replaceable, List<String> allowedReplacements) {
+    Map<String, Integer> promptResources(int replaceable, Set<String> allowedReplacements) {
         Map<String, Integer> replacedRes = new HashMap<>();
 
         this.getOut().println("These are the resources you can replace blanks with:");
-        allowedReplacements.forEach(n -> this.getOut().println(n));
+        allowedReplacements.forEach(r -> {
+            new Resource(r).render(this);
+            out.println();
+        });
 
-        String input = "";
-        while (replaceable > 0) {
-            int count = 0; String res = "";
+        int allocResCount = 0;
+        // TODO: Check for overshooting
+        while (allocResCount < replaceable) {
+            out.println();
+            out.println("You can finish at any time by pressing B.");
+            out.println();
 
-            while (!allowedReplacements.contains(res)) {
-                res = this.prompt("Replacement resource (B to go back)");
-                if (res.equalsIgnoreCase("B"))
-                    break;
-            }
-            if (res.equalsIgnoreCase("B"))
-                break;
+            String res = promptResource(allowedReplacements);
+            if (res == null)
+                return replacedRes;
 
-            while (count < 1) {
-                input = this.prompt("Amount replaced (> 0, B to go back):");
+            int quantity = promptQuantity(replaceable);
+            if (quantity < 0)
+                return replacedRes;
 
-                if (input.equalsIgnoreCase("B"))
-                    break;
-                try {
-                    count = Integer.parseInt(input);
-                    if (replaceable - count < 0) {
-                        this.getOut().printf("Too many chosen: %d available%n", replaceable);
-                        count = 0;
-                    }
-                } catch (Exception e) { }
-            }
-            if (input.equalsIgnoreCase("B"))
-                break;
-
-            replacedRes.put(res, count);
-            replaceable -= count;
+            allocResCount += quantity;
+            replacedRes.put(res, quantity);
         }
 
         return replacedRes;
