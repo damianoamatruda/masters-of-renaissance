@@ -225,7 +225,7 @@ public class Cli extends EventDispatcher {
         this.state = state;
         clear();
         out.println();
-        out.println(Cli.center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
+        out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
         state.render(this);
     }
 
@@ -271,67 +271,37 @@ public class Cli extends EventDispatcher {
     }
 
     // TODO: Maybe make it a component, like Menu
-    Map<String, Integer> promptResources(int replaceable, Set<String> allowedReplacements) {
-        Map<String, Integer> replacedRes = new HashMap<>();
-
-        this.getOut().println("These are the resources you can replace blanks with:");
-        allowedReplacements.forEach(r -> {
-            new Resource(r).render(this);
-            out.println();
-        });
-
-        int allocResCount = 0;
-        // TODO: Check for overshooting
-        while (allocResCount < replaceable) {
-            out.println();
-            out.println("You can finish at any time by pressing B.");
-            out.println();
-
-            String res = promptResource(allowedReplacements);
-            if (res == null)
-                return replacedRes;
-
-            int quantity = promptQuantity(replaceable);
-            if (quantity < 0)
-                return replacedRes;
-
-            allocResCount += quantity;
-            replacedRes.put(res, quantity);
-        }
-
-        return replacedRes;
-    }
-
-    // TODO: Maybe make it a component, like Menu
-    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelvesIDs) {
+    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         showShelves(this.getViewModel().getLocalPlayerNickname());
 
-        int totalResCount = resMap.values().stream().mapToInt(Integer::intValue).sum();
-        int allocResCount = 0;
-        // TODO: Check for overshooting
-        while (allocResCount < totalResCount) {
+        Map<String, Integer> remainingResMap = new HashMap<>(resMap);
+        int totalQuantity = remainingResMap.values().stream().mapToInt(Integer::intValue).sum();
+        int allocQuantity = 0;
+        while (allocQuantity < totalQuantity) {
             out.println();
             out.println("Remaining:");
-            new ResourceMap(resMap).render(this);
-            out.println();
+            new ResourceMap(remainingResMap).render(this);
 
+            out.println();
             out.println("You can finish at any time by pressing B.");
+
             out.println();
 
-            String res = promptResource(resMap.keySet());
+            String res = promptResource(remainingResMap.keySet());
             if (res == null)
                 return shelves;
 
-            int quantity = promptQuantity(resMap.get(res));
+            int quantity = promptQuantity(remainingResMap.get(res));
             if (quantity < 0)
                 return shelves;
 
-            int shelfId = promptShelfId(allowedShelvesIDs);
+            int shelfId = promptShelfId(allowedShelves);
             if (shelfId < 0)
                 return shelves;
 
+            // TODO: Check for shelf overshooting
             shelves.compute(shelfId, (sid, rMap) -> {
                 if (rMap == null)
                     rMap = new HashMap<>();
@@ -339,8 +309,89 @@ public class Cli extends EventDispatcher {
                 return rMap;
             });
 
-            allocResCount += quantity;
-            resMap.computeIfPresent(res, (k, v) -> v - quantity);
+            allocQuantity += quantity;
+            remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+        }
+
+        return shelves;
+    }
+
+    // TODO: Maybe make it a component, like Menu
+    Map<String, Integer> promptResources(Set<String> allowedResources, int totalQuantity) {
+        Map<String, Integer> replacedRes = new HashMap<>();
+
+        out.println("Resources you can choose:");
+
+        out.println();
+        allowedResources.forEach(r -> {
+            new Resource(r).render(this);
+            out.println();
+        });
+
+        int allocQuantity = 0;
+        while (allocQuantity < totalQuantity) {
+            out.println();
+            out.println("You can finish at any time by pressing B.");
+
+            out.println();
+
+            String res = promptResource(allowedResources);
+            if (res == null)
+                return replacedRes;
+
+            int quantity = promptQuantity(totalQuantity - allocQuantity);
+            if (quantity < 0)
+                return replacedRes;
+
+            allocQuantity += quantity;
+            replacedRes.put(res, quantity);
+        }
+
+        return replacedRes;
+    }
+
+    Map<Integer, Map<String, Integer>> promptShelvesSetup(Set<String> allowedResources, int totalQuantity, Set<Integer> allowedShelves) {
+        Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
+
+        showShelves(this.getViewModel().getLocalPlayerNickname());
+
+        int allocQuantity = 0;
+        while (allocQuantity < totalQuantity) {
+            out.println();
+            out.println("Resources you can choose:");
+
+            out.println();
+            allowedResources.forEach(r -> {
+                new Resource(r).render(this);
+                out.println();
+            });
+
+            out.println();
+
+            out.println("You can finish at any time by pressing B.");
+            out.println();
+
+            String res = promptResource(allowedResources);
+            if (res == null)
+                return shelves;
+
+            int quantity = promptQuantity(totalQuantity - allocQuantity);
+            if (quantity < 0)
+                return shelves;
+
+            int shelfId = promptShelfId(allowedShelves);
+            if (shelfId < 0)
+                return shelves;
+
+            // TODO: Check for shelf overshooting
+            shelves.compute(shelfId, (sid, rMap) -> {
+                if (rMap == null)
+                    rMap = new HashMap<>();
+                rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                return rMap;
+            });
+
+            allocQuantity += quantity;
         }
 
         return shelves;
@@ -374,7 +425,7 @@ public class Cli extends EventDispatcher {
         return quantity;
     }
 
-    private int promptShelfId(Set<Integer> allowedShelvesIDs) {
+    private int promptShelfId(Set<Integer> allowedShelves) {
         int shelfId = -1;
         String input;
         while (shelfId < 0) {
@@ -383,7 +434,7 @@ public class Cli extends EventDispatcher {
                 return -1;
             try {
                 shelfId = Integer.parseInt(input);
-                if (!allowedShelvesIDs.contains(shelfId))
+                if (!allowedShelves.contains(shelfId))
                     shelfId = -1;
             } catch (NumberFormatException ignored) {
             }
@@ -406,7 +457,6 @@ public class Cli extends EventDispatcher {
             viewModel.getPlayerDepots(player).forEach(c -> {
                 out.println();
                 new ResourceContainer(c).render(this);
-
             });
         }
     }

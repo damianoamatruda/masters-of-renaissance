@@ -46,9 +46,11 @@ public class BuyDevelopmentCardState extends CliState {
         cli.getOut().println();
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
-        Set<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).collect(Collectors.toUnmodifiableSet());
+        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
+                .map(ReducedResourceContainer::getId)
+                .collect(Collectors.toUnmodifiableSet());
 
-        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(cost, allowedShelvesIDs);
+        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(cost, allowedShelves);
 
         cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));
     }

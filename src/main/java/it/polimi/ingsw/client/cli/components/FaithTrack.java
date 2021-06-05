@@ -117,7 +117,6 @@ public class FaithTrack implements Renderable {
             else
                 output.append("      ");
         }
-        output.append("\n");
 
         // Print the result
         cli.getOut().println(output);

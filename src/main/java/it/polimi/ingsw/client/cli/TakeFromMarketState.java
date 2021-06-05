@@ -19,7 +19,6 @@ public class TakeFromMarketState extends CliState {
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
-        cli.getOut().println();
         new Market(vm.getMarket()).render(cli);
         cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
@@ -88,8 +87,8 @@ public class TakeFromMarketState extends CliState {
                     input = cli.prompt("Replace resources? [y/n]");
                 if (input.equals("n")) {
                     replacements = cli.promptResources(
-                            blanksCount,
-                            zeroLeaders.stream().map(l -> l.getResourceType().getName()).collect(Collectors.toUnmodifiableSet()));
+                            zeroLeaders.stream().map(l -> l.getResourceType().getName()).collect(Collectors.toUnmodifiableSet()), blanksCount
+                    );
                 }
             }
         }
@@ -102,8 +101,14 @@ public class TakeFromMarketState extends CliState {
         Map<String, Integer> totalRes = new HashMap<>(replacements);
         chosenResourcesNames.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
-        Set<Integer> allowedShelvesIDs = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream().map(ReducedResourceContainer::getId).collect(Collectors.toUnmodifiableSet());
-        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, cli.promptShelves(totalRes, allowedShelvesIDs)));
+        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
+                .map(ReducedResourceContainer::getId)
+                .collect(Collectors.toUnmodifiableSet());
+
+        cli.getOut().println();
+        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(totalRes, allowedShelves);
+
+        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, shelves));
     }
 
     // ErrObjectNotOwned handled in clistate
