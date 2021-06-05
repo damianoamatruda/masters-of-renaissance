@@ -70,8 +70,7 @@ public class FaithTrack implements Renderable {
                 boldT, slimT, boldHorizontalLine, slimHorizontalLine, cellWidth, maxFaith, sectionTiles, yellowTiles, output);
 
         //Number of lines = number of players
-        for (int j = 0; j < players.size(); j++) {
-            String player = players.get(j);
+        for (int j = 0; j < players.size() + (players.size() == 1 ? 1 : 0); j++) {
             // Tiles in middle rows
             for (int i = 0; i <= maxFaith; i++) {
                 if ((yellowTiles.contains(i) && (sectionTiles.contains(i - 1))) ||
@@ -80,8 +79,15 @@ public class FaithTrack implements Renderable {
                 else if (yellowTiles.contains(i) || yellowTiles.contains(i - 1)) output.append("\u001B[93m");
                 else if (sectionTiles.contains(i) || sectionTiles.contains(i - 1)) output.append("\u001B[31m");
 //                else if (i > 0 && !sectionTiles.contains(i - 1) && !yellowTiles.contains(i - 1)) output.append("\u001B[0m");
-                output.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? boldVerticalLine : slimVerticalLine)
-                        .append("\u001B[0m").append(points.get(player) == i ? String.format("%-5s", nicks.get(j)) : " ".repeat(cellWidth));
+                output.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? boldVerticalLine : slimVerticalLine);
+                if (j < players.size()) {
+                    String player = players.get(j);
+                    output.append("\u001B[0m").append(points.get(player) == i ?
+                            String.format("%-14s", cli.getViewModel().getClientColor(player) + nicks.get(j) + "\u001B[0m") : " ".repeat(cellWidth));
+                }
+                else
+                    output.append("\u001B[0m").append(cli.getViewModel().getBlackCrossFP() == i ?
+                            String.format("%-14s", "\u001B[90mBlack" + "\u001B[0m") : " ".repeat(cellWidth));
             }
             // Rightmost side border
             if (yellowTiles.contains(maxFaith)) output.append("\u001B[93m");

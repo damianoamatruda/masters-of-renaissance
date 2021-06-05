@@ -35,6 +35,9 @@ public class ViewModel {
     private int slotsCount;
     private ReducedActionToken latestToken;
 
+    private final List<String> clientColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
+    private Map<String, String> mappedColors;
+
     /**
      * Class constructor.
      * Initializes empty objects.
@@ -53,6 +56,8 @@ public class ViewModel {
 
         isLastRound = false;
         isSetupDone = false;
+
+        mappedColors = new HashMap<>();
     }
     
     /**
@@ -383,6 +388,8 @@ public class ViewModel {
     public void setPlayerNicknames(List<String> playerNicknames) {
         if (playerNicknames != null)
             this.playerNicknames = new ArrayList<>(playerNicknames);
+        for(int i = 0; i < playerNicknames.size(); i++)
+            mappedColors.put(playerNicknames.get(i), clientColors.get(i));
     }
 
     /**
@@ -503,5 +510,9 @@ public class ViewModel {
 
     public void setLatestToken(ReducedActionToken latestToken) {
         this.latestToken = latestToken;
+    }
+
+    public String getClientColor(String nick) {
+        return mappedColors.get(nick);
     }
 }
