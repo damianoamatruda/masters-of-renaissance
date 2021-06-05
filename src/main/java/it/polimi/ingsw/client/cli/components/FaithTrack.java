@@ -64,7 +64,7 @@ public class FaithTrack extends StringComponent {
         // Indexes on top of the track
         StringBuilder stringBuilder = new StringBuilder(" ");
         for (int i = 0; i <= maxFaith; i++)
-            stringBuilder.append(String.format("%-6s", Cli.centerLine(String.valueOf(i), 6)));
+            stringBuilder.append(Cli.centerLine(String.valueOf(i), 6));
         stringBuilder.append("\n");
 
         // Upper border
@@ -85,10 +85,10 @@ public class FaithTrack extends StringComponent {
                 if (j < players.size()) {
                     String player = players.get(j);
                     stringBuilder.append("\u001B[0m").append(points.get(player) == i ?
-                            String.format("%-14s", cli.getViewModel().getClientColor(player) + nicks.get(j) + "\u001B[0m") : " ".repeat(cellWidth));
+                            Cli.centerLine(cli.getViewModel().getClientColor(player) + nicks.get(j) + "\u001B[0m", 5) : " ".repeat(cellWidth));
                 } else
                     stringBuilder.append("\u001B[0m").append(cli.getViewModel().getBlackCrossFP() == i ?
-                            String.format("%-14s", "\u001B[90mBlack" + "\u001B[0m") : " ".repeat(cellWidth));
+                            Cli.centerLine("\u001B[90mBlack" + "\u001B[0m", 5) : " ".repeat(cellWidth));
             }
             // Rightmost side border
             if (yellowTiles.contains(maxFaith)) stringBuilder.append("\u001B[93m");
@@ -111,16 +111,16 @@ public class FaithTrack extends StringComponent {
                 overlapped.add(i);
             if (yellowTiles.contains(i)) {
                 index = yellowTiles.indexOf(i);
-                stringBuilder.append(String.format("%-15s", "\u001B[93m" + reducedFaithTrack.getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m"));
+                stringBuilder.append(Cli.centerLine("\u001B[93m" + reducedFaithTrack.getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m", 6));
             } else if (sectionEnds.contains(i)) {
-                stringBuilder.append(String.format("%-15s", "\u001B[31m" + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                stringBuilder.append(Cli.centerLine("\u001B[31m" + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m", 6));
             } else
                 stringBuilder.append("      ");
         }
         stringBuilder.append("\n");
         for (int i = 0; i <= maxFaith; i++) {
             if (overlapped.contains(i))
-                stringBuilder.append(String.format("%-16s", "\u001B[31m+ " + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m"));
+                stringBuilder.append(Cli.centerLine("\u001B[31m+ " + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m", 7));
             else
                 stringBuilder.append("      ");
         }
