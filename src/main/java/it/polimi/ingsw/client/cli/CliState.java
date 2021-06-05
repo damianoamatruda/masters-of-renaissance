@@ -201,7 +201,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateLeadersHandCount event) {
         cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersCount(event.getLeadersCount());
         cli.getOut().println();
-        cli.getOut().printf("Player %s now has %d leader cards.%n", event.getPlayer(), event.getLeadersCount());
+        cli.getOut().println(Cli.center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
     }
 
     public void on(Cli cli, UpdateMarket event) {

@@ -49,6 +49,5 @@ public class LeadersHand implements Renderable {
             }
         }
         cli.getOut().println("─".repeat(40 * Integer.min(4, leaders.size() - i + 4)));
-        cli.getOut().println("\n");
     }
 }

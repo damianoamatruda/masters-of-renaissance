@@ -223,8 +223,8 @@ public class Cli extends EventDispatcher {
      */
     void setState(CliState state) {
         this.state = state;
-        clear();
         out.println();
+        clear();
         out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
         state.render(this);
     }

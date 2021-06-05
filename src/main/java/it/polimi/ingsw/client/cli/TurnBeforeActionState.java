@@ -11,11 +11,12 @@ public class TurnBeforeActionState extends CliTurnState {
     @Override
     public void render(Cli cli) {
         if (!cli.getViewModel().isSetupDone()) {
+            cli.getOut().println();
             cli.getOut().println("Waiting for all players to finish their setup...");
             return;
         }
 
-        cli.getOut().println(Cli.center("\n\nAvailable actions:\n"));
+        cli.getOut().println(Cli.center("Available actions:"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Take market resources", cli1 -> cli.setState(new TakeFromMarketState())));
@@ -23,12 +24,13 @@ public class TurnBeforeActionState extends CliTurnState {
         entries.put('3', new Menu.Entry("Activate production", cli1 -> cli.setState(new ActivateProductionsState())));
         entries.put('L', new Menu.Entry("Leader actions", this::leaderActions));
         entries.put('S', new Menu.Entry("Swap shelves", this::swapShelves));
-
         new Menu(entries).render(cli);
     }
 
     @Override
     public void on(Cli cli, UpdateAction event) {
+        cli.getOut().println();
+        cli.promptPause();
         cli.setState(new TurnBeforeActionState());
     }
 

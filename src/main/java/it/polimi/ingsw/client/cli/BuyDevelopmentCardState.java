@@ -57,6 +57,8 @@ public class BuyDevelopmentCardState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
+        cli.getOut().println();
+        cli.promptPause();
         cli.setState(new TurnAfterActionState());
     }
 }

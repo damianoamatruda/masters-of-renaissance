@@ -14,7 +14,11 @@ public class WaitingAfterTurnState extends CliState {
     @Override
     public void on(Cli cli, UpdateCurrentPlayer event) {
         super.on(cli, event);
-        if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+        if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname())) {
+            cli.getOut().println();
+            cli.getOut().println("It's your turn.");
+            cli.promptPause();
             cli.setState(new TurnBeforeActionState());
+        }
     }
 }

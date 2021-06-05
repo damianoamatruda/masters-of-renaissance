@@ -72,11 +72,13 @@ public class InputPlayersCountState extends CliState {
 
         if (cli.getViewModel().isResumedGame())
             throw new RuntimeException("UpdateLeadersHand after resumed game.");
-        
+
+        cli.getOut().println();
+        cli.promptPause();
         cli.setState(
-            new SetupLeadersState(cli.getViewModel()
-                .getLocalPlayerData()
-                .getSetup()
-                .getChosenLeadersCount()));
+                new SetupLeadersState(cli.getViewModel()
+                        .getLocalPlayerData()
+                        .getSetup()
+                        .getChosenLeadersCount()));
     }
 }
