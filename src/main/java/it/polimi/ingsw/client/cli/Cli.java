@@ -20,7 +20,7 @@ import java.io.PrintStream;
 import java.util.*;
 
 public class Cli extends EventDispatcher {
-    static final int width = 180;
+    static final int width = 179;
 
     private final View view;
     private Network network;
