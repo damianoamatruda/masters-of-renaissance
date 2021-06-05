@@ -96,13 +96,13 @@ public class Market extends StackPane {
         }
 
         for (int i = 1; i < marketRows - 1; i++) {
-            IndexRadioButton b = new IndexRadioButton(String.valueOf(i), i - 1, true);
+            IndexRadioButton b = new IndexRadioButton(i - 1, true);
             b.setToggleGroup(indexSelectors);
             // TODO scale text (see Strongbox)
             grid.add(b, marketColumns - 1, i);
         }
         for (int i = 1; i < marketColumns - 2; i++) {
-            IndexRadioButton b = new IndexRadioButton(String.valueOf(i), i - 1, false);
+            IndexRadioButton b = new IndexRadioButton(i - 1, false);
             b.setToggleGroup(indexSelectors);
 
             grid.add(b, i, marketRows - 1);
@@ -127,8 +127,7 @@ public class Market extends StackPane {
         private final boolean isRow;
         private final int index;
 
-        public IndexRadioButton(String label, int index, boolean isRow) {
-            super(label);
+        public IndexRadioButton(int index, boolean isRow) {
             this.index = index;
             this.isRow = isRow;
         }

@@ -33,7 +33,7 @@ public class OptionsState extends CliState {
             cli.setGameConfigStream(new FileInputStream(gameConfigFile));
             cli.setState(new MainMenuState());
         } catch (FileNotFoundException e) {
-            cli.getOut().printf("Couldn't access to file %s.%n", gameConfigFile.getPath());
+            cli.getOut().printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
             cli.promptPause();
             cli.setState(new OptionsState());
         }

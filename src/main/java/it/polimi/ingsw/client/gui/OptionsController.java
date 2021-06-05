@@ -96,7 +96,7 @@ public class OptionsController extends GuiController {
                 gui.setGameConfigStream(new FileInputStream(gameConfigFile));
                 resetConfigButton.setDisable(false);
             } catch (FileNotFoundException e) {
-                System.out.printf("Couldn't access to file %s.%n", gameConfigFile.getPath());
+                System.out.printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
             }
         }
     }
