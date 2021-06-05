@@ -1,13 +1,12 @@
 package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.cli.Cli;
-import it.polimi.ingsw.client.cli.Renderable;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.List;
 
-public class Market implements Renderable {
+public class Market extends StringComponent {
     private final ReducedMarket reducedMarket;
 
     public Market(ReducedMarket reducedMarket) {
@@ -15,45 +14,49 @@ public class Market implements Renderable {
     }
 
     @Override
-    public void render(Cli cli) {
+    public String getString(Cli cli) {
+        StringBuilder stringBuilder = new StringBuilder();
+
         int width = reducedMarket.getGrid().stream().map(List::size).reduce(Integer::max).orElse(0);
 
-        cli.getOut().println("Market:");
-        cli.getOut().println("Replaceable resource type: " + new Resource(reducedMarket.getReplaceableResType()).getString(cli) + "\n");
+        stringBuilder.append("Market. Replaceable resource type: ").append(new Resource(reducedMarket.getReplaceableResType()).getString(cli)).append("\n").append("\n");
 
-        cli.getOut().print("╔");
-        cli.getOut().print("═".repeat(12 * (width + 1) - 1));
-        cli.getOut().println("╗");
+        stringBuilder.append("╔").append("═".repeat(4 + (10 + 1) * (width + 1))).append("╗").append("\n");
 
-        cli.getOut().print("║" + " ".repeat(8));
-        cli.getOut().print((String.format("%-10s", " ")).repeat(width) + " ");
-        cli.getOut().printf("%-23s", Cli.centerLine(new Resource(reducedMarket.getSlide()).getString(cli), 23));
-        cli.getOut().println("║");
+        stringBuilder
+                .append("║").append(" ".repeat(4 + (10 + 1) * width + 1))
+                .append(Cli.centerLine(new Resource(reducedMarket.getSlide()).getString(cli), 10))
+                .append("║").append("\n");
 
-        cli.getOut().println("║" + " ".repeat(4) + "╔" + "═".repeat(12 * width - 5) + "╦" + "═".repeat(10) + "╝");
+        stringBuilder
+                .append("║").append(" ".repeat(4)).append("╔").append("═".repeat((10 + 1) * width - 1))
+                .append("╦").append("═".repeat(10)).append("╝").append("\n");
 
         for (int i = 0; i < reducedMarket.getGrid().size(); i++) {
             List<String> r = reducedMarket.getGrid().get(i).stream().map(ReducedResourceType::getName).toList();
-            cli.getOut().print("║" + " ".repeat(4) + "║");
+            stringBuilder.append("║").append(" ".repeat(4)).append("║");
             for (int j = 0; j < r.size(); j++) {
                 String res = r.get(j);
-                cli.getOut().printf("%-22s", Cli.centerLine(new Resource(res).getString(cli), 22));
-                if (j < r.size() - 1) cli.getOut().print(" │");
-                else cli.getOut().print(" ");
+                stringBuilder.append(Cli.centerLine(new Resource(res).getString(cli), 10));
+                if (j < r.size() - 1)
+                    stringBuilder.append("│");
             }
-            cli.getOut().printf("║ < %d%n", i + 1);
+            stringBuilder.append(String.format("║ < %d", i + 1)).append("\n");
             if (i < reducedMarket.getGrid().size() - 1) {
-                cli.getOut().print("║" + " ".repeat(4) + "║");
-                cli.getOut().print(("─".repeat(10) + "┼").repeat(r.size() - 1) + "─".repeat(10));
-                cli.getOut().println("║");
+                stringBuilder.append("║").append(" ".repeat(4)).append("║");
+                stringBuilder.append(("─".repeat(10) + "┼").repeat(r.size() - 1)).append("─".repeat(10));
+                stringBuilder.append("║").append("\n");
             }
         }
 
-        cli.getOut().println("╚" + "═".repeat(4) + "╩" + "═".repeat(12 * width - 5) + "╝");
-        cli.getOut().print(" ".repeat(6));
-        for (int i = 1; i <= width; i++) cli.getOut().printf("%-10s ", Cli.centerLine("^", 10));
-        cli.getOut().print("\n" + " ".repeat(6));
-        for (int i = 1; i <= width; i++) cli.getOut().printf("%-10s ", Cli.centerLine("" + i, 10));
-        cli.getOut().println();
+        stringBuilder.append("╚").append("═".repeat(4)).append("╩").append("═".repeat(12 * width - 5)).append("╝").append("\n");
+        stringBuilder.append(" ".repeat(6));
+        for (int i = 1; i <= width; i++)
+            stringBuilder.append(Cli.centerLine("^", 10)).append(" ");
+        stringBuilder.append("\n").append(" ".repeat(6));
+        for (int i = 1; i <= width; i++)
+            stringBuilder.append(Cli.centerLine("" + i, 10)).append(" ");
+
+        return Cli.center(stringBuilder.toString());
     }
 }

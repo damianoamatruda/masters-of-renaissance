@@ -17,6 +17,8 @@ public class BaseProductions implements Renderable {
 
     @Override
     public void render(Cli cli) {
+        // TODO: Use Cli methods instead of printf
+
         cli.getOut().println("Base productions:");
 
         baseProductions.forEach((key, value) -> cli.getOut().println("Player: " + key));

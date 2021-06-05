@@ -3,10 +3,6 @@ package it.polimi.ingsw.client.cli.components;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class LeaderCard extends StringComponent {
     private final ReducedLeaderCard reducedLeaderCard;
 
@@ -16,46 +12,36 @@ public class LeaderCard extends StringComponent {
 
     @Override
     public String getString(Cli cli) {
-        List<String> column = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
 
-        column.add(String.format("%-38s", "[Leader]"));
+        stringBuilder.append("[Leader]").append("\n");
 
-        column.add(String.format("%-51s", String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, type: %s",
+        stringBuilder.append(String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, type: %s",
                 reducedLeaderCard.getId(),
                 reducedLeaderCard.getLeaderType()
-        )));
+        )).append("\n");
 
-        column.add(String.format("%-51s", String.format("BoundResource: %s, VP: %d",
+        stringBuilder.append(String.format("BoundResource: %s, VP: %d",
                 new Resource(reducedLeaderCard.getResourceType().getName()).getString(cli),
-                reducedLeaderCard.getVictoryPoints())
-        ));
+                reducedLeaderCard.getVictoryPoints()
+        )).append("\n");
 
-        column.add(String.format("%-38s", String.format("Active status: %s", reducedLeaderCard.isActive())));
+        stringBuilder.append(String.format("Active status: %s", reducedLeaderCard.isActive())).append("\n");
 
         if (reducedLeaderCard.getDiscount() >= 0)
-            column.add(String.format("%-38s", String.format("Discount: %d", reducedLeaderCard.getDiscount())));
+            stringBuilder.append(String.format("Discount: %d", reducedLeaderCard.getDiscount())).append("\n");
 
-        if (reducedLeaderCard.getDevCardRequirement() != null) {
-            List<String> s = Arrays.stream(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement()).getString(cli).split("\\R"))
-                    .filter(st -> !st.contains("\r") && !st.startsWith("\n"))
-                    .map(st -> st.replaceFirst(" ".repeat(17), ""))
-                    .toList();
-            column.addAll(s);
-        }
-        if (reducedLeaderCard.getResourceRequirement() != null) {
-            List<String> s = Arrays.stream(new ResourceRequirement(reducedLeaderCard.getResourceRequirement()).getString(cli).split("\\R"))
-                    .filter(st -> !st.contains("\r") && !st.startsWith("\n"))
-                    .map(st -> st.replaceFirst(" ".repeat(17), ""))
-                    .toList();
-            column.addAll(s);
-        }
+        if (reducedLeaderCard.getDevCardRequirement() != null)
+            stringBuilder.append(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement()).getString(cli));
+        if (reducedLeaderCard.getResourceRequirement() != null)
+            stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement()).getString(cli));
 
         cli.getViewModel().getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->
-                column.add(new ResourceContainer(c).getString(cli)));
+                stringBuilder.append(new ResourceContainer(c).getString(cli)));
 
         cli.getViewModel().getProduction(reducedLeaderCard.getProduction()).ifPresent(p ->
-                column.add(new ResourceTransactionRecipe(p).getString(cli)));
+                stringBuilder.append(new ResourceTransactionRecipe(p).getString(cli)));
 
-        return String.join("\n", column);
+        return stringBuilder.toString();
     }
 }

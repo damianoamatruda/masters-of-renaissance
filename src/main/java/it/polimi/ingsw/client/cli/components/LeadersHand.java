@@ -1,14 +1,14 @@
 package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.cli.Cli;
-import it.polimi.ingsw.client.cli.Renderable;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LeadersHand implements Renderable {
+public class LeadersHand extends StringComponent {
+    private final static int cellWidth = 38;
     private final List<ReducedLeaderCard> leaders;
 
     public LeadersHand(List<ReducedLeaderCard> leaders) {
@@ -16,38 +16,36 @@ public class LeadersHand implements Renderable {
     }
 
     @Override
-    public void render(Cli cli) {
+    public String getString(Cli cli) {
+        StringBuilder stringBuilder = new StringBuilder();
+
         int i;
         for (i = 0; i < leaders.size(); i += 4) {
-            cli.getOut().println("─".repeat(40 * Integer.min(4, leaders.size() - i)));
-            List<List<String>> rows = new ArrayList<>();
+            stringBuilder.append(Cli.slimLine(cellWidth * (leaders.size() % 5) + 1));
 
             List<ReducedLeaderCard> cards = new ArrayList<>();
             for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
                 cards.add(leaders.get(i + j));
-                rows.add(new ArrayList<>());
             }
 
+            List<List<String>> rows = new ArrayList<>();
             for (int j = 0; j < 4 && j < leaders.size() - i; j++)
-                rows.get(j).addAll(Arrays.asList(new LeaderCard(cards.get(j)).getString(cli).split("\\R")));
-
-            String rowTemplate = "";
-            for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
-                rowTemplate += "%-38s │";
-            }
-            rowTemplate += "\n";
+                rows.add(Arrays.asList(new LeaderCard(cards.get(j)).getString(cli).split("\\R")));
 
             int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
             for (int k = 0; k < length; k++) {
-                List<String> row = new ArrayList<>();
+                stringBuilder.append("│");
                 for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
                     if (k < rows.get(j).size())
-                        row.add(rows.get(j).get(k));
-                    else row.add("");
+                        stringBuilder.append(Cli.left(rows.get(j).get(k), cellWidth - 2)).append(" │");
+                    else
+                        stringBuilder.append(Cli.left("", cellWidth - 2)).append(" │");
                 }
-                cli.getOut().printf(rowTemplate, row.toArray());
+                stringBuilder.append("\n");
             }
         }
-        cli.getOut().println("─".repeat(40 * Integer.min(4, leaders.size() - i + 4)));
+        stringBuilder.append(Cli.slimLine(cellWidth * (leaders.size() % 5) + 1));
+
+        return Cli.center(stringBuilder.toString());
     }
 }

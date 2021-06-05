@@ -29,7 +29,7 @@ public class ActivateProductionsState extends CliState {
         do {
             Optional<ReducedResourceTransactionRecipe> optionalSelectedProd;
             do {
-                int productionId = cli.promptInt("Production ID");
+                int productionId = cli.promptInt("Production");
                 optionalSelectedProd = allowedProds.stream().filter(p -> p.getId() == productionId).findAny();
             } while (optionalSelectedProd.isEmpty());
 

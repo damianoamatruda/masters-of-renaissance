@@ -13,7 +13,8 @@ public abstract class CliTurnState extends CliState {
     private int leaderId;
 
     public void leaderActions(Cli cli) {
-        cli.getOut().println(Cli.center("\n\nLeader actions:\n"));
+        cli.getOut().println();
+        cli.getOut().println(Cli.center("Leader actions:\n"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeAction(cli, true)));
@@ -24,7 +25,10 @@ public abstract class CliTurnState extends CliState {
 
     private void executeAction(Cli cli, boolean isActivate) {
         new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render(cli);
+
+        cli.getOut().println();
         leaderId = cli.promptInt("Leader");
+
         cli.dispatch(new ReqLeaderAction(leaderId, isActivate));
     }
 

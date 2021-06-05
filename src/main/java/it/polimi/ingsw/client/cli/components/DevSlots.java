@@ -15,6 +15,8 @@ public class DevSlots implements Renderable {
 
     @Override
     public void render(Cli cli) {
+        // TODO: Use Cli methods instead of printf
+
         for (int i = 0; i < slots.size(); i += 4) {
             cli.trackSlimLine();
             List<List<String>> rows = new ArrayList<>();

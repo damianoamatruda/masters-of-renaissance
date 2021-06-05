@@ -12,6 +12,9 @@ public class ResourceRequirement extends StringComponent {
 
     @Override
     public String getString(Cli cli) {
-        return String.format("%-38s", "--- Requirements ---\n") + String.format("%s%n", new ResourceMap(reducedResourceRequirement.getRequirements()).getString(cli));
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("--- Requirements ---").append("\n");
+        stringBuilder.append(new ResourceMap(reducedResourceRequirement.getRequirements()).getString(cli));
+        return stringBuilder.toString();
     }
 }

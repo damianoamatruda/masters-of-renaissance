@@ -1,13 +1,14 @@
 package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.cli.Cli;
-import it.polimi.ingsw.client.cli.Renderable;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
 import java.util.*;
 
-public class DevCardGrid implements Renderable {
+public class DevCardGrid extends StringComponent {
+    private final static int cellWidth = 30;
+
     private final ReducedDevCardGrid reducedDevCardGrid;
 
     public DevCardGrid(ReducedDevCardGrid reducedDevCardGrid) {
@@ -15,13 +16,15 @@ public class DevCardGrid implements Renderable {
     }
 
     @Override
-    public void render(Cli cli) {
+    public String getString(Cli cli) {
+        StringBuilder stringBuilder = new StringBuilder();
+
         List<List<ReducedDevCard>> topCards = new ArrayList<>();
         int levels = reducedDevCardGrid.getLevelsCount();
 
         for (int i = 1; i <= levels; i++) {
-            cli.trackSlimLine();
-            List<List<String>> lines = new ArrayList<>();
+            stringBuilder.append(Cli.slimLine(cellWidth * reducedDevCardGrid.getColorsCount() + 1));
+
             for (String key : reducedDevCardGrid.getGrid().keySet()) {
                 int index = i;
                 ReducedDevCard card = reducedDevCardGrid.getGrid().get(key).stream()
@@ -32,31 +35,27 @@ public class DevCardGrid implements Renderable {
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
+
+            List<List<String>> rows = new ArrayList<>();
             for (int j = 0; j < topCards.get(i - 1).size(); j++) {
                 ReducedDevCard card = topCards.get(i - 1).get(j);
-                lines.add(new ArrayList<>());
-                List<String> column = lines.get(j);
-                column.addAll(Arrays.asList(new DevelopmentCard(card).getString(cli).split("\\R")));
+                rows.add(Arrays.asList(new DevelopmentCard(card).getString(cli).split("\\R")));
             }
 
-            String rowTemplate = "";
-            for (int j = 0; j < topCards.get(i - 1).size(); j++) {
-                rowTemplate += "%-38s │";
-            }
-            rowTemplate += "\n";
-
-            int length = lines.stream().map(List::size).reduce(Integer::max).orElse(0);
+            int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
             for (int j = 0; j < length; j++) {
-                List<String> row = new ArrayList<>();
+                stringBuilder.append("│");
                 for (int l = 0; l < topCards.get(i - 1).size(); l++) {
-                    if (j < lines.get(l).size())
-                        row.add(lines.get(l).get(j));
-                    else row.add("");
+                    if (j < rows.get(l).size())
+                        stringBuilder.append(Cli.left(rows.get(l).get(j), cellWidth - 2)).append(" │");
+                    else
+                        stringBuilder.append(Cli.left("", cellWidth - 2)).append(" │");
                 }
-                cli.getOut().printf(rowTemplate, row.toArray());
+                stringBuilder.append("\n");
             }
         }
-        cli.trackSlimLine();
-        cli.getOut().println();
+        stringBuilder.append(Cli.slimLine(cellWidth * reducedDevCardGrid.getColorsCount() + 1));
+
+        return Cli.center(stringBuilder.toString());
     }
 }

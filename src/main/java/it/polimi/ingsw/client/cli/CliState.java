@@ -96,7 +96,10 @@ public abstract class CliState implements Renderable {
         // print only, no cache update
         cli.getViewModel()
                 .getActionToken(event.getActionToken())
-                .ifPresent(t -> new ActionToken(t).render(cli));
+                .ifPresent(t -> {
+                    cli.getOut().println();
+                    new ActionToken(t).render(cli);
+                });
     }
 
     public void on(Cli cli, UpdateBookedSeats event) {
@@ -105,7 +108,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateCurrentPlayer event) {
         cli.getViewModel().setCurrentPlayer(event.getPlayer());
         cli.getOut().println();
-        cli.getOut().printf("Current player: %s%n", event.getPlayer());
+        cli.getOut().println(Cli.center(String.format("Current player: %s", event.getPlayer())));
     }
 
     public void on(Cli cli, UpdateDevCardGrid event) {

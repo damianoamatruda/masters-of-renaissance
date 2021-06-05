@@ -4,9 +4,6 @@ import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DevCardRequirement extends StringComponent {
     private final ReducedDevCardRequirement reducedDevCardRequirement;
 
@@ -16,16 +13,15 @@ public class DevCardRequirement extends StringComponent {
 
     @Override
     public String getString(Cli cli) {
-        List<String> column = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
 
-        column.add("--- Requirements ---");
+        stringBuilder.append("--- Requirements ---").append("\n");
         for (int k = 0; k < reducedDevCardRequirement.getEntries().size(); k++) {
             ReducedDevCardRequirementEntry e = reducedDevCardRequirement.getEntries().get(k);
-            String req = String.format("  %-49s", e.getAmount() + " " + new DevCardColor(e.getColor()).getString(cli) + " card(s) of " +
-                    (e.getLevel() > 0 ? ("level " + e.getLevel()) : "any level"));
-            column.add(req);
+            stringBuilder.append(e.getAmount()).append(" ").append(new DevCardColor(e.getColor()).getString(cli))
+                    .append(" card(s) of ").append(e.getLevel() > 0 ? ("level " + e.getLevel()) : "any level").append("\n");
         }
 
-        return String.join("\n", column);
+        return stringBuilder.toString();
     }
 }

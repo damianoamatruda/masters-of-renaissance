@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.cli.Cli;
 import java.util.Map;
 
 public class ResourceMap extends StringComponent {
+    private final int padding = 12;
     private final Map<String, Integer> reducedResourceMap;
 
     public ResourceMap(Map<String, Integer> reducedResourceMap) {
@@ -16,20 +17,15 @@ public class ResourceMap extends StringComponent {
         StringBuilder stringBuilder = new StringBuilder();
 
         int i = 0;
-        String req = "";
         for (String resType : reducedResourceMap.keySet()) {
             if (i % 2 == 0)
-                req = String.format("  %-24s", String.format("%s: %d", new Resource(resType).getString(cli), reducedResourceMap.get(resType)));
-            else {
-                req += String.format("  %-36s", String.format("%s: %d", new Resource(resType).getString(cli), reducedResourceMap.get(resType)));
-                stringBuilder.append(req).append("\n");
-            }
+                stringBuilder.append(String.format("  %s", Cli.left(String.format("%s: %d", new Resource(resType).getString(cli), reducedResourceMap.get(resType)), padding)));
+            else
+                stringBuilder.append(String.format("%s: %d", new Resource(resType).getString(cli), reducedResourceMap.get(resType))).append("\n");
             i++;
         }
-        if (reducedResourceMap.size() % 2 != 0) {
-            req += " ".repeat(25);
-            stringBuilder.append(req).append("\n");
-        }
+        if (reducedResourceMap.size() % 2 != 0)
+            stringBuilder.append("\n");
 
         return stringBuilder.toString();
     }

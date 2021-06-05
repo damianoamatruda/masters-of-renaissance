@@ -11,7 +11,7 @@ public class InputPlayersCountState extends CliState {
     @Override
     public void render(Cli cli) {
         if (cli.isOffline()) {
-            cli.getOut().println("Preparing a new game...");
+            cli.getOut().println(Cli.center("Preparing a new game..."));
             cli.dispatch(new ReqNewGame(1));
             return;
         }

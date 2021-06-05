@@ -20,7 +20,7 @@ import java.io.PrintStream;
 import java.util.*;
 
 public class Cli extends EventDispatcher {
-    static final int width = 160;
+    static final int width = 180;
 
     private final View view;
     private Network network;
@@ -60,32 +60,78 @@ public class Cli extends EventDispatcher {
         return s.hasNext() ? s.next() : "";
     }
 
-    public static String centerLine(String s, int width) {
-        int marginLeft = (width - s.length()) / 2;
+    public static String centerLine(String str, int width) {
+        int marginLeft = (width - textLength(str)) / 2;
+        int marginRight = width - marginLeft - textLength(str);
+
+        if (textLength(str) > width) {
+            System.err.println("String too long:");
+            System.err.println(str);
+            System.err.printf("Max length: %d. Got: %d.", width, textLength(str));
+            throw new IllegalArgumentException();
+        }
 
         StringBuilder stringBuilder = new StringBuilder();
-        s.lines().forEachOrdered(line -> stringBuilder.append(" ".repeat(marginLeft)).append(line));
+        str.lines().forEachOrdered(line -> stringBuilder.append(" ".repeat(marginLeft)).append(line).append(" ".repeat(marginRight)));
         return stringBuilder.toString();
     }
 
-    public static String center(String s) {
-        if (s.lines().count() == 0)
+    public static String center(String str) {
+        if (str.lines().count() == 0)
             return "";
 
-        int maxLineWidth = s.lines().mapToInt(String::length).max().orElseThrow();
+        int maxLineWidth = str.lines().mapToInt(Cli::textLength).max().orElseThrow();
 
-        if (maxLineWidth > width)
+        if (maxLineWidth > width) {
+            System.err.println("String too long:");
+            System.err.println(str.lines().filter(s -> s.length() == maxLineWidth).findAny().orElseThrow());
+            System.err.printf("Max length: %d. Got: %d.", width, textLength(str.lines().filter(s -> s.length() == maxLineWidth).findAny().orElseThrow()));
             throw new IllegalArgumentException();
+        }
 
         int marginLeft = (width - maxLineWidth) / 2;
 
         StringBuilder stringBuilder = new StringBuilder();
-        s.lines().forEachOrdered(line -> stringBuilder.append(" ".repeat(marginLeft)).append(line).append("\n"));
+        str.lines().forEachOrdered(line -> stringBuilder.append(" ".repeat(marginLeft)).append(line).append(" ".repeat(width - marginLeft - textLength(line))).append("\n"));
         return stringBuilder.toString();
     }
 
-    /* public static String spaced(String s) {
-        return String.format("%n%s%n", s);
+    public static String left(String str, int width, char fill) {
+        if (textLength(str) > width) {
+            System.err.println("String too long:");
+            System.err.println(str);
+            System.err.printf("Max length: %d. Got: %d.", width, textLength(str));
+            throw new IllegalArgumentException();
+        }
+        return str + Character.toString(fill).repeat(width - textLength(str));
+    }
+
+    public static String left(String str, int width) {
+        return left(str, width, ' ');
+    }
+
+    public static String right(String str, int width, char fill) {
+        return Character.toString(fill).repeat(width - textLength(str)) + str;
+    }
+
+    public static String right(String str, int width) {
+        return right(str, width, ' ');
+    }
+
+    public static int textLength(String str) {
+        return str.replaceAll("\u001B\\[[;\\d]*m", "").length();
+    }
+
+    public static String slimLine(int width) {
+        return "─".repeat(width) + "\n";
+    }
+
+    public static String slimLine() {
+        return slimLine(width);
+    }
+
+    /* public static String spaced(String str) {
+        return String.format("%n%s%n", str);
     } */
 
     public void start() {
@@ -239,18 +285,16 @@ public class Cli extends EventDispatcher {
     }
 
     void promptPause() {
-        out.println("[Press ENTER to continue]");
+        out.print(Cli.center("[Press ENTER to continue]"));
         pause();
     }
 
     public void trackSlimLine() {
-        for (int i = 0; i < width; i++)
-            out.print("─");
-        out.println();
+        out.print(slimLine());
     }
 
-    void repeatState(String s) {
-        out.println(s);
+    void repeatState(String str) {
+        out.println(str);
         promptPause();
         setState(this.state);
     }
@@ -429,7 +473,7 @@ public class Cli extends EventDispatcher {
         int shelfId = -1;
         String input;
         while (shelfId < 0) {
-            input = prompt("Shelf ID");
+            input = prompt("Shelf");
             if (input.equalsIgnoreCase("B"))
                 return -1;
             try {
@@ -444,39 +488,43 @@ public class Cli extends EventDispatcher {
 
     @Deprecated
     void showShelves(String player) {
+        StringBuilder stringBuilder = new StringBuilder();
+
         if (viewModel.getPlayerWarehouseShelves(player).size() > 0) {
-            out.printf("%s's warehouse shelves:%n", player);
-            viewModel.getPlayerWarehouseShelves(player).forEach(c -> {
-                out.println();
-                new ResourceContainer(c).render(this);
-            });
+            stringBuilder.append(String.format("%s's warehouse shelves:", player)).append("\n");
+            viewModel.getPlayerWarehouseShelves(player).forEach(c ->
+                    stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
         }
         if (viewModel.getPlayerDepots(player).size() > 0) {
-            out.println();
-            out.printf("%s's available leader depots:%n", player);
-            viewModel.getPlayerDepots(player).forEach(c -> {
-                out.println();
-                new ResourceContainer(c).render(this);
-            });
+            stringBuilder.append("\n");
+            stringBuilder.append(String.format("%s's available leader depots:%n", player));
+            viewModel.getPlayerDepots(player).forEach(c ->
+                    stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
         }
+
+        out.println(Cli.center(stringBuilder.toString()));
     }
 
     @Deprecated
     void showStrongbox(String player) {
-        out.printf("%s's strongbox:%n", player);
-        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c -> {
-            out.println();
-            new ResourceContainer(c).render(this);
-        });
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(String.format("%s's strongbox:", player)).append("\n");
+        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c ->
+                stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
+
+        out.println(Cli.center(stringBuilder.toString()));
     }
 
     @Deprecated
     public void showContainers(String player) {
-        out.printf("%s's containers:%n", player);
-        viewModel.getPlayerShelves(player).forEach(c -> {
-            out.println();
-            new ResourceContainer(c).render(this);
-        });
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(String.format("%s's containers:", player)).append("\n");
+        viewModel.getPlayerShelves(player).forEach(c ->
+                stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
+
+        out.println(Cli.center(stringBuilder.toString()));
     }
 
     void quit() {
