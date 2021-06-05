@@ -13,10 +13,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class Warehouse extends VBox {
     private double maxRowHeight;
     private final Map<Integer, Shelf> shelves = new HashMap<>();
+    
+    private int waitingForSwap1, waitingForSwap2;
 
     public Warehouse() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/warehouse.fxml"));
@@ -30,11 +33,11 @@ public class Warehouse extends VBox {
         }
     }
 
-    public void setWarehouseShelves(List<ReducedResourceContainer> shelves) {
+    public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback) {
         maxRowHeight = getPrefHeight() / shelves.size(); // TODO: check that it works with more than 3 shelves
         if(shelves != null) {
             for (ReducedResourceContainer shelf : shelves) {
-                Shelf content = new Shelf(shelf);
+                Shelf content = new Shelf(shelf, callback);
                 content.setAlignment(Pos.CENTER);
 
                 for(String resource : shelf.getContent().keySet()) {
@@ -81,5 +84,18 @@ public class Warehouse extends VBox {
 
     public Shelf getShelf(int id) {
         return shelves.get(id);
+    }
+
+    public void setWaitingForSwap(Integer s1, Integer s2) {
+        waitingForSwap1 = s1;
+        waitingForSwap2 = s2;
+    }
+
+    public int getWaitingForSwap1() {
+        return waitingForSwap1;
+    }
+
+    public int getWaitingForSwap2() {
+        return waitingForSwap2;
     }
 }

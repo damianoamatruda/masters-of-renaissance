@@ -1,18 +1,25 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.event.EventType;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+
+import java.util.function.BiConsumer;
 
 public class Shelf extends HBox {
     private final int shelfId;
     private final int size;
     private final HBox content = new HBox();
+    private final Circle swapIcon = new Circle(10, Color.WHITE);
+    private final BiConsumer<Integer, Integer> callback;
 
-    public Shelf(ReducedResourceContainer shelf) {
+    public Shelf(ReducedResourceContainer shelf, BiConsumer<Integer, Integer> callback) {
+        this.callback = callback;
         this.shelfId = shelf.getId();
         this.size = shelf.getSize();
         this.setSpacing(20);
@@ -29,6 +36,9 @@ public class Shelf extends HBox {
 
         this.getChildren().add(new Text("Size: " + shelf.getSize()));
         this.getChildren().add(content);
+
+        setSwapDnD();
+        this.getChildren().add(swapIcon);
     }
 
     public void addResource(Resource r) {
@@ -64,4 +74,46 @@ public class Shelf extends HBox {
         if (content.getChildren().size() <= 0) return null;
         return ((Resource)content.getChildren().get(0)).getName();
     }
+
+    private void setSwapDnD() {
+        swapIcon.setOnDragDetected((event -> {
+            Dragboard db = this.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("[swap]" + this.getShelfId());
+            db.setContent(content);
+            event.consume();
+        }));
+
+        this.setOnDragOver((event) -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasString() && db.getString().startsWith("[swap]")) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        this.setOnDragDropped((event) -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString() && db.getString().startsWith("[swap]")) {
+                try {
+                    int sourceShelfID = Integer.parseInt(db.getString().substring(6));
+
+                    callback.accept(sourceShelfID, this.shelfId);
+
+                    //disable temporarily dnd until response is received
+
+                } catch (Exception e) { // TODO remove this catch once debugged
+                    e.printStackTrace();
+                }
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
+//    private void disableSwapDnD() {
+//        swapIcon.removeEventHandler(EventType.ROOT);
+//    }
 }

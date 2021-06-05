@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
+import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -71,7 +72,7 @@ public class SetupResourcesController extends GuiController {
             resourceTypesContainer.getChildren().add(r);
         });
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()));
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
 
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
                     Dragboard db = event.getDragboard();

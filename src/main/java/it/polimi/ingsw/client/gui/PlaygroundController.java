@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import it.polimi.ingsw.client.gui.components.DevSlot;
 import it.polimi.ingsw.client.gui.components.DevelopmentCard;
@@ -15,10 +14,11 @@ import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
+import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -35,6 +35,8 @@ public abstract class PlaygroundController extends GuiController {
     @FXML protected Text topText = new Text();
 
     private LeaderCard toDiscard = null;
+
+    private final Warehouse warehouse = new Warehouse();
 
 
     @Override
@@ -56,8 +58,7 @@ public abstract class PlaygroundController extends GuiController {
         prod.setProduction(gui.getViewModel().getProduction(baseProdId).orElseThrow());
 
 
-        Warehouse warehouse = new Warehouse();
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()));
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
 
 
         Strongbox s = new Strongbox();
@@ -237,5 +238,32 @@ public abstract class PlaygroundController extends GuiController {
         leadersBox.getChildren().get(leaderIndex + 1).setVisible(false);
 
         toDiscard = null;
+    }
+
+    @Override
+    public void on(Gui gui, UpdateAction event) {
+        super.on(gui, event);
+
+        if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
+
+            Node s1 = warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
+            Node s2 = warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
+
+            int tempIndex1 = warehouse.getChildren().indexOf(s1);
+            int tempIndex2 = warehouse.getChildren().indexOf(s2);
+                Platform.runLater(() -> {
+                    warehouse.getChildren().remove(Math.max(tempIndex1, tempIndex2));
+                    warehouse.getChildren().remove(Math.min(tempIndex1, tempIndex2));
+
+                    if(tempIndex1 < tempIndex2) {
+                        warehouse.getChildren().add(tempIndex1, s2);
+                        warehouse.getChildren().add(tempIndex2, s1);
+                    } else {
+                        warehouse.getChildren().add(tempIndex2, s1);
+                        warehouse.getChildren().add(tempIndex1, s2);
+                    }
+                });
+
+        }
     }
 }

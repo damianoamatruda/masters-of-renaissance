@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
+import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.css.PseudoClass;
@@ -176,7 +177,7 @@ public class DevCardGridController extends GuiController {
         List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).getWarehouseShelves().stream()
             .map(id -> vm.getContainer(id).orElseThrow()).toList();
 
-        warehouse.setWarehouseShelves(whShelves);
+        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
 
         if (containersBox.getChildren().size() >= 1)
             containersBox.getChildren().remove(0);

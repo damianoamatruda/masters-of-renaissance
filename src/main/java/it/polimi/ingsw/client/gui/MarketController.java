@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.DepotLeader;
 import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
@@ -131,7 +132,7 @@ public class MarketController extends GuiController {
         List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).getWarehouseShelves().stream()
             .map(id -> vm.getContainer(id).orElseThrow()).toList();
             
-        warehouse.setWarehouseShelves(whShelves);
+        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
 
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
