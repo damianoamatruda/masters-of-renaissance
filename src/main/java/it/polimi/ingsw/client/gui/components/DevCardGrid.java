@@ -42,7 +42,7 @@ public class DevCardGrid extends HBox {
     public void setGrid(ReducedDevCardGrid grid) {
         for(String color : grid.getGrid().keySet()) {
             VBox column = new VBox(5);
-            for(int i = 1; i <= grid.getLevelsCount(); i++) {
+            for(int i = grid.getLevelsCount(); i >= 1 ; i--) {
                 ReducedDevCard card;
 
                 try {
