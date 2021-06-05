@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import it.polimi.ingsw.client.gui.components.DevSlot;
 import it.polimi.ingsw.client.gui.components.DevelopmentCard;
@@ -12,8 +13,15 @@ import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeader;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
+import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHandCount;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
+import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -27,6 +35,8 @@ public abstract class PlaygroundController extends GuiController {
     private VBox leadersBox = new VBox();
 
     @FXML protected Text topText = new Text();
+
+    private LeaderCard toDiscard = null;
 
 
     @Override
@@ -116,13 +126,37 @@ public abstract class PlaygroundController extends GuiController {
                     leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
                             reducedLeader.getResourceType().getName());
 
+                leaderCard.setActivated(reducedLeader.isActive());
+
                 return leaderCard;
             }).toList();
 
         leadersBox.setAlignment(Pos.CENTER);
         leadersBox.setPrefWidth(166);
         leadersBox.setSpacing(20);
-        leadersBox.getChildren().addAll(leaders);
+
+        int i = 0;
+        for(LeaderCard leader : leaders) {
+            leadersBox.getChildren().add(leader);
+            HBox h = new HBox();
+            h.setAlignment(Pos.CENTER);
+            h.setSpacing(20);
+
+            if (!leader.isActivated()) {
+                Button activate = new SButton("Activate");
+                int finalI = i;
+                activate.setOnMouseClicked((event -> handleActivate(finalI)));
+
+                Button discard = new SButton("Discard");
+                discard.setOnMouseClicked((event -> handleDiscard(finalI)));
+
+                h.getChildren().addAll(List.of(activate, discard));
+            }
+
+            leadersBox.getChildren().add(h);
+            i++;
+        }
+
         canvas.getChildren().add(leadersBox);
         AnchorPane.setRightAnchor(leadersBox, 10.0);
         AnchorPane.setBottomAnchor(leadersBox, 50.0);
@@ -144,5 +178,58 @@ public abstract class PlaygroundController extends GuiController {
         else
             gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
 
+    }
+
+    private void handleActivate(int leaderIndex) {
+        int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
+        Gui.getInstance().dispatch(new ReqLeaderAction(leaderId, true));
+    }
+
+    private void handleDiscard(int leaderIndex) {
+        LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
+        if (toDiscard == null) {
+            toDiscard = leader;
+            Gui.getInstance().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
+        }
+    }
+
+    @Override
+    public void on(Gui gui, UpdateLeader event) {
+        super.on(gui, event);
+
+        LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
+        int leaderIndex = leadersBox.getChildren().indexOf(leader);
+
+        leader.setActivated(event.isActivated());
+
+        HBox buttons = (HBox) leadersBox.getChildren().get(leaderIndex + 1);
+        buttons.getChildren().forEach(b -> { b.setDisable(true); b.setVisible(false);});
+    }
+
+    @Override
+    public void on(Gui gui, ErrCardRequirements event) {
+        super.on(gui, event);
+
+//        Alert a = new Alert(Alert.AlertType.ERROR);
+//        a.setContentText("Requirements not met. Leader cannot be activated.");
+//
+//        a.show();
+
+    }
+
+    @Override
+    public void on(Gui gui, UpdateLeadersHandCount event) {
+        super.on(gui, event);
+
+        int leaderIndex = leadersBox.getChildren().indexOf(toDiscard);
+        gui.getViewModel().getCurrentPlayerData().getLeadersHand().remove(Integer.valueOf(toDiscard.getLeaderId()));
+
+//        leadersBox.getChildren().remove(leaderIndex, leaderIndex + 2);
+        leadersBox.getChildren().get(leaderIndex).setVisible(false);
+
+        leadersBox.getChildren().get(leaderIndex + 1).setDisable(true);
+        leadersBox.getChildren().get(leaderIndex + 1).setVisible(false);
+
+        toDiscard = null;
     }
 }

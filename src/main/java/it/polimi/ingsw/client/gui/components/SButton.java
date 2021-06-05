@@ -20,4 +20,9 @@ public class SButton extends Button {
                 clip.play();
         });
     }
+
+    public SButton(String text) {
+        this();
+        this.setText(text);
+    }
 }

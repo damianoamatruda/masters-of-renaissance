@@ -27,6 +27,9 @@ public class LeaderCard extends Card {
 
     private int leaderId;
 
+    private boolean isActivated;
+
+
     public LeaderCard(String leaderType) {
         super(leaderType);
     }
@@ -167,5 +170,13 @@ public class LeaderCard extends Card {
 
     public void setLeaderId(int leaderId) {
         this.leaderId = leaderId;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 }

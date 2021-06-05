@@ -15,9 +15,9 @@ public class PlayerData {
     /** When not activated, cards are hidden.
      * Therefore, only their number is stored. */
     private int leadersCount;
-    /** IDs of the activated leader cards.
+    /* IDs of the activated leader cards.
      * An ID's presence makes the card visible.
-     * The card's state also needs to be set to active. */
+     * The card's state also needs to be set to active. */ //Not only the activated, actually
     private List<Integer> leadersHand;
     private final ReducedPlayerSetup setup;
     private final int strongbox;
