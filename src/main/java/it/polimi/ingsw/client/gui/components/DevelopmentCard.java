@@ -1,15 +1,19 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
-import it.polimi.ingsw.common.backend.model.DevCardColor;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 public class DevelopmentCard extends Card {
-//    @FXML private Label level;
-//    @FXML private Label color;
-//    @FXML private HBox requirement;
+    private int height = 251;
+    private int width = 166;
+    @FXML
+    private Text levelLeft;
+    @FXML
+    private Text levelRight;
 
     public DevelopmentCard(String color) {
         super(color);
@@ -22,19 +26,15 @@ public class DevelopmentCard extends Card {
         setVictoryPoints(card.getVictoryPoints()+"");
     }
 
-    public void setData(int level, DevCardColor color) {
-//        this.color.setText(color.getName());
-//        this.level.setText(Integer.toString(level));
-    }
-
     public void setLevel(int level){
-        // should put as many dots to the side flags as the level of the card
+        levelLeft.setText(level+"");
+        levelRight.setText(level+"");
     }
 
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
-        victoryPoints.setLayoutX(76);
-        victoryPoints.setLayoutY(228);
+        victoryPoints.setLayoutX(width * 0.465);
+        victoryPoints.setLayoutY(height * 0.91);
     }
 
     @Override
@@ -44,14 +44,14 @@ public class DevelopmentCard extends Card {
 
     public void setRequirement(ReducedResourceRequirement requirement) {
         super.setRequirement(requirement);
-        this.requirement.setLayoutX(20);
+        this.requirement.setLayoutX(width * 0.12);
 //        this.requirement.setAlignment(Pos.CENTER);
 //        this.requirement.setLayoutY();
     }
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
-        this.prod.setLayoutX(20);
-        this.prod.setLayoutY(130);
+        this.prod.setLayoutX(width * 0.12);
+        this.prod.setLayoutY(height * 0.518);
     }
 }

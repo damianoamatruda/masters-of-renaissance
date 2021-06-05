@@ -12,6 +12,8 @@
       <Cursor fx:constant="OPEN_HAND"/>
    </cursor>
    <Text fx:id="victoryPoints"/>
+   <Text fx:id="levelLeft" layoutY="65" layoutX="22"/>
+   <Text fx:id="levelRight" layoutY="65" layoutX="133"/>
    <Text/>
    <VBox fx:id="resourcePane" maxHeight="60.0" maxWidth="116.0" minHeight="60.0" minWidth="116.0" prefHeight="100.0"
          prefWidth="100.0" scaleShape="false"/>
