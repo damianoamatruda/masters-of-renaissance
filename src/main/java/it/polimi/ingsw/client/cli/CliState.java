@@ -222,6 +222,7 @@ public abstract class CliState implements Renderable {
                 event.getWarehouseShelves()));
         cli.getOut().println();
         cli.showContainers(event.getPlayer());
+        cli.getOut().println(new BaseProductions(Map.of(cli.getViewModel().getLocalPlayerNickname(), cli.getViewModel().getPlayerData(cli.getViewModel().getLocalPlayerNickname()).getBaseProduction())).getString(cli));
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {

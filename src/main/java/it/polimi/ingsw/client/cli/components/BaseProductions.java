@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class BaseProductions implements Renderable {
+public class BaseProductions extends StringComponent {
     private final Map<String, Integer> baseProductions;
 
     public BaseProductions(Map<String, Integer> baseProductions) {
@@ -16,37 +16,31 @@ public class BaseProductions implements Renderable {
     }
 
     @Override
-    public void render(Cli cli) {
-        // TODO: Use Cli methods instead of printf
+    public String getString(Cli cli) {
+        StringBuilder output = new StringBuilder("Base productions:").append("\n");
 
-        cli.getOut().println("Base productions:");
-
-        baseProductions.forEach((key, value) -> cli.getOut().println("Player: " + key));
+        baseProductions.forEach((key, value) -> output.append("Player: ").append(key).append("\n"));
         List<Integer> baseProds = baseProductions.values().stream().toList();
         for (int i = 0; i < baseProds.size(); i += 3) {
             List<List<String>> rows = new ArrayList<>();
 
-            String rowTemplate = "";
             for (int j = 0; j < 3 && 3 * i + j < baseProds.size() - i; j++) {
                 rows.add(new ArrayList<>());
                 List<String> column = rows.get(j);
                 cli.getViewModel().getProduction(baseProds.get(3 * i + j)).ifPresent(p ->
                         column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\\R"))));
-                rowTemplate += "%-50s ";
             }
-            rowTemplate += "\n";
 
             int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
             for (int k = 0; k < length; k++) {
-                List<String> row = new ArrayList<>();
                 for (int j = 0; j < 3 && 3 * i + j < baseProds.size() - i; j++) {
                     if (k < rows.get(j).size())
-                        row.add(rows.get(j).get(k));
-                    else row.add("");
+                        output.append(Cli.left(rows.get(j).get(k), 50));
                 }
-                cli.getOut().printf(rowTemplate, row.toArray());
+                output.append("\n");
             }
-            cli.getOut().println("\n");
+            output.append("\n\n");
         }
+        return output.toString();
     }
 }
