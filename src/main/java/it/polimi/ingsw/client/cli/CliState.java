@@ -218,9 +218,7 @@ public abstract class CliState implements Renderable {
                 event.getStrongbox(),
                 event.getWarehouseShelves()));
         cli.getOut().println();
-        cli.getOut().printf("%s's containers:%n", event.getPlayer());
-        cli.getOut().println();
-        vm.getPlayerShelves(event.getPlayer()).forEach(c -> new ResourceContainer(c).render(cli));
+        cli.showContainers(event.getPlayer());
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {

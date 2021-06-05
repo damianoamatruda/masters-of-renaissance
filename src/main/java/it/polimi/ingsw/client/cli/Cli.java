@@ -464,10 +464,18 @@ public class Cli extends EventDispatcher {
     @Deprecated
     void showStrongbox(String player) {
         out.printf("%s's strongbox:%n", player);
-        out.println();
         viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c -> {
-            new ResourceContainer(c).render(this);
             out.println();
+            new ResourceContainer(c).render(this);
+        });
+    }
+
+    @Deprecated
+    public void showContainers(String player) {
+        out.printf("%s's containers:%n", player);
+        viewModel.getPlayerShelves(player).forEach(c -> {
+            out.println();
+            new ResourceContainer(c).render(this);
         });
     }
 
