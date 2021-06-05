@@ -101,6 +101,6 @@ public class ResourceType {
     }
 
     public ReducedResourceType reduce() {
-        return new ReducedResourceType(name, colorValue, storable);
+        return new ReducedResourceType(name, colorValue, storable, isGiveableToPlayer(), isTakeableFromPlayer());
     }
 }

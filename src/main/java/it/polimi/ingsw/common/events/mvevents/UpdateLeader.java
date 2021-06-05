@@ -6,17 +6,17 @@ public class UpdateLeader implements MVEvent {
     private final int leader;
 
     /** <code>true</code> if the card is active; <code>false</code> otherwise. */
-    private final boolean active;
+    private final boolean isActivated;
 
     /**
      * Class constructor.
      *
-     * @param leader the ID of the card the action was called upon
-     * @param active <code>true</code> if the card is active; <code>false</code> otherwise.
+     * @param leader      the ID of the card the action was called upon
+     * @param isActivated <code>true</code> if the card is active; <code>false</code> otherwise.
      */
-    public UpdateLeader(int leader, boolean active) {
+    public UpdateLeader(int leader, boolean isActivated) {
         this.leader = leader;
-        this.active = active;
+        this.isActivated = isActivated;
     }
 
     /**
@@ -29,7 +29,7 @@ public class UpdateLeader implements MVEvent {
     /**
      * @return <code>true</code> if the card is active; <code>false</code> otherwise.
      */
-    public boolean isActive() {
-        return active;
+    public boolean isActivated() {
+        return isActivated;
     }
 }

@@ -191,7 +191,7 @@ public class Market extends EventDispatcher {
     public ReducedMarket reduce() {
         List<List<ReducedResourceType>> grid = new ArrayList<>();
         for(int i = 0; i < getGrid().size(); i++) {
-            grid.add(getGrid().get(i).stream().map(g -> new ReducedResourceType(g.getName(), g.getColorValue(), g.isStorable())).toList());
+            grid.add(getGrid().get(i).stream().map(g -> new ReducedResourceType(g.getName(), g.getColorValue(), g.isStorable(), g.isGiveableToPlayer(), g.isTakeableFromPlayer())).toList());
         }
         String slide = getSlide().getName();
         String replaceableResType = getReplaceableResType().getName();

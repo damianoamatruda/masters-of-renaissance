@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -128,10 +127,8 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateLeader event) {
-        if (event.isActive())
-            gui.getViewModel()
-                    .getLeaderCard(event.getLeader())
-                    .ifPresent(ReducedLeaderCard::setActive);
+        if (event.isActivated())
+            gui.getViewModel().activateLeaderCard(event.getLeader());
         else
             // is a discard move (well, technically never used as such,
             // see constructor references and UpdateLeadersHandCount)

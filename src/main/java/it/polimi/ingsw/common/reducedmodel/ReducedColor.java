@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 public class ReducedColor {
-    private String name, colorValue;
+    private final String name, colorValue;
 
     public ReducedColor(String name, String colorValue) {
         this.name = name;

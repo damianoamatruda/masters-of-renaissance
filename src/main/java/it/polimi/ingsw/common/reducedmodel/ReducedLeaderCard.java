@@ -5,7 +5,7 @@ public class ReducedLeaderCard extends ReducedCard {
     private final String leaderType;
     private final ReducedDevCardRequirement devCardRequirement;
     private final ReducedResourceRequirement resourceRequirement;
-    private boolean isActive;
+    private final boolean isActive;
 
     private final int containerId;
     private final int discount;
@@ -71,10 +71,6 @@ public class ReducedLeaderCard extends ReducedCard {
     public boolean isActive() {
         return isActive;
     }
-
-    public void setActive() {
-        this.isActive = true;
-    }
     
     /**
      * @return the containerId of the card
@@ -90,4 +86,9 @@ public class ReducedLeaderCard extends ReducedCard {
         return discount;
     }
 
+    public ReducedLeaderCard getActivated() {
+        return isActive ? this : new ReducedLeaderCard(
+                id, victoryPoints, resourceType, leaderType, true,
+                devCardRequirement, resourceRequirement, containerId, discount, production);
+    }
 }

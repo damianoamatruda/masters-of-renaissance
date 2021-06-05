@@ -1,9 +1,9 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 public abstract class ReducedCard {
-    private final int id;
-    private final int victoryPoints;
-    private final int production;
+    protected final int id;
+    protected final int victoryPoints;
+    protected final int production;
 
     public ReducedCard(int id, int victoryPoints, int production) {
         this.id = id;

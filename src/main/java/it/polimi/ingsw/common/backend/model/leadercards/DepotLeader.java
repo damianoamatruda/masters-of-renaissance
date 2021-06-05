@@ -41,7 +41,7 @@ public class DepotLeader extends LeaderCard {
     @Override
     public ReducedLeaderCard reduce() {
         return new ReducedLeaderCard(getId(), getVictoryPoints(),
-                new ReducedResourceType(getResource().getName(), getResource().getColorValue(), getResource().isStorable()),
+                new ReducedResourceType(getResource().getName(), getResource().getColorValue(), getResource().isStorable(), getResource().isGiveableToPlayer(), getResource().isTakeableFromPlayer()),
                 getClass().getSimpleName(), isActive(), requirement.reduceDR(), requirement.reduceRR(), shelf.getId(), -1, -1);
     }
 }

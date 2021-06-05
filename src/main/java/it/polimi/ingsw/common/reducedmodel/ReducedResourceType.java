@@ -1,13 +1,17 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 public class ReducedResourceType {
-    private String name, colorValue;
-    private boolean isStorable;
+    private final String name, colorValue;
+    private final boolean isStorable;
+    private final boolean isGiveableToPlayer;
+    private final boolean isTakeableFromPlayer;
 
-    public ReducedResourceType(String name, String colorValue, boolean isStorable) {
+    public ReducedResourceType(String name, String colorValue, boolean isStorable, boolean isGiveableToPlayer, boolean isTakeableFromPlayer) {
         this.name = name;
         this.colorValue = colorValue;
         this.isStorable = isStorable;
+        this.isGiveableToPlayer = isGiveableToPlayer;
+        this.isTakeableFromPlayer = isTakeableFromPlayer;
     }
 
     public String getName() {
@@ -20,5 +24,13 @@ public class ReducedResourceType {
 
     public boolean isStorable() {
         return isStorable;
+    }
+
+    public boolean isGiveableToPlayer() {
+        return isGiveableToPlayer;
+    }
+
+    public boolean isTakeableFromPlayer() {
+        return isTakeableFromPlayer;
     }
 }

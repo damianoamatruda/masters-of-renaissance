@@ -342,6 +342,13 @@ public class ViewModel {
     }
 
     /**
+     * @param id the ID of the card to be activated
+     */
+    public void activateLeaderCard(int id) {
+        leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
+    }
+
+    /**
      * @param leaderCards the leaderCards to set
      */
     public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {

@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -168,11 +167,9 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateLeader event) {
-        if (event.isActive())
-            cli.getViewModel()
-                .getLeaderCard(event.getLeader())
-                .ifPresent(ReducedLeaderCard::setActive);
-        else 
+        if (event.isActivated())
+            cli.getViewModel().activateLeaderCard(event.getLeader());
+        else
             // is a discard move (well, technically never used as such,
             // see constructor references and UpdateLeadersHandCount)
             cli.getViewModel().getCurrentPlayerData().setLeadersCount(
@@ -181,7 +178,7 @@ public abstract class CliState implements Renderable {
         cli.getOut().println();
         new LeaderCard(cli.getViewModel().getLeaderCard(event.getLeader()).orElseThrow()).render(cli);
         cli.getOut().println();
-        cli.getOut().printf("Leader %d is now %s.%n", event.getLeader(), event.isActive() ? "active" : "discarded");
+        cli.getOut().printf("Leader %d is now %s.%n", event.getLeader(), event.isActivated() ? "activated" : "discarded");
     }
 
     public void on(Cli cli, UpdateLeadersHand event) {
