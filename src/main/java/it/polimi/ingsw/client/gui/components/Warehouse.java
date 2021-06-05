@@ -3,6 +3,9 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -56,7 +59,19 @@ public class Warehouse extends VBox {
 
     public void refreshShelfAdd(int id, String resource) {
         Shelf shelf = shelves.get(id);
-        shelf.addResource(resource);
+        Resource r = new Resource();
+        r.setResourceType(resource);
+        shelf.addResource(r);
+
+        r.setOnDragDetected((event) -> {
+                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(r.getImage());
+                content.putString(shelf.getShelfId()+"");
+                db.setContent(content);
+                event.consume();
+            }
+        );
     }
 
     public void refreshShelfRemove(int id, String resource) {

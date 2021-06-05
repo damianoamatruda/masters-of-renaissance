@@ -119,7 +119,7 @@ public class MarketController extends GuiController {
 
     private void removeResourceFromBox(String resource) {
         resourcesBox.getChildren().remove(
-            resourcesBox.getChildren().stream().filter(r -> ((Resource)r).getName().equals(resource)).findAny().get());
+            resourcesBox.getChildren().stream().filter(r -> ((Resource)r).getName().equals(resource)).findAny().orElse(null));
     }
 
     private void resetWarehouse() {

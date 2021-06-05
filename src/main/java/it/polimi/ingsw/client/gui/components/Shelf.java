@@ -31,21 +31,17 @@ public class Shelf extends HBox {
         this.getChildren().add(content);
     }
 
+    public void addResource(Resource r) {
+        ((HBox) this.getChildren().get(1)).getChildren().add(r);
+        r.setPreserveRatio(true);
+    }
+
     public void addResource(String resource) {
         Resource r = new Resource();
         r.setResourceType(resource);
         ((HBox) this.getChildren().get(1)).getChildren().add(r);
         r.setPreserveRatio(true);
 
-        r.setOnDragDetected((event) -> {
-                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putImage(r.getImage());
-                content.putString(shelfId+"");
-                db.setContent(content);
-                event.consume();
-            }
-        );
     }
 
     public int getShelfId() {
