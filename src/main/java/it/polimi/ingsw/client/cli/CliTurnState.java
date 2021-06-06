@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.Menu;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrActiveLeaderDiscarded;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
@@ -53,5 +54,10 @@ public abstract class CliTurnState extends CliState {
     @Override
     public void on(Cli cli, ErrActiveLeaderDiscarded event) {
         cli.repeatState(String.format("Active leader %d tried to be discarded.", leaderId));
+    }
+
+    @Override
+    public void on(Cli cli, ErrCardRequirements event) {
+        cli.repeatState(event.getReason());
     }
 }
