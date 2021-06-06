@@ -52,8 +52,26 @@ public class ResourceTransactionRecipe {
     public ResourceTransactionRecipe(Map<ResourceType, Integer> input, int inputBlanks, Set<ResourceType> inputBlanksExclusions,
                                      Map<ResourceType, Integer> output, int outputBlanks, Set<ResourceType> outputBlanksExclusions,
                                      boolean discardableOutput) {
-        // TODO: Check that the given maps have values >= 0
+        int errorCode = 0;
 
+        if (input.values().stream().filter(v -> v < 0).findAny().isPresent())
+            errorCode = 1;
+        if (output.values().stream().filter(v -> v < 0).findAny().isPresent())
+            errorCode = 2;
+        
+        if(errorCode > 0)
+            throw new IllegalArgumentException(String.format("Illegal negative %s map values constructing transaction recipe.",
+                errorCode == 1 ? "input" : "output"));
+        
+        if (inputBlanks < 0)
+            errorCode = 1;
+        if (outputBlanks < 0)
+            errorCode = 2;
+        
+        if(errorCode > 0)
+            throw new IllegalArgumentException(String.format("Illegal negative %s replacements value constructing transaction recipe.",
+                errorCode == 1 ? "input" : "output"));
+        
         this.id = idCounter.getAndIncrement();
         this.input = Map.copyOf(input);
         this.inputBlanks = inputBlanks;
