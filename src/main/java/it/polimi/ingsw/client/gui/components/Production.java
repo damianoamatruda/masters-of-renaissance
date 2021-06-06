@@ -37,11 +37,6 @@ public class Production extends StackPane {
     }
 
     public void setProduction(ReducedResourceTransactionRecipe production) {
-        HBox h = (HBox)this.getChildren().get(0);
-//        h.setSpacing(20);
-        input = (VBox) h.getChildren().get(0);
-        output = (VBox) h.getChildren().get(2);
-        
         elementScale = (this.getMaxHeight() - (2 * padding)) / this.getMaxHeight();
         
         maxRowHeight = (this.getMaxHeight() - (2 * padding)) / Math.max(
@@ -93,7 +88,7 @@ public class Production extends StackPane {
         box.setAlignment(Pos.CENTER);
         
         r.setFitHeight(maxRowHeight);
-        r.setFitWidth(20);
+        r.setFitWidth(30);
 
         l.setScaleY(elementScale);
         l.setScaleX(elementScale);

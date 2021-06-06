@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.scene.image.ImageView?>
-
-
-<fx:root fx:id="resourceImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" type="ImageView" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" />
+<fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="resourceImage" styleClass="resource" fitHeight="100.0"
+         fitWidth="100.0" pickOnBounds="true" preserveRatio="true" type="ImageView"
+         xmlns="http://javafx.com/javafx/16"/>

@@ -45,8 +45,8 @@ public class CardRequirement extends HBox {
             r.setResourceType(resource);
             r.setPreserveRatio(true);
             r.setFitHeight(maxRowHeight);
-            r.setFitWidth(20);
-            HBox.setMargin(r, new Insets(0, 0, 0, 4));
+            r.setFitWidth(30);
+            // HBox.setMargin(r, new Insets(0, 0, 0, 4));
 
             entry.getChildren().add(l);
             entry.getChildren().add(r);
