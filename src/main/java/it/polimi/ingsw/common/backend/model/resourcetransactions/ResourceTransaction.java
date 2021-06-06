@@ -60,13 +60,15 @@ public class ResourceTransaction {
             request.getDiscardedOutput().forEach((r, q) -> discardedOutput.merge(r, q, Integer::sum));
 
             request.getInputContainers().forEach((c, oldResMap) -> inputContainers.merge(c, oldResMap, (r1, r2) -> {
-                r2.forEach((r, q) -> r1.merge(r, q, Integer::sum));
-                return r1;
+                Map<ResourceType, Integer> r1new = new HashMap<>(r1);
+                r2.forEach((r, q) -> r1new.merge(r, q, Integer::sum));
+                return r1new;
             }));
 
             request.getOutputContainers().forEach((c, oldResMap) -> outputContainers.merge(c, oldResMap, (r1, r2) -> {
-                r2.forEach((r, q) -> r1.merge(r, q, Integer::sum));
-                return r1;
+                Map<ResourceType, Integer> r1new = new HashMap<>(r1);
+                r2.forEach((r, q) -> r1new.merge(r, q, Integer::sum));
+                return r1new;
             }));
         }
 
