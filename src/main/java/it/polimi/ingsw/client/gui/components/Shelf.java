@@ -86,7 +86,7 @@ public class Shelf extends HBox {
 
         this.setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
-            if (db.hasString() && db.getString().startsWith("[swap]")) {
+            if (db.hasString() && db.getString().startsWith("[swap]") && Integer.parseInt(db.getString().substring(6)) != this.getShelfId()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
