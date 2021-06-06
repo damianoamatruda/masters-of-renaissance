@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
+import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
@@ -74,11 +75,8 @@ public class SetupResourcesState extends CliState {
     // ErrResourceTransfer handled in CliState
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
-        if (event.getAction() != ActionType.CHOOSE_RESOURCES)
-            throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
-        if (!event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            return;
+    public void on(Cli cli, UpdateSetupDone event) {
+        super.on(cli, event);
 
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.setState(new TurnBeforeActionState());

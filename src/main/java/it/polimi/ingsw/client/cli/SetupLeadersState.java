@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
+import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
@@ -77,6 +78,16 @@ public class SetupLeadersState extends CliState {
         if (choosable > 0)
             cli.setState(new SetupResourcesState(choosable));
         else if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+            cli.setState(new TurnBeforeActionState());
+        else
+            cli.setState(new WaitingAfterTurnState());
+    }
+
+    @Override
+    public void on(Cli cli, UpdateSetupDone event) {
+        super.on(cli, event);
+
+        if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
