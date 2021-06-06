@@ -5,21 +5,21 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 /** Development card grid state update. */
 public class UpdateDevCardGrid implements MVEvent {
     /** The new development card grid state. */
-    private final ReducedDevCardGrid topCards; // ID == 0 means the card was null -> stack was empty
+    private final ReducedDevCardGrid devCardGrid; // card ID == null means the stack was empty
 
     /**
      * Class constructor.
      *
-     * @param topCards the new development card grid state
+     * @param devCardGrid the new development card grid state
      */
-    public UpdateDevCardGrid(ReducedDevCardGrid topCards) {
-        this.topCards = topCards;
+    public UpdateDevCardGrid(ReducedDevCardGrid devCardGrid) {
+        this.devCardGrid = devCardGrid;
     }
 
     /**
      * @return the new development card grid state
      */
     public ReducedDevCardGrid getCards() {
-        return topCards;
+        return devCardGrid;
     }
 }

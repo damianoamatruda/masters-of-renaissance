@@ -7,18 +7,12 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class DevCardGrid extends HBox {
     private BiConsumer<ReducedDevCard, DevelopmentCard> controllerListener;
@@ -40,15 +34,15 @@ public class DevCardGrid extends HBox {
     }
 
     public void setGrid(ReducedDevCardGrid grid) {
-        for(String color : grid.getGrid().keySet()) {
+        for (String color : grid.getTopCards().keySet()) {
             VBox column = new VBox(5);
-            for(int i = grid.getLevelsCount(); i >= 1 ; i--) {
+            for (int i = grid.getLevelsCount(); i >= 1; i--) {
                 ReducedDevCard card;
 
-                try {
-                    int cardid = grid.getGrid().get(color).get(i).peek();
-                    card = Gui.getInstance().getViewModel().getDevelopmentCard(cardid).orElseThrow(NullPointerException::new);
-                } catch (NullPointerException e) {
+                Optional<Integer> cardId = grid.getTopCards().get(color).get(i);
+                if (cardId.isPresent())
+                    card = Gui.getInstance().getViewModel().getDevelopmentCard(cardId.get()).orElseThrow(NullPointerException::new);
+                else {
                     column.getChildren().add(new Label());
                     continue;
                 }

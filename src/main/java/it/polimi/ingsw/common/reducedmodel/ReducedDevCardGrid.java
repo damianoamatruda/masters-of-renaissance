@@ -2,7 +2,8 @@ package it.polimi.ingsw.common.reducedmodel;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ReducedDevCardGrid {
     /** Number of rows of separate decks that represent different development card levels. */
@@ -12,12 +13,12 @@ public class ReducedDevCardGrid {
     private final int colorsCount;
 
     /** All the cards that are still not bought by any player. */
-    private final Map<String, List<Stack<Integer>>> grid;
+    private final Map<String, List<Integer>> topCards;
 
-    public ReducedDevCardGrid(int levelsCount, int colorsCount, Map<String, List<Stack<Integer>>> grid) {
+    public ReducedDevCardGrid(int levelsCount, int colorsCount, Map<String, List<Integer>> topCards) {
         this.levelsCount = levelsCount;
         this.colorsCount = colorsCount;
-        this.grid = grid;
+        this.topCards = topCards;
     }
 
     /**
@@ -37,7 +38,7 @@ public class ReducedDevCardGrid {
     /**
      * @return all the cards that are still not bought by any player
      */
-    public Map<String, List<Stack<Integer>>> getGrid() {
-        return grid;
+    public Map<String, List<Optional<Integer>>> getTopCards() {
+        return topCards.entrySet().stream().collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue().stream().map(Optional::ofNullable).toList()));
     }
 }

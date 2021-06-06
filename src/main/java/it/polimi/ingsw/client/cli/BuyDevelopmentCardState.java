@@ -34,8 +34,9 @@ public class BuyDevelopmentCardState extends CliState {
         int level = cli.promptInt("Card level");
         int slot = cli.promptInt("Player board slot to assign to the card");
 
-        ReducedDevCard card = grid.getGrid().get(color).stream()
-                .filter(Objects::nonNull).map(Stack::peek)
+        ReducedDevCard card = grid.getTopCards().get(color).stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .map(id -> vm.getDevelopmentCard(id).orElse(null))
                 .filter(Objects::nonNull)
                 .filter(c -> c.getLevel() == level).findAny().orElseThrow();

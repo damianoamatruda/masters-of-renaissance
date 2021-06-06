@@ -25,10 +25,11 @@ public class DevCardGrid extends StringComponent {
         for (int i = 1; i <= levels; i++) {
             stringBuilder.append(Cli.slimLine(cellWidth * reducedDevCardGrid.getColorsCount() + 1));
 
-            for (String key : reducedDevCardGrid.getGrid().keySet()) {
+            for (String key : reducedDevCardGrid.getTopCards().keySet()) {
                 int index = i;
-                ReducedDevCard card = reducedDevCardGrid.getGrid().get(key).stream()
-                        .filter(Objects::nonNull).map(Stack::peek)
+                ReducedDevCard card = reducedDevCardGrid.getTopCards().get(key).stream()
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
                         .map(id -> cli.getViewModel().getDevelopmentCard(id).orElse(null))
                         .filter(Objects::nonNull)
                         .filter(c -> c.getLevel() == levels + 1 - index).findAny().orElseThrow();

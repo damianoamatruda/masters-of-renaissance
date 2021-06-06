@@ -11,6 +11,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -164,19 +165,16 @@ public class DevCardGrid extends EventDispatcher {
     }
 
     public ReducedDevCardGrid reduce() {
-        Map<String, List<Stack<Integer>>> reducedGrid = new HashMap<>();
-        grid.forEach((key, value) -> reducedGrid.put(key.getName(), value.stream().map(this::reduceDeck).toList()));
-
-        return new ReducedDevCardGrid(getLevelsCount(), getColorsCount(), reducedGrid);
-    }
-
-    private Stack<Integer> reduceDeck(Stack<DevelopmentCard> s) {
-        if (s == null) return null;
-
-        Stack<Integer> reducedDeck = new Stack<>();
-        for (DevelopmentCard developmentCard : s) {
-            reducedDeck.push(developmentCard.getId());
-        }
-        return reducedDeck;
+        Map<String, List<Integer>> topCards = grid.entrySet().stream()
+                .collect(Collectors.toUnmodifiableMap(e -> e.getKey().getName(), e -> e.getValue().stream().map(s -> {
+                    if (s == null)
+                        return null;
+                    try {
+                        return s.peek().getId();
+                    } catch (EmptyStackException exception) {
+                        return null;
+                    }
+                }).toList()));
+        return new ReducedDevCardGrid(getLevelsCount(), getColorsCount(), topCards);
     }
 }

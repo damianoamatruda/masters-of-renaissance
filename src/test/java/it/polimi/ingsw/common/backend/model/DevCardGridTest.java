@@ -70,13 +70,13 @@ public class DevCardGridTest {
 
 
     /**
-     * Checks correct instantiation of devGrid with original rules.
+     * Checks correct instantiation of devCardGrid with original rules.
      *
      * @param level level of the cards to test
      */
     @ParameterizedTest
     @ValueSource(ints = {1, 2})
-    void devGridTest(int level) {
+    void devCardGridTest(int level) {
         assertAll(() -> assertEquals(2, devCardGrid.getDeck(c1, level).size()),
                 () -> assertEquals(2, devCardGrid.getDeck(c2, level).size()));
     }
