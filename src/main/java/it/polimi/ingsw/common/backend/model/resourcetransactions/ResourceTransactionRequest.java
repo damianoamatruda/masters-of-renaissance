@@ -33,10 +33,15 @@ public class ResourceTransactionRequest {
                                       Map<ResourceType, Integer> outputBlanksRep,
                                       Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
                                       Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
-        validate(recipe, inputBlanksRep, outputBlanksRep, inputContainers, outputContainers);
+        Map<ResourceType, Integer> inputReplacements = new HashMap<>(inputBlanksRep);
+        Map<ResourceType, Integer> outputReplacements = new HashMap<>(outputBlanksRep);
+        inputReplacements.entrySet().removeIf(e -> e.getValue() == 0);
+        outputReplacements.entrySet().removeIf(e -> e.getValue() == 0);
+
+        validate(recipe, inputReplacements, outputReplacements, inputContainers, outputContainers);
         this.recipe = recipe;
-        this.inputBlanksRep = Map.copyOf(inputBlanksRep);
-        this.outputBlanksRep = Map.copyOf(outputBlanksRep);
+        this.inputBlanksRep = Map.copyOf(inputReplacements);
+        this.outputBlanksRep = Map.copyOf(outputReplacements);
         this.inputContainers = Map.copyOf(inputContainers);
         this.outputContainers = Map.copyOf(outputContainers);
     }
