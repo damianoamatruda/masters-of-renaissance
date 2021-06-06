@@ -7,12 +7,10 @@ import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.DataFormat;
@@ -50,8 +48,6 @@ public class DevCardGridController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
         /*Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
 

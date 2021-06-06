@@ -30,8 +30,6 @@ public class SetupLeadersController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
         Gui gui = Gui.getInstance();
 
         if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()) == null)

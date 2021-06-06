@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 public class PlaygroundAfterAction extends PlaygroundController{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
         Gui gui = Gui.getInstance();
 
         Button endTurn = new SButton();

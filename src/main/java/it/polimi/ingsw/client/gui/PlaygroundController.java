@@ -9,7 +9,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -37,7 +36,6 @@ public abstract class PlaygroundController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
         Gui gui = Gui.getInstance();
 
         ViewModel vm = gui.getViewModel();

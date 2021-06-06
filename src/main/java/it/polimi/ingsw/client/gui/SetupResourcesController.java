@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.gui.components.Shelf;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
@@ -44,8 +43,6 @@ public class SetupResourcesController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
         Gui gui = Gui.getInstance();
         ViewModel vm = gui.getViewModel();
 

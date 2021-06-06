@@ -10,9 +10,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class GuiController implements Initializable {
+    public GuiController() {
+        Gui.getInstance().setController(this);
+    }
+
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Gui.getInstance().setController(this);
     }
 
     public void on(Gui gui, ErrAction event) {

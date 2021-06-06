@@ -13,7 +13,6 @@ public class PlaygroundBeforeAction extends PlaygroundController{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
         Gui gui = Gui.getInstance();
 
         Button left = new SButton();

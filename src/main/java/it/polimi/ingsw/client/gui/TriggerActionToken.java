@@ -24,8 +24,6 @@ public class TriggerActionToken extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
 //        message.setTextAlignment(TextAlignment.CENTER);
 
         next.setOnAction(actionEvent ->

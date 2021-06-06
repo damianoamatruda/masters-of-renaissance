@@ -12,7 +12,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -43,8 +42,6 @@ public class MarketController extends GuiController {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
         /*Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
         
