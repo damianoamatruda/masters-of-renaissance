@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.cli.components.Menu;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 
@@ -18,6 +19,10 @@ public abstract class CliTurnState extends CliState {
 
     public CliTurnState() {
         executingSecondary = false;
+    }
+
+    protected void quitToTitle(Cli cli) {
+        cli.dispatch(new ReqQuit());
     }
 
     protected void swapShelves(Cli cli) {

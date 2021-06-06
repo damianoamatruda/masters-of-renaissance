@@ -145,10 +145,7 @@ public class Cli extends EventDispatcher {
     }
 
     public void stop() {
-        if (network != null) {
-            network.stop();
-            network = null;
-        }
+        stopNetwork();
         executor.shutdownNow();
     }
 
@@ -311,8 +308,7 @@ public class Cli extends EventDispatcher {
     }
 
     void startOfflineClient() {
-        if (network != null)
-            network.stop();
+        stopNetwork();
         network = new OfflineClient(view, gameConfigStream);
         try {
             network.start();
@@ -322,11 +318,17 @@ public class Cli extends EventDispatcher {
     }
 
     void startOnlineClient(String host, int port) throws IOException {
-        if (network != null)
-            network.stop();
+        stopNetwork();
         network = new OnlineClient(view, host, port);
         network.start();
         offline = false;
+    }
+
+    void stopNetwork() {
+        if (network != null) {
+            network.stop();
+            network = null;
+        }
     }
 
     // TODO: Maybe make it a component, like Menu
