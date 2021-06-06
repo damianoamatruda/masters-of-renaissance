@@ -5,9 +5,11 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class WaitingForTurn extends PlaygroundController {
+public class WaitingForTurnController extends PlaygroundController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
+
         topText.setText(String.format("Watching playerboard of: %s", Gui.getInstance().getViewModel().getCurrentPlayer()));
 
         AnchorPane.setLeftAnchor(topText, 10.0);

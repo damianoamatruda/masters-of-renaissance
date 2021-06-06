@@ -4,5 +4,5 @@
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane fx:id="canvas" xmlns="http://javafx.com/javafx/16"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.client.gui.PlaygroundAfterAction"
+            fx:controller="it.polimi.ingsw.client.gui.PlaygroundAfterActionController"
             stylesheets="@index.css"/>

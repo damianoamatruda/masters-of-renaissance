@@ -10,9 +10,11 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PlaygroundAfterAction extends PlaygroundController{
+public class PlaygroundAfterActionController extends PlaygroundController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
+
         Gui gui = Gui.getInstance();
 
         Button endTurn = new SButton();
