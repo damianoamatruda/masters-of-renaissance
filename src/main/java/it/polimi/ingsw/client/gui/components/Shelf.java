@@ -13,10 +13,11 @@ import java.util.function.BiConsumer;
 
 public class Shelf extends HBox {
     private final int shelfId;
-    private final int size;
+    private int size;
     private final HBox content = new HBox();
     private final Circle swapIcon = new Circle(10, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;
+    private Text sizeText;
 
     public Shelf(ReducedResourceContainer shelf, BiConsumer<Integer, Integer> callback) {
         this.callback = callback;
@@ -34,7 +35,8 @@ public class Shelf extends HBox {
                 "-fx-opacity: 1;" +
                 "-fx-background-size: 300 100;");
 
-        this.getChildren().add(new Text("Size: " + shelf.getSize()));
+        sizeText = new Text("Size: " + shelf.getSize());
+        this.getChildren().add(sizeText);
         this.getChildren().add(content);
 
     }
@@ -114,6 +116,11 @@ public class Shelf extends HBox {
             event.setDropCompleted(success);
             event.consume();
         });
+    }
+
+    public void adjustSize(int size) {
+        this.size = size;
+        sizeText.setText("Size: " + size);
     }
 
 //    private void disableSwapDnD() {
