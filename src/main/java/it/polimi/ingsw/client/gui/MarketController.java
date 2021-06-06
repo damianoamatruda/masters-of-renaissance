@@ -354,6 +354,16 @@ public class MarketController extends GuiController {
                     warehouse.getChildren().add(tempIndex2, s1);
                     warehouse.getChildren().add(tempIndex1, s2);
                 }
+
+                // Extra part (only for Market):
+                Map<String, Integer> temp = selection.get(((Shelf) s1).getShelfId());
+                if(selection.get(((Shelf) s2).getShelfId()) != null)
+                    selection.put(((Shelf) s1).getShelfId(), selection.get(((Shelf) s2).getShelfId()));
+                else selection.remove(((Shelf) s1).getShelfId());
+                if(temp != null)
+                    selection.put(((Shelf) s2).getShelfId(), temp);
+                else selection.remove(((Shelf) s2).getShelfId());
+                return;
             });
         }
     }
