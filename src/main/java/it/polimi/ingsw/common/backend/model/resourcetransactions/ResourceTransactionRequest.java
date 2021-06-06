@@ -86,7 +86,9 @@ public class ResourceTransactionRequest {
             throw new RuntimeException(); // TODO: Add more specific exception
 
         checkContainers(getReplacedInput(recipe.getInput(), inputBlanksRep), inputContainers);
-        checkContainers(getReplacedOutput(recipe.getOutput(), outputBlanksRep), outputContainers);
+
+        if (!recipe.hasDiscardableOutput())
+            checkContainers(getReplacedOutput(recipe.getOutput(), outputBlanksRep), outputContainers);
     }
 
     /**

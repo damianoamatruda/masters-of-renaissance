@@ -104,12 +104,11 @@ public class Market extends EventDispatcher {
             output = leader.replaceMarketResources(replaceableResType, output, replacements);
         output.remove(replaceableResType);
 
-        ResourceTransactionRequest transactionRequest;
+        ResourceTransactionRecipe transactionRecipe = new ResourceTransactionRecipe(
+                Map.of(), 0, Set.of(), output, 0, Set.of(), true);
 
-
-        transactionRequest = new ResourceTransactionRequest(
-                new ResourceTransactionRecipe(Map.of(), 0, Set.of(), output, 0, Set.of(), true),
-                Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
+        ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
+                transactionRecipe, Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
 
         new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
 

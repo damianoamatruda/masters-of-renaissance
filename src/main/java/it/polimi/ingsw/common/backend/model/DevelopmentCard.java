@@ -83,11 +83,14 @@ public class DevelopmentCard extends Card {
      */
     public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         cost.checkRequirements(player);
-        new ResourceTransaction(List.of(
-                new ResourceTransactionRequest(
-                        new ResourceTransactionRecipe(cost.getDiscountedCost(player), 0, Map.of(), 0),
-                        Map.of(), Map.of(), resContainers, Map.of())
-        )).activate(game, player);
+
+        ResourceTransactionRecipe transactionRecipe = new ResourceTransactionRecipe(
+                cost.getDiscountedCost(player), 0, Map.of(), 0);
+
+        ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
+                transactionRecipe, Map.of(), Map.of(), resContainers, Map.of());
+
+        new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
     }
 
     public ReducedDevCard reduce() {

@@ -114,11 +114,11 @@ public class PlayerSetup {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
 
-        ResourceTransactionRequest transactionRequest;
+        ResourceTransactionRecipe transactionRecipe = new ResourceTransactionRecipe(
+                Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false);
 
-        transactionRequest = new ResourceTransactionRequest(
-                new ResourceTransactionRecipe(Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false),
-                Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
+        ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
+                transactionRecipe, Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
 
         new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
 
