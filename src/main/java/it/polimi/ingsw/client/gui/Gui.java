@@ -11,7 +11,6 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -141,17 +140,16 @@ public class Gui extends Application {
     }
 
     void setRoot(URL fxml, Consumer<?> callback) {
-        new Thread(new Task<>() {
-            @Override
-            protected Void call() throws IOException {
-                FXMLLoader fxmlLoader = new FXMLLoader(fxml);
-                Parent root = fxmlLoader.load();
-                if (callback != null)
-                    callback.accept(fxmlLoader.getController());
-                Platform.runLater(() -> scene.setRoot(root));
-                return null;
-            }
-        }).start();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(fxml);
+            Parent root = fxmlLoader.load();
+            if (callback != null)
+                callback.accept(fxmlLoader.getController());
+            Platform.runLater(() -> scene.setRoot(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     void setRoot(URL fxml) {

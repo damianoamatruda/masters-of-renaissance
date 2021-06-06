@@ -19,7 +19,7 @@ public class MainMenuController extends GuiController {
         Gui gui = Gui.getInstance();
 
         if (gui.getMusicPlayer().isEmpty()) {
-            new Thread(new Task<>() {
+            Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
                     Media media = new Media(Objects.requireNonNull(getClass().getResource(musicPath)).toString());
@@ -29,7 +29,10 @@ public class MainMenuController extends GuiController {
                     gui.setMusicPlayer(player);
                     return null;
                 }
-            }).start();
+            };
+
+            Thread thread = new Thread(task);
+            thread.start();
         }
     }
 
