@@ -7,10 +7,12 @@ import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.DataFormat;
@@ -240,5 +242,26 @@ public class DevCardGridController extends GuiController {
         super.on(gui, event);
         if(event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+
+        else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
+            // TODO duplicated handle
+            Node s1 = warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
+            Node s2 = warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
+
+            int tempIndex1 = warehouse.getChildren().indexOf(s1);
+            int tempIndex2 = warehouse.getChildren().indexOf(s2);
+            Platform.runLater(() -> {
+                warehouse.getChildren().remove(Math.max(tempIndex1, tempIndex2));
+                warehouse.getChildren().remove(Math.min(tempIndex1, tempIndex2));
+
+                if(tempIndex1 < tempIndex2) {
+                    warehouse.getChildren().add(tempIndex1, s2);
+                    warehouse.getChildren().add(tempIndex2, s1);
+                } else {
+                    warehouse.getChildren().add(tempIndex2, s1);
+                    warehouse.getChildren().add(tempIndex1, s2);
+                }
+            });
+        }
     }
 }
