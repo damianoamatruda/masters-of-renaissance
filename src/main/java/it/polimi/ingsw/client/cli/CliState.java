@@ -89,6 +89,8 @@ public abstract class CliState implements Renderable {
                     cli.getOut().println();
                     new ActionToken(t).render(cli);
                 });
+        cli.getOut().println();
+        cli.promptPause();
     }
 
     public void on(Cli cli, UpdateBookedSeats event) {
