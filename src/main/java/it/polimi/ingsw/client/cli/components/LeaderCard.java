@@ -22,7 +22,7 @@ public class LeaderCard extends StringComponent {
         )).append("\n");
 
         stringBuilder.append(String.format("BoundResource: %s, VP: %d",
-                new Resource(reducedLeaderCard.getResourceType().getName()).getString(cli),
+                new Resource(reducedLeaderCard.getResourceType()).getString(cli),
                 reducedLeaderCard.getVictoryPoints()
         )).append("\n");
 

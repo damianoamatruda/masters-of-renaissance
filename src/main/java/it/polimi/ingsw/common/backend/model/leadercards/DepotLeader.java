@@ -4,7 +4,6 @@ import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirement;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceShelf;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.Optional;
 
@@ -40,8 +39,6 @@ public class DepotLeader extends LeaderCard {
 
     @Override
     public ReducedLeaderCard reduce() {
-        return new ReducedLeaderCard(getId(), getVictoryPoints(),
-                new ReducedResourceType(getResource().getName(), getResource().getColorValue(), getResource().isStorable(), getResource().isGiveableToPlayer(), getResource().isTakeableFromPlayer()),
-                getClass().getSimpleName(), isActive(), requirement.reduceDR(), requirement.reduceRR(), shelf.getId(), -1, -1);
+        return new ReducedLeaderCard(getId(), getVictoryPoints(), getResource().getName(), getClass().getSimpleName(), isActive(), requirement.reduceDR(), requirement.reduceRR(), shelf.getId(), -1, -1);
     }
 }

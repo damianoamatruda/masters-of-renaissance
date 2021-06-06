@@ -56,17 +56,23 @@ public class TakeFromMarketState extends CliState {
         }
 
         // get a list with the selected resources
-        List<ReducedResourceType> chosenResources = new ArrayList<>();
+        List<String> chosenResources = new ArrayList<>();
         if (isRow)
             chosenResources = vm.getMarket().getGrid().get(index);
         else {
-            for (List<ReducedResourceType> row : vm.getMarket().getGrid())
+            for (List<String> row : vm.getMarket().getGrid())
                 chosenResources.add(row.get(index));
         }
-        List<String> chosenResourcesNames = chosenResources.stream().filter(ReducedResourceType::isStorable).map(ReducedResourceType::getName).toList();
+        chosenResources = chosenResources.stream()
+                .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(ReducedResourceType::isStorable)
+                .map(ReducedResourceType::getName)
+                .toList();
 
         // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
-        int blanksCount = (int) chosenResourcesNames.stream().filter(r -> r.equals(vm.getMarket().getReplaceableResType())).count();
+        int blanksCount = (int) chosenResources.stream().filter(r -> r.equals(vm.getMarket().getReplaceableResType())).count();
         Map<String, Integer> replacements = new HashMap<>();
 
         // for (String res : chosenResources)
@@ -87,7 +93,7 @@ public class TakeFromMarketState extends CliState {
                     input = cli.prompt("Replace resources? [y/n]");
                 if (input.equals("n")) {
                     replacements = cli.promptResources(
-                            zeroLeaders.stream().map(l -> l.getResourceType().getName()).collect(Collectors.toUnmodifiableSet()), blanksCount
+                            zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).collect(Collectors.toUnmodifiableSet()), blanksCount
                     );
                 }
             }
@@ -96,10 +102,10 @@ public class TakeFromMarketState extends CliState {
         // replacements = replacements.entrySet().stream().filter(e -> e.getKey().equals(cli.getViewModel().getMarket().getReplaceableResType())).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
 
         // remove the replaceable resources from the selected ones
-        chosenResourcesNames = chosenResourcesNames.stream().filter(r -> !r.equals(vm.getMarket().getReplaceableResType())).toList();
+        chosenResources = chosenResources.stream().filter(r -> !r.equals(vm.getMarket().getReplaceableResType())).toList();
 
         Map<String, Integer> totalRes = new HashMap<>(replacements);
-        chosenResourcesNames.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
+        chosenResources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
         Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
                 .map(ReducedResourceContainer::getId)

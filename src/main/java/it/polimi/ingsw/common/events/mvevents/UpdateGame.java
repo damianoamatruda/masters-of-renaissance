@@ -35,7 +35,8 @@ public class UpdateGame extends ViewEvent {
      */
     public UpdateGame(View view,
                       List<String> players,
-                      List<ReducedColor> colors, List<ReducedResourceType> resourceTypes,
+                      List<ReducedColor> colors,
+                      List<ReducedResourceType> resourceTypes,
                       List<ReducedLeaderCard> leaderCards,
                       List<ReducedDevCard> developmentCards,
                       List<ReducedResourceContainer> resContainers,
@@ -59,7 +60,8 @@ public class UpdateGame extends ViewEvent {
     }
 
     public UpdateGame(List<String> players,
-                      List<ReducedColor> colors, List<ReducedResourceType> resourceTypes,
+                      List<ReducedColor> colors,
+                      List<ReducedResourceType> resourceTypes,
                       List<ReducedLeaderCard> leaderCards,
                       List<ReducedDevCard> developmentCards,
                       List<ReducedResourceContainer> resContainers,

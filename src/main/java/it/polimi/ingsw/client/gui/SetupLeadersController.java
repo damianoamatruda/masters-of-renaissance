@@ -45,7 +45,7 @@ public class SetupLeadersController extends GuiController {
             leaderCard.setLeaderId(reducedLeader.getId());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
             leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
-            leaderCard.setResourceType(reducedLeader.getResourceType().getName());
+            leaderCard.setResourceType(reducedLeader.getResourceType());
             if (reducedLeader.getResourceRequirement().isPresent())
                 leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
             if (reducedLeader.getDevCardRequirement().isPresent())
@@ -59,7 +59,7 @@ public class SetupLeadersController extends GuiController {
                 leaderCard.setProduction(gui.getViewModel().getProduction(reducedLeader.getProduction()).orElseThrow());
             else
                 leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                        reducedLeader.getResourceType().getName());
+                        reducedLeader.getResourceType());
 
             leaderCard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                 if (selection.contains(leaderCard)) {

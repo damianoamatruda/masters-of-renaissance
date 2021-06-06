@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class Market extends StringComponent {
                 .append("╦").append("═".repeat(10)).append("╝").append("\n");
 
         for (int i = 0; i < reducedMarket.getGrid().size(); i++) {
-            List<String> r = reducedMarket.getGrid().get(i).stream().map(ReducedResourceType::getName).toList();
+            List<String> r = reducedMarket.getGrid().get(i);
             stringBuilder.append("║").append(" ".repeat(4)).append("║");
             for (int j = 0; j < r.size(); j++) {
                 String res = r.get(j);

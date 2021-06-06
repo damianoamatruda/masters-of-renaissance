@@ -8,7 +8,6 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.UpdateMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -188,10 +187,9 @@ public class Market extends EventDispatcher {
     }
 
     public ReducedMarket reduce() {
-        List<List<ReducedResourceType>> grid = new ArrayList<>();
-        for(int i = 0; i < getGrid().size(); i++) {
-            grid.add(getGrid().get(i).stream().map(g -> new ReducedResourceType(g.getName(), g.getColorValue(), g.isStorable(), g.isGiveableToPlayer(), g.isTakeableFromPlayer())).toList());
-        }
+        List<List<String>> grid = new ArrayList<>();
+        for (int i = 0; i < getGrid().size(); i++)
+            grid.add(getGrid().get(i).stream().map(ResourceType::getName).toList());
         String slide = getSlide().getName();
         String replaceableResType = getReplaceableResType().getName();
 

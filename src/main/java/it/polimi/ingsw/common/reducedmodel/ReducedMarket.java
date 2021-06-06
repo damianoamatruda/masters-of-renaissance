@@ -3,7 +3,7 @@ package it.polimi.ingsw.common.reducedmodel;
 import java.util.List;
 
 public class ReducedMarket {
-    private final List<List<ReducedResourceType>> grid;
+    private final List<List<String>> grid;
 
     /** The type of the resources that can be replaced. */
     private final String replaceableResType;
@@ -11,7 +11,7 @@ public class ReducedMarket {
     /** The resource in the slide. */
     private final String slide;
 
-    public ReducedMarket(List<List<ReducedResourceType>> grid, String replaceableResType, String slide) {
+    public ReducedMarket(List<List<String>> grid, String replaceableResType, String slide) {
         this.grid = grid;
         this.replaceableResType = replaceableResType;
         this.slide = slide;
@@ -34,7 +34,7 @@ public class ReducedMarket {
     /**
      * @return the grid
      */
-    public List<List<ReducedResourceType>> getGrid() {
+    public List<List<String>> getGrid() {
         return grid;
     }
 }

@@ -73,18 +73,25 @@ public class MarketController extends GuiController {
         this.index = index;
 
         ViewModel vm = Gui.getInstance().getViewModel();
+
         // get a list with the selected resources
-        List<ReducedResourceType> chosenResources = new ArrayList<>();
+        List<String> chosenResources = new ArrayList<>();
         if (isRow)
             chosenResources = vm.getMarket().getGrid().get(index);
         else {
-            for (List<ReducedResourceType> row : vm.getMarket().getGrid())
+            for (List<String> row : vm.getMarket().getGrid())
                 chosenResources.add(row.get(index));
         }
-        List<String> chosenResourcesNames = chosenResources.stream().filter(ReducedResourceType::isStorable).map(ReducedResourceType::getName).toList();
+        chosenResources = chosenResources.stream()
+                .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(ReducedResourceType::isStorable)
+                .map(ReducedResourceType::getName)
+                .toList();
 
         resourcesBox.getChildren().clear();
-        resourcesBox.getChildren().addAll(chosenResourcesNames.stream().map(n -> {
+        resourcesBox.getChildren().addAll(chosenResources.stream().map(n -> {
             Resource r = new Resource();
             r.setResourceType(n);
             r.setOnDragDetected((event) -> {
@@ -244,7 +251,7 @@ public class MarketController extends GuiController {
                 leaderCard.setLeaderId(reducedLeader.getId());
                 leaderCard.setLeaderType(reducedLeader.getLeaderType());
                 leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
-                leaderCard.setResourceType(reducedLeader.getResourceType().getName());
+                leaderCard.setResourceType(reducedLeader.getResourceType());
                 if (reducedLeader.getResourceRequirement().isPresent())
                     leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
                 if (reducedLeader.getDevCardRequirement().isPresent())
@@ -255,7 +262,7 @@ public class MarketController extends GuiController {
                     // TODO handle substitution
                 } else {
                     leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                            reducedLeader.getResourceType().getName());
+                            reducedLeader.getResourceType());
 
                     leaderCard.setOnDragOver((event) -> {
                         Dragboard db = event.getDragboard();
@@ -280,7 +287,7 @@ public class MarketController extends GuiController {
                                 content.compute(resource, (k, v) -> v == null ? 1 : v++);
                                 ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getBoundedResType());
 
-                                leaderCard.setDepotContent(newContainer, reducedLeader.getResourceType().getName());
+                                leaderCard.setDepotContent(newContainer, reducedLeader.getResourceType());
 
                                 removeResourceFromBox(resource);
                             }

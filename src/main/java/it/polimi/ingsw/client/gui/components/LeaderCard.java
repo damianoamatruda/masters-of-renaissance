@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -81,9 +80,9 @@ public class LeaderCard extends Card {
         this.prod.setLayoutY(getHeight() * 0.74);
     }
 
-    public void setZeroReplacement(ReducedResourceType type) {
+    public void setZeroReplacement(String type) {
         Resource res = new Resource();
-        res.setResourceType(type.getName());
+        res.setResourceType(type);
 
         res.setLayoutX(getWidth() * 0.60);
         res.setLayoutY(getHeight() * 0.77);
@@ -94,7 +93,7 @@ public class LeaderCard extends Card {
         this.getChildren().add(res);
     }
 
-    public void setDiscount(ReducedResourceType type, int discount) {
+    public void setDiscount(String type, int discount) {
         HBox bonus = new HBox();
         Resource res = new Resource();
         TextArea amount = new TextArea();
@@ -103,7 +102,7 @@ public class LeaderCard extends Card {
         amount.setLayoutY(getHeight() * 0.70);
         //TODO text not showing
 
-        res.setResourceType(type.getName());
+        res.setResourceType(type);
 
         res.setFitHeight(getHeight() * 0.14);
         res.setFitWidth(getHeight() * 0.14);

@@ -3,7 +3,7 @@ package it.polimi.ingsw.common.reducedmodel;
 import java.util.Optional;
 
 public class ReducedLeaderCard extends ReducedCard {
-    private final ReducedResourceType resourceType;
+    private final String resourceType;
     private final String leaderType;
     private final ReducedDevCardRequirement devCardRequirement;
     private final ReducedResourceRequirement resourceRequirement;
@@ -22,12 +22,12 @@ public class ReducedLeaderCard extends ReducedCard {
      * @param discount
      * @param production
      */
-    public ReducedLeaderCard(int id, int victoryPoints, ReducedResourceType resourceType, String leaderType, boolean isActive,
-            ReducedDevCardRequirement devCardRequirement,
-            ReducedResourceRequirement resourceRequirement,
-            int containerId,
-            int discount,
-            int production) {
+    public ReducedLeaderCard(int id, int victoryPoints, String resourceType, String leaderType, boolean isActive,
+                             ReducedDevCardRequirement devCardRequirement,
+                             ReducedResourceRequirement resourceRequirement,
+                             int containerId,
+                             int discount,
+                             int production) {
         super(id, victoryPoints, production);
         this.resourceType = resourceType;
         this.leaderType = leaderType;
@@ -56,7 +56,7 @@ public class ReducedLeaderCard extends ReducedCard {
     /**
      * @return the resourceType of the card
      */
-    public ReducedResourceType getResourceType() {
+    public String getResourceType() {
         return resourceType;
     }
 

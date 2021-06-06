@@ -1,7 +1,8 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 public class ReducedResourceType {
-    private final String name, colorValue;
+    private final String name;
+    private final String colorValue;
     private final boolean isStorable;
     private final boolean isGiveableToPlayer;
     private final boolean isTakeableFromPlayer;

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -76,7 +75,7 @@ public class Market extends StackPane {
 
         
         while (row < m.getGrid().size()) {
-            List<String> mRow = m.getGrid().get(row).stream().map(ReducedResourceType::getName).toList();
+            List<String> mRow = m.getGrid().get(row);
 
             while (col < mRow.size()) {
                 String sRes = mRow.get(col);

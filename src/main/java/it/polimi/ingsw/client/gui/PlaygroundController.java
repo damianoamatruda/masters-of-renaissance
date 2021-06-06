@@ -105,7 +105,7 @@ public abstract class PlaygroundController extends GuiController {
                 leaderCard.setLeaderId(reducedLeader.getId());
                 leaderCard.setLeaderType(reducedLeader.getLeaderType());
                 leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
-                leaderCard.setResourceType(reducedLeader.getResourceType().getName());
+                leaderCard.setResourceType(reducedLeader.getResourceType());
                 if (reducedLeader.getResourceRequirement().isPresent())
                     leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
                 if (reducedLeader.getDevCardRequirement().isPresent())
@@ -119,7 +119,7 @@ public abstract class PlaygroundController extends GuiController {
                     leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
                 else
                     leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                            reducedLeader.getResourceType().getName());
+                            reducedLeader.getResourceType());
 
                 leaderCard.setActivated(reducedLeader.isActive());
 
