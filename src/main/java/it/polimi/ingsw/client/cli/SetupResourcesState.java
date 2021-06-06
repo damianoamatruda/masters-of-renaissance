@@ -10,6 +10,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,11 @@ public class SetupResourcesState extends CliState {
         Set<String> allowedResources = vm.getResourceTypes().stream()
                 .map(ReducedResourceType::getName)
                 .filter(r -> !vm.getLocalPlayerData().getSetup().getInitialExcludedResources().contains(r))
+                .map(r -> vm.getResourceTypes().stream().filter(res -> res.getName().equals(r)).findAny())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(ReducedResourceType::isStorable)
+                .map(ReducedResourceType::getName)
                 .collect(Collectors.toUnmodifiableSet());
 
         int totalQuantity = vm.getLocalPlayerData().getSetup().getInitialResources();
