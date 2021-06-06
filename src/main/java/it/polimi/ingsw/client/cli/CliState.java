@@ -22,23 +22,12 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ErrBuyDevCard event) {
-        cli.repeatState(event.isStackEmpty() ?
-                "Cannot buy development card. Deck is empty." :
-                "Cannot place devcard in slot, level mismatch.");
     }
 
     public void on(Cli cli, ErrCardRequirements event) {
-        cli.repeatState(event.getReason());
     }
 
     public void on(Cli cli, ErrInitialChoice event) {
-        // repeats either SetupLeadersState or SetupResourcesState
-        // if it doesn't, that's really bad
-        cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
-                event.getMissingLeadersCount() == 0 ?
-                        "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
-                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
-                "Resources already chosen");          // else it's from the resources choice
     }
 
     public void on(Cli cli, ErrNewGame event) {
@@ -160,7 +149,6 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
-        // cli.setState(new WaitingBeforeGameState(event.getPlayersCount()));
     }
 
     public void on(Cli cli, UpdateLastRound event) {

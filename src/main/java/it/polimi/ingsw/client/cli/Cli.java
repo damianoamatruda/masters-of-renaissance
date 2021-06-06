@@ -18,12 +18,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Cli extends EventDispatcher {
     static final int width = 179;
 
     private final View view;
     private Network network;
+
+    private final ExecutorService executor;
 
     /** The current state of the interface. */
     private CliState state;
@@ -42,6 +46,8 @@ public class Cli extends EventDispatcher {
         this.registerOnMV(this.view);
 
         this.network = null;
+
+        this.executor = Executors.newCachedThreadPool();
 
         this.viewModel = new ViewModel();
         this.out = System.out;
@@ -139,6 +145,8 @@ public class Cli extends EventDispatcher {
     }
 
     public void stop() {
+        executor.shutdownNow();
+
         if (network != null)
             network.stop();
     }
@@ -269,10 +277,12 @@ public class Cli extends EventDispatcher {
      */
     void setState(CliState state) {
         this.state = state;
-        out.println();
-        clear();
-        out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
-        state.render(this);
+        executor.submit(() -> {
+            out.println();
+            clear();
+            out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
+            state.render(this);
+        });
     }
 
     void clear() {
@@ -528,8 +538,8 @@ public class Cli extends EventDispatcher {
     }
 
     void quit() {
-        stop();
         clear();
+        stop();
     }
 
     Optional<InputStream> getGameConfigStream() {

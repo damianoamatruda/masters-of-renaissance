@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.DevCardGrid;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
@@ -53,6 +55,18 @@ public class BuyDevelopmentCardState extends CliState {
         Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(cost, allowedShelves);
 
         cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));
+    }
+
+    @Override
+    public void on(Cli cli, ErrBuyDevCard event) {
+        cli.repeatState(event.isStackEmpty() ?
+                "Cannot buy development card. Deck is empty." :
+                "Cannot place devcard in slot, level mismatch.");
+    }
+
+    @Override
+    public void on(Cli cli, ErrCardRequirements event) {
+        cli.repeatState(event.getReason());
     }
 
     @Override

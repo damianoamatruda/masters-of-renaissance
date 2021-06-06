@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 
 import java.util.ArrayList;
@@ -49,6 +50,19 @@ public class SetupLeadersState extends CliState {
             cli.setState(new TurnBeforeActionState());
         else
             cli.setState(new WaitingAfterTurnState());
+    }
+
+    @Override
+    public void on(Cli cli, ErrInitialChoice event) {
+        // TODO: Share method with SetupResourcesState
+
+        // repeats either SetupLeadersState or SetupResourcesState
+        // if it doesn't, that's really bad
+        cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
+                event.getMissingLeadersCount() == 0 ?
+                        "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
+                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
+                "Resources already chosen");          // else it's from the resources choice
     }
 
     @Override
