@@ -6,6 +6,7 @@ package it.polimi.ingsw.common.backend.model.resourcetransactions;
 public class IllegalResourceTransactionContainersException extends IllegalResourceTransactionException {
     private final String resType;
     private final int replacedCount, shelvesChoiceResCount;
+    private final boolean isIllegalDiscardedOut;
     
     /**
      * Class constructor.
@@ -14,10 +15,18 @@ public class IllegalResourceTransactionContainersException extends IllegalResour
      * @param replacedCount         the count of resources in the replaced map
      * @param shelvesChoiceResCount the count of resources in the shelves mapping
      */
-    public IllegalResourceTransactionContainersException(String resType, int replacedCount, int shelvesChoiceResCount) {
+    public IllegalResourceTransactionContainersException(String resType, int replacedCount, int shelvesChoiceResCount, boolean isIllegalDiscardedOut) {
         this.resType = resType;
         this.replacedCount = replacedCount;
         this.shelvesChoiceResCount = shelvesChoiceResCount;
+        this.isIllegalDiscardedOut = isIllegalDiscardedOut;
+    }
+
+    /**
+     * @return whether the exception was thrown due to an illegal discard value (typically negative)
+     */
+    public boolean isIllegalDiscardedOut() {
+        return isIllegalDiscardedOut;
     }
 
     /**

@@ -87,13 +87,22 @@ public class ResourceTransactionRequest {
         if (outputBlanksRep.values().stream().reduce(0, Integer::sum) != recipe.getOutputBlanks())
             throw new IllegalResourceTransactionReplacementsException(false, false, false, outputBlanksRep.values().stream().reduce(0, Integer::sum), recipe.getInputBlanks());
 
-        if (!recipe.hasDiscardableOutput() && !getDiscardedOutput(recipe.getOutput(), outputBlanksRep, outputContainers).isEmpty())
-            throw new RuntimeException(); // TODO: Add more specific exception
+        Map<ResourceType, Integer> discardedOut = getDiscardedOutput(recipe.getOutput(), outputBlanksRep, outputContainers);
+        if (discardedOut.values().stream().filter(v -> v < 0).findAny().isPresent()) {
+            ResourceType r = discardedOut.entrySet().stream().filter(e -> e.getValue() < 0).map(e -> e.getKey()).findAny().get();
+            throw new IllegalResourceTransactionContainersException(
+                    r.getName(),
+                    discardedOut.get(r), outputContainers.values().stream()
+                        .flatMap(m -> m.entrySet().stream())
+                        .filter(e -> e.getKey() == r)
+                        .map(e -> e.getValue())
+                        .reduce(0, Integer::sum),
+                    true);
+        }
+        
+        checkContainers(getReplacedInput(recipe.getInput(), inputBlanksRep), recipe.hasDiscardableOutput(), inputContainers, true);
 
-        checkContainers(getReplacedInput(recipe.getInput(), inputBlanksRep), inputContainers);
-
-        if (!recipe.hasDiscardableOutput())
-            checkContainers(getReplacedOutput(recipe.getOutput(), outputBlanksRep), outputContainers);
+        checkContainers(getReplacedOutput(recipe.getOutput(), outputBlanksRep), recipe.hasDiscardableOutput(), outputContainers, false);
     }
 
     /**
@@ -104,7 +113,9 @@ public class ResourceTransactionRequest {
      * @throws IllegalResourceTransactionContainersException if the request's container-resource mappings are invalid
      */
     private static void checkContainers(Map<ResourceType, Integer> resourceMap,
-                                        Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalResourceTransactionContainersException {
+                                        boolean isDiscardable,
+                                        Map<ResourceContainer, Map<ResourceType, Integer>> resContainers,
+                                        boolean isInputContainers) throws IllegalResourceTransactionContainersException {
         /* Filter the storable resources */
         resourceMap = resourceMap.entrySet().stream()
                 .filter(e -> e.getKey().isStorable())
@@ -116,9 +127,10 @@ public class ResourceTransactionRequest {
         int resContainersResourcesCount = resContainers.values().stream()
                 .map(m -> m.values().stream().reduce(0, Integer::sum))
                 .reduce(0, Integer::sum);
-        if (resContainersResourcesCount != resourceMapResourcesCount)
+        if (resContainersResourcesCount > resourceMapResourcesCount ||
+            (resContainersResourcesCount < resourceMapResourcesCount && (!isDiscardable || isInputContainers)))
             throw new IllegalResourceTransactionContainersException(
-                "", resourceMapResourcesCount, resContainersResourcesCount);
+                "", resourceMapResourcesCount, resContainersResourcesCount, false);
 
         /* Check that the quantity of each storable resource type in the map of resources is the same as in the map
            of resource containers */
@@ -126,9 +138,9 @@ public class ResourceTransactionRequest {
             int resourceCount = 0;
             for (ResourceContainer resContainer : resContainers.keySet())
                 resourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
-            if (resourceCount != resourceMap.get(resType))
+            if (resourceCount < resourceMap.get(resType) && !isDiscardable)
                 throw new IllegalResourceTransactionContainersException(
-                    resType.getName(), resourceMap.get(resType), resourceCount);
+                    resType.getName(), resourceMap.get(resType), resourceCount, false);
         }
     }
 
