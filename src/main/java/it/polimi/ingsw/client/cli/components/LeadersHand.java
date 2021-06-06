@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LeadersHand extends StringComponent {
-    private final static int cellWidth = 38;
+    private final static int cellWidth = 34;
     private final List<ReducedLeaderCard> leaders;
 
     public LeadersHand(List<ReducedLeaderCard> leaders) {
