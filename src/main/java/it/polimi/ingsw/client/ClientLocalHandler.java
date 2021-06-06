@@ -15,17 +15,13 @@ public class ClientLocalHandler extends NetworkHandler {
     }
 
     public void run() {
-        Event event;
-
         listening = true;
         while (listening) {
             try {
-                event = eventQueue.take();
+                dispatch(eventQueue.take());
             } catch (InterruptedException e) {
                 listening = false;
-                break;
             }
-            dispatch(event);
         }
     }
 

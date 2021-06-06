@@ -20,6 +20,7 @@ public class OfflineClient implements Network {
     private final ExecutorService executor;
     private Controller controller;
     private View virtualView;
+    private NetworkHandler networkHandler;
 
     public OfflineClient(View view, InputStream gameConfigStream) {
         this.view = view;
@@ -27,6 +28,7 @@ public class OfflineClient implements Network {
         this.executor = Executors.newCachedThreadPool();
         this.controller = null;
         this.virtualView = null;
+        this.networkHandler = null;
     }
 
     public OfflineClient(View view) {
@@ -38,7 +40,7 @@ public class OfflineClient implements Network {
         Lobby model = new Lobby(gameFactory);
         controller = new Controller(model);
 
-        NetworkHandler networkHandler = new ClientLocalHandler();
+        networkHandler = new ClientLocalHandler();
 
         networkHandler.registerOnVC(view);
 
@@ -58,15 +60,27 @@ public class OfflineClient implements Network {
     public void stop() {
         executor.shutdownNow();
 
-        if (controller != null)
-            controller.unregisterOnVC(virtualView);
+        if (controller != null) {
+            if (virtualView != null)
+                controller.unregisterOnVC(virtualView);
+            controller = null;
+        }
 
         if (virtualView != null) {
+            if (networkHandler != null)
+                virtualView.unregisterOnVC(networkHandler);
+
             view.unregisterOnModelLobby(virtualView);
             view.unregisterOnModelGameContext(virtualView);
             view.unregisterOnModelGame(virtualView);
             view.unregisterOnModelPlayer(virtualView);
             virtualView = null;
+        }
+
+        if (networkHandler != null) {
+            networkHandler.unregisterOnVC(view);
+            networkHandler.stop();
+            networkHandler = null;
         }
     }
 }

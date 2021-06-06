@@ -19,7 +19,6 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     public NetworkHandler(Socket socket, NetworkProtocol protocol) {
         this.socket = socket;
         this.protocol = protocol;
-
         this.out = null;
         this.in = null;
         this.listening = false;

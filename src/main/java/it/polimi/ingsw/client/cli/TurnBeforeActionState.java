@@ -24,6 +24,7 @@ public class TurnBeforeActionState extends CliTurnState {
         entries.put('3', new Menu.Entry("Activate production", cli1 -> cli.setState(new ActivateProductionsState())));
         entries.put('L', new Menu.Entry("Leader actions", this::leaderActions));
         entries.put('S', new Menu.Entry("Swap shelves", this::swapShelves));
+        entries.put('Q', new Menu.Entry("Quit", Cli::quit));
         new Menu(entries).render(cli);
     }
 

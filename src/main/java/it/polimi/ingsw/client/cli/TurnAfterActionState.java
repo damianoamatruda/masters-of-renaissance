@@ -15,6 +15,7 @@ public class TurnAfterActionState extends CliTurnState {
         entries.put('L', new Menu.Entry("Leader actions", this::leaderActions));
         entries.put('S', new Menu.Entry("Swap shelves", this::swapShelves));
         entries.put('E', new Menu.Entry("End turn", this::endTurn));
+        entries.put('Q', new Menu.Entry("Quit", Cli::quit));
 
         new Menu(entries).render(cli);
     }

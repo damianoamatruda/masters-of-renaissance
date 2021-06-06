@@ -145,10 +145,11 @@ public class Cli extends EventDispatcher {
     }
 
     public void stop() {
-        executor.shutdownNow();
-
-        if (network != null)
+        if (network != null) {
             network.stop();
+            network = null;
+        }
+        executor.shutdownNow();
     }
 
     public void registerOnMV(EventDispatcher view) {
