@@ -26,12 +26,16 @@ public class ZeroLeader extends LeaderCard {
     }
 
     @Override
-    public Map<ResourceType, Integer> replaceMarketResources(ResourceType replaceableResType,
-                                                             Map<ResourceType, Integer> toProcess,
-                                                             Map<ResourceType, Integer> replacements) {
-        if (toProcess == null) return null;
+    public Map<ResourceType, Integer> replaceMarketResources(
+        ResourceType replaceableResType,
+        Map<ResourceType, Integer> toProcess,
+        Map<ResourceType, Integer> replacements) {
+        
+        if (toProcess == null)
+            return null;
 
-        if (!isActive()) return super.replaceMarketResources(replaceableResType, toProcess, replacements);
+        if (!isActive())
+            return super.replaceMarketResources(replaceableResType, toProcess, replacements);
 
         Map<ResourceType, Integer> resCopy = new HashMap<>(toProcess);
         
@@ -49,7 +53,7 @@ public class ZeroLeader extends LeaderCard {
                If there's some left, zeros can be used in successive conversions; else it shouldn't be possible to do so,
                for that would transform more resources than it is allowed */
             resCopy.compute(replaceableResType, (res, amount) -> amount == null || amount - amountToConvert == 0 ? null : amount - amountToConvert);
-            replacements.compute(this.getResource(), (res, amount) -> amount - amountToConvert == 0 ? null : amount - amountToConvert);
+            replacements.compute(this.getResource(), (res, amount) -> amount == null || amount - amountToConvert == 0 ? null : amount - amountToConvert);
         }
 
         return resCopy;
