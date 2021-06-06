@@ -329,6 +329,7 @@ public class MarketController extends GuiController {
     @Override
     public void on(Gui gui, UpdateAction event) {
         super.on(gui, event);
-        gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+        if(event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
     }
 }
