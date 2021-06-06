@@ -2,9 +2,14 @@ name: Cleanup artifacts
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 0 * * *'
 
   workflow_dispatch:
+    inputs:
+      expireIn:
+        description: 'Expire duration'
+        required: true
+        default: '1days'
 
 jobs:
   delete-artifacts:
@@ -14,4 +19,4 @@ jobs:
       - uses: kolpav/purge-artifacts-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          expire-in: 7days # Setting this to 0 will delete all artifacts
+          expire-in: ${{ github.event.inputs.expireIn }}
