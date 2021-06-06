@@ -121,7 +121,7 @@ public class DevCardGridTest {
      */
     @Test
     void buyCardWrongLevel() {
-        buyer.getStrongbox().addResource(r1);
+        assertDoesNotThrow(() -> buyer.getStrongbox().addResource(r1));
 
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
                 buyer.getStrongbox(), Map.of(r1, 1)

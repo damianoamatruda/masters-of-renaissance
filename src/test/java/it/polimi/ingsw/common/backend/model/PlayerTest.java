@@ -79,7 +79,7 @@ public class PlayerTest {
      */
     @Test
     void getNumOfResourcesTestStrongboxOnly() {
-        player.getStrongbox().addResources(Map.of(coin, 4, servant, 7, shield, 1));
+        assertDoesNotThrow(() -> player.getStrongbox().addResources(Map.of(coin, 4, servant, 7, shield, 1)));
         assertEquals(12, player.getResourcesCount());
     }
 

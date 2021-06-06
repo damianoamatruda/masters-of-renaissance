@@ -60,11 +60,10 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
-    public void addResources(Map<ResourceType, Integer> resMap) {
+    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
         if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
             ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
-            throw new IllegalArgumentException(
-                new IllegalResourceTransferException(nonStorable, true, Kind.NON_STORABLE));
+            throw new IllegalResourceTransferException(nonStorable, true, Kind.NON_STORABLE);
         }
         for (ResourceType resType : resMap.keySet())
             resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
@@ -73,26 +72,23 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
-    public void addResource(ResourceType resType) {
+    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
         addResources(Map.of(resType, 1));
     }
 
     @Override
-    public void removeResources(Map<ResourceType, Integer> resMap) {
+    public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
         if (!resMap.keySet().stream().allMatch(resources::containsKey)) {
             ResourceType resType = resMap.keySet().stream().filter(r -> !resources.containsKey(r)).findAny().orElseThrow();
-            throw new IllegalArgumentException(
-                new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED));
+            throw new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED);
         }
         if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
             ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
-            throw new IllegalArgumentException(
-                new IllegalResourceTransferException(nonStorable, false, Kind.NON_STORABLE));
+            throw new IllegalResourceTransferException(nonStorable, false, Kind.NON_STORABLE);
         }
         for (ResourceType resType : resMap.keySet())
             if (resources.get(resType) < resMap.get(resType))
-                throw new IllegalArgumentException(
-                    new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED));
+                throw new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED);
         for (ResourceType resType : resMap.keySet())
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
 
@@ -100,7 +96,7 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
-    public void removeResource(ResourceType resType) {
+    public void removeResource(ResourceType resType) throws IllegalResourceTransferException {
         removeResources(Map.of(resType, 1));
     }
 

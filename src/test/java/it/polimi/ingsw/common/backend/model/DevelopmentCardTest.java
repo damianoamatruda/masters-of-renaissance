@@ -40,7 +40,7 @@ public class DevelopmentCardTest {
      */
     @Test
     void takeFromPlayer() {
-        player.getStrongbox().addResource(coin);
+        assertDoesNotThrow(() -> player.getStrongbox().addResource(coin));
 
         assertDoesNotThrow(() -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(coin, 1))));
     }
@@ -51,7 +51,7 @@ public class DevelopmentCardTest {
      */
     @Test
     void takeFromPlayerNotEnoughRes() {
-        player.getStrongbox().addResource(new ResourceType("Shield", true));
+        assertDoesNotThrow(() -> player.getStrongbox().addResource(new ResourceType("Shield", true)));
 
         assertThrows(Exception.class, () -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(coin, 1))));
     }
