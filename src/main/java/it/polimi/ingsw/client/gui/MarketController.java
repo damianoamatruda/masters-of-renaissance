@@ -9,8 +9,10 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -134,7 +136,7 @@ public class MarketController extends GuiController {
             
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
 
-        warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
+        warehouse.getChildren().forEach(shelf -> ((Shelf) shelf).getChildren().get(1).setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
             if (db.hasImage()) {
                 event.acceptTransferModes(TransferMode.MOVE);
@@ -142,7 +144,7 @@ public class MarketController extends GuiController {
             event.consume();
         }));
 
-        warehouse.getChildren().forEach(shelf -> shelf.setOnDragDropped((event) -> {
+        warehouse.getChildren().forEach(shelf -> ((Shelf) shelf).getChildren().get(1).setOnDragDropped((event) -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasImage()) {
@@ -184,6 +186,8 @@ public class MarketController extends GuiController {
 
         warehousePane.getChildren().clear();
         warehousePane.getChildren().add(warehouse);
+
+        warehouse.enableSwapper();
     }
 
     private void setDnDCanvas() {
@@ -331,5 +335,26 @@ public class MarketController extends GuiController {
         super.on(gui, event);
         if(event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+
+        else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
+            // TODO duplicated handle
+            Node s1 = warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
+            Node s2 = warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
+
+            int tempIndex1 = warehouse.getChildren().indexOf(s1);
+            int tempIndex2 = warehouse.getChildren().indexOf(s2);
+            Platform.runLater(() -> {
+                warehouse.getChildren().remove(Math.max(tempIndex1, tempIndex2));
+                warehouse.getChildren().remove(Math.min(tempIndex1, tempIndex2));
+
+                if(tempIndex1 < tempIndex2) {
+                    warehouse.getChildren().add(tempIndex1, s2);
+                    warehouse.getChildren().add(tempIndex2, s1);
+                } else {
+                    warehouse.getChildren().add(tempIndex2, s1);
+                    warehouse.getChildren().add(tempIndex1, s2);
+                }
+            });
+        }
     }
 }

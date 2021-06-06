@@ -36,7 +36,7 @@ public abstract class PlaygroundController extends GuiController {
 
     private LeaderCard toDiscard = null;
 
-    private final Warehouse warehouse = new Warehouse();
+    protected final Warehouse warehouse = new Warehouse();
 
 
     @Override

@@ -43,6 +43,8 @@ public class PlaygroundBeforeAction extends PlaygroundController{
         AnchorPane.setTopAnchor(topText, 50.0);
 
         canvas.getChildren().add(topText);
+
+        warehouse.enableSwapper();
     }
 
     @Override

@@ -98,4 +98,9 @@ public class Warehouse extends VBox {
     public int getWaitingForSwap2() {
         return waitingForSwap2;
     }
+
+    public void enableSwapper() {
+        for(Shelf shelf : shelves.values())
+            shelf.addSwapper();
+    }
 }

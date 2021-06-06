@@ -34,6 +34,7 @@ public class PlaygroundAfterAction extends PlaygroundController{
 
         canvas.getChildren().add(topText);
 
+        warehouse.enableSwapper();
     }
 
     @Override

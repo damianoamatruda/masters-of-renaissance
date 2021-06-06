@@ -37,8 +37,6 @@ public class Shelf extends HBox {
         this.getChildren().add(new Text("Size: " + shelf.getSize()));
         this.getChildren().add(content);
 
-        setSwapDnD();
-        this.getChildren().add(swapIcon);
     }
 
     public void addResource(Resource r) {
@@ -73,6 +71,11 @@ public class Shelf extends HBox {
     public String getBoundResource() {
         if (content.getChildren().size() <= 0) return null;
         return ((Resource)content.getChildren().get(0)).getName();
+    }
+
+    public void addSwapper() {
+        setSwapDnD();
+        this.getChildren().add(swapIcon);
     }
 
     private void setSwapDnD() {
