@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.input.ClipboardContent;
@@ -102,5 +103,26 @@ public class Warehouse extends VBox {
     public void enableSwapper() {
         for(Shelf shelf : shelves.values())
             shelf.addSwapper();
+    }
+
+    public void swapShelves(Shelf s1, Shelf s2) {
+        int tempIndex1 = this.getChildren().indexOf(s1);
+        int tempIndex2 = this.getChildren().indexOf(s2);
+        Platform.runLater(() -> {
+            this.getChildren().remove(Math.max(tempIndex1, tempIndex2));
+            this.getChildren().remove(Math.min(tempIndex1, tempIndex2));
+
+            if(tempIndex1 < tempIndex2) {
+                this.getChildren().add(tempIndex1, s2);
+                this.getChildren().add(tempIndex2, s1);
+            } else {
+                this.getChildren().add(tempIndex2, s1);
+                this.getChildren().add(tempIndex1, s2);
+            }
+
+            int tempSize = s1.getSize();
+            s1.adjustSize(s2.getSize());
+            s2.adjustSize(tempSize);
+        });
     }
 }

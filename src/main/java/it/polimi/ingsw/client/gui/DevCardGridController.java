@@ -246,28 +246,10 @@ public class DevCardGridController extends GuiController {
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 
         else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
-            // TODO duplicated handle
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
             Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
 
-            int tempIndex1 = warehouse.getChildren().indexOf(s1);
-            int tempIndex2 = warehouse.getChildren().indexOf(s2);
-            Platform.runLater(() -> {
-                warehouse.getChildren().remove(Math.max(tempIndex1, tempIndex2));
-                warehouse.getChildren().remove(Math.min(tempIndex1, tempIndex2));
-
-                if (tempIndex1 < tempIndex2) {
-                    warehouse.getChildren().add(tempIndex1, s2);
-                    warehouse.getChildren().add(tempIndex2, s1);
-                } else {
-                    warehouse.getChildren().add(tempIndex2, s1);
-                    warehouse.getChildren().add(tempIndex1, s2);
-                }
-
-                int tempSize = s1.getSize();
-                s1.adjustSize(s2.getSize());
-                s2.adjustSize(tempSize);
-            });
+            warehouse.swapShelves(s1, s2);
         }
     }
 }

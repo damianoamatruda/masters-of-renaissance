@@ -338,37 +338,18 @@ public class MarketController extends GuiController {
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 
         else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
-            // TODO duplicated handle
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
             Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
 
-            int tempIndex1 = warehouse.getChildren().indexOf(s1);
-            int tempIndex2 = warehouse.getChildren().indexOf(s2);
+            warehouse.swapShelves(s1, s2);
             Platform.runLater(() -> {
-                warehouse.getChildren().remove(Math.max(tempIndex1, tempIndex2));
-                warehouse.getChildren().remove(Math.min(tempIndex1, tempIndex2));
-
-                if(tempIndex1 < tempIndex2) {
-                    warehouse.getChildren().add(tempIndex1, s2);
-                    warehouse.getChildren().add(tempIndex2, s1);
-                } else {
-                    warehouse.getChildren().add(tempIndex2, s1);
-                    warehouse.getChildren().add(tempIndex1, s2);
-                }
-
-                int tempSize = s1.getSize();
-                s1.adjustSize(s2.getSize());
-                s2.adjustSize(tempSize);
-
-                // Extra part (only for Market):
-                Map<String, Integer> temp = selection.get(((Shelf) s1).getShelfId());
-                if(selection.get(((Shelf) s2).getShelfId()) != null)
-                    selection.put(((Shelf) s1).getShelfId(), selection.get(((Shelf) s2).getShelfId()));
-                else selection.remove(((Shelf) s1).getShelfId());
+                Map<String, Integer> temp = selection.get(s1.getShelfId());
+                if(selection.get(s2.getShelfId()) != null)
+                    selection.put(s1.getShelfId(), selection.get(s2.getShelfId()));
+                else selection.remove(s1.getShelfId());
                 if(temp != null)
-                    selection.put(((Shelf) s2).getShelfId(), temp);
-                else selection.remove(((Shelf) s2).getShelfId());
-                return;
+                    selection.put(s2.getShelfId(), temp);
+                else selection.remove(s2.getShelfId());
             });
         }
     }
