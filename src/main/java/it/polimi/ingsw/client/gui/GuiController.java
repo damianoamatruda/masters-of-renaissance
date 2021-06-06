@@ -126,14 +126,8 @@ public abstract class GuiController implements Initializable {
         gui.getViewModel().setLastRound();
     }
 
-    public void on(Gui gui, UpdateLeader event) {
-        if (event.isActivated())
-            gui.getViewModel().activateLeaderCard(event.getLeader());
-        else
-            // is a discard move (well, technically never used as such,
-            // see constructor references and UpdateLeadersHandCount)
-            gui.getViewModel().getCurrentPlayerData().setLeadersCount(
-                    gui.getViewModel().getCurrentPlayerData().getLeadersCount() - 1);
+    public void on(Gui gui, UpdateActivateLeader event) {
+        gui.getViewModel().activateLeaderCard(event.getLeader());
     }
 
     public void on(Gui gui, UpdateLeadersHand event) {

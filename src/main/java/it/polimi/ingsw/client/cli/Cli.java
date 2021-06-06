@@ -176,7 +176,7 @@ public class Cli extends EventDispatcher {
         view.addEventListener(UpdateGame.class, event -> state.on(this, event));
         view.addEventListener(UpdateGameEnd.class, event -> state.on(this, event));
         view.addEventListener(UpdateLastRound.class, event -> state.on(this, event));
-        view.addEventListener(UpdateLeader.class, event -> state.on(this, event));
+        view.addEventListener(UpdateActivateLeader.class, event -> state.on(this, event));
         view.addEventListener(UpdateLeadersHandCount.class, event -> state.on(this, event));
         view.addEventListener(UpdateMarket.class, event -> state.on(this, event));
         view.addEventListener(UpdatePlayer.class, event -> state.on(this, event));
@@ -213,7 +213,7 @@ public class Cli extends EventDispatcher {
         view.removeEventListener(UpdateGame.class, event -> state.on(this, event));
         view.removeEventListener(UpdateGameEnd.class, event -> state.on(this, event));
         view.removeEventListener(UpdateLastRound.class, event -> state.on(this, event));
-        view.removeEventListener(UpdateLeader.class, event -> state.on(this, event));
+        view.removeEventListener(UpdateActivateLeader.class, event -> state.on(this, event));
         view.removeEventListener(UpdateLeadersHandCount.class, event -> state.on(this, event));
         view.removeEventListener(UpdateMarket.class, event -> state.on(this, event));
         view.removeEventListener(UpdatePlayer.class, event -> state.on(this, event));

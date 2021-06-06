@@ -151,6 +151,7 @@ public class Player extends EventDispatcher {
         game.onDiscardLeader(this);
         leaders.remove(leader);
 
+        dispatch(new UpdateLeadersHand(getNickname(), leaders.stream().map(Card::getId).toList()));
         dispatch(new UpdateLeadersHandCount(getNickname(), leaders.size()));
     }
 

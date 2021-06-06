@@ -220,7 +220,7 @@ public class Gui extends Application {
         view.addEventListener(UpdateGame.class, event -> controller.on(this, event));
         view.addEventListener(UpdateGameEnd.class, event -> controller.on(this, event));
         view.addEventListener(UpdateLastRound.class, event -> controller.on(this, event));
-        view.addEventListener(UpdateLeader.class, event -> controller.on(this, event));
+        view.addEventListener(UpdateActivateLeader.class, event -> controller.on(this, event));
         view.addEventListener(UpdateLeadersHandCount.class, event -> controller.on(this, event));
         view.addEventListener(UpdateMarket.class, event -> controller.on(this, event));
         view.addEventListener(UpdatePlayer.class, event -> controller.on(this, event));
@@ -257,7 +257,7 @@ public class Gui extends Application {
         view.removeEventListener(UpdateGame.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateGameEnd.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateLastRound.class, event -> controller.on(this, event));
-        view.removeEventListener(UpdateLeader.class, event -> controller.on(this, event));
+        view.removeEventListener(UpdateActivateLeader.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateLeadersHandCount.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateMarket.class, event -> controller.on(this, event));
         view.removeEventListener(UpdatePlayer.class, event -> controller.on(this, event));

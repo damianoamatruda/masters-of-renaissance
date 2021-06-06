@@ -60,7 +60,7 @@ public class View extends EventDispatcher {
         game.addEventListener(UpdateGame.class, this::on);
         game.addEventListener(UpdateGameEnd.class, this::on);
         game.addEventListener(UpdateLastRound.class, this::on);
-        game.addEventListener(UpdateLeader.class, this::on);
+        game.addEventListener(UpdateActivateLeader.class, this::on);
         game.addEventListener(UpdateLeadersHandCount.class, this::on);
         game.addEventListener(UpdateMarket.class, this::on);
         game.addEventListener(UpdatePlayer.class, this::on);
@@ -80,7 +80,7 @@ public class View extends EventDispatcher {
         game.removeEventListener(UpdateGame.class, this::on);
         game.removeEventListener(UpdateGameEnd.class, this::on);
         game.removeEventListener(UpdateLastRound.class, this::on);
-        game.removeEventListener(UpdateLeader.class, this::on);
+        game.removeEventListener(UpdateActivateLeader.class, this::on);
         game.removeEventListener(UpdateLeadersHandCount.class, this::on);
         game.removeEventListener(UpdateMarket.class, this::on);
         game.removeEventListener(UpdatePlayer.class, this::on);

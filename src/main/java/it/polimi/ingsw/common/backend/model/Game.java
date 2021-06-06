@@ -99,7 +99,7 @@ public class Game extends EventDispatcher {
         this.players.forEach(p -> p.addEventListener(UpdateVictoryPoints.class, this::dispatch));
         this.players.forEach(p -> p.addEventListener(UpdatePlayerStatus.class, this::dispatch));
         this.players.forEach(p -> p.addEventListener(UpdateDevCardSlot.class, this::dispatch));
-        this.leaderCards.forEach(l -> l.addEventListener(UpdateLeader.class, this::dispatch));
+        this.leaderCards.forEach(l -> l.addEventListener(UpdateActivateLeader.class, this::dispatch));
         this.resContainers.forEach(c -> c.addEventListener(UpdateResourceContainer.class, this::dispatch));
         this.devCardGrid.addEventListener(UpdateDevCardGrid.class, this::dispatch);
         this.market.addEventListener(UpdateMarket.class, this::dispatch);

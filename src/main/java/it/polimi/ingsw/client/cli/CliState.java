@@ -157,19 +157,15 @@ public abstract class CliState implements Renderable {
         cli.getOut().println("Last round!");
     }
 
-    public void on(Cli cli, UpdateLeader event) {
-        if (event.isActivated())
-            cli.getViewModel().activateLeaderCard(event.getLeader());
-        else
-            // is a discard move (well, technically never used as such,
-            // see constructor references and UpdateLeadersHandCount)
-            cli.getViewModel().getCurrentPlayerData().setLeadersCount(
-                    cli.getViewModel().getCurrentPlayerData().getLeadersCount() - 1);
+    public void on(Cli cli, UpdateActivateLeader event) {
+        ViewModel vm = cli.getViewModel();
 
+        vm.activateLeaderCard(event.getLeader());
+        
         cli.getOut().println();
-        new LeaderCard(cli.getViewModel().getLeaderCard(event.getLeader()).orElseThrow()).render(cli);
+        cli.getOut().printf("%s activated leader card %d.%n", vm.getCurrentPlayer(), event.getLeader());
         cli.getOut().println();
-        cli.getOut().printf("Leader %d is now %s.%n", event.getLeader(), event.isActivated() ? "activated" : "discarded");
+        new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow()).render(cli);
     }
 
     public void on(Cli cli, UpdateLeadersHand event) {

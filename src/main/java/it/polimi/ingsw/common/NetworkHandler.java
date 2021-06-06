@@ -50,7 +50,7 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
         view.addEventListener(UpdateGameEnd.class, this::send);
         view.addEventListener(UpdateJoinGame.class, this::send);
         view.addEventListener(UpdateLastRound.class, this::send);
-        view.addEventListener(UpdateLeader.class, this::send);
+        view.addEventListener(UpdateActivateLeader.class, this::send);
         view.addEventListener(UpdateLeadersHand.class, this::send);
         view.addEventListener(UpdateLeadersHandCount.class, this::send);
         view.addEventListener(UpdateMarket.class, this::send);
@@ -87,7 +87,7 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
         view.removeEventListener(UpdateGameEnd.class, this::send);
         view.removeEventListener(UpdateJoinGame.class, this::send);
         view.removeEventListener(UpdateLastRound.class, this::send);
-        view.removeEventListener(UpdateLeader.class, this::send);
+        view.removeEventListener(UpdateActivateLeader.class, this::send);
         view.removeEventListener(UpdateLeadersHand.class, this::send);
         view.removeEventListener(UpdateLeadersHandCount.class, this::send);
         view.removeEventListener(UpdateMarket.class, this::send);

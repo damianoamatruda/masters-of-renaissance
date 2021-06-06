@@ -199,13 +199,13 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateLeader event) {
+    public void on(Gui gui, UpdateActivateLeader event) {
         super.on(gui, event);
 
         LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
         int leaderIndex = leadersBox.getChildren().indexOf(leader);
 
-        leader.setActivated(event.isActivated());
+        leader.setActivated(true);
 
         HBox buttons = (HBox) leadersBox.getChildren().get(leaderIndex + 1);
         buttons.getChildren().forEach(b -> { b.setDisable(true); b.setVisible(false);});
