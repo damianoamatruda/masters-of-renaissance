@@ -32,9 +32,9 @@ public class LeaderCard extends StringComponent {
             stringBuilder.append(String.format("Discount: %d", reducedLeaderCard.getDiscount())).append("\n");
 
         if (reducedLeaderCard.getDevCardRequirement() != null)
-            stringBuilder.append(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement()).getString(cli));
+            stringBuilder.append(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement().get()).getString(cli));
         if (reducedLeaderCard.getResourceRequirement() != null)
-            stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement()).getString(cli));
+            stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement().get()).getString(cli));
 
         cli.getViewModel().getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->
                 stringBuilder.append(new ResourceContainer(c).getString(cli)));

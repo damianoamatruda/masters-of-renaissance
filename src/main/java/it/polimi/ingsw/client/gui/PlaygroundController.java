@@ -108,10 +108,10 @@ public abstract class PlaygroundController extends GuiController {
                 leaderCard.setLeaderType(reducedLeader.getLeaderType());
                 leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
                 leaderCard.setResourceType(reducedLeader.getResourceType().getName());
-                if (reducedLeader.getResourceRequirement() != null)
-                    leaderCard.setRequirement(reducedLeader.getResourceRequirement());
-                if (reducedLeader.getDevCardRequirement() != null)
-                    leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
+                if (reducedLeader.getResourceRequirement().isPresent())
+                    leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
+                if (reducedLeader.getDevCardRequirement().isPresent())
+                    leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
 
                 if (reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
                     leaderCard.setZeroReplacement(reducedLeader.getResourceType());

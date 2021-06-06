@@ -1,5 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.Optional;
+
 public class ReducedLeaderCard extends ReducedCard {
     private final ReducedResourceType resourceType;
     private final String leaderType;
@@ -40,15 +42,15 @@ public class ReducedLeaderCard extends ReducedCard {
     /**
      * @return the resourceRequirement
      */
-    public ReducedResourceRequirement getResourceRequirement() {
-        return resourceRequirement;
+    public Optional<ReducedResourceRequirement> getResourceRequirement() {
+        return Optional.ofNullable(resourceRequirement);
     }
 
     /**
      * @return the devCardRequirement
      */
-    public ReducedDevCardRequirement getDevCardRequirement() {
-        return devCardRequirement;
+    public Optional<ReducedDevCardRequirement> getDevCardRequirement() {
+        return Optional.ofNullable(devCardRequirement);
     }
 
     /**
