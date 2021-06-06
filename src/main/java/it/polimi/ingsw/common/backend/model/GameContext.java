@@ -3,6 +3,7 @@ package it.polimi.ingsw.common.backend.model;
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
+import it.polimi.ingsw.common.backend.model.cardrequirements.DevCardRequirement.Entry;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
@@ -250,7 +251,10 @@ public class GameContext extends EventDispatcher {
             } catch (IllegalArgumentException e) {
                 dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             } catch (CardRequirementsNotMetException e) {
-                dispatch(new ErrCardRequirements(view, e.getMessage()));
+                dispatch(new ErrCardRequirements(view,
+                        e.getMissingDevCards().stream().map(Entry::reduce).toList(),
+                        e.getMissingResources().entrySet().stream()
+                                .collect(Collectors.toMap(entry -> entry.getKey().getName(), entry -> entry.getValue()))));
             }
         }
     }
@@ -406,7 +410,10 @@ public class GameContext extends EventDispatcher {
                 dispatch(new ErrBuyDevCard(view, true));
                 return;
             } catch (CardRequirementsNotMetException e) {
-                dispatch(new ErrCardRequirements(view, e.getMessage()));
+                dispatch(new ErrCardRequirements(view,
+                        e.getMissingDevCards().stream().map(Entry::reduce).toList(),
+                        e.getMissingResources().entrySet().stream()
+                                .collect(Collectors.toMap(entry -> entry.getKey().getName(), entry -> entry.getValue()))));
                 return;
             } catch (IllegalCardDepositException e) {
                 dispatch(new ErrBuyDevCard(view, false));

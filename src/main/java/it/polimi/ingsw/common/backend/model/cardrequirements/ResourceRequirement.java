@@ -72,15 +72,8 @@ public class ResourceRequirement implements CardRequirement {
                 missingResources.put(r, discountedRes.get(r) - playerAmount);
         }
 
-        if (!missingResources.keySet().isEmpty()) {
-            String msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", player.getNickname());
-
-            for (Map.Entry<ResourceType, Integer> e : missingResources.entrySet()) {
-                msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey().getName(), e.getValue()));
-            }
-
-            throw new CardRequirementsNotMetException("resource", msg);
-        }
+        if (!missingResources.isEmpty())
+            throw new CardRequirementsNotMetException(missingResources);
     }
 
     @Override

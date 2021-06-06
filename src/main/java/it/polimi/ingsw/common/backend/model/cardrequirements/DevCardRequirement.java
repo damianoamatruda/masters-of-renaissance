@@ -71,15 +71,8 @@ public class DevCardRequirement implements CardRequirement {
         }
 
         // if the missing set isn't empty the requirements haven't been met
-        if (missing.size() != 0) {
-            String msg = String.format("\nPlayer %s does not satisfy the following entries:", player.getNickname());
-
-            for (Entry e : new ArrayList<>(missing)) {
-                msg = msg.concat(String.format("\nColor %s, level %d, missing %s", e.color.getName(), e.level, e.amount));
-            }
-
-            throw new CardRequirementsNotMetException("development card", msg);
-        }
+        if (!missing.isEmpty())
+            throw new CardRequirementsNotMetException(missing);
     }
 
     @Override
