@@ -101,7 +101,7 @@ public class SetupResourcesController extends GuiController {
                                     }
 
                                 }
-                            if(success) warehouse.refreshShelfAdd(id, resource);
+                            if(success) warehouse.addResourceDraggable(id, resource);
                             updateChoiceButton();
 
                         } catch (Exception e) { // TODO remove this catch once debugged

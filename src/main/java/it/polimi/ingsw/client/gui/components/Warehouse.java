@@ -35,12 +35,17 @@ public class Warehouse extends VBox {
     }
 
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback) {
+        setWarehouseShelves(shelves, callback, false);
+    }
+
+    public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback, boolean wantsDnD) {
         maxRowHeight = getPrefHeight() / shelves.size(); // TODO: check that it works with more than 3 shelves
         if(shelves != null) {
             for (ReducedResourceContainer shelf : shelves) {
                 Shelf content = new Shelf(shelf, callback);
                 content.setAlignment(Pos.CENTER);
 
+                this.shelves.put(shelf.getId(), content);
                 for(String resource : shelf.getContent().keySet()) {
                     HBox entry = new HBox();
 
@@ -49,19 +54,21 @@ public class Warehouse extends VBox {
                     entry.maxHeight(maxRowHeight);
 
                     for(int i = 0; i < shelf.getContent().get(resource); i++) {
-                        content.addResource(resource);
+                        if(wantsDnD) {
+                            addResourceDraggable(content.getShelfId(), resource);
+                        }
+                        else content.addResource(resource);
                     }
 
                     content.getChildren().add(entry);
 
                 }
-                this.shelves.put(shelf.getId(), content);
                 this.getChildren().add(content);
             }
         }
     }
 
-    public void refreshShelfAdd(int id, String resource) {
+    public void addResourceDraggable(int id, String resource) {
         Shelf shelf = shelves.get(id);
         Resource r = new Resource();
         r.setResourceType(resource);

@@ -161,7 +161,7 @@ public class MarketController extends GuiController {
                     if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource))) {
                         success = putChoice(resource, shelfID);
                         if (success) {
-                            warehouse.refreshShelfAdd(shelfID, resource);
+                            warehouse.addResourceDraggable(shelfID, resource);
                             removeResourceFromBox(resource);
                         }
                     }

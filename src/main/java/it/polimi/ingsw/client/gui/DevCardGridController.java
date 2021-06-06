@@ -175,7 +175,9 @@ public class DevCardGridController extends GuiController {
         List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).getWarehouseShelves().stream()
             .map(id -> vm.getContainer(id).orElseThrow()).toList();
 
-        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
+                warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2));
+            }, true);
 
         if (containersBox.getChildren().size() >= 1)
             containersBox.getChildren().remove(0);
