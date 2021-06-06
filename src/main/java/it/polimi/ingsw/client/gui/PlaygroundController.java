@@ -1,16 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
-import java.net.URL;
-import java.util.*;
-
-import it.polimi.ingsw.client.gui.components.DevSlot;
-import it.polimi.ingsw.client.gui.components.DevelopmentCard;
-import it.polimi.ingsw.client.gui.components.Playerboard;
-import it.polimi.ingsw.client.gui.components.Production;
-import it.polimi.ingsw.client.gui.components.Strongbox;
-import it.polimi.ingsw.client.gui.components.Warehouse;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.client.gui.components.*;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
@@ -24,13 +15,18 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 public abstract class PlaygroundController extends GuiController {
     @FXML
     protected AnchorPane canvas;
     @FXML
     protected Playerboard pboard;
 
-    private VBox leadersBox = new VBox();
+    private final VBox leadersBox = new VBox();
 
     @FXML protected Text topText = new Text();
 
@@ -112,14 +108,16 @@ public abstract class PlaygroundController extends GuiController {
                 leaderCard.setLeaderType(reducedLeader.getLeaderType());
                 leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
                 leaderCard.setResourceType(reducedLeader.getResourceType().getName());
-                leaderCard.setRequirement(reducedLeader.getResourceRequirement());
-                leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
+                if (reducedLeader.getResourceRequirement() != null)
+                    leaderCard.setRequirement(reducedLeader.getResourceRequirement());
+                if (reducedLeader.getDevCardRequirement() != null)
+                    leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
 
-                if(reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
+                if (reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
                     leaderCard.setZeroReplacement(reducedLeader.getResourceType());
-                else if(reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
+                else if (reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
                     leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
-                else if(reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
+                else if (reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
                     leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
                 else
                     leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),

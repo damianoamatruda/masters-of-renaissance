@@ -48,14 +48,16 @@ public class SetupLeadersController extends GuiController {
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
             leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
             leaderCard.setResourceType(reducedLeader.getResourceType().getName());
-            leaderCard.setRequirement(reducedLeader.getResourceRequirement());
-            leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
+            if (reducedLeader.getResourceRequirement() != null)
+                leaderCard.setRequirement(reducedLeader.getResourceRequirement());
+            if (reducedLeader.getDevCardRequirement() != null)
+                leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
 
-            if(reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
+            if (reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
                 leaderCard.setZeroReplacement(reducedLeader.getResourceType());
-            else if(reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
+            else if (reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
                 leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
-            else if(reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
+            else if (reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
                 leaderCard.setProduction(gui.getViewModel().getProduction(reducedLeader.getProduction()).orElseThrow());
             else
                 leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),

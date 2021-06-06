@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,11 +17,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class CardRequirement extends HBox {
-    private final double maxRowHeight;
+    private static final double maxRowHeight = 30; // TODO: Parameterize
     private List<HBox> requirements;
 
     public CardRequirement() {
-        maxRowHeight = 30; //TODO parameterize
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/cardrequirement.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -33,65 +33,62 @@ public class CardRequirement extends HBox {
     }
 
     public void setRequirements(ReducedResourceRequirement requirements) {
-        if(requirements != null) {
-            this.requirements = new ArrayList<>();
-            for (String resource : requirements.getRequirements().keySet()) {
-                HBox entry = new HBox();
+        this.requirements = new ArrayList<>();
+        for (String resource : requirements.getRequirements().keySet()) {
+            HBox entry = new HBox();
 
-                Resource r = new Resource();
-                r.setResourceType(resource);
+            Text l = new Text(requirements.getRequirements().get(resource) + "");
+            l.maxHeight(maxRowHeight);
+            HBox.setMargin(l, new Insets(0, 0, 0, 6));
 
-                Text l = new Text(requirements.getRequirements().get(resource) + "");
+            Resource r = new Resource();
+            r.setResourceType(resource);
+            r.setPreserveRatio(true);
+            r.setFitHeight(maxRowHeight);
+            r.setFitWidth(20);
+            HBox.setMargin(r, new Insets(0, 0, 0, 4));
 
-                entry.getChildren().add(l);
-                entry.getChildren().add(r);
+            entry.getChildren().add(l);
+            entry.getChildren().add(r);
 
-                entry.setAlignment(Pos.CENTER);
-
-                r.setPreserveRatio(true);
-                r.setFitHeight(maxRowHeight);
-                l.maxHeight(maxRowHeight);
-
-                entry.maxHeight(maxRowHeight);
+            entry.setAlignment(Pos.CENTER);
+            entry.maxHeight(maxRowHeight);
 
 //                entry.setBorder(new Border(new BorderStroke(Color.BLACK,
 //                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-                this.getChildren().add(entry);
-            }
+            this.getChildren().add(entry);
         }
     }
 
     public void setRequirements(ReducedDevCardRequirement requirements) {
-        if(requirements != null) {
-            this.requirements = new ArrayList<>();
-            for (ReducedDevCardRequirementEntry color : requirements.getEntries()) {
-                HBox entry = new HBox();
+        this.requirements = new ArrayList<>();
+        for (ReducedDevCardRequirementEntry color : requirements.getEntries()) {
+            HBox entry = new HBox();
 
-                ImageView i = new ImageView();
-                String fileName = color.getColor().toLowerCase();
-                if (color.getLevel() > 0) fileName += color.getLevel() + "";
-                i.setImage(new Image(Objects.requireNonNull(getClass().getResource(
-                        String.format("/assets/gui/cardrequirements/%s.png", fileName))).toExternalForm()));
+            ImageView i = new ImageView();
+            String fileName = color.getColor().toLowerCase();
+            if (color.getLevel() > 0) fileName += color.getLevel() + "";
+            i.setImage(new Image(Objects.requireNonNull(getClass().getResource(
+                    String.format("/assets/gui/cardrequirements/%s.png", fileName))).toExternalForm()));
 
-                Text l = new Text(color.getAmount() + "");
-                entry.getChildren().add(l);
-                entry.getChildren().add(i);
+            Text l = new Text(color.getAmount() + "");
+            entry.getChildren().add(l);
+            entry.getChildren().add(i);
 
-                entry.setAlignment(Pos.CENTER);
+            entry.setAlignment(Pos.CENTER);
 
-                i.setPreserveRatio(true);
-                i.setFitHeight(maxRowHeight);
-                l.maxHeight(maxRowHeight);
+            i.setPreserveRatio(true);
+            i.setFitHeight(maxRowHeight);
+            l.maxHeight(maxRowHeight);
 
-                entry.maxHeight(maxRowHeight);
+            entry.maxHeight(maxRowHeight);
 
 //                entry.setBorder(new Border(new BorderStroke(Color.BLACK,
 //                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 //            this.requirements.add(entry);
-                this.getChildren().add(entry);
-            }
+            this.getChildren().add(entry);
         }
     }
 

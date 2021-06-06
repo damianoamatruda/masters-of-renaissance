@@ -8,8 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
 public class DevelopmentCard extends Card {
-    private int height = 251;
-    private int width = 166;
     @FXML
     private Text levelLeft;
     @FXML
@@ -33,8 +31,8 @@ public class DevelopmentCard extends Card {
 
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
-        victoryPoints.setLayoutX(width * 0.465);
-        victoryPoints.setLayoutY(height * 0.91);
+        victoryPoints.setLayoutX(getWidth() * 0.47);
+        victoryPoints.setLayoutY(getHeight() * 0.91);
     }
 
     @Override
@@ -44,14 +42,14 @@ public class DevelopmentCard extends Card {
 
     public void setRequirement(ReducedResourceRequirement requirement) {
         super.setRequirement(requirement);
-        this.requirement.setLayoutX(width * 0.12);
+        this.requirement.setLayoutX(getWidth() * 0.12);
 //        this.requirement.setAlignment(Pos.CENTER);
 //        this.requirement.setLayoutY();
     }
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
-        this.prod.setLayoutX(width * 0.12);
-        this.prod.setLayoutY(height * 0.518);
+        this.prod.setLayoutX(getWidth() * 0.12);
+        this.prod.setLayoutY(getHeight() * 0.52);
     }
 }

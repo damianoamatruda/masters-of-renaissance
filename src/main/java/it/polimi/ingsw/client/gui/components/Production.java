@@ -93,7 +93,7 @@ public class Production extends StackPane {
         box.setAlignment(Pos.CENTER);
         
         r.setFitHeight(maxRowHeight);
-        r.setFitWidth(30);
+        r.setFitWidth(20);
 
         l.setScaleY(elementScale);
         l.setScaleX(elementScale);

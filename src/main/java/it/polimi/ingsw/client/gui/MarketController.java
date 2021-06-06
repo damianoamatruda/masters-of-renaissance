@@ -248,16 +248,17 @@ public class MarketController extends GuiController {
                 leaderCard.setLeaderType(reducedLeader.getLeaderType());
                 leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
                 leaderCard.setResourceType(reducedLeader.getResourceType().getName());
-                leaderCard.setRequirement(reducedLeader.getResourceRequirement());
-                leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
-                
-                if(reducedLeader.getLeaderType().equals(ZeroLeader.class.getSimpleName())) {
+                if (reducedLeader.getResourceRequirement() != null)
+                    leaderCard.setRequirement(reducedLeader.getResourceRequirement());
+                if (reducedLeader.getDevCardRequirement() != null)
+                    leaderCard.setRequirement(reducedLeader.getDevCardRequirement());
+
+                if (reducedLeader.getLeaderType().equals(ZeroLeader.class.getSimpleName())) {
                     leaderCard.setZeroReplacement(reducedLeader.getResourceType());
                     // TODO handle substitution
-                }
-                else {
+                } else {
                     leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                        reducedLeader.getResourceType().getName());
+                            reducedLeader.getResourceType().getName());
 
                     leaderCard.setOnDragOver((event) -> {
                         Dragboard db = event.getDragboard();

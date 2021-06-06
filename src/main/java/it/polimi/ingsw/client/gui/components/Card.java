@@ -61,7 +61,6 @@ public abstract class Card extends Pane {
 
     public void setRequirement(ReducedResourceRequirement requirement) {
         this.requirement = new CardRequirement();
-
         this.requirement.setRequirements(requirement);
         this.getChildren().addAll(this.requirement);
     }

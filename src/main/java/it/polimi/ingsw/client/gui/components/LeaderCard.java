@@ -61,7 +61,6 @@ public class LeaderCard extends Card {
 
     public void setRequirement(ReducedDevCardRequirement requirement) {
         this.requirement = new CardRequirement();
-
         this.requirement.setRequirements(requirement);
         resourcePane.getChildren().addAll(this.requirement);
     }
@@ -73,24 +72,24 @@ public class LeaderCard extends Card {
 
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
-        victoryPoints.setLayoutX(getWidth() / 2.1);
-        this.victoryPoints.setLayoutY(getHeight() / 1.63);
+        this.victoryPoints.setLayoutX(getWidth() * 0.47);
+        this.victoryPoints.setLayoutY(getHeight() * 0.62);
     }
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
-        this.prod.setLayoutY(getHeight() / 1.3567);
+        this.prod.setLayoutY(getHeight() * 0.74);
     }
 
     public void setZeroReplacement(ReducedResourceType type) {
         Resource res = new Resource();
         res.setResourceType(type.getName());
 
-        res.setLayoutX(getWidth() / 1.66);
-        res.setLayoutY(getHeight() / 1.3);
+        res.setLayoutX(getWidth() * 0.60);
+        res.setLayoutY(getHeight() * 0.77);
 
-        res.setFitHeight(getHeight() / 5);
-        res.setFitWidth(getHeight() / 5);
+        res.setFitHeight(getHeight() * 0.20);
+        res.setFitWidth(getHeight() * 0.20);
 
         this.getChildren().add(res);
     }
@@ -100,17 +99,17 @@ public class LeaderCard extends Card {
         Resource res = new Resource();
         TextArea amount = new TextArea();
         amount.setText("-" + discount);
-        amount.setLayoutX(getWidth() / 1.66);
-        amount.setLayoutY(getHeight() / 1.4342);
+        amount.setLayoutX(getWidth() * 0.60);
+        amount.setLayoutY(getHeight() * 0.70);
         //TODO text not showing
 
         res.setResourceType(type.getName());
 
-        res.setFitHeight(getHeight() / 7.17);
-        res.setFitWidth(getHeight() / 7.17);
+        res.setFitHeight(getHeight() * 0.14);
+        res.setFitWidth(getHeight() * 0.14);
 
-        res.setLayoutX(getWidth() / 1.383);
-        res.setLayoutY(getHeight() / 1.4342);
+        res.setLayoutX(getWidth() * 0.72);
+        res.setLayoutY(getHeight() * 0.70);
 
         bonus.getChildren().add(amount);
         bonus.getChildren().add(res);
@@ -125,9 +124,11 @@ public class LeaderCard extends Card {
     public void setDepotContent(ReducedResourceContainer container, String boundRes) {
         content = container;
 
-        double x1 = getWidth() / 4.6, x2 = getWidth() / 1.7, y = getHeight() / 1.255;
+        double x1 = getWidth() * 0.22;
+        double x2 = getWidth() * 0.59;
+        double y = getHeight() * 0.80;
 
-        if(container == null) {
+        if (container == null) {
             fillDepot(x1, y, boundRes, true);
             fillDepot(x2, y, boundRes, true);
             return;
@@ -153,8 +154,8 @@ public class LeaderCard extends Card {
         img.setX(x);
         img.setY(y);
 
-        img.setFitHeight(getHeight() / 7.17);
-        img.setFitWidth(getHeight() / 7.17);
+        img.setFitHeight(getHeight() * 0.14);
+        img.setFitWidth(getHeight() * 0.14);
         this.getChildren().add(img);
     }
 
