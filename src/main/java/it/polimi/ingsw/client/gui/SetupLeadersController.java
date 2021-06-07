@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
@@ -31,16 +32,18 @@ public class SetupLeadersController extends GuiController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Gui gui = Gui.getInstance();
+        ViewModel vm = gui.getViewModel();
 
-        if (gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()) == null)
+        if (vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()) == null)
             throw new RuntimeException();
 
-        titleComponent.setText(String.format("Choose %d leader cards", gui.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()));
+        titleComponent.setText(String.format("Choose %d leader cards",
+                vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()));
 
         leadersContainer.setSpacing(10);
         leadersContainer.setAlignment(Pos.CENTER);
 
-        List<LeaderCard> leaderCards = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream().map(reducedLeader -> {
+        List<LeaderCard> leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
             leaderCard.setLeaderId(reducedLeader.getId());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
@@ -56,9 +59,9 @@ public class SetupLeadersController extends GuiController {
             else if (reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
                 leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
             else if (reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
-                leaderCard.setProduction(gui.getViewModel().getProduction(reducedLeader.getProduction()).orElseThrow());
+                leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
             else
-                leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
+                leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
                         reducedLeader.getResourceType());
 
             leaderCard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
@@ -66,7 +69,7 @@ public class SetupLeadersController extends GuiController {
                     selection.remove(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
                     updateChoiceButton();
-                } else if (selection.size() != gui.getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount()) {
+                } else if (selection.size() != vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
                     selection.add(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
                     updateChoiceButton();
@@ -105,7 +108,7 @@ public class SetupLeadersController extends GuiController {
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
         if(event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname())) {
-            int choosable = gui.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
+            int choosable = gui.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
 
             if (choosable > 0)
                 gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
@@ -125,6 +128,8 @@ public class SetupLeadersController extends GuiController {
     }
 
     private void updateChoiceButton() {
-        choiceButton.setDisable(selection.size() != Gui.getInstance().getViewModel().getLocalPlayerData().getSetup().getChosenLeadersCount());
+        choiceButton.setDisable(
+                selection.size() != Gui.getInstance().getViewModel()
+                        .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
     }
 }

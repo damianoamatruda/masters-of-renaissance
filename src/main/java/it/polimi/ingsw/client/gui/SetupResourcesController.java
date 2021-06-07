@@ -46,7 +46,8 @@ public class SetupResourcesController extends GuiController {
         Gui gui = Gui.getInstance();
         ViewModel vm = gui.getViewModel();
 
-        titleComponent.setText(String.format("Choose %d resources.", gui.getViewModel().getLocalPlayerData().getSetup().getInitialResources()));
+        titleComponent.setText(String.format("Choose %d resources.",
+                gui.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources()));
 
         resourceTypesContainer.setSpacing(40);
         resourceTypesContainer.setAlignment(Pos.CENTER);
@@ -166,8 +167,10 @@ public class SetupResourcesController extends GuiController {
     }
 
     private void updateChoiceButton() {
-        int count = selection.keySet().stream().mapToInt(k -> selection.get(k).keySet().stream().mapToInt(h -> selection.get(k).get(h)).sum()).sum();
-        choiceButton.setDisable(count != Gui.getInstance().getViewModel().getLocalPlayerData().getSetup().getInitialResources());
+        int count = selection.keySet().stream()
+                .mapToInt(k -> selection.get(k).keySet().stream().mapToInt(h -> selection.get(k).get(h)).sum()).sum();
+        choiceButton.setDisable(count != Gui.getInstance().getViewModel()
+                .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources());
     }
 
     public void handleChoice() {

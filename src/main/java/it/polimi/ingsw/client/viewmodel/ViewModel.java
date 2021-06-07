@@ -13,14 +13,14 @@ public class ViewModel {
      */
     private final Map<String, PlayerData> playerData;
 
-    private String localPlayerNickname;
+    private String localPlayerNickname = "";
     private boolean isResumedGame;
     private boolean isSetupDone;
 
     private List<ReducedActionToken> actionTokens;
     private int blackCrossFP;
     private List<ReducedResourceContainer> containers;
-    private String currentPlayer;
+    private String currentPlayer = "";
     private List<ReducedColor> devCardColors;
     private ReducedDevCardGrid devCardGrid;
     private List<ReducedDevCard> developmentCards;
@@ -31,7 +31,7 @@ public class ViewModel {
     private List<String> playerNicknames;
     private List<ReducedResourceTransactionRecipe> productions;
     private List<ReducedResourceType> resourceTypes;
-    private String winner;
+    private String winner = "";
     private int slotsCount;
     private ReducedActionToken latestToken;
 
@@ -64,15 +64,15 @@ public class ViewModel {
      * @param nickname the nickname of the player whose data needs to be retrieved.
      * @return the playerData of the specified player
      */
-    public PlayerData getPlayerData(String nickname) {
-        return playerData.get(nickname);
+    public Optional<PlayerData> getPlayerData(String nickname) {
+        return Optional.ofNullable(playerData.get(nickname));
     }
 
-    public PlayerData getCurrentPlayerData() {
+    public Optional<PlayerData> getCurrentPlayerData() {
         return getPlayerData(getCurrentPlayer());
     }
 
-    public PlayerData getLocalPlayerData() {
+    public Optional<PlayerData> getLocalPlayerData() {
         return getPlayerData(getLocalPlayerNickname());
     }
 
@@ -283,8 +283,8 @@ public class ViewModel {
     /**
      * @return the devCardGrid
      */
-    public ReducedDevCardGrid getDevCardGrid() {
-        return devCardGrid;
+    public Optional<ReducedDevCardGrid> getDevCardGrid() {
+        return Optional.ofNullable(devCardGrid);
     }
 
     /**
@@ -313,8 +313,8 @@ public class ViewModel {
     /**
      * @return the faithTrack
      */
-    public ReducedFaithTrack getFaithTrack() {
-        return faithTrack;
+    public Optional<ReducedFaithTrack> getFaithTrack() {
+        return Optional.ofNullable(faithTrack);
     }
 
     /**
@@ -364,8 +364,8 @@ public class ViewModel {
     /**
      * @return the market
      */
-    public ReducedMarket getMarket() {
-        return market;
+    public Optional<ReducedMarket> getMarket() {
+        return Optional.ofNullable(market);
     }
 
     /**
@@ -427,7 +427,7 @@ public class ViewModel {
      * @return the vaticanSections
      */
     public Map<Integer, ReducedVaticanSection> getVaticanSections() {
-        return faithTrack == null ? null : faithTrack.getVaticanSections();
+        return getFaithTrack().isEmpty() ? new HashMap<>() : getFaithTrack().get().getVaticanSections();
     }
 
     /**
@@ -504,8 +504,8 @@ public class ViewModel {
         this.slotsCount = slotsCount;
     }
 
-    public ReducedActionToken getLatestToken() {
-        return latestToken;
+    public Optional<ReducedActionToken> getLatestToken() {
+        return Optional.ofNullable(latestToken);
     }
 
     public void setLatestToken(ReducedActionToken latestToken) {

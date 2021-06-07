@@ -19,7 +19,7 @@ public class TakeFromMarketState extends CliState {
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
-        new Market(vm.getMarket()).render(cli);
+        new Market(vm.getMarket().orElseThrow()).render(cli);
         cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
 
@@ -47,8 +47,9 @@ public class TakeFromMarketState extends CliState {
             try {
                 index = cli.promptInt("Number") - 1;
                 if (index >= 0
-                        && (isRow && index < cli.getViewModel().getMarket().getGrid().size()
-                        || !isRow && cli.getViewModel().getMarket().getGrid().size() > 0 && index < cli.getViewModel().getMarket().getGrid().get(0).size()))
+                        && (isRow && index < cli.getViewModel().getMarket().orElseThrow().getGrid().size()
+                        || !isRow && cli.getViewModel().getMarket().orElseThrow().getGrid().size() > 0
+                                  && index < cli.getViewModel().getMarket().orElseThrow().getGrid().get(0).size()))
                     isValid = true;
             } catch (Exception e) {
                 cli.getOut().println("Please input an integer greater than 0.");
@@ -58,9 +59,9 @@ public class TakeFromMarketState extends CliState {
         // get a list with the selected resources
         List<String> chosenResources = new ArrayList<>();
         if (isRow)
-            chosenResources = vm.getMarket().getGrid().get(index);
+            chosenResources = vm.getMarket().orElseThrow().getGrid().get(index);
         else {
-            for (List<String> row : vm.getMarket().getGrid())
+            for (List<String> row : vm.getMarket().orElseThrow().getGrid())
                 chosenResources.add(row.get(index));
         }
         chosenResources = chosenResources.stream()
@@ -72,7 +73,7 @@ public class TakeFromMarketState extends CliState {
                 .toList();
 
         // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
-        int blanksCount = (int) chosenResources.stream().filter(r -> r.equals(vm.getMarket().getReplaceableResType())).count();
+        int blanksCount = (int) chosenResources.stream().filter(r -> r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).count();
         Map<String, Integer> replacements = new HashMap<>();
 
         // for (String res : chosenResources)
@@ -102,7 +103,7 @@ public class TakeFromMarketState extends CliState {
         // replacements = replacements.entrySet().stream().filter(e -> e.getKey().equals(cli.getViewModel().getMarket().getReplaceableResType())).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
 
         // remove the replaceable resources from the selected ones
-        chosenResources = chosenResources.stream().filter(r -> !r.equals(vm.getMarket().getReplaceableResType())).toList();
+        chosenResources = chosenResources.stream().filter(r -> !r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).toList();
 
         Map<String, Integer> totalRes = new HashMap<>(replacements);
         chosenResources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));

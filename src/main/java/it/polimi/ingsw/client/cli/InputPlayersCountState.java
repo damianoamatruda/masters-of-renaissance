@@ -68,7 +68,7 @@ public class InputPlayersCountState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateLeadersHand event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
+        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
 
         if (cli.getViewModel().isResumedGame())
             throw new RuntimeException("UpdateLeadersHand after resumed game.");
@@ -77,8 +77,8 @@ public class InputPlayersCountState extends CliState {
         cli.promptPause();
         cli.setState(
                 new SetupLeadersState(cli.getViewModel()
-                        .getLocalPlayerData()
-                        .getSetup()
+                        .getLocalPlayerData().orElseThrow()
+                        .getSetup().orElseThrow()
                         .getChosenLeadersCount()));
     }
 }

@@ -61,7 +61,7 @@ public class DevCardGridController extends GuiController {
         vm = gui.getViewModel();
 
         devCardGrid = new DevCardGrid();
-        devCardGrid.setGrid(vm.getDevCardGrid());
+        devCardGrid.setGrid(vm.getDevCardGrid().orElseThrow());
         devCardGrid.setControllerListener(this::devCardPressed);
 
         // devCardGrid.setBorder(new Border(new BorderStroke(Color.GREEN,
@@ -112,7 +112,7 @@ public class DevCardGridController extends GuiController {
 
                 putChoice(resource, id);
 
-                if (vm.getPlayerData(vm.getLocalPlayerNickname()).getStrongbox() == id)
+                if (vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getStrongbox() == id)
                     strongbox.refreshRemove(resource);
                 else
                     warehouse.refreshShelfRemove(id, resource);
@@ -172,7 +172,7 @@ public class DevCardGridController extends GuiController {
         warehouse.setPrefHeight(245);
         warehouse.setPrefWidth(301);
 
-        List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).getWarehouseShelves().stream()
+        List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getWarehouseShelves().stream()
             .map(id -> vm.getContainer(id).orElseThrow()).toList();
 
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
@@ -194,7 +194,7 @@ public class DevCardGridController extends GuiController {
         strongbox.setPrefHeight(245);
         strongbox.setPrefWidth(291);
 
-        strongbox.setContent(vm.getContainer(vm.getPlayerData(vm.getLocalPlayerNickname()).getStrongbox()).orElseThrow());
+        strongbox.setContent(vm.getContainer(vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getStrongbox()).orElseThrow());
 
         if (containersBox.getChildren().size() == 2)
             containersBox.getChildren().remove(1);

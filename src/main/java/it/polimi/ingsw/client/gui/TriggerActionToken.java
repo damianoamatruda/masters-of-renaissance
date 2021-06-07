@@ -32,7 +32,7 @@ public class TriggerActionToken extends GuiController {
         AnchorPane.setTopAnchor(message, 20.0);
         AnchorPane.setBottomAnchor(next, 20.0);
 
-        this.token.setImage(new Image(getTokenImage(Gui.getInstance().getViewModel().getLatestToken())));
+        this.token.setImage(new Image(getTokenImage(Gui.getInstance().getViewModel().getLatestToken().orElseThrow())));
 
         AnchorPane.setTopAnchor(this.token, 200.0);
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /** Data relative to a player's objects. */
 public class PlayerData {
@@ -127,8 +128,8 @@ public class PlayerData {
     /**
      * @return the setup
      */
-    public ReducedPlayerSetup getSetup() {
-        return setup;
+    public Optional<ReducedPlayerSetup> getSetup() {
+        return Optional.ofNullable(setup);
     }
 
     /**

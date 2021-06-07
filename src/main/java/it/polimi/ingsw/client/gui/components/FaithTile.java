@@ -43,7 +43,7 @@ public class FaithTile extends StackPane {
             bonusPts.setLayoutY(bg.getScaleX() - bonusPts.getScaleY() / 2);
             this.getChildren().add(bonusPts);
 
-            ReducedYellowTile y = Gui.getInstance().getViewModel().getFaithTrack().getYellowTiles().stream().filter(yt -> yt.getFaithPoints() == tileId).findAny().orElseThrow();
+            ReducedYellowTile y = Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getYellowTiles().stream().filter(yt -> yt.getFaithPoints() == tileId).findAny().orElseThrow();
             Text t = new Text(y.getVictoryPoints()+"");
             t.setScaleX(bg.getScaleY()*2);
             t.setScaleY(bg.getScaleY()*2);

@@ -5,8 +5,11 @@ import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class CliState implements Renderable {
@@ -106,23 +109,37 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateDevCardGrid event) {
         cli.getViewModel().setDevCardGrid(event.getCards());
         cli.getOut().println();
-        new DevCardGrid(cli.getViewModel().getDevCardGrid()).render(cli);
+        new DevCardGrid(cli.getViewModel().getDevCardGrid().orElseThrow()).render(cli);
     }
 
     public void on(Cli cli, UpdateDevCardSlot event) {
-        cli.getViewModel().getCurrentPlayerData().setDevSlot(event.getDevSlot(), event.getDevCard());
+        cli.getViewModel().getCurrentPlayerData().orElseThrow().setDevSlot(event.getDevSlot(), event.getDevCard());
         // TODO: print
     }
 
     public void on(Cli cli, UpdateFaithPoints event) {
+        ViewModel vm = cli.getViewModel();
+
         if (event.isBlackCross())
-            cli.getViewModel().setBlackCrossFP(event.getFaithPoints());
+            vm.setBlackCrossFP(event.getFaithPoints());
         else
-            cli.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
-        Map<String, Integer> points = cli.getViewModel().getPlayerNicknames().stream()
-            .collect(Collectors.toMap(nick -> nick, nick -> cli.getViewModel().getPlayerData(nick).getFaithPoints()));
-        cli.getOut().println();
-        new FaithTrack(cli.getViewModel().getFaithTrack(), points).render(cli);
+            vm.getPlayerData(event.getPlayer()).orElseThrow().setFaithPoints(event.getFaithPoints());
+        
+        Map<String, Integer> points = vm.getPlayerNicknames().stream()
+            .collect(Collectors.toMap(nick -> nick, nick -> {
+                Optional<PlayerData> pd = vm.getPlayerData(nick);
+                
+                if (pd.isPresent())
+                    return pd.get().getFaithPoints();
+                
+                return 0;
+            }));
+
+        Optional<ReducedFaithTrack> ft = vm.getFaithTrack();
+        if (ft.isPresent()) {
+            cli.getOut().println();
+            new FaithTrack(ft.get(), points).render(cli);
+        }
     }
 
     public void on(Cli cli, UpdateGameEnd event) {
@@ -148,7 +165,7 @@ public abstract class CliState implements Renderable {
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));
         cli.getOut().println();
-        new FaithTrack(cli.getViewModel().getFaithTrack(), points).render(cli);
+        new FaithTrack(cli.getViewModel().getFaithTrack().orElseThrow(), points).render(cli);
     }
 
     public void on(Cli cli, UpdateJoinGame event) {
@@ -181,7 +198,7 @@ public abstract class CliState implements Renderable {
             player
             leadershand -> client has enough info for leader choice */
 
-        cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
+        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
         cli.getOut().println();
         cli.getOut().printf("%s's leader cards:%n", event.getPlayer());
         cli.getOut().println();
@@ -189,7 +206,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateLeadersHandCount event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).setLeadersCount(event.getLeadersCount());
+        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersCount(event.getLeadersCount());
         cli.getOut().println();
         cli.getOut().println(Cli.center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
     }
@@ -209,11 +226,16 @@ public abstract class CliState implements Renderable {
                 event.getWarehouseShelves()));
         cli.getOut().println();
         cli.showContainers(event.getPlayer());
-//        cli.getOut().println(new BaseProductions(Map.of(cli.getViewModel().getLocalPlayerNickname(), cli.getViewModel().getPlayerData(cli.getViewModel().getLocalPlayerNickname()).getBaseProduction())).getString(cli));
+
+        Map<String, Integer> baseProds = new HashMap<>();
+
+        baseProds = vm.getPlayerNicknames().stream().filter(nick -> vm.getPlayerData(nick).isPresent()).collect(Collectors.toMap(n -> n, n -> vm.getPlayerData(n).get().getBaseProduction()));
+
+        cli.getOut().println(new BaseProductions(baseProds).getString(cli));
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).setActive(event.isActive());
+        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setActive(event.isActive());
         cli.getOut().println();
         cli.getOut().printf("Player %s became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
     }
@@ -239,7 +261,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateVictoryPoints event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).setVictoryPoints(event.getVictoryPoints());
+        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setVictoryPoints(event.getVictoryPoints());
         cli.getOut().println();
         cli.getOut().printf("Victory points for %s: %d.%n", event.getPlayer(), event.getVictoryPoints());
     }

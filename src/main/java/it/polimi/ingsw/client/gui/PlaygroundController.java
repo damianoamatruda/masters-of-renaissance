@@ -40,7 +40,7 @@ public abstract class PlaygroundController extends GuiController {
 
         ViewModel vm = gui.getViewModel();
 
-        int baseProdId = gui.getViewModel().getCurrentPlayerData().getBaseProduction();
+        int baseProdId = gui.getViewModel().getCurrentPlayerData().orElseThrow().getBaseProduction();
 
         Production prod = new Production();
         prod.setStyle("-fx-background-image: url('/assets/gui/playerboard/baseproduction.png');" +
@@ -56,13 +56,13 @@ public abstract class PlaygroundController extends GuiController {
 
 
         Strongbox s = new Strongbox();
-        int sbId = gui.getViewModel().getCurrentPlayerData().getStrongbox();
+        int sbId = gui.getViewModel().getCurrentPlayerData().orElseThrow().getStrongbox();
 
         s.setContent(gui.getViewModel().getContainer(sbId).orElseThrow());
 
         List<DevSlot> slots = new ArrayList<>();
 
-        List<List<Integer>> modelSlots = vm.getCurrentPlayerData().getDevSlots();
+        List<List<Integer>> modelSlots = vm.getCurrentPlayerData().orElseThrow().getDevSlots();
         for (List<Integer> modelSlot : modelSlots) {
             DevSlot slot = new DevSlot();
 
@@ -77,7 +77,7 @@ public abstract class PlaygroundController extends GuiController {
             slots.add(new DevSlot());
         }
 
-        FaithTrack f = new FaithTrack(vm.getFaithTrack());
+        FaithTrack f = new FaithTrack(vm.getFaithTrack().orElseThrow());
 
         pboard = new Playerboard(warehouse, s, prod, slots, f);
 
@@ -98,7 +98,7 @@ public abstract class PlaygroundController extends GuiController {
 
     protected void setLeadersBox() {
         ViewModel vm = Gui.getInstance().getViewModel();
-        List<LeaderCard> leaders = vm.getCurrentPlayerData().getLeadersHand().stream()
+        List<LeaderCard> leaders = vm.getCurrentPlayerData().orElseThrow().getLeadersHand().stream()
             .map(id -> vm.getLeaderCard(id).orElseThrow())
             .map(reducedLeader -> {
                 LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
@@ -163,7 +163,7 @@ public abstract class PlaygroundController extends GuiController {
         int oldPts;
 
         if(!event.isBlackCross())
-            oldPts = gui.getViewModel().getPlayerData(event.getPlayer()).getFaithPoints();
+            oldPts = gui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().getFaithPoints();
         else oldPts = gui.getViewModel().getBlackCrossFP();
 
         super.on(gui, event);
@@ -226,7 +226,7 @@ public abstract class PlaygroundController extends GuiController {
         super.on(gui, event);
 
         int leaderIndex = leadersBox.getChildren().indexOf(toDiscard);
-        gui.getViewModel().getCurrentPlayerData().getLeadersHand().remove(Integer.valueOf(toDiscard.getLeaderId()));
+        gui.getViewModel().getCurrentPlayerData().orElseThrow().getLeadersHand().remove(Integer.valueOf(toDiscard.getLeaderId()));
 
 //        leadersBox.getChildren().remove(leaderIndex, leaderIndex + 2);
         leadersBox.getChildren().get(leaderIndex).setVisible(false);

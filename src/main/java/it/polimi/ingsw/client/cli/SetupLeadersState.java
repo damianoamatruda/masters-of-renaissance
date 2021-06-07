@@ -24,7 +24,7 @@ public class SetupLeadersState extends CliState {
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
-        if (vm.getLocalPlayerData().getLeadersHand() != null)
+        if (vm.getLocalPlayerData().orElseThrow().getLeadersHand() != null)
             new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname())).render(cli);
 
         cli.getOut().println("\nChoosing starting leaders hand.");
@@ -33,7 +33,7 @@ public class SetupLeadersState extends CliState {
         List<Integer> leaders = new ArrayList<>();
 
         int chosen = 0;
-        while (chosen < vm.getLocalPlayerData().getSetup().getChosenLeadersCount()) {
+        while (chosen < vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
             int id = cli.promptInt((leadersToChoose - chosen) + " leader cards left to be chosen");
             leaders.add(id);
             chosen++;
@@ -73,7 +73,7 @@ public class SetupLeadersState extends CliState {
         if (!event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             return;
 
-        int choosable = cli.getViewModel().getLocalPlayerData().getSetup().getInitialResources();
+        int choosable = cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
 
         if (choosable > 0)
             cli.setState(new SetupResourcesState(choosable));

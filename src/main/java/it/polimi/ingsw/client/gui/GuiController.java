@@ -93,14 +93,14 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateDevCardSlot event) {
-        gui.getViewModel().getCurrentPlayerData().setDevSlot(event.getDevSlot(), event.getDevCard());
+        gui.getViewModel().getCurrentPlayerData().orElseThrow().setDevSlot(event.getDevSlot(), event.getDevCard());
     }
 
     public void on(Gui gui, UpdateFaithPoints event) {
         if (event.isBlackCross())
             gui.getViewModel().setBlackCrossFP(event.getFaithPoints());
         else
-            gui.getViewModel().getPlayerData(event.getPlayer()).setFaithPoints(event.getFaithPoints());
+            gui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setFaithPoints(event.getFaithPoints());
     }
 
     public void on(Gui gui, UpdateGameEnd event) {
@@ -144,11 +144,11 @@ public abstract class GuiController implements Initializable {
             player
             leadershand -> with GS and player has enough info for leader choice */
 
-        gui.getViewModel().getPlayerData(event.getPlayer()).setLeadersHand(event.getLeaders());
+        gui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
     }
 
     public void on(Gui gui, UpdateLeadersHandCount event) {
-        gui.getViewModel().getPlayerData(event.getPlayer()).setLeadersCount(event.getLeadersCount());
+        gui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersCount(event.getLeadersCount());
     }
 
     public void on(Gui gui, UpdateMarket event) {
@@ -164,7 +164,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdatePlayerStatus event) {
-        gui.getViewModel().getPlayerData(event.getPlayer()).setActive(event.isActive());
+        gui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setActive(event.isActive());
     }
 
     public void on(Gui gui, UpdateResourceContainer event) {
@@ -180,6 +180,6 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateVictoryPoints event) {
-        gui.getViewModel().getPlayerData(event.getPlayer()).setVictoryPoints(event.getVictoryPoints());
+        gui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setVictoryPoints(event.getVictoryPoints());
     }
 }

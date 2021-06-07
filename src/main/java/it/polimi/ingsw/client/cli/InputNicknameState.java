@@ -65,8 +65,8 @@ public class InputNicknameState extends CliState{
         cli.promptPause();
         cli.setState(
                 new SetupLeadersState(cli.getViewModel()
-                        .getLocalPlayerData()
-                        .getSetup()
+                        .getLocalPlayerData().orElseThrow()
+                        .getSetup().orElseThrow()
                         .getChosenLeadersCount()));
     }
 }

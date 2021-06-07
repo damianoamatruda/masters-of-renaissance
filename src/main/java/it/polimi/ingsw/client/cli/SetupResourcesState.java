@@ -30,7 +30,7 @@ public class SetupResourcesState extends CliState {
 
         Set<String> allowedResources = vm.getResourceTypes().stream()
                 .map(ReducedResourceType::getName)
-                .filter(r -> !vm.getLocalPlayerData().getSetup().getInitialExcludedResources().contains(r))
+                .filter(r -> !vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialExcludedResources().contains(r))
                 .map(r -> vm.getResourceTypes().stream().filter(res -> res.getName().equals(r)).findAny())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -38,7 +38,7 @@ public class SetupResourcesState extends CliState {
                 .map(ReducedResourceType::getName)
                 .collect(Collectors.toUnmodifiableSet());
 
-        int totalQuantity = vm.getLocalPlayerData().getSetup().getInitialResources();
+        int totalQuantity = vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
 
         Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
                 .map(ReducedResourceContainer::getId)

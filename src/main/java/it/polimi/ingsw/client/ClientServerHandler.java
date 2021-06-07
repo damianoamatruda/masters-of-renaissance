@@ -52,6 +52,8 @@ public class ClientServerHandler extends NetworkHandler {
             // System.err.println(e.getMessage());
             // e.printStackTrace();
             send(new ReqGoodbye());
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             this.out = null;
             this.in = null;

@@ -22,7 +22,7 @@ public class BuyDevelopmentCardState extends CliState {
 
         ViewModel vm = cli.getViewModel();
 
-        ReducedDevCardGrid grid = vm.getDevCardGrid();
+        ReducedDevCardGrid grid = vm.getDevCardGrid().orElseThrow();
 
         new DevCardGrid(grid).render(cli);
         cli.getOut().println();

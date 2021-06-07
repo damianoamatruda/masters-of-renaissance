@@ -8,7 +8,9 @@ public class GameEndState extends CliState {
         if (cli.getViewModel().getWinner().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.getOut().println("You won with " + cli.getViewModel().getPlayerData(cli.getViewModel().getWinner()) + " points! CONGRATULATIONS!");
         else
-            cli.getOut().println(cli.getViewModel().getWinner() + " is the winner with " + cli.getViewModel().getPlayerData(cli.getViewModel().getWinner()).getVictoryPoints() + " points!");
+            cli.getOut().println(
+                    cli.getViewModel().getWinner() + " is the winner with " +
+                            cli.getViewModel().getPlayerData(cli.getViewModel().getWinner()).orElseThrow().getVictoryPoints() + " points!");
 
         cli.dispatch(new ReqQuit());
         cli.promptPause();

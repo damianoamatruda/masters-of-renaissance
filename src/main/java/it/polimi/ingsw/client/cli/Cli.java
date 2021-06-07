@@ -527,7 +527,7 @@ public class Cli extends EventDispatcher {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(String.format("%s's strongbox:", player)).append("\n");
-        viewModel.getContainer(viewModel.getPlayerData(player).getStrongbox()).ifPresent(c ->
+        viewModel.getContainer(viewModel.getPlayerData(player).orElseThrow().getStrongbox()).ifPresent(c ->
                 stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
 
         out.println(Cli.center(stringBuilder.toString()));

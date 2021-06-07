@@ -55,7 +55,7 @@ public class MarketController extends GuiController {
         ViewModel vm = gui.getViewModel();
     
         market = new Market();
-        market.setContent(vm.getMarket());
+        market.setContent(vm.getMarket().orElseThrow());
         market.setSelectionListener(this::marketSelected);
 
         resetChoice();
@@ -77,9 +77,9 @@ public class MarketController extends GuiController {
         // get a list with the selected resources
         List<String> chosenResources = new ArrayList<>();
         if (isRow)
-            chosenResources = vm.getMarket().getGrid().get(index);
+            chosenResources = vm.getMarket().orElseThrow().getGrid().get(index);
         else {
-            for (List<String> row : vm.getMarket().getGrid())
+            for (List<String> row : vm.getMarket().orElseThrow().getGrid())
                 chosenResources.add(row.get(index));
         }
         chosenResources = chosenResources.stream()
@@ -135,7 +135,7 @@ public class MarketController extends GuiController {
 
         warehouse = new Warehouse();
 
-        List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).getWarehouseShelves().stream()
+        List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getWarehouseShelves().stream()
             .map(id -> vm.getContainer(id).orElseThrow()).toList();
             
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
