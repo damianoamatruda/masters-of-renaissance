@@ -11,6 +11,9 @@ public class ReducedDevCardRequirementEntry {
      * @param amount
      */
     public ReducedDevCardRequirementEntry(String color, int level, int amount) {
+        if (color == null)
+            throw new IllegalArgumentException("Null color constructing reduced dev card requirement entry");
+            
         this.color = color;
         this.level = level;
         this.amount = amount;

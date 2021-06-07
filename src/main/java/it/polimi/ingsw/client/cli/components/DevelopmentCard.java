@@ -23,7 +23,7 @@ public class DevelopmentCard extends StringComponent {
                 reducedDevCard.getLevel(),
                 reducedDevCard.getVictoryPoints()
         )).append("\n");
-        stringBuilder.append(new ResourceRequirement(reducedDevCard.getCost()).getString(cli));
+        reducedDevCard.getCost().ifPresent(cost -> stringBuilder.append(new ResourceRequirement(cost).getString(cli)));
         cli.getViewModel().getProduction(reducedDevCard.getProduction()).ifPresent(p ->
                 stringBuilder.append(new ResourceTransactionRecipe(p).getString(cli)));
 

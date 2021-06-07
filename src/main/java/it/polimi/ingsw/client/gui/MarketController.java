@@ -285,7 +285,7 @@ public class MarketController extends GuiController {
                                 ReducedResourceContainer lCont = leaderCard.getContainer();
                                 Map<String, Integer> content = lCont.getContent();
                                 content.compute(resource, (k, v) -> v == null ? 1 : v++);
-                                ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getBoundedResType());
+                                ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getBoundedResType().orElse(null));
 
                                 leaderCard.setDepotContent(newContainer, reducedLeader.getResourceType());
 

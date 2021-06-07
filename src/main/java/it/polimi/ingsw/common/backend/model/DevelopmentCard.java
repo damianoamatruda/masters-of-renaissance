@@ -38,6 +38,10 @@ public class DevelopmentCard extends Card {
      */
     public DevelopmentCard(DevCardColor color, int level, ResourceRequirement cost, ResourceTransactionRecipe production, int victoryPoints, int id) {
         super(victoryPoints, id);
+
+        if (cost == null)
+            throw new NullPointerException();
+
         this.color = color;
         this.cost = cost;
         this.level = level;

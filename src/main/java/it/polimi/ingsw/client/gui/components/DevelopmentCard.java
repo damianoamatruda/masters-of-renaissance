@@ -19,7 +19,7 @@ public class DevelopmentCard extends Card {
 
     public DevelopmentCard(ReducedDevCard card) {
         super(card.getColor());
-        setRequirement(card.getCost());
+        card.getCost().ifPresent(cost -> setRequirement(cost));
         setProduction(Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow());
         setVictoryPoints(card.getVictoryPoints()+"");
     }

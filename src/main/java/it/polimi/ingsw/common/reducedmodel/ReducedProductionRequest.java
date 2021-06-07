@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ReducedProductionRequest {
@@ -10,6 +11,14 @@ public class ReducedProductionRequest {
 
     public ReducedProductionRequest(int production, Map<String, Integer> inputBlanksRep, Map<String, Integer> outputBlanksRep,
                                     Map<Integer, Map<String, Integer>> inputContainers) {
+
+        if (inputBlanksRep == null)
+            inputBlanksRep = new HashMap<>();
+        if (outputBlanksRep == null)
+            outputBlanksRep = new HashMap<>();
+        if (inputContainers == null)
+            inputContainers = new HashMap<>();
+        
         this.production = production;
         this.inputBlanksRep = inputBlanksRep;
         this.outputBlanksRep = outputBlanksRep;

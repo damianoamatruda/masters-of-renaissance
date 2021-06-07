@@ -211,7 +211,7 @@ public class DevCardGridController extends GuiController {
 
         List<DevelopmentCard> guicards = devCards.stream().map(c -> {
             DevelopmentCard guicard = new DevelopmentCard(c.getColor());
-            guicard.setRequirement(c.getCost());
+            c.getCost().ifPresent(cost -> guicard.setRequirement(cost));
             guicard.setProduction(vm.getProduction(c.getProduction()).orElseThrow());
             guicard.setVictoryPoints(c.getVictoryPoints()+"");
             return guicard;

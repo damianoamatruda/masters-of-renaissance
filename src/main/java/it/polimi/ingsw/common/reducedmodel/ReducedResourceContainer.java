@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ReducedResourceContainer {
     /** The ID of the modified container. */
@@ -22,6 +24,9 @@ public class ReducedResourceContainer {
      * @param boundedResType the resource binding the container's contents
      */
     public ReducedResourceContainer(int id, int size, Map<String, Integer> content, String boundedResType) {
+        if (content == null)
+            content = new HashMap<>();
+            
         this.id = id;
         this.size = size;
         this.content = content;
@@ -52,7 +57,7 @@ public class ReducedResourceContainer {
     /**
      * @return the resource binding the container's contents
      */
-    public String getBoundedResType() {
-        return boundedResType;
+    public Optional<String> getBoundedResType() {
+        return Optional.ofNullable(boundedResType);
     }
 }

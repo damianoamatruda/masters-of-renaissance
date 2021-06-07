@@ -1,5 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,16 @@ public class ReducedResourceTransactionRecipe {
     public ReducedResourceTransactionRecipe(int id, Map<String, Integer> input, int inputBlanks,
             List<String> inputBlanksExclusions, Map<String, Integer> output, int outputBlanks,
             List<String> outputBlanksExclusions, boolean discardableOutput) {
+        
+        if (input == null)
+            input = new HashMap<>();
+        if (inputBlanksExclusions == null)
+            inputBlanksExclusions = new ArrayList<>();
+        if (output == null)
+            output = new HashMap<>();
+        if (outputBlanksExclusions == null)
+            outputBlanksExclusions = new ArrayList<>();
+
         this.id = id;
         this.input = input;
         this.inputBlanks = inputBlanks;

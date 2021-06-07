@@ -29,6 +29,12 @@ public class ReducedLeaderCard extends ReducedCard {
                              int discount,
                              int production) {
         super(id, victoryPoints, production);
+
+        if (resourceType == null)
+            throw new IllegalArgumentException("Null resource type constructing reduced leader card.");
+        if (leaderType == null)
+            throw new IllegalArgumentException("Null leader type constructing reduced leader card.");
+
         this.resourceType = resourceType;
         this.leaderType = leaderType;
         this.isActive = isActive;

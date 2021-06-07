@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ReducedResourceRequirement {
@@ -9,6 +10,9 @@ public class ReducedResourceRequirement {
      * @param requirements
      */
     public ReducedResourceRequirement(Map<String, Integer> requirements) {
+        if (requirements == null)
+            requirements = new HashMap<>();
+
         this.requirements = requirements;
     }
 

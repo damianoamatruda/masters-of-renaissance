@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ReducedPlayerSetup {
     private final int chosenLeadersCount;
@@ -43,8 +44,8 @@ public class ReducedPlayerSetup {
     /**
      * @return the resources that cannot be chosen
      */
-    public List<String> getInitialExcludedResources() {
-        return initialExcludedResources;
+    public Optional<List<String>> getInitialExcludedResources() {
+        return Optional.ofNullable(initialExcludedResources);
     }
 
     public boolean hasChosenLeaders() {

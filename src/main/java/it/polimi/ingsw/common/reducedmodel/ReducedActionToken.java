@@ -1,5 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.Optional;
+
 public class ReducedActionToken {
     private final int id;
     private final String kind;
@@ -34,7 +36,7 @@ public class ReducedActionToken {
      * @return (if applicable, else null) the color
      *         of the development card that will be discarded upon token activation
      */
-    public String getDiscardedDevCardColor() {
-        return discardedDevCardColor;
+    public Optional<String> getDiscardedDevCardColor() {
+        return Optional.ofNullable(discardedDevCardColor);
     }
 }

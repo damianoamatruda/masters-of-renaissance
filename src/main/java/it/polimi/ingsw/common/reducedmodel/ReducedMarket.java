@@ -12,6 +12,13 @@ public class ReducedMarket {
     private final String slide;
 
     public ReducedMarket(List<List<String>> grid, String replaceableResType, String slide) {
+        if (grid == null)
+            throw new IllegalArgumentException("Null grid constructing reduced market.");
+        if (replaceableResType == null)
+            throw new IllegalArgumentException("Null replaceable resource type constructing reduced market.");
+        if (slide == null)
+            throw new IllegalArgumentException("Null slide resource constructing reduced market.");
+
         this.grid = grid;
         this.replaceableResType = replaceableResType;
         this.slide = slide;

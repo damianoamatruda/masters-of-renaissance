@@ -13,6 +13,11 @@ public class ReducedFaithTrack {
      * @param yellowTiles
      */
     public ReducedFaithTrack(Map<Integer, ReducedVaticanSection> vaticanSections, List<ReducedYellowTile> yellowTiles, int maxFaith) {
+        if (vaticanSections == null)
+            throw new IllegalArgumentException("Null vatican sections constructing reduced faith track.");
+        if (yellowTiles == null)
+            throw new IllegalArgumentException("Null yellow tile constructing reduced faith track.");
+        
         this.vaticanSections = vaticanSections;
         this.yellowTiles = yellowTiles;
         this.maxFaith = maxFaith;

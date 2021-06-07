@@ -10,6 +10,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,7 +41,12 @@ public class BuyDevelopmentCardState extends CliState {
                 .map(id -> vm.getDevelopmentCard(id).orElse(null))
                 .filter(Objects::nonNull)
                 .filter(c -> c.getLevel() == level).findAny().orElseThrow();
-        Map<String, Integer> cost = new HashMap<>(card.getCost().getRequirements());
+        
+        Map<String, Integer> cost = new HashMap<>();
+
+        Optional<ReducedResourceRequirement> cCost = card.getCost();
+        if (cCost.isPresent())
+            cost = new HashMap<>(cCost.get().getRequirements());
 
         cli.getOut().println("Resources need to be paid.");
         cli.getOut().println("Please specify how many resources to take from which container.");

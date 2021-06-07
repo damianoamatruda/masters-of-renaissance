@@ -1,5 +1,7 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.Optional;
+
 public class ReducedDevCard extends ReducedCard {
     private final String color;
     private final ReducedResourceRequirement cost;
@@ -13,6 +15,7 @@ public class ReducedDevCard extends ReducedCard {
      */
     public ReducedDevCard(int id, int victoryPoints, String color, ReducedResourceRequirement cost, int level, int production) {
         super(id, victoryPoints, production);
+
         this.color = color;
         this.cost = cost;
         this.level = level;
@@ -28,8 +31,8 @@ public class ReducedDevCard extends ReducedCard {
     /**
      * @return the cost of the card
      */
-    public ReducedResourceRequirement getCost() {
-        return cost;
+    public Optional<ReducedResourceRequirement> getCost() {
+        return Optional.ofNullable(cost);
     }
 
     /**

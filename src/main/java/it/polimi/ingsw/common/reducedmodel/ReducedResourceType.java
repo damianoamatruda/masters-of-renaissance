@@ -8,6 +8,9 @@ public class ReducedResourceType {
     private final boolean isTakeableFromPlayer;
 
     public ReducedResourceType(String name, String colorValue, boolean isStorable, boolean isGiveableToPlayer, boolean isTakeableFromPlayer) {
+        if (colorValue == null)
+            throw new IllegalArgumentException("Null color constructing reduced resource type.");
+        
         this.name = name;
         this.colorValue = colorValue;
         this.isStorable = isStorable;

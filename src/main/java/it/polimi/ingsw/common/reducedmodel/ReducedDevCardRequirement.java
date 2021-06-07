@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReducedDevCardRequirement {
@@ -9,6 +10,9 @@ public class ReducedDevCardRequirement {
      * @param entries
      */
     public ReducedDevCardRequirement(List<ReducedDevCardRequirementEntry> entries) {
+        if (entries == null)
+            entries = new ArrayList<>();
+            
         this.entries = entries;
     }
 
