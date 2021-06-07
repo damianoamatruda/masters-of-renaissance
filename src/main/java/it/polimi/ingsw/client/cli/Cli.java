@@ -233,8 +233,10 @@ public class Cli extends EventDispatcher {
         if (!prompt.isEmpty())
             out.printf("%s: ", prompt);
         String input = in.nextLine();
-        if (input.toUpperCase().startsWith("Q"))
+        if (input.equalsIgnoreCase("q") && !(viewModel.getLocalPlayerNickname().equals(""))) {
             dispatch(new ReqQuit());
+            return null;
+        }
         return input;
     }
 
