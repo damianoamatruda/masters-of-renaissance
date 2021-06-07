@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import it.polimi.ingsw.client.gui.components.SButton?>
+<?import javafx.scene.text.Text?>
+<?import it.polimi.ingsw.client.gui.components.LeaderBoard?>
+<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="it.polimi.ingsw.client.gui.EndgameController"
+           stylesheets="@index.css">
+  <BorderPane>
+    <center>
+      <VBox alignment="CENTER">
+        <VBox.margin>
+          <Insets bottom="40.0"/>
+        </VBox.margin>
+        <Text fx:id="outcome" textAlignment="CENTER"/>
+        <VBox.margin>
+          <Insets top="20.0"/>
+        </VBox.margin>
+        <Text/>
+        <LeaderBoard fx:id="leaderboard"/>
+        <VBox.margin>
+          <Insets top="8.0"/>
+        </VBox.margin>
+        <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit to title"/>
+        <padding>
+          <Insets bottom="80.0"/>
+        </padding>
+      </VBox>
+    </center>
+  </BorderPane>
+</StackPane>

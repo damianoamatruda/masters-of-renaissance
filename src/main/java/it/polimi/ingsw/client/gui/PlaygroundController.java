@@ -167,7 +167,8 @@ public abstract class PlaygroundController extends GuiController {
 
         super.on(gui, event);
 
-        Platform.runLater(() -> pboard.updateFaithPoints(event, oldPts));
+        if(oldPts < gui.getViewModel().getFaithTrack().orElseThrow().getMaxFaith())
+            Platform.runLater(() -> pboard.updateFaithPoints(event, oldPts));
 
     }
 
@@ -246,5 +247,12 @@ public abstract class PlaygroundController extends GuiController {
 
             warehouse.swapShelves(s1, s2);
         }
+    }
+
+    @Override
+    public void on(Gui gui, UpdateGameEnd event) {
+        super.on(gui, event);
+
+        gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
     }
 }

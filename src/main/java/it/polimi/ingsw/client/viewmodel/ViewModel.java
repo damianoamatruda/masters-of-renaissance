@@ -37,6 +37,7 @@ public class ViewModel {
 
     private final List<String> clientColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
     private Map<String, String> mappedColors;
+    private boolean isGameEnded = false;
 
     /**
      * Class constructor.
@@ -452,6 +453,7 @@ public class ViewModel {
      */
     public void setWinner(String winner) {
         this.winner = winner;
+        this.isGameEnded = true;
     }
 
     /**
@@ -514,5 +516,9 @@ public class ViewModel {
 
     public String getClientColor(String nick) {
         return mappedColors.get(nick);
+    }
+
+    public boolean isGameEnded() {
+        return isGameEnded;
     }
 }

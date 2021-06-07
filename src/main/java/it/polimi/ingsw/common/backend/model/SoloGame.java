@@ -87,7 +87,7 @@ public class SoloGame extends Game {
         dispatch(new UpdateActionToken(token.getId()));
 
         /* Check if Lorenzo is winning */
-        if (blackPoints == faithTrack.getMaxFaithPointsCount() || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
+        if (blackPoints >= faithTrack.getMaxFaithPointsCount() || devCardGrid.numOfAvailableColors() < devCardGrid.getColorsCount())
             blackWinner = true;
 
         if (!blackWinner)

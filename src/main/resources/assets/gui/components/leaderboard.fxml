@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Label?>
+<fx:root xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         type="VBox" alignment="CENTER">
+
+  <Label text="Leaderboard" textAlignment="CENTER"/>
+  <VBox.margin>
+    <Insets bottom="8.0"/>
+  </VBox.margin>
+  <TableView fx:id="content" />
+
+</fx:root>

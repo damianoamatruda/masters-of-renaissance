@@ -22,10 +22,12 @@ public class TriggerActionToken extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        message.setTextAlignment(TextAlignment.CENTER);
-
-        next.setOnAction(actionEvent ->
-                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml")));
+        Gui gui = Gui.getInstance();
+        next.setOnAction(actionEvent -> {
+            if(!gui.getViewModel().isGameEnded())
+                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+            else gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
+        });
 
         AnchorPane.setTopAnchor(message, 20.0);
         AnchorPane.setBottomAnchor(next, 20.0);

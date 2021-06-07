@@ -75,11 +75,11 @@ public class FaithTrack extends VBox {
 
     public void updatePlayerMarker(int faithPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removePlayerMarker();
-        tiles.get(faithPoints).addPlayerMarker();
+        tiles.get(Integer.min(faithPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addPlayerMarker();
     }
 
     public void updateBlackMarker(int blackPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removeBlackMarker();
-        tiles.get(blackPoints).addBlackMarker();
+        tiles.get(Integer.min(blackPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addBlackMarker();
     }
 }
