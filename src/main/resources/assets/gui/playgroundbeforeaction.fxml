@@ -2,7 +2,10 @@
 
 
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:id="canvas" xmlns="http://javafx.com/javafx/16"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.client.gui.PlaygroundBeforeActionController"
-            stylesheets="@index.css"/>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="it.polimi.ingsw.client.gui.PlaygroundBeforeActionController"
+  stylesheets="@index.css">
+  <AnchorPane fx:id="canvas"/>
+</StackPane>

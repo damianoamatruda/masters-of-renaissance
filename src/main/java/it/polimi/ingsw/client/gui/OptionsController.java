@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.gui.components.SButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -13,16 +14,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class OptionsController extends GuiController {
-    @FXML
-    private Slider musicSlider;
-    @FXML
-    private Slider soundFxSlider;
-    @FXML
-    private Text musicText;
-    @FXML
-    private Text soundFxText;
-    @FXML
-    private SButton resetConfigButton;
+    @FXML private StackPane backStackPane;
+    @FXML private Slider musicSlider;
+    @FXML private Slider soundFxSlider;
+    @FXML private Text musicText;
+    @FXML private Text soundFxText;
+    @FXML private SButton resetConfigButton;
     private double oldMusicVolume;
     private double oldSoundFxVolume;
 

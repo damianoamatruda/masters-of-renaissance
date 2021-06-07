@@ -19,6 +19,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -30,16 +31,12 @@ public class SetupResourcesController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private List<ReducedResourceType> choosableResources;
-    @FXML
-    private HBox resourceTypesContainer;
-    @FXML
-    private Warehouse warehouse;
-    @FXML
-    private Button choiceButton;
-    @FXML
-    private Title titleComponent;
-    @FXML
-    private BorderPane window;
+    @FXML private StackPane backStackPane;
+    @FXML private HBox resourceTypesContainer;
+    @FXML private Warehouse warehouse;
+    @FXML private Button choiceButton;
+    @FXML private Title titleComponent;
+    @FXML private BorderPane window;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

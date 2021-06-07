@@ -3,24 +3,24 @@
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="canvas" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="780.0" prefWidth="1280.0"
-            xmlns="http://javafx.com/javafx/16" fx:controller="it.polimi.ingsw.client.gui.DevCardGridController"
-            stylesheets="@index.css">
-   <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0"
-         AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
-      <StackPane fx:id="devCardGridPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="740.0"
-                 prefWidth="640.0"/>
-      <VBox alignment="CENTER" spacing="40.0">
-         <HBox fx:id="containersBox" alignment="CENTER" spacing="10.0"/>
-         <HBox fx:id="devSlotsBox" alignment="CENTER" prefHeight="250.0" prefWidth="520.0"/>
-         <HBox alignment="CENTER_LEFT" spacing="20.0">
-            <ChoiceBox fx:id="devSlotChoicePicker" prefHeight="20.0" prefWidth="100.0"/>
-            <SButton fx:id="submitBtn" mnemonicParsing="false" prefHeight="20.0" text="Submit"
-                     textAlignment="CENTER"/>
-         </HBox>
-      </VBox>
-   </HBox>
-   <SButton fx:id="back" alignment="BOTTOM_LEFT" text="Back" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-</AnchorPane>
+<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.DevCardGridController" stylesheets="@index.css">
+   <AnchorPane fx:id="canvas" maxHeight="-Infinity" maxWidth="-Infinity"
+               minHeight="-Infinity"
+               minWidth="-Infinity" prefHeight="780.0" prefWidth="1280.0">
+      <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0"
+            AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <StackPane fx:id="devCardGridPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="740.0"
+                  prefWidth="640.0"/>
+         <VBox alignment="CENTER" spacing="40.0">
+            <HBox fx:id="containersBox" alignment="CENTER" spacing="10.0"/>
+            <HBox fx:id="devSlotsBox" alignment="CENTER" prefHeight="250.0" prefWidth="520.0"/>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <ChoiceBox fx:id="devSlotChoicePicker" prefHeight="20.0" prefWidth="100.0"/>
+               <SButton fx:id="submitBtn" mnemonicParsing="false" prefHeight="20.0" text="Submit"
+                        textAlignment="CENTER"/>
+            </HBox>
+         </VBox>
+      </HBox>
+      <SButton fx:id="back" alignment="BOTTOM_LEFT" text="Back" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+   </AnchorPane>
+</StackPane>

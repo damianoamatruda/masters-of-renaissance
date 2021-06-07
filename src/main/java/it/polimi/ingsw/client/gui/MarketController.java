@@ -20,11 +20,13 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.*;
 
 public class MarketController extends GuiController {
+    @FXML private StackPane backStackPane;
     @FXML private AnchorPane canvas;
     @FXML private Pane marketPane;
     @FXML private Pane warehousePane;

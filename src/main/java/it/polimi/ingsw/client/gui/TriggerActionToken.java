@@ -7,20 +7,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TriggerActionToken extends GuiController {
-    @FXML
-    ImageView token;
-    @FXML
-    Text message;
-    @FXML
-    Button next;
-    @FXML
-    BorderPane canvas;
+    @FXML private StackPane backStackPane;
+    @FXML ImageView token;
+    @FXML Text message;
+    @FXML Button next;
+    @FXML BorderPane canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

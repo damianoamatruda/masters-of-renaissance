@@ -9,12 +9,12 @@ import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 
 public class InputNicknameController extends GuiController {
-    @FXML
-    private Title titleComponent;
-    @FXML
-    private TextField nickname;
+    @FXML private StackPane backStackPane;
+    @FXML private Title titleComponent;
+    @FXML private TextField nickname;
     private String nicknameValue;
 
     @FXML

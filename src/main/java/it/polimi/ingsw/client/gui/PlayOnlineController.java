@@ -2,13 +2,14 @@ package it.polimi.ingsw.client.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 public class PlayOnlineController extends GuiController {
-    @FXML
-    private TextField server;
+    @FXML private StackPane backStackPane;
+    @FXML private TextField server;
 
     @FXML
     private void handleServerInput() {

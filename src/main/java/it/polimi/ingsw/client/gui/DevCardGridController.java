@@ -26,6 +26,7 @@ import java.util.*;
 public class DevCardGridController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
+    @FXML private StackPane backStackPane;
     @FXML private AnchorPane canvas;
     @FXML private StackPane devCardGridPane;
     @FXML private HBox containersBox;

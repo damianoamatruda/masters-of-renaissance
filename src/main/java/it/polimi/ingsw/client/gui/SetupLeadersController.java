@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,12 +23,11 @@ import java.util.ResourceBundle;
 public class SetupLeadersController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
     private final List<LeaderCard> selection = new ArrayList<>();
-    @FXML
-    private HBox leadersContainer;
-    @FXML
-    private Button choiceButton;
-    @FXML
-    private Title titleComponent;
+    
+    @FXML private StackPane backStackPane;
+    @FXML private HBox leadersContainer;
+    @FXML private Button choiceButton;
+    @FXML private Title titleComponent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

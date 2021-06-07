@@ -8,16 +8,15 @@ import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class WaitingBeforeGameController extends GuiController {
-    @FXML
-    private Text bookedSeats;
-    @FXML
-    private ToggleGroup group;
-    @FXML
-    private VBox canPrepare;
+    @FXML private StackPane backStackPane;
+    @FXML private Text bookedSeats;
+    @FXML private ToggleGroup group;
+    @FXML private VBox canPrepare;
     private boolean youCanPrepare;
 
     public WaitingBeforeGameController() {

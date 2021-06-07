@@ -20,10 +20,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public abstract class PlaygroundController extends GuiController {
-    @FXML
-    protected AnchorPane canvas;
-    @FXML
-    protected Playerboard pboard;
+    @FXML private StackPane backStackPane;
+    @FXML protected AnchorPane canvas;
+    @FXML protected Playerboard pboard;
 
     private final VBox leadersBox = new VBox();
 

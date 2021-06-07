@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -11,6 +12,8 @@ import java.util.ResourceBundle;
 
 public class MainMenuController extends GuiController {
     private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
+
+    @FXML private StackPane backStackPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -7,70 +7,71 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/11.0.1"
-            fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController"
-            stylesheets="@index.css">
-  <center>
-    <VBox alignment="CENTER">
+<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="it.polimi.ingsw.client.gui.WaitingBeforeGameController"
+  stylesheets="@index.css">
+  <BorderPane>
+    <center>
       <VBox alignment="CENTER">
-        <VBox.margin>
-          <Insets bottom="40.0"/>
-        </VBox.margin>
-        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-          <Image url="@logo.png"/>
-        </ImageView>
-      </VBox>
-      <Text>Waiting for a new game...</Text>
-      <Text>Player(s) who joined:</Text>
-      <Text fx:id="bookedSeats">1</Text>
-      <VBox alignment="CENTER" fx:id="canPrepare" visible="false">
-        <Text>You can prepare a new game</Text>
-        <Text/>
-        <HBox alignment="CENTER" spacing="10">
-          <Label text="How many players? ">
-            <HBox.margin>
-              <Insets right="30.0"/>
-              <Insets bottom="10.0"/>
-            </HBox.margin>
-          </Label>
-          <RadioButton selected="true" text="1">
-            <toggleGroup>
-              <ToggleGroup fx:id="group"/>
-            </toggleGroup>
-            <HBox.margin>
-              <Insets right="30.0"/>
-              <Insets bottom="10.0"/>
-            </HBox.margin>
-          </RadioButton>
-          <RadioButton text="2" toggleGroup="$group">
-            <HBox.margin>
-              <Insets right="30.0"/>
-              <Insets bottom="10.0"/>
-            </HBox.margin>
-          </RadioButton>
-          <RadioButton text="3" toggleGroup="$group">
-            <HBox.margin>
-              <Insets right="30.0"/>
-              <Insets bottom="10.0"/>
-            </HBox.margin>
-          </RadioButton>
-          <RadioButton text="4" toggleGroup="$group">
-            <HBox.margin>
-              <Insets right="30.0"/>
-              <Insets bottom="10.0"/>
-            </HBox.margin>
-          </RadioButton>
-        </HBox>
-        <SButton alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game" defaultButton="true">
+        <VBox alignment="CENTER">
           <VBox.margin>
-            <Insets top="8.0"/>
+            <Insets bottom="40.0"/>
           </VBox.margin>
-        </SButton>
+          <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@logo.png"/>
+          </ImageView>
+        </VBox>
+        <Text>Waiting for a new game...</Text>
+        <Text>Player(s) who joined:</Text>
+        <Text fx:id="bookedSeats">1</Text>
+        <VBox alignment="CENTER" fx:id="canPrepare" visible="false">
+          <Text>You can prepare a new game</Text>
+          <Text/>
+          <HBox alignment="CENTER" spacing="10">
+            <Label text="How many players? ">
+              <HBox.margin>
+                <Insets right="30.0"/>
+                <Insets bottom="10.0"/>
+              </HBox.margin>
+            </Label>
+            <RadioButton selected="true" text="1">
+              <toggleGroup>
+                <ToggleGroup fx:id="group"/>
+              </toggleGroup>
+              <HBox.margin>
+                <Insets right="30.0"/>
+                <Insets bottom="10.0"/>
+              </HBox.margin>
+            </RadioButton>
+            <RadioButton text="2" toggleGroup="$group">
+              <HBox.margin>
+                <Insets right="30.0"/>
+                <Insets bottom="10.0"/>
+              </HBox.margin>
+            </RadioButton>
+            <RadioButton text="3" toggleGroup="$group">
+              <HBox.margin>
+                <Insets right="30.0"/>
+                <Insets bottom="10.0"/>
+              </HBox.margin>
+            </RadioButton>
+            <RadioButton text="4" toggleGroup="$group">
+              <HBox.margin>
+                <Insets right="30.0"/>
+                <Insets bottom="10.0"/>
+              </HBox.margin>
+            </RadioButton>
+          </HBox>
+          <SButton alignment="CENTER" onAction="#handleNewGame" prefWidth="400.0" text="New Game" defaultButton="true">
+            <VBox.margin>
+              <Insets top="8.0"/>
+            </VBox.margin>
+          </SButton>
+        </VBox>
+        <padding>
+          <Insets bottom="80.0"/>
+        </padding>
       </VBox>
-      <padding>
-        <Insets bottom="80.0"/>
-      </padding>
-    </VBox>
-  </center>
-</BorderPane>
+    </center>
+  </BorderPane>
+</StackPane>

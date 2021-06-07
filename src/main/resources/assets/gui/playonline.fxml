@@ -8,44 +8,45 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            xmlns="http://javafx.com/javafx"
-            fx:controller="it.polimi.ingsw.client.gui.PlayOnlineController"
-            stylesheets="@index.css">
-  <center>
-    <VBox alignment="CENTER">
+<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="it.polimi.ingsw.client.gui.PlayOnlineController"
+  stylesheets="@index.css">
+  <BorderPane>
+    <center>
       <VBox alignment="CENTER">
-        <VBox.margin>
-          <Insets bottom="40.0"/>
-        </VBox.margin>
-        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-          <Image url="@logo.png"/>
-        </ImageView>
+        <VBox alignment="CENTER">
+          <VBox.margin>
+            <Insets bottom="40.0"/>
+          </VBox.margin>
+          <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@logo.png"/>
+          </ImageView>
+        </VBox>
+        <Title maxWidth="-Infinity" text="Play Online">
+          <VBox.margin>
+            <Insets bottom="30.0"/>
+          </VBox.margin>
+        </Title>
+        <VBox maxWidth="-Infinity" prefHeight="0.0">
+          <Label text="Server Address"/>
+          <TextField fx:id="server" prefWidth="400.0" maxWidth="400.0" text="127.0.0.1:1234"/>
+        </VBox>
+        <BorderPane maxWidth="-Infinity" prefWidth="400.0">
+          <left>
+            <SButton alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
+          </left>
+          <right>
+            <SButton alignment="CENTER" onAction="#handleServerInput" prefWidth="190.0" text="Join Server"
+                    defaultButton="true"/>
+          </right>
+          <VBox.margin>
+            <Insets top="30.0"/>
+          </VBox.margin>
+        </BorderPane>
+        <padding>
+          <Insets bottom="80.0"/>
+        </padding>
       </VBox>
-      <Title maxWidth="-Infinity" text="Play Online">
-        <VBox.margin>
-          <Insets bottom="30.0"/>
-        </VBox.margin>
-      </Title>
-      <VBox maxWidth="-Infinity" prefHeight="0.0">
-        <Label text="Server Address"/>
-        <TextField fx:id="server" prefWidth="400.0" maxWidth="400.0" text="127.0.0.1:1234"/>
-      </VBox>
-      <BorderPane maxWidth="-Infinity" prefWidth="400.0">
-        <left>
-          <SButton alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
-        </left>
-        <right>
-          <SButton alignment="CENTER" onAction="#handleServerInput" prefWidth="190.0" text="Join Server"
-                   defaultButton="true"/>
-        </right>
-        <VBox.margin>
-          <Insets top="30.0"/>
-        </VBox.margin>
-      </BorderPane>
-      <padding>
-        <Insets bottom="80.0"/>
-      </padding>
-    </VBox>
-  </center>
-</BorderPane>
+    </center>
+  </BorderPane>
+</StackPane>
