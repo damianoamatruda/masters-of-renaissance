@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.viewmodel;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /** Data storage cache on the Masters Of Renaissance client. */
 public class ViewModel {
@@ -388,7 +389,8 @@ public class ViewModel {
      */
     public void setPlayerNicknames(List<String> playerNicknames) {
         if (playerNicknames != null)
-            this.playerNicknames = new ArrayList<>(playerNicknames);
+            playerNicknames = new ArrayList<>(playerNicknames);
+            
         for(int i = 0; i < playerNicknames.size(); i++)
             mappedColors.put(playerNicknames.get(i), clientColors.get(i));
     }
@@ -437,7 +439,7 @@ public class ViewModel {
     public void setVaticanSection(int id) {
         if (faithTrack != null)
             faithTrack.getVaticanSections().entrySet().stream()
-                .map(e -> e.getValue())
+                .map(Entry::getValue)
                 .filter(vs -> vs.getId() == id).findAny().ifPresent(vs -> vs.setActive());
     }
 
