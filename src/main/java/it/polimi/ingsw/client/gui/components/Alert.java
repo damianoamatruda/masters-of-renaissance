@@ -22,6 +22,7 @@ public class Alert extends BorderPane {
         canvas.setAlignment(Pos.CENTER);
 
         this.setCenter(canvas);
+        this.setBottom(new SButton("OK"));
     }
 
     public Alert(Node center, Node top, Node right, Node left) {
