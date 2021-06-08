@@ -29,7 +29,7 @@ public class InputNicknameState extends CliState{
     @Override
     public void on(Cli cli, UpdateBookedSeats event) {
         if (event.canPrepareNewGame().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setNextState(new InputPlayersCountState());
+            cli.setState(new InputPlayersCountState());
         else if (!cli.getViewModel().getLocalPlayerNickname().equals(""))
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
@@ -49,9 +49,9 @@ public class InputNicknameState extends CliState{
         
         if (cli.getViewModel().isResumedGame()) {
             if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-                cli.setNextState(new TurnBeforeActionState());
+                cli.setState(new TurnBeforeActionState());
             else
-                cli.setNextState(new WaitingAfterTurnState());
+                cli.setState(new WaitingAfterTurnState());
         }
     }
     
@@ -64,7 +64,7 @@ public class InputNicknameState extends CliState{
 
         cli.getOut().println();
         cli.promptPause();
-        cli.setNextState(
+        cli.setState(
                 new SetupLeadersState(cli.getViewModel()
                         .getLocalPlayerData().orElseThrow()
                         .getSetup().orElseThrow()

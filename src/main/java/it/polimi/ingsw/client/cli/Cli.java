@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Cli extends EventDispatcher {
     static final int width = 179;
@@ -29,7 +27,7 @@ public class Cli extends EventDispatcher {
 
     /** The current state of the interface. */
     private CliState state;
-    private CliState nextState;
+    private volatile boolean ready;
 
     private final ViewModel viewModel;
 
@@ -138,7 +136,7 @@ public class Cli extends EventDispatcher {
     } */
 
     public void start() {
-        setNextState(new SplashState());
+        setState(new SplashState());
         renderNextState();
     }
 
@@ -272,8 +270,9 @@ public class Cli extends EventDispatcher {
      *
      * @param state the next state
      */
-    synchronized void setNextState(CliState state) {
-        this.nextState = state;
+    synchronized void setState(CliState state) {
+        this.state = state;
+        this.ready = true;
         notifyAll();
     }
 
@@ -285,14 +284,12 @@ public class Cli extends EventDispatcher {
      */
     synchronized void renderNextState() {
         while (true) {
-            while (nextState == null) {
+            while (!ready) {
                 try {
                     wait();
                 } catch (InterruptedException e) { }
             }
-    
-            this.state = nextState;
-            nextState = null;
+            ready = false;
             
             out.println();
             clear();
@@ -322,7 +319,7 @@ public class Cli extends EventDispatcher {
     void repeatState(String str) {
         out.println(str);
         promptPause();
-        setNextState(this.state);
+        setState(this.state);
     }
 
     void startOfflineClient() {

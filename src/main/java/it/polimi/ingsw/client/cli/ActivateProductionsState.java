@@ -77,6 +77,6 @@ public class ActivateProductionsState extends CliState {
     public void on(Cli cli, UpdateAction event) {
         cli.getOut().println();
         cli.promptPause();
-        cli.setNextState(new TurnAfterActionState());
+        cli.setState(new TurnAfterActionState());
     }
 }

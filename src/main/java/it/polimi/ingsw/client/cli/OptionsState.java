@@ -24,18 +24,18 @@ public class OptionsState extends CliState {
 
     private void defaultConfig(Cli cli) {
         cli.setGameConfigStream(null);
-        cli.setNextState(new MainMenuState());
+        cli.setState(new MainMenuState());
     }
 
     private void customConfig(Cli cli) {
         File gameConfigFile = cli.promptFile("Path of custom config.json");
         try {
             cli.setGameConfigStream(new FileInputStream(gameConfigFile));
-            cli.setNextState(new MainMenuState());
+            cli.setState(new MainMenuState());
         } catch (FileNotFoundException e) {
             cli.getOut().printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
             cli.promptPause();
-            cli.setNextState(new OptionsState());
+            cli.setState(new OptionsState());
         }
     }
 }

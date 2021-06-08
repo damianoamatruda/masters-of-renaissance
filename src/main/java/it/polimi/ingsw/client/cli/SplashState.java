@@ -11,7 +11,7 @@ public class SplashState extends CliState {
         renderCastle(cli);
         cli.getOut().println();
         pausePressEnter(cli);
-        cli.setNextState(new MainMenuState());
+        cli.setState(new MainMenuState());
     }
 
     private void renderCredits(Cli cli) {

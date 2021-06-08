@@ -29,17 +29,17 @@ public class TurnAfterActionState extends CliTurnState {
         cli.getOut().println();
         cli.promptPause();
         if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
-            cli.setNextState(new WaitingAfterTurnState());
+            cli.setState(new WaitingAfterTurnState());
         else
-            cli.setNextState(new TurnAfterActionState());
+            cli.setState(new TurnAfterActionState());
     }
 
     @Override
     public void on(Cli cli, UpdateCurrentPlayer event) {
         super.on(cli, event);
         if (cli.getViewModel().getLocalPlayerNickname().equals(event.getPlayer()))
-            cli.setNextState(new TurnBeforeActionState());
+            cli.setState(new TurnBeforeActionState());
         else
-            cli.setNextState(new WaitingAfterTurnState());
+            cli.setState(new WaitingAfterTurnState());
     }
 }

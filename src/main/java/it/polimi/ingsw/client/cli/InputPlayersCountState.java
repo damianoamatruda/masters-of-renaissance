@@ -60,9 +60,9 @@ public class InputPlayersCountState extends CliState {
 
         if (cli.getViewModel().isResumedGame()) {
             if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-                cli.setNextState(new TurnBeforeActionState());
+                cli.setState(new TurnBeforeActionState());
             else
-                cli.setNextState(new WaitingAfterTurnState());
+                cli.setState(new WaitingAfterTurnState());
         }
     }
 
@@ -75,7 +75,7 @@ public class InputPlayersCountState extends CliState {
 
         cli.getOut().println();
         cli.promptPause();
-        cli.setNextState(
+        cli.setState(
                 new SetupLeadersState(cli.getViewModel()
                         .getLocalPlayerData().orElseThrow()
                         .getSetup().orElseThrow()
