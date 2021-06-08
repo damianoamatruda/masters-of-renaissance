@@ -27,10 +27,9 @@ public class Cli extends EventDispatcher {
     private final View view;
     private Network network;
 
-    private final ExecutorService executor;
-
     /** The current state of the interface. */
     private CliState state;
+    private CliState nextState;
 
     private final ViewModel viewModel;
 
@@ -46,8 +45,6 @@ public class Cli extends EventDispatcher {
         this.registerOnMV(this.view);
 
         this.network = null;
-
-        this.executor = Executors.newCachedThreadPool();
 
         this.viewModel = new ViewModel();
         this.out = System.out;
@@ -141,12 +138,12 @@ public class Cli extends EventDispatcher {
     } */
 
     public void start() {
-        setState(new SplashState());
+        setNextState(new SplashState());
+        renderNextState();
     }
 
     public void stop() {
         stopNetwork();
-        executor.shutdownNow();
     }
 
     public void registerOnMV(EventDispatcher view) {
@@ -275,14 +272,33 @@ public class Cli extends EventDispatcher {
      *
      * @param state the next state
      */
-    void setState(CliState state) {
-        this.state = state;
-        executor.submit(() -> {
+    synchronized void setNextState(CliState state) {
+        this.nextState = state;
+        notifyAll();
+    }
+
+    /**
+     * Sets the current state based on the next requested state.
+     * If no state is requested, waits for a request.
+     * While a state is being rendered, requested states aren't applied:
+     * only the last requested state is applied, and only as soon as the current state has finished rendering.
+     */
+    synchronized void renderNextState() {
+        while (true) {
+            while (nextState == null) {
+                try {
+                    wait();
+                } catch (InterruptedException e) { }
+            }
+    
+            this.state = nextState;
+            nextState = null;
+            
             out.println();
             clear();
             out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
             state.render(this);
-        });
+        }
     }
 
     void clear() {
@@ -306,7 +322,7 @@ public class Cli extends EventDispatcher {
     void repeatState(String str) {
         out.println(str);
         promptPause();
-        setState(this.state);
+        setNextState(this.state);
     }
 
     void startOfflineClient() {

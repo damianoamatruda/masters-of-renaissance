@@ -48,9 +48,9 @@ public class SetupLeadersState extends CliState {
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
 
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setNextState(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setNextState(new WaitingAfterTurnState());
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SetupLeadersState extends CliState {
         int choosable = cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
 
         if (choosable > 0)
-            cli.setState(new SetupResourcesState(choosable));
+            cli.setNextState(new SetupResourcesState(choosable));
 //        else if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
 //            cli.setState(new TurnBeforeActionState());
 //        else
@@ -88,8 +88,8 @@ public class SetupLeadersState extends CliState {
         super.on(cli, event);
 
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setNextState(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setNextState(new WaitingAfterTurnState());
     }
 }

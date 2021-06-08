@@ -19,9 +19,9 @@ public class TurnBeforeActionState extends CliTurnState {
         cli.getOut().println(Cli.center("Available actions:"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('1', new Menu.Entry("Take Market Resources", cli1 -> cli.setState(new TakeFromMarketState())));
-        entries.put('2', new Menu.Entry("Buy a Card", cli1 -> cli.setState(new BuyDevelopmentCardState())));
-        entries.put('3', new Menu.Entry("Activate Production", cli1 -> cli.setState(new ActivateProductionsState())));
+        entries.put('1', new Menu.Entry("Take Market Resources", cli1 -> cli.setNextState(new TakeFromMarketState())));
+        entries.put('2', new Menu.Entry("Buy a Card", cli1 -> cli.setNextState(new BuyDevelopmentCardState())));
+        entries.put('3', new Menu.Entry("Activate Production", cli1 -> cli.setNextState(new ActivateProductionsState())));
         entries.put('L', new Menu.Entry("Leader Actions", this::leaderActions));
         entries.put('S', new Menu.Entry("Swap Shelves", this::swapShelves));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
@@ -33,7 +33,7 @@ public class TurnBeforeActionState extends CliTurnState {
         if (executingSecondary) {
             cli.getOut().println();
             cli.promptPause();
-            cli.setState(new TurnBeforeActionState());
+            cli.setNextState(new TurnBeforeActionState());
         }
     }
 
@@ -44,6 +44,6 @@ public class TurnBeforeActionState extends CliTurnState {
            When it got here, other players' setup was still ongoing,
            therefore this message is handled here */
         super.on(cli, event);
-        cli.setState(new TurnBeforeActionState());
+        cli.setNextState(new TurnBeforeActionState());
     }
 }

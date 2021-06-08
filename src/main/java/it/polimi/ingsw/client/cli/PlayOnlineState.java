@@ -62,10 +62,10 @@ public class PlayOnlineState extends CliState {
         }
 
         if (connected)
-            cli.setState(new InputNicknameState());
+            cli.setNextState(new InputNicknameState());
         else {
             cli.promptPause();
-            cli.setState(new PlayOnlineState());
+            cli.setNextState(new PlayOnlineState());
         }
     }
 }

@@ -67,9 +67,9 @@ public class SetupResourcesState extends CliState {
             throw new RuntimeException("Resources setup: ErrAction received with reason not LATE_SETUP_ACTION.");
 
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setNextState(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setNextState(new WaitingAfterTurnState());
     }
 
     // ErrObjectNotOwned handled in CliState
@@ -84,8 +84,8 @@ public class SetupResourcesState extends CliState {
         super.on(cli, event);
 
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setNextState(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setNextState(new WaitingAfterTurnState());
     }
 }
