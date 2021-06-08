@@ -12,7 +12,8 @@ public interface GameFactory {
     /**
      * Builder of a multiplayer game instance.
      *
-     * @param nicknames the list of nicknames of players who joined
+     * @param nicknames the list of nicknames of the players who joined.
+     *                  Cannot be null, 0, 1 or greater than the maxPlayers config parameter.
      * @return the multiplayer game
      */
     Game getMultiGame(List<String> nicknames);
@@ -20,7 +21,7 @@ public interface GameFactory {
     /**
      * Builder of a single-player game instance.
      *
-     * @param nickname the nickname of the only player
+     * @param nickname the nickname of the game's only player
      * @return the single-player game
      */
     SoloGame getSoloGame(String nickname);

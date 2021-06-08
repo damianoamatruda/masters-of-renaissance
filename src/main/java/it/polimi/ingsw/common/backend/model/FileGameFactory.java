@@ -156,6 +156,7 @@ public class FileGameFactory implements GameFactory {
      * Checks the number of given players.
      *
      * @param nicknames the list of nicknames
+     * @param isMultiGame whether the requested game is a multiplayer game
      */
     private void checkNumberOfPlayers(List<String> nicknames, boolean isMultiGame) {
         
