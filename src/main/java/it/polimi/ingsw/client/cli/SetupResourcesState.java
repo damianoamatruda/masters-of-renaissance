@@ -76,7 +76,6 @@ public class SetupResourcesState extends CliState {
     // ErrNoSuchEntity handled in CliState
     // ErrResourceReplacement handled in CliState
     // ErrReplacedTransRecipe handled in CliState
-    // ErrInitialChoice handled in CliState
     // ErrResourceTransfer handled in CliState
 
     @Override
