@@ -19,6 +19,5 @@ public class PauseMenu extends GuiController {
     @FXML
     private void handleQuit() {
         Gui.getInstance().dispatch(new ReqQuit());
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }
