@@ -13,10 +13,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -68,6 +65,8 @@ public class MarketController extends GuiController {
         submitBtn.setOnAction(this::submitPressed);
 
         back.setOnAction(this::back);
+
+        setPauseOnEsc(getClass().getResource("/assets/gui/market.fxml"));
     }
 
     private void marketSelected(int index, boolean isRow) {
@@ -358,5 +357,14 @@ public class MarketController extends GuiController {
                 else selection.remove(s2.getShelfId());
             });
         }
+    }
+
+    protected void setPauseOnEsc(URL lastScene) {
+        this.canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Gui.getInstance().pushLastScene(lastScene);
+                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"));
+            }
+        });
     }
 }

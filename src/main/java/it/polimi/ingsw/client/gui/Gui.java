@@ -50,6 +50,7 @@ public class Gui extends Application {
     private boolean offline;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
+    private URL lastScene;
 
     public static void main(String[] args) {
         launch(args);
@@ -270,5 +271,13 @@ public class Gui extends Application {
         view.removeEventListener(UpdateVaticanSection.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateVictoryPoints.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateLeadersHand.class, event -> controller.on(this, event));
+    }
+
+    public void pushLastScene(URL location) {
+        this.lastScene = location;
+    }
+
+    public URL getLastScene() {
+        return lastScene;
     }
 }

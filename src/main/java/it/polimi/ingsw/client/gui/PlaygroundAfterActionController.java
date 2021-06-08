@@ -36,6 +36,8 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         canvas.getChildren().add(topText);
 
         warehouse.enableSwapper();
+
+        setPauseOnEsc(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
     }
 
     @Override

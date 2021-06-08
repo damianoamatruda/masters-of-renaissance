@@ -49,6 +49,7 @@ public class MainMenuController extends GuiController {
 
     @FXML
     private void handleOptions() {
+        Gui.getInstance().pushLastScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/options.fxml"));
     }
 

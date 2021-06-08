@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -126,6 +127,8 @@ public class DevCardGridController extends GuiController {
             event.setDropCompleted(success);
             event.consume();
         });
+
+        setPauseOnEsc(getClass().getResource("/assets/gui/devcardgrid.fxml"));
     }
 
     private boolean putChoice(String resource, int shelfID) {
@@ -250,5 +253,14 @@ public class DevCardGridController extends GuiController {
 
             warehouse.swapShelves(s1, s2);
         }
+    }
+
+    protected void setPauseOnEsc(URL lastScene) {
+        this.canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Gui.getInstance().pushLastScene(lastScene);
+                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"));
+            }
+        });
     }
 }

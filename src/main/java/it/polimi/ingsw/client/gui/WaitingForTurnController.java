@@ -16,5 +16,7 @@ public class WaitingForTurnController extends PlaygroundController {
         AnchorPane.setTopAnchor(topText, 5.0);
 
         canvas.getChildren().add(topText);
+
+        setPauseOnEsc(getClass().getResource("/assets/gui/waitingforturn.fxml"));
     }
 }

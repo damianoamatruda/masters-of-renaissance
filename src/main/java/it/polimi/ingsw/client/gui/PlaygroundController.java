@@ -10,9 +10,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -93,6 +96,15 @@ public abstract class PlaygroundController extends GuiController {
         pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
+    }
+
+    protected void setPauseOnEsc(URL lastScene) {
+        this.canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Gui.getInstance().pushLastScene(lastScene);
+                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"));
+            }
+        });
     }
 
     protected void setLeadersBox() {

@@ -46,6 +46,8 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
         canvas.getChildren().add(topText);
 
         warehouse.enableSwapper();
+
+        setPauseOnEsc(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     @Override

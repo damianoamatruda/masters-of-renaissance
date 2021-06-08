@@ -58,7 +58,7 @@ public class OptionsController extends GuiController {
 
     @FXML
     private void handleBack() {
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        Gui.getInstance().setRoot(Gui.getInstance().getLastScene());
     }
 
     @FXML
