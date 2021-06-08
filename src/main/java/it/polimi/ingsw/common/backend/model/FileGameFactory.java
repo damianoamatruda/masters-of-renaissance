@@ -83,7 +83,7 @@ public class FileGameFactory implements GameFactory {
 
     @Override
     public Game getMultiGame(List<String> nicknames) {
-        checkNumberOfPlayers(nicknames);
+        checkNumberOfPlayers(nicknames, true);
         
         baseProduction = buildBaseProduction();
         List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
@@ -157,15 +157,18 @@ public class FileGameFactory implements GameFactory {
      *
      * @param nicknames the list of nicknames
      */
-    private void checkNumberOfPlayers(List<String> nicknames) {
+    private void checkNumberOfPlayers(List<String> nicknames, boolean isMultiGame) {
+        
         String baseMsg = "Invalid number of players chosen";
         if (nicknames == null)
-            throw new IllegalArgumentException(String.format("%s: %s", baseMsg, "null"));
+            throw new IllegalArgumentException(String.format("%s: %s.", baseMsg, "null"));
+            else if (nicknames.size() == 0)
+                throw new IllegalArgumentException(String.format("%s: 0.", baseMsg));
+        else if (nicknames.size() == 1 && isMultiGame)
+            throw new IllegalArgumentException("Cannot create MultiGame with only one player.");
         else if (nicknames.size() > maxPlayers)
             throw new IllegalArgumentException(
-                    String.format("%s %d: maximum allowed is %d", baseMsg, nicknames.size(), maxPlayers));
-        else if (nicknames.size() == 0)
-            throw new IllegalArgumentException(String.format("%s: 0", baseMsg));
+                    String.format("%s %d: maximum allowed is %d.", baseMsg, nicknames.size(), maxPlayers));
     }
 
     /**
