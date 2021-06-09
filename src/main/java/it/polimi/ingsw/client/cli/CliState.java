@@ -266,7 +266,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateResourceContainer event) {
         cli.getViewModel().setContainer(event.getResContainer());
         cli.getOut().println();
-        new ResourceContainer(event.getResContainer()).renderBoxed(cli);
+        cli.getOut().print(Cli.center(new ResourceContainer(event.getResContainer()).getStringBoxed(cli)));
     }
 
     public void on(Cli cli, UpdateSetupDone event) {
