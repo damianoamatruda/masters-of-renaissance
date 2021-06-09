@@ -388,8 +388,8 @@ public class ViewModel {
      * @param playerNicknames the playerNicknames to set
      */
     public void setPlayerNicknames(List<String> playerNicknames) {
-        if (playerNicknames != null)
-            playerNicknames = new ArrayList<>(playerNicknames);
+        if (this.playerNicknames != null)
+            this.playerNicknames = new ArrayList<>(playerNicknames);
             
         for(int i = 0; i < playerNicknames.size(); i++)
             mappedColors.put(playerNicknames.get(i), clientColors.get(i));

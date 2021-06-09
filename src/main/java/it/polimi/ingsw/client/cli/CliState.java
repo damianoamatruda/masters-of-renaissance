@@ -128,11 +128,9 @@ public abstract class CliState implements Renderable {
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> {
                 Optional<PlayerData> pd = vm.getPlayerData(nick);
-                
-                if (pd.isPresent())
-                    return pd.get().getFaithPoints();
-                
-                return 0;
+
+                return pd.map(PlayerData::getFaithPoints).orElse(0);
+
             }));
 
         Optional<ReducedFaithTrack> ft = vm.getFaithTrack();

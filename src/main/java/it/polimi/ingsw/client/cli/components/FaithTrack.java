@@ -22,7 +22,6 @@ public class FaithTrack extends StringComponent {
 
     @Override
     public String getString(Cli cli) {
-        // TODO: Use Cli methods instead of String.format
 
         String boldTopLeftCorner = "╔";
         String slimTopLeftCorner = "┌";
