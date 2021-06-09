@@ -1,7 +1,8 @@
-package it.polimi.ingsw.client.gui;
+package it.polimi.ingsw.client.gui.components;
 
-import it.polimi.ingsw.client.gui.components.SButton;
+import it.polimi.ingsw.client.gui.Gui;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -11,17 +12,17 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
 
-public class OptionsController extends GuiController {
+public class Options extends Alert {
     @FXML private VBox configContainer;
-    @FXML private StackPane backStackPane;
     @FXML private Slider musicSlider;
     @FXML private Slider soundFxSlider;
     @FXML private Text musicText;
     @FXML private Text soundFxText;
     @FXML private SButton resetConfigButton;
+    @FXML private SButton customConfigButton;
+    @FXML private SButton backButton;
     private double oldMusicVolume;
     private double oldSoundFxVolume;
 
@@ -29,8 +30,20 @@ public class OptionsController extends GuiController {
         return String.format("%d%%", (int) (value * 100));
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public Options() {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/options.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+
+        setHandlers();
+
         Gui gui = Gui.getInstance();
 
         musicSlider.valueProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -56,11 +69,21 @@ public class OptionsController extends GuiController {
 
         if (Gui.getInstance().getGameConfigStream().isEmpty())
             resetConfigButton.setDisable(true);
+
+        setBackground();
+    }
+
+    private void setHandlers() {
+        musicText.setOnMouseClicked(e -> handleMusicClick());
+        soundFxText.setOnMouseClicked(e -> handleSoundFxClick());
+        customConfigButton.setOnAction(e -> handleConfig());
+        resetConfigButton.setOnAction(e -> handleResetConfig());
+        backButton.setOnAction(e -> handleBack());
     }
 
     @FXML
     private void handleBack() {
-        Gui.getInstance().setRoot(Gui.getInstance().getLastScene());
+        ((StackPane) this.getParent()).getChildren().remove(this);
     }
 
     @FXML
@@ -111,6 +134,5 @@ public class OptionsController extends GuiController {
             ((VBox) configContainer.getParent()).getChildren().remove(configContainer);
         }
     }
-
 
 }

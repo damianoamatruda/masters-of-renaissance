@@ -16,6 +16,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class Alert extends BorderPane {
+
+    public Alert() {}
+
     public Alert(String title, String content) {
         Text titleText = new Text(title);
         titleText.setWrappingWidth(600);
@@ -40,7 +43,7 @@ public class Alert extends BorderPane {
         setBackground();
     }
 
-    private void setBackground() {
+    protected void setBackground() {
         Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
         

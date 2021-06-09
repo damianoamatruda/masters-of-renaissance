@@ -50,7 +50,6 @@ public class Gui extends Application {
     private boolean offline;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
-    private URL lastScene;
 
     public static void main(String[] args) {
         launch(args);
@@ -162,7 +161,7 @@ public class Gui extends Application {
         setRoot(fxml, null);
     }
 
-    Stage getStage() {
+    public Stage getStage() {
         return stage;
     }
 
@@ -171,11 +170,11 @@ public class Gui extends Application {
         System.exit(0);
     }
 
-    Optional<InputStream> getGameConfigStream() {
+    public Optional<InputStream> getGameConfigStream() {
         return Optional.ofNullable(gameConfigStream);
     }
 
-    void setGameConfigStream(InputStream gameConfigStream) {
+    public void setGameConfigStream(InputStream gameConfigStream) {
         this.gameConfigStream = gameConfigStream;
     }
 
@@ -183,7 +182,7 @@ public class Gui extends Application {
         return offline;
     }
 
-    Optional<MediaPlayer> getMusicPlayer() {
+    public Optional<MediaPlayer> getMusicPlayer() {
         return Optional.ofNullable(musicPlayer);
     }
 
@@ -271,13 +270,5 @@ public class Gui extends Application {
         view.removeEventListener(UpdateVaticanSection.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateVictoryPoints.class, event -> controller.on(this, event));
         view.removeEventListener(UpdateLeadersHand.class, event -> controller.on(this, event));
-    }
-
-    public void pushLastScene(URL location) {
-        this.lastScene = location;
-    }
-
-    public URL getLastScene() {
-        return lastScene;
     }
 }

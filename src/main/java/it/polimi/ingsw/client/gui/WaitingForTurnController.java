@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -17,6 +18,17 @@ public class WaitingForTurnController extends PlaygroundController {
 
         canvas.getChildren().add(topText);
 
-        setPauseOnEsc(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+        setPauseOnEsc();
+    }
+
+    @Override
+    protected void setPauseOnEsc() {
+        this.canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"), (PauseMenuController controller) -> {
+                    controller.setLastScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+                });
+            }
+        });
     }
 }

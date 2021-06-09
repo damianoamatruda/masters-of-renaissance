@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.components.Options;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
@@ -49,8 +50,9 @@ public class MainMenuController extends GuiController {
 
     @FXML
     private void handleOptions() {
-        Gui.getInstance().pushLastScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/options.fxml"));
+        Options options = new Options();
+        options.setConfigContainer(true);
+        backStackPane.getChildren().add(options);
     }
 
     @FXML

@@ -128,7 +128,7 @@ public class DevCardGridController extends GuiController {
             event.consume();
         });
 
-        setPauseOnEsc(getClass().getResource("/assets/gui/devcardgrid.fxml"));
+        setPauseOnEsc();
     }
 
     private boolean putChoice(String resource, int shelfID) {
@@ -255,11 +255,12 @@ public class DevCardGridController extends GuiController {
         }
     }
 
-    protected void setPauseOnEsc(URL lastScene) {
+    private void setPauseOnEsc() {
         this.canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                Gui.getInstance().pushLastScene(lastScene);
-                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"));
+                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"), (PauseMenuController controller) -> {
+                    controller.setLastScene(getClass().getResource("/assets/gui/devcardgrid.fxml"));
+                });
             }
         });
     }

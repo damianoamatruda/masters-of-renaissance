@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -37,12 +38,23 @@ public class PlaygroundAfterActionController extends PlaygroundController {
 
         warehouse.enableSwapper();
 
-        setPauseOnEsc(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+        setPauseOnEsc();
     }
 
     @Override
     public void on(Gui gui, UpdateActionToken event) {
         super.on(gui, event);
         gui.setRoot(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
+    }
+
+    @Override
+    protected void setPauseOnEsc() {
+        this.canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"), (PauseMenuController controller) -> {
+                    controller.setLastScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+                });
+            }
+        });
     }
 }

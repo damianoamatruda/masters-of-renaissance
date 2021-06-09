@@ -6,35 +6,38 @@
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-         xmlns="http://javafx.com/javafx"
-         fx:controller="it.polimi.ingsw.client.gui.PauseMenu"
-         stylesheets="@index.css" id="body">
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           xmlns="http://javafx.com/javafx"
+           fx:controller="it.polimi.ingsw.client.gui.PauseMenuController"
+           stylesheets="@index.css" id="body"
+           fx:id="backStackPane">
 
-  <center>
-    <VBox alignment="CENTER">
+  <BorderPane>
+    <center>
       <VBox alignment="CENTER">
-        <VBox.margin>
-          <Insets bottom="40.0"/>
-        </VBox.margin>
-        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-          <Image url="@logo.png"/>
-        </ImageView>
+        <VBox alignment="CENTER">
+          <VBox.margin>
+            <Insets bottom="40.0"/>
+          </VBox.margin>
+          <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@logo.png"/>
+          </ImageView>
+        </VBox>
+        <SButton alignment="CENTER" onAction="#handleBack" prefWidth="400.0" text="Back"/>
+        <SButton alignment="CENTER" onAction="#handleOptions" prefWidth="400.0" text="Options...">
+          <VBox.margin>
+            <Insets top="8.0"/>
+          </VBox.margin>
+        </SButton>
+        <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit Game">
+          <VBox.margin>
+            <Insets top="8.0"/>
+          </VBox.margin>
+        </SButton>
+        <padding>
+          <Insets bottom="80.0"/>
+        </padding>
       </VBox>
-      <SButton alignment="CENTER" onAction="#handleBack" prefWidth="400.0" text="Back"/>
-      <SButton alignment="CENTER" onAction="#handleOptions" prefWidth="400.0" text="Options...">
-        <VBox.margin>
-          <Insets top="8.0"/>
-        </VBox.margin>
-      </SButton>
-      <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit Game">
-        <VBox.margin>
-          <Insets top="8.0"/>
-        </VBox.margin>
-      </SButton>
-      <padding>
-        <Insets bottom="80.0"/>
-      </padding>
-    </VBox>
-  </center>
-</BorderPane>
+    </center>
+  </BorderPane>
+</StackPane>

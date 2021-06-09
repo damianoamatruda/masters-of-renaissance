@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import it.polimi.ingsw.client.gui.components.Title?>
 <?import javafx.geometry.*?>
@@ -10,10 +9,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-   fx:controller="it.polimi.ingsw.client.gui.OptionsController"
-   stylesheets="@index.css">
-   <BorderPane>
+<fx:root xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+         stylesheets="@../index.css" type="BorderPane">
+
       <center>
          <VBox alignment="CENTER">
             <VBox alignment="CENTER">
@@ -21,7 +19,7 @@
                   <Insets bottom="40.0"/>
                </VBox.margin>
                <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@logo.png"/>
+                  <Image url="@../logo.png"/>
                </ImageView>
             </VBox>
             <Title maxWidth="-Infinity" text="Options">
@@ -36,7 +34,7 @@
                      <Slider fx:id="musicSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
                   </left>
                   <right>
-                     <Text fx:id="musicText" onMouseClicked="#handleMusicClick">
+                     <Text fx:id="musicText">
                         <cursor>
                            <Cursor fx:constant="HAND"/>
                         </cursor>
@@ -51,7 +49,7 @@
                      <Slider fx:id="soundFxSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
                   </left>
                   <right>
-                     <Text fx:id="soundFxText" onMouseClicked="#handleSoundFxClick">
+                     <Text fx:id="soundFxText">
                         <cursor>
                            <Cursor fx:constant="HAND"/>
                         </cursor>
@@ -66,17 +64,17 @@
                <Label text="Offline Play Config"/>
                <BorderPane maxWidth="-Infinity" prefWidth="400.0">
                   <left>
-                     <SButton onAction="#handleConfig" prefWidth="190.0" text="Custom..."/>
+                     <SButton fx:id="customConfigButton" prefWidth="190.0" text="Custom..."/>
                   </left>
                   <right>
-                     <SButton fx:id="resetConfigButton" onAction="#handleResetConfig" prefWidth="190.0" text="Default"/>
+                     <SButton fx:id="resetConfigButton" prefWidth="190.0" text="Default"/>
                   </right>
                </BorderPane>
                <VBox.margin>
                   <Insets top="30.0"/>
                </VBox.margin>
             </VBox>
-            <SButton alignment="CENTER" onAction="#handleBack" prefWidth="400.0" text="Back">
+            <SButton alignment="CENTER" fx:id="backButton" prefWidth="400.0" text="Back">
                <VBox.margin>
                   <Insets top="30.0"/>
                </VBox.margin>
@@ -86,5 +84,4 @@
             </padding>
          </VBox>
       </center>
-   </BorderPane>
-</StackPane>
+</fx:root>
