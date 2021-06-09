@@ -128,9 +128,10 @@ public class View extends EventDispatcher {
     }
 
     private void on(ViewEvent viewEvent) {
+        // TODO: Add logger
+        System.out.printf("%s, isPresent: %s, equals: %s%n", viewEvent, viewEvent.getView().isPresent(), viewEvent.getView().isPresent() && viewEvent.getView().get().equals(this));
         if (viewEvent.getView().isPresent() && !viewEvent.getView().get().equals(this))
             return;
-        viewEvent.setView(null);
         dispatch(viewEvent);
     }
 
