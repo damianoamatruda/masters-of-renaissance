@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.components.SButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -14,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class OptionsController extends GuiController {
+    @FXML private VBox configContainer;
     @FXML private StackPane backStackPane;
     @FXML private Slider musicSlider;
     @FXML private Slider soundFxSlider;
@@ -103,4 +105,12 @@ public class OptionsController extends GuiController {
         Gui.getInstance().setGameConfigStream(null);
         resetConfigButton.setDisable(true);
     }
+
+    public void setConfigContainer(boolean isPresent) {
+        if (!isPresent) {
+            ((VBox) configContainer.getParent()).getChildren().remove(configContainer);
+        }
+    }
+
+
 }

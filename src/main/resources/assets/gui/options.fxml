@@ -62,7 +62,7 @@
                   <Insets top="30.0"/>
                </VBox.margin>
             </VBox>
-            <VBox maxWidth="-Infinity" prefHeight="0.0">
+            <VBox fx:id="configContainer" maxWidth="-Infinity" prefHeight="0.0">
                <Label text="Offline Play Config"/>
                <BorderPane maxWidth="-Infinity" prefWidth="400.0">
                   <left>
