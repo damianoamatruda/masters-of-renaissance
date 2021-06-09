@@ -258,7 +258,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setActive(event.isActive());
+        cli.getViewModel().getPlayerData(event.getPlayer()).ifPresent(pdata -> pdata.setActive(event.isActive()));
         cli.getOut().println();
         cli.getOut().printf("Player %s became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
     }
