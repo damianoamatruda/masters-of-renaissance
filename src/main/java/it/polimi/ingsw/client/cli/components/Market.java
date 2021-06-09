@@ -48,7 +48,7 @@ public class Market extends StringComponent {
             }
         }
 
-        stringBuilder.append("╚").append("═".repeat(4)).append("╩").append("═".repeat(12 * width - 5)).append("╝").append("\n");
+        stringBuilder.append("╚").append("═".repeat(4)).append("╩").append("═".repeat((10 + 1) * width - 1)).append("╝").append("\n");
         stringBuilder.append(" ".repeat(6));
         for (int i = 1; i <= width; i++)
             stringBuilder.append(Cli.centerLine("^", 10)).append(" ");
