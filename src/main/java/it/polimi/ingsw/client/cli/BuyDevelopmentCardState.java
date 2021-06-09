@@ -114,7 +114,7 @@ public class BuyDevelopmentCardState extends CliState {
             msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
     
             for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
-                msg = msg.concat(String.format("\nColor %s, this.level %d, missing %s", e.getColor(), e.getLevel(), e.getAmount()));
+                msg = msg.concat(String.format("\nColor %s, level %d, missing %s", e.getColor(), e.getLevel(), e.getAmount()));
         } else {
             msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", cli.getViewModel().getLocalPlayerNickname());
 

@@ -91,7 +91,7 @@ public class TakeFromMarketState extends CliState {
                 .map(ReducedResourceType::getName)
                 .toList();
 
-        // if there's > 0 replaceable, get the active zeroleaders and prompt for this.replacements
+        // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
         int blanksCount = (int) this.resources.stream().filter(r -> r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).count();
 
         // remove the replaceable this.resources from the selected ones
@@ -110,7 +110,7 @@ public class TakeFromMarketState extends CliState {
             // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {
                 new LeadersHand(zeroLeaders).render(cli);
-                cli.getOut().println("These are the active leaders you can use to replace blank this.resources.");
+                cli.getOut().println("These are the active leaders you can use to replace blank resources.");
 
                 AtomicBoolean valid = new AtomicBoolean(false);
                 while (!valid.get()) {

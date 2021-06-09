@@ -38,8 +38,8 @@ public class OptionsState extends CliState {
             } catch (FileNotFoundException e) {
                 cli.getOut().printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
                 cli.promptPause();
-                cli.setState(new OptionsState());
+                cli.setState(this);
             }
-        }, () -> cli.setState(new OptionsState()));
+        }, () -> cli.setState(this));
     }
 }
