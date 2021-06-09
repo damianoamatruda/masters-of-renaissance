@@ -497,7 +497,7 @@ public class Cli extends EventDispatcher {
         if (viewModel.getPlayerWarehouseShelves(player).size() > 0) {
             stringBuilder.append(String.format("%s's warehouse shelves:", player)).append("\n");
             viewModel.getPlayerWarehouseShelves(player).forEach(c ->
-                    stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
+                    stringBuilder.append("\n").append(new ResourceContainer(c).getStringBoxed(this)));
         }
         if (viewModel.getPlayerDepots(player).size() > 0) {
             stringBuilder.append("\n");
@@ -528,7 +528,7 @@ public class Cli extends EventDispatcher {
 
         stringBuilder.append(String.format("%s's containers:", player)).append("\n");
         viewModel.getPlayerShelves(player).forEach(c ->
-                stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
+                stringBuilder.append("\n").append(new ResourceContainer(c).getStringBoxed(this)));
 
         out.print(Cli.center(stringBuilder.toString()));
         out.println();
