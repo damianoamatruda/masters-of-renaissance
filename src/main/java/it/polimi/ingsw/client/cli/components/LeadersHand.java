@@ -21,7 +21,7 @@ public class LeadersHand extends StringComponent {
 
         int i;
         for (i = 0; i < leaders.size(); i += 4) {
-            stringBuilder.append(Cli.slimLine(cellWidth * (leaders.size() % 5) + 1));
+            stringBuilder.append(("┌" + Cli.slimLineNoNewLine(cellWidth - 1) + "┐ ").repeat(Integer.min(4, leaders.size() - i))).append("\n");
 
             List<ReducedLeaderCard> cards = new ArrayList<>();
             for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
@@ -34,17 +34,18 @@ public class LeadersHand extends StringComponent {
 
             int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
             for (int k = 0; k < length; k++) {
-                stringBuilder.append("│");
+
                 for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
+                    stringBuilder.append("│");
                     if (k < rows.get(j).size())
-                        stringBuilder.append(Cli.left(rows.get(j).get(k), cellWidth - 2)).append(" │");
+                        stringBuilder.append(Cli.left(rows.get(j).get(k), cellWidth - 2)).append(" │ ");
                     else
-                        stringBuilder.append(Cli.left("", cellWidth - 2)).append(" │");
+                        stringBuilder.append(Cli.left("", cellWidth - 2)).append(" │ ");
                 }
                 stringBuilder.append("\n");
             }
+            stringBuilder.append(("└" + Cli.slimLineNoNewLine(cellWidth - 1) + "┘ ").repeat(Integer.min(4, leaders.size() - i))).append("\n");
         }
-        stringBuilder.append(Cli.slimLine(cellWidth * (leaders.size() % 5) + 1));
 
         return Cli.center(stringBuilder.toString());
     }

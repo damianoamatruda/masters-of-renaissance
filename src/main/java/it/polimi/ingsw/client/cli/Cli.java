@@ -124,7 +124,11 @@ public class Cli extends EventDispatcher {
     }
 
     public static String slimLine(int width) {
-        return "─".repeat(width) + "\n";
+        return slimLineNoNewLine(width) + "\n";
+    }
+
+    public static String slimLineNoNewLine(int width) {
+        return "─".repeat(width);
     }
 
     public static String slimLine() {
