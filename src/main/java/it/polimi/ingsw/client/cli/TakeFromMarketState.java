@@ -11,60 +11,79 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class TakeFromMarketState extends CliState {
+    private final CliState sourceState;
+    private boolean isRow;
+    private int index;
+    private List<String> resources;
+    private Map<String, Integer> replacements;
+    private Map<Integer, Map<String, Integer>> shelves;
+
+    public TakeFromMarketState(CliState sourceState) {
+        this.sourceState = sourceState;
+    }
 
     @Override
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
         new Market(vm.getMarket().orElseThrow()).render(cli);
+
         cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
 
-        cli.getOut().println();
-        cli.getOut().println("Getting resources from the market:");
+        chooseRowCol(cli);
+    }
 
-        boolean isValid = false;
-        boolean isRow = false;
-        int index = -1;
-        String input;
-
-        while (!isValid) {
-            isValid = true;
-
-            input = cli.prompt("[row/col]");
-            
-            if (input.equalsIgnoreCase("row"))
-                isRow = true;
-            else if (!input.equalsIgnoreCase("col"))
-                isValid = false;
+    private void chooseRowCol(Cli cli) {
+        AtomicBoolean valid = new AtomicBoolean(false);
+        while (!valid.get()) {
+            valid.set(true);
+            cli.prompt("[row/col]").ifPresentOrElse(input -> {
+                if (input.equalsIgnoreCase("row")) {
+                    this.isRow = true;
+                    chooseIndex(cli);
+                } else if (input.equalsIgnoreCase("col")) {
+                    this.isRow = false;
+                    chooseIndex(cli);
+                } else
+                    valid.set(false);
+            }, () -> cli.setState(this.sourceState));
         }
-        isValid = false;
+    }
 
-        while (!isValid) {
-            try {
-                index = cli.promptInt("Number") - 1;
-                if (index >= 0
-                        && (isRow && index < cli.getViewModel().getMarket().orElseThrow().getGrid().size()
-                        || !isRow && cli.getViewModel().getMarket().orElseThrow().getGrid().size() > 0
-                                  && index < cli.getViewModel().getMarket().orElseThrow().getGrid().get(0).size()))
-                    isValid = true;
-            } catch (Exception e) {
-                cli.getOut().println("Please input an integer greater than 0.");
-            }
+    private void chooseIndex(Cli cli) {
+        AtomicBoolean valid = new AtomicBoolean(false);
+        while (!valid.get()) {
+            valid.set(true);
+            cli.promptInt("Number").ifPresentOrElse(number -> {
+                this.index = number - 1;
+                if (this.index >= 0
+                        && (this.isRow && this.index < cli.getViewModel().getMarket().orElseThrow().getGrid().size()
+                        || !this.isRow && cli.getViewModel().getMarket().orElseThrow().getGrid().size() > 0
+                        && this.index < cli.getViewModel().getMarket().orElseThrow().getGrid().get(0).size()))
+                    chooseReplacements(cli);
+                else
+                    valid.set(false);
+            }, () -> chooseRowCol(cli));
         }
+    }
+
+    private void chooseReplacements(Cli cli) {
+        ViewModel vm = cli.getViewModel();
 
         // get a list with the selected resources
-        List<String> chosenResources = new ArrayList<>();
-        if (isRow)
-            chosenResources = vm.getMarket().orElseThrow().getGrid().get(index);
+        this.resources = new ArrayList<>();
+        if (this.isRow)
+            this.resources = vm.getMarket().orElseThrow().getGrid().get(this.index);
         else {
             for (List<String> row : vm.getMarket().orElseThrow().getGrid())
-                chosenResources.add(row.get(index));
+                this.resources.add(row.get(this.index));
         }
-        chosenResources = chosenResources.stream()
+        this.resources = this.resources.stream()
                 .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -72,57 +91,69 @@ public class TakeFromMarketState extends CliState {
                 .map(ReducedResourceType::getName)
                 .toList();
 
-        // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
-        int blanksCount = (int) chosenResources.stream().filter(r -> r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).count();
-        Map<String, Integer> replacements = new HashMap<>();
+        // if there's > 0 replaceable, get the active zeroleaders and prompt for this.replacements
+        int blanksCount = (int) this.resources.stream().filter(r -> r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).count();
+
+        // remove the replaceable this.resources from the selected ones
+        this.resources = this.resources.stream().filter(r -> !r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).toList();
+
+        this.replacements = new HashMap<>();
 
         // for (String res : chosenResources)
-        //     replacements.compute(res, (k, v) -> v == null ? 1 : v++);
+        //     this.replacements.compute(res, (k, v) -> v == null ? 1 : v++);
 
         if (blanksCount > 0) {
             List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
-                .filter(c -> c.isActive() &&
-                        c.getLeaderType().equals(ZeroLeader.class.getSimpleName())).toList();
-            
+                    .filter(c -> c.isActive() &&
+                            c.getLeaderType().equals(ZeroLeader.class.getSimpleName())).toList();
+
+            // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {
                 new LeadersHand(zeroLeaders).render(cli);
-                cli.getOut().println("These are the active leaders you can use to replace blank resources.");
-                
+                cli.getOut().println("These are the active leaders you can use to replace blank this.resources.");
 
-                input = "";
-                while (!input.equals("y") && !input.equals("n"))
-                    input = cli.prompt("Replace resources? [y/n]");
-                if (input.equals("n")) {
-                    replacements = cli.promptResources(
-                            zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).collect(Collectors.toUnmodifiableSet()), blanksCount
-                    );
+                AtomicBoolean valid = new AtomicBoolean(false);
+                while (!valid.get()) {
+                    valid.set(true);
+                    cli.prompt("Replace resources? [y/n]").ifPresentOrElse(input -> {
+                        valid.set(input.equalsIgnoreCase("y") || input.equalsIgnoreCase("n"));
+                        if (input.equalsIgnoreCase("y")) {
+                            cli.promptResources(
+                                    zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).collect(Collectors.toUnmodifiableSet()), blanksCount
+                            ).ifPresentOrElse(replacements -> {
+                                this.replacements = replacements;
+                            }, () -> chooseIndex(cli)); // TODO: Refactor logic of this
+                        }
+                    }, () -> chooseIndex(cli));
                 }
             }
         }
 
-        // replacements = replacements.entrySet().stream().filter(e -> e.getKey().equals(cli.getViewModel().getMarket().getReplaceableResType())).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+        chooseShelves(cli);
+    }
 
-        // remove the replaceable resources from the selected ones
-        chosenResources = chosenResources.stream().filter(r -> !r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).toList();
+    private void chooseShelves(Cli cli) {
+        ViewModel vm = cli.getViewModel();
 
-        Map<String, Integer> totalRes = new HashMap<>(replacements);
-        chosenResources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
+        Map<String, Integer> totalRes = new HashMap<>(this.replacements);
+        this.resources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
         Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.getOut().println();
-        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(totalRes, allowedShelves);
-
-        cli.dispatch(new ReqTakeFromMarket(isRow, index, replacements, shelves));
+        cli.promptShelves(totalRes, allowedShelves).ifPresentOrElse(shelves -> {
+            this.shelves = shelves;
+            cli.dispatch(new ReqTakeFromMarket(this.isRow, this.index, this.replacements, this.shelves));
+        }, () -> chooseIndex(cli)); // TODO: Check this
     }
 
-    // ErrObjectNotOwned handled in clistate
-    // ErrNoSuchEntity handled in clistate
-    // ErrResourceReplacement handled in clistate
-    // ErrReplacedTransRecipe handled in clistate
-    // ErrResourceTransfer handled in clistate
+    // ErrObjectNotOwned handled in CliState
+    // ErrNoSuchEntity handled in CliState
+    // ErrResourceReplacement handled in CliState
+    // ErrReplacedTransRecipe handled in CliState
+    // ErrResourceTransfer handled in CliState
 
     @Override
     public void on(Cli cli, UpdateAction event) {

@@ -11,16 +11,18 @@ import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cli extends EventDispatcher {
-    static final int width = 179;
+    private static final int width = 179;
+    private static final String backValue = " ";
 
     private final View view;
     private Network network;
@@ -222,39 +224,45 @@ public class Cli extends EventDispatcher {
         view.removeEventListener(UpdateLeadersHand.class, event -> state.on(this, event));
     }
 
-    public String prompt(String prompt, String defaultValue) {
+    public Optional<String> prompt(String prompt, String defaultValue) {
+        if (prompt.isEmpty())
+            throw new IllegalArgumentException("Prompt cannot be empty.");
         out.printf("%s (default: %s): ", prompt, defaultValue);
         String value = in.nextLine();
-        return !value.isBlank() ? value : defaultValue;
+        if (value.equals(backValue))
+            return Optional.empty();
+        return Optional.of(!value.isBlank() ? value : defaultValue);
     }
 
-    public String prompt(String prompt) {
+    public Optional<String> prompt(String prompt) {
         if (!prompt.isEmpty())
             out.printf("%s: ", prompt);
-        String input = in.nextLine();
-        if (input.equalsIgnoreCase("q") && !(viewModel.getLocalPlayerNickname().equals(""))) {
-            dispatch(new ReqQuit());
-            return null;
-        }
-        return input;
+        String value = in.nextLine();
+        if (value.equals(backValue))
+            return Optional.empty();
+        return Optional.of(value);
     }
 
-    public int promptInt(String prompt) {
+    public Optional<Integer> promptInt(String prompt) {
         int value;
         while (true) {
-            String input = prompt(prompt);
+            Optional<String> input = prompt(prompt);
+            if (input.isEmpty())
+                return Optional.empty();
             try {
-                value = Integer.parseInt(input);
+                value = Integer.parseInt(input.get());
                 break;
             } catch (NumberFormatException ignored) {
             }
         }
-        return value;
+        return Optional.of(value);
     }
 
-    public File promptFile(String prompt) {
-        String path = prompt(prompt);
-        return new File(path);
+    public Optional<File> promptFile(String prompt) {
+        Optional<String> path = prompt(prompt);
+        if (path.isEmpty())
+            return Optional.empty();
+        return Optional.of(new File(path.get()));
     }
 
     public PrintStream getOut() {
@@ -291,13 +299,14 @@ public class Cli extends EventDispatcher {
             while (!ready) {
                 try {
                     wait();
-                } catch (InterruptedException e) { }
+                } catch (InterruptedException e) {
+                }
             }
             ready = false;
-            
-            out.println();
+
+            // out.println();
             clear();
-            out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
+            // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
             state.render(this);
         }
     }
@@ -351,15 +360,15 @@ public class Cli extends EventDispatcher {
     }
 
     // TODO: Maybe make it a component, like Menu
-    Map<Integer, Map<String, Integer>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves) {
+    Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         showShelves(this.getViewModel().getLocalPlayerNickname());
 
         Map<String, Integer> remainingResMap = new HashMap<>(resMap);
         int totalQuantity = remainingResMap.values().stream().mapToInt(Integer::intValue).sum();
-        int allocQuantity = 0;
-        while (allocQuantity < totalQuantity) {
+        AtomicInteger allocQuantity = new AtomicInteger();
+        while (allocQuantity.get() < totalQuantity) {
             out.println();
             out.println("Remaining:");
             new ResourceMap(remainingResMap).render(this);
@@ -369,35 +378,36 @@ public class Cli extends EventDispatcher {
 
             out.println();
 
-            String res = promptResource(remainingResMap.keySet());
-            if (res == null)
-                return shelves;
+            AtomicBoolean valid = new AtomicBoolean(true);
 
-            int quantity = promptQuantity(remainingResMap.get(res));
-            if (quantity < 0)
-                return shelves;
+            promptResource(remainingResMap.keySet()).ifPresentOrElse(res -> {
+                promptQuantity(remainingResMap.get(res)).ifPresentOrElse(quantity -> {
+                    promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+                        // TODO: Check for shelf overshooting
+                        shelves.compute(shelfId, (sid, rMap) -> {
+                            if (rMap == null)
+                                rMap = new HashMap<>();
+                            rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                            return rMap;
+                        });
 
-            int shelfId = promptShelfId(allowedShelves);
-            if (shelfId < 0)
-                return shelves;
+                        allocQuantity.addAndGet(quantity);
+                        remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+                    }, () -> valid.set(false));
+                }, () -> valid.set(false));
+            }, () -> valid.set(false));
 
-            // TODO: Check for shelf overshooting
-            shelves.compute(shelfId, (sid, rMap) -> {
-                if (rMap == null)
-                    rMap = new HashMap<>();
-                rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
-                return rMap;
-            });
-
-            allocQuantity += quantity;
-            remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+            if (!valid.get()) {
+                // TODO: Take only one step back
+                return Optional.empty();
+            }
         }
 
-        return shelves;
+        return Optional.of(shelves);
     }
 
     // TODO: Maybe make it a component, like Menu
-    Map<String, Integer> promptResources(Set<String> allowedResources, int totalQuantity) {
+    Optional<Map<String, Integer>> promptResources(Set<String> allowedResources, int totalQuantity) {
         Map<String, Integer> replacedRes = new HashMap<>();
 
         out.println("Resources you can choose:");
@@ -408,35 +418,38 @@ public class Cli extends EventDispatcher {
             out.println();
         });
 
-        int allocQuantity = 0;
-        while (allocQuantity < totalQuantity) {
+        AtomicInteger allocQuantity = new AtomicInteger();
+        while (allocQuantity.get() < totalQuantity) {
             out.println();
             out.println("You can finish at any time by pressing B.");
 
             out.println();
 
-            String res = promptResource(allowedResources);
-            if (res == null)
-                return replacedRes;
+            AtomicBoolean valid = new AtomicBoolean(true);
 
-            int quantity = promptQuantity(totalQuantity - allocQuantity);
-            if (quantity < 0)
-                return replacedRes;
+            promptResource(allowedResources).ifPresentOrElse(res -> {
+                promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> {
+                    allocQuantity.addAndGet(quantity);
+                    replacedRes.put(res, quantity);
+                }, () -> valid.set(false));
+            }, () -> valid.set(false));
 
-            allocQuantity += quantity;
-            replacedRes.put(res, quantity);
+            if (!valid.get()) {
+                // TODO: Take only one step back
+                return Optional.empty();
+            }
         }
 
-        return replacedRes;
+        return Optional.of(replacedRes);
     }
 
-    Map<Integer, Map<String, Integer>> promptShelvesSetup(Set<String> allowedResources, int totalQuantity, Set<Integer> allowedShelves) {
+    Optional<Map<Integer, Map<String, Integer>>> promptShelvesSetup(Set<String> allowedResources, int totalQuantity, Set<Integer> allowedShelves) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         showShelves(this.getViewModel().getLocalPlayerNickname());
 
-        int allocQuantity = 0;
-        while (allocQuantity < totalQuantity) {
+        AtomicInteger allocQuantity = new AtomicInteger();
+        while (allocQuantity.get() < totalQuantity) {
             out.println();
             out.println("Resources you can choose:");
 
@@ -451,75 +464,75 @@ public class Cli extends EventDispatcher {
             out.println("You can finish at any time by pressing B.");
             out.println();
 
-            String res = promptResource(allowedResources);
-            if (res == null)
-                return shelves;
+            AtomicBoolean valid = new AtomicBoolean(true);
+            promptResource(allowedResources).ifPresentOrElse(res -> {
+                promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> {
+                    promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+                        // TODO: Check for shelf overshooting
+                        shelves.compute(shelfId, (sid, rMap) -> {
+                            if (rMap == null)
+                                rMap = new HashMap<>();
+                            rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                            return rMap;
+                        });
 
-            int quantity = promptQuantity(totalQuantity - allocQuantity);
-            if (quantity < 0)
-                return shelves;
+                        allocQuantity.addAndGet(quantity);
+                    }, () -> valid.set(false));
+                }, () -> valid.set(false));
+            }, () -> valid.set(false));
 
-            int shelfId = promptShelfId(allowedShelves);
-            if (shelfId < 0)
-                return shelves;
-
-            // TODO: Check for shelf overshooting
-            shelves.compute(shelfId, (sid, rMap) -> {
-                if (rMap == null)
-                    rMap = new HashMap<>();
-                rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
-                return rMap;
-            });
-
-            allocQuantity += quantity;
+            if (!valid.get()) {
+                // TODO: Take only one step back
+                return Optional.empty();
+            }
         }
 
-        return shelves;
+        return Optional.of(shelves);
     }
 
-    private String promptResource(Set<String> resTypes) {
+    private Optional<String> promptResource(Set<String> resTypes) {
         Optional<String> resType;
         do {
-            String input = prompt("Resource");
-            if (input.equalsIgnoreCase("B"))
-                return null;
-            resType = resTypes.stream().filter(r -> r.equalsIgnoreCase(input)).findAny();
+            Optional<String> input = prompt("Resource");
+            if (input.isEmpty())
+                return Optional.empty();
+            resType = resTypes.stream().filter(r -> r.equalsIgnoreCase(input.get())).findAny();
         } while (resType.isEmpty());
-        return resType.get();
+        return resType;
     }
 
-    private int promptQuantity(int maxQuantity) {
+    private Optional<Integer> promptQuantity(int maxQuantity) {
         int quantity = -1;
-        String input;
+        Optional<String> input;
         while (quantity < 1) {
             input = prompt("Quantity");
-            if (input.equalsIgnoreCase("B"))
-                return -1;
+            if (input.isEmpty())
+                return Optional.empty();
             try {
-                quantity = Integer.parseInt(input);
+                quantity = Integer.parseInt(input.get());
                 if (quantity > maxQuantity)
                     quantity = -1;
             } catch (NumberFormatException ignored) {
             }
         }
-        return quantity;
+        return Optional.of(quantity);
     }
 
-    private int promptShelfId(Set<Integer> allowedShelves) {
+    private Optional<Integer> promptShelfId(Set<Integer> allowedShelves) {
         int shelfId = -1;
-        String input;
+        Optional<String> input;
         while (shelfId < 0) {
             input = prompt("Shelf");
-            if (input.equalsIgnoreCase("B"))
-                return -1;
+            if (input.isEmpty())
+                return Optional.empty();
             try {
-                shelfId = Integer.parseInt(input);
+                shelfId = Integer.parseInt(input.get());
                 if (!allowedShelves.contains(shelfId))
                     shelfId = -1;
             } catch (NumberFormatException ignored) {
             }
         }
-        return shelfId;
+        return Optional.of(shelfId);
     }
 
     @Deprecated
@@ -538,7 +551,8 @@ public class Cli extends EventDispatcher {
                     stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
         }
 
-        out.println(Cli.center(stringBuilder.toString()));
+        out.print(Cli.center(stringBuilder.toString()));
+        out.println();
     }
 
     @Deprecated
@@ -549,7 +563,8 @@ public class Cli extends EventDispatcher {
         viewModel.getContainer(viewModel.getPlayerData(player).orElseThrow().getStrongbox()).ifPresent(c ->
                 stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
 
-        out.println(Cli.center(stringBuilder.toString()));
+        out.print(Cli.center(stringBuilder.toString()));
+        out.println();
     }
 
     @Deprecated
@@ -560,7 +575,8 @@ public class Cli extends EventDispatcher {
         viewModel.getPlayerShelves(player).forEach(c ->
                 stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
 
-        out.println(Cli.center(stringBuilder.toString()));
+        out.print(Cli.center(stringBuilder.toString()));
+        out.println();
     }
 
     void quit() {

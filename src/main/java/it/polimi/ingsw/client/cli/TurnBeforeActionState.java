@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.Menu;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -16,34 +14,17 @@ public class TurnBeforeActionState extends CliTurnState {
             return;
         }
 
-        cli.getOut().println(Cli.center("Available actions:"));
+        cli.getOut().println();
+        cli.getOut().print(Cli.center("Available actions:"));
 
+        cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('1', new Menu.Entry("Take Market Resources", cli1 -> cli.setState(new TakeFromMarketState())));
-        entries.put('2', new Menu.Entry("Buy a Card", cli1 -> cli.setState(new BuyDevelopmentCardState())));
-        entries.put('3', new Menu.Entry("Activate Production", cli1 -> cli.setState(new ActivateProductionsState())));
-        entries.put('L', new Menu.Entry("Leader Actions", this::leaderActions));
-        entries.put('S', new Menu.Entry("Swap Shelves", this::swapShelves));
+        entries.put('1', new Menu.Entry("Take Market Resources", cli1 -> cli1.setState(new TakeFromMarketState(this))));
+        entries.put('2', new Menu.Entry("Buy a Card", cli1 -> cli1.setState(new BuyDevelopmentCardState(this))));
+        entries.put('3', new Menu.Entry("Activate Production", cli1 -> cli1.setState(new ActivateProductionsState(this))));
+        entries.put('L', new Menu.Entry("Leader Actions", cli1 -> cli1.setState(new LeaderActionsState(this))));
+        entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setState(new SwapShelvesState(this))));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
-        new Menu(entries).render(cli);
-    }
-
-    @Override
-    public void on(Cli cli, UpdateAction event) {
-        if (executingSecondary) {
-            cli.getOut().println();
-            cli.promptPause();
-            cli.setState(new TurnBeforeActionState());
-        }
-    }
-
-    @Override
-    public void on(Cli cli, UpdateSetupDone event) {
-        /* if the client got here it means it has finished the local setup and
-           it switched to this state (it happens when the local player is the current player).
-           When it got here, other players' setup was still ongoing,
-           therefore this message is handled here */
-        super.on(cli, event);
-        cli.setState(new TurnBeforeActionState());
+        new Menu(entries, this::quitToTitle).render(cli);
     }
 }

@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.MainTitle;
 import it.polimi.ingsw.client.cli.components.Menu;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
@@ -14,12 +13,16 @@ public class OptionsState extends CliState {
     public void render(Cli cli) {
         new MainTitle().render(cli);
 
-        cli.getOut().println(Cli.center("Offline Play Config:"));
+        cli.getOut().print(Cli.center("Offline Play Config:"));
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('D', new Menu.Entry("Default Config", this::defaultConfig));
         entries.put('C', new Menu.Entry("Custom Config", this::customConfig));
-        new Menu(entries).render(cli);
+        new Menu(entries, this::goBack).render(cli);
+    }
+
+    private void goBack(Cli cli) {
+        cli.setState(new MainMenuState());
     }
 
     private void defaultConfig(Cli cli) {
@@ -28,14 +31,15 @@ public class OptionsState extends CliState {
     }
 
     private void customConfig(Cli cli) {
-        File gameConfigFile = cli.promptFile("Path of custom config.json");
-        try {
-            cli.setGameConfigStream(new FileInputStream(gameConfigFile));
-            cli.setState(new MainMenuState());
-        } catch (FileNotFoundException e) {
-            cli.getOut().printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
-            cli.promptPause();
-            cli.setState(new OptionsState());
-        }
+        cli.promptFile("Path of custom config.json").ifPresentOrElse(gameConfigFile -> {
+            try {
+                cli.setGameConfigStream(new FileInputStream(gameConfigFile));
+                cli.setState(new MainMenuState());
+            } catch (FileNotFoundException e) {
+                cli.getOut().printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
+                cli.promptPause();
+                cli.setState(new OptionsState());
+            }
+        }, () -> cli.setState(new OptionsState()));
     }
 }

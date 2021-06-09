@@ -6,30 +6,31 @@ import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 public class InputPlayersCountState extends CliState {
     @Override
     public void render(Cli cli) {
         if (cli.isOffline()) {
-            cli.getOut().println(Cli.center("Preparing a new game..."));
+            // cli.getOut().print(Cli.center("Preparing a new game..."));
             cli.dispatch(new ReqNewGame(1));
             return;
         }
 
-        int count = 0;
-        boolean isNumber = false;
-        while (!isNumber) {
+        boolean valid = false;
+        while (!valid) {
+            valid = true;
             try {
-                count = cli.promptInt("You are the first player of the match. Please choose the players count");
-                if (count <= 0)
-                    throw new NumberFormatException();
-                isNumber = true;
+                cli.promptInt("You are the first player of the match. Please choose the players count").ifPresentOrElse(count -> {
+                    if (count <= 0)
+                        throw new NumberFormatException();
+                    cli.dispatch(new ReqNewGame(count));
+                }, () -> cli.dispatch(new ReqQuit()));
             } catch (NumberFormatException e) {
                 cli.getOut().println("Please input an integer greater than 0.");
+                valid = false;
             }
         }
-
-        cli.dispatch(new ReqNewGame(count));
     }
 
     @Override
@@ -75,10 +76,6 @@ public class InputPlayersCountState extends CliState {
 
         cli.getOut().println();
         cli.promptPause();
-        cli.setState(
-                new SetupLeadersState(cli.getViewModel()
-                        .getLocalPlayerData().orElseThrow()
-                        .getSetup().orElseThrow()
-                        .getChosenLeadersCount()));
+        cli.setState(new SetupLeadersState());
     }
 }

@@ -10,17 +10,24 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class BuyDevelopmentCardState extends CliState {
+    private final CliState sourceState;
+    private String color;
+    private int level;
+    private Map<String, Integer> cost;
+    private Map<Integer, Map<String, Integer>> shelves;
+    private int slot;
+
+    public BuyDevelopmentCardState(CliState sourceState) {
+        this.sourceState = sourceState;
+    }
 
     @Override
     public void render(Cli cli) {
-        cli.getOut().println("Buying a development card.");
-
         ViewModel vm = cli.getViewModel();
 
         ReducedDevCardGrid grid = vm.getDevCardGrid().orElseThrow();
@@ -31,38 +38,66 @@ public class BuyDevelopmentCardState extends CliState {
         cli.getOut().println();
         cli.showStrongbox(vm.getLocalPlayerNickname());
 
-        String color = cli.prompt("Card color");
-        int level = cli.promptInt("Card level");
-        int slot = cli.promptInt("Player board slot to assign to the card");
+        chooseColor(cli);
+    }
 
-        ReducedDevCard card = grid.getTopCards().get(color).stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(id -> vm.getDevelopmentCard(id).orElse(null))
-                .filter(Objects::nonNull)
-                .filter(c -> c.getLevel() == level).findAny().orElseThrow();
-        
-        Map<String, Integer> cost = new HashMap<>();
+    private void chooseColor(Cli cli) {
+        cli.prompt("Card color").ifPresentOrElse(color -> {
+            this.color = color;
+            chooseLevel(cli);
+        }, () -> cli.setState(this.sourceState));
+    }
 
-        Optional<ReducedResourceRequirement> cCost = card.getCost();
-        if (cCost.isPresent())
-            cost = new HashMap<>(cCost.get().getRequirements());
+    private void chooseLevel(Cli cli) {
+        cli.promptInt("Card level").ifPresentOrElse(level -> {
+            this.level = level;
+            chooseSlot(cli);
+        }, () -> chooseColor(cli));
+    }
 
-        cli.getOut().println("Resources need to be paid.");
-        cli.getOut().println("Please specify how many resources to take from which container.");
+    private void chooseSlot(Cli cli) {
+        ViewModel vm = cli.getViewModel();
 
-        cli.getOut().println();
-        cli.showShelves(vm.getLocalPlayerNickname());
-        cli.getOut().println();
-        cli.showStrongbox(vm.getLocalPlayerNickname());
+        ReducedDevCardGrid grid = vm.getDevCardGrid().orElseThrow();
+
+        cli.promptInt("Player board slot to assign to the card").ifPresentOrElse(slot -> {
+            this.slot = slot;
+
+            ReducedDevCard card = grid.getTopCards().get(this.color).stream()
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .map(id -> vm.getDevelopmentCard(id).orElse(null))
+                    .filter(Objects::nonNull)
+                    .filter(c -> c.getLevel() == this.level).findAny().orElseThrow();
+
+            this.cost = card.getCost().isPresent() ? new HashMap<>() : new HashMap<>(card.getCost().get().getRequirements());
+
+            if (!this.cost.isEmpty()) {
+                cli.getOut().println("Resources need to be paid.");
+                cli.getOut().println("Please specify how many resources to take from which container.");
+
+                cli.getOut().println();
+                cli.showShelves(vm.getLocalPlayerNickname());
+                cli.getOut().println();
+                cli.showStrongbox(vm.getLocalPlayerNickname());
+
+                chooseShelves(cli);
+            }
+
+            cli.dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
+        }, () -> chooseLevel(cli));
+    }
+
+    private void chooseShelves(Cli cli) {
+        ViewModel vm = cli.getViewModel();
 
         Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
-        Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(cost, allowedShelves);
-
-        cli.dispatch(new ReqBuyDevCard(color, level, slot, shelves));
+        cli.promptShelves(this.cost, allowedShelves).ifPresentOrElse(shelves -> {
+            this.shelves = shelves;
+        }, () -> chooseSlot(cli));
     }
 
     @Override
@@ -74,12 +109,12 @@ public class BuyDevelopmentCardState extends CliState {
 
     @Override
     public void on(Cli cli, ErrCardRequirements event) {
-        String msg = "";
+        String msg;
         if (event.getMissingDevCards().isPresent()) {
             msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
     
             for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
-                msg = msg.concat(String.format("\nColor %s, level %d, missing %s", e.getColor(), e.getLevel(), e.getAmount()));
+                msg = msg.concat(String.format("\nColor %s, this.level %d, missing %s", e.getColor(), e.getLevel(), e.getAmount()));
         } else {
             msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", cli.getViewModel().getLocalPlayerNickname());
 

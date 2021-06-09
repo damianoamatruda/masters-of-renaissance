@@ -6,18 +6,24 @@ import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InputNicknameState extends CliState{
     @Override
     public void render(Cli cli) {
-        String nickname;
-
-        do {
-            nickname = cli.prompt("Nickname");
-        } while (nickname.isBlank());
-
-        cli.getViewModel().setLocalPlayerNickname(nickname);
-        cli.dispatch(new ReqJoin(nickname));
+        AtomicBoolean valid = new AtomicBoolean(false);
+        while (!valid.get()) {
+            valid.set(true);
+            cli.prompt("Nickname").ifPresentOrElse(nickname -> {
+                if (!nickname.isBlank()) {
+                    cli.getViewModel().setLocalPlayerNickname(nickname);
+                    cli.dispatch(new ReqJoin(nickname));
+                } else
+                    valid.set(false);
+            }, () -> cli.dispatch(new ReqQuit()));
+        }
     }
 
     @Override
@@ -64,10 +70,6 @@ public class InputNicknameState extends CliState{
 
         cli.getOut().println();
         cli.promptPause();
-        cli.setState(
-                new SetupLeadersState(cli.getViewModel()
-                        .getLocalPlayerData().orElseThrow()
-                        .getSetup().orElseThrow()
-                        .getChosenLeadersCount()));
+        cli.setState(new SetupLeadersState());
     }
 }

@@ -6,26 +6,20 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SetupResourcesState extends CliState {
-    private final int choosable;
-
-    public SetupResourcesState(int choosable) {
-        this.choosable = choosable;
-    }
-
     @Override
     public void render(Cli cli) {
         cli.getOut().println();
-        cli.getOut().println("Choosing initial resources.");
+        cli.getOut().print(Cli.center("Choosing initial resources."));
 
         ViewModel vm = cli.getViewModel();
 
@@ -45,9 +39,14 @@ public class SetupResourcesState extends CliState {
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
-        Map<Integer, Map<String, Integer>> shelves = cli.promptShelvesSetup(allowedResources, totalQuantity, allowedShelves);
-
-        cli.dispatch(new ReqChooseResources(shelves));
+        cli.promptShelvesSetup(allowedResources, totalQuantity, allowedShelves).ifPresentOrElse(shelves -> {
+            cli.dispatch(new ReqChooseResources(shelves));
+        }, () -> cli.prompt("You cannot go back. Do you want to quit to title? [y/n]").ifPresentOrElse(input -> {
+            if (input.equalsIgnoreCase("y"))
+                cli.dispatch(new ReqQuit());
+            else
+                cli.setState(this);
+        }, () -> cli.setState(this)));
     }
 
     @Override

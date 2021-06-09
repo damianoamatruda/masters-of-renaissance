@@ -10,12 +10,30 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class ActivateProductionsState extends CliState {
+    private final CliState sourceState;
+    private final List<ReducedProductionRequest> requests;
+    private boolean done;
+    private ReducedResourceTransactionRecipe selectedProd;
+    private Map<String, Integer> inputReplacement;
+    private Map<String, Integer> outputReplacement;
+    private Map<Integer, Map<String, Integer>> shelves;
+
+    public ActivateProductionsState(CliState sourceState) {
+        this.sourceState = sourceState;
+        this.requests = new ArrayList<>();
+        this.done = false;
+    }
 
     @Override
     public void render(Cli cli) {
+        chooseProductions(cli);
+    }
+
+    private void chooseProductions(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getPlayerProductions(vm.getLocalPlayerNickname());
@@ -24,53 +42,84 @@ public class ActivateProductionsState extends CliState {
         cli.getOut().println();
         cli.getOut().println("Choose which production to activate:");
 
-        List<ReducedProductionRequest> requests = new ArrayList<>();
-        String input;
-        do {
-            Optional<ReducedResourceTransactionRecipe> optionalSelectedProd;
-            do {
-                int productionId = cli.promptInt("Production");
-                optionalSelectedProd = allowedProds.stream().filter(p -> p.getId() == productionId).findAny();
-            } while (optionalSelectedProd.isEmpty());
+        while (!this.done) {
+            AtomicBoolean valid = new AtomicBoolean(false);
+            while (!valid.get()) {
+                valid.set(true);
+                cli.promptInt("Production").ifPresentOrElse(productionId -> {
+                    allowedProds.stream().filter(p -> p.getId() == productionId).findAny().ifPresentOrElse(selectedProd -> {
+                        this.selectedProd = selectedProd;
+                        chooseInputReplacements(cli);
+                    }, () -> valid.set(false));
+                }, () -> {
+                    // TODO: Take only one step back
+                    this.requests.clear();
+                    this.done = true;
+                });
+            }
+        }
 
-            ReducedResourceTransactionRecipe selectedProd = optionalSelectedProd.get();
+        if (!this.requests.isEmpty())
+            cli.dispatch(new ReqActivateProduction(this.requests));
+        else
+            cli.setState(this.sourceState);
+    }
 
-            cli.getOut().println();
-            cli.getOut().println("-- Input replacements --");
-            Map<String, Integer> inputReplacement = cli.promptResources(
-                    vm.getResourceTypes().stream().filter(r -> (r.isStorable() || r.isTakeableFromPlayer()) && !selectedProd.getInputBlanksExclusions().contains(r.getName())).map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
-                    selectedProd.getInputBlanks()
-            );
+    private void chooseInputReplacements(Cli cli) {
+        ViewModel vm = cli.getViewModel();
 
-            cli.getOut().println();
-            cli.getOut().println("-- Output replacements --");
+        cli.getOut().println();
+        cli.getOut().println("-- Input replacements --");
+        cli.getOut().println();
+        cli.promptResources(
+                vm.getResourceTypes().stream().filter(r -> (r.isStorable() || r.isTakeableFromPlayer()) && !this.selectedProd.getInputBlanksExclusions().contains(r.getName())).map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
+                this.selectedProd.getInputBlanks()
+        ).ifPresentOrElse(inputReplacement -> {
+            this.inputReplacement = inputReplacement;
+            chooseOutputReplacements(cli);
+        }, () -> chooseProductions(cli));
+    }
 
-            cli.getOut().println();
-            Map<String, Integer> outputReplacement = cli.promptResources(
-                    vm.getResourceTypes().stream().filter(r -> (r.isStorable() || r.isGiveableToPlayer()) && !selectedProd.getOutputBlanksExclusions().contains(r.getName())).map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
-                    selectedProd.getOutputBlanks()
-            );
+    private void chooseOutputReplacements(Cli cli) {
+        ViewModel vm = cli.getViewModel();
 
-            Map<String, Integer> totalRes = new HashMap<>(selectedProd.getInput());
-            inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
+        cli.getOut().println();
+        cli.getOut().println("-- Output replacements --");
+        cli.getOut().println();
+        cli.promptResources(
+                vm.getResourceTypes().stream().filter(r -> (r.isStorable() || r.isGiveableToPlayer()) && !this.selectedProd.getOutputBlanksExclusions().contains(r.getName())).map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
+                this.selectedProd.getOutputBlanks()
+        ).ifPresentOrElse(outputReplacement -> {
+            this.outputReplacement = outputReplacement;
+            chooseShelves(cli);
+        }, () -> chooseInputReplacements(cli));
+    }
 
-            cli.getOut().println();
-            cli.getOut().println("-- Containers to take resources from --");
+    private void chooseShelves(Cli cli) {
+        ViewModel vm = cli.getViewModel();
 
-            Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
-                    .map(ReducedResourceContainer::getId)
-                    .collect(Collectors.toUnmodifiableSet());
+        Map<String, Integer> totalRes = new HashMap<>(this.selectedProd.getInput());
+        this.inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 
-            cli.getOut().println();
-            Map<Integer, Map<String, Integer>> shelves = cli.promptShelves(totalRes, allowedShelves);
+        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
+                .map(ReducedResourceContainer::getId)
+                .collect(Collectors.toUnmodifiableSet());
 
-            requests.add(new ReducedProductionRequest(selectedProd.getId(), inputReplacement, outputReplacement, shelves));
+        cli.getOut().println();
+        cli.getOut().println("-- Containers to take resources from --");
+        cli.getOut().println();
+        cli.promptShelves(totalRes, allowedShelves).ifPresentOrElse(shelves -> {
+            this.shelves = shelves;
+            this.requests.add(new ReducedProductionRequest(this.selectedProd.getId(), this.inputReplacement, this.outputReplacement, this.shelves));
+            chooseDone(cli);
+        }, () -> chooseOutputReplacements(cli));
+    }
 
-            cli.getOut().println();
-            input = cli.prompt("Are you done? [y/n]");
-        } while (!input.equalsIgnoreCase("y"));
-
-        cli.dispatch(new ReqActivateProduction(requests));
+    private void chooseDone(Cli cli) {
+        cli.getOut().println();
+        cli.prompt("Done [y/n]").ifPresentOrElse(input -> {
+            this.done = input.equalsIgnoreCase("y");
+        }, () -> chooseShelves(cli));
     }
 
     @Override

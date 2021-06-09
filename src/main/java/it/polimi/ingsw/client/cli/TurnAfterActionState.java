@@ -11,13 +11,16 @@ import java.util.Map;
 public class TurnAfterActionState extends CliTurnState {
     @Override
     public void render(Cli cli) {
+        cli.getOut().println();
+        cli.getOut().print(Cli.center("Available actions:"));
+
+        cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('L', new Menu.Entry("Leader Actions", this::leaderActions));
-        entries.put('S', new Menu.Entry("Swap Shelves", this::swapShelves));
+        entries.put('L', new Menu.Entry("Leader Actions", cli1 -> cli1.setState(new LeaderActionsState(this))));
+        entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setState(new SwapShelvesState(this))));
         entries.put('E', new Menu.Entry("End Turn", this::endTurn));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
-
-        new Menu(entries).render(cli);
+        new Menu(entries, this::quitToTitle).render(cli);
     }
 
     private void endTurn(Cli cli) {

@@ -9,37 +9,48 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SetupLeadersState extends CliState {
-    private final int leadersToChoose;
-
-    public SetupLeadersState(int leadersToChoose) {
-        this.leadersToChoose = leadersToChoose;
-    }
-
     @Override
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
 
+        int leadersToChoose = cli.getViewModel()
+                .getLocalPlayerData().orElseThrow()
+                .getSetup().orElseThrow()
+                .getChosenLeadersCount();
+
         if (vm.getLocalPlayerData().orElseThrow().getLeadersHand() != null)
             new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname())).render(cli);
 
-        cli.getOut().println("\nChoosing starting leaders hand.");
-        cli.getOut().println("Please input leader card IDs from the ones assigned to you.\n");
+        cli.getOut().println();
+        cli.getOut().print(Cli.center("Choosing starting leaders hand."));
 
         List<Integer> leaders = new ArrayList<>();
 
-        int chosen = 0;
-        while (chosen < vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
-            int id = cli.promptInt((leadersToChoose - chosen) + " leader cards left to be chosen");
-            leaders.add(id);
-            chosen++;
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicInteger chosen = new AtomicInteger();
+        while (!done.get()) {
+            cli.promptInt((leadersToChoose - chosen.get()) + " leader cards left to be chosen").ifPresentOrElse(id -> {
+                leaders.add(id);
+                chosen.getAndIncrement();
+                done.set(chosen.get() >= vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+            }, () -> {
+                leaders.clear();
+                done.set(true);
+            });
         }
 
-        cli.dispatch(new ReqChooseLeaders(leaders));
+        if (!leaders.isEmpty())
+            cli.dispatch(new ReqChooseLeaders(leaders));
+        else
+            cli.dispatch(new ReqQuit());
     }
 
     @Override
@@ -73,14 +84,8 @@ public class SetupLeadersState extends CliState {
         if (!event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             return;
 
-        int choosable = cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
-
-        if (choosable > 0)
-            cli.setState(new SetupResourcesState(choosable));
-//        else if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-//            cli.setState(new TurnBeforeActionState());
-//        else
-//            cli.setState(new WaitingAfterTurnState());
+        if (cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources() > 0)
+            cli.setState(new SetupResourcesState());
     }
 
     @Override
