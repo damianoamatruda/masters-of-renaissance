@@ -125,7 +125,10 @@ public class Server implements Network {
             virtualView.registerOnVC(networkHandler);
             controller.registerOnVC(virtualView);
 
-            networkHandler.registerOnMV(virtualView);
+            networkHandler.registerOnModelLobby(virtualView);
+            networkHandler.registerOnModelGameContext(virtualView);
+            networkHandler.registerOnModelGame(virtualView);
+            networkHandler.registerOnModelPlayer(virtualView);
 
             executor.submit(networkHandler);
         }

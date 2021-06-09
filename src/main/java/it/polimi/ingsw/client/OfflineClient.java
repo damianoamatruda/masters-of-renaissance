@@ -42,17 +42,13 @@ public class OfflineClient implements Network {
 
         networkHandler = new ClientLocalHandler();
 
-        networkHandler.registerOnVC(view);
+        networkHandler.registerOnModelLobby(model);
 
-        virtualView = new View();
-        virtualView.registerOnModelLobby(model);
-        virtualView.registerOnVC(networkHandler);
-        controller.registerOnVC(virtualView);
-
-        view.registerOnModelLobby(virtualView);
-        view.registerOnModelGameContext(virtualView);
-        view.registerOnModelGame(virtualView);
-        view.registerOnModelPlayer(virtualView);
+        view.registerOnModelLobby(networkHandler);
+        view.registerOnModelGameContext(networkHandler);
+        view.registerOnModelGame(networkHandler);
+        view.registerOnModelPlayer(networkHandler);
+        controller.registerOnVC(view);
 
         executor.submit(networkHandler);
     }
