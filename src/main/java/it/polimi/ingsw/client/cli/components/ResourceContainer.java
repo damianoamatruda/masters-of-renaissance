@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 public class ResourceContainer extends StringComponent {
     private final ReducedResourceContainer reducedResourceContainer;
-    private int cellWidth = 25;
+    private int cellWidth = 30;
 
     public ResourceContainer(ReducedResourceContainer reducedResourceContainer) {
         this.reducedResourceContainer = reducedResourceContainer;
