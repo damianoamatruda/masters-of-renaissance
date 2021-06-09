@@ -376,9 +376,6 @@ public class Cli extends EventDispatcher {
             new ResourceMap(remainingResMap).render(this);
 
             out.println();
-            out.println("You can finish at any time by pressing B.");
-
-            out.println();
 
             AtomicBoolean valid = new AtomicBoolean(true);
 
@@ -423,9 +420,6 @@ public class Cli extends EventDispatcher {
         AtomicInteger allocQuantity = new AtomicInteger();
         while (allocQuantity.get() < totalQuantity) {
             out.println();
-            out.println("You can finish at any time by pressing B.");
-
-            out.println();
 
             AtomicBoolean valid = new AtomicBoolean(true);
 
@@ -461,9 +455,6 @@ public class Cli extends EventDispatcher {
                 out.println();
             });
 
-            out.println();
-
-            out.println("You can finish at any time by pressing B.");
             out.println();
 
             AtomicBoolean valid = new AtomicBoolean(true);

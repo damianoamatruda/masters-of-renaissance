@@ -19,6 +19,31 @@ public abstract class CliState implements Renderable {
     // TODO review all error states
 
     public void on(Cli cli, ErrAction event) {
+        ViewModel vm = cli.getViewModel();
+
+        // TODO: handle
+        // switch (event.getReason()) {
+        // case LATE_SETUP_ACTION:
+        //     if ()
+        // break;
+        // case EARLY_MANDATORY_ACTION:
+
+        // break;
+        // case LATE_MANDATORY_ACTION:
+
+        // break;
+        // case EARLY_TURN_END:
+
+        // break;
+        // case GAME_ENDED:
+
+        // break;
+        // case NOT_CURRENT_PLAYER:
+
+        // break;
+        // default:
+        //         break;
+        // }
     }
 
     public void on(Cli cli, ErrActiveLeaderDiscarded event) {
