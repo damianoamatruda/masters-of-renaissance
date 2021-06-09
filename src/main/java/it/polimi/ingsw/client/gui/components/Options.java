@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.Gui;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -14,15 +15,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class Options extends Alert {
-    @FXML private VBox configContainer;
-    @FXML private Slider musicSlider;
-    @FXML private Slider soundFxSlider;
-    @FXML private Text musicText;
-    @FXML private Text soundFxText;
-    @FXML private SButton resetConfigButton;
-    @FXML private SButton customConfigButton;
-    @FXML private SButton backButton;
+public class Options extends BorderPane {
+    @FXML
+    private VBox configContainer;
+    @FXML
+    private Slider musicSlider;
+    @FXML
+    private Slider soundFxSlider;
+    @FXML
+    private Text musicText;
+    @FXML
+    private Text soundFxText;
+    @FXML
+    private SButton resetConfigButton;
+    @FXML
+    private SButton customConfigButton;
+    @FXML
+    private SButton backButton;
     private double oldMusicVolume;
     private double oldSoundFxVolume;
 
@@ -31,7 +40,6 @@ public class Options extends Alert {
     }
 
     public Options() {
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/options.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -69,8 +77,6 @@ public class Options extends Alert {
 
         if (Gui.getInstance().getGameConfigStream().isEmpty())
             resetConfigButton.setDisable(true);
-
-        setBackground();
     }
 
     private void setHandlers() {
@@ -134,5 +140,4 @@ public class Options extends Alert {
             ((VBox) configContainer.getParent()).getChildren().remove(configContainer);
         }
     }
-
 }

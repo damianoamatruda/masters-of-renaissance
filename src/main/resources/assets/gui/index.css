@@ -15,11 +15,14 @@
 }
 
 .root {
+    -fx-font-family: 'Caslon Antique Bold';
+    -fx-font-size: 22px;
+}
+
+.root, .main {
     -fx-background-image: url('background.png');
     -fx-background-size: 500px;
     -fx-background-position: center;
-    -fx-font-family: 'Caslon Antique Bold';
-    -fx-font-size: 22px;
 }
 
 .text {
