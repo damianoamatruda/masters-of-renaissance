@@ -79,7 +79,7 @@ public class SetupLeadersState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        if (event.getAction() != ActionType.CHOOSE_LEADERS)
+        if (event.getAction() != ActionType.CHOOSE_LEADERS && event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
         if (!event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             return;

@@ -104,7 +104,7 @@ public class SetupLeadersController extends GuiController {
     @Override
     public void on(Gui gui, UpdateAction event) {
         super.on(gui, event);
-        if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS)
+        if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
         if(event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname())) {
