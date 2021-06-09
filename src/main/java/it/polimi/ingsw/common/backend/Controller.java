@@ -1,42 +1,58 @@
 package it.polimi.ingsw.common.backend;
 
+import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.Lobby;
 import it.polimi.ingsw.common.events.vcevents.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Controller {
     private final Lobby model;
+
+    private final Map<View, EventListener<ReqActivateProduction>> reqActivateProductionEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqBuyDevCard>> reqBuyDevCardEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqChooseLeaders>> reqChooseLeadersEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqChooseResources>> reqChooseResourcesEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqEndTurn>> reqEndTurnEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqJoin>> reqJoinEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqLeaderAction>> reqLeaderActionEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqNewGame>> reqNewGameEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqQuit>> reqQuitEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqSwapShelves>> reqSwapShelvesEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqTakeFromMarket>> reqTakeFromMarketEventListeners = new HashMap<>();
 
     public Controller(Lobby model) {
         this.model = model;
     }
 
     public void registerOnVC(View view) {
-        view.addEventListener(ReqActivateProduction.class, event -> on(view, event));
-        view.addEventListener(ReqBuyDevCard.class, event -> on(view, event));
-        view.addEventListener(ReqChooseLeaders.class, event -> on(view, event));
-        view.addEventListener(ReqChooseResources.class, event -> on(view, event));
-        view.addEventListener(ReqEndTurn.class, event -> on(view, event));
-        view.addEventListener(ReqJoin.class, event -> on(view, event));
-        view.addEventListener(ReqLeaderAction.class, event -> on(view, event));
-        view.addEventListener(ReqNewGame.class, event -> on(view, event));
-        view.addEventListener(ReqQuit.class, event -> on(view, event));
-        view.addEventListener(ReqSwapShelves.class, event -> on(view, event));
-        view.addEventListener(ReqTakeFromMarket.class, event -> on(view, event));
+        view.addEventListener(ReqActivateProduction.class, reqActivateProductionEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqBuyDevCard.class, reqBuyDevCardEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqChooseLeaders.class, reqChooseLeadersEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqChooseResources.class, reqChooseResourcesEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqEndTurn.class, reqEndTurnEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqJoin.class, reqJoinEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqLeaderAction.class, reqLeaderActionEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqNewGame.class, reqNewGameEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqQuit.class, reqQuitEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqSwapShelves.class, reqSwapShelvesEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqTakeFromMarket.class, reqTakeFromMarketEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
     }
 
     public void unregisterOnVC(View view) {
-        view.removeEventListener(ReqActivateProduction.class, event -> on(view, event));
-        view.removeEventListener(ReqBuyDevCard.class, event -> on(view, event));
-        view.removeEventListener(ReqChooseLeaders.class, event -> on(view, event));
-        view.removeEventListener(ReqChooseResources.class, event -> on(view, event));
-        view.removeEventListener(ReqEndTurn.class, event -> on(view, event));
-        view.removeEventListener(ReqJoin.class, event -> on(view, event));
-        view.removeEventListener(ReqLeaderAction.class, event -> on(view, event));
-        view.removeEventListener(ReqNewGame.class, event -> on(view, event));
-        view.removeEventListener(ReqQuit.class, event -> on(view, event));
-        view.removeEventListener(ReqSwapShelves.class, event -> on(view, event));
-        view.removeEventListener(ReqTakeFromMarket.class, event -> on(view, event));
+        view.removeEventListener(ReqActivateProduction.class, reqActivateProductionEventListeners.remove(view));
+        view.removeEventListener(ReqBuyDevCard.class, reqBuyDevCardEventListeners.remove(view));
+        view.removeEventListener(ReqChooseLeaders.class, reqChooseLeadersEventListeners.remove(view));
+        view.removeEventListener(ReqChooseResources.class, reqChooseResourcesEventListeners.remove(view));
+        view.removeEventListener(ReqEndTurn.class, reqEndTurnEventListeners.remove(view));
+        view.removeEventListener(ReqJoin.class, reqJoinEventListeners.remove(view));
+        view.removeEventListener(ReqLeaderAction.class, reqLeaderActionEventListeners.remove(view));
+        view.removeEventListener(ReqNewGame.class, reqNewGameEventListeners.remove(view));
+        view.removeEventListener(ReqQuit.class, reqQuitEventListeners.remove(view));
+        view.removeEventListener(ReqSwapShelves.class, reqSwapShelvesEventListeners.remove(view));
+        view.removeEventListener(ReqTakeFromMarket.class, reqTakeFromMarketEventListeners.remove(view));
     }
 
     private void on(View view, ReqQuit event) {
