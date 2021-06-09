@@ -23,7 +23,7 @@ public class DevCardGrid extends StringComponent {
         int levels = reducedDevCardGrid.getLevelsCount();
 
         for (int i = 1; i <= levels; i++) {
-            stringBuilder.append(Cli.slimLine(cellWidth * reducedDevCardGrid.getColorsCount() + 1));
+            stringBuilder.append(("┌" + Cli.slimLineNoNewLine(cellWidth - 1) + "┐ ").repeat(reducedDevCardGrid.getColorsCount())).append("\n");
 
             for (String key : reducedDevCardGrid.getTopCards().keySet()) {
                 int index = i;
@@ -45,17 +45,17 @@ public class DevCardGrid extends StringComponent {
 
             int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
             for (int j = 0; j < length; j++) {
-                stringBuilder.append("│");
                 for (int l = 0; l < topCards.get(i - 1).size(); l++) {
+                    stringBuilder.append("│");
                     if (j < rows.get(l).size())
-                        stringBuilder.append(Cli.left(rows.get(l).get(j), cellWidth - 2)).append(" │");
+                        stringBuilder.append(Cli.left(rows.get(l).get(j), cellWidth - 2)).append(" │ ");
                     else
-                        stringBuilder.append(Cli.left("", cellWidth - 2)).append(" │");
+                        stringBuilder.append(Cli.left("", cellWidth - 2)).append(" │ ");
                 }
                 stringBuilder.append("\n");
             }
+            stringBuilder.append(("└" + Cli.slimLineNoNewLine(cellWidth - 1) + "┘ ").repeat(reducedDevCardGrid.getColorsCount())).append("\n");
         }
-        stringBuilder.append(Cli.slimLine(cellWidth * reducedDevCardGrid.getColorsCount() + 1));
 
         return Cli.center(stringBuilder.toString());
     }
