@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
@@ -92,6 +93,17 @@ public class SetupLeadersState extends CliState {
     public void on(Cli cli, UpdateSetupDone event) {
         super.on(cli, event);
 
+        setNextState(cli);
+    }
+
+    @Override
+    public void on(Cli cli, UpdateCurrentPlayer event) {
+        super.on(cli, event);
+
+        setNextState(cli);
+    }
+
+    private static void setNextState(Cli cli) {
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             cli.setState(new TurnBeforeActionState());
         else
