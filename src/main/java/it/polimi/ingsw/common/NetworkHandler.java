@@ -3,6 +3,7 @@ package it.polimi.ingsw.common;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
+import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.vcevents.*;
 
 import java.io.BufferedReader;
@@ -129,6 +130,7 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     public abstract void run();
 
     public void stop() {
+        send(new ReqGoodbye());
         listening = false;
     }
 
