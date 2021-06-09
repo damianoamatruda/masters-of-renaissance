@@ -24,12 +24,14 @@ public class Cli extends EventDispatcher {
     private static final int width = 179;
     private static final String backValue = " ";
 
+    private volatile boolean running;
+    private volatile boolean ready;
+
     private final View view;
     private Network network;
 
     /** The current state of the interface. */
     private CliState state;
-    private volatile boolean ready;
 
     private final ViewModel viewModel;
 
@@ -141,12 +143,35 @@ public class Cli extends EventDispatcher {
         return String.format("%n%s%n", str);
     } */
 
-    public void start() {
+    public synchronized void start() {
         setState(new SplashState());
-        renderNextState();
+
+        /*
+         * Sets the current state based on the next requested state.
+         * If no state is requested, waits for a request.
+         * While a state is being rendered, requested states aren't applied:
+         * only the last requested state is applied, and only as soon as the current state has finished rendering.
+         */
+        running = true;
+        while (running) {
+            while (!ready) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    ready = true;
+                }
+            }
+            ready = false;
+
+            // out.println();
+            clear();
+            // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
+            state.render(this);
+        }
     }
 
     public void stop() {
+        running = false;
         stopNetwork();
     }
 
@@ -286,29 +311,6 @@ public class Cli extends EventDispatcher {
         this.state = state;
         this.ready = true;
         notifyAll();
-    }
-
-    /**
-     * Sets the current state based on the next requested state.
-     * If no state is requested, waits for a request.
-     * While a state is being rendered, requested states aren't applied:
-     * only the last requested state is applied, and only as soon as the current state has finished rendering.
-     */
-    synchronized void renderNextState() {
-        while (true) {
-            while (!ready) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                }
-            }
-            ready = false;
-
-            // out.println();
-            clear();
-            // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
-            state.render(this);
-        }
     }
 
     void clear() {
