@@ -66,11 +66,11 @@ public class Lobby extends EventDispatcher {
                 }
 
                 /* Resuming routine (observer registrations and state messages) */
-                context.resume(view);
                 view.registerOnModelGameContext(context);
                 context.registerViewToModel(view, nickname);
                 joined.put(view, context);
                 disconnected.remove(nickname);
+                context.resume(view);
             } else {
                 // TODO: Add logger
                 // System.out.printf("Set nickname \"%s\".%n", nickname);
