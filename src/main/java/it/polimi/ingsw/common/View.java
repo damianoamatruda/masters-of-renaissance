@@ -3,55 +3,79 @@ package it.polimi.ingsw.common;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.vcevents.*;
 
-/** Interface defining the 'View' role in the MVC architecture. */
+/**
+ * This class represents the View in the MVC architecture.
+ */
 public class View extends EventDispatcher {
-    private final EventListener<ResQuit> resQuitEventListener = this::on;
-    private final EventListener<UpdateBookedSeats> updateBookedSeatsEventListener = this::on;
-    private final EventListener<UpdateJoinGame> updateJoinGameEventListener = this::on;
-    private final EventListener<ErrNewGame> errNewGameEventListener = this::on;
-    private final EventListener<ErrNickname> errNicknameEventListener = this::on;
-    private final EventListener<ErrAction> errActionEventListener = this::on;
-    private final EventListener<ErrActiveLeaderDiscarded> errActiveLeaderDiscardedEventListener = this::on;
-    private final EventListener<ErrBuyDevCard> errBuyDevCardEventListener = this::on;
-    private final EventListener<ErrCardRequirements> errCardRequirementsEventListener = this::on;
-    private final EventListener<ErrInitialChoice> errInitialChoiceEventListener = this::on;
-    private final EventListener<ErrNoSuchEntity> errNoSuchEntityEventListener = this::on;
-    private final EventListener<ErrObjectNotOwned> errObjectNotOwnedEventListener = this::on;
-    private final EventListener<ErrReplacedTransRecipe> errReplacedTransRecipeEventListener = this::on;
-    private final EventListener<ErrResourceReplacement> errResourceReplacementEventListener = this::on;
-    private final EventListener<ErrResourceTransfer> errResourceTransferEventListener = this::on;
-    private final EventListener<UpdateAction> updateActionEventListener = this::on;
-    private final EventListener<UpdateActionToken> updateActionTokenEventListener = this::on;
-    private final EventListener<UpdateCurrentPlayer> updateCurrentPlayerEventListener = this::on;
-    private final EventListener<UpdateDevCardGrid> updateDevCardGridEventListener = this::on;
-    private final EventListener<UpdateDevCardSlot> updateDevCardSlotEventListener = this::on;
-    private final EventListener<UpdateFaithPoints> updateFaithPointsEventListener = this::on;
-    private final EventListener<UpdateGame> updateGameEventListener = this::on;
-    private final EventListener<UpdateGameEnd> updateGameEndEventListener = this::on;
-    private final EventListener<UpdateLastRound> updateLastRoundEventListener = this::on;
-    private final EventListener<UpdateActivateLeader> updateActivateLeaderEventListener = this::on;
-    private final EventListener<UpdateLeadersHandCount> updateLeadersHandCountEventListener = this::on;
-    private final EventListener<UpdateMarket> updateMarketEventListener = this::on;
-    private final EventListener<UpdatePlayer> updatePlayerEventListener = this::on;
-    private final EventListener<UpdatePlayerStatus> updatePlayerStatusEventListener = this::on;
-    private final EventListener<UpdateResourceContainer> updateResourceContainerEventListener = this::on;
-    private final EventListener<UpdateSetupDone> updateSetupDoneEventListener = this::on;
-    private final EventListener<UpdateVaticanSection> updateVaticanSectionEventListener = this::on;
-    private final EventListener<UpdateVictoryPoints> updateVictoryPointsEventListener = this::on;
-    private final EventListener<UpdateLeadersHand> updateLeadersHandEventListener = this::on;
-    private final EventListener<ReqActivateProduction> reqActivateProductionEventListener = this::on;
-    private final EventListener<ReqBuyDevCard> reqBuyDevCardEventListener = this::on;
-    private final EventListener<ReqChooseLeaders> reqChooseLeadersEventListener = this::on;
-    private final EventListener<ReqChooseResources> reqChooseResourcesEventListener = this::on;
-    private final EventListener<ReqEndTurn> reqEndTurnEventListener = this::on;
-    private final EventListener<ReqJoin> reqJoinEventListener = this::on;
-    private final EventListener<ReqLeaderAction> reqLeaderActionEventListener = this::on;
-    private final EventListener<ReqNewGame> reqNewGameEventListener = this::on;
-    private final EventListener<ReqQuit> reqQuitEventListener = this::on;
-    private final EventListener<ReqSwapShelves> reqSwapShelvesEventListener = this::on;
-    private final EventListener<ReqTakeFromMarket> reqTakeFromMarketEventListener = this::on;
+    private EventListener<ResQuit> resQuitEventListener = event -> {
+    };
+    private EventListener<UpdateBookedSeats> updateBookedSeatsEventListener = event -> {
+    };
+    private EventListener<UpdateJoinGame> updateJoinGameEventListener = event -> {
+    };
+    private EventListener<ErrNewGame> errNewGameEventListener = event -> {
+    };
+    private EventListener<ErrNickname> errNicknameEventListener = event -> {
+    };
+    private EventListener<ErrAction> errActionEventListener = event -> {
+    };
+    private EventListener<ErrActiveLeaderDiscarded> errActiveLeaderDiscardedEventListener = event -> {
+    };
+    private EventListener<ErrBuyDevCard> errBuyDevCardEventListener = event -> {
+    };
+    private EventListener<ErrCardRequirements> errCardRequirementsEventListener = event -> {
+    };
+    private EventListener<ErrInitialChoice> errInitialChoiceEventListener = event -> {
+    };
+    private EventListener<ErrNoSuchEntity> errNoSuchEntityEventListener = event -> {
+    };
+    private EventListener<ErrObjectNotOwned> errObjectNotOwnedEventListener = event -> {
+    };
+    private EventListener<ErrReplacedTransRecipe> errReplacedTransRecipeEventListener = event -> {
+    };
+    private EventListener<ErrResourceReplacement> errResourceReplacementEventListener = event -> {
+    };
+    private EventListener<ErrResourceTransfer> errResourceTransferEventListener = event -> {
+    };
+    private EventListener<UpdateAction> updateActionEventListener = event -> {
+    };
+    private EventListener<UpdateActionToken> updateActionTokenEventListener = event -> {
+    };
+    private EventListener<UpdateCurrentPlayer> updateCurrentPlayerEventListener = event -> {
+    };
+    private EventListener<UpdateDevCardGrid> updateDevCardGridEventListener = event -> {
+    };
+    private EventListener<UpdateDevCardSlot> updateDevCardSlotEventListener = event -> {
+    };
+    private EventListener<UpdateFaithPoints> updateFaithPointsEventListener = event -> {
+    };
+    private EventListener<UpdateGame> updateGameEventListener = event -> {
+    };
+    private EventListener<UpdateGameEnd> updateGameEndEventListener = event -> {
+    };
+    private EventListener<UpdateLastRound> updateLastRoundEventListener = event -> {
+    };
+    private EventListener<UpdateActivateLeader> updateActivateLeaderEventListener = event -> {
+    };
+    private EventListener<UpdateLeadersHandCount> updateLeadersHandCountEventListener = event -> {
+    };
+    private EventListener<UpdateMarket> updateMarketEventListener = event -> {
+    };
+    private EventListener<UpdatePlayer> updatePlayerEventListener = event -> {
+    };
+    private EventListener<UpdatePlayerStatus> updatePlayerStatusEventListener = event -> {
+    };
+    private EventListener<UpdateResourceContainer> updateResourceContainerEventListener = event -> {
+    };
+    private EventListener<UpdateSetupDone> updateSetupDoneEventListener = event -> {
+    };
+    private EventListener<UpdateVaticanSection> updateVaticanSectionEventListener = event -> {
+    };
+    private EventListener<UpdateVictoryPoints> updateVictoryPointsEventListener = event -> {
+    };
+    private EventListener<UpdateLeadersHand> updateLeadersHandEventListener = event -> {
+    };
 
     public void registerOnModelLobby(EventDispatcher lobby) {
         lobby.addEventListener(ResQuit.class, resQuitEventListener);
@@ -145,43 +169,151 @@ public class View extends EventDispatcher {
         player.removeEventListener(UpdateLeadersHand.class, updateLeadersHandEventListener);
     }
 
-    public void registerOnVC(EventDispatcher view) {
-        view.addEventListener(ReqActivateProduction.class, reqActivateProductionEventListener);
-        view.addEventListener(ReqBuyDevCard.class, reqBuyDevCardEventListener);
-        view.addEventListener(ReqChooseLeaders.class, reqChooseLeadersEventListener);
-        view.addEventListener(ReqChooseResources.class, reqChooseResourcesEventListener);
-        view.addEventListener(ReqEndTurn.class, reqEndTurnEventListener);
-        view.addEventListener(ReqJoin.class, reqJoinEventListener);
-        view.addEventListener(ReqLeaderAction.class, reqLeaderActionEventListener);
-        view.addEventListener(ReqNewGame.class, reqNewGameEventListener);
-        view.addEventListener(ReqQuit.class, reqQuitEventListener);
-        view.addEventListener(ReqSwapShelves.class, reqSwapShelvesEventListener);
-        view.addEventListener(ReqTakeFromMarket.class, reqTakeFromMarketEventListener);
+    public void setResQuitEventListener(EventListener<ResQuit> resQuitEventListener) {
+        this.resQuitEventListener = event -> on(event, resQuitEventListener);
     }
 
-    public void unregisterOnVC(EventDispatcher view) {
-        view.removeEventListener(ReqActivateProduction.class, reqActivateProductionEventListener);
-        view.removeEventListener(ReqBuyDevCard.class, reqBuyDevCardEventListener);
-        view.removeEventListener(ReqChooseLeaders.class, reqChooseLeadersEventListener);
-        view.removeEventListener(ReqChooseResources.class, reqChooseResourcesEventListener);
-        view.removeEventListener(ReqEndTurn.class, reqEndTurnEventListener);
-        view.removeEventListener(ReqJoin.class, reqJoinEventListener);
-        view.removeEventListener(ReqLeaderAction.class, reqLeaderActionEventListener);
-        view.removeEventListener(ReqNewGame.class, reqNewGameEventListener);
-        view.removeEventListener(ReqQuit.class, reqQuitEventListener);
-        view.removeEventListener(ReqSwapShelves.class, reqSwapShelvesEventListener);
-        view.removeEventListener(ReqTakeFromMarket.class, reqTakeFromMarketEventListener);
+    public void setUpdateBookedSeatsEventListener(EventListener<UpdateBookedSeats> updateBookedSeatsEventListener) {
+        this.updateBookedSeatsEventListener = event -> on(event, updateBookedSeatsEventListener);
     }
 
-    private void on(ViewEvent viewEvent) {
+    public void setUpdateJoinGameEventListener(EventListener<UpdateJoinGame> updateJoinGameEventListener) {
+        this.updateJoinGameEventListener = event -> on(event, updateJoinGameEventListener);
+    }
+
+    public void setErrNewGameEventListener(EventListener<ErrNewGame> errNewGameEventListener) {
+        this.errNewGameEventListener = event -> on(event, errNewGameEventListener);
+    }
+
+    public void setErrNicknameEventListener(EventListener<ErrNickname> errNicknameEventListener) {
+        this.errNicknameEventListener = event -> on(event, errNicknameEventListener);
+    }
+
+    public void setErrActionEventListener(EventListener<ErrAction> errActionEventListener) {
+        this.errActionEventListener = event -> on(event, errActionEventListener);
+    }
+
+    public void setErrActiveLeaderDiscardedEventListener(EventListener<ErrActiveLeaderDiscarded> errActiveLeaderDiscardedEventListener) {
+        this.errActiveLeaderDiscardedEventListener = event -> on(event, errActiveLeaderDiscardedEventListener);
+    }
+
+    public void setErrBuyDevCardEventListener(EventListener<ErrBuyDevCard> errBuyDevCardEventListener) {
+        this.errBuyDevCardEventListener = event -> on(event, errBuyDevCardEventListener);
+    }
+
+    public void setErrCardRequirementsEventListener(EventListener<ErrCardRequirements> errCardRequirementsEventListener) {
+        this.errCardRequirementsEventListener = event -> on(event, errCardRequirementsEventListener);
+    }
+
+    public void setErrInitialChoiceEventListener(EventListener<ErrInitialChoice> errInitialChoiceEventListener) {
+        this.errInitialChoiceEventListener = event -> on(event, errInitialChoiceEventListener);
+    }
+
+    public void setErrNoSuchEntityEventListener(EventListener<ErrNoSuchEntity> errNoSuchEntityEventListener) {
+        this.errNoSuchEntityEventListener = event -> on(event, errNoSuchEntityEventListener);
+    }
+
+    public void setErrObjectNotOwnedEventListener(EventListener<ErrObjectNotOwned> errObjectNotOwnedEventListener) {
+        this.errObjectNotOwnedEventListener = event -> on(event, errObjectNotOwnedEventListener);
+    }
+
+    public void setErrReplacedTransRecipeEventListener(EventListener<ErrReplacedTransRecipe> errReplacedTransRecipeEventListener) {
+        this.errReplacedTransRecipeEventListener = event -> on(event, errReplacedTransRecipeEventListener);
+    }
+
+    public void setErrResourceReplacementEventListener(EventListener<ErrResourceReplacement> errResourceReplacementEventListener) {
+        this.errResourceReplacementEventListener = event -> on(event, errResourceReplacementEventListener);
+    }
+
+    public void setErrResourceTransferEventListener(EventListener<ErrResourceTransfer> errResourceTransferEventListener) {
+        this.errResourceTransferEventListener = event -> on(event, errResourceTransferEventListener);
+    }
+
+    public void setUpdateActionEventListener(EventListener<UpdateAction> updateActionEventListener) {
+        this.updateActionEventListener = event -> on(event, updateActionEventListener);
+    }
+
+    public void setUpdateActionTokenEventListener(EventListener<UpdateActionToken> updateActionTokenEventListener) {
+        this.updateActionTokenEventListener = event -> on(event, updateActionTokenEventListener);
+    }
+
+    public void setUpdateCurrentPlayerEventListener(EventListener<UpdateCurrentPlayer> updateCurrentPlayerEventListener) {
+        this.updateCurrentPlayerEventListener = event -> on(event, updateCurrentPlayerEventListener);
+    }
+
+    public void setUpdateDevCardGridEventListener(EventListener<UpdateDevCardGrid> updateDevCardGridEventListener) {
+        this.updateDevCardGridEventListener = event -> on(event, updateDevCardGridEventListener);
+    }
+
+    public void setUpdateDevCardSlotEventListener(EventListener<UpdateDevCardSlot> updateDevCardSlotEventListener) {
+        this.updateDevCardSlotEventListener = event -> on(event, updateDevCardSlotEventListener);
+    }
+
+    public void setUpdateFaithPointsEventListener(EventListener<UpdateFaithPoints> updateFaithPointsEventListener) {
+        this.updateFaithPointsEventListener = event -> on(event, updateFaithPointsEventListener);
+    }
+
+    public void setUpdateGameEventListener(EventListener<UpdateGame> updateGameEventListener) {
+        this.updateGameEventListener = event -> on(event, updateGameEventListener);
+    }
+
+    public void setUpdateGameEndEventListener(EventListener<UpdateGameEnd> updateGameEndEventListener) {
+        this.updateGameEndEventListener = event -> on(event, updateGameEndEventListener);
+    }
+
+    public void setUpdateLastRoundEventListener(EventListener<UpdateLastRound> updateLastRoundEventListener) {
+        this.updateLastRoundEventListener = event -> on(event, updateLastRoundEventListener);
+    }
+
+    public void setUpdateActivateLeaderEventListener(EventListener<UpdateActivateLeader> updateActivateLeaderEventListener) {
+        this.updateActivateLeaderEventListener = event -> on(event, updateActivateLeaderEventListener);
+    }
+
+    public void setUpdateLeadersHandCountEventListener(EventListener<UpdateLeadersHandCount> updateLeadersHandCountEventListener) {
+        this.updateLeadersHandCountEventListener = event -> on(event, updateLeadersHandCountEventListener);
+    }
+
+    public void setUpdateMarketEventListener(EventListener<UpdateMarket> updateMarketEventListener) {
+        this.updateMarketEventListener = event -> on(event, updateMarketEventListener);
+    }
+
+    public void setUpdatePlayerEventListener(EventListener<UpdatePlayer> updatePlayerEventListener) {
+        this.updatePlayerEventListener = event -> on(event, updatePlayerEventListener);
+    }
+
+    public void setUpdatePlayerStatusEventListener(EventListener<UpdatePlayerStatus> updatePlayerStatusEventListener) {
+        this.updatePlayerStatusEventListener = event -> on(event, updatePlayerStatusEventListener);
+    }
+
+    public void setUpdateResourceContainerEventListener(EventListener<UpdateResourceContainer> updateResourceContainerEventListener) {
+        this.updateResourceContainerEventListener = event -> on(event, updateResourceContainerEventListener);
+    }
+
+    public void setUpdateSetupDoneEventListener(EventListener<UpdateSetupDone> updateSetupDoneEventListener) {
+        this.updateSetupDoneEventListener = event -> on(event, updateSetupDoneEventListener);
+    }
+
+    public void setUpdateVaticanSectionEventListener(EventListener<UpdateVaticanSection> updateVaticanSectionEventListener) {
+        this.updateVaticanSectionEventListener = event -> on(event, updateVaticanSectionEventListener);
+    }
+
+    public void setUpdateVictoryPointsEventListener(EventListener<UpdateVictoryPoints> updateVictoryPointsEventListener) {
+        this.updateVictoryPointsEventListener = event -> on(event, updateVictoryPointsEventListener);
+    }
+
+    public void setUpdateLeadersHandEventListener(EventListener<UpdateLeadersHand> updateLeadersHandEventListener) {
+        this.updateLeadersHandEventListener = event -> on(event, updateLeadersHandEventListener);
+    }
+
+    private <T extends ViewEvent> void on(T viewEvent, EventListener<T> listener) {
         // TODO: Add logger
         System.out.printf("%s, isPresent: %s, equals: %s%n", viewEvent, viewEvent.getView().isPresent(), viewEvent.getView().isPresent() && viewEvent.getView().get().equals(this));
         if (viewEvent.getView().isPresent() && !viewEvent.getView().get().equals(this))
             return;
-        dispatch(viewEvent);
+        listener.on(viewEvent);
     }
 
-    private void on(Event event) {
-        dispatch(event);
+    private <T extends Event> void on(T event, EventListener<T> listener) {
+        listener.on(event);
     }
 }

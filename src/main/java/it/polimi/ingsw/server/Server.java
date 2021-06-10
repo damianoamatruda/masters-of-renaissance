@@ -2,22 +2,18 @@ package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.common.Network;
-import it.polimi.ingsw.common.NetworkHandler;
-import it.polimi.ingsw.common.NetworkProtocol;
-import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.EventListener;
+import it.polimi.ingsw.common.*;
 import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
 import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
-import it.polimi.ingsw.common.events.netevents.*;
+import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
@@ -31,8 +27,9 @@ public class Server implements Network {
     private final ExecutorService executor;
     private final NetworkProtocol protocol;
     private ServerSocket serverSocket;
-    // private final Map<Socket, View> views;
     private volatile boolean listening;
+    private final Map<NetworkHandler, View> virtualViews;
+    private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
 
     public Server(int port, InputStream gameConfigStream) {
         this.port = port;
@@ -41,6 +38,12 @@ public class Server implements Network {
         this.protocol = new NetworkProtocol();
         this.serverSocket = null;
         this.listening = false;
+        this.virtualViews = new HashMap<>();
+        this.vcEventListeners = new HashMap<>();
+    }
+
+    public Server(int port) {
+        this(port, null);
     }
 
     public static void main(String[] args) {
@@ -106,29 +109,59 @@ public class Server implements Network {
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
+                // TODO: Add logger
                 // System.err.println("Couldn't listen for a connection.");
                 // System.err.println(e.getMessage());
                 continue;
             }
 
             NetworkHandler networkHandler = new ServerClientHandler(socket, protocol);
-
-            networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
-            networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
-
             View virtualView = new View();
-            virtualView.registerOnModelLobby(model); // TODO: Unregister when done
-            virtualView.registerOnVC(networkHandler);
+            virtualView.setResQuitEventListener(networkHandler::send);
+            virtualView.setUpdateBookedSeatsEventListener(networkHandler::send);
+            virtualView.setUpdateJoinGameEventListener(networkHandler::send);
+            virtualView.setErrNewGameEventListener(networkHandler::send);
+            virtualView.setErrNicknameEventListener(networkHandler::send);
+            virtualView.setErrActionEventListener(networkHandler::send);
+            virtualView.setErrActiveLeaderDiscardedEventListener(networkHandler::send);
+            virtualView.setErrBuyDevCardEventListener(networkHandler::send);
+            virtualView.setErrCardRequirementsEventListener(networkHandler::send);
+            virtualView.setErrInitialChoiceEventListener(networkHandler::send);
+            virtualView.setErrNoSuchEntityEventListener(networkHandler::send);
+            virtualView.setErrObjectNotOwnedEventListener(networkHandler::send);
+            virtualView.setErrReplacedTransRecipeEventListener(networkHandler::send);
+            virtualView.setErrResourceReplacementEventListener(networkHandler::send);
+            virtualView.setErrResourceTransferEventListener(networkHandler::send);
+            virtualView.setUpdateActionEventListener(networkHandler::send);
+            virtualView.setUpdateActionTokenEventListener(networkHandler::send);
+            virtualView.setUpdateCurrentPlayerEventListener(networkHandler::send);
+            virtualView.setUpdateDevCardGridEventListener(networkHandler::send);
+            virtualView.setUpdateDevCardSlotEventListener(networkHandler::send);
+            virtualView.setUpdateFaithPointsEventListener(networkHandler::send);
+            virtualView.setUpdateGameEventListener(networkHandler::send);
+            virtualView.setUpdateGameEndEventListener(networkHandler::send);
+            virtualView.setUpdateLastRoundEventListener(networkHandler::send);
+            virtualView.setUpdateActivateLeaderEventListener(networkHandler::send);
+            virtualView.setUpdateLeadersHandCountEventListener(networkHandler::send);
+            virtualView.setUpdateMarketEventListener(networkHandler::send);
+            virtualView.setUpdatePlayerEventListener(networkHandler::send);
+            virtualView.setUpdatePlayerStatusEventListener(networkHandler::send);
+            virtualView.setUpdateResourceContainerEventListener(networkHandler::send);
+            virtualView.setUpdateSetupDoneEventListener(networkHandler::send);
+            virtualView.setUpdateVaticanSectionEventListener(networkHandler::send);
+            virtualView.setUpdateVictoryPointsEventListener(networkHandler::send);
+            virtualView.setUpdateLeadersHandEventListener(networkHandler::send);
+            networkHandler.addEventListener(VCEvent.class, vcEventListeners.computeIfAbsent(networkHandler, n -> virtualView::dispatch));
+
+            virtualView.registerOnModelLobby(model);
             controller.registerOnVC(virtualView);
 
-            networkHandler.registerOnModelLobby(virtualView);
-            networkHandler.registerOnModelGameContext(virtualView);
-            networkHandler.registerOnModelGame(virtualView);
-            networkHandler.registerOnModelPlayer(virtualView);
+            networkHandler.setOnStop(() -> {
+                View virtualView1 = virtualViews.remove(networkHandler);
+                virtualView1.unregisterOnModelLobby(model);
+                controller.registerOnVC(virtualView1);
+                networkHandler.removeEventListener(VCEvent.class, vcEventListeners.remove(networkHandler));
+            });
 
             executor.submit(networkHandler);
         }
@@ -138,28 +171,5 @@ public class Server implements Network {
     public void stop() {
         executor.shutdownNow();
         listening = false;
-    }
-
-    private void on(ReqWelcome event, NetworkHandler networkHandler) {
-        networkHandler.send(new ResWelcome());
-    }
-
-    private void on(ResWelcome event, NetworkHandler networkHandler) {
-    }
-
-    private void on(ReqHeartbeat event, NetworkHandler networkHandler) {
-        networkHandler.send(new ResHeartbeat());
-    }
-
-    private void on(ResHeartbeat event, NetworkHandler networkHandler) {
-    }
-
-    private void on(ReqGoodbye event, NetworkHandler networkHandler) {
-        networkHandler.send(new ResGoodbye());
-        networkHandler.stop();
-    }
-
-    private void on(ResGoodbye event, NetworkHandler networkHandler) {
-        networkHandler.stop();
     }
 }

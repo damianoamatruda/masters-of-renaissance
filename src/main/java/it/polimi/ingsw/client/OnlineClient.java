@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.common.Network;
-import it.polimi.ingsw.common.NetworkHandler;
-import it.polimi.ingsw.common.NetworkProtocol;
-import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.netevents.*;
+import it.polimi.ingsw.common.*;
+import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -19,6 +16,7 @@ public class OnlineClient implements Network {
     private final NetworkProtocol protocol;
     private Socket socket;
     private NetworkHandler networkHandler;
+    private EventListener<VCEvent> vcEventListener;
 
     public OnlineClient(View view, String host, int port) {
         this.view = view;
@@ -28,6 +26,7 @@ public class OnlineClient implements Network {
         this.protocol = new NetworkProtocol();
         this.socket = null;
         this.networkHandler = null;
+        this.vcEventListener = null;
     }
 
     public void start() throws IOException {
@@ -35,19 +34,19 @@ public class OnlineClient implements Network {
 
         networkHandler = new ClientServerHandler(socket, protocol);
 
-        networkHandler.addEventListener(ReqGoodbye.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ReqHeartbeat.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ReqWelcome.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ResGoodbye.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ResHeartbeat.class, event -> on(event, networkHandler));
-        networkHandler.addEventListener(ResWelcome.class, event -> on(event, networkHandler));
-
-        networkHandler.registerOnVC(view);
-
         view.registerOnModelLobby(networkHandler);
         view.registerOnModelGameContext(networkHandler);
         view.registerOnModelGame(networkHandler);
         view.registerOnModelPlayer(networkHandler);
+        view.addEventListener(VCEvent.class, vcEventListener = networkHandler::send);
+
+        networkHandler.setOnStop(() -> {
+            view.unregisterOnModelLobby(networkHandler);
+            view.unregisterOnModelGameContext(networkHandler);
+            view.unregisterOnModelGame(networkHandler);
+            view.unregisterOnModelPlayer(networkHandler);
+            stop();
+        });
 
         executor.submit(networkHandler);
     }
@@ -64,35 +63,13 @@ public class OnlineClient implements Network {
         }
 
         if (networkHandler != null) {
-            view.unregisterOnModelLobby(networkHandler);
-            view.unregisterOnModelGameContext(networkHandler);
-            view.unregisterOnModelGame(networkHandler);
-            view.unregisterOnModelPlayer(networkHandler);
             networkHandler.stop();
             networkHandler = null;
         }
-    }
 
-    private void on(ReqWelcome event, NetworkHandler networkHandler) {
-        networkHandler.send(new ResWelcome());
-    }
-
-    private void on(ResWelcome event, NetworkHandler networkHandler) {
-    }
-
-    private void on(ReqHeartbeat event, NetworkHandler networkHandler) {
-        networkHandler.send(new ResHeartbeat());
-    }
-
-    private void on(ResHeartbeat event, NetworkHandler networkHandler) {
-    }
-
-    private void on(ReqGoodbye event, NetworkHandler networkHandler) {
-        networkHandler.send(new ResGoodbye());
-        stop();
-    }
-
-    private void on(ResGoodbye event, NetworkHandler networkHandler) {
-        stop();
+        if (vcEventListener != null) {
+            view.removeEventListener(VCEvent.class, vcEventListener);
+            vcEventListener = null;
+        }
     }
 }

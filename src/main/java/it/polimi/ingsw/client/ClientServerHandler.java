@@ -58,5 +58,6 @@ public class ClientServerHandler extends NetworkHandler {
             this.out = null;
             this.in = null;
         }
+        stop();
     }
 }

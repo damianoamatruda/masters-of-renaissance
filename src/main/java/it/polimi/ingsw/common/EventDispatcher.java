@@ -14,13 +14,13 @@ public class EventDispatcher {
         listeners = new HashMap<>();
     }
 
-    public <T extends Event> void addEventListener(Class<T> eventType, EventListener<T> listener) {
+    public <T extends Event> void addEventListener(Class<T> eventType, EventListener<? super T> listener) {
         if (!listeners.containsKey(eventType))
             listeners.put(eventType, new HashSet<>());
         listeners.get(eventType).add(listener);
     }
 
-    public <T extends Event> void removeEventListener(Class<T> eventType, EventListener<T> listener) {
+    public <T extends Event> void removeEventListener(Class<T> eventType, EventListener<? super T> listener) {
         if (!listeners.containsKey(eventType))
             return;
         listeners.get(eventType).remove(listener);
@@ -28,8 +28,8 @@ public class EventDispatcher {
 
     @SuppressWarnings("unchecked")
     public <T extends Event> void dispatch(T event) {
-        if (!listeners.containsKey(event.getClass()))
-            return;
-        listeners.get(event.getClass()).forEach(listener -> ((EventListener<T>) listener).on(event));
+        for (Class<? extends Event> eventType : listeners.keySet())
+            if (eventType.isAssignableFrom(event.getClass()))
+                listeners.get(eventType).forEach(listener -> ((EventListener<? super T>) listener).on(event));
     }
 }
