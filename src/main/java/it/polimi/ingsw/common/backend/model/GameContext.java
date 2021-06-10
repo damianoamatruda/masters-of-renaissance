@@ -252,8 +252,8 @@ public class GameContext extends EventDispatcher {
                 dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             } catch (CardRequirementsNotMetException e) {
                 dispatch(new ErrCardRequirements(view,
-                        e.getMissingDevCards().stream().map(Entry::reduce).toList(),
-                        e.getMissingResources().entrySet().stream()
+                        e.getMissingDevCards().orElse(new HashSet<>()).stream().map(Entry::reduce).toList(),
+                        e.getMissingResources().orElse(new HashMap<>()).entrySet().stream()
                                 .collect(Collectors.toMap(entry -> entry.getKey().getName(), entry -> entry.getValue()))));
             }
         }
@@ -411,8 +411,8 @@ public class GameContext extends EventDispatcher {
                 return;
             } catch (CardRequirementsNotMetException e) {
                 dispatch(new ErrCardRequirements(view,
-                        e.getMissingDevCards().stream().map(Entry::reduce).toList(),
-                        e.getMissingResources().entrySet().stream()
+                        e.getMissingDevCards().orElse(new HashSet<>()).stream().map(Entry::reduce).toList(),
+                        e.getMissingResources().orElse(new HashMap<>()).entrySet().stream()
                                 .collect(Collectors.toMap(entry -> entry.getKey().getName(), entry -> entry.getValue()))));
                 return;
             } catch (IllegalCardDepositException e) {

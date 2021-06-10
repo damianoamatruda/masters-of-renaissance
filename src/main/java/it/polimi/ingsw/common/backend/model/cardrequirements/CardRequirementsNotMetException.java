@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.cardrequirements;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import it.polimi.ingsw.common.backend.model.cardrequirements.DevCardRequirement.Entry;
@@ -39,14 +40,14 @@ public class CardRequirementsNotMetException extends Exception {
     /**
      * @return the missingResources
      */
-    public Map<ResourceType, Integer> getMissingResources() {
-        return missingResources;
+    public Optional<Map<ResourceType, Integer>> getMissingResources() {
+        return Optional.ofNullable(missingResources);
     }
 
     /**
      * @return the missingDevCards
      */
-    public Set<Entry> getMissingDevCards() {
-        return missingDevCards;
+    public Optional<Set<Entry>> getMissingDevCards() {
+        return Optional.ofNullable(missingDevCards);
     }
 }
