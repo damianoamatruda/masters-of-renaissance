@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
-
-<?import javafx.geometry.Insets?>
 <?import it.polimi.ingsw.client.gui.components.SButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <StackPane xmlns:fx="http://javafx.com/fxml"
            xmlns="http://javafx.com/javafx"
            fx:controller="it.polimi.ingsw.client.gui.PauseMenuController"
@@ -29,7 +28,7 @@
             <Insets top="8.0"/>
           </VBox.margin>
         </SButton>
-        <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit Game">
+        <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit to Title">
           <VBox.margin>
             <Insets top="8.0"/>
           </VBox.margin>
