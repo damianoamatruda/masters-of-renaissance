@@ -1,8 +1,11 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Options;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -15,9 +18,17 @@ public class MainMenuController extends GuiController {
     private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
 
     @FXML private StackPane backStackPane;
+    @FXML private BorderPane bpane;
+    
+    private NumberBinding maxScale;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        bpane.scaleXProperty().bind(maxScale);
+        bpane.scaleYProperty().bind(maxScale);
+        
         Gui gui = Gui.getInstance();
 
         if (gui.getMusicPlayer().isEmpty()) {
@@ -53,6 +64,9 @@ public class MainMenuController extends GuiController {
         Options options = new Options();
         options.setConfigContainer(true);
         backStackPane.getChildren().add(options);
+
+        options.scaleXProperty().bind(maxScale);
+        options.scaleYProperty().bind(maxScale);
     }
 
     @FXML

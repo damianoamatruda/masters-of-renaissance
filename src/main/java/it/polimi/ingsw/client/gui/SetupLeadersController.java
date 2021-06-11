@@ -7,11 +7,14 @@ import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
@@ -25,12 +28,18 @@ public class SetupLeadersController extends GuiController {
     private final List<LeaderCard> selection = new ArrayList<>();
     
     @FXML private StackPane backStackPane;
+    @FXML private BorderPane bpane;
     @FXML private HBox leadersContainer;
     @FXML private Button choiceButton;
     @FXML private Title titleComponent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                backStackPane.heightProperty().divide(Gui.minHeight));
+        bpane.scaleXProperty().bind(maxScale);
+        bpane.scaleYProperty().bind(maxScale);
+
         Gui gui = Gui.getInstance();
         ViewModel vm = gui.getViewModel();
 

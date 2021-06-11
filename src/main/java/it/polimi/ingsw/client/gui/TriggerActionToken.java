@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -15,13 +17,18 @@ import java.util.ResourceBundle;
 
 public class TriggerActionToken extends GuiController {
     @FXML private StackPane backStackPane;
-    @FXML ImageView token;
-    @FXML Text message;
-    @FXML Button next;
-    @FXML BorderPane canvas;
+    @FXML private BorderPane canvas;
+    @FXML private ImageView token;
+    @FXML private Text message;
+    @FXML private Button next;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                backStackPane.heightProperty().divide(Gui.minHeight));
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
+
         Gui gui = Gui.getInstance();
         next.setOnAction(actionEvent -> {
             if(!gui.getViewModel().isGameEnded())

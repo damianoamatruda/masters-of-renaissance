@@ -8,7 +8,7 @@
 <StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="it.polimi.ingsw.client.gui.MainMenuController"
   stylesheets="@index.css">
-  <BorderPane>
+  <BorderPane fx:id="bpane">
     <center>
       <VBox alignment="CENTER">
         <VBox alignment="CENTER">

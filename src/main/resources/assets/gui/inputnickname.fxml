@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.InputNicknameController" stylesheets="@index.css">
-  <BorderPane>
+  <BorderPane fx:id="bpane">
     <center>
       <VBox alignment="CENTER">
         <VBox alignment="CENTER">

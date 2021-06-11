@@ -3,18 +3,29 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EndgameController extends GuiController {
+    @FXML private StackPane backStackPane;
+    @FXML private BorderPane bpane;
     @FXML private Text outcome;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
+
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        bpane.scaleXProperty().bind(maxScale);
+        bpane.scaleYProperty().bind(maxScale);
 
         ViewModel viewModel = Gui.getInstance().getViewModel();
         

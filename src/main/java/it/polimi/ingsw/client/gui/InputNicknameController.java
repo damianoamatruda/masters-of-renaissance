@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
@@ -7,16 +10,28 @@ import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 public class InputNicknameController extends GuiController {
     @FXML private StackPane backStackPane;
+    @FXML private BorderPane bpane;
     @FXML private Title titleComponent;
     @FXML private TextField nickname;
     private String nicknameValue;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        bpane.scaleXProperty().bind(maxScale);
+        bpane.scaleYProperty().bind(maxScale);
+    }
+    
     @FXML
     private void handleNicknameInput() {
         nicknameValue = nickname.getText();

@@ -2,16 +2,28 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Options;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
+import java.util.ResourceBundle;
 
 public class PauseMenuController extends GuiController {
     public BorderPane options;
     @FXML private StackPane backStackPane;
+    @FXML private BorderPane bpane;
     private URL lastScene;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        bpane.scaleXProperty().bind(maxScale);
+        bpane.scaleYProperty().bind(maxScale);
+    }
 
     @FXML
     private void handleBack() {

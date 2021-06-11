@@ -11,7 +11,7 @@
            stylesheets="@index.css" id="body"
            fx:id="backStackPane">
 
-  <BorderPane>
+  <BorderPane fx:id="bpane">
     <center>
       <VBox alignment="CENTER">
         <VBox alignment="CENTER">

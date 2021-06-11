@@ -10,7 +10,7 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="it.polimi.ingsw.client.gui.EndgameController"
            stylesheets="@index.css">
-  <BorderPane>
+  <BorderPane fx:id="bpane">
     <center>
       <VBox alignment="CENTER">
         <VBox.margin>

@@ -8,6 +8,8 @@ import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -37,6 +39,11 @@ public abstract class PlaygroundController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
+
         Gui gui = Gui.getInstance();
 
         ViewModel vm = gui.getViewModel();

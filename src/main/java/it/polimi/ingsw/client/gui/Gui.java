@@ -27,8 +27,8 @@ import java.util.function.Consumer;
  */
 public class Gui extends Application {
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
-    private static final double minWidth = 1280;
-    private static final double minHeight = 780;
+    static final double minWidth = 1280;
+    static final double minHeight = 780;
     private static final String title = "Masters of Renaissance";
 
     private static Gui instance = null;

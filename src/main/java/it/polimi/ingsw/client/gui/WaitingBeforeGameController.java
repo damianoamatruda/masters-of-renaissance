@@ -1,26 +1,42 @@
 package it.polimi.ingsw.client.gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class WaitingBeforeGameController extends GuiController {
     @FXML private StackPane backStackPane;
+    @FXML private BorderPane bpane;
     @FXML private Text bookedSeats;
     @FXML private ToggleGroup group;
     @FXML private VBox canPrepare;
+    
     private boolean youCanPrepare;
 
     public WaitingBeforeGameController() {
         youCanPrepare = false;
+    }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        bpane.scaleXProperty().bind(maxScale);
+        bpane.scaleYProperty().bind(maxScale);
     }
 
     public void setBookedSeats(int bookedSeatsValue) {

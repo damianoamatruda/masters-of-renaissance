@@ -9,7 +9,8 @@ import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
-import javafx.css.PseudoClass;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -28,18 +29,22 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class SetupResourcesController extends GuiController {
-    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private List<ReducedResourceType> choosableResources;
     @FXML private StackPane backStackPane;
+    @FXML private BorderPane bpane;
     @FXML private HBox resourceTypesContainer;
     @FXML private Warehouse warehouse;
     @FXML private Button choiceButton;
     @FXML private Title titleComponent;
-    @FXML private BorderPane window;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                backStackPane.heightProperty().divide(Gui.minHeight));
+        bpane.scaleXProperty().bind(maxScale);
+        bpane.scaleYProperty().bind(maxScale);
+
         Gui gui = Gui.getInstance();
         ViewModel vm = gui.getViewModel();
 
@@ -125,7 +130,7 @@ public class SetupResourcesController extends GuiController {
                 }
         ));
 
-        this.window.setOnDragOver((event) -> {
+        this.bpane.setOnDragOver((event) -> {
                 Dragboard db = event.getDragboard();
                 if (db.hasImage()) {
                     event.acceptTransferModes(TransferMode.ANY);
@@ -133,7 +138,7 @@ public class SetupResourcesController extends GuiController {
                 event.consume();
             }
         );
-        this.window.setOnDragDropped((event) -> {
+        this.bpane.setOnDragDropped((event) -> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 try {

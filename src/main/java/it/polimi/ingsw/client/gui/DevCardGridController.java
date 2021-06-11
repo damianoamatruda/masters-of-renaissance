@@ -7,6 +7,8 @@ import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,6 +52,10 @@ public class DevCardGridController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
+                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
         /*Image backBGImage = new Image(
             Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
 
@@ -75,12 +81,7 @@ public class DevCardGridController extends GuiController {
         // containersBox.setBorder(new Border(new BorderStroke(Color.RED,
         //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        // doesn't actually do anything about the layoutBounds issue
-        Group g = new Group(devCardGrid);
-        g.setScaleX(0.9);
-        g.setScaleY(0.9);
-
-        devCardGridPane.getChildren().add(g);
+        devCardGridPane.getChildren().add(devCardGrid);
 
         devSlotChoicePicker.getItems().addAll(List.of(0, 1, 2));
 
