@@ -24,7 +24,6 @@ public class OnlineClient implements Network {
         this.networkHandler.setOnClose(() -> {
             view.unregisterOnModelLobby(networkHandler);
             view.unregisterOnModelGameContext(networkHandler);
-            view.unregisterOnModelPlayer(networkHandler);
             try {
                 close();
             } catch (IOException e) {
@@ -39,7 +38,6 @@ public class OnlineClient implements Network {
     public void open() {
         view.registerOnModelLobby(networkHandler);
         view.registerOnModelGameContext(networkHandler);
-        view.registerOnModelPlayer(networkHandler);
         view.addEventListener(VCEvent.class, vcEventListener = networkHandler::send);
 
         executor.submit(networkHandler);

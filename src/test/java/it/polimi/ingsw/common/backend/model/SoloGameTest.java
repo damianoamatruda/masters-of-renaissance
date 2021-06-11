@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.DepotLeader;
@@ -93,7 +94,7 @@ public class SoloGameTest {
     @Test
     void discardActiveDevCard() throws IllegalArgumentException, CardRequirementsNotMetException {
         player.getLeaders().get(0).activate(player);
-        assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
+        assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(new View(), game, player.getLeaders().get(0)));
     }
 
     /**

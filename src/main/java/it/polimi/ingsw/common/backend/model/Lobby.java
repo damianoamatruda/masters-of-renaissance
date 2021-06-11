@@ -65,10 +65,9 @@ public class Lobby extends EventDispatcher {
 
             /* Resuming routine (observer registrations and state messages) */
             view.registerOnModelGameContext(context);
-            context.registerViewOnModelPlayer(view, nickname);
             joined.put(view, context);
             disconnected.remove(nickname);
-            context.resume(view);
+            context.dispatchResumeStates(view, nickname);
         } else {
             // TODO: Add logger
             // System.out.printf("Set nickname \"%s\".%n", nickname);
@@ -127,7 +126,6 @@ public class Lobby extends EventDispatcher {
             GameContext context = joined.get(view);
             if (context != null) {
                 view.unregisterOnModelGameContext(context);
-                context.unregisterViewOnModelPlayer(view, nickname);
 
                 try {
                     context.setActive(nickname, false);
@@ -172,10 +170,10 @@ public class Lobby extends EventDispatcher {
         GameContext context = new GameContext(newGame, gameFactory);
         waiting.subList(0, newGamePlayersCount).forEach(view -> {
             view.registerOnModelGameContext(context);
-            context.registerViewOnModelPlayer(view, nicknames.get(view));
             joined.put(view, context);
         });
-        context.start();
+        context.dispatchStartPublicStates();
+        waiting.subList(0, newGamePlayersCount).forEach(view -> context.dispatchStartPrivateStates(view, nicknames.get(view)));
 
         // TODO: Add logger
         // System.out.printf("started context, waiting list %d\n", waiting.size());

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.common.backend.model.leadercards.DepotLeader;
@@ -117,7 +118,7 @@ public class PlayerTest {
     void discardLeaderTest(int marker) throws ActiveLeaderDiscardException {
         player.incrementFaithPoints(game, marker);
 
-        player.discardLeader(game, player.getLeaders().get(0));
+        player.discardLeader(new View(), game, player.getLeaders().get(0));
         assertEquals(marker + 1, player.getFaithPoints());
 
     }
@@ -132,7 +133,7 @@ public class PlayerTest {
     void invalidLeaderDiscard() throws IllegalArgumentException, CardRequirementsNotMetException {
         player.getLeaders().get(0).activate(player);
 
-        assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(game, player.getLeaders().get(0)));
+        assertThrows(ActiveLeaderDiscardException.class, () -> player.discardLeader(new View(), game, player.getLeaders().get(0)));
 
     }
 

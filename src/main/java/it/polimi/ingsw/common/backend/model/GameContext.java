@@ -50,15 +50,7 @@ public class GameContext extends EventDispatcher {
         this.mandatoryActionDone = false;
     }
 
-    public void registerViewOnModelPlayer(View view, String nickname) {
-        view.registerOnModelPlayer(getPlayerByNickname(nickname));
-    }
-
-    public void unregisterViewOnModelPlayer(View view, String nickname) {
-        view.unregisterOnModelPlayer(getPlayerByNickname(nickname));
-    }
-
-    public void start() {
+    public void dispatchStartPublicStates() {
         // TODO: Add logger
         // System.out.println("context.start, players:");
         // for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
@@ -68,13 +60,18 @@ public class GameContext extends EventDispatcher {
         game.dispatchState();
         game.getMarket().dispatchInitialState();
         game.getDevCardGrid().dispatchInitialState();
-        game.getPlayers().forEach(Player::dispatchState);
+        game.getPlayers().forEach(Player::dispatchPublicState);
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
-    public void resume(View view) {
+    public void dispatchStartPrivateStates(View view, String nickname) {
+        getPlayerByNickname(nickname).dispatchPrivateState(view);
+    }
+
+    public void dispatchResumeStates(View view, String nickname) {
         game.dispatchState(view);
-        game.getPlayers().forEach(p -> p.dispatchState(view));
+        game.getPlayers().forEach(p -> p.dispatchPublicState(view));
+        getPlayerByNickname(nickname).dispatchPrivateState(view);
     }
 
     /**
@@ -109,7 +106,7 @@ public class GameContext extends EventDispatcher {
         List<LeaderCard> leaders = leaderIds.stream().map(player::getLeaderById).filter(Optional::isPresent).map(Optional::get).toList();
 
         try {
-            player.getSetup().chooseLeaders(game, player, leaders);
+            player.getSetup().chooseLeaders(view, game, player, leaders);
             dispatch(new UpdateAction(nickname, ActionType.CHOOSE_LEADERS));
         } catch (CannotChooseException e) {
             dispatch(new ErrInitialChoice(view, true, e.getMissingLeadersCount()));
@@ -268,7 +265,7 @@ public class GameContext extends EventDispatcher {
         }
 
         try {
-            player.discardLeader(game, leader);
+            player.discardLeader(view, game, leader);
             dispatch(new UpdateAction(nickname, ActionType.DISCARD_LEADER));
         } catch (IllegalArgumentException e) {
             dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));

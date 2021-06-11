@@ -25,10 +25,6 @@ public class UpdateLeadersHand extends ViewEvent {
         this.leaders = leaders;
     }
 
-    public UpdateLeadersHand(String player, List<Integer> leaders) {
-        this(null, player, leaders);
-    }
-
     /**
      * @return the nickname of the player that has chosen the leader cards
      */

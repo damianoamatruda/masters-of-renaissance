@@ -106,6 +106,7 @@ public class View extends EventDispatcher {
         gameContext.addEventListener(ErrResourceTransfer.class, errResourceTransferEventListener);
         gameContext.addEventListener(UpdateAction.class, updateActionEventListener);
         gameContext.addEventListener(UpdateActionToken.class, updateActionTokenEventListener);
+        gameContext.addEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
         gameContext.addEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
         gameContext.addEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
         gameContext.addEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
@@ -113,7 +114,7 @@ public class View extends EventDispatcher {
         gameContext.addEventListener(UpdateGame.class, updateGameEventListener);
         gameContext.addEventListener(UpdateGameEnd.class, updateGameEndEventListener);
         gameContext.addEventListener(UpdateLastRound.class, updateLastRoundEventListener);
-        gameContext.addEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
+        gameContext.addEventListener(UpdateLeadersHand.class, updateLeadersHandEventListener);
         gameContext.addEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
         gameContext.addEventListener(UpdateMarket.class, updateMarketEventListener);
         gameContext.addEventListener(UpdatePlayer.class, updatePlayerEventListener);
@@ -137,6 +138,7 @@ public class View extends EventDispatcher {
         gameContext.removeEventListener(ErrResourceTransfer.class, errResourceTransferEventListener);
         gameContext.removeEventListener(UpdateAction.class, updateActionEventListener);
         gameContext.removeEventListener(UpdateActionToken.class, updateActionTokenEventListener);
+        gameContext.removeEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
         gameContext.removeEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
         gameContext.removeEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
         gameContext.removeEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
@@ -144,7 +146,7 @@ public class View extends EventDispatcher {
         gameContext.removeEventListener(UpdateGame.class, updateGameEventListener);
         gameContext.removeEventListener(UpdateGameEnd.class, updateGameEndEventListener);
         gameContext.removeEventListener(UpdateLastRound.class, updateLastRoundEventListener);
-        gameContext.removeEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
+        gameContext.removeEventListener(UpdateLeadersHand.class, updateLeadersHandEventListener);
         gameContext.removeEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
         gameContext.removeEventListener(UpdateMarket.class, updateMarketEventListener);
         gameContext.removeEventListener(UpdatePlayer.class, updatePlayerEventListener);
@@ -153,14 +155,6 @@ public class View extends EventDispatcher {
         gameContext.removeEventListener(UpdateSetupDone.class, updateSetupDoneEventListener);
         gameContext.removeEventListener(UpdateVaticanSection.class, updateVaticanSectionEventListener);
         gameContext.removeEventListener(UpdateVictoryPoints.class, updateVictoryPointsEventListener);
-    }
-
-    public void registerOnModelPlayer(EventDispatcher player) {
-        player.addEventListener(UpdateLeadersHand.class, updateLeadersHandEventListener);
-    }
-
-    public void unregisterOnModelPlayer(EventDispatcher player) {
-        player.removeEventListener(UpdateLeadersHand.class, updateLeadersHandEventListener);
     }
 
     public void setResQuitEventListener(EventListener<ResQuit> resQuitEventListener) {

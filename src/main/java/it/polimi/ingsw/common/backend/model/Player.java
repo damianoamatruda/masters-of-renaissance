@@ -83,7 +83,7 @@ public class Player extends EventDispatcher {
         this.winner = false;
     }
 
-    public void dispatchState(View view) {
+    public void dispatchPublicState(View view) {
         dispatch(new UpdatePlayer(
                 view,
                 nickname,
@@ -91,11 +91,14 @@ public class Player extends EventDispatcher {
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
                 setup.reduce()));
-        dispatch(new UpdateLeadersHand(nickname, leaders.stream().map(Card::getId).toList()));
     }
 
-    public void dispatchState() {
-        dispatchState(null);
+    public void dispatchPublicState() {
+        dispatchPublicState(null);
+    }
+
+    public void dispatchPrivateState(View view) {
+        dispatch(new UpdateLeadersHand(view, nickname, leaders.stream().map(Card::getId).toList()));
     }
 
     /**
@@ -125,13 +128,13 @@ public class Player extends EventDispatcher {
         return List.copyOf(leaders);
     }
 
-    public void retainLeaders(List<LeaderCard> leaders) {
+    public void retainLeaders(View view, List<LeaderCard> leaders) {
         if (!this.leaders.containsAll(leaders))
             throw new RuntimeException(); // TODO: Add more specific exception
 
         this.leaders.retainAll(leaders);
 
-        dispatch(new UpdateLeadersHand(getNickname(), this.leaders.stream().map(Card::getId).toList()));
+        dispatch(new UpdateLeadersHand(view, getNickname(), this.leaders.stream().map(Card::getId).toList()));
         dispatch(new UpdateLeadersHandCount(getNickname(), this.leaders.size()));
     }
 
@@ -143,7 +146,7 @@ public class Player extends EventDispatcher {
      * @throws ActiveLeaderDiscardException leader is already active
      * @throws IllegalArgumentException     leader isn't owned by the player
      */
-    public void discardLeader(Game game, LeaderCard leader) throws IllegalArgumentException, ActiveLeaderDiscardException {
+    public void discardLeader(View view, Game game, LeaderCard leader) throws IllegalArgumentException, ActiveLeaderDiscardException {
         if (!leaders.contains(leader))
             throw new IllegalArgumentException(
                     String.format("Leader %d cannot be discarded: inexistent leader, max index allowed %d", leaders.indexOf(leader), leaders.size()));
@@ -151,7 +154,7 @@ public class Player extends EventDispatcher {
         game.onDiscardLeader(this);
         leaders.remove(leader);
 
-        dispatch(new UpdateLeadersHand(getNickname(), leaders.stream().map(Card::getId).toList()));
+        dispatch(new UpdateLeadersHand(view, getNickname(), leaders.stream().map(Card::getId).toList()));
         dispatch(new UpdateLeadersHandCount(getNickname(), leaders.size()));
     }
 

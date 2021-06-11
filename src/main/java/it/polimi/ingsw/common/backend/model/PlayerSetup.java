@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
@@ -77,17 +78,18 @@ public class PlayerSetup {
     /**
      * Chooses leaders from the hand of the player.
      *
+     * @param view
      * @param chosenLeaders the leader cards to choose
      * @throws CannotChooseException if the leader cards have already been chosen
      */
-    public void chooseLeaders(Game game, Player player, List<LeaderCard> chosenLeaders) throws CannotChooseException {
+    public void chooseLeaders(View view, Game game, Player player, List<LeaderCard> chosenLeaders) throws CannotChooseException {
         if (hasChosenLeaders)
             throw new CannotChooseException(0);
 
         if (chosenLeaders.size() != chosenLeadersCount)
             throw new CannotChooseException(chosenLeadersCount - chosenLeaders.size());
 
-        player.retainLeaders(chosenLeaders);
+        player.retainLeaders(view, chosenLeaders);
 
         hasChosenLeaders = true;
         if (isDone())
