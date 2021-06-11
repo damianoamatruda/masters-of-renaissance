@@ -2,8 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
-import it.polimi.ingsw.common.backend.model.leadercards.DepotLeader;
-import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
@@ -245,7 +243,7 @@ public class MarketController extends GuiController {
         
         leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .filter(c -> c.isActive() &&
-                (c.getLeaderType().equals(DepotLeader.class.getSimpleName()) || c.getLeaderType().equals(ZeroLeader.class.getSimpleName())))
+                (c.getLeaderType().equals("DepotLeader") || c.getLeaderType().equals("ZeroLeader")))
             .map(reducedLeader -> {
                 LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
                 leaderCard.setLeaderId(reducedLeader.getId());
@@ -257,7 +255,7 @@ public class MarketController extends GuiController {
                 if (reducedLeader.getDevCardRequirement().isPresent())
                     leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
 
-                if (reducedLeader.getLeaderType().equals(ZeroLeader.class.getSimpleName())) {
+                if (reducedLeader.getLeaderType().equals("ZeroLeader")) {
                     leaderCard.setZeroReplacement(reducedLeader.getResourceType());
                     // TODO handle substitution
                 } else {
