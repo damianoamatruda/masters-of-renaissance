@@ -105,6 +105,23 @@ public class View extends EventDispatcher {
         gameContext.addEventListener(ErrResourceReplacement.class, errResourceReplacementEventListener);
         gameContext.addEventListener(ErrResourceTransfer.class, errResourceTransferEventListener);
         gameContext.addEventListener(UpdateAction.class, updateActionEventListener);
+        gameContext.addEventListener(UpdateActionToken.class, updateActionTokenEventListener);
+        gameContext.addEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
+        gameContext.addEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
+        gameContext.addEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
+        gameContext.addEventListener(UpdateFaithPoints.class, updateFaithPointsEventListener);
+        gameContext.addEventListener(UpdateGame.class, updateGameEventListener);
+        gameContext.addEventListener(UpdateGameEnd.class, updateGameEndEventListener);
+        gameContext.addEventListener(UpdateLastRound.class, updateLastRoundEventListener);
+        gameContext.addEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
+        gameContext.addEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
+        gameContext.addEventListener(UpdateMarket.class, updateMarketEventListener);
+        gameContext.addEventListener(UpdatePlayer.class, updatePlayerEventListener);
+        gameContext.addEventListener(UpdatePlayerStatus.class, updatePlayerStatusEventListener);
+        gameContext.addEventListener(UpdateResourceContainer.class, updateResourceContainerEventListener);
+        gameContext.addEventListener(UpdateSetupDone.class, updateSetupDoneEventListener);
+        gameContext.addEventListener(UpdateVaticanSection.class, updateVaticanSectionEventListener);
+        gameContext.addEventListener(UpdateVictoryPoints.class, updateVictoryPointsEventListener);
     }
 
     public void unregisterOnModelGameContext(EventDispatcher gameContext) {
@@ -119,46 +136,23 @@ public class View extends EventDispatcher {
         gameContext.removeEventListener(ErrResourceReplacement.class, errResourceReplacementEventListener);
         gameContext.removeEventListener(ErrResourceTransfer.class, errResourceTransferEventListener);
         gameContext.removeEventListener(UpdateAction.class, updateActionEventListener);
-    }
-
-    public void registerOnModelGame(EventDispatcher game) {
-        game.addEventListener(UpdateActionToken.class, updateActionTokenEventListener);
-        game.addEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
-        game.addEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
-        game.addEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
-        game.addEventListener(UpdateFaithPoints.class, updateFaithPointsEventListener);
-        game.addEventListener(UpdateGame.class, updateGameEventListener);
-        game.addEventListener(UpdateGameEnd.class, updateGameEndEventListener);
-        game.addEventListener(UpdateLastRound.class, updateLastRoundEventListener);
-        game.addEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
-        game.addEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
-        game.addEventListener(UpdateMarket.class, updateMarketEventListener);
-        game.addEventListener(UpdatePlayer.class, updatePlayerEventListener);
-        game.addEventListener(UpdatePlayerStatus.class, updatePlayerStatusEventListener);
-        game.addEventListener(UpdateResourceContainer.class, updateResourceContainerEventListener);
-        game.addEventListener(UpdateSetupDone.class, updateSetupDoneEventListener);
-        game.addEventListener(UpdateVaticanSection.class, updateVaticanSectionEventListener);
-        game.addEventListener(UpdateVictoryPoints.class, updateVictoryPointsEventListener);
-    }
-
-    public void unregisterOnModelGame(EventDispatcher game) {
-        game.removeEventListener(UpdateActionToken.class, updateActionTokenEventListener);
-        game.removeEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
-        game.removeEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
-        game.removeEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
-        game.removeEventListener(UpdateFaithPoints.class, updateFaithPointsEventListener);
-        game.removeEventListener(UpdateGame.class, updateGameEventListener);
-        game.removeEventListener(UpdateGameEnd.class, updateGameEndEventListener);
-        game.removeEventListener(UpdateLastRound.class, updateLastRoundEventListener);
-        game.removeEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
-        game.removeEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
-        game.removeEventListener(UpdateMarket.class, updateMarketEventListener);
-        game.removeEventListener(UpdatePlayer.class, updatePlayerEventListener);
-        game.removeEventListener(UpdatePlayerStatus.class, updatePlayerStatusEventListener);
-        game.removeEventListener(UpdateResourceContainer.class, updateResourceContainerEventListener);
-        game.removeEventListener(UpdateSetupDone.class, updateSetupDoneEventListener);
-        game.removeEventListener(UpdateVaticanSection.class, updateVaticanSectionEventListener);
-        game.removeEventListener(UpdateVictoryPoints.class, updateVictoryPointsEventListener);
+        gameContext.removeEventListener(UpdateActionToken.class, updateActionTokenEventListener);
+        gameContext.removeEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
+        gameContext.removeEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
+        gameContext.removeEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
+        gameContext.removeEventListener(UpdateFaithPoints.class, updateFaithPointsEventListener);
+        gameContext.removeEventListener(UpdateGame.class, updateGameEventListener);
+        gameContext.removeEventListener(UpdateGameEnd.class, updateGameEndEventListener);
+        gameContext.removeEventListener(UpdateLastRound.class, updateLastRoundEventListener);
+        gameContext.removeEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
+        gameContext.removeEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
+        gameContext.removeEventListener(UpdateMarket.class, updateMarketEventListener);
+        gameContext.removeEventListener(UpdatePlayer.class, updatePlayerEventListener);
+        gameContext.removeEventListener(UpdatePlayerStatus.class, updatePlayerStatusEventListener);
+        gameContext.removeEventListener(UpdateResourceContainer.class, updateResourceContainerEventListener);
+        gameContext.removeEventListener(UpdateSetupDone.class, updateSetupDoneEventListener);
+        gameContext.removeEventListener(UpdateVaticanSection.class, updateVaticanSectionEventListener);
+        gameContext.removeEventListener(UpdateVictoryPoints.class, updateVictoryPointsEventListener);
     }
 
     public void registerOnModelPlayer(EventDispatcher player) {

@@ -24,7 +24,6 @@ public class OnlineClient implements Network {
         this.networkHandler.setOnClose(() -> {
             view.unregisterOnModelLobby(networkHandler);
             view.unregisterOnModelGameContext(networkHandler);
-            view.unregisterOnModelGame(networkHandler);
             view.unregisterOnModelPlayer(networkHandler);
             try {
                 close();
@@ -40,7 +39,6 @@ public class OnlineClient implements Network {
     public void open() {
         view.registerOnModelLobby(networkHandler);
         view.registerOnModelGameContext(networkHandler);
-        view.registerOnModelGame(networkHandler);
         view.registerOnModelPlayer(networkHandler);
         view.addEventListener(VCEvent.class, vcEventListener = networkHandler::send);
 

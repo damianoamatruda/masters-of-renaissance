@@ -18,7 +18,6 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     };
 
     public NetworkHandler(Socket socket, NetworkProtocol protocol) {
-        /* It is unnecessary to removing these listeners later because they live together with this class */
         this.addEventListener(ReqGoodbye.class, this::on);
         this.addEventListener(ReqHeartbeat.class, this::on);
         this.addEventListener(ReqWelcome.class, this::on);
