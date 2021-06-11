@@ -84,16 +84,18 @@ public class Shelf extends HBox {
         swapIcon.setOnDragDetected((event -> {
             Dragboard db = this.startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
-            content.putString("[swap]" + this.getShelfId());
+            content.putString("[swap]" + this.getShelfId() + " size:" + this.getContentSize());
             db.setContent(content);
             event.consume();
         }));
 
         this.setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
-            if (db.hasString() && db.getString().startsWith("[swap]") && Integer.parseInt(db.getString().substring(6)) != this.getShelfId()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
+                if (db.hasString() && db.getString().startsWith("[swap]")
+                        && Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" "))) != this.getShelfId()
+                        && Integer.parseInt(db.getString().substring(db.getString().indexOf(":") + 1)) <= size) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
             event.consume();
         });
 
@@ -102,11 +104,11 @@ public class Shelf extends HBox {
             boolean success = false;
             if (db.hasString() && db.getString().startsWith("[swap]")) {
                 try {
-                    int sourceShelfID = Integer.parseInt(db.getString().substring(6));
+                    int sourceShelfID = Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" ")));
 
                     callback.accept(sourceShelfID, this.shelfId);
 
-                    //disable temporarily dnd until response is received
+                    // TODO disable temporarily dnd until response is received
 
                 } catch (Exception e) { // TODO remove this catch once debugged
                     e.printStackTrace();
