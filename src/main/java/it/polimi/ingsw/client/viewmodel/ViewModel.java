@@ -61,7 +61,7 @@ public class ViewModel {
 
         mappedColors = new HashMap<>();
     }
-    
+
     /**
      * @param nickname the nickname of the player whose data needs to be retrieved.
      * @return the playerData of the specified player
@@ -69,7 +69,7 @@ public class ViewModel {
     public Optional<PlayerData> getPlayerData(String nickname) {
         return Optional.ofNullable(playerData.get(nickname));
     }
-
+    
     public Optional<PlayerData> getCurrentPlayerData() {
         return getPlayerData(getCurrentPlayer());
     }
@@ -77,7 +77,7 @@ public class ViewModel {
     public Optional<PlayerData> getLocalPlayerData() {
         return getPlayerData(getLocalPlayerNickname());
     }
-
+    
     /**
      * To be used when receiving the first UpdatePlayer message.
      * 
@@ -85,6 +85,77 @@ public class ViewModel {
      */
     public void setPlayerData(String nickname, PlayerData playerData) {
         this.playerData.put(nickname, playerData);
+    }
+
+    /**
+     * @param nickname
+     * @return the topmost development cards in the player's slots
+     */
+    public Optional<ReducedResourceTransactionRecipe> getPlayerBaseProduction(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return Optional.empty();
+
+        return getProduction(playerData.get(nickname).getBaseProduction());
+    }
+
+    /**
+     * @param nickname
+     * @return the topmost development cards in the player's slots
+     */
+    public List<List<Optional<ReducedDevCard>>> getPlayerDevelopmentCards(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return new ArrayList<>();
+
+        return playerData.get(nickname).getDevSlots().stream()
+            .map(slot -> slot.stream().map(c -> getDevelopmentCard(c)).toList())
+            .toList();
+    }
+
+    /**
+     * @param nickname the player whose faith points are to be returned
+     * @return the faith points of the selected player
+     */
+    public int getPlayerFaithPoints(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return 0;
+        
+        return playerData.get(nickname).getFaithPoints();
+    }
+
+    /**
+     * @param nickname the player whose state to be returned
+     * @return the state of the selected player
+     */
+    public boolean isPlayerActive(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return false;
+        
+        return playerData.get(nickname).isActive();
+    }
+
+    /**
+     * @param nickname
+     * @return the reduced leader cards owned by the player
+     */
+    public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return new ArrayList<>();
+
+        return playerData.get(nickname).getLeadersHand().stream()
+                .map(id -> getLeaderCard(id).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+    }
+    
+    /**
+     * @param nickname
+     * @return the number of leader cards owned by the player
+     */
+    public int getPlayerLeadersCount(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return 0;
+
+        return playerData.get(nickname).getLeadersCount();
     }
 
     /**
@@ -108,43 +179,17 @@ public class ViewModel {
             if (c.getProduction() >= 0 && c.isActive())
                 ids.add(c.getProduction());
         });
-        getPlayerDevelopmentCards(nickname).forEach(c -> {
-            if (c.getProduction() >= 0)
-                ids.add(c.getProduction());
+        getPlayerDevelopmentCards(nickname).forEach(l -> {
+            l.get(0).ifPresent(c -> {
+                if (c.getProduction() >= 0)
+                    ids.add(c.getProduction());
+            });
         });
 
         return ids.stream()
             .map(id -> getProduction(id).orElse(null))
             .filter(Objects::nonNull)
             .toList();
-    }
-
-    /**
-     * @param nickname
-     * @return the topmost development cards in the player's slots
-     */
-    public List<ReducedDevCard> getPlayerDevelopmentCards(String nickname) {
-        if (!playerData.containsKey(nickname))
-            return new ArrayList<>();
-
-        return playerData.get(nickname).getDevSlots().stream()
-            .map(slot -> getDevelopmentCard(slot.get(0)).orElse(null))
-            .filter(Objects::nonNull)
-            .toList();
-    }
-
-    /**
-     * @param nickname
-     * @return the reduced leader cards owned by the player
-     */
-    public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
-        if (!playerData.containsKey(nickname))
-            return new ArrayList<>();
-
-        return playerData.get(nickname).getLeadersHand().stream()
-                .map(id -> getLeaderCard(id).orElse(null))
-                .filter(Objects::nonNull)
-                .toList();
     }
 
     /**
@@ -191,6 +236,20 @@ public class ViewModel {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
+    }
+
+    public Optional<ReducedResourceContainer> getPlayerStrongbox(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return Optional.empty();
+
+        return getContainer(playerData.get(nickname).getStrongbox());
+    }
+
+    public int getPlayerVictoryPoints(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return 0;
+
+        return playerData.get(nickname).getVictoryPoints();
     }
 
     /**
@@ -302,6 +361,14 @@ public class ViewModel {
      */
     public Optional<ReducedDevCard> getDevelopmentCard(int id) {
         return developmentCards.stream().filter(c -> c.getId() == id).findAny();
+    }
+
+    /**
+     * @param id the ID of the card to be returned
+     * @return the developmentCard matching the ID
+     */
+    public Optional<ReducedDevCard> getDevelopmentCard(String color, int level) {
+        return developmentCards.stream().filter(c -> c.getColor().equals(color) && c.getLevel() == level).findAny();
     }
 
     /**

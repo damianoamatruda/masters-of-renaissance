@@ -46,14 +46,14 @@ public class PlayerData {
     /**
      * @return the baseProduction
      */
-    public int getBaseProduction() {
+    int getBaseProduction() {
         return baseProduction;
     }
 
     /**
      * @return the devSlots
      */
-    public List<List<Integer>> getDevSlots() {
+    List<List<Integer>> getDevSlots() {
         return devSlots;
     }
 
@@ -71,7 +71,7 @@ public class PlayerData {
     /**
      * @return the faithPoints
      */
-    public int getFaithPoints() {
+    int getFaithPoints() {
         return faithPoints;
     }
 
@@ -85,7 +85,7 @@ public class PlayerData {
     /**
      * @return the isActive
      */
-    public boolean isActive() {
+    boolean isActive() {
         return isActive;
     }
 
@@ -99,7 +99,7 @@ public class PlayerData {
     /**
      * @return the leadersCount
      */
-    public int getLeadersCount() {
+    int getLeadersCount() {
         return leadersCount;
     }
 
@@ -113,7 +113,7 @@ public class PlayerData {
     /**
      * @return the leadersHand
      */
-    public List<Integer> getLeadersHand() {
+    List<Integer> getLeadersHand() {
         return leadersHand;
     }
 
@@ -135,14 +135,14 @@ public class PlayerData {
     /**
      * @return the strongbox
      */
-    public int getStrongbox() {
+    int getStrongbox() {
         return strongbox;
     }
 
     /**
      * @return the victoryPoints
      */
-    public int getVictoryPoints() {
+    int getVictoryPoints() {
         return victoryPoints;
     }
 
@@ -156,7 +156,7 @@ public class PlayerData {
     /**
      * @return the warehouseShelves
      */
-    public List<Integer> getWarehouseShelves() {
+    List<Integer> getWarehouseShelves() {
         return warehouseShelves;
     }
 }

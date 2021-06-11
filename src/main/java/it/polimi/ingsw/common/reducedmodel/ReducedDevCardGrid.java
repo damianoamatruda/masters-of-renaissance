@@ -42,6 +42,7 @@ public class ReducedDevCardGrid {
      * @return all the cards that are still not bought by any player
      */
     public Map<String, List<Optional<Integer>>> getTopCards() {
-        return topCards.entrySet().stream().collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue().stream().map(Optional::ofNullable).toList()));
+        return topCards.entrySet().stream()
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue().stream().map(Optional::ofNullable).toList()));
     }
 }

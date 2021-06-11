@@ -6,10 +6,12 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class CliState implements Renderable {
@@ -151,12 +153,7 @@ public abstract class CliState implements Renderable {
             vm.getPlayerData(event.getPlayer()).orElseThrow().setFaithPoints(event.getFaithPoints());
         
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
-            .collect(Collectors.toMap(nick -> nick, nick -> {
-                Optional<PlayerData> pd = vm.getPlayerData(nick);
-
-                return pd.map(PlayerData::getFaithPoints).orElse(0);
-
-            }));
+            .collect(Collectors.toMap(n -> n, n -> vm.getPlayerFaithPoints(n)));
 
         Optional<ReducedFaithTrack> ft = vm.getFaithTrack();
         if (ft.isPresent()) {
@@ -250,9 +247,11 @@ public abstract class CliState implements Renderable {
         cli.getOut().println();
         cli.showContainers(event.getPlayer());
 
-        Map<String, Integer> baseProds = new HashMap<>();
+        Map<String, Optional<ReducedResourceTransactionRecipe>> baseProds = new HashMap<>();
 
-        baseProds = vm.getPlayerNicknames().stream().filter(nick -> vm.getPlayerData(nick).isPresent()).collect(Collectors.toMap(n -> n, n -> vm.getPlayerData(n).get().getBaseProduction()));
+        baseProds = vm.getPlayerNicknames().stream()
+                .filter(nick -> vm.getPlayerData(nick).isPresent())
+                .collect(Collectors.toMap(n -> n, n -> vm.getPlayerBaseProduction(n)));
 
         cli.getOut().println(new BaseProductions(baseProds).getString(cli));
     }

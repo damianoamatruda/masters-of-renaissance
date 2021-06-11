@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Map.Entry;
 
 public class Strongbox extends StackPane {
@@ -34,6 +35,10 @@ public class Strongbox extends StackPane {
 
         this.prefWidthProperty().addListener((o, old, newP) -> { if (c != null) setContent(c); });
         this.prefHeightProperty().addListener((o, old, newP) -> { if (c != null) setContent(c); });
+    }
+
+    public Optional<ReducedResourceContainer> getContent() {
+        return Optional.ofNullable(c);
     }
 
     public void setContent(ReducedResourceContainer c) {

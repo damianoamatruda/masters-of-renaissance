@@ -114,10 +114,9 @@ public class DevCardGridController extends GuiController {
 
                 putChoice(resource, id);
 
-                if (vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getStrongbox() == id)
-                    strongbox.refreshRemove(resource);
-                else
-                    warehouse.refreshShelfRemove(id, resource);
+                strongbox.getContent().ifPresentOrElse(
+                    c -> strongbox.refreshRemove(resource),
+                    () -> warehouse.refreshShelfRemove(id, resource));
 
                 success = true;
             } catch (NumberFormatException e) {
@@ -176,8 +175,7 @@ public class DevCardGridController extends GuiController {
         warehouse.setPrefHeight(245);
         warehouse.setPrefWidth(301);
 
-        List<ReducedResourceContainer> whShelves = vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getWarehouseShelves().stream()
-            .map(id -> vm.getContainer(id).orElseThrow()).toList();
+        List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname());
 
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
                 warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2));
@@ -198,7 +196,7 @@ public class DevCardGridController extends GuiController {
         strongbox.setPrefHeight(245);
         strongbox.setPrefWidth(291);
 
-        strongbox.setContent(vm.getContainer(vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getStrongbox()).orElseThrow());
+        strongbox.setContent(vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElseThrow());
 
         if (containersBox.getChildren().size() == 2)
             containersBox.getChildren().remove(1);
@@ -209,25 +207,21 @@ public class DevCardGridController extends GuiController {
     }
 
     private void resetSlots() {
-        List<ReducedDevCard> devCards = vm.getPlayerDevelopmentCards(vm.getLocalPlayerNickname());
-
-        devSlots = new ArrayList<>();
-
-        List<DevelopmentCard> guicards = devCards.stream().map(c -> {
-            DevelopmentCard guicard = new DevelopmentCard(c.getColor());
-            c.getCost().ifPresent(cost -> guicard.setRequirement(cost));
-            guicard.setProduction(vm.getProduction(c.getProduction()).orElseThrow());
-            guicard.setVictoryPoints(c.getVictoryPoints()+"");
-            return guicard;
-        }).toList();
-
-        guicards.forEach(gc -> {
+        List<List<Optional<ReducedDevCard>>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
+        
+        modelSlots.forEach(modelSlot -> {
             DevSlot slot = new DevSlot();
 
-            slot.setDevCards(List.of(gc));
+            List<DevelopmentCard> cards = modelSlot.stream()
+                    .map(oc -> oc.orElseThrow())
+                    .map(c -> new DevelopmentCard(c)).toList();
+            slot.setDevCards(cards);
 
             devSlots.add(slot);
         });
+        
+        for(int i = 0; i < vm.getSlotsCount() - modelSlots.size(); i++)
+            devSlots.add(new DevSlot());
 
         devSlotsBox.getChildren().clear();
         devSlotsBox.getChildren().addAll(devSlots);

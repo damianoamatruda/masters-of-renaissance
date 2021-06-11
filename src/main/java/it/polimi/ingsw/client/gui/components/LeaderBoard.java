@@ -44,7 +44,7 @@ public class LeaderBoard extends VBox {
         content.getColumns().addAll(playerColumn, pointsColumn);
 
         List<LeaderBoardEntry> entries = viewModel.getPlayerNicknames().stream()
-                .map(player -> new LeaderBoardEntry(player, viewModel.getPlayerData(player).orElseThrow().getVictoryPoints()))
+                .map(player -> new LeaderBoardEntry(player, viewModel.getPlayerVictoryPoints(player)))
                 .sorted(Comparator.comparingInt(a -> a.points))
                 .toList();
 

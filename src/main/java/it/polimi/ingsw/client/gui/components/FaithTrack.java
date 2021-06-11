@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
@@ -15,6 +16,8 @@ public class FaithTrack extends VBox {
     Map<Integer, FaithTile> tiles = new HashMap<>();
 
     public FaithTrack(ReducedFaithTrack track) {
+        ViewModel vm = Gui.getInstance().getViewModel();
+
         List<ReducedYellowTile> yellowTiles = track.getYellowTiles();
         List<Integer> yellowTilesIndexes = yellowTiles.stream().map(ReducedYellowTile::getFaithPoints).toList();
         Map<Integer, ReducedVaticanSection> sections = track.getVaticanSections();
@@ -68,9 +71,9 @@ public class FaithTrack extends VBox {
         }
         this.getChildren().add(hBox);
 
-        if(Gui.getInstance().getViewModel().getPlayerNicknames().size() == 1)
-            updateBlackMarker(Gui.getInstance().getViewModel().getBlackCrossFP(), -1);
-        updatePlayerMarker(Gui.getInstance().getViewModel().getPlayerData(Gui.getInstance().getViewModel().getLocalPlayerNickname()).orElseThrow().getFaithPoints(), -1);
+        if(vm.getPlayerNicknames().size() == 1)
+            updateBlackMarker(vm.getBlackCrossFP(), -1);
+        updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
     }
 
     public void updatePlayerMarker(int faithPoints, int oldPts) {

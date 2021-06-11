@@ -63,12 +63,7 @@ public class BuyDevelopmentCardState extends CliState {
         cli.promptInt("Player board slot to assign to the card").ifPresentOrElse(slot -> {
             this.slot = slot;
 
-            ReducedDevCard card = grid.getTopCards().get(this.color).stream()
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .map(id -> vm.getDevelopmentCard(id).orElse(null))
-                    .filter(Objects::nonNull)
-                    .filter(c -> c.getLevel() == this.level).findAny().orElseThrow();
+            ReducedDevCard card = vm.getDevelopmentCard(color, level).orElseThrow();
 
             this.cost = card.getCost().isPresent() ? new HashMap<>() : new HashMap<>(card.getCost().get().getRequirements());
 

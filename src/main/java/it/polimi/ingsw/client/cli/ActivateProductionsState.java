@@ -72,7 +72,10 @@ public class ActivateProductionsState extends CliState {
         cli.getOut().println("-- Input replacements --");
         cli.getOut().println();
         cli.promptResources(
-                vm.getResourceTypes().stream().filter(r -> (r.isStorable() || r.isTakeableFromPlayer()) && !this.selectedProd.getInputBlanksExclusions().contains(r.getName())).map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
+                vm.getResourceTypes().stream()
+                        .filter(r -> (r.isStorable() || r.isTakeableFromPlayer()) &&
+                                     !this.selectedProd.getInputBlanksExclusions().contains(r.getName()))
+                        .map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
                 this.selectedProd.getInputBlanks()
         ).ifPresentOrElse(inputReplacement -> {
             this.inputReplacement = inputReplacement;
@@ -87,7 +90,10 @@ public class ActivateProductionsState extends CliState {
         cli.getOut().println("-- Output replacements --");
         cli.getOut().println();
         cli.promptResources(
-                vm.getResourceTypes().stream().filter(r -> (r.isStorable() || r.isGiveableToPlayer()) && !this.selectedProd.getOutputBlanksExclusions().contains(r.getName())).map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
+                vm.getResourceTypes().stream()
+                        .filter(r -> (r.isStorable() || r.isGiveableToPlayer()) &&
+                                     !this.selectedProd.getOutputBlanksExclusions().contains(r.getName()))
+                        .map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
                 this.selectedProd.getOutputBlanks()
         ).ifPresentOrElse(outputReplacement -> {
             this.outputReplacement = outputReplacement;

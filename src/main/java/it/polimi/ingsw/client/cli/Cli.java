@@ -513,7 +513,7 @@ public class Cli {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(String.format("%s's strongbox:", player)).append("\n");
-        viewModel.getContainer(viewModel.getPlayerData(player).orElseThrow().getStrongbox()).ifPresent(c ->
+        viewModel.getPlayerStrongbox(viewModel.getLocalPlayerNickname()).ifPresent(c ->
                 stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
 
         out.print(Cli.center(stringBuilder.toString()));

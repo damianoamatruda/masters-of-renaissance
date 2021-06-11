@@ -1,17 +1,18 @@
 package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.cli.Cli;
-import it.polimi.ingsw.client.cli.Renderable;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class BaseProductions extends StringComponent {
-    private final Map<String, Integer> baseProductions;
+    private final Map<String, Optional<ReducedResourceTransactionRecipe>> baseProductions;
 
-    public BaseProductions(Map<String, Integer> baseProductions) {
+    public BaseProductions(Map<String, Optional<ReducedResourceTransactionRecipe>> baseProductions) {
         this.baseProductions = baseProductions;
     }
 
@@ -20,14 +21,15 @@ public class BaseProductions extends StringComponent {
         StringBuilder output = new StringBuilder("Base productions:").append("\n");
 
         baseProductions.forEach((key, value) -> output.append("Player: ").append(key).append("\n"));
-        List<Integer> baseProds = baseProductions.values().stream().toList();
+        List<Optional<ReducedResourceTransactionRecipe>> baseProds = baseProductions.values().stream().toList();
         for (int i = 0; i < baseProds.size(); i += 3) {
             List<List<String>> rows = new ArrayList<>();
 
             for (int j = 0; j < 3 && 3 * i + j < baseProds.size() - i; j++) {
                 rows.add(new ArrayList<>());
                 List<String> column = rows.get(j);
-                cli.getViewModel().getProduction(baseProds.get(3 * i + j)).ifPresent(p ->
+                
+                baseProds.get(3 * i + j).ifPresent(p ->
                         column.addAll(Arrays.asList(new ResourceTransactionRecipe(p).getString(cli).split("\\R"))));
             }
 

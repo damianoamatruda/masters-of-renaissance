@@ -135,17 +135,15 @@ public class LeaderCard extends Card {
 
         Map<String, Integer> content = container.getContent();
 
-        String resourceType = content.keySet().stream().findAny().orElse(null);
-
-        if(resourceType == null) {
+        content.keySet().stream().findAny().ifPresentOrElse(r -> {
+            int size = content.get(r);
+            fillDepot(x1, y, r, false);
+            fillDepot(x2, y, r, size < 2);
+        }, () -> {
             fillDepot(x1, y, boundRes, true);
             fillDepot(x2, y, boundRes, true);
-            return;
-        }
+        });
 
-        int size = content.get(resourceType);
-        fillDepot(x1, y, resourceType, false);
-        fillDepot(x2, y, resourceType, size < 2);
     }
 
     private void fillDepot(double x, double y, String boundRes, boolean isEmpty) {

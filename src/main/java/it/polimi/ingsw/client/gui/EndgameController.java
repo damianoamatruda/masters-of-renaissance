@@ -17,12 +17,13 @@ public class EndgameController extends GuiController {
         super.initialize(url, resourceBundle);
 
         ViewModel viewModel = Gui.getInstance().getViewModel();
+        
         if(viewModel.getWinner() != null && viewModel.getWinner().equals(viewModel.getLocalPlayerNickname()))
-            outcome.setText("You won with " + viewModel.getPlayerData(viewModel.getWinner()).orElseThrow().getVictoryPoints() + " points! CONGRATULATIONS!");
+            outcome.setText("You won with " + viewModel.getPlayerVictoryPoints(viewModel.getWinner()) + " points! CONGRATULATIONS!");
         else if (viewModel.getWinner() != null)
             outcome.setText(
                     viewModel.getWinner() + " is the winner with " +
-                            viewModel.getPlayerData(viewModel.getWinner()).orElseThrow().getVictoryPoints() + " points!");
+                            viewModel.getPlayerVictoryPoints(viewModel.getWinner()) + " points!");
         else
             outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
     }

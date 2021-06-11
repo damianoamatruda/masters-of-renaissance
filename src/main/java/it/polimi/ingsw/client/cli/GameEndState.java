@@ -1,16 +1,18 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 public class GameEndState extends CliState {
     @Override
     public void render(Cli cli) {
-        if (cli.getViewModel().getWinner().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.getOut().println("You won with " + cli.getViewModel().getPlayerData(cli.getViewModel().getWinner()) + " points! CONGRATULATIONS!");
-        else
-            cli.getOut().println(
-                    cli.getViewModel().getWinner() + " is the winner with " +
-                            cli.getViewModel().getPlayerData(cli.getViewModel().getWinner()).orElseThrow().getVictoryPoints() + " points!");
+        ViewModel vm = cli.getViewModel();
+
+        String prefix = vm.getWinner() + " is the winner";
+        if (vm.getWinner().equals(vm.getLocalPlayerNickname()))
+            prefix = "You won";
+
+        cli.getOut().println(prefix + " with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points!");
 
         cli.dispatch(new ReqQuit());
         cli.promptPause();

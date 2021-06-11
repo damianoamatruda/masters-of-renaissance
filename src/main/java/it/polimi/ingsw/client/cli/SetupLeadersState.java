@@ -11,6 +11,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,14 @@ public class SetupLeadersState extends CliState {
                 .getSetup().orElseThrow()
                 .getChosenLeadersCount();
 
-        if (vm.getLocalPlayerData().orElseThrow().getLeadersHand() != null)
-            new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname())).render(cli);
+        List<ReducedLeaderCard> lCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname());
+        if (lCards.size() == 0) {
+            cli.getOut().println("No leader cards to choose from. Setup cannot continue.");
+            cli.promptPause();
+            cli.setState(new MainMenuState());
+        }
+
+        new LeadersHand(lCards).render(cli);
 
         cli.getOut().println();
         cli.getOut().print(Cli.center("Choosing starting leaders hand."));
