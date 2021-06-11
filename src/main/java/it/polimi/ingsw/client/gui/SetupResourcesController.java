@@ -121,7 +121,7 @@ public class SetupResourcesController extends GuiController {
                         else
                             selection.get(id).remove(resource);
 
-                        warehouse.refreshShelfRemove(id, resource);
+                        warehouse.refreshShelfRemove(id);
                         updateChoiceButton();
 
                     }
@@ -151,7 +151,7 @@ public class SetupResourcesController extends GuiController {
                     else
                         selection.get(id).remove(resource);
 
-                    warehouse.refreshShelfRemove(id, resource);
+                    warehouse.refreshShelfRemove(id);
                     updateChoiceButton();
 
                     success = true;

@@ -85,7 +85,7 @@ public class Warehouse extends VBox {
         );
     }
 
-    public void refreshShelfRemove(int id, String resource) {
+    public void refreshShelfRemove(int id) {
         Shelf shelf = shelves.get(id);
         shelf.removeResource();
     }
@@ -128,8 +128,14 @@ public class Warehouse extends VBox {
             }
 
             int tempSize = s1.getSize();
-            s1.adjustSize(s2.getSize());
-            s2.adjustSize(tempSize);
+            int tempId = s1.getShelfId();
+
+            shelves.put(s1.getShelfId(), s2);
+            shelves.put(s2.getShelfId(), s1);
+
+            s1.refresh(s2.getSize(), s2.getShelfId());
+            s2.refresh(tempSize, tempId);
+
         });
     }
 }

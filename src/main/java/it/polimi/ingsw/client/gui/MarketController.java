@@ -184,7 +184,7 @@ public class MarketController extends GuiController {
                 else
                     selection.get(id).remove(resource);
 
-                warehouse.refreshShelfRemove(id, resource);
+                warehouse.refreshShelfRemove(id);
             }
             event.setDropCompleted(success);
             event.consume();
@@ -221,7 +221,7 @@ public class MarketController extends GuiController {
                     else
                         selection.get(id).remove(resource);
 
-                    warehouse.refreshShelfRemove(id, resource);
+                    warehouse.refreshShelfRemove(id);
                     resourcesBox.getChildren().add(res);
                     res.setOnDragDetected((evt) -> {
                         Dragboard resdb = res.startDragAndDrop(TransferMode.ANY);
@@ -233,8 +233,8 @@ public class MarketController extends GuiController {
 
                     success = true;
                 } catch (NumberFormatException | NullPointerException e) {
-//                    e.printStackTrace();
-                }
+                    // it is fine if it passes here. Drop will be ignored
+                } catch (Exception e) { e.printStackTrace(); }
 
                 event.setDropCompleted(success);
                 event.consume();
@@ -349,7 +349,6 @@ public class MarketController extends GuiController {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
             Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
 
-            warehouse.swapShelves(s1, s2);
             Platform.runLater(() -> {
                 Map<String, Integer> temp = selection.get(s1.getShelfId());
                 if(selection.get(s2.getShelfId()) != null)
@@ -358,6 +357,8 @@ public class MarketController extends GuiController {
                 if(temp != null)
                     selection.put(s2.getShelfId(), temp);
                 else selection.remove(s2.getShelfId());
+
+                warehouse.swapShelves(s1, s2);
             });
         }
     }

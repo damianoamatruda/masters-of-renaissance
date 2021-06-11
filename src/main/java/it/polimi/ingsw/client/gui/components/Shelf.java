@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.event.EventType;
+import javafx.scene.Node;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -12,7 +13,7 @@ import javafx.scene.text.Text;
 import java.util.function.BiConsumer;
 
 public class Shelf extends HBox {
-    private final int shelfId;
+    private int shelfId;
     private int size;
     private final HBox content = new HBox();
     private final Circle swapIcon = new Circle(10, Color.WHITE);
@@ -120,9 +121,25 @@ public class Shelf extends HBox {
         });
     }
 
-    public void adjustSize(int size) {
+    public void refresh(int size, int newId) {
+        //adjust size
         this.size = size;
         sizeText.setText("Size: " + size);
+        this.shelfId = newId;
+
+        //adjust clipboard content of resources
+        for(Node r : content.getChildren()) {
+            //TODO handle duplicated code
+            r.setOnDragDetected((event) -> {
+                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(((Resource) r).getImage());
+                    content.putString(newId+"");
+                    db.setContent(content);
+                    event.consume();
+                }
+            );
+        }
     }
 
 //    private void disableSwapDnD() {

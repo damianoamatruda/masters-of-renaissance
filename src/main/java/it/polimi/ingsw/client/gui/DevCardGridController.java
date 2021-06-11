@@ -12,7 +12,6 @@ import javafx.beans.binding.NumberBinding;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.DataFormat;
@@ -117,7 +116,7 @@ public class DevCardGridController extends GuiController {
 
                 strongbox.getContent().ifPresentOrElse(
                     c -> strongbox.refreshRemove(resource),
-                    () -> warehouse.refreshShelfRemove(id, resource));
+                    () -> warehouse.refreshShelfRemove(id));
 
                 success = true;
             } catch (NumberFormatException e) {
