@@ -27,12 +27,7 @@ public class DevCardGrid extends StringComponent {
 
             for (String key : reducedDevCardGrid.getTopCards().keySet()) {
                 int index = i;
-                ReducedDevCard card = reducedDevCardGrid.getTopCards().get(key).stream()
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .map(id -> cli.getViewModel().getDevelopmentCard(id).orElse(null))
-                        .filter(Objects::nonNull)
-                        .filter(c -> c.getLevel() == levels + 1 - index).findAny().orElseThrow();
+                ReducedDevCard card = cli.getViewModel().getDevelopmentCard(key, levels + 1 - index).orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
