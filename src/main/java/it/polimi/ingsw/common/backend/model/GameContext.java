@@ -50,15 +50,15 @@ public class GameContext extends EventDispatcher {
         this.mandatoryActionDone = false;
     }
 
-    public synchronized void registerViewOnModelPlayer(View view, String nickname) {
+    public void registerViewOnModelPlayer(View view, String nickname) {
         view.registerOnModelPlayer(getPlayerByNickname(nickname));
     }
 
-    public synchronized void unregisterViewOnModelPlayer(View view, String nickname) {
+    public void unregisterViewOnModelPlayer(View view, String nickname) {
         view.unregisterOnModelPlayer(getPlayerByNickname(nickname));
     }
 
-    public synchronized void start() {
+    public void start() {
         // TODO: Add logger
         // System.out.println("context.start, players:");
         // for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
@@ -72,7 +72,7 @@ public class GameContext extends EventDispatcher {
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
-    public synchronized void resume(View view) {
+    public void resume(View view) {
         game.dispatchState(view);
         game.getPlayers().forEach(p -> p.dispatchState(view));
     }
@@ -84,7 +84,7 @@ public class GameContext extends EventDispatcher {
      * @param nickname  the player
      * @param leaderIds the leader cards to choose
      */
-    public synchronized void chooseLeaders(View view, String nickname, List<Integer> leaderIds) {
+    public void chooseLeaders(View view, String nickname, List<Integer> leaderIds) {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
@@ -123,7 +123,7 @@ public class GameContext extends EventDispatcher {
      * @param nickname       the player
      * @param reducedShelves the destination shelves
      */
-    public synchronized void chooseResources(View view, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
+    public void chooseResources(View view, String nickname, Map<Integer, Map<String, Integer>> reducedShelves) {
         Player player = getPlayerByNickname(nickname);
 
         if (player.getSetup().isDone()) {
@@ -167,12 +167,12 @@ public class GameContext extends EventDispatcher {
     /**
      * Swaps the content of two shelves of a player.
      *
-     * @param view        the view the action originates from. Used to on back errors
+     * @param view     the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param shelfId1 the first shelf
      * @param shelfId2 the second shelf
      */
-    public synchronized void swapShelves(View view, String nickname, Integer shelfId1, Integer shelfId2) {
+    public void swapShelves(View view, String nickname, Integer shelfId1, Integer shelfId2) {
         Player player = getPlayerByNickname(nickname);
 
         if (!preliminaryChecks(view, player))
@@ -245,11 +245,11 @@ public class GameContext extends EventDispatcher {
     /**
      * Makes a player discard a leader card.
      *
-     * @param view        the view the action originates from. Used to on back errors
+     * @param view     the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param leaderId the leader card to discard
      */
-    public synchronized void discardLeader(View view, String nickname, Integer leaderId) {
+    public void discardLeader(View view, String nickname, Integer leaderId) {
         Player player = getPlayerByNickname(nickname);
 
         if (!preliminaryChecks(view, player))
@@ -287,9 +287,9 @@ public class GameContext extends EventDispatcher {
      * @param replacements   a map of the chosen resources to take, if choices are applicable
      * @param reducedShelves a map of the shelves where to add the taken resources, if possible
      */
-    public synchronized void takeMarketResources(View view, String nickname, boolean isRow, int index,
-                                                 Map<String, Integer> replacements,
-                                                 Map<Integer, Map<String, Integer>> reducedShelves) {
+    public void takeMarketResources(View view, String nickname, boolean isRow, int index,
+                                    Map<String, Integer> replacements,
+                                    Map<Integer, Map<String, Integer>> reducedShelves) {
         Player player = getPlayerByNickname(nickname);
 
         if (!preliminaryChecks(view, player))
@@ -353,8 +353,8 @@ public class GameContext extends EventDispatcher {
      * @param slotIndex            the index of the deview slot where to put the development card
      * @param reducedResContainers a map of the resource containers where to take the storable resources
      */
-    public synchronized void buyDevCard(View view, String nickname, String color, int level, int slotIndex,
-                                        Map<Integer, Map<String, Integer>> reducedResContainers) {
+    public void buyDevCard(View view, String nickname, String color, int level, int slotIndex,
+                           Map<Integer, Map<String, Integer>> reducedResContainers) {
         Player player = getPlayerByNickname(nickname);
         if (!preliminaryChecks(view, player))
             return;
@@ -420,7 +420,7 @@ public class GameContext extends EventDispatcher {
      * @param nickname            the player
      * @param reducedProdRequests the group of requested contemporary productions
      */
-    public synchronized void activateProductionRequests(View view, String nickname, List<ReducedProductionRequest> reducedProdRequests) {
+    public void activateProductionRequests(View view, String nickname, List<ReducedProductionRequest> reducedProdRequests) {
         Player player = getPlayerByNickname(nickname);
 
         if (!preliminaryChecks(view, player))
@@ -498,7 +498,7 @@ public class GameContext extends EventDispatcher {
      * @param view        the view the action originates from. Used to on back errors
      * @param nickname the player
      */
-    public synchronized void endTurn(View view, String nickname) {
+    public void endTurn(View view, String nickname) {
         Player player = getPlayerByNickname(nickname);
 
         if (!preliminaryChecks(view, player))
@@ -523,7 +523,7 @@ public class GameContext extends EventDispatcher {
         dispatch(new UpdateAction(nickname, ActionType.END_TURN));
     }
 
-    public synchronized void setActive(String nickname, boolean active) throws NoActivePlayersException {
+    public void setActive(String nickname, boolean active) throws NoActivePlayersException {
         Player player = getPlayerByNickname(nickname);
         player.setActive(active);
         if (!active && player.equals(game.getCurrentPlayer()))

@@ -33,163 +33,162 @@ public class Lobby extends EventDispatcher {
         this.disconnected = new HashMap<>();
     }
 
-    /* The player joining is one of the first of the match if 'freeSeats' is negative. */
-    public void joinLobby(View view, String nickname) {
-        synchronized(lock) {
-            if (nicknames.containsKey(view)) {
-                dispatch(new ErrNickname(view, ErrNicknameReason.ALREADY_SET));
-                return;
-            }
-            if (nickname == null || nickname.isBlank()) {
-                dispatch(new ErrNickname(view, ErrNicknameReason.NOT_SET));
-                return;
-            }
-            if (nicknames.containsValue(nickname)) {
-                dispatch(new ErrNickname(view, ErrNicknameReason.TAKEN));
-                return;
-            }
-    
-            /* nickname validated, join lobby */
-            nicknames.put(view, nickname);
-    
-            if (disconnected.containsKey(nickname)) {
-                // TODO: Add logger
-                // System.out.printf("Player \"%s\" rejoined%n", nickname);
-
-                /* Get the match the nickname was previously in and set the player back to active */
-                GameContext context = disconnected.get(nickname);
-                try {
-                    context.setActive(nickname, true);
-                } catch (NoActivePlayersException e) {
-                    // dispatch(new ErrAction(view, e));
-                    throw new RuntimeException("No active players after player rejoining.");
-                }
-
-                /* Resuming routine (observer registrations and state messages) */
-                view.registerOnModelGameContext(context);
-                context.registerViewOnModelPlayer(view, nickname);
-                joined.put(view, context);
-                disconnected.remove(nickname);
-                context.resume(view);
-            } else {
-                // TODO: Add logger
-                // System.out.printf("Set nickname \"%s\".%n", nickname);
-
-                waiting.add(view);
-
-                // TODO: Add logger
-                // System.out.printf("Adding %s, %d waiting\n", nickname, waiting.size());
-
-                waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
-
-                if (newGamePlayersCount != 0)
-                    dispatch(new UpdateJoinGame(view, newGamePlayersCount));
-
-                if (waiting.size() == newGamePlayersCount) {
-                    // TODO: Add logger
-                    // System.out.printf("%s joining started a new game\n", nicknames.get(view));
-                    startNewGame();
-                }
-            }
+    public synchronized void joinLobby(View view, String nickname) {
+        if (nicknames.containsKey(view)) {
+            dispatch(new ErrNickname(view, ErrNicknameReason.ALREADY_SET));
+            return;
         }
-    }
+        if (nickname == null || nickname.isBlank()) {
+            dispatch(new ErrNickname(view, ErrNicknameReason.NOT_SET));
+            return;
+        }
+        if (nicknames.containsValue(nickname)) {
+            dispatch(new ErrNickname(view, ErrNicknameReason.TAKEN));
+            return;
+        }
 
-    /* If the player is one of the first to join, it will have to choose the total number of players in the match. */
-    public void prepareNewGame(View view, int newGamePlayersCount) {
-        synchronized(lock) {
-            if (!checkNickname(view))
-                return;
-    
-            if (waiting.indexOf(view) != 0) {
-                // TODO: Add logger
-                // System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
-                dispatch(new ErrNewGame(view, false));
-                return;
+        /* nickname validated, join lobby */
+        nicknames.put(view, nickname);
+
+        if (disconnected.containsKey(nickname)) {
+            // TODO: Add logger
+            // System.out.printf("Player \"%s\" rejoined%n", nickname);
+
+            /* Get the match the nickname was previously in and set the player back to active */
+            GameContext context = disconnected.get(nickname);
+            try {
+                context.setActive(nickname, true);
+            } catch (NoActivePlayersException e) {
+                // dispatch(new ErrAction(view, e));
+                throw new RuntimeException("No active players after player rejoining.");
             }
 
-            if (newGamePlayersCount == 0) {
-                dispatch(new ErrNewGame(view, true));
-                return;
-            }
+            /* Resuming routine (observer registrations and state messages) */
+            view.registerOnModelGameContext(context);
+            context.registerViewOnModelPlayer(view, nickname);
+            joined.put(view, context);
+            disconnected.remove(nickname);
+            context.resume(view);
+        } else {
+            // TODO: Add logger
+            // System.out.printf("Set nickname \"%s\".%n", nickname);
+
+            waiting.add(view);
 
             // TODO: Add logger
-            // System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
-            this.newGamePlayersCount = newGamePlayersCount;
+            // System.out.printf("Adding %s, %d waiting\n", nickname, waiting.size());
 
-            waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> dispatch(new UpdateJoinGame(v, newGamePlayersCount)));
+            waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
 
-            if (waiting.size() >= newGamePlayersCount) {
+            if (newGamePlayersCount != 0)
+                dispatch(new UpdateJoinGame(view, newGamePlayersCount));
+
+            if (waiting.size() == newGamePlayersCount) {
                 // TODO: Add logger
-                // System.out.printf("%s prepared a new game\n", nicknames.get(view));
+                // System.out.printf("%s joining started a new game\n", nicknames.get(view));
                 startNewGame();
             }
         }
     }
 
-    public void startNewGame() {
-        synchronized(lock) {
-            Game newGame = newGamePlayersCount == 1 ?
-                    gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
-                    gameFactory.getMultiGame(waiting.subList(0, newGamePlayersCount).stream().map(nicknames::get).toList());
+    /* If the player is one of the first to join, it will have to choose the total number of players in the match. */
+    public synchronized void prepareNewGame(View view, int newGamePlayersCount) {
+        if (!checkNickname(view))
+            return;
 
-            GameContext context = new GameContext(newGame, gameFactory);
-            waiting.subList(0, newGamePlayersCount).forEach(view -> {
-                view.registerOnModelGameContext(context);
-                context.registerViewOnModelPlayer(view, nicknames.get(view));
-                joined.put(view, context);
-            });
-            context.start();
-
+        if (waiting.indexOf(view) != 0) {
             // TODO: Add logger
-            // System.out.printf("started context, waiting list %d\n", waiting.size());
+            // System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+            dispatch(new ErrNewGame(view, false));
+            return;
+        }
 
-            /* Remove players who joined from waiting list */
-            waiting.subList(0, newGamePlayersCount).clear();
+        if (newGamePlayersCount == 0) {
+            dispatch(new ErrNewGame(view, true));
+            return;
+        }
 
+        // TODO: Add logger
+        // System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+        this.newGamePlayersCount = newGamePlayersCount;
+
+        waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> dispatch(new UpdateJoinGame(v, newGamePlayersCount)));
+
+        if (waiting.size() >= newGamePlayersCount) {
             // TODO: Add logger
-            // System.out.printf("Removed %d waiting %d\n", newGamePlayersCount, waiting.size());
-
-            waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
-
-            newGamePlayersCount = 0;
+            // System.out.printf("%s prepared a new game\n", nicknames.get(view));
+            startNewGame();
         }
     }
 
-    public void quit(View view) {
-        synchronized (lock) {
-            String nickname = nicknames.get(view);
-            if (nickname != null) {
-                GameContext context = joined.get(view);
-                if (context != null) {
-                    view.unregisterOnModelGameContext(context);
-                    context.unregisterViewOnModelPlayer(view, nickname);
+    public synchronized void quit(View view) {
+        String nickname = nicknames.get(view);
+        if (nickname != null) {
+            GameContext context = joined.get(view);
+            if (context != null) {
+                view.unregisterOnModelGameContext(context);
+                context.unregisterViewOnModelPlayer(view, nickname);
 
-                    try {
-                        context.setActive(nickname, false);
-                        disconnected.put(nickname, context);
-                    } catch (NoActivePlayersException e) {
-                        disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
-                    }
-                    joined.remove(view);
+                try {
+                    context.setActive(nickname, false);
+                    disconnected.put(nickname, context);
+                } catch (NoActivePlayersException e) {
+                    disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
                 }
-                nicknames.remove(view);
-
-                waiting.remove(view);
+                joined.remove(view);
             }
-            dispatch(new ResQuit(view));
+            nicknames.remove(view);
+
+            waiting.remove(view);
         }
+        dispatch(new ResQuit(view));
     }
 
     public void checkJoinedThen(View view, BiConsumer<GameContext, String> then) {
-        if (checkJoined(view)) {
-            String nickname = "";
-    
-            synchronized(lock) {
+        boolean hasJoined;
+
+        synchronized (this) {
+            hasJoined = checkJoined(view);
+        }
+
+        if (hasJoined) {
+            String nickname;
+
+            synchronized (this) {
                 nickname = nicknames.get(view);
             }
-    
-            then.accept(joined.get(view), nickname);
+
+            synchronized (joined.get(view)) {
+                then.accept(joined.get(view), nickname);
+            }
         }
+    }
+
+    private void startNewGame() {
+        Game newGame = newGamePlayersCount == 1 ?
+                gameFactory.getSoloGame(nicknames.get(waiting.get(0))) :
+                gameFactory.getMultiGame(waiting.subList(0, newGamePlayersCount).stream().map(nicknames::get).toList());
+
+        GameContext context = new GameContext(newGame, gameFactory);
+        waiting.subList(0, newGamePlayersCount).forEach(view -> {
+            view.registerOnModelGameContext(context);
+            context.registerViewOnModelPlayer(view, nicknames.get(view));
+            joined.put(view, context);
+        });
+        context.start();
+
+        // TODO: Add logger
+        // System.out.printf("started context, waiting list %d\n", waiting.size());
+
+        /* Remove players who joined from waiting list */
+        waiting.subList(0, newGamePlayersCount).clear();
+
+        // TODO: Add logger
+        // System.out.printf("Removed %d waiting %d\n", newGamePlayersCount, waiting.size());
+
+        waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
+
+        newGamePlayersCount = 0;
     }
 
     private boolean checkNickname(View view) {
