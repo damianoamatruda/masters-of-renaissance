@@ -21,7 +21,6 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-
 /**
  * JavaFX App
  */
@@ -134,6 +133,7 @@ public class Gui extends Application {
     @Override
     public void stop() {
         closeClient();
+        view.close();
     }
 
     public void dispatch(Event event) {

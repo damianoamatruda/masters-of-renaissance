@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventDispatcher;
+import it.polimi.ingsw.common.AsynchronousEventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public class Lobby extends EventDispatcher {
+public class Lobby extends AsynchronousEventDispatcher {
     private final Object lock;
     private final GameFactory gameFactory;
     public final Map<View, String> nicknames;
@@ -132,6 +132,7 @@ public class Lobby extends EventDispatcher {
                     disconnected.put(nickname, context);
                 } catch (NoActivePlayersException e) {
                     disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
+                    context.close();
                 }
                 joined.remove(view);
             }
@@ -160,6 +161,13 @@ public class Lobby extends EventDispatcher {
                 then.accept(joined.get(view), nickname);
             }
         }
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        joined.values().forEach(AsynchronousEventDispatcher::close);
+        disconnected.values().forEach(AsynchronousEventDispatcher::close);
     }
 
     private void startNewGame() {

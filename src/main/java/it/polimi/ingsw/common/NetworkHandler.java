@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public abstract class NetworkHandler extends EventDispatcher implements Runnable, AutoCloseable {
+public abstract class NetworkHandler extends AsynchronousEventDispatcher implements Runnable, AutoCloseable {
     protected static final int timeout = 6000000;
     protected final Socket socket;
     protected final NetworkProtocol protocol;
@@ -35,13 +35,14 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
     public abstract void run();
 
     public void close() {
-        out = null;
-        in = null;
+        super.close();
         if (listening) {
             send(new ReqGoodbye());
             listening = false;
             onClose.run();
         }
+        out = null;
+        in = null;
     }
 
     public void send(Event event) {

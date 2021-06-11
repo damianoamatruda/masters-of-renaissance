@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.*;
 /**
  * This class represents the View in the MVC architecture.
  */
-public class View extends EventDispatcher {
+public class View extends AsynchronousEventDispatcher {
     private EventListener<ResQuit> resQuitEventListener = event -> {
     };
     private EventListener<UpdateBookedSeats> updateBookedSeatsEventListener = event -> {

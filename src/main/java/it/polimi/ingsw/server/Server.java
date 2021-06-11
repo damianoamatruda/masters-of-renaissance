@@ -23,19 +23,22 @@ public class Server implements Network, Runnable {
     private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
 
     private final ServerSocket serverSocket;
-    private final InputStream gameConfigStream;
     private final ExecutorService executor;
     private final NetworkProtocol protocol;
+    private final Lobby model;
     private final Map<NetworkHandler, View> virtualViews;
     private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
     private volatile boolean listening;
 
     public Server(int port, InputStream gameConfigStream) throws IOException {
         this.serverSocket = new ServerSocket(port);
-        this.gameConfigStream = gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath);
         this.executor = Executors.newCachedThreadPool();
         this.protocol = new NetworkProtocol();
         this.listening = false;
+
+        GameFactory gameFactory = new FileGameFactory(gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath));
+        this.model = new Lobby(gameFactory);
+
         this.virtualViews = new HashMap<>();
         this.vcEventListeners = new HashMap<>();
     }
@@ -99,8 +102,6 @@ public class Server implements Network, Runnable {
 
     @Override
     public void run() {
-        GameFactory gameFactory = new FileGameFactory(gameConfigStream);
-        Lobby model = new Lobby(gameFactory);
         Controller controller = new Controller(model);
 
         // TODO: Add logger
@@ -178,8 +179,11 @@ public class Server implements Network, Runnable {
 
     @Override
     public void close() throws IOException {
-        listening = false;
-        executor.shutdownNow();
-        serverSocket.close();
+        if (listening) {
+            listening = false;
+            executor.shutdownNow();
+            model.close();
+            serverSocket.close();
+        }
     }
 }

@@ -40,5 +40,6 @@ public class OfflineClient implements Network {
     public void close() {
         view.unregisterOnModelLobby(model);
         controller.unregisterOnVC(view);
+        model.close();
     }
 }

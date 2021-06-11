@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.EventDispatcher;
+import it.polimi.ingsw.common.AsynchronousEventDispatcher;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.cardrequirements.DevCardRequirement.Entry;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * This class manages the states and actions of a game.
  */
-public class GameContext extends EventDispatcher {
+public class GameContext extends AsynchronousEventDispatcher {
     /** The game. */
     private final Game game;
 

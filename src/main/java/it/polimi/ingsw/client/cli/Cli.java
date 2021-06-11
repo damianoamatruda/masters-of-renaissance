@@ -203,6 +203,7 @@ public class Cli {
     public void stop() {
         running = false;
         closeClient();
+        view.close();
     }
 
     public void dispatch(Event event) {
