@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.viewmodel.ViewModel;
-import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -22,14 +21,14 @@ public class EndgameController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
-                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+                backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
 
         ViewModel viewModel = Gui.getInstance().getViewModel();
-        
-        if(viewModel.getWinner() != null && viewModel.getWinner().equals(viewModel.getLocalPlayerNickname()))
+
+        if (viewModel.getWinner() != null && viewModel.getWinner().equals(viewModel.getLocalPlayerNickname()))
             outcome.setText("You won with " + viewModel.getPlayerVictoryPoints(viewModel.getWinner()) + " points! CONGRATULATIONS!");
         else if (viewModel.getWinner() != null)
             outcome.setText(

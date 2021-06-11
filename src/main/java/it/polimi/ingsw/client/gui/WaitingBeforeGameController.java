@@ -1,8 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
@@ -18,13 +15,21 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class WaitingBeforeGameController extends GuiController {
-    @FXML private StackPane backStackPane;
-    @FXML private BorderPane bpane;
-    @FXML private Text bookedSeats;
-    @FXML private ToggleGroup group;
-    @FXML private VBox canPrepare;
-    
+    @FXML
+    private StackPane backStackPane;
+    @FXML
+    private BorderPane bpane;
+    @FXML
+    private Text bookedSeats;
+    @FXML
+    private ToggleGroup group;
+    @FXML
+    private VBox canPrepare;
+
     private boolean youCanPrepare;
 
     public WaitingBeforeGameController() {
@@ -33,8 +38,8 @@ public class WaitingBeforeGameController extends GuiController {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
-                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+                backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
     }

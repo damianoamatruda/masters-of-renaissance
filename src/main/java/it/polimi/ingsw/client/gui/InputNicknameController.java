@@ -1,8 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
@@ -17,17 +14,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class InputNicknameController extends GuiController {
-    @FXML private StackPane backStackPane;
-    @FXML private BorderPane bpane;
-    @FXML private Title titleComponent;
-    @FXML private TextField nickname;
+    @FXML
+    private StackPane backStackPane;
+    @FXML
+    private BorderPane bpane;
+    @FXML
+    private Title titleComponent;
+    @FXML
+    private TextField nickname;
     private String nicknameValue;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
-                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+                backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
     }

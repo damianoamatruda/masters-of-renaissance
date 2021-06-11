@@ -26,9 +26,13 @@ import java.util.function.Consumer;
  */
 public class Gui extends Application {
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
-    static final double minWidth = 1280;
-    static final double minHeight = 780;
     private static final String title = "Masters of Renaissance";
+    static final double realWidth = 1280;
+    static final double realHeight = 720;
+    private static final double startWidth = 854;
+    private static final double startHeight = 480;
+    private static final double minWidth = 640;
+    private static final double minHeight = 360;
 
     private static Gui instance = null;
 
@@ -121,10 +125,10 @@ public class Gui extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = new FXMLLoader(getClass().getResource(initialSceneFxml)).load();
-        scene = new Scene(root, minWidth, minHeight, false, SceneAntialiasing.BALANCED);
+        scene = new Scene(root, startWidth, startHeight, false, SceneAntialiasing.BALANCED);
         primaryStage.setScene(scene);
-        primaryStage.setWidth(minWidth);
-        primaryStage.setHeight(minHeight);
+        primaryStage.setMinWidth(minWidth);
+        primaryStage.setMinHeight(minHeight);
         primaryStage.setTitle(title);
         primaryStage.show();
         this.stage = primaryStage;

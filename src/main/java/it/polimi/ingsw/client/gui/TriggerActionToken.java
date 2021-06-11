@@ -24,14 +24,14 @@ public class TriggerActionToken extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
-                backStackPane.heightProperty().divide(Gui.minHeight));
+        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+                backStackPane.heightProperty().divide(Gui.realHeight));
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
 
         Gui gui = Gui.getInstance();
         next.setOnAction(actionEvent -> {
-            if(!gui.getViewModel().isGameEnded())
+            if (!gui.getViewModel().isGameEnded())
                 gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
             else gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
         });

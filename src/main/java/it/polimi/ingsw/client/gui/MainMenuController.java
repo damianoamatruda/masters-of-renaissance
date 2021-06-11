@@ -24,11 +24,11 @@ public class MainMenuController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.minWidth),
-                                              backStackPane.heightProperty().divide(Gui.minHeight));
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+                backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
-        
+
         Gui gui = Gui.getInstance();
 
         if (gui.getMusicPlayer().isEmpty()) {
