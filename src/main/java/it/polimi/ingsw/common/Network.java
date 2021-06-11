@@ -1,9 +1,5 @@
 package it.polimi.ingsw.common;
 
-import java.io.IOException;
-
-public interface Network {
-    void start() throws IOException;
-
-    void stop();
+public interface Network extends AutoCloseable {
+    void open();
 }

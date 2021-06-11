@@ -34,7 +34,7 @@ public class Gui extends Application {
     private static Gui instance = null;
 
     private final View view;
-    private Network network;
+    private Network client;
 
     private Scene scene;
     private Stage stage;
@@ -102,7 +102,7 @@ public class Gui extends Application {
         this.view.setUpdateVictoryPointsEventListener(event -> controller.on(this, event));
         this.view.setUpdateLeadersHandEventListener(event -> controller.on(this, event));
 
-        this.network = null;
+        this.client = null;
 
         this.viewModel = new ViewModel();
 
@@ -133,8 +133,7 @@ public class Gui extends Application {
 
     @Override
     public void stop() {
-        if (network != null)
-            network.stop();
+        closeClient();
     }
 
     public void dispatch(Event event) {
@@ -145,27 +144,27 @@ public class Gui extends Application {
         this.controller = controller;
     }
 
-    void startOfflineClient() {
-        stopNetwork();
-        network = new OfflineClient(view, gameConfigStream);
-        try {
-            network.start();
-        } catch (IOException ignored) {
-        }
+    void openOfflineClient() {
+        closeClient();
+        client = new OfflineClient(view, gameConfigStream);
+        client.open();
         offline = true;
     }
 
-    void startOnlineClient(String host, int port) throws IOException {
-        stopNetwork();
-        network = new OnlineClient(view, host, port);
-        network.start();
+    void openOnlineClient(String host, int port) throws IOException {
+        closeClient();
+        client = new OnlineClient(view, host, port);
+        client.open();
         offline = false;
     }
 
-    void stopNetwork() {
-        if (network != null) {
-            network.stop();
-            network = null;
+    void closeClient() {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception ignored) {
+            }
+            client = null;
         }
     }
 

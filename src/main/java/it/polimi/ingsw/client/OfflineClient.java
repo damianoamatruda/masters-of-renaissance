@@ -11,41 +11,34 @@ import java.io.InputStream;
 
 public class OfflineClient implements Network {
     private static final String defaultGameConfigPath = "/config/config.json";
-
     private final View view;
-    private final InputStream gameConfigStream;
-    private Lobby model;
-    private Controller controller;
+    private final Lobby model;
+    private final Controller controller;
 
     public OfflineClient(View view, InputStream gameConfigStream) {
         this.view = view;
-        this.gameConfigStream = gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath);
-        this.model = null;
-        this.controller = null;
+
+        GameFactory gameFactory = new FileGameFactory(gameConfigStream != null ?
+                gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath));
+
+        this.model = new Lobby(gameFactory);
+
+        this.controller = new Controller(model);
     }
 
     public OfflineClient(View view) {
         this(view, null);
     }
 
-    public void start() {
-        GameFactory gameFactory = new FileGameFactory(gameConfigStream);
-        model = new Lobby(gameFactory);
-        controller = new Controller(model);
-
+    @Override
+    public void open() {
         view.registerOnModelLobby(model);
         controller.registerOnVC(view);
     }
 
-    public void stop() {
-        if (model != null) {
-            view.unregisterOnModelLobby(model);
-            model = null;
-        }
-
-        if (controller != null) {
-            controller.unregisterOnVC(view);
-            controller = null;
-        }
+    @Override
+    public void close() {
+        view.unregisterOnModelLobby(model);
+        controller.unregisterOnVC(view);
     }
 }

@@ -104,7 +104,7 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, ResQuit event) {
-        cli.stopNetwork();
+        cli.closeClient();
         cli.setState(new MainMenuState());
     }
 

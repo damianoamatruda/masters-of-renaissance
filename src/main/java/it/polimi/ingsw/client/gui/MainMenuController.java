@@ -38,7 +38,7 @@ public class MainMenuController extends GuiController {
     @FXML
     private void handlePlayOffline() {
         Gui gui = Gui.getInstance();
-        gui.startOfflineClient();
+        gui.openOfflineClient();
         gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
                 controller.setTitle("Play Offline"));
     }

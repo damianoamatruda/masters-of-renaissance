@@ -23,7 +23,7 @@ public class PlayOnlineController extends GuiController {
             host = args[0];
             port = Integer.parseInt(args[1]);
             System.out.printf("Connecting to %s...%n", server.getText());
-            gui.startOnlineClient(host, port);
+            gui.openOnlineClient(host, port);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.printf("%s is not a valid pair IP:port%n", server.getText());
             return;

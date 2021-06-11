@@ -9,67 +9,49 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class OnlineClient implements Network {
+    private final Socket socket;
     private final View view;
-    private final String host;
-    private final int port;
     private final ExecutorService executor;
-    private final NetworkProtocol protocol;
-    private Socket socket;
-    private NetworkHandler networkHandler;
+    private final NetworkHandler networkHandler;
     private EventListener<VCEvent> vcEventListener;
 
-    public OnlineClient(View view, String host, int port) {
+    public OnlineClient(View view, String host, int port) throws IOException {
+        this.socket = new Socket(host, port);
         this.view = view;
-        this.host = host;
-        this.port = port;
         this.executor = Executors.newCachedThreadPool();
-        this.protocol = new NetworkProtocol();
-        this.socket = null;
-        this.networkHandler = null;
+
+        this.networkHandler = new ClientServerHandler(socket, new NetworkProtocol());
+        this.networkHandler.setOnClose(() -> {
+            view.unregisterOnModelLobby(networkHandler);
+            view.unregisterOnModelGameContext(networkHandler);
+            view.unregisterOnModelGame(networkHandler);
+            view.unregisterOnModelPlayer(networkHandler);
+            try {
+                close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         this.vcEventListener = null;
     }
 
-    public void start() throws IOException {
-        socket = new Socket(host, port);
-
-        networkHandler = new ClientServerHandler(socket, protocol);
-
+    @Override
+    public void open() {
         view.registerOnModelLobby(networkHandler);
         view.registerOnModelGameContext(networkHandler);
         view.registerOnModelGame(networkHandler);
         view.registerOnModelPlayer(networkHandler);
         view.addEventListener(VCEvent.class, vcEventListener = networkHandler::send);
 
-        networkHandler.setOnStop(() -> {
-            view.unregisterOnModelLobby(networkHandler);
-            view.unregisterOnModelGameContext(networkHandler);
-            view.unregisterOnModelGame(networkHandler);
-            view.unregisterOnModelPlayer(networkHandler);
-            stop();
-        });
-
         executor.submit(networkHandler);
     }
 
-    public void stop() {
+    @Override
+    public void close() throws IOException {
         executor.shutdownNow();
-
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException ignored) {
-            }
-            socket = null;
-        }
-
-        if (networkHandler != null) {
-            networkHandler.stop();
-            networkHandler = null;
-        }
-
-        if (vcEventListener != null) {
-            view.removeEventListener(VCEvent.class, vcEventListener);
-            vcEventListener = null;
-        }
+        networkHandler.close();
+        socket.close();
+        view.removeEventListener(VCEvent.class, vcEventListener);
     }
 }

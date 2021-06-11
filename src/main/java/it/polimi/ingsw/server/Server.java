@@ -18,31 +18,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
-public class Server implements Network {
+public class Server implements Network, Runnable {
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
     private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
 
-    private final int port;
+    private final ServerSocket serverSocket;
     private final InputStream gameConfigStream;
     private final ExecutorService executor;
     private final NetworkProtocol protocol;
-    private ServerSocket serverSocket;
-    private volatile boolean listening;
     private final Map<NetworkHandler, View> virtualViews;
     private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
+    private volatile boolean listening;
 
-    public Server(int port, InputStream gameConfigStream) {
-        this.port = port;
+    public Server(int port, InputStream gameConfigStream) throws IOException {
+        this.serverSocket = new ServerSocket(port);
         this.gameConfigStream = gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath);
         this.executor = Executors.newCachedThreadPool();
         this.protocol = new NetworkProtocol();
-        this.serverSocket = null;
         this.listening = false;
         this.virtualViews = new HashMap<>();
         this.vcEventListeners = new HashMap<>();
     }
 
-    public Server(int port) {
+    public Server(int port) throws IOException {
         this(port, null);
     }
 
@@ -88,19 +86,24 @@ public class Server implements Network {
         }
 
         try {
-            new Server(port, gameConfigStream).start();
+            new Server(port, gameConfigStream).run();
         } catch (IOException e) {
             System.err.printf("Couldn't listen on port %d.%n", port);
         }
     }
 
-    public void start() throws IOException {
-        serverSocket = new ServerSocket(port);
+    @Override
+    public void open() {
+        new Thread(this).start();
+    }
 
+    @Override
+    public void run() {
         GameFactory gameFactory = new FileGameFactory(gameConfigStream);
         Lobby model = new Lobby(gameFactory);
         Controller controller = new Controller(model);
 
+        // TODO: Add logger
         System.out.println("Server ready");
         listening = true;
         while (listening) {
@@ -116,6 +119,13 @@ public class Server implements Network {
             }
 
             NetworkHandler networkHandler = new ServerClientHandler(socket, protocol);
+            networkHandler.setOnClose(() -> {
+                View virtualView1 = virtualViews.remove(networkHandler);
+                virtualView1.unregisterOnModelLobby(model);
+                controller.registerOnVC(virtualView1);
+                networkHandler.removeEventListener(VCEvent.class, vcEventListeners.remove(networkHandler));
+            });
+
             View virtualView = new View();
             virtualView.setResQuitEventListener(networkHandler::send);
             virtualView.setUpdateBookedSeatsEventListener(networkHandler::send);
@@ -156,20 +166,20 @@ public class Server implements Network {
             virtualView.registerOnModelLobby(model);
             controller.registerOnVC(virtualView);
 
-            networkHandler.setOnStop(() -> {
-                View virtualView1 = virtualViews.remove(networkHandler);
-                virtualView1.unregisterOnModelLobby(model);
-                controller.registerOnVC(virtualView1);
-                networkHandler.removeEventListener(VCEvent.class, vcEventListeners.remove(networkHandler));
-            });
-
             executor.submit(networkHandler);
         }
-        stop();
+
+        try {
+            close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void stop() {
-        executor.shutdownNow();
+    @Override
+    public void close() throws IOException {
         listening = false;
+        executor.shutdownNow();
+        serverSocket.close();
     }
 }

@@ -17,11 +17,8 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 public class ServerClientHandler extends NetworkHandler {
-    private final int timeout;
-
     public ServerClientHandler(Socket socket, NetworkProtocol protocol) {
         super(socket, protocol);
-        this.timeout = 6000000;
     }
 
     public void run() {
@@ -82,9 +79,7 @@ public class ServerClientHandler extends NetworkHandler {
             // System.err.println(e.getMessage());
             dispatch(new ReqQuit());
         } finally {
-            this.out = null;
-            this.in = null;
+            close();
         }
-        stop();
     }
 }

@@ -55,9 +55,7 @@ public class ClientServerHandler extends NetworkHandler {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            this.out = null;
-            this.in = null;
+            close();
         }
-        stop();
     }
 }

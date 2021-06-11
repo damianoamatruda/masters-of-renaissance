@@ -67,7 +67,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, ResQuit event) {
-        gui.stopNetwork();
+        gui.closeClient();
         gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 

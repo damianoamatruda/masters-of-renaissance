@@ -7,13 +7,14 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public abstract class NetworkHandler extends EventDispatcher implements Runnable {
+public abstract class NetworkHandler extends EventDispatcher implements Runnable, AutoCloseable {
+    protected static final int timeout = 6000000;
     protected final Socket socket;
     protected final NetworkProtocol protocol;
     protected PrintWriter out;
     protected BufferedReader in;
     protected volatile boolean listening;
-    protected Runnable onStop = () -> {
+    protected Runnable onClose = () -> {
     };
 
     public NetworkHandler(Socket socket, NetworkProtocol protocol) {
@@ -34,11 +35,13 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
 
     public abstract void run();
 
-    public void stop() {
+    public void close() {
+        out = null;
+        in = null;
         if (listening) {
             send(new ReqGoodbye());
             listening = false;
-            onStop.run();
+            onClose.run();
         }
     }
 
@@ -47,8 +50,8 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
             out.println(protocol.processOutput(event));
     }
 
-    public void setOnStop(Runnable onStop) {
-        this.onStop = onStop;
+    public void setOnClose(Runnable onClose) {
+        this.onClose = onClose;
     }
 
     protected void on(ReqWelcome event) {
@@ -67,10 +70,10 @@ public abstract class NetworkHandler extends EventDispatcher implements Runnable
 
     protected void on(ReqGoodbye event) {
         send(new ResGoodbye());
-        stop();
+        close();
     }
 
     protected void on(ResGoodbye event) {
-        stop();
+        close();
     }
 }

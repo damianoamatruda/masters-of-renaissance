@@ -26,7 +26,7 @@ public class Cli {
     private volatile boolean ready;
 
     private final View view;
-    private Network network;
+    private Network client;
 
     /** The current state of the interface. */
     private CliState state;
@@ -76,7 +76,7 @@ public class Cli {
         this.view.setUpdateVictoryPointsEventListener(event -> state.on(this, event));
         this.view.setUpdateLeadersHandEventListener(event -> state.on(this, event));
 
-        this.network = null;
+        this.client = null;
 
         this.viewModel = new ViewModel();
         this.out = System.out;
@@ -202,7 +202,7 @@ public class Cli {
 
     public void stop() {
         running = false;
-        stopNetwork();
+        closeClient();
     }
 
     public void dispatch(Event event) {
@@ -297,27 +297,27 @@ public class Cli {
         setState(this.state);
     }
 
-    void startOfflineClient() {
-        stopNetwork();
-        network = new OfflineClient(view, gameConfigStream);
-        try {
-            network.start();
-        } catch (IOException ignored) {
-        }
+    void openOfflineClient() {
+        closeClient();
+        client = new OfflineClient(view, gameConfigStream);
+        client.open();
         offline = true;
     }
 
-    void startOnlineClient(String host, int port) throws IOException {
-        stopNetwork();
-        network = new OnlineClient(view, host, port);
-        network.start();
+    void openOnlineClient(String host, int port) throws IOException {
+        closeClient();
+        client = new OnlineClient(view, host, port);
+        client.open();
         offline = false;
     }
 
-    void stopNetwork() {
-        if (network != null) {
-            network.stop();
-            network = null;
+    void closeClient() {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception ignored) {
+            }
+            client = null;
         }
     }
 
