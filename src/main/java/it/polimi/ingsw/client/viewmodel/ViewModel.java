@@ -364,8 +364,9 @@ public class ViewModel {
     }
 
     /**
-     * @param id the ID of the card to be returned
-     * @return the developmentCard matching the ID
+     * @param color the card's color
+     * @param level the card's level
+     * @return the card of the specified color and level
      */
     public Optional<ReducedDevCard> getDevelopmentCard(String color, int level) {
         return developmentCards.stream().filter(c -> c.getColor().equals(color) && c.getLevel() == level).findAny();
