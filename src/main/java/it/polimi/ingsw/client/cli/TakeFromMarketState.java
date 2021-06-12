@@ -149,7 +149,7 @@ public class TakeFromMarketState extends CliState {
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.getOut().println();
-        cli.promptShelves(totalRes, allowedShelves).ifPresentOrElse(shelves -> {
+        cli.promptShelves(totalRes, allowedShelves, true).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
             cli.dispatch(new ReqTakeFromMarket(this.isRow, this.index, this.replacements, this.shelves));
         }, () -> chooseIndex(cli)); // TODO: Check this

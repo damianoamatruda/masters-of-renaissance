@@ -98,7 +98,7 @@ public class BuyDevelopmentCardState extends CliState {
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
-        cli.promptShelves(this.cost, allowedShelves).ifPresentOrElse(shelves -> {
+        cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
         }, () -> chooseSlot(cli));
     }

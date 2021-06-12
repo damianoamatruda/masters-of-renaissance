@@ -120,7 +120,7 @@ public class ActivateProductionsState extends CliState {
         cli.getOut().println();
         cli.getOut().println("-- Containers to take resources from --");
         cli.getOut().println();
-        cli.promptShelves(totalRes, allowedShelves).ifPresentOrElse(shelves -> {
+        cli.promptShelves(totalRes, allowedShelves, false).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
             this.requests.add(new ReducedProductionRequest(this.selectedProd.getId(), this.inputReplacement, this.outputReplacement, this.shelves));
             chooseDone(cli);

@@ -332,7 +332,7 @@ public class Cli {
     }
 
     // TODO: Maybe make it a component, like Menu
-    Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves) {
+    Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves, boolean discardable) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         showShelves(this.getViewModel().getLocalPlayerNickname());
@@ -343,30 +343,46 @@ public class Cli {
         while (allocQuantity.get() < totalQuantity) {
             out.println();
 
-            String string = "Remaining:" + "\n" +
+            String string = "Remaining resources:" + "\n" +
                     new ResourceMap(remainingResMap).getString(this);
             out.println(center(string));
 
-            out.println();
-
             AtomicBoolean valid = new AtomicBoolean(true);
+            AtomicBoolean discarded = new AtomicBoolean(false);
 
-            promptResource(remainingResMap.keySet()).ifPresentOrElse(res -> {
-                promptQuantity(remainingResMap.get(res)).ifPresentOrElse(quantity -> {
-                    promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
-                        // TODO: Check for shelf overshooting
-                        shelves.compute(shelfId, (sid, rMap) -> {
-                            if (rMap == null)
-                                rMap = new HashMap<>();
-                            rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
-                            return rMap;
-                        });
+            if (discardable) {
+                out.println();
+                out.println(center("Press D if you want to discard all remaining resources."));
 
-                        allocQuantity.addAndGet(quantity);
-                        remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+                out.println();
+                prompt("").ifPresentOrElse(input -> {
+                    if (input.equalsIgnoreCase("D"))
+                        discarded.set(true);
+                }, () -> valid.set(false));
+            }
+
+            if (discarded.get())
+                break;
+
+            if (valid.get()) {
+                out.println();
+                promptResource(remainingResMap.keySet()).ifPresentOrElse(res -> {
+                    promptQuantity(remainingResMap.get(res)).ifPresentOrElse(quantity -> {
+                        promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+                            // TODO: Check for shelf overshooting
+                            shelves.compute(shelfId, (sid, rMap) -> {
+                                if (rMap == null)
+                                    rMap = new HashMap<>();
+                                rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                                return rMap;
+                            });
+
+                            allocQuantity.addAndGet(quantity);
+                            remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+                        }, () -> valid.set(false));
                     }, () -> valid.set(false));
                 }, () -> valid.set(false));
-            }, () -> valid.set(false));
+            }
 
             if (!valid.get()) {
                 // TODO: Take only one step back
