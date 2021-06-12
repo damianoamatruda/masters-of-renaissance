@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.ProductionSet;
 import it.polimi.ingsw.client.cli.components.ResourceTransactionRecipe;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
@@ -44,9 +45,9 @@ public class ActivateProductionsState extends CliState {
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getPlayerProductions(vm.getLocalPlayerNickname());
 
         cli.getOut().println();
-        allowedProds.forEach(p -> new ResourceTransactionRecipe(p).render(cli));
+        cli.getOut().println(center(new ProductionSet(allowedProds).getString(cli)));
         cli.getOut().println();
-        cli.getOut().println("Choose which production to activate:");
+        cli.getOut().println(center("Input the IDs of the productions to be activated."));
 
         while (!this.done) {
             AtomicBoolean valid = new AtomicBoolean(false);

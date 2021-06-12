@@ -22,7 +22,6 @@ public class SwapShelvesState extends CliState {
         cli.getOut().println();
         cli.showShelves(cli.getViewModel().getLocalPlayerNickname());
 
-        cli.getOut().println();
         promptFirstShelf(cli);
     }
 

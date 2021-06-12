@@ -248,13 +248,13 @@ public abstract class CliState implements Renderable {
         cli.getOut().println();
         cli.showContainers(event.getPlayer());
 
-        Map<String, Optional<ReducedResourceTransactionRecipe>> baseProds = new HashMap<>();
+        Optional<ReducedResourceTransactionRecipe> baseProds;
 
-        baseProds = vm.getPlayerNicknames().stream()
-                .filter(nick -> vm.getPlayerData(nick).isPresent())
-                .collect(Collectors.toMap(n -> n, n -> vm.getPlayerBaseProduction(n)));
+        baseProds = vm.getPlayerBaseProduction(vm.getLocalPlayerNickname());
+        // TODO put baseProd outside of PlayerData, since it is unique (?)
 
-        cli.getOut().println(new BaseProductions(baseProds).getString(cli));
+        cli.getOut().println(center("\nBase Production:"));
+        cli.getOut().println(center(new Box(new ResourceTransactionRecipe(baseProds.orElseThrow()), -1).getString(cli)));
     }
 
     public void on(Cli cli, UpdatePlayerStatus event) {
