@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.cli.components;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
+import java.util.Map;
+
 public class ResourceTransactionRecipe extends StringComponent {
     private final ReducedResourceTransactionRecipe reducedResourceTransactionRecipe;
 
@@ -17,18 +19,20 @@ public class ResourceTransactionRecipe extends StringComponent {
         stringBuilder.append(String.format("--- Production (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---%n", reducedResourceTransactionRecipe.getId()));
 
         stringBuilder.append("Input:").append("\n");
-        stringBuilder.append(new ResourceMap(reducedResourceTransactionRecipe.getInput()).getString(cli));
+        Map<String, Integer> inputResourceMap = reducedResourceTransactionRecipe.getInput();
         if (reducedResourceTransactionRecipe.getInputBlanks() > 0)
-            stringBuilder.append(String.format("  Blanks: %d", reducedResourceTransactionRecipe.getInputBlanks())).append("\n");
+            inputResourceMap.put("Blanks", reducedResourceTransactionRecipe.getInputBlanks());
+        stringBuilder.append(new ResourceMap(inputResourceMap).getString(cli));
         if (!reducedResourceTransactionRecipe.getInputBlanksExclusions().isEmpty()) {
             stringBuilder.append("B. exclusions:").append("\n");
             reducedResourceTransactionRecipe.getInputBlanksExclusions().forEach(e -> stringBuilder.append("  ").append(new Resource(e).getString(cli)).append("\n"));
         }
 
         stringBuilder.append("Output:").append("\n");
-        stringBuilder.append(new ResourceMap(reducedResourceTransactionRecipe.getOutput()).getString(cli));
+        Map<String, Integer> outputResourceMap = reducedResourceTransactionRecipe.getOutput();
         if (reducedResourceTransactionRecipe.getOutputBlanks() > 0)
-            stringBuilder.append(String.format("  Blanks: %d", reducedResourceTransactionRecipe.getOutputBlanks())).append("\n");
+            inputResourceMap.put("Blanks", reducedResourceTransactionRecipe.getOutputBlanks());
+        stringBuilder.append(new ResourceMap(outputResourceMap).getString(cli));
         if (!reducedResourceTransactionRecipe.getOutputBlanksExclusions().isEmpty()) {
             stringBuilder.append("B. exclusions:").append("\n");
             reducedResourceTransactionRecipe.getOutputBlanksExclusions().forEach(e -> stringBuilder.append("  ").append(new Resource(e).getString(cli)).append("\n"));
