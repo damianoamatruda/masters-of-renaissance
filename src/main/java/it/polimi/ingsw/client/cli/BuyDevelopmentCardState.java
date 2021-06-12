@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.DevCardGrid;
+import it.polimi.ingsw.client.cli.components.DevSlots;
+import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
@@ -42,9 +44,13 @@ public class BuyDevelopmentCardState extends CliState {
         cli.getOut().println();
         new DevCardGrid(grid).render(cli);
         cli.getOut().println();
-        cli.showShelves(vm.getLocalPlayerNickname());
-        cli.getOut().println();
-        cli.showStrongbox(vm.getLocalPlayerNickname());
+        new ResourceContainers(vm.getLocalPlayerNickname(),
+                vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
+                vm.getPlayerDepots(vm.getLocalPlayerNickname()),
+                vm.getPlayerStrongbox(vm.getLocalPlayerNickname()))
+                .render(cli);
+
+        // new DevSlots(slots)
 
         chooseColor(cli);
     }
@@ -80,9 +86,11 @@ public class BuyDevelopmentCardState extends CliState {
                 cli.getOut().println("Please specify how many resources to take from which container.");
 
                 cli.getOut().println();
-                cli.showShelves(vm.getLocalPlayerNickname());
-                cli.getOut().println();
-                cli.showStrongbox(vm.getLocalPlayerNickname());
+                new ResourceContainers(vm.getLocalPlayerNickname(),
+                        vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
+                        vm.getPlayerDepots(vm.getLocalPlayerNickname()),
+                        vm.getPlayerStrongbox(vm.getLocalPlayerNickname()))
+                        .render(cli);
 
                 chooseShelves(cli);
             }
