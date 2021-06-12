@@ -24,8 +24,8 @@ public class PlaygroundAfterActionController extends PlaygroundController {
             gui.dispatch(new ReqEndTurn());
         });
         canvas.getChildren().add(endTurn);
-        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), 0.0);
-        AnchorPane.setRightAnchor(canvas.getChildren().get(1), canvas.getWidth() / 2);
+        AnchorPane.setBottomAnchor(endTurn, 0.0);
+        AnchorPane.setRightAnchor(endTurn, 0.0);
 
         setLeadersBox();
 

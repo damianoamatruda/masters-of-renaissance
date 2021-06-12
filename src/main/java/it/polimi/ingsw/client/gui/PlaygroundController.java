@@ -108,7 +108,11 @@ public abstract class PlaygroundController extends GuiController {
     private void setPauseHandlers() {
         this.canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                backStackPane.getChildren().add(new PauseMenu());
+                try {
+                    backStackPane.getChildren().add(new PauseMenu());
+                }catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -118,8 +122,8 @@ public abstract class PlaygroundController extends GuiController {
             backStackPane.getChildren().add(new PauseMenu());
         });
         canvas.getChildren().add(pause);
-        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), 0.0);
-        AnchorPane.setLeftAnchor(canvas.getChildren().get(1), canvas.getWidth() / 2);
+        AnchorPane.setBottomAnchor(pause, 0.0);
+        AnchorPane.setLeftAnchor(pause, 0.0);
     }
 
     protected void setLeadersBox() {
