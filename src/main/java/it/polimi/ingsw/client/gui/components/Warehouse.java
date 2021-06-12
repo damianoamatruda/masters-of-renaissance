@@ -39,6 +39,7 @@ public class Warehouse extends VBox {
     }
 
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback, boolean wantsDnD) {
+        this.getChildren().clear();
         maxRowHeight = getPrefHeight() / shelves.size(); // TODO: check that it works with more than 3 shelves
         if(shelves != null) {
             for (ReducedResourceContainer shelf : shelves) {
