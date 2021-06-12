@@ -4,19 +4,17 @@ import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.left;
 import static it.polimi.ingsw.client.cli.Cli.slimLine;
 
 public class DevSlots extends StringComponent {
-    private final Map<Integer, ReducedDevCard> slots;
+    private final List<ReducedDevCard> slots;
     private final static int cellWidth = 30;
 
-    public DevSlots(Map<Integer, ReducedDevCard> slots) {
-        this.slots = new HashMap<>(slots);
+    public DevSlots(List<ReducedDevCard> slots) {
+        this.slots = new ArrayList<>(slots);
     }
 
     @Override

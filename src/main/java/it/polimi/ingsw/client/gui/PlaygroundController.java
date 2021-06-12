@@ -23,7 +23,6 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public abstract class PlaygroundController extends GuiController {
@@ -69,13 +68,12 @@ public abstract class PlaygroundController extends GuiController {
 
         List<DevSlot> slots = new ArrayList<>();
 
-        List<List<Optional<ReducedDevCard>>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
+        List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
         
         modelSlots.forEach(modelSlot -> {
             DevSlot slot = new DevSlot();
 
             List<DevelopmentCard> cards = modelSlot.stream()
-                    .map(oc -> oc.orElseThrow())
                     .map(c -> new DevelopmentCard(c)).toList();
             slot.setDevCards(cards);
 

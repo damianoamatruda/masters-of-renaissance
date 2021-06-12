@@ -26,19 +26,19 @@ public class ViewModel {
     private ReducedDevCardGrid devCardGrid;
     private List<ReducedDevCard> developmentCards;
     private ReducedFaithTrack faithTrack;
+    private boolean isGameEnded = false;
     private boolean isLastRound;
+    private ReducedActionToken latestToken;
     private List<ReducedLeaderCard> leaderCards;
     private ReducedMarket market;
     private List<String> playerNicknames;
     private List<ReducedResourceTransactionRecipe> productions;
     private List<ReducedResourceType> resourceTypes;
-    private String winner = "";
     private int slotsCount;
-    private ReducedActionToken latestToken;
+    private String winner = "";
 
     private final List<String> clientColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
     private Map<String, String> mappedColors;
-    private boolean isGameEnded = false;
 
     /**
      * Class constructor.
@@ -100,14 +100,32 @@ public class ViewModel {
 
     /**
      * @param nickname
-     * @return the topmost development cards in the player's slots
+     * @return all the development cards in the player's slots
      */
-    public List<List<Optional<ReducedDevCard>>> getPlayerDevelopmentCards(String nickname) {
+    public List<List<ReducedDevCard>> getPlayerDevelopmentCards(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
         return playerData.get(nickname).getDevSlots().stream()
-            .map(slot -> slot.stream().map(c -> getDevelopmentCard(c)).toList())
+            .map(slot -> slot.stream()
+                             .map(c -> getDevelopmentCard(c).orElse(null))
+                             .filter(Objects::nonNull)
+                             .toList())
+            .toList();
+    }
+
+    /**
+     * @param nickname
+     * @return the topmost development cards in the player's slots
+     */
+    public List<ReducedDevCard> getPlayerDevelopmentSlots(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return new ArrayList<>();
+
+        return playerData.get(nickname).getDevSlots().stream()
+            .map(slot -> slot.isEmpty() ? -1 : slot.get(0))
+            .map(cardID -> getDevelopmentCard(cardID).orElse(null))
+            .filter(Objects::nonNull)
             .toList();
     }
 
@@ -175,16 +193,11 @@ public class ViewModel {
         List<Integer> ids = new ArrayList<>();
         
         ids.add(pd.getBaseProduction());
-        getPlayerLeaderCards(nickname).forEach(c -> {
-            if (c.getProduction() >= 0 && c.isActive())
-                ids.add(c.getProduction());
-        });
-        getPlayerDevelopmentCards(nickname).forEach(l -> {
-            l.get(0).ifPresent(c -> {
-                if (c.getProduction() >= 0)
-                    ids.add(c.getProduction());
-            });
-        });
+        getPlayerLeaderCards(nickname).stream()
+            .filter(ReducedLeaderCard::isActive)
+            .forEach(c -> ids.add(c.getProduction()));
+        getPlayerDevelopmentSlots(nickname)
+            .forEach(c -> ids.add(c.getProduction()));
 
         return ids.stream()
             .map(id -> getProduction(id).orElse(null))
@@ -394,6 +407,10 @@ public class ViewModel {
         this.faithTrack = faithTrack;
     }
 
+    public boolean isGameEnded() {
+        return isGameEnded;
+    }
+
     /**
      * @return whether it's the last round of the match
      */
@@ -406,6 +423,14 @@ public class ViewModel {
      */
     public void setLastRound() {
         this.isLastRound = true;
+    }
+
+    public Optional<ReducedActionToken> getLatestToken() {
+        return Optional.ofNullable(latestToken);
+    }
+
+    public void setLatestToken(ReducedActionToken latestToken) {
+        this.latestToken = latestToken;
     }
 
     /**
@@ -494,6 +519,14 @@ public class ViewModel {
             this.resourceTypes = new ArrayList<>(resourceTypes);
     }
 
+    public int getSlotsCount() {
+        return slotsCount;
+    }
+
+    public void setSlotsCount(int slotsCount) {
+        this.slotsCount = slotsCount;
+    }
+
     /**
      * @return the vaticanSections
      */
@@ -534,6 +567,13 @@ public class ViewModel {
     }
 
     /**
+     * @param isResumedGame whether the game is resumed
+     */
+    public void setResumedGame(boolean isResumedGame) {
+        this.isResumedGame = isResumedGame;
+    }
+
+    /**
      * @param isSetupDone whether the player setup is done
      */
     public void setSetupDone(boolean isSetupDone) {
@@ -545,13 +585,6 @@ public class ViewModel {
      */
     public boolean isSetupDone() {
         return isResumedGame || isSetupDone; // when resuming setup is still false
-    }
-
-    /**
-     * @param isResumedGame whether the game is resumed
-     */
-    public void setResumedGame(boolean isResumedGame) {
-        this.isResumedGame = isResumedGame;
     }
 
     /**
@@ -568,28 +601,8 @@ public class ViewModel {
         this.localPlayerNickname = localPlayerNickname;
     }
 
-    public int getSlotsCount() {
-        return slotsCount;
-    }
-
-    public void setSlotsCount(int slotsCount) {
-        this.slotsCount = slotsCount;
-    }
-
-    public Optional<ReducedActionToken> getLatestToken() {
-        return Optional.ofNullable(latestToken);
-    }
-
-    public void setLatestToken(ReducedActionToken latestToken) {
-        this.latestToken = latestToken;
-    }
-
     public String getClientColor(String nick) {
         return mappedColors.get(nick);
-    }
-
-    public boolean isGameEnded() {
-        return isGameEnded;
     }
 
     public boolean isCurrentPlayer() {

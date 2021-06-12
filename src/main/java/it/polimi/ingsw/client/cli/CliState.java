@@ -139,8 +139,10 @@ public abstract class CliState implements Renderable {
     }
 
     public void on(Cli cli, UpdateDevCardSlot event) {
-        cli.getViewModel().getCurrentPlayerData().orElseThrow().setDevSlot(event.getDevSlot(), event.getDevCard());
-        // TODO: print
+        cli.getViewModel().getCurrentPlayerData().orElseThrow().pushToDevSlot(event.getDevSlot(), event.getDevCard());
+        
+        new DevSlots(cli.getViewModel()
+                .getPlayerDevelopmentSlots(cli.getViewModel().getLocalPlayerNickname())).render(cli);
     }
 
     public void on(Cli cli, UpdateFaithPoints event) {
@@ -180,6 +182,7 @@ public abstract class CliState implements Renderable {
         vm.setDevCardColors(event.getColors());
         vm.setResourceTypes(event.getResourceTypes());
         vm.setResumedGame(event.isResumed());
+        vm.setSlotsCount(event.getSlotsCount());
 
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));

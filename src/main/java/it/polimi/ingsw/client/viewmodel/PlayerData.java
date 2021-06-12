@@ -61,7 +61,7 @@ public class PlayerData {
      * @param slot   the index of the slot (0-based) to place the card into
      * @param cardID the ID of the card to place on top (set at position 0)
      */
-    public void setDevSlot(int slot, int cardID) {
+    public void pushToDevSlot(int slot, int cardID) {
         while (devSlots.size() - 1 < slot)
             devSlots.add(slot, new ArrayList<>());
 

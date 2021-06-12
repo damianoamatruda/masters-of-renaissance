@@ -13,15 +13,17 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardState extends CliState {
     private final CliState sourceState;
+    private ViewModel vm;
+    private ReducedDevCardGrid grid;
     private String color;
     private int level;
     private Map<String, Integer> cost;
@@ -30,16 +32,18 @@ public class BuyDevelopmentCardState extends CliState {
 
     public BuyDevelopmentCardState(CliState sourceState) {
         this.sourceState = sourceState;
+
+        this.shelves = new HashMap<>();
     }
 
     @Override
     public void render(Cli cli) {
+        vm = cli.getViewModel();
+        
         cli.getOut().println();
         cli.getOut().println(center("~ Buy a Development Card ~"));
 
-        ViewModel vm = cli.getViewModel();
-
-        ReducedDevCardGrid grid = vm.getDevCardGrid().orElseThrow();
+        grid = vm.getDevCardGrid().orElseThrow();
 
         cli.getOut().println();
         new DevCardGrid(grid).render(cli);
@@ -50,58 +54,87 @@ public class BuyDevelopmentCardState extends CliState {
                 vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
                 .render(cli);
 
-        // new DevSlots(slots)
+        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render(cli);
 
         chooseColor(cli);
     }
 
     private void chooseColor(Cli cli) {
-        cli.prompt("Card color").ifPresentOrElse(color -> {
-            this.color = color;
-            chooseLevel(cli);
-        }, () -> cli.setState(this.sourceState));
+        Set<String> allowedColors = grid.getTopCards().keySet().stream()
+            .map(String::toLowerCase)
+            .collect(Collectors.toUnmodifiableSet());
+
+        AtomicBoolean valid = new AtomicBoolean(false);
+        while (!valid.get()) {
+            valid.set(true);
+            cli.prompt("Card color").ifPresentOrElse(color -> {
+                if (!allowedColors.contains(color.toLowerCase()))
+                    valid.set(false);
+                else {
+                    this.color = color.substring(0, 1).toUpperCase() + color.substring(1);
+                    chooseLevel(cli);
+                }
+            }, () -> cli.setState(this.sourceState));
+        }
     }
 
     private void chooseLevel(Cli cli) {
-        cli.promptInt("Card level").ifPresentOrElse(level -> {
-            this.level = level;
-            chooseSlot(cli);
-        }, () -> chooseColor(cli));
+        Set<Integer> levels = grid.getTopCards().values().stream()
+            .flatMap(Collection::stream)
+            .filter(Optional::isPresent)
+            .map(id -> vm.getDevelopmentCard(id.get()))
+            .map(card -> card.isPresent() ? card.get().getLevel() : -1).collect(Collectors.toUnmodifiableSet());
+
+        AtomicBoolean valid = new AtomicBoolean(false);
+        while (!valid.get()) {
+            valid.set(true);
+            cli.promptInt("Card level").ifPresentOrElse(level -> {
+                if (!levels.contains(level))
+                    valid.set(false);
+                else {    
+                    this.level = level;
+                    chooseSlot(cli);
+                }
+            }, () -> chooseColor(cli));
+        }
     }
 
     private void chooseSlot(Cli cli) {
-        ViewModel vm = cli.getViewModel();
+        AtomicBoolean valid = new AtomicBoolean(false);
+        while (!valid.get()) {
+            valid.set(true);
+            cli.promptInt("Player board slot index to assign the card to").ifPresentOrElse(slot -> {
+                if (slot < 1 || slot > vm.getSlotsCount()) {
+                    valid.set(false);
+                    return;
+                }
 
-        ReducedDevCardGrid grid = vm.getDevCardGrid().orElseThrow();
+                this.slot = slot;
 
-        cli.promptInt("Player board slot to assign to the card").ifPresentOrElse(slot -> {
-            this.slot = slot;
+                ReducedDevCard card = vm.getDevelopmentCard(color, level).orElseThrow();
 
-            ReducedDevCard card = vm.getDevelopmentCard(color, level).orElseThrow();
+                this.cost = card.getCost().isPresent() ? new HashMap<>(card.getCost().get().getRequirements()) : new HashMap<>();
 
-            this.cost = card.getCost().isPresent() ? new HashMap<>() : new HashMap<>(card.getCost().get().getRequirements());
+                if (!this.cost.isEmpty()) {
+                    cli.getOut().println("Resources need to be paid.");
+                    cli.getOut().println("Please specify how many resources to take from which container.");
 
-            if (!this.cost.isEmpty()) {
-                cli.getOut().println("Resources need to be paid.");
-                cli.getOut().println("Please specify how many resources to take from which container.");
+                    cli.getOut().println();
+                    new ResourceContainers(vm.getLocalPlayerNickname(),
+                            vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
+                            vm.getPlayerDepots(vm.getLocalPlayerNickname()),
+                            vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
+                            .render(cli);
 
-                cli.getOut().println();
-                new ResourceContainers(vm.getLocalPlayerNickname(),
-                        vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
-                        vm.getPlayerDepots(vm.getLocalPlayerNickname()),
-                        vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
-                        .render(cli);
+                    chooseShelves(cli);
+                }
 
-                chooseShelves(cli);
-            }
-
-            cli.dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
-        }, () -> chooseLevel(cli));
+                cli.dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
+            }, () -> chooseLevel(cli));
+        }
     }
 
     private void chooseShelves(Cli cli) {
-        ViewModel vm = cli.getViewModel();
-
         Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());

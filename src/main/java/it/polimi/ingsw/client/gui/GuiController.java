@@ -93,7 +93,7 @@ public abstract class GuiController implements Initializable {
     }
 
     public void on(Gui gui, UpdateDevCardSlot event) {
-        gui.getViewModel().getCurrentPlayerData().orElseThrow().setDevSlot(event.getDevSlot(), event.getDevCard());
+        gui.getViewModel().getCurrentPlayerData().orElseThrow().pushToDevSlot(event.getDevSlot(), event.getDevCard());
     }
 
     public void on(Gui gui, UpdateFaithPoints event) {
