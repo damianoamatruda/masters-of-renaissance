@@ -48,7 +48,6 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
 
         warehouse.enableSwapper();
 
-        setPauseOnEsc();
     }
 
     @Override
@@ -58,16 +57,5 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
                 event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES ||
                 event.getAction() == UpdateAction.ActionType.ACTIVATE_PRODUCTION)
         gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
-    }
-
-    @Override
-    protected void setPauseOnEsc() {
-        this.canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"), (PauseMenuController controller) -> {
-                    controller.setLastScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-                });
-            }
-        });
     }
 }

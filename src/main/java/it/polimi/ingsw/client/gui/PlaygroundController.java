@@ -13,6 +13,7 @@ import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -99,9 +100,17 @@ public abstract class PlaygroundController extends GuiController {
         pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
+        setPauseOnEsc();
+
     }
 
-    protected abstract void setPauseOnEsc();
+    private void setPauseOnEsc() {
+        this.canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                backStackPane.getChildren().add(new PauseMenu());
+            }
+        });
+    }
 
     protected void setLeadersBox() {
         ViewModel vm = Gui.getInstance().getViewModel();

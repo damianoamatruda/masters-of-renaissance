@@ -256,9 +256,7 @@ public class DevCardGridController extends GuiController {
     private void setPauseOnEsc() {
         this.canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"), (PauseMenuController controller) -> {
-                    controller.setLastScene(getClass().getResource("/assets/gui/devcardgrid.fxml"));
-                });
+                backStackPane.getChildren().add(new PauseMenu());
             }
         });
     }

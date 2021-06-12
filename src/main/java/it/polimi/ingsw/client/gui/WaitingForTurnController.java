@@ -18,17 +18,5 @@ public class WaitingForTurnController extends PlaygroundController {
 
         canvas.getChildren().add(topText);
 
-        setPauseOnEsc();
-    }
-
-    @Override
-    protected void setPauseOnEsc() {
-        this.canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"), (PauseMenuController controller) -> {
-                    controller.setLastScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-                });
-            }
-        });
     }
 }

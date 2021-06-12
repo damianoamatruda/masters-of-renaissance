@@ -38,23 +38,11 @@ public class PlaygroundAfterActionController extends PlaygroundController {
 
         warehouse.enableSwapper();
 
-        setPauseOnEsc();
     }
 
     @Override
     public void on(Gui gui, UpdateActionToken event) {
         super.on(gui, event);
         gui.setRoot(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
-    }
-
-    @Override
-    protected void setPauseOnEsc() {
-        this.canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                Gui.getInstance().setRoot(getClass().getResource("/assets/gui/pausemenu.fxml"), (PauseMenuController controller) -> {
-                    controller.setLastScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
-                });
-            }
-        });
     }
 }
