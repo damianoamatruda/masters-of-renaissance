@@ -591,4 +591,8 @@ public class ViewModel {
     public boolean isGameEnded() {
         return isGameEnded;
     }
+
+    public boolean isCurrentPlayer() {
+        return currentPlayer.equals(localPlayerNickname);
+    }
 }

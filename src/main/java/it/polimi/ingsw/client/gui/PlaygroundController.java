@@ -207,13 +207,18 @@ public abstract class PlaygroundController extends GuiController {
     public void on(Gui gui, UpdateActivateLeader event) {
         super.on(gui, event);
 
-        LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
-        int leaderIndex = leadersBox.getChildren().indexOf(leader);
+        if(gui.getViewModel().isCurrentPlayer()) {
+            LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
+            int leaderIndex = leadersBox.getChildren().indexOf(leader);
 
-        leader.setActivated(true);
+            leader.setActivated(true);
 
-        HBox buttons = (HBox) leadersBox.getChildren().get(leaderIndex + 1);
-        buttons.getChildren().forEach(b -> { b.setDisable(true); b.setVisible(false);});
+            HBox buttons = (HBox) leadersBox.getChildren().get(leaderIndex + 1);
+            buttons.getChildren().forEach(b -> {
+                b.setDisable(true);
+                b.setVisible(false);
+            });
+        }
     }
 
     @Override
@@ -231,15 +236,17 @@ public abstract class PlaygroundController extends GuiController {
     public void on(Gui gui, UpdateLeadersHandCount event) {
         super.on(gui, event);
 
-        int leaderIndex = leadersBox.getChildren().indexOf(toDiscard);
+        if(gui.getViewModel().isCurrentPlayer()) {
+            int leaderIndex = leadersBox.getChildren().indexOf(toDiscard);
 
 //        leadersBox.getChildren().remove(leaderIndex, leaderIndex + 2);
-        leadersBox.getChildren().get(leaderIndex).setVisible(false);
+            leadersBox.getChildren().get(leaderIndex).setVisible(false);
 
-        leadersBox.getChildren().get(leaderIndex + 1).setDisable(true);
-        leadersBox.getChildren().get(leaderIndex + 1).setVisible(false);
+            leadersBox.getChildren().get(leaderIndex + 1).setDisable(true);
+            leadersBox.getChildren().get(leaderIndex + 1).setVisible(false);
 
-        toDiscard = null;
+            toDiscard = null;
+        }
     }
 
     @Override
