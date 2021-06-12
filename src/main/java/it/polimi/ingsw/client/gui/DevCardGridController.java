@@ -80,6 +80,9 @@ public class DevCardGridController extends GuiController {
         // containersBox.setBorder(new Border(new BorderStroke(Color.RED,
         //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
+        devCardGrid.setScaleX(0.75);
+        devCardGrid.setScaleY(0.75);
+
         devCardGridPane.getChildren().add(devCardGrid);
 
         devSlotChoicePicker.getItems().addAll(List.of(0, 1, 2));
