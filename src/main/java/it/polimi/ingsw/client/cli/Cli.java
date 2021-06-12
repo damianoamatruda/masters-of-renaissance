@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.OnlineClient;
 import it.polimi.ingsw.client.cli.components.Box;
 import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainer;
+import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.Network;
@@ -335,7 +336,12 @@ public class Cli {
     Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves, boolean discardable) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
-        showShelves(this.getViewModel().getLocalPlayerNickname());
+        new ResourceContainers(
+                viewModel.getLocalPlayerNickname(),
+                viewModel.getPlayerWarehouseShelves(viewModel.getLocalPlayerNickname()),
+                viewModel.getPlayerDepots(viewModel.getLocalPlayerNickname()),
+                Optional.empty())
+                .render(this);
 
         Map<String, Integer> remainingResMap = new HashMap<>(resMap);
         int totalQuantity = remainingResMap.values().stream().mapToInt(Integer::intValue).sum();
@@ -430,12 +436,17 @@ public class Cli {
     Optional<Map<Integer, Map<String, Integer>>> promptShelvesSetup(Set<String> allowedResources, int totalQuantity, Set<Integer> allowedShelves) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
-        showShelves(this.getViewModel().getLocalPlayerNickname());
+        new ResourceContainers(
+                viewModel.getLocalPlayerNickname(),
+                viewModel.getPlayerWarehouseShelves(viewModel.getLocalPlayerNickname()),
+                viewModel.getPlayerDepots(viewModel.getLocalPlayerNickname()),
+                Optional.empty())
+                .render(this);
 
         AtomicInteger allocQuantity = new AtomicInteger();
         while (allocQuantity.get() < totalQuantity) {
             out.println();
-            out.println("Resources you can choose:");
+            out.printf("You can choose %d resources among these:%n", totalQuantity - allocQuantity.get());
 
             out.println();
             allowedResources.forEach(r -> {
@@ -514,50 +525,6 @@ public class Cli {
             }
         }
         return Optional.of(shelfId);
-    }
-
-    @Deprecated
-    void showShelves(String player) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        if (viewModel.getPlayerWarehouseShelves(player).size() > 0) {
-            stringBuilder.append(String.format("%s's warehouse shelves:", player)).append("\n");
-            viewModel.getPlayerWarehouseShelves(player).forEach(c ->
-                    stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(this)));
-        }
-        if (viewModel.getPlayerDepots(player).size() > 0) {
-            stringBuilder.append("\n");
-            stringBuilder.append(String.format("%s's available leader depots:%n", player));
-            viewModel.getPlayerDepots(player).forEach(c ->
-                    stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
-        }
-
-        out.println(center(stringBuilder.toString()));
-        out.println();
-    }
-
-    @Deprecated
-    void showStrongbox(String player) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append(String.format("%s's strongbox:", player)).append("\n");
-        viewModel.getPlayerStrongbox(player).ifPresent(c ->
-                stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(this)));
-
-        out.println(center(stringBuilder.toString()));
-        out.println();
-    }
-
-    @Deprecated
-    public void showContainers(String player) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append(String.format("%s's containers:", player)).append("\n");
-        viewModel.getPlayerShelves(player).forEach(c ->
-                stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(this)));
-
-        out.println(center(stringBuilder.toString()));
-        out.println();
     }
 
     void quit() {

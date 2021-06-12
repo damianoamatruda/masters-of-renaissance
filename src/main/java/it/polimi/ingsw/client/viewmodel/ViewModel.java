@@ -194,7 +194,7 @@ public class ViewModel {
 
     /**
      * @param nickname
-     * @return the player's reduced containers
+     * @return the player's warehouse shelves and depots
      */
     public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
         if (!playerData.containsKey(nickname))

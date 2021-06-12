@@ -246,7 +246,13 @@ public abstract class CliState implements Renderable {
                 event.getStrongbox(),
                 event.getWarehouseShelves()));
         cli.getOut().println();
-        cli.showContainers(event.getPlayer());
+        
+        new ResourceContainers(
+                event.getPlayer(),
+                vm.getPlayerWarehouseShelves(event.getPlayer()),
+                vm.getPlayerDepots(event.getPlayer()),
+                vm.getPlayerStrongbox(event.getPlayer()))
+                .render(cli);
 
         Optional<ReducedResourceTransactionRecipe> baseProds;
 

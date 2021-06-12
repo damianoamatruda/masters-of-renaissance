@@ -5,6 +5,11 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
+import java.util.Optional;
+
+import it.polimi.ingsw.client.cli.components.ResourceContainers;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
+
 public class SwapShelvesState extends CliState {
     private final CliState sourceState;
     private int shelfId1;
@@ -16,11 +21,18 @@ public class SwapShelvesState extends CliState {
 
     @Override
     public void render(Cli cli) {
+        ViewModel vm = cli.getViewModel();
+
         cli.getOut().println();
         cli.getOut().println(center("~ Swap Shelves ~"));
 
         cli.getOut().println();
-        cli.showShelves(cli.getViewModel().getLocalPlayerNickname());
+        new ResourceContainers(
+                vm.getLocalPlayerNickname(),
+                vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
+                vm.getPlayerDepots(vm.getLocalPlayerNickname()),
+                Optional.empty())
+                .render(cli);
 
         promptFirstShelf(cli);
     }

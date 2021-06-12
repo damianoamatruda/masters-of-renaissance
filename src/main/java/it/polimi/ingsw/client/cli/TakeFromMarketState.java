@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.Market;
+import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
@@ -39,7 +40,12 @@ public class TakeFromMarketState extends CliState {
         new Market(vm.getMarket().orElseThrow()).render(cli);
 
         cli.getOut().println();
-        cli.showShelves(vm.getLocalPlayerNickname());
+        new ResourceContainers(
+                vm.getLocalPlayerNickname(),
+                vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
+                vm.getPlayerDepots(vm.getLocalPlayerNickname()),
+                Optional.empty())
+                .render(cli);
 
         chooseRowCol(cli);
     }
