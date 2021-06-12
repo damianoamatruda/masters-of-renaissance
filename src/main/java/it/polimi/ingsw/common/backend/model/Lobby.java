@@ -56,12 +56,7 @@ public class Lobby extends AsynchronousEventDispatcher {
 
             /* Get the match the nickname was previously in and set the player back to active */
             GameContext context = disconnected.get(nickname);
-            try {
-                context.setActive(nickname, true);
-            } catch (NoActivePlayersException e) {
-                // dispatch(new ErrAction(view, e));
-                throw new RuntimeException("No active players after player rejoining.");
-            }
+            context.setActive(nickname, true);
 
             /* Resuming routine (observer registrations and state messages) */
             view.registerOnModelGameContext(context);
@@ -127,13 +122,8 @@ public class Lobby extends AsynchronousEventDispatcher {
             if (context != null) {
                 view.unregisterOnModelGameContext(context);
 
-                try {
-                    context.setActive(nickname, false);
-                    disconnected.put(nickname, context);
-                } catch (NoActivePlayersException e) {
-                    disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
-                    context.close();
-                }
+                context.setActive(nickname, false);
+                disconnected.put(nickname, context);
                 joined.remove(view);
             }
             nicknames.remove(view);

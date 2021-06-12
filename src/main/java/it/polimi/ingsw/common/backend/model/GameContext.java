@@ -509,18 +509,14 @@ public class GameContext extends AsynchronousEventDispatcher {
             return;
         }
 
-        try {
-            game.onTurnEnd();
-        } catch (NoActivePlayersException e) {
-            throw new RuntimeException("No active players"); // TODO: Handle this
-        }
+        game.onTurnEnd();
 
         mandatoryActionDone = false;
 
         dispatch(new UpdateAction(nickname, ActionType.END_TURN));
     }
 
-    public void setActive(String nickname, boolean active) throws NoActivePlayersException {
+    public void setActive(String nickname, boolean active) {
         Player player = getPlayerByNickname(nickname);
         player.setActive(active);
         if (!active && player.equals(game.getCurrentPlayer()))

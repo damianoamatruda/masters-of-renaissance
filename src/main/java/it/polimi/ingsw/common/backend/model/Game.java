@@ -218,20 +218,19 @@ public class Game extends EventDispatcher {
      * <p>
      * If next player is inactive, the operation is repeated until an active player is found.
      *
-     * @throws NoActivePlayersException all players are set to inactive
      */
-    public void onTurnEnd() throws NoActivePlayersException {
-        if (players.stream().noneMatch(Player::isActive))
-            throw new NoActivePlayersException();
+    public void onTurnEnd() {
+        if (players.stream().anyMatch(Player::isActive)) {
 
-        do
-            players.add(players.remove(0));
-        while (!players.get(0).isActive());
+            do
+                players.add(players.remove(0));
+            while (!players.get(0).isActive());
 
-        dispatch(new UpdateCurrentPlayer(players.get(0).getNickname()));
+            dispatch(new UpdateCurrentPlayer(players.get(0).getNickname()));
 
-        if (lastRound)
-            end();
+            if (lastRound)
+                end();
+        }
     }
 
     /**
