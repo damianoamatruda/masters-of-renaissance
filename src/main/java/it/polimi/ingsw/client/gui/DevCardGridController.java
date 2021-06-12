@@ -190,7 +190,7 @@ public class DevCardGridController extends GuiController {
         // warehouse.setScaleX(0.62);
         // warehouse.setScaleY(0.62);
 
-        warehouse.enableSwapper();
+//        warehouse.enableSwapper();
     }
 
     private void resetStrongbox() {
