@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
+import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -100,16 +102,24 @@ public abstract class PlaygroundController extends GuiController {
         pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        setPauseOnEsc();
-
+        setPauseHandlers();
     }
 
-    private void setPauseOnEsc() {
+    private void setPauseHandlers() {
         this.canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 backStackPane.getChildren().add(new PauseMenu());
             }
         });
+
+        Button pause = new SButton();
+        pause.setText("Pause");
+        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
+            backStackPane.getChildren().add(new PauseMenu());
+        });
+        canvas.getChildren().add(pause);
+        AnchorPane.setBottomAnchor(canvas.getChildren().get(1), 0.0);
+        AnchorPane.setLeftAnchor(canvas.getChildren().get(1), canvas.getWidth() / 2);
     }
 
     protected void setLeadersBox() {
