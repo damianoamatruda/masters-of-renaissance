@@ -14,6 +14,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class TakeFromMarketState extends CliState {
     private final CliState sourceState;
     private boolean isRow;
@@ -28,8 +30,12 @@ public class TakeFromMarketState extends CliState {
 
     @Override
     public void render(Cli cli) {
+        cli.getOut().println();
+        cli.getOut().println(center("~ Take Market Resources ~"));
+
         ViewModel vm = cli.getViewModel();
 
+        cli.getOut().println();
         new Market(vm.getMarket().orElseThrow()).render(cli);
 
         cli.getOut().println();
@@ -157,7 +163,6 @@ public class TakeFromMarketState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        cli.getOut().println();
         cli.promptPause();
         cli.setState(new TurnAfterActionState());
     }

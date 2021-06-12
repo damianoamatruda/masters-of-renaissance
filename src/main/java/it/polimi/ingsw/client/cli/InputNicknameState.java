@@ -10,9 +10,21 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class InputNicknameState extends CliState{
+import static it.polimi.ingsw.client.cli.Cli.center;
+
+public class InputNicknameState extends CliState {
+    private final String title;
+
+    public InputNicknameState(String title) {
+        this.title = title;
+    }
+
     @Override
     public void render(Cli cli) {
+        cli.getOut().println();
+        cli.getOut().println(center(String.format("~ %s ~", title)));
+
+        cli.getOut().println();
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
             valid.set(true);
@@ -68,7 +80,6 @@ public class InputNicknameState extends CliState{
         if (cli.getViewModel().isResumedGame())
             throw new RuntimeException("UpdateLeadersHand after resumed game.");
 
-        cli.getOut().println();
         cli.promptPause();
         cli.setState(new SetupLeadersState());
     }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.cli.components.Box;
 import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainer;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
@@ -17,6 +18,7 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class Cli {
     private static final int width = 179;
@@ -95,40 +97,30 @@ public class Cli {
         return s.hasNext() ? s.next() : "";
     }
 
-    public static String centerLine(String str, int width) {
-        int marginLeft = (width - textLength(str)) / 2;
-        int marginRight = width - marginLeft - textLength(str);
-
-        if (textLength(str) > width) {
-            System.err.println("String too long:");
-            System.err.println(str);
-            System.err.printf("Max length: %d. Got: %d.", width, textLength(str));
-            throw new IllegalArgumentException();
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        str.lines().forEachOrdered(line -> stringBuilder.append(" ".repeat(marginLeft)).append(line).append(" ".repeat(marginRight)));
-        return stringBuilder.toString();
-    }
-
-    public static String center(String str) {
+    public static String center(String str, int width, char fill) {
         if (str.lines().count() == 0)
             return "";
 
-        int maxLineWidth = str.lines().mapToInt(Cli::textLength).max().orElseThrow();
-
-        if (maxLineWidth > width) {
+        if (maxLineWidth(str) > width) {
             System.err.println("String too long:");
-            System.err.println(str.lines().filter(s -> s.length() == maxLineWidth).findAny().orElseThrow());
-            System.err.printf("Max length: %d. Got: %d.", width, textLength(str.lines().filter(s -> s.length() == maxLineWidth).findAny().orElseThrow()));
+            System.err.println(str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow());
+            System.err.printf("Max length: %d. Got: %d.", width, textLength(str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow()));
             throw new IllegalArgumentException();
         }
 
-        int marginLeft = (width - maxLineWidth) / 2;
+        int marginLeft = (width - maxLineWidth(str)) / 2;
 
         StringBuilder stringBuilder = new StringBuilder();
-        str.lines().forEachOrdered(line -> stringBuilder.append(" ".repeat(marginLeft)).append(line).append(" ".repeat(width - marginLeft - textLength(line))).append("\n"));
-        return stringBuilder.toString();
+        str.lines().forEachOrdered(line -> stringBuilder.append(Character.toString(fill).repeat(marginLeft)).append(line).append(Character.toString(fill).repeat(width - marginLeft - textLength(line))).append("\n"));
+        return stringBuilder.substring(0, stringBuilder.length() - 1);
+    }
+
+    public static String center(String str, int width) {
+        return center(str, width, ' ');
+    }
+
+    public static String center(String str) {
+        return center(str, width);
     }
 
     public static String left(String str, int width, char fill) {
@@ -145,6 +137,10 @@ public class Cli {
         return left(str, width, ' ');
     }
 
+    public static String left(String str) {
+        return left(str, width);
+    }
+
     public static String right(String str, int width, char fill) {
         return Character.toString(fill).repeat(width - textLength(str)) + str;
     }
@@ -153,8 +149,20 @@ public class Cli {
         return right(str, width, ' ');
     }
 
+    public static String right(String str) {
+        return right(str, width);
+    }
+
     public static int textLength(String str) {
         return str.replaceAll("\u001B\\[[;\\d]*m", "").length();
+    }
+
+    public static int maxLineWidth(String str) {
+        return str.lines().mapToInt(Cli::textLength).max().orElseThrow();
+    }
+
+    public static int maxLinesHeight(List<String> str) {
+        return Math.toIntExact(str.stream().map(String::lines).mapToLong(Stream::count).max().orElseThrow());
     }
 
     public static String slimLine(int width) {
@@ -213,7 +221,7 @@ public class Cli {
     public Optional<String> prompt(String prompt, String defaultValue) {
         if (prompt.isEmpty())
             throw new IllegalArgumentException("Prompt cannot be empty.");
-        out.printf("%s (default: %s): ", prompt, defaultValue);
+        out.print(right(String.format("%s (default: %s): ", prompt, defaultValue), width / 3));
         String value = in.nextLine();
         if (value.equals(backValue))
             return Optional.empty();
@@ -222,7 +230,7 @@ public class Cli {
 
     public Optional<String> prompt(String prompt) {
         if (!prompt.isEmpty())
-            out.printf("%s: ", prompt);
+            out.print(right(String.format("%s: ", prompt), width / 3));
         String value = in.nextLine();
         if (value.equals(backValue))
             return Optional.empty();
@@ -284,7 +292,8 @@ public class Cli {
     }
 
     void promptPause() {
-        out.print(Cli.center("[Press ENTER to continue]"));
+        out.println();
+        out.println(center("[Press ENTER to continue]"));
         pause();
     }
 
@@ -333,8 +342,10 @@ public class Cli {
         AtomicInteger allocQuantity = new AtomicInteger();
         while (allocQuantity.get() < totalQuantity) {
             out.println();
-            out.println("Remaining:");
-            new ResourceMap(remainingResMap).render(this);
+
+            String string = "Remaining:" + "\n" +
+                    new ResourceMap(remainingResMap).getString(this);
+            out.println(center(string));
 
             out.println();
 
@@ -496,7 +507,7 @@ public class Cli {
         if (viewModel.getPlayerWarehouseShelves(player).size() > 0) {
             stringBuilder.append(String.format("%s's warehouse shelves:", player)).append("\n");
             viewModel.getPlayerWarehouseShelves(player).forEach(c ->
-                    stringBuilder.append("\n").append(new ResourceContainer(c).getStringBoxed(this)));
+                    stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(this)));
         }
         if (viewModel.getPlayerDepots(player).size() > 0) {
             stringBuilder.append("\n");
@@ -505,7 +516,7 @@ public class Cli {
                     stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
         }
 
-        out.print(Cli.center(stringBuilder.toString()));
+        out.println(center(stringBuilder.toString()));
         out.println();
     }
 
@@ -514,10 +525,10 @@ public class Cli {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(String.format("%s's strongbox:", player)).append("\n");
-        viewModel.getPlayerStrongbox(viewModel.getLocalPlayerNickname()).ifPresent(c ->
-                stringBuilder.append("\n").append(new ResourceContainer(c).getString(this)));
+        viewModel.getPlayerStrongbox(player).ifPresent(c ->
+                stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(this)));
 
-        out.print(Cli.center(stringBuilder.toString()));
+        out.println(center(stringBuilder.toString()));
         out.println();
     }
 
@@ -527,9 +538,9 @@ public class Cli {
 
         stringBuilder.append(String.format("%s's containers:", player)).append("\n");
         viewModel.getPlayerShelves(player).forEach(c ->
-                stringBuilder.append("\n").append(new ResourceContainer(c).getStringBoxed(this)));
+                stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(this)));
 
-        out.print(Cli.center(stringBuilder.toString()));
+        out.println(center(stringBuilder.toString()));
         out.println();
     }
 

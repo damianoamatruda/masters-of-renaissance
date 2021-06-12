@@ -11,6 +11,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class LeaderActionsState extends CliState {
     private final CliState sourceState;
     private int leaderId;
@@ -21,7 +23,7 @@ public class LeaderActionsState extends CliState {
 
     public void render(Cli cli) {
         cli.getOut().println();
-        cli.getOut().print(Cli.center("Leader actions:"));
+        cli.getOut().println(center("~ Leader Actions ~"));
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
@@ -65,7 +67,6 @@ public class LeaderActionsState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        cli.getOut().println();
         cli.promptPause();
         cli.setState(sourceState);
     }

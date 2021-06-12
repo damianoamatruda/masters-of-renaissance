@@ -16,11 +16,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class SetupResourcesState extends CliState {
     @Override
     public void render(Cli cli) {
         cli.getOut().println();
-        cli.getOut().print(Cli.center("Choosing initial resources."));
+        cli.getOut().println(center("~ Choose initial resources ~"));
 
         ViewModel vm = cli.getViewModel();
 

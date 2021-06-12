@@ -3,8 +3,8 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
@@ -18,10 +18,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class SetupLeadersState extends CliState {
     @Override
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
+
+        cli.getOut().println();
+        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
 
         int leadersToChoose = cli.getViewModel()
                 .getLocalPlayerData().orElseThrow()
@@ -35,10 +40,10 @@ public class SetupLeadersState extends CliState {
             cli.setState(new MainMenuState());
         }
 
+        cli.getOut().println();
         new LeadersHand(lCards).render(cli);
 
         cli.getOut().println();
-        cli.getOut().print(Cli.center("Choosing starting leaders hand."));
 
         List<Integer> leaders = new ArrayList<>();
 

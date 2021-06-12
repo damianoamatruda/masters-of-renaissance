@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class FaithTrack extends StringComponent {
     private final ReducedFaithTrack reducedFaithTrack;
     private final Map<String, Integer> points;
@@ -63,7 +65,7 @@ public class FaithTrack extends StringComponent {
         // Indexes on top of the track
         StringBuilder stringBuilder = new StringBuilder(" ");
         for (int i = 0; i <= maxFaith; i++)
-            stringBuilder.append(Cli.centerLine(String.valueOf(i), 6));
+            stringBuilder.append(center(String.valueOf(i), 6));
         stringBuilder.append("\n");
 
         // Upper border
@@ -84,10 +86,10 @@ public class FaithTrack extends StringComponent {
                 if (j < players.size()) {
                     String player = players.get(j);
                     stringBuilder.append("\u001B[0m").append(points.get(player) == i ?
-                            Cli.centerLine(cli.getViewModel().getClientColor(player) + nicks.get(j) + "\u001B[0m", 5) : " ".repeat(cellWidth));
+                            center(cli.getViewModel().getClientColor(player) + nicks.get(j) + "\u001B[0m", 5) : " ".repeat(cellWidth));
                 } else
                     stringBuilder.append("\u001B[0m").append(cli.getViewModel().getBlackCrossFP() == i ?
-                            Cli.centerLine("\u001B[90mBlack" + "\u001B[0m", 5) : " ".repeat(cellWidth));
+                            center("\u001B[90mBlack" + "\u001B[0m", 5) : " ".repeat(cellWidth));
             }
             // Rightmost side border
             if (yellowTiles.contains(maxFaith)) stringBuilder.append("\u001B[93m");
@@ -110,21 +112,21 @@ public class FaithTrack extends StringComponent {
                 overlapped.add(i);
             if (yellowTiles.contains(i)) {
                 index = yellowTiles.indexOf(i);
-                stringBuilder.append(Cli.centerLine("\u001B[93m" + reducedFaithTrack.getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m", 6));
+                stringBuilder.append(center("\u001B[93m" + reducedFaithTrack.getYellowTiles().get(index).getVictoryPoints() + " pts" + "\u001B[0m", 6));
             } else if (sectionEnds.contains(i)) {
-                stringBuilder.append(Cli.centerLine("\u001B[31m" + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m", 6));
+                stringBuilder.append(center("\u001B[31m" + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m", 6));
             } else
                 stringBuilder.append("      ");
         }
         stringBuilder.append("\n");
         for (int i = 0; i <= maxFaith; i++) {
             if (overlapped.contains(i))
-                stringBuilder.append(Cli.centerLine("\u001B[31m+ " + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m", 7));
+                stringBuilder.append(center("\u001B[31m+ " + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m", 7));
             else
                 stringBuilder.append("      ");
         }
 
-        return Cli.center(stringBuilder.toString());
+        return center(stringBuilder.toString());
     }
 
     private void printTrackHorizontalBorder(String boldLeftCorner, String slimLeftCorner, String boldRightCorner,

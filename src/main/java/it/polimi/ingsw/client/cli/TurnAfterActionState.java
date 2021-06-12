@@ -8,11 +8,13 @@ import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class TurnAfterActionState extends CliTurnState {
     @Override
     public void render(Cli cli) {
         cli.getOut().println();
-        cli.getOut().print(Cli.center("Available actions:"));
+        cli.getOut().println(center("~ It's your turn ~"));
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
@@ -29,7 +31,6 @@ public class TurnAfterActionState extends CliTurnState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        cli.getOut().println();
         cli.promptPause();
         if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
             cli.setState(new WaitingAfterTurnState());

@@ -8,6 +8,6 @@ public abstract class StringComponent implements Renderable {
 
     @Override
     public final void render(Cli cli) {
-        cli.getOut().print(getString(cli));
+        cli.getOut().println(getString(cli));
     }
 }

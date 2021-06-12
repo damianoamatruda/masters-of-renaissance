@@ -4,10 +4,13 @@ import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class DevCardGrid extends StringComponent {
-    private final static int cellWidth = 30;
+    private final static int cellWidth = 28;
 
     private final ReducedDevCardGrid reducedDevCardGrid;
 
@@ -19,15 +22,14 @@ public class DevCardGrid extends StringComponent {
     public String getString(Cli cli) {
         StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append("Development Card Grid:").append("\n").append("\n");
+
         List<List<ReducedDevCard>> topCards = new ArrayList<>();
         int levels = reducedDevCardGrid.getLevelsCount();
 
         for (int i = 1; i <= levels; i++) {
-            stringBuilder.append(("┌" + Cli.slimLineNoNewLine(cellWidth - 1) + "┐ ").repeat(reducedDevCardGrid.getColorsCount())).append("\n");
-
             for (String key : reducedDevCardGrid.getTopCards().keySet()) {
-                int index = i;
-                ReducedDevCard card = cli.getViewModel().getDevelopmentCard(key, levels + 1 - index).orElseThrow();
+                ReducedDevCard card = cli.getViewModel().getDevelopmentCard(key, levels + 1 - i).orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }
@@ -35,23 +37,21 @@ public class DevCardGrid extends StringComponent {
             List<List<String>> rows = new ArrayList<>();
             for (int j = 0; j < topCards.get(i - 1).size(); j++) {
                 ReducedDevCard card = topCards.get(i - 1).get(j);
-                rows.add(Arrays.asList(new DevelopmentCard(card).getString(cli).split("\\R")));
+                rows.add(new Box(new DevelopmentCard(card), -1, cellWidth).getString(cli).lines().toList());
             }
 
             int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
             for (int j = 0; j < length; j++) {
                 for (int l = 0; l < topCards.get(i - 1).size(); l++) {
-                    stringBuilder.append("│");
                     if (j < rows.get(l).size())
-                        stringBuilder.append(Cli.left(rows.get(l).get(j), cellWidth - 2)).append(" │ ");
+                        stringBuilder.append(rows.get(l).get(j)).append(" ");
                     else
-                        stringBuilder.append(Cli.left("", cellWidth - 2)).append(" │ ");
+                        stringBuilder.append("".repeat(cellWidth + 1));
                 }
                 stringBuilder.append("\n");
             }
-            stringBuilder.append(("└" + Cli.slimLineNoNewLine(cellWidth - 1) + "┘ ").repeat(reducedDevCardGrid.getColorsCount())).append("\n");
         }
 
-        return Cli.center(stringBuilder.toString());
+        return center(stringBuilder.toString());
     }
 }

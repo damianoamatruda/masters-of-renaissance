@@ -10,10 +10,7 @@ public class MainMenuState extends CliState {
     @Override
     public void render(Cli cli) {
         new MainTitle().render(cli);
-        renderMainMenu(cli);
-    }
 
-    private void renderMainMenu(Cli cli) {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Play Offline", this::playOffline));
         entries.put('2', new Menu.Entry("Play Online", cli1 -> cli1.setState(new PlayOnlineState())));
@@ -24,6 +21,6 @@ public class MainMenuState extends CliState {
 
     private void playOffline(Cli cli) {
         cli.openOfflineClient();
-        cli.setState(new InputNicknameState());
+        cli.setState(new InputNicknameState("Play Offline"));
     }
 }

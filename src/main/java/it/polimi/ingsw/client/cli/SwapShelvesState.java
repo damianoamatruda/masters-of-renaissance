@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class SwapShelvesState extends CliState {
     private final CliState sourceState;
     private int shelfId1;
@@ -15,10 +17,12 @@ public class SwapShelvesState extends CliState {
     @Override
     public void render(Cli cli) {
         cli.getOut().println();
+        cli.getOut().println(center("~ Swap Shelves ~"));
+
+        cli.getOut().println();
         cli.showShelves(cli.getViewModel().getLocalPlayerNickname());
 
         cli.getOut().println();
-
         promptFirstShelf(cli);
     }
 
@@ -38,7 +42,6 @@ public class SwapShelvesState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        cli.getOut().println();
         cli.promptPause();
         cli.setState(sourceState);
     }

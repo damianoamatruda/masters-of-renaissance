@@ -13,6 +13,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class ActivateProductionsState extends CliState {
     private final CliState sourceState;
     private final List<ReducedProductionRequest> requests;
@@ -34,10 +36,14 @@ public class ActivateProductionsState extends CliState {
     }
 
     private void chooseProductions(Cli cli) {
+        cli.getOut().println();
+        cli.getOut().println(center("~ Activate Productions ~"));
+
         ViewModel vm = cli.getViewModel();
 
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getPlayerProductions(vm.getLocalPlayerNickname());
 
+        cli.getOut().println();
         allowedProds.forEach(p -> new ResourceTransactionRecipe(p).render(cli));
         cli.getOut().println();
         cli.getOut().println("Choose which production to activate:");
@@ -130,7 +136,6 @@ public class ActivateProductionsState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        cli.getOut().println();
         cli.promptPause();
         cli.setState(new TurnAfterActionState());
     }

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class Menu implements Renderable {
     private final Map<Character, Entry> entries;
     private final Consumer<Cli> backAction;
@@ -28,7 +30,8 @@ public class Menu implements Renderable {
     public void render(Cli cli) {
         StringBuilder stringBuilder = new StringBuilder();
         entries.forEach((c, entry) -> stringBuilder.append(String.format("[%c] %s%n", c, entry.description)));
-        cli.getOut().print(Cli.center(stringBuilder.toString()));
+        cli.getOut().println(center(stringBuilder.toString()));
+        cli.getOut().println();
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
             cli.prompt("").ifPresentOrElse(input -> {

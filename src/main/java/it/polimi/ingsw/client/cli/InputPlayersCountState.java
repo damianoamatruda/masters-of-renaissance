@@ -8,20 +8,30 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class InputPlayersCountState extends CliState {
     @Override
     public void render(Cli cli) {
         if (cli.isOffline()) {
-            // cli.getOut().print(Cli.center("Preparing a new game..."));
+            // cli.getOut().println(center("Preparing a new game..."));
             cli.dispatch(new ReqNewGame(1));
             return;
         }
+
+        cli.getOut().println();
+        cli.getOut().println(center("~ Play Online ~"));
+
+        cli.getOut().println();
+        cli.getOut().println(center("You are the first player in the lobby."));
+
+        cli.getOut().println();
 
         boolean valid = false;
         while (!valid) {
             valid = true;
             try {
-                cli.promptInt("You are the first player of the match. Please choose the players count").ifPresentOrElse(count -> {
+                cli.promptInt("Players count").ifPresentOrElse(count -> {
                     if (count <= 0)
                         throw new NumberFormatException();
                     cli.dispatch(new ReqNewGame(count));
@@ -74,7 +84,6 @@ public class InputPlayersCountState extends CliState {
         if (cli.getViewModel().isResumedGame())
             throw new RuntimeException("UpdateLeadersHand after resumed game.");
 
-        cli.getOut().println();
         cli.promptPause();
         cli.setState(new SetupLeadersState());
     }

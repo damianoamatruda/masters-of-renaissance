@@ -11,8 +11,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static it.polimi.ingsw.client.cli.Cli.center;
 
 public abstract class CliState implements Renderable {
     @Override
@@ -120,7 +121,6 @@ public abstract class CliState implements Renderable {
                     cli.getOut().println();
                     new ActionToken(t).render(cli);
                 });
-        cli.getOut().println();
         cli.promptPause();
     }
 
@@ -130,7 +130,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateCurrentPlayer event) {
         cli.getViewModel().setCurrentPlayer(event.getPlayer());
         cli.getOut().println();
-        cli.getOut().print(Cli.center(String.format("Current player: %s", event.getPlayer())));
+        cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
     }
 
     public void on(Cli cli, UpdateDevCardGrid event) {
@@ -220,7 +220,7 @@ public abstract class CliState implements Renderable {
 
         cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
         cli.getOut().println();
-        cli.getOut().printf("%s's leader cards:%n", event.getPlayer());
+        cli.getOut().println(center(String.format("%s's leader cards:", event.getPlayer())));
         cli.getOut().println();
         new LeadersHand(cli.getViewModel().getPlayerLeaderCards(event.getPlayer())).render(cli);
     }
@@ -228,7 +228,8 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateLeadersHandCount event) {
         cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersCount(event.getLeadersCount());
         cli.getOut().println();
-        cli.getOut().print(Cli.center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
+        cli.getOut().println(center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
+        cli.promptPause();
     }
 
     public void on(Cli cli, UpdateMarket event) {
@@ -265,7 +266,7 @@ public abstract class CliState implements Renderable {
     public void on(Cli cli, UpdateResourceContainer event) {
         cli.getViewModel().setContainer(event.getResContainer());
         cli.getOut().println();
-        cli.getOut().print(Cli.center(new ResourceContainer(event.getResContainer()).getStringBoxed(cli)));
+        cli.getOut().println(center(new Box(new ResourceContainer(event.getResContainer())).getString(cli)));
     }
 
     public void on(Cli cli, UpdateSetupDone event) {

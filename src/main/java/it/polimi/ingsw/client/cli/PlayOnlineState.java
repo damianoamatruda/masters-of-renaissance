@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.client.OnlineClient;
-import it.polimi.ingsw.client.cli.components.MainTitle;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,12 +10,17 @@ import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class PlayOnlineState extends CliState {
     private static final String serverConfigPath = "/config/server.json";
 
     @Override
     public void render(Cli cli) {
-        new MainTitle().render(cli);
+        cli.getOut().println();
+        cli.getOut().println(center("~ Play Online ~"));
+
+        cli.getOut().println();
 
         JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(OnlineClient.class.getResourceAsStream(serverConfigPath))), JsonObject.class);
 
@@ -61,7 +65,7 @@ public class PlayOnlineState extends CliState {
         }
 
         if (connected)
-            cli.setState(new InputNicknameState());
+            cli.setState(new InputNicknameState("Play Online"));
         else {
             cli.promptPause();
             cli.setState(new PlayOnlineState());

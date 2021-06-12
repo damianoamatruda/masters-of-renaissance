@@ -11,8 +11,12 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardState extends CliState {
     private final CliState sourceState;
@@ -28,10 +32,14 @@ public class BuyDevelopmentCardState extends CliState {
 
     @Override
     public void render(Cli cli) {
+        cli.getOut().println();
+        cli.getOut().println(center("~ Buy a Development Card ~"));
+
         ViewModel vm = cli.getViewModel();
 
         ReducedDevCardGrid grid = vm.getDevCardGrid().orElseThrow();
 
+        cli.getOut().println();
         new DevCardGrid(grid).render(cli);
         cli.getOut().println();
         cli.showShelves(vm.getLocalPlayerNickname());
@@ -122,7 +130,6 @@ public class BuyDevelopmentCardState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateAction event) {
-        cli.getOut().println();
         cli.promptPause();
         cli.setState(new TurnAfterActionState());
     }

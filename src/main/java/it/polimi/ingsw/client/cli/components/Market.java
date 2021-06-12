@@ -5,6 +5,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
 import java.util.List;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class Market extends StringComponent {
     private final ReducedMarket reducedMarket;
 
@@ -18,13 +20,15 @@ public class Market extends StringComponent {
 
         int width = reducedMarket.getGrid().stream().map(List::size).reduce(Integer::max).orElse(0);
 
-        stringBuilder.append("Market. Replaceable resource type: ").append(new Resource(reducedMarket.getReplaceableResType()).getString(cli)).append("\n").append("\n");
+        stringBuilder.append("Market:").append("\n").append("\n");
+
+        stringBuilder.append(String.format("(Replaceable resource: %s)", new Resource(reducedMarket.getReplaceableResType()).getString(cli))).append("\n").append("\n");
 
         stringBuilder.append("╔").append("═".repeat(4 + (10 + 1) * (width + 1))).append("╗").append("\n");
 
         stringBuilder
                 .append("║").append(" ".repeat(4 + (10 + 1) * width + 1))
-                .append(Cli.centerLine(new Resource(reducedMarket.getSlide()).getString(cli), 10))
+                .append(center(new Resource(reducedMarket.getSlide()).getString(cli), 10))
                 .append("║").append("\n");
 
         stringBuilder
@@ -36,7 +40,7 @@ public class Market extends StringComponent {
             stringBuilder.append("║").append(" ".repeat(4)).append("║");
             for (int j = 0; j < r.size(); j++) {
                 String res = r.get(j);
-                stringBuilder.append(Cli.centerLine(new Resource(res).getString(cli), 10));
+                stringBuilder.append(center(new Resource(res).getString(cli), 10));
                 if (j < r.size() - 1)
                     stringBuilder.append("│");
             }
@@ -51,11 +55,11 @@ public class Market extends StringComponent {
         stringBuilder.append("╚").append("═".repeat(4)).append("╩").append("═".repeat((10 + 1) * width - 1)).append("╝").append("\n");
         stringBuilder.append(" ".repeat(6));
         for (int i = 1; i <= width; i++)
-            stringBuilder.append(Cli.centerLine("^", 10)).append(" ");
+            stringBuilder.append(center("^", 10)).append(" ");
         stringBuilder.append("\n").append(" ".repeat(6));
         for (int i = 1; i <= width; i++)
-            stringBuilder.append(Cli.centerLine("" + i, 10)).append(" ");
+            stringBuilder.append(center("" + i, 10)).append(" ");
 
-        return Cli.center(stringBuilder.toString());
+        return center(stringBuilder.toString());
     }
 }
