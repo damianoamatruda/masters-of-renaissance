@@ -90,7 +90,7 @@ public class GameTest {
      * yellow tile bonus points.
      */
     @Test
-    void noYellowTilesEndOfGame() throws NoActivePlayersException {
+    void noYellowTilesEndOfGame() {
         game.getPlayers().get(0).incrementFaithPoints(game, 24);
         game.onTurnEnd();
         assertAll(() -> assertTrue(game.hasEnded()),
@@ -284,7 +284,7 @@ public class GameTest {
              * Closes the Game (and does the last calcs to determine winner) before the following tests.
              */
             @BeforeEach
-            void endGame() throws NoActivePlayersException {
+            void endGame() {
                 game.onAddToDevSlot(7);
                 game.getPlayers().get(1).setActive(false);
                 game.getPlayers().get(2).setActive(false);
@@ -351,7 +351,7 @@ public class GameTest {
          * Checks the functioning of player switch with one (out of three) inactive player.
          */
         @Test
-        void onTurnEndWithOneInactivePlayer() throws NoActivePlayersException {
+        void onTurnEndWithOneInactivePlayer() {
             String next = game.getPlayers().get(2).getNickname();
             game.getPlayers().get(1).setActive(false);
             game.onTurnEnd();
@@ -362,7 +362,7 @@ public class GameTest {
          * Checks the functioning of player switch with two (out of three) inactive players.
          */
         @Test
-        void onTurnEndWithTwoInactivePlayers() throws NoActivePlayersException {
+        void onTurnEndWithTwoInactivePlayers() {
             game.getPlayers().get(1).setActive(false);
             game.getPlayers().get(2).setActive(false);
             String next = game.getPlayers().get(0).getNickname();
@@ -376,23 +376,12 @@ public class GameTest {
          * Checks the Game behavior if current player disconnects before ending their own turn.
          */
         @Test
-        void currentPlayerDisconnects() throws NoActivePlayersException {
+        void currentPlayerDisconnects() {
             Player expected = game.getPlayers().get(1);
             game.getPlayers().get(0).setActive(false);
             game.onTurnEnd();
             Player next = game.getCurrentPlayer();
             assertEquals(expected, next);
-        }
-
-        /**
-         * Checks the Game behavior if all players disconnect.
-         */
-        @Test
-        void onTurnEndWithAllInactivePlayers() {
-            game.getPlayers().get(0).setActive(false);
-            game.getPlayers().get(1).setActive(false);
-            game.getPlayers().get(2).setActive(false);
-            assertThrows(NoActivePlayersException.class, () -> game.onTurnEnd());
         }
 
     }

@@ -147,7 +147,7 @@ class ActionTokenDiscardTwoTest {
      */
     @ParameterizedTest
     @MethodSource("provideParameters")
-    void discardEndOfGame(DevCardColor color) throws NoActivePlayersException {
+    void discardEndOfGame(DevCardColor color) {
         ActionToken token = new ActionTokenDiscardTwo(0, color);
         DevCardGrid grid = game.getDevCardGrid();
         int level;

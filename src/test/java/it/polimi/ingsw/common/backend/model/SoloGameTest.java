@@ -82,7 +82,7 @@ public class SoloGameTest {
      * Test for onTurnEnd method.
      */
     @Test
-    void onTurnEnd() throws NoActivePlayersException {
+    void onTurnEnd() {
         player = game.getPlayers().get(0);
         game.onTurnEnd();
         assertEquals(player, game.getCurrentPlayer());
@@ -126,7 +126,7 @@ public class SoloGameTest {
          * Ensures that if Lorenzo arrives first the player has lost.
          */
         @Test
-        void losingGame() throws NoActivePlayersException {
+        void losingGame() {
             game.incrementBlackPoints(16);
             game.onTurnEnd();
             assertAll(() -> assertEquals(2, player.getVictoryPoints()),
