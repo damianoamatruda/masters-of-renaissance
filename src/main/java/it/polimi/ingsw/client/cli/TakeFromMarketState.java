@@ -44,7 +44,7 @@ public class TakeFromMarketState extends CliState {
                 vm.getLocalPlayerNickname(),
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
-                Optional.empty())
+                null)
                 .render(cli);
 
         chooseRowCol(cli);

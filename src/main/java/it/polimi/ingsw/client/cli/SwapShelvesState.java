@@ -5,8 +5,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-import java.util.Optional;
-
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 
@@ -31,7 +29,7 @@ public class SwapShelvesState extends CliState {
                 vm.getLocalPlayerNickname(),
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
-                Optional.empty())
+                null)
                 .render(cli);
 
         promptFirstShelf(cli);

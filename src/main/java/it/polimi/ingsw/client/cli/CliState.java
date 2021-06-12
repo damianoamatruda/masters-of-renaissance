@@ -8,7 +8,6 @@ import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -251,7 +250,7 @@ public abstract class CliState implements Renderable {
                 event.getPlayer(),
                 vm.getPlayerWarehouseShelves(event.getPlayer()),
                 vm.getPlayerDepots(event.getPlayer()),
-                vm.getPlayerStrongbox(event.getPlayer()))
+                vm.getPlayerStrongbox(event.getPlayer()).orElse(null))
                 .render(cli);
 
         Optional<ReducedResourceTransactionRecipe> baseProds;

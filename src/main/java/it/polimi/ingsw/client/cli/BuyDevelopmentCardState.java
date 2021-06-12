@@ -47,7 +47,7 @@ public class BuyDevelopmentCardState extends CliState {
         new ResourceContainers(vm.getLocalPlayerNickname(),
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
-                vm.getPlayerStrongbox(vm.getLocalPlayerNickname()))
+                vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
                 .render(cli);
 
         // new DevSlots(slots)
@@ -89,7 +89,7 @@ public class BuyDevelopmentCardState extends CliState {
                 new ResourceContainers(vm.getLocalPlayerNickname(),
                         vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                         vm.getPlayerDepots(vm.getLocalPlayerNickname()),
-                        vm.getPlayerStrongbox(vm.getLocalPlayerNickname()))
+                        vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
                         .render(cli);
 
                 chooseShelves(cli);

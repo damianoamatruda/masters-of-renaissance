@@ -2,9 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
-import it.polimi.ingsw.client.cli.components.Box;
 import it.polimi.ingsw.client.cli.components.Resource;
-import it.polimi.ingsw.client.cli.components.ResourceContainer;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
@@ -340,7 +338,7 @@ public class Cli {
                 viewModel.getLocalPlayerNickname(),
                 viewModel.getPlayerWarehouseShelves(viewModel.getLocalPlayerNickname()),
                 viewModel.getPlayerDepots(viewModel.getLocalPlayerNickname()),
-                Optional.empty())
+                null)
                 .render(this);
 
         Map<String, Integer> remainingResMap = new HashMap<>(resMap);
@@ -440,7 +438,7 @@ public class Cli {
                 viewModel.getLocalPlayerNickname(),
                 viewModel.getPlayerWarehouseShelves(viewModel.getLocalPlayerNickname()),
                 viewModel.getPlayerDepots(viewModel.getLocalPlayerNickname()),
-                Optional.empty())
+                null)
                 .render(this);
 
         AtomicInteger allocQuantity = new AtomicInteger();

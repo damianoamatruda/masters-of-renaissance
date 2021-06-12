@@ -9,8 +9,6 @@ import java.util.List;
 import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
 public class ProductionSet extends StringComponent {
-    private final static int cellWidth = 28;
-
     private final List<ReducedResourceTransactionRecipe> reducedProductionSet;
 
     public ProductionSet(List<ReducedResourceTransactionRecipe> reducedProductionSet) {
