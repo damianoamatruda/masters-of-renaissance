@@ -74,7 +74,7 @@ public class ServerClientHandler extends NetworkHandler {
             }
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             // System.err.println("Couldn't listen for a connection.");
             // System.err.println(e.getMessage());
             dispatch(new ReqQuit());

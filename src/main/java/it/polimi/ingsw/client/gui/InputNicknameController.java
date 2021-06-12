@@ -76,6 +76,12 @@ public class InputNicknameController extends GuiController {
         super.on(gui, event);
         if (gui.isOffline())
             System.out.println("Game started.");
+
+        if(event.isResumed()) {
+            if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+            else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+        }
     }
 
     @Override
