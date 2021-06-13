@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.gui.components;
 
+import java.util.function.Consumer;
+
+import javafx.beans.binding.NumberBinding;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -14,7 +17,10 @@ public class Alert extends BorderPane {
 
     public Alert() {}
 
-    public Alert(String title, String content) {
+    public Alert(String title, String content, NumberBinding sizeBinding) {
+        this.scaleXProperty().bind(sizeBinding);
+        this.scaleYProperty().bind(sizeBinding);
+
         Text titleText = new Text(title);
         titleText.setWrappingWidth(600);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -35,6 +41,7 @@ public class Alert extends BorderPane {
             ((Pane) getParent()).getChildren().remove(this);
         });
         this.setBottom(okButton);
+        BorderPane.setAlignment(okButton, Pos.CENTER);
 
         this.getStyleClass().add("main");
     }

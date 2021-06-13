@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import javafx.application.Platform;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
@@ -36,11 +37,13 @@ public class Options extends BorderPane {
     private double oldMusicVolume;
     private double oldSoundFxVolume;
 
+    private NumberBinding maxScale;
+
     private static String getPercentage(double value) {
         return String.format("%d%%", (int) (value * 100));
     }
 
-    public Options() {
+    public Options(NumberBinding sizeBinding) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/options.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -50,6 +53,11 @@ public class Options extends BorderPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        this.maxScale = sizeBinding;
+
+        this.scaleXProperty().bind(sizeBinding);
+        this.scaleYProperty().bind(sizeBinding);
 
         setHandlers();
 
@@ -127,7 +135,9 @@ public class Options extends BorderPane {
                 gui.setGameConfigStream(new FileInputStream(gameConfigFile));
                 resetConfigButton.setDisable(false);
             } catch (FileNotFoundException e) {
-                Platform.runLater(() -> ((Pane) this.getParent()).getChildren().add(new Alert(title, String.format("Couldn't gain access to file %s.%n", gameConfigFile.getPath()))));
+                Platform.runLater(() ->
+                    ((Pane) this.getParent()).getChildren().add(
+                        new Alert(title, String.format("Couldn't gain access to file %s.%n", gameConfigFile.getPath()), maxScale)));
             }
         }
     }

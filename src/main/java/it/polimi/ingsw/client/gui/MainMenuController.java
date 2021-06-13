@@ -61,12 +61,9 @@ public class MainMenuController extends GuiController {
 
     @FXML
     private void handleOptions() {
-        Options options = new Options();
+        Options options = new Options(maxScale);
         options.setConfigContainer(true);
         backStackPane.getChildren().add(options);
-
-        options.scaleXProperty().bind(maxScale);
-        options.scaleYProperty().bind(maxScale);
     }
 
     @FXML

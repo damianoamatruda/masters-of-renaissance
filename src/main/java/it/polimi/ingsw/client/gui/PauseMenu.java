@@ -21,6 +21,8 @@ public class PauseMenu extends StackPane {
     @FXML private SButton opt;
     @FXML private SButton quit;
 
+    private NumberBinding maxScale;
+
     public PauseMenu() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/pausemenu.fxml"));
         fxmlLoader.setRoot(this);
@@ -34,7 +36,7 @@ public class PauseMenu extends StackPane {
 
         setHandlers();
 
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
                 backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
@@ -47,7 +49,7 @@ public class PauseMenu extends StackPane {
 
     @FXML
     private void handleOptions() {
-        Options options = new Options();
+        Options options = new Options(maxScale);
         options.setConfigContainer(false);
         backStackPane.getChildren().add(options);
     }

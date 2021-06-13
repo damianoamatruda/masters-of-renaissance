@@ -30,9 +30,11 @@ public class InputNicknameController extends GuiController {
     private TextField nickname;
     private String nicknameValue;
 
+    private NumberBinding maxScale;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
                 backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
@@ -57,7 +59,9 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, ErrNickname event) {
         super.on(gui, event);
-        Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()))));
+        Platform.runLater(() ->
+            backStackPane.getChildren().add(
+                new Alert("Play Online", String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()), maxScale)));
     }
 
     @Override

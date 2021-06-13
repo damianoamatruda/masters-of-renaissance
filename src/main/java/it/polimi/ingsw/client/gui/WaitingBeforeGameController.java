@@ -33,13 +33,15 @@ public class WaitingBeforeGameController extends GuiController {
 
     private boolean youCanPrepare;
 
+    private NumberBinding maxScale;
+
     public WaitingBeforeGameController() {
         youCanPrepare = false;
     }
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
                 backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
@@ -83,7 +85,7 @@ public class WaitingBeforeGameController extends GuiController {
             int count = Integer.parseInt(inputRadio.getText());
             gui.dispatch(new ReqNewGame(count));
         } catch (NumberFormatException e) {
-            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", "Not a number")));
+            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", "Not a number", maxScale)));
         }
     }
 }

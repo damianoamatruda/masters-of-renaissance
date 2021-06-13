@@ -38,10 +38,11 @@ public abstract class PlaygroundController extends GuiController {
 
     protected final Warehouse warehouse = new Warehouse();
 
+    private NumberBinding maxScale;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
                 backStackPane.heightProperty().divide(Gui.realHeight));
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
@@ -59,9 +60,7 @@ public abstract class PlaygroundController extends GuiController {
                 "-fx-background-size: 100 100;");
         gui.getViewModel().getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(p -> prod.setProduction(p));
 
-
         warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
-
 
         Strongbox s = new Strongbox();
         gui.getViewModel().getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(sb -> s.setContent(sb));
