@@ -34,10 +34,12 @@ public class DevCardGrid extends StringComponent {
                 topCards.get(i - 1).add(card);
             }
 
+            int maxHeight = Cli.maxLinesHeight(topCards.get(i - 1).stream().map(c -> new DevelopmentCard(c).getString(cli)).toList());
+
             List<List<String>> rows = new ArrayList<>();
             for (int j = 0; j < topCards.get(i - 1).size(); j++) {
                 ReducedDevCard card = topCards.get(i - 1).get(j);
-                rows.add(new Box(new DevelopmentCard(card), -1, cellWidth).getString(cli).lines().toList());
+                rows.add(new Box(new DevelopmentCard(card), -1, cellWidth, maxHeight).getString(cli).lines().toList());
             }
 
             int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
