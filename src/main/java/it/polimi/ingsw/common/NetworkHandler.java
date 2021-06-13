@@ -40,10 +40,10 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
     public void close() {
         super.close();
         if (listening) {
-            send(new ReqGoodbye());
             listening = false;
             onClose.run();
         }
+        send(new ReqGoodbye());
         if (!socket.isClosed()) {
             try {
                 socket.close();
