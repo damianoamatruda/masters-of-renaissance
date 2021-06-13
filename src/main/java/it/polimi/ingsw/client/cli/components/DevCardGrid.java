@@ -29,7 +29,7 @@ public class DevCardGrid extends StringComponent {
 
         for (int i = 1; i <= levels; i++) {
             for (String key : reducedDevCardGrid.getTopCards().keySet()) {
-                ReducedDevCard card = cli.getViewModel().getDevelopmentCard(key, levels + 1 - i).orElseThrow();
+                ReducedDevCard card = cli.getViewModel().getDevCardFromGrid(key, levels + 1 - i).orElseThrow();
                 topCards.add(new ArrayList<>());
                 topCards.get(i - 1).add(card);
             }

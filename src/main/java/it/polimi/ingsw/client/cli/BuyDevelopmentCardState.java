@@ -15,7 +15,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
@@ -83,7 +82,8 @@ public class BuyDevelopmentCardState extends CliState {
             .flatMap(Collection::stream)
             .filter(Optional::isPresent)
             .map(id -> vm.getDevelopmentCard(id.get()))
-            .map(card -> card.isPresent() ? card.get().getLevel() : -1).collect(Collectors.toUnmodifiableSet());
+            .map(card -> card.isPresent() ? card.get().getLevel() : -1)
+            .filter(level -> level >= 0).collect(Collectors.toUnmodifiableSet());
 
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
@@ -111,7 +111,7 @@ public class BuyDevelopmentCardState extends CliState {
 
                 this.slot = slot;
 
-                ReducedDevCard card = vm.getDevelopmentCard(color, level).orElseThrow();
+                ReducedDevCard card = vm.getDevCardFromGrid(color, level).orElseThrow();
 
                 this.cost = card.getCost().isPresent() ? new HashMap<>(card.getCost().get().getRequirements()) : new HashMap<>();
 

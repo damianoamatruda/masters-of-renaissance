@@ -20,8 +20,7 @@ public class LeadersHand extends StringComponent {
     public String getString(Cli cli) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        int i;
-        for (i = 0; i < leaders.size(); i += 4) {
+        for (int i = 0; i < leaders.size(); i += 4) {
             List<ReducedLeaderCard> cards = new ArrayList<>();
             for (int j = 0; j < 4 && j < leaders.size() - i; j++) {
                 cards.add(leaders.get(i + j));

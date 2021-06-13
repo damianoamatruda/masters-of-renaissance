@@ -377,12 +377,24 @@ public class ViewModel {
     }
 
     /**
+     * Returns a development card from the top cards of the development card grid,
+     * based on color and level.
+     * 
      * @param color the card's color
      * @param level the card's level
      * @return the card of the specified color and level
      */
-    public Optional<ReducedDevCard> getDevelopmentCard(String color, int level) {
-        return developmentCards.stream().filter(c -> c.getColor().equals(color) && c.getLevel() == level).findAny();
+    public Optional<ReducedDevCard> getDevCardFromGrid(String color, int level) {
+        if (devCardGrid == null ||
+            !devCardGrid.getTopCards().keySet().contains(color) ||
+            !devCardGrid.getTopCards().get(color).stream()
+                .map(id -> getDevelopmentCard(id.orElse(-1)))
+                .filter(Optional::isPresent).map(Optional::get)
+                .map(ReducedDevCard::getLevel).toList().contains(level))
+            
+            return Optional.empty();
+
+        return getDevelopmentCard(devCardGrid.getTopCards().get(color).get(level).orElse(-1));
     }
 
     /**

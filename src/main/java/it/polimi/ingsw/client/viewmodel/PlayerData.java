@@ -63,7 +63,7 @@ public class PlayerData {
      */
     public void pushToDevSlot(int slot, int cardID) {
         while (devSlots.size() - 1 < slot)
-            devSlots.add(slot, new ArrayList<>());
+            devSlots.add(new ArrayList<>());
 
         devSlots.get(slot).add(0, cardID);
     }

@@ -6,12 +6,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.client.cli.Cli.left;
-import static it.polimi.ingsw.client.cli.Cli.slimLine;
-
 public class DevSlots extends StringComponent {
     private final List<ReducedDevCard> slots;
-    private final static int cellWidth = 30;
 
     public DevSlots(List<ReducedDevCard> slots) {
         this.slots = new ArrayList<>(slots);
@@ -19,32 +15,39 @@ public class DevSlots extends StringComponent {
 
     @Override
     public String getString(Cli cli) {
-        StringBuilder output = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < slots.size(); i += 4) {
-            output.append(slimLine(cellWidth * Integer.min(4, slots.size()) + 1));
-            List<List<String>> rows = new ArrayList<>();
+            // List<List<String>> rows = new ArrayList<>();
 
             List<ReducedDevCard> cards = new ArrayList<>();
             for (int j = 0; j < 4 && j < slots.size() - i; j++) {
                 cards.add(slots.get(i + j));
-                rows.add(new ArrayList<>());
             }
 
+            List<DevelopmentCard> devCardComponents = new ArrayList<>();
             for (int j = 0; j < 4 && j < slots.size() - i; j++)
-                rows.get(j).addAll(new DevelopmentCard(cards.get(j)).getString(cli).lines().toList());
+                devCardComponents.add(new DevelopmentCard(cards.get(j)));
 
-            int length = rows.stream().map(List::size).reduce(Integer::max).orElse(0);
+            int maxWidth = devCardComponents.stream().map(c -> c.getString(cli)).mapToInt(Cli::maxLineWidth).max().orElse(0);
+            int maxHeight = Cli.maxLinesHeight(devCardComponents.stream().map(c -> c.getString(cli)).toList());
+            
+            List<List<String>> rows = new ArrayList<>();
+            for (DevelopmentCard devCardComponent : devCardComponents)
+                rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString(cli).lines().toList());
+                
+            int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {
-                for (int j = 0; j < 4 && j < slots.size() - i; j++) {
-                    if (k < rows.get(j).size())
-                        output.append(left(rows.get(j).get(k), 38)).append(" │");
+                for (List<String> row : rows) {
+                    if (k < row.size())
+                        stringBuilder.append(row.get(k)).append(" ");
+                    else
+                        stringBuilder.append("".repeat(maxWidth + 1));
                 }
-                output.append("\n");
+                stringBuilder.append("\n");
             }
         }
-        output.append(slimLine(cellWidth * Integer.min(4, slots.size()) + 1)).append("\n\n");
 
-        return output.toString();
+        return Cli.center(stringBuilder.toString());
     }
 }
