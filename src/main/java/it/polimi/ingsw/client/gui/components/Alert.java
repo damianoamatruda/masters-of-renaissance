@@ -1,9 +1,8 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.util.function.Consumer;
-
 import javafx.beans.binding.NumberBinding;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -42,6 +41,7 @@ public class Alert extends BorderPane {
         });
         this.setBottom(okButton);
         BorderPane.setAlignment(okButton, Pos.CENTER);
+        BorderPane.setMargin(okButton, new Insets(20));
 
         this.getStyleClass().add("main");
     }
