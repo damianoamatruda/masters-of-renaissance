@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class Warehouse extends VBox {
@@ -138,5 +139,9 @@ public class Warehouse extends VBox {
             s2.refresh(tempSize, tempId);
 
         });
+    }
+
+    public Optional<Shelf> getShelfByResource(String resource) {
+        return shelves.values().stream().filter(sh -> sh.getBoundResource() != null && sh.getBoundResource().equals(resource)).findAny();
     }
 }

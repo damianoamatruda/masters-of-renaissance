@@ -160,9 +160,13 @@ public class MarketController extends GuiController {
                     int shelfID = ((Shelf) shelf).getShelfId();
                     String resource = ((Resource) event.getGestureSource()).getName();
 
+                    boolean alreadyHasBoundShelf = (selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != shelfID) ||
+                            warehouse.getShelfByResource(resource).isPresent() && warehouse.getShelfByResource(resource).get().getShelfId() != shelfID)
+                            && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
+
                     Shelf s = warehouse.getShelf(shelfID);
 
-                    if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource))) {
+                    if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource)) && !alreadyHasBoundShelf) {
                         success = putChoice(resource, shelfID);
                         if (success) {
                             warehouse.addResourceDraggable(shelfID, resource);
