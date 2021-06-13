@@ -24,8 +24,6 @@ public class OnlineClient implements Network {
         this.networkHandler.setOnClose(() -> {
             view.unregisterOnModelLobby(networkHandler);
             view.unregisterOnModelGameContext(networkHandler);
-
-            close();
         });
 
         this.vcEventListener = null;

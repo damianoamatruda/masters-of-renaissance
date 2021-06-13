@@ -21,6 +21,6 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
 
     @Override
     public void close() {
-        executor.shutdownNow();
+        executor.shutdown();
     }
 }

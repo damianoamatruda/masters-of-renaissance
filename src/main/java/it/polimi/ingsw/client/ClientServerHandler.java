@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,10 +37,16 @@ public class ClientServerHandler extends NetworkHandler {
 
             listening = true;
             while (listening) {
-                if ((inputLine = in.readLine()) == null) {
+                try {
+                    if ((inputLine = in.readLine()) == null) {
+                        if (!listening)
+                            break;
+                        throw new IOException("Null readLine while listening");
+                    }
+                } catch (SocketException e) {
                     if (!listening)
                         break;
-                    throw new IOException("Null readLine while listening");
+                    throw e;
                 }
 
                 LOGGER.info(inputLine);
@@ -54,14 +61,15 @@ public class ClientServerHandler extends NetworkHandler {
                     }
                 }
             }
+            LOGGER.info("Connection soft-closed");
         } catch (IOException e) {
-            LOGGER.log(Level.INFO, "Couldn't listen for a connection", e);
+            LOGGER.log(Level.INFO, "Connection hard-closed", e);
             dispatch(new UpdateServerUnavailable());
         } catch (RuntimeException e) {
             LOGGER.log(Level.SEVERE, "Unknown runtime exception", e);
             send(new ErrRuntime(e));
         } finally {
-            close();
+            shutdown();
         }
     }
 }

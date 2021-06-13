@@ -37,13 +37,17 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
 
     public abstract void run();
 
+    @Override
     public void close() {
+        send(new ReqGoodbye());
+    }
+
+    public void shutdown() {
         super.close();
         if (listening) {
             listening = false;
             onClose.run();
         }
-        send(new ReqGoodbye());
         if (!socket.isClosed()) {
             try {
                 socket.close();
@@ -85,10 +89,10 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
 
     protected void on(ReqGoodbye event) {
         send(new ResGoodbye());
-        close();
+        shutdown();
     }
 
     protected void on(ResGoodbye event) {
-        close();
+        shutdown();
     }
 }
