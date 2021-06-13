@@ -15,8 +15,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerClientHandler extends NetworkHandler {
+    private static final Logger LOGGER = Logger.getLogger(ServerClientHandler.class.getName());
+
     public ServerClientHandler(Socket socket, NetworkProtocol protocol) {
         super(socket, protocol);
     }
@@ -36,14 +40,14 @@ public class ServerClientHandler extends NetworkHandler {
             while (listening) {
                 try {
                     if ((inputLine = in.readLine()) == null) {
-                        System.out.println("NULL READLINE");
+                        LOGGER.info("Null readLine");
                         dispatch(new ReqQuit());
                         break;
                     }
 
                     halfTimeout = 0;
 
-                    System.out.println("Received: \"" + inputLine + "\"");
+                    LOGGER.info(String.format("Received: %s", inputLine));
 
                     try {
                         try {
@@ -74,9 +78,7 @@ public class ServerClientHandler extends NetworkHandler {
             }
             socket.close();
         } catch (IOException e) {
-            // e.printStackTrace();
-            // System.err.println("Couldn't listen for a connection.");
-            // System.err.println(e.getMessage());
+            LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
             dispatch(new ReqQuit());
         } finally {
             close();

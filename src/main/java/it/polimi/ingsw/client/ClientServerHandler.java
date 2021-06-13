@@ -13,8 +13,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientServerHandler extends NetworkHandler {
+    private static final Logger LOGGER = Logger.getLogger(ClientServerHandler.class.getName());
+
     public ClientServerHandler(Socket socket, NetworkProtocol protocol) {
         super(socket, protocol);
     }
@@ -36,7 +40,7 @@ public class ClientServerHandler extends NetworkHandler {
                     dispatch(new UpdateServerUnavailable());
                     break;
                 }
-                System.out.println(inputLine);
+                LOGGER.info(inputLine);
                 try {
                     dispatch(protocol.processInputAsNetEvent(inputLine));
                 } catch (NetworkProtocolException e1) {
@@ -48,9 +52,7 @@ public class ClientServerHandler extends NetworkHandler {
                 }
             }
         } catch (IOException e) {
-            // System.err.println("Couldn't listen for a connection.");
-            // System.err.println(e.getMessage());
-            // e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
             send(new ReqGoodbye());
         } catch (Exception e) {
             e.printStackTrace();

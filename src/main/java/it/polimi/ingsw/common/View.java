@@ -4,10 +4,14 @@ import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 
+import java.util.logging.Logger;
+
 /**
  * This class represents the View in the MVC architecture.
  */
 public class View extends AsynchronousEventDispatcher {
+    private static final Logger LOGGER = Logger.getLogger(View.class.getName());
+
     private EventListener<ResQuit> resQuitEventListener = event -> {
     };
     private EventListener<UpdateBookedSeats> updateBookedSeatsEventListener = event -> {
@@ -294,8 +298,7 @@ public class View extends AsynchronousEventDispatcher {
     }
 
     private <T extends ViewEvent> void on(T viewEvent, EventListener<T> listener) {
-        // TODO: Add logger
-        System.out.printf("%s, isPresent: %s, equals: %s%n", viewEvent, viewEvent.getView().isPresent(), viewEvent.getView().isPresent() && viewEvent.getView().get().equals(this));
+        LOGGER.info(String.format("%s, isPresent: %s, equals: %s", viewEvent, viewEvent.getView().isPresent(), viewEvent.getView().isPresent() && viewEvent.getView().get().equals(this)));
         if (viewEvent.getView().isPresent() && !viewEvent.getView().get().equals(this))
             return;
         listener.on(viewEvent);

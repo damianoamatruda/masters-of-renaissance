@@ -17,8 +17,11 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server implements Network, Runnable {
+    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
     private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
 
@@ -81,9 +84,9 @@ public class Server implements Network, Runnable {
         if (gameConfigPath != null) {
             try {
                 gameConfigStream = new FileInputStream(gameConfigPath);
-                System.out.println("Loaded custom config");
+                LOGGER.info("Loaded custom config");
             } catch (FileNotFoundException e) {
-                System.err.printf("Couldn't access to file %s.%n", gameConfigPath);
+                LOGGER.log(Level.SEVERE, String.format("Couldn't gain access to file %s", gameConfigPath), e);
                 return;
             }
         }
@@ -91,7 +94,7 @@ public class Server implements Network, Runnable {
         try {
             new Server(port, gameConfigStream).run();
         } catch (IOException e) {
-            System.err.printf("Couldn't listen on port %d.%n", port);
+            LOGGER.log(Level.SEVERE, String.format("Couldn't listen on port %d", port), e);
         }
     }
 
@@ -104,8 +107,7 @@ public class Server implements Network, Runnable {
     public void run() {
         Controller controller = new Controller(model);
 
-        // TODO: Add logger
-        System.out.println("Server ready");
+        LOGGER.info("Server is ready");
         listening = true;
         while (listening) {
             Socket socket;
@@ -113,9 +115,7 @@ public class Server implements Network, Runnable {
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
-                // TODO: Add logger
-                // System.err.println("Couldn't listen for a connection.");
-                // System.err.println(e.getMessage());
+                LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
                 continue;
             }
 

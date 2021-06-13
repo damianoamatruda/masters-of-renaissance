@@ -17,9 +17,11 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Cli {
+    private static final Logger LOGGER = Logger.getLogger(Cli.class.getName());
     private static final int width = 179;
     private static final String backValue = " ";
 
@@ -101,10 +103,9 @@ public class Cli {
             return "";
 
         if (maxLineWidth(str) > width) {
-            System.err.println("String too long:");
-            System.err.println(str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow());
-            System.err.printf("Max length: %d. Got: %d.", width, textLength(str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow()));
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("String too long:" + "\n" +
+                    str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow() + "\n" +
+                    String.format("Max length: %d. Got: %d.", width, textLength(str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow())));
         }
 
         int marginLeft = (width - maxLineWidth(str)) / 2;
@@ -124,10 +125,9 @@ public class Cli {
 
     public static String left(String str, int width, char fill) {
         if (textLength(str) > width) {
-            System.err.println("String too long:");
-            System.err.println(str);
-            System.err.printf("Max length: %d. Got: %d.", width, textLength(str));
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("String too long:" + "\n" +
+                    str + "\n" +
+                    String.format("Max length: %d. Got: %d.", width, textLength(str)));
         }
         return str + Character.toString(fill).repeat(width - textLength(str));
     }

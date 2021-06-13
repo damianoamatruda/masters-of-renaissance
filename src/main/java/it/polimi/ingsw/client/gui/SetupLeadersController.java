@@ -131,7 +131,6 @@ public class SetupLeadersController extends GuiController {
         if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
         else {
-            System.out.println(gui.getViewModel().getCurrentPlayer() + gui.getViewModel().getLocalPlayerNickname());
             gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
         }
     }

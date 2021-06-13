@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.logging.Logger;
 
 public class Lobby extends AsynchronousEventDispatcher {
+    private static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
     private final Object lock;
     private final GameFactory gameFactory;
     public final Map<View, String> nicknames;
@@ -51,8 +53,7 @@ public class Lobby extends AsynchronousEventDispatcher {
         nicknames.put(view, nickname);
 
         if (disconnected.containsKey(nickname)) {
-            // TODO: Add logger
-            // System.out.printf("Player \"%s\" rejoined%n", nickname);
+            LOGGER.info(String.format("Player '%s' rejoined", nickname));
 
             /* Get the match the nickname was previously in and set the player back to active */
             GameContext context = disconnected.get(nickname);
@@ -64,13 +65,11 @@ public class Lobby extends AsynchronousEventDispatcher {
             disconnected.remove(nickname);
             context.dispatchResumeStates(view, nickname);
         } else {
-            // TODO: Add logger
-            // System.out.printf("Set nickname \"%s\".%n", nickname);
+            LOGGER.info(String.format("Set nickname '%s'", nickname));
 
             waiting.add(view);
 
-            // TODO: Add logger
-            // System.out.printf("Adding %s, %d waiting\n", nickname, waiting.size());
+            LOGGER.info(String.format("Adding '%s', %d waiting", nickname, waiting.size()));
 
             waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
 
@@ -78,8 +77,7 @@ public class Lobby extends AsynchronousEventDispatcher {
                 dispatch(new UpdateJoinGame(view, newGamePlayersCount));
 
             if (waiting.size() == newGamePlayersCount) {
-                // TODO: Add logger
-                // System.out.printf("%s joining started a new game\n", nicknames.get(view));
+                LOGGER.info(String.format("%s joining started a new game", nicknames.get(view)));
                 startNewGame();
             }
         }
@@ -91,8 +89,7 @@ public class Lobby extends AsynchronousEventDispatcher {
             return;
 
         if (waiting.indexOf(view) != 0) {
-            // TODO: Add logger
-            // System.out.printf("%s: failed to set players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+            LOGGER.info(String.format("%s: failed to set players count to %d", nicknames.get(view), newGamePlayersCount));
             dispatch(new ErrNewGame(view, false));
             return;
         }
@@ -102,15 +99,13 @@ public class Lobby extends AsynchronousEventDispatcher {
             return;
         }
 
-        // TODO: Add logger
-        // System.out.printf("%s: setting players count to %d.%n", nicknames.get(view), newGamePlayersCount);
+        LOGGER.info(String.format("%s: setting players count to %d", nicknames.get(view), newGamePlayersCount));
         this.newGamePlayersCount = newGamePlayersCount;
 
         waiting.subList(0, Math.min(waiting.size(), newGamePlayersCount)).forEach(v -> dispatch(new UpdateJoinGame(v, newGamePlayersCount)));
 
         if (waiting.size() >= newGamePlayersCount) {
-            // TODO: Add logger
-            // System.out.printf("%s prepared a new game\n", nicknames.get(view));
+            LOGGER.info(String.format("%s: prepared a new game", nicknames.get(view)));
             startNewGame();
         }
     }
@@ -173,14 +168,12 @@ public class Lobby extends AsynchronousEventDispatcher {
         context.dispatchStartPublicStates();
         waiting.subList(0, newGamePlayersCount).forEach(view -> context.dispatchStartPrivateStates(view, nicknames.get(view)));
 
-        // TODO: Add logger
-        // System.out.printf("started context, waiting list %d\n", waiting.size());
+        LOGGER.info(String.format("Started context, %d waiting", waiting.size()));
 
         /* Remove players who joined from waiting list */
         waiting.subList(0, newGamePlayersCount).clear();
 
-        // TODO: Add logger
-        // System.out.printf("Removed %d waiting %d\n", newGamePlayersCount, waiting.size());
+        LOGGER.info(String.format("%d removed, %d waiting", newGamePlayersCount, waiting.size()));
 
         waiting.forEach(v -> dispatch(new UpdateBookedSeats(v, waiting.size(), nicknames.get(waiting.get(0)))));
 

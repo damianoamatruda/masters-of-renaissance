@@ -22,12 +22,15 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrNoSuchEntity.IDType;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * This class manages the states and actions of a game.
  */
 public class GameContext extends AsynchronousEventDispatcher {
+    private static final Logger LOGGER = Logger.getLogger(GameContext.class.getName());
+
     /** The game. */
     private final Game game;
 
@@ -51,11 +54,14 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     public void dispatchStartPublicStates() {
-        // TODO: Add logger
-        // System.out.println("context.start, players:");
-        // for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
-        //     System.out.println(n);
-        // System.out.println("context.start, players: end of list");
+        LOGGER.info(() -> {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("context.start, players:").append("\n");
+            for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
+                stringBuilder.append(n).append("\n");
+            stringBuilder.append("context.start, players: end of list").append("\n");
+            return stringBuilder.toString();
+        });
 
         game.dispatchState();
         game.getMarket().dispatchInitialState();
