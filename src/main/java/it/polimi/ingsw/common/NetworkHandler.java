@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public abstract class NetworkHandler extends AsynchronousEventDispatcher implements Runnable, AutoCloseable {
     private static final Logger LOGGER = Logger.getLogger(NetworkHandler.class.getName());
-    protected static final int timeout = 6000000;
+    protected static final int timeout = 20000;
     protected final Socket socket;
     protected final NetworkProtocol protocol;
     protected PrintWriter out;
