@@ -45,9 +45,9 @@ public class OnlineClient implements Network {
 
     @Override
     public void close() throws IOException {
+        view.removeEventListener(VCEvent.class, vcEventListener);
         executor.shutdownNow();
         networkHandler.close();
         socket.close();
-        view.removeEventListener(VCEvent.class, vcEventListener);
     }
 }
