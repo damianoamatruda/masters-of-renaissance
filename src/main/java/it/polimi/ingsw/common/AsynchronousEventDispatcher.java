@@ -14,6 +14,8 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
 
     @Override
     public <T extends Event> void dispatch(T event) {
+        if (executor.isShutdown())
+            return;
         executor.execute(() -> super.dispatch(event));
     }
 

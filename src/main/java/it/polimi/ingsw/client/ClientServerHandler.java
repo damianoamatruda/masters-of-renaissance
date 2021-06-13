@@ -38,8 +38,9 @@ public class ClientServerHandler extends NetworkHandler {
             listening = true;
             while (listening) {
                 if ((inputLine = in.readLine()) == null) {
-                    dispatch(new UpdateServerUnavailable());
-                    break;
+                    if (!listening)
+                        break;
+                    throw new IOException("Null readLine while listening");
                 }
 
                 LOGGER.info(inputLine);
@@ -55,13 +56,19 @@ public class ClientServerHandler extends NetworkHandler {
                 }
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
-            send(new ReqGoodbye());
+            LOGGER.log(Level.INFO, "Couldn't listen for a connection", e);
+            dispatch(new ReqGoodbye());
         } catch (RuntimeException e) {
             LOGGER.log(Level.SEVERE, "Unknown runtime exception", e);
             send(new ErrRuntime(e));
         } finally {
             close();
         }
+    }
+
+    @Override
+    protected void on(ReqGoodbye event) {
+        dispatch(new UpdateServerUnavailable());
+        super.on(event);
     }
 }

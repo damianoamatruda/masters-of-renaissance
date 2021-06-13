@@ -46,8 +46,9 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
     }
 
     public void send(Event event) {
-        if (out != null)
-            out.println(protocol.processOutput(event));
+        if (out == null)
+            return;
+        out.println(protocol.processOutput(event));
     }
 
     public void setOnClose(Runnable onClose) {

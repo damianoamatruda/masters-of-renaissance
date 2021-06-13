@@ -84,7 +84,7 @@ public class NetworkProtocol {
 
     public String processOutput(Event event) {
         String str = outputGson.toJson(event);
-        LOGGER.info(str);
+        LOGGER.info(String.format("Sent: %s", str));
         return str;
     }
 }

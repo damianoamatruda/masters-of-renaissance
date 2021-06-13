@@ -34,20 +34,21 @@ public class ServerClientHandler extends NetworkHandler {
             this.in = in;
             String inputLine;
 
-            listening = true;
             socket.setSoTimeout(timeout / 2);
-            int halfTimeout = 0;
+            boolean halfTimeout = false;
+
+            listening = true;
             while (listening) {
                 try {
                     if ((inputLine = in.readLine()) == null) {
-                        LOGGER.info("Null readLine");
-                        dispatch(new ReqQuit());
-                        break;
+                        if (!listening)
+                            break;
+                        throw new IOException("Null readLine while listening");
                     }
 
-                    LOGGER.info(String.format("Received: %s", inputLine));
+                    LOGGER.info(inputLine);
 
-                    halfTimeout = 0;
+                    halfTimeout = false;
 
                     try {
                         dispatch(protocol.processInputAsNetEvent(inputLine));
@@ -60,24 +61,26 @@ public class ServerClientHandler extends NetworkHandler {
                         }
                     }
                 } catch (SocketTimeoutException e) {
-                    if (halfTimeout < 1) {
-                        send(new ReqHeartbeat());
-                        halfTimeout++;
-                    } else {
-                        send(new ReqGoodbye());
-                        dispatch(new ReqQuit());
-                        break;
-                    }
+                    if (halfTimeout)
+                        throw e;
+                    send(new ReqHeartbeat());
+                    halfTimeout = true;
                 }
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
-            dispatch(new ReqQuit());
+            LOGGER.log(Level.INFO, "Couldn't listen for a connection", e);
+            dispatch(new ReqGoodbye());
         } catch (RuntimeException e) {
             LOGGER.log(Level.SEVERE, "Unknown runtime exception", e);
             send(new ErrRuntime(e));
         } finally {
             close();
         }
+    }
+
+    @Override
+    protected void on(ReqGoodbye event) {
+        dispatch(new ReqQuit());
+        super.on(event);
     }
 }
