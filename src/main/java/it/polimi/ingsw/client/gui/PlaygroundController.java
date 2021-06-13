@@ -108,7 +108,9 @@ public abstract class PlaygroundController extends GuiController {
     private void setPauseHandlers() {
         this.canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                backStackPane.getChildren().add(new PauseMenu());
+                if(backStackPane.getChildren().size() == 1)
+                    backStackPane.getChildren().add(new PauseMenu());
+                else backStackPane.getChildren().remove(backStackPane.getChildren().size() - 1);
             }
         });
 
