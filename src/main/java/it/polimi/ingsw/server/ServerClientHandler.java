@@ -45,9 +45,9 @@ public class ServerClientHandler extends NetworkHandler {
                         break;
                     }
 
-                    halfTimeout = 0;
-
                     LOGGER.info(String.format("Received: %s", inputLine));
+
+                    halfTimeout = 0;
 
                     try {
                         dispatch(protocol.processInputAsNetEvent(inputLine));
@@ -70,7 +70,6 @@ public class ServerClientHandler extends NetworkHandler {
                     }
                 }
             }
-            socket.close();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
             dispatch(new ReqQuit());
