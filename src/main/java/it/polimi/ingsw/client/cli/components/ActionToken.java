@@ -17,11 +17,16 @@ public class ActionToken extends StringComponent {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(String.format("--- ActionToken (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---", reducedActionToken.getId())).append("\n");
-        stringBuilder.append(String.format("Kind: %s", reducedActionToken.getKind())).append("\n");
+        
+        if (reducedActionToken.getKind().contains("Black"))
+            if (reducedActionToken.getKind().contains("Shuffle"))
+                stringBuilder.append("Moved Lorenzo il Magnifico's cross one tile and shuffled the tokens.");
+            else
+                stringBuilder.append("Moved Lorenzo il Magnifico's cross two spaces.");
         
         reducedActionToken.getDiscardedDevCardColor().ifPresent(color ->
                 stringBuilder.append(
-                        String.format("Discarded development card of color %s",
+                        String.format("Discarded development cards of color %s.",
                                 new DevCardColor(color).getString(cli))).append("\n"));
 
         return center(stringBuilder.toString());

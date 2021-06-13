@@ -75,7 +75,7 @@ public class ActivateProductionsState extends CliState {
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
-        cli.getOut().println("-- Input replacements --");
+        cli.getOut().println(center("-- Input replacements --"));
         cli.getOut().println();
         cli.promptResources(
                 vm.getResourceTypes().stream()
@@ -93,7 +93,7 @@ public class ActivateProductionsState extends CliState {
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
-        cli.getOut().println("-- Output replacements --");
+        cli.getOut().println(center("-- Output replacements --"));
         cli.getOut().println();
         cli.promptResources(
                 vm.getResourceTypes().stream()
@@ -118,7 +118,7 @@ public class ActivateProductionsState extends CliState {
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.getOut().println();
-        cli.getOut().println("-- Containers to take resources from --");
+        cli.getOut().println(center("-- Containers to take resources from --"));
         cli.getOut().println();
         cli.promptShelves(totalRes, allowedShelves, false).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
