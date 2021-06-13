@@ -123,7 +123,7 @@ public class Server implements Network, Runnable {
             networkHandler.setOnClose(() -> {
                 View virtualView1 = virtualViews.remove(networkHandler);
                 virtualView1.unregisterOnModelLobby(model);
-                controller.registerOnVC(virtualView1);
+                controller.unregisterOnVC(virtualView1);
                 networkHandler.removeEventListener(VCEvent.class, vcEventListeners.remove(networkHandler));
             });
 
