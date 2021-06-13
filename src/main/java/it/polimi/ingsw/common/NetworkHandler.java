@@ -6,8 +6,10 @@ import it.polimi.ingsw.common.events.netevents.*;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public abstract class NetworkHandler extends AsynchronousEventDispatcher implements Runnable, AutoCloseable {
+    private static final Logger LOGGER = Logger.getLogger(NetworkHandler.class.getName());
     protected static final int timeout = 6000000;
     protected final Socket socket;
     protected final NetworkProtocol protocol;
@@ -45,9 +47,13 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
     }
 
     public void send(Event event) {
-        if (out == null)
+        String output = protocol.processOutput(event);
+        if (out == null) {
+            LOGGER.info(String.format("Not sent: %s", output));
             return;
-        out.println(protocol.processOutput(event));
+        }
+        LOGGER.info(String.format("Sent: %s", output));
+        out.println(output);
     }
 
     public void setOnClose(Runnable onClose) {

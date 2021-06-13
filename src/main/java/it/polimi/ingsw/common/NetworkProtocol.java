@@ -6,10 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.netevents.NetEvent;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
-import java.util.logging.Logger;
-
 public class NetworkProtocol {
-    private static final Logger LOGGER = Logger.getLogger(NetworkProtocol.class.getName());
     private final Gson outputGson;
 
     public NetworkProtocol() {
@@ -83,8 +80,6 @@ public class NetworkProtocol {
     }
 
     public String processOutput(Event event) {
-        String str = outputGson.toJson(event);
-        LOGGER.info(String.format("Sent: %s", str));
-        return str;
+        return outputGson.toJson(event);
     }
 }
