@@ -21,16 +21,28 @@ import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MarketController extends GuiController {
-    @FXML private StackPane backStackPane;
-    @FXML private AnchorPane canvas;
-    @FXML private Pane marketPane;
-    @FXML private Pane warehousePane;
-    @FXML private HBox leaderCardsBox;
-    @FXML private HBox resourcesBox;
-    @FXML private Button submitBtn;
-    @FXML private Button back;
+    private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
+
+    @FXML
+    private StackPane backStackPane;
+    @FXML
+    private AnchorPane canvas;
+    @FXML
+    private Pane marketPane;
+    @FXML
+    private Pane warehousePane;
+    @FXML
+    private HBox leaderCardsBox;
+    @FXML
+    private HBox resourcesBox;
+    @FXML
+    private Button submitBtn;
+    @FXML
+    private Button back;
 
     private boolean isRow;
     private int index;
@@ -175,7 +187,7 @@ public class MarketController extends GuiController {
                     }
 
                 } catch (Exception e) { // TODO remove this catch once debugged
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                 }
             }
             if(db.hasString() && success) {
@@ -238,7 +250,9 @@ public class MarketController extends GuiController {
                     success = true;
                 } catch (NumberFormatException | NullPointerException e) {
                     // it is fine if it passes here. Drop will be ignored
-                } catch (Exception e) { e.printStackTrace(); }
+                } catch (Exception e) { // TODO remove this catch once debugged
+                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
+                }
 
                 event.setDropCompleted(success);
                 event.consume();

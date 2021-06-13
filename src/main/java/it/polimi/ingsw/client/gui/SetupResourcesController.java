@@ -27,16 +27,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SetupResourcesController extends GuiController {
+    private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
+
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private List<ReducedResourceType> choosableResources;
-    @FXML private StackPane backStackPane;
-    @FXML private BorderPane bpane;
-    @FXML private HBox resourceTypesContainer;
-    @FXML private Warehouse warehouse;
-    @FXML private Button choiceButton;
-    @FXML private Title titleComponent;
+    @FXML
+    private StackPane backStackPane;
+    @FXML
+    private BorderPane bpane;
+    @FXML
+    private HBox resourceTypesContainer;
+    @FXML
+    private Warehouse warehouse;
+    @FXML
+    private Button choiceButton;
+    @FXML
+    private Title titleComponent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -112,7 +122,7 @@ public class SetupResourcesController extends GuiController {
                             updateChoiceButton();
 
                         } catch (Exception e) { // TODO remove this catch once debugged
-                            e.printStackTrace();
+                            LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                         }
                     }
                     if(db.hasString() && success) {
@@ -150,7 +160,7 @@ public class SetupResourcesController extends GuiController {
                     String resource = ((Resource) event.getGestureSource()).getName();
 
                     int amount = selection.get(id).get(resource) - 1;
-                    if(amount > 0)
+                    if (amount > 0)
                         selection.get(id).put(resource, amount);
                     else
                         selection.get(id).remove(resource);
@@ -159,8 +169,8 @@ public class SetupResourcesController extends GuiController {
                     updateChoiceButton();
 
                     success = true;
-                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
+                } catch (NumberFormatException e) { // TODO: Handle this, don't simply log it
+                    LOGGER.log(Level.SEVERE, "NumberFormatException (TODO: Handle this)", e);
                 }
 
                 event.setDropCompleted(success);

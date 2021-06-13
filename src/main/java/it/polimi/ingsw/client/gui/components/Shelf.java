@@ -1,24 +1,28 @@
 package it.polimi.ingsw.client.gui.components;
 
-import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import javafx.event.EventType;
 import javafx.scene.Node;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Shelf extends HBox {
+    private static final Logger LOGGER = Logger.getLogger(Shelf.class.getName());
+
     private int shelfId;
     private int size;
     private final HBox content = new HBox();
     private final Circle swapIcon = new Circle(10, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;
-    private Text sizeText;
+    private final Text sizeText;
 
     public Shelf(ReducedResourceContainer shelf, BiConsumer<Integer, Integer> callback) {
         this.callback = callback;
@@ -112,7 +116,7 @@ public class Shelf extends HBox {
                     // TODO disable temporarily dnd until response is received
 
                 } catch (Exception e) { // TODO remove this catch once debugged
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                 }
             }
 

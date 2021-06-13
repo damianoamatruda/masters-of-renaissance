@@ -24,17 +24,28 @@ import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DevCardGridController extends GuiController {
+    private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
+
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
-    @FXML private StackPane backStackPane;
-    @FXML private AnchorPane canvas;
-    @FXML private StackPane devCardGridPane;
-    @FXML private HBox containersBox;
-    @FXML private HBox devSlotsBox;
-    @FXML private ChoiceBox<Integer> devSlotChoicePicker;
-    @FXML private Button submitBtn;
+    @FXML
+    private StackPane backStackPane;
+    @FXML
+    private AnchorPane canvas;
+    @FXML
+    private StackPane devCardGridPane;
+    @FXML
+    private HBox containersBox;
+    @FXML
+    private HBox devSlotsBox;
+    @FXML
+    private ChoiceBox<Integer> devSlotChoicePicker;
+    @FXML
+    private Button submitBtn;
     @FXML private Button back;
 
     private ViewModel vm;
@@ -118,12 +129,12 @@ public class DevCardGridController extends GuiController {
                 putChoice(resource, id);
 
                 strongbox.getContent().ifPresentOrElse(
-                    c -> strongbox.refreshRemove(resource),
-                    () -> warehouse.refreshShelfRemove(id));
+                        c -> strongbox.refreshRemove(resource),
+                        () -> warehouse.refreshShelfRemove(id));
 
                 success = true;
-            } catch (NumberFormatException e) {
-                //    e.printStackTrace();
+            } catch (NumberFormatException e) { // TODO: Handle this, don't simply log it
+                LOGGER.log(Level.SEVERE, "NumberFormatException (TODO: Handle this)", e);
             }
 
             event.setDropCompleted(success);

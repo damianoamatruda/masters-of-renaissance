@@ -50,26 +50,20 @@ public class ServerClientHandler extends NetworkHandler {
                     LOGGER.info(String.format("Received: %s", inputLine));
 
                     try {
+                        dispatch(protocol.processInputAsNetEvent(inputLine));
+                    } catch (NetworkProtocolException e1) {
                         try {
-                            dispatch(protocol.processInputAsNetEvent(inputLine));
-                        } catch (NetworkProtocolException e1) {
-                            try {
-                                dispatch(protocol.processInputAsVCEvent(inputLine));
-                            } catch (NetworkProtocolException e2) {
-                                e2.printStackTrace();
-                                send(new ErrProtocol(e2));
-                            }
+                            dispatch(protocol.processInputAsVCEvent(inputLine));
+                        } catch (NetworkProtocolException e2) {
+                            LOGGER.log(Level.INFO, "Unknown event", e2);
+                            send(new ErrProtocol(e2));
                         }
-                    } catch (Exception e) {
-                        send(new ErrRuntime(e));
-                        e.printStackTrace();
                     }
                 } catch (SocketTimeoutException e) {
                     if (halfTimeout < 1) {
                         send(new ReqHeartbeat());
                         halfTimeout++;
                     } else {
-                        e.printStackTrace();
                         send(new ReqGoodbye());
                         dispatch(new ReqQuit());
                         break;
@@ -80,6 +74,9 @@ public class ServerClientHandler extends NetworkHandler {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
             dispatch(new ReqQuit());
+        } catch (RuntimeException e) {
+            LOGGER.log(Level.SEVERE, "Unknown runtime exception", e);
+            send(new ErrRuntime(e));
         } finally {
             close();
         }

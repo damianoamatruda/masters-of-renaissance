@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import javafx.beans.binding.Bindings;
@@ -96,18 +95,6 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private void handleChoice() {
         Gui.getInstance().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
-    }
-
-    @Override
-    public void on(Gui gui, UpdateLeadersHand event) {
-        super.on(gui, event);
-        // if (gui.isOffline()) {
-        //     try {
-        //         gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
-        //     } catch (IOException e) {
-        //         e.printStackTrace();
-        //     }
-        // }
     }
 
     @Override

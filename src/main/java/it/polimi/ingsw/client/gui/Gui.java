@@ -20,11 +20,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * JavaFX App
  */
 public class Gui extends Application {
+    private static final Logger LOGGER = Logger.getLogger(Gui.class.getName());
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
     private static final String title = "Masters of Renaissance";
     static final double realWidth = 1280;
@@ -180,7 +183,7 @@ public class Gui extends Application {
                 callback.accept(fxmlLoader.getController());
             Platform.runLater(() -> scene.setRoot(root));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "IOException when setting root", e);
             throw new RuntimeException(e);
         }
     }

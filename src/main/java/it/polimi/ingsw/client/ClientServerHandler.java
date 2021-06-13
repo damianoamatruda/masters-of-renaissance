@@ -40,7 +40,9 @@ public class ClientServerHandler extends NetworkHandler {
                     dispatch(new UpdateServerUnavailable());
                     break;
                 }
+
                 LOGGER.info(inputLine);
+
                 try {
                     dispatch(protocol.processInputAsNetEvent(inputLine));
                 } catch (NetworkProtocolException e1) {
@@ -54,8 +56,8 @@ public class ClientServerHandler extends NetworkHandler {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
             send(new ReqGoodbye());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RuntimeException e) {
+            LOGGER.log(Level.SEVERE, "Unknown runtime exception", e);
         } finally {
             close();
         }
