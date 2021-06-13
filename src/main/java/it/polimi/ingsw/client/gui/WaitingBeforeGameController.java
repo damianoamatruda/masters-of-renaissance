@@ -1,10 +1,11 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
-import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
@@ -62,12 +63,6 @@ public class WaitingBeforeGameController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateGame event) {
-        super.on(gui, event);
-        System.out.println("Game started.");
-    }
-
-    @Override
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
         gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
@@ -88,7 +83,7 @@ public class WaitingBeforeGameController extends GuiController {
             int count = Integer.parseInt(inputRadio.getText());
             gui.dispatch(new ReqNewGame(count));
         } catch (NumberFormatException e) {
-            System.out.println("Not a number");
+            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", "Not a number")));
         }
     }
 }

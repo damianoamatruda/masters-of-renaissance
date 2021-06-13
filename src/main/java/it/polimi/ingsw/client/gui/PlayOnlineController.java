@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.components.Alert;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
@@ -30,25 +32,29 @@ public class PlayOnlineController extends GuiController {
         Gui gui = Gui.getInstance();
 
         String[] args = server.getText().split(":");
-        String host = "";
-        int port = -1;
+        String host;
+        int port;
 
         try {
             host = args[0];
             port = Integer.parseInt(args[1]);
-            System.out.printf("Connecting to %s...%n", server.getText());
-            gui.openOnlineClient(host, port);
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.printf("%s is not a valid pair IP:port%n", server.getText());
+            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", String.format("%s is not a valid pair IP:port.", server.getText()))));
             return;
         } catch (NumberFormatException e) {
-            System.out.printf("Port %s is not a valid port%n", args[1]);
+            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", String.format("Port %s is not a valid port.", args[1]))));
             return;
+        }
+
+        // Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", String.format("Connecting to %s...", server.getText()))));
+
+        try {
+            gui.openOnlineClient(host, port);
         } catch (UnknownHostException e) {
-            System.out.printf("Don't know about host %s%n", host);
+            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", String.format("Don't know about host %s.", host))));
             return;
         } catch (IOException e) {
-            System.out.printf("Couldn't get I/O for the connection to %s when creating the socket.%n", host);
+            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", String.format("Couldn't get I/O for the connection to %s when creating the socket.", host))));
             return;
         }
 

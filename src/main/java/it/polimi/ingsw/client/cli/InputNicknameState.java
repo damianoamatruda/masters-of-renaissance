@@ -41,7 +41,7 @@ public class InputNicknameState extends CliState {
     @Override
     public void on(Cli cli, ErrNickname event) {
         // don't call super.on
-        cli.repeatState("Nickname is invalid. Reason: " + event.getReason().toString().toLowerCase());
+        cli.repeatState(String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()));
     }
 
     @Override

@@ -1,11 +1,12 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -89,7 +90,7 @@ public class Options extends BorderPane {
 
     @FXML
     private void handleBack() {
-        ((StackPane) this.getParent()).getChildren().remove(this);
+        ((Pane) this.getParent()).getChildren().remove(this);
     }
 
     @FXML
@@ -116,15 +117,17 @@ public class Options extends BorderPane {
     private void handleConfig() {
         Gui gui = Gui.getInstance();
 
+        String title = "Open custom config.json";
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open custom config.json");
+        fileChooser.setTitle(title);
         File gameConfigFile = fileChooser.showOpenDialog(gui.getStage());
         if (gameConfigFile != null) {
             try {
                 gui.setGameConfigStream(new FileInputStream(gameConfigFile));
                 resetConfigButton.setDisable(false);
             } catch (FileNotFoundException e) {
-                System.out.printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
+                Platform.runLater(() -> ((Pane) this.getParent()).getChildren().add(new Alert(title, String.format("Couldn't gain access to file %s.%n", gameConfigFile.getPath()))));
             }
         }
     }

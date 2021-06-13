@@ -1,8 +1,11 @@
 package it.polimi.ingsw.client.gui.components;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -25,7 +28,13 @@ public class Alert extends BorderPane {
         canvas.setAlignment(Pos.CENTER);
 
         this.setCenter(canvas);
-        this.setBottom(new SButton("OK"));
+
+        Button okButton = new SButton("OK");
+        okButton.setDefaultButton(true);
+        okButton.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
+            ((Pane) getParent()).getChildren().remove(this);
+        });
+        this.setBottom(okButton);
 
         this.getStyleClass().add("main");
     }

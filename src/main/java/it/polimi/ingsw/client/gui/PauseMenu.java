@@ -8,11 +8,10 @@ import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class PauseMenu extends StackPane {
     public BorderPane options;
@@ -43,7 +42,7 @@ public class PauseMenu extends StackPane {
 
     @FXML
     private void handleBack() {
-        ((StackPane) this.getParent()).getChildren().remove(this);
+        ((Pane) this.getParent()).getChildren().remove(this);
     }
 
     @FXML
