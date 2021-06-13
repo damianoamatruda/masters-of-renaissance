@@ -1,10 +1,18 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -14,25 +22,30 @@ import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Shelf extends HBox {
+public class Shelf extends BorderPane {
     private static final Logger LOGGER = Logger.getLogger(Shelf.class.getName());
 
     private int shelfId;
     private int size;
-    private final HBox content = new HBox();
+    private HBox content;
     private final Circle swapIcon = new Circle(10, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
 
-    public Shelf(ReducedResourceContainer shelf, BiConsumer<Integer, Integer> callback) {
+    public Shelf(ReducedResourceContainer shelf, double maxHeight, double contentWidth, BiConsumer<Integer, Integer> callback) {
         this.callback = callback;
         this.shelfId = shelf.getId();
         this.size = shelf.getSize();
-        this.setSpacing(20);
-        this.setMaxWidth(400);
+        // this.setSpacing(10);
+        // this.setMinWidth(contentWidth);
+        this.setMinHeight(maxHeight);
+        this.setMaxHeight(maxHeight);
+        // this.setAlignment(Pos.CENTER_LEFT);
 
-        content.setPrefHeight(100);
-        content.setPrefWidth(300);
+        content = new HBox();
+        content.setMinHeight(maxHeight);
+        content.setMaxHeight(maxHeight);
+        content.setMinWidth(contentWidth);
         content.setStyle("-fx-background-image: url('/assets/gui/playerboard/warehouseshelf.png');" +
                 "-fx-background-position: center center;" +
                 "-fx-background-repeat: stretch;" +
@@ -41,22 +54,30 @@ public class Shelf extends HBox {
                 "-fx-background-size: 300 100;");
 
         sizeText = new Text("Size: " + shelf.getSize());
-        this.getChildren().add(sizeText);
-        this.getChildren().add(content);
+        // content.setBorder(new Border(new BorderStroke(Color.PINK,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        this.setLeft(sizeText);
+        this.setCenter(content);
+        
+        BorderPane.setMargin(content, new Insets(0, 10, 0, 10));
+        BorderPane.setAlignment(sizeText, Pos.CENTER_LEFT);
+    }
 
+    public void setContent(HBox content) {
+        this.content = content;
     }
 
     public void addResource(Resource r) {
-        ((HBox) this.getChildren().get(1)).getChildren().add(r);
         r.setPreserveRatio(true);
+        r.setFitHeight(this.getMinHeight());
+        ((HBox) this.getCenter()).getChildren().add(r);
     }
 
     public void addResource(String resource) {
         Resource r = new Resource();
         r.setResourceType(resource);
-        ((HBox) this.getChildren().get(1)).getChildren().add(r);
-        r.setPreserveRatio(true);
 
+        addResource(r);
     }
 
     public int getShelfId() {
@@ -68,7 +89,7 @@ public class Shelf extends HBox {
     }
 
     public void removeResource() {
-        ((HBox) this.getChildren().get(1)).getChildren().remove(((HBox) this.getChildren().get(1)).getChildren().size() - 1);
+        content.getChildren().remove(content.getChildren().size() - 1);
     }
 
     public int getContentSize() {
@@ -82,7 +103,9 @@ public class Shelf extends HBox {
 
     public void addSwapper() {
         setSwapDnD();
-        this.getChildren().add(swapIcon);
+        this.setRight(swapIcon);
+
+        BorderPane.setAlignment(swapIcon, Pos.CENTER_RIGHT);
     }
 
     private void setSwapDnD() {

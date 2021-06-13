@@ -7,8 +7,14 @@ import javafx.geometry.Pos;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,6 +39,8 @@ public class Warehouse extends VBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        // this.setBorder(new Border(new BorderStroke(Color.RED,
+        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback) {
@@ -41,12 +49,14 @@ public class Warehouse extends VBox {
 
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback, boolean wantsDnD) {
         this.getChildren().clear();
-        maxRowHeight = getPrefHeight() / shelves.size(); // TODO: check that it works with more than 3 shelves
+        maxRowHeight = getPrefHeight() / shelves.size();
         if(shelves != null) {
             for (ReducedResourceContainer shelf : shelves) {
-                Shelf content = new Shelf(shelf, callback);
-                content.setAlignment(Pos.CENTER);
+                Shelf content = new Shelf(shelf, maxRowHeight, this.getMinHeight(), callback);
+                // content.setAlignment(Pos.CENTER);
 
+                // content.setBorder(new Border(new BorderStroke(Color.GREEN,
+                //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                 this.shelves.put(shelf.getId(), content);
                 for(String resource : shelf.getContent().keySet()) {
                     HBox entry = new HBox();
@@ -56,14 +66,12 @@ public class Warehouse extends VBox {
                     entry.maxHeight(maxRowHeight);
 
                     for(int i = 0; i < shelf.getContent().get(resource); i++) {
-                        if(wantsDnD) {
+                        if(wantsDnD)
                             addResourceDraggable(content.getShelfId(), resource);
-                        }
-                        else content.addResource(resource);
+                        else
+                            content.addResource(resource);
                     }
-
-                    content.getChildren().add(entry);
-
+                    content.setContent(entry);
                 }
                 this.getChildren().add(content);
             }
