@@ -90,7 +90,7 @@ public class SetupResourcesController extends GuiController {
                             int id = ((Shelf) shelf).getShelfId();
                             String resource = ((Resource) event.getGestureSource()).getName();
 
-                            boolean alreadyHasBoundShelf = selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource))
+                            boolean alreadyHasBoundShelf = selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != id)
                                     && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
 
                             if((selection.get(id) == null || selection.get(id).get(resource) == null ||
