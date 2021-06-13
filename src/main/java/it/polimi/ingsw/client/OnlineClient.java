@@ -40,8 +40,8 @@ public class OnlineClient implements Network {
 
     @Override
     public void close() {
-        view.removeEventListener(VCEvent.class, vcEventListener);
-        executor.shutdownNow();
         networkHandler.close();
+        executor.shutdown();
+        view.removeEventListener(VCEvent.class, vcEventListener);
     }
 }

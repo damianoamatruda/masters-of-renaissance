@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.NetworkProtocol;
 import it.polimi.ingsw.common.NetworkProtocolException;
+import it.polimi.ingsw.common.events.netevents.ReqGoodbye;
 import it.polimi.ingsw.common.events.netevents.ReqHeartbeat;
 import it.polimi.ingsw.common.events.netevents.errors.ErrProtocol;
 import it.polimi.ingsw.common.events.netevents.errors.ErrRuntime;
@@ -83,5 +84,11 @@ public class ServerClientHandler extends NetworkHandler {
         } finally {
             shutdown();
         }
+    }
+
+    @Override
+    protected void on(ReqGoodbye event) {
+        dispatch(new ReqQuit());
+        super.on(event);
     }
 }

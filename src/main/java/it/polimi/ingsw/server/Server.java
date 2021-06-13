@@ -175,15 +175,15 @@ public class Server implements Network, Runnable {
 
     @Override
     public void close() {
-        listening = false;
-        executor.shutdownNow();
-        model.close();
-        if (!serverSocket.isClosed()) {
+        if (listening) {
+            listening = false;
             try {
                 serverSocket.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+        executor.shutdownNow();
+        model.close();
     }
 }

@@ -47,8 +47,6 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
         if (listening) {
             listening = false;
             onClose.run();
-        }
-        if (!socket.isClosed()) {
             try {
                 socket.close();
             } catch (IOException e) {
@@ -61,7 +59,7 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
 
     public void send(Event event) {
         String output = protocol.processOutput(event);
-        if (out == null) {
+        if (!listening) {
             LOGGER.info(String.format("Not sent: %s", output));
             return;
         }
