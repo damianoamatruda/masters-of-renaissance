@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.netevents.*;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -41,6 +42,13 @@ public abstract class NetworkHandler extends AsynchronousEventDispatcher impleme
         if (listening) {
             listening = false;
             onClose.run();
+        }
+        if (!socket.isClosed()) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         out = null;
         in = null;

@@ -9,14 +9,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class OnlineClient implements Network {
-    private final Socket socket;
     private final View view;
     private final ExecutorService executor;
     private final NetworkHandler networkHandler;
     private EventListener<VCEvent> vcEventListener;
 
     public OnlineClient(View view, String host, int port) throws IOException {
-        this.socket = new Socket(host, port);
+        Socket socket = new Socket(host, port);
+
         this.view = view;
         this.executor = Executors.newCachedThreadPool();
 
@@ -24,11 +24,8 @@ public class OnlineClient implements Network {
         this.networkHandler.setOnClose(() -> {
             view.unregisterOnModelLobby(networkHandler);
             view.unregisterOnModelGameContext(networkHandler);
-            try {
-                close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+
+            close();
         });
 
         this.vcEventListener = null;
@@ -44,10 +41,9 @@ public class OnlineClient implements Network {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         view.removeEventListener(VCEvent.class, vcEventListener);
         executor.shutdownNow();
         networkHandler.close();
-        socket.close();
     }
 }

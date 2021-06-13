@@ -167,10 +167,7 @@ public class Gui extends Application {
 
     void closeClient() {
         if (client != null) {
-            try {
-                client.close();
-            } catch (Exception ignored) {
-            }
+            client.close();
             client = null;
         }
     }

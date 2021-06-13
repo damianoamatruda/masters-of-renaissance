@@ -322,10 +322,7 @@ public class Cli {
 
     void closeClient() {
         if (client != null) {
-            try {
-                client.close();
-            } catch (Exception ignored) {
-            }
+            client.close();
             client = null;
         }
     }

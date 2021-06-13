@@ -170,20 +170,20 @@ public class Server implements Network, Runnable {
             executor.submit(networkHandler);
         }
 
-        try {
-            close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        close();
     }
 
     @Override
-    public void close() throws IOException {
-        if (listening) {
-            listening = false;
-            executor.shutdownNow();
-            model.close();
-            serverSocket.close();
+    public void close() {
+        listening = false;
+        executor.shutdownNow();
+        model.close();
+        if (!serverSocket.isClosed()) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
