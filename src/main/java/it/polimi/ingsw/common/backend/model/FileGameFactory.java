@@ -87,13 +87,16 @@ public class FileGameFactory implements GameFactory {
         
         baseProduction = buildBaseProduction();
         List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
+        List<Warehouse> warehouses = new ArrayList<>();
+        List<Strongbox> strongboxes = new ArrayList<>();
+        buildBaseContainers(warehouses, strongboxes, nicknames.size());
         List<LeaderCard> leaderCards = buildLeaderCards(productions);
         List<DevelopmentCard> developmentCards = buildDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
         addDevCardProductions(productions, developmentCards);
         
         return new Game(
-                getPlayers(nicknames, leaderCards, resContainers), devCardColorMap.values().stream().toList(), resTypeMap.values().stream().toList(),
+                getPlayers(nicknames, warehouses, strongboxes, leaderCards, resContainers), devCardColorMap.values().stream().toList(), resTypeMap.values().stream().toList(),
                 leaderCards,
                 developmentCards,
                 resContainers,
@@ -110,6 +113,9 @@ public class FileGameFactory implements GameFactory {
     public SoloGame getSoloGame(String nickname) {
         baseProduction = buildBaseProduction();
         List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
+        List<Warehouse> warehouses = new ArrayList<>();
+        List<Strongbox> strongboxes = new ArrayList<>();
+        buildBaseContainers(warehouses, strongboxes, 1);
         List<LeaderCard> leaderCards = buildLeaderCards(productions);
         List<DevelopmentCard> developmentCards = buildDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
@@ -118,7 +124,7 @@ public class FileGameFactory implements GameFactory {
         Collections.shuffle(actionTokens);
 
         return new SoloGame(
-                getPlayers(List.of(nickname), leaderCards, resContainers).get(0),
+                getPlayers(List.of(nickname), warehouses, strongboxes, leaderCards, resContainers).get(0),
                 devCardColorMap.values().stream().toList(), resTypeMap.values().stream().toList(), leaderCards,
                 developmentCards,
                 resContainers,
@@ -130,6 +136,13 @@ public class FileGameFactory implements GameFactory {
                 maxDevCards,
                 slotsCount
         );
+    }
+
+    private void buildBaseContainers(List<Warehouse> warehouses, List<Strongbox> strongboxes, int playersCount) {
+        for(int i = 0; i < playersCount; i++) {
+            warehouses.add(new Warehouse(warehouseShelvesCount));
+            strongboxes.add(new Strongbox());
+        }
     }
 
     /**
@@ -176,10 +189,13 @@ public class FileGameFactory implements GameFactory {
      * Returns a list of players.
      *
      * @param nicknames   the list of nicknames
+     * @param warehouses  the list of allocated warehouses
+     * @param strongboxes the list of allocated strongboxes
      * @param leaderCards the list of leader cards
      * @return the players
      */
-    private List<Player> getPlayers(List<String> nicknames, List<LeaderCard> leaderCards,
+    private List<Player> getPlayers(List<String> nicknames, List<Warehouse> warehouses,
+                                    List<Strongbox> strongboxes, List<LeaderCard> leaderCards,
                                     List<ResourceContainer> resContainers) {
         List<Player> players = new ArrayList<>();
 
@@ -194,8 +210,8 @@ public class FileGameFactory implements GameFactory {
         List<PlayerSetup> playerSetups = buildPlayerSetups();
 
         for (int i = 0; i < shuffledNicknames.size(); i++) {
-            Warehouse warehouse = new Warehouse(warehouseShelvesCount);
-            Strongbox strongbox = new Strongbox();
+            Warehouse warehouse = warehouses.get(i);
+            Strongbox strongbox = strongboxes.get(i);
 
             resContainers.addAll(warehouse.getShelves());
             resContainers.add(strongbox);
