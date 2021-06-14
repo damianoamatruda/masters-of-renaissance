@@ -7,7 +7,6 @@ import java.util.Optional;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.Event;
 
 public class Ui extends View {
     private final ViewModel viewModel;
@@ -34,10 +33,6 @@ public class Ui extends View {
 
     public void setController(UiController controller) {
         this.controller = controller;
-    }
-
-    public void dispatch(Event event) {
-        dispatch(event);
     }
     
     public Optional<InputStream> getGameConfigStream() {
