@@ -163,7 +163,7 @@ public class FileGameFactory implements GameFactory {
         String baseMsg = "Invalid number of players chosen";
         if (nicknames == null)
             throw new IllegalArgumentException(String.format("%s: %s.", baseMsg, "null"));
-            else if (nicknames.size() == 0)
+            else if (nicknames.isEmpty())
                 throw new IllegalArgumentException(String.format("%s: 0.", baseMsg));
         else if (nicknames.size() == 1 && isMultiGame)
             throw new IllegalArgumentException("Cannot create MultiGame with only one player.");

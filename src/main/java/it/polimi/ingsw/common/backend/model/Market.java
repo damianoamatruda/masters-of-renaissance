@@ -43,7 +43,7 @@ public class Market extends EventDispatcher {
         if (colsCount <= 0)
             throw new IllegalArgumentException("Cannot create market: illegal number of columns: 0");
 
-        if (resourcesList.size() == 0)
+        if (resourcesList.isEmpty())
             throw new IllegalArgumentException("Cannot create market: illegal number of resources: 0");
 
         /* Check that the resulting grid is full. */

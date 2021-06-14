@@ -74,7 +74,7 @@ public class Game extends EventDispatcher {
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market,
                 FaithTrack faithTrack, int maxObtainableDevCards, int slotsCount) {
-        if (players.size() == 0)
+        if (players.isEmpty())
             throw new IllegalArgumentException(); // TODO: Add description
 
         this.players = new ArrayList<>(players);

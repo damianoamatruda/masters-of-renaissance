@@ -142,7 +142,7 @@ public class DevCardGridController extends GuiController {
             shelvesMap.get(shelfID).put(resource, amount);
             success = true;
         } catch (NullPointerException e) {
-            if(shelvesMap.get(shelfID) == null || shelvesMap.get(shelfID).keySet().size() == 0) {
+            if(shelvesMap.get(shelfID) == null || shelvesMap.get(shelfID).keySet().isEmpty()) {
                 Map<String, Integer> entry = new HashMap<>();
                 entry.put(resource, 1);
                 shelvesMap.put(shelfID, entry);

@@ -153,10 +153,14 @@ public class DevCardGrid extends EventDispatcher {
      */
     public void discardDevCards(DevCardColor color, int quantity) {
         int level = 1;
-        while (getDeck(color, level).size() == 0) level++;
+        while (getDeck(color, level).isEmpty())
+            level++;
+            
         while (quantity > 0 && level <= 3) {
             getDeck(color, level).pop();
-            if (getDeck(color, level).size() == 0) level++;
+
+            if (getDeck(color, level).isEmpty())
+                level++;
             quantity--;
         }
         if (quantity > 0) grid.remove(color);

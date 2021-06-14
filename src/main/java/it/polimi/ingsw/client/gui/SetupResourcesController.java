@@ -121,7 +121,7 @@ public class SetupResourcesController extends GuiController {
                                     selection.get(id).put(resource, amount);
                                     success = true;
                                 } catch (NullPointerException e) {
-                                    if(selection.get(id) == null || selection.get(id).keySet().size() == 0) {
+                                    if(selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
                                         Map<String, Integer> entry = new HashMap<>();
                                         entry.put(resource, 1);
                                         selection.put(id, entry);

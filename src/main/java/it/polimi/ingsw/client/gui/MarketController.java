@@ -136,7 +136,7 @@ public class MarketController extends GuiController {
             selection.get(shelfID).put(resource, amount);
             success = true;
         } catch (NullPointerException e) {
-            if(selection.get(shelfID) == null || selection.get(shelfID).size() == 0) {
+            if(selection.get(shelfID) == null || selection.get(shelfID).isEmpty()) {
                 Map<String, Integer> entry = new HashMap<>();
                 entry.put(resource, 1);
                 selection.put(shelfID, entry);
