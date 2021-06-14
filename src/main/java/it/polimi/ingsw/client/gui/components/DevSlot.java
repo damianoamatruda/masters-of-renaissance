@@ -55,8 +55,9 @@ public class DevSlot extends StackPane {
             AnchorPane p = new AnchorPane();
 
             p.getChildren().add(c);
-            
-            AnchorPane.setBottomAnchor(c, 20d + 50 * i);
+
+            AnchorPane.setLeftAnchor(c, 25d);
+            AnchorPane.setBottomAnchor(c, 90d + 50 * i);
 
             this.getChildren().add(p);
         }
