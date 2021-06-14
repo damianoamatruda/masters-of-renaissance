@@ -70,7 +70,7 @@ public class Gui extends Application {
 
         this.ui = new Ui();
 
-        ui.setViewListeners(this.controller);
+        setViewListeners();
 
         this.musicPlayer = null;
         this.soundFxVolume = 1;
@@ -144,5 +144,42 @@ public class Gui extends Application {
 
     public void setSoundFxVolume(double soundFxVolume) {
         this.soundFxVolume = soundFxVolume;
+    }
+
+    private void setViewListeners() {
+        ui.getView().setResQuitEventListener(event -> controller.on(event));
+        ui.getView().setUpdateBookedSeatsEventListener(event -> controller.on(event));
+        ui.getView().setUpdateJoinGameEventListener(event -> controller.on(event));
+        ui.getView().setErrNewGameEventListener(event -> controller.on(event));
+        ui.getView().setErrNicknameEventListener(event -> controller.on(event));
+        ui.getView().setErrActionEventListener(event -> controller.on(event));
+        ui.getView().setErrActiveLeaderDiscardedEventListener(event -> controller.on(event));
+        ui.getView().setErrBuyDevCardEventListener(event -> controller.on(event));
+        ui.getView().setErrCardRequirementsEventListener(event -> controller.on(event));
+        ui.getView().setErrInitialChoiceEventListener(event -> controller.on(event));
+        ui.getView().setErrNoSuchEntityEventListener(event -> controller.on(event));
+        ui.getView().setErrObjectNotOwnedEventListener(event -> controller.on(event));
+        ui.getView().setErrReplacedTransRecipeEventListener(event -> controller.on(event));
+        ui.getView().setErrResourceReplacementEventListener(event -> controller.on(event));
+        ui.getView().setErrResourceTransferEventListener(event -> controller.on(event));
+        ui.getView().setUpdateActionEventListener(event -> controller.on(event));
+        ui.getView().setUpdateActionTokenEventListener(event -> controller.on(event));
+        ui.getView().setUpdateCurrentPlayerEventListener(event -> controller.on(event));
+        ui.getView().setUpdateDevCardGridEventListener(event -> controller.on(event));
+        ui.getView().setUpdateDevCardSlotEventListener(event -> controller.on(event));
+        ui.getView().setUpdateFaithPointsEventListener(event -> controller.on(event));
+        ui.getView().setUpdateGameEventListener(event -> controller.on(event));
+        ui.getView().setUpdateGameEndEventListener(event -> controller.on(event));
+        ui.getView().setUpdateLastRoundEventListener(event -> controller.on(event));
+        ui.getView().setUpdateActivateLeaderEventListener(event -> controller.on(event));
+        ui.getView().setUpdateLeadersHandCountEventListener(event -> controller.on(event));
+        ui.getView().setUpdateMarketEventListener(event -> controller.on(event));
+        ui.getView().setUpdatePlayerEventListener(event -> controller.on(event));
+        ui.getView().setUpdatePlayerStatusEventListener(event -> controller.on(event));
+        ui.getView().setUpdateResourceContainerEventListener(event -> controller.on(event));
+        ui.getView().setUpdateSetupDoneEventListener(event -> controller.on(event));
+        ui.getView().setUpdateVaticanSectionEventListener(event -> controller.on(event));
+        ui.getView().setUpdateVictoryPointsEventListener(event -> controller.on(event));
+        ui.getView().setUpdateLeadersHandEventListener(event -> controller.on(event));
     }
 }
