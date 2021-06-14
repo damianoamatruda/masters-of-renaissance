@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
+import static it.polimi.ingsw.client.cli.Cli.centerAll;
 
 public class ActionToken extends StringComponent {
     private final ReducedActionToken reducedActionToken;
@@ -29,6 +30,6 @@ public class ActionToken extends StringComponent {
                         String.format("Discarded development cards of color %s.",
                                 new DevCardColor(color).getString(cli))).append("\n"));
 
-        return center(stringBuilder.toString());
+        return centerAll(stringBuilder.toString());
     }
 }

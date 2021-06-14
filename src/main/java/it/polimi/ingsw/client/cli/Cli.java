@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Cli {
@@ -88,6 +89,12 @@ public class Cli {
 
     public static String center(String str) {
         return center(str, width);
+    }
+
+    public static String centerAll(String str) {
+        StringBuilder stringBuilder = new StringBuilder();
+        str.lines().forEachOrdered(line -> stringBuilder.append(center(line)).append("\n"));
+        return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
 
     public static String left(String str, int width, char fill) {
