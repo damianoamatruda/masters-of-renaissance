@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -94,26 +94,25 @@ public class LeaderCard extends Card {
     }
 
     public void setDiscount(String type, int discount) {
-        HBox bonus = new HBox();
-        Resource res = new Resource();
-        TextArea amount = new TextArea();
-        amount.setText("-" + discount);
-        amount.setLayoutX(getWidth() * 0.60);
-        amount.setLayoutY(getHeight() * 0.70);
-        //TODO text not showing
+        HBox bonus = new HBox(-3);
+        bonus.setAlignment(Pos.CENTER);
 
+        Text amount = new Text();
+        amount.setText(String.valueOf(-1 * discount));
+        
+        Resource res = new Resource();
         res.setResourceType(type);
 
         res.setFitHeight(getHeight() * 0.14);
         res.setFitWidth(getHeight() * 0.14);
 
-        res.setLayoutX(getWidth() * 0.72);
-        res.setLayoutY(getHeight() * 0.70);
+        bonus.setLayoutX(getWidth() * 0.67);
+        bonus.setLayoutY(getHeight() * 0.70);
 
         bonus.getChildren().add(amount);
         bonus.getChildren().add(res);
 
-        this.getChildren().add(res);
+        this.getChildren().add(bonus);
     }
 
     public ReducedResourceContainer getContainer() {
