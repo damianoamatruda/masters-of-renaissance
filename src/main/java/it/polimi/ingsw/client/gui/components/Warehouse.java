@@ -71,7 +71,6 @@ public class Warehouse extends VBox {
                         else
                             content.addResource(resource);
                     }
-                    content.setContent(entry);
                 }
                 this.getChildren().add(content);
             }
