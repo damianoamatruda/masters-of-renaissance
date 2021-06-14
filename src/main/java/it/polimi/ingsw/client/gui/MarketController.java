@@ -187,7 +187,8 @@ public class MarketController extends GuiController {
                         success = putChoice(resource, shelfID);
                         if (success) {
                             warehouse.addResourceDraggable(shelfID, resource);
-                            removeResourceFromBox(resource);
+                            if(!db.hasString())
+                                removeResourceFromBox(resource);
                         }
                     }
 
