@@ -31,7 +31,7 @@ public class ResourceTransactionRecipe extends StringComponent {
         stringBuilder.append("Output:").append("\n");
         Map<String, Integer> outputResourceMap = reducedResourceTransactionRecipe.getOutput();
         if (reducedResourceTransactionRecipe.getOutputBlanks() > 0)
-            inputResourceMap.put("Blanks", reducedResourceTransactionRecipe.getOutputBlanks());
+            outputResourceMap.put("Blanks", reducedResourceTransactionRecipe.getOutputBlanks());
         stringBuilder.append(new ResourceMap(outputResourceMap).getString(cli));
         if (!reducedResourceTransactionRecipe.getOutputBlanksExclusions().isEmpty()) {
             stringBuilder.append("B. exclusions:").append("\n");
