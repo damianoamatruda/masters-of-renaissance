@@ -8,8 +8,9 @@
 <fx:root xmlns:fx="http://javafx.com/fxml"
          xmlns="http://javafx.com/javafx"
          stylesheets="@../index.css"
-         fx:id="backStackPane" type="StackPane" styleClass="main">
-
+         fx:id="backStackPane" type="StackPane" styleClass="main"
+         maxHeight="720" minHeight="720"
+         maxWidth="1280" minWidth="1280">
   <BorderPane fx:id="bpane">
     <center>
       <VBox alignment="CENTER">

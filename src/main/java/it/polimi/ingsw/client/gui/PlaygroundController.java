@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
-import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
@@ -93,10 +92,11 @@ public abstract class PlaygroundController extends GuiController {
         AnchorPane.setLeftAnchor(pboard, 0d);
         AnchorPane.setRightAnchor(pboard, 0d);
 
-
-        canvas.setBorder(new Border(new BorderStroke(Color.PINK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        pboard.setBorder(new Border(new BorderStroke(Color.BLUE,
+        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        canvas.setBorder(new Border(new BorderStroke(Color.RED,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        pboard.setBorder(new Border(new BorderStroke(Color.GREEN,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setPauseHandlers();
@@ -106,7 +106,7 @@ public abstract class PlaygroundController extends GuiController {
         this.canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 if(backStackPane.getChildren().size() == 1)
-                    backStackPane.getChildren().add(new PauseMenu());
+                    backStackPane.getChildren().add(new PauseMenu(maxScale));
                 else backStackPane.getChildren().remove(backStackPane.getChildren().size() - 1);
             }
         });
@@ -114,7 +114,7 @@ public abstract class PlaygroundController extends GuiController {
         Button pause = new SButton();
         pause.setText("Pause");
         pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            backStackPane.getChildren().add(new PauseMenu());
+            backStackPane.getChildren().add(new PauseMenu(maxScale));
         });
         canvas.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 0.0);

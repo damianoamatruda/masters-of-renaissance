@@ -10,7 +10,8 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="it.polimi.ingsw.client.gui.EndgameController"
            stylesheets="@index.css">
-  <BorderPane fx:id="bpane">
+  <BorderPane fx:id="bpane"
+    maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
     <center>
       <VBox alignment="CENTER">
         <VBox.margin>

@@ -8,6 +8,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +33,11 @@ public class PlayOnlineController extends GuiController {
                 backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
+
+        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        bpane.setBorder(new Border(new BorderStroke(Color.RED,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     @FXML

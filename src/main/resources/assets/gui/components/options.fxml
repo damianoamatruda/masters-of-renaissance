@@ -10,9 +10,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <fx:root xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-         stylesheets="@../index.css" type="BorderPane" styleClass="main">
+         type="BorderPane"
+         maxHeight="720" minHeight="720"
+         maxWidth="1280" minWidth="1280">
    <center>
-      <VBox alignment="CENTER">
+      <VBox maxWidth="-Infinity" alignment="CENTER" stylesheets="@../index.css" styleClass="main" fx:id="window">
          <VBox alignment="CENTER">
             <VBox.margin>
                <Insets bottom="40.0"/>

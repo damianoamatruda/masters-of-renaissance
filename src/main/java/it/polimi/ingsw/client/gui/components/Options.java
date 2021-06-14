@@ -6,9 +6,15 @@ import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -18,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Options extends BorderPane {
+    @FXML
+    private VBox window;
     @FXML
     private VBox configContainer;
     @FXML
@@ -35,7 +43,6 @@ public class Options extends BorderPane {
     @FXML
     private SButton backButton;
     private double oldMusicVolume;
-    private double oldSoundFxVolume;
 
     private NumberBinding maxScale;
 
@@ -56,8 +63,8 @@ public class Options extends BorderPane {
 
         this.maxScale = sizeBinding;
 
-        this.scaleXProperty().bind(sizeBinding);
-        this.scaleYProperty().bind(sizeBinding);
+        this.scaleXProperty().bind(maxScale);
+        this.scaleYProperty().bind(maxScale);
 
         setHandlers();
 
@@ -86,6 +93,9 @@ public class Options extends BorderPane {
 
         if (Gui.getInstance().getGameConfigStream().isEmpty())
             resetConfigButton.setDisable(true);
+
+        window.setBorder(new Border(new BorderStroke(Color.rgb(214, 150, 0),
+            BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
     }
 
     private void setHandlers() {

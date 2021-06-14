@@ -9,6 +9,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.Objects;
@@ -44,6 +50,10 @@ public class MainMenuController extends GuiController {
                 }
             }).start();
         }
+        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        bpane.setBorder(new Border(new BorderStroke(Color.RED,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     @FXML

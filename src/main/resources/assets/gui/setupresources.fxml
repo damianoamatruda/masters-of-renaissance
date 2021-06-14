@@ -10,12 +10,13 @@
 <StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="it.polimi.ingsw.client.gui.SetupResourcesController"
   stylesheets="@index.css">
-  <BorderPane fx:id="bpane">
+  <BorderPane fx:id="bpane"
+    maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
     <center>
       <VBox alignment="CENTER">
         <VBox alignment="CENTER">
           <VBox.margin>
-            <Insets bottom="40.0"/>
+            <Insets bottom="20.0"/>
           </VBox.margin>
           <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@logo.png"/>
@@ -23,17 +24,17 @@
         </VBox>
         <Title fx:id="titleComponent" maxWidth="-Infinity">
           <VBox.margin>
-            <Insets bottom="30.0"/>
+            <Insets bottom="15.0"/>
           </VBox.margin>
         </Title>
         <HBox fx:id="resourceTypesContainer"/>
         <Warehouse fx:id="warehouse" alignment="CENTER"/>
         <padding>
-          <Insets bottom="80.0"/>
+          <Insets bottom="20.0"/>
         </padding>
         <SButton fx:id="choiceButton" onAction="#handleChoice" prefWidth="250.0" text="Choose">
           <VBox.margin>
-            <Insets top="20.0"/>
+            <Insets top="10.0"/>
           </VBox.margin>
         </SButton>
       </VBox>

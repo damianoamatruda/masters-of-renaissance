@@ -30,6 +30,12 @@ public class Gui extends Application {
     private static final Logger LOGGER = Logger.getLogger(Gui.class.getName());
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
     private static final String title = "Masters of Renaissance";
+    /* Adjusting the ratio between 'real' and 'starting' sizes
+       will result in the whole GUI changing its intrinsinc scaling.
+       'real' values reflect the sizes set in the FXMLs.
+       Therefore, if both 'starting' and 'real' sizes are set to 720p,
+       the scale will result in a ratio of 1:1 for all sizes
+       (the screen size of the components will be the same as their logical size). */
     static final double realWidth = 1280;
     static final double realHeight = 720;
     private static final double startWidth = 854;

@@ -21,6 +21,12 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.*;
@@ -48,6 +54,8 @@ public class DevCardGridController extends GuiController {
     private Button submitBtn;
     @FXML private Button back;
 
+    private NumberBinding maxScale;
+
     private ViewModel vm;
     private DevCardGrid devCardGrid;
     private List<DevSlot> devSlots;
@@ -62,34 +70,22 @@ public class DevCardGridController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
                 backStackPane.heightProperty().divide(Gui.realHeight));
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
-        /*Image backBGImage = new Image(
-            Objects.requireNonNull(getClass().getResource("/assets/gui/background.png")).toExternalForm());
-
-        BackgroundImage backBG = new BackgroundImage(backBGImage,
-            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-            new BackgroundSize(1.0, 1.0, true, true, false, true));
-        Background bg = new Background(backBG);
-        this.canvas.setBackground(bg);*/
-
+        
+        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        canvas.setBorder(new Border(new BorderStroke(Color.RED,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        
         Gui gui = Gui.getInstance();
         vm = gui.getViewModel();
 
         devCardGrid = new DevCardGrid();
         devCardGrid.setGrid(vm.getDevCardGrid().orElseThrow());
         devCardGrid.setControllerListener(this::devCardPressed);
-
-        // devCardGrid.setBorder(new Border(new BorderStroke(Color.GREEN,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        // devCardGridPane.setBorder(new Border(new BorderStroke(Color.RED,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        // containersBox.setBorder(new Border(new BorderStroke(Color.RED,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         devCardGrid.setScaleX(0.75);
         devCardGrid.setScaleY(0.75);
@@ -106,11 +102,6 @@ public class DevCardGridController extends GuiController {
         resetWarehouse();
         resetStrongbox();
         resetSlots();
-
-        // warehouse.setBorder(new Border(new BorderStroke(Color.BLUE,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        // strongbox.setBorder(new Border(new BorderStroke(Color.GREEN,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         this.canvas.setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
@@ -266,7 +257,7 @@ public class DevCardGridController extends GuiController {
     private void setPauseOnEsc() {
         this.canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                backStackPane.getChildren().add(new PauseMenu());
+                backStackPane.getChildren().add(new PauseMenu(maxScale));
             }
         });
     }
