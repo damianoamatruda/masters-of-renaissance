@@ -14,7 +14,6 @@ import java.util.Map;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class LeaderActionsState extends CliController {
-    private final Cli cli = Cli.getInstance();
     private final CliController sourceState;
     private int leaderId;
 
@@ -22,7 +21,7 @@ public class LeaderActionsState extends CliController {
         this.sourceState = sourceState;
     }
 
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Leader Actions ~"));
 
@@ -30,11 +29,11 @@ public class LeaderActionsState extends CliController {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(true)));
         entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(false)));
-        new Menu(entries, cli1 -> cli1.setState(sourceState)).render(cli);
+        new Menu(entries, cli1 -> cli1.setState(sourceState)).render();
     }
 
     private void executeLeaderAction(boolean isActivate) {
-        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render(cli);
+        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render();
 
         cli.getOut().println();
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {

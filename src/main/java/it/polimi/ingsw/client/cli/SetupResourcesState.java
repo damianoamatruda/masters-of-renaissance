@@ -19,10 +19,8 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class SetupResourcesState extends CliController {
-    private final Cli cli = Cli.getInstance();
-
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Choose initial resources ~"));
 

@@ -7,7 +7,9 @@ public abstract class StringComponent implements Renderable {
     public abstract String getString(Cli cli);
 
     @Override
-    public final void render(Cli cli) {
+    public final void render() {
+        Cli cli = Cli.getInstance();
+        
         cli.getOut().println(getString(cli));
     }
 }

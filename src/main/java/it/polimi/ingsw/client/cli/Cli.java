@@ -74,7 +74,7 @@ public class Cli {
             // out.println();
             clear();
             // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
-            state.render(this);
+            state.render();
         }
     }
 
@@ -277,7 +277,7 @@ public class Cli {
                 ui.getViewModel().getPlayerWarehouseShelves(ui.getViewModel().getLocalPlayerNickname()),
                 ui.getViewModel().getPlayerDepots(ui.getViewModel().getLocalPlayerNickname()),
                 null)
-                .render(this);
+                .render();
 
         Map<String, Integer> remainingResMap = new HashMap<>(resMap);
         int totalQuantity = remainingResMap.values().stream().mapToInt(Integer::intValue).sum();
@@ -343,7 +343,7 @@ public class Cli {
 
         out.println();
         allowedResources.forEach(r -> {
-            new Resource(r).render(this);
+            new Resource(r).render();
             out.println();
         });
 
@@ -377,7 +377,7 @@ public class Cli {
                 ui.getViewModel().getPlayerWarehouseShelves(ui.getViewModel().getLocalPlayerNickname()),
                 ui.getViewModel().getPlayerDepots(ui.getViewModel().getLocalPlayerNickname()),
                 null)
-                .render(this);
+                .render();
 
         AtomicInteger allocQuantity = new AtomicInteger();
         while (allocQuantity.get() < totalQuantity) {
@@ -386,7 +386,7 @@ public class Cli {
 
             out.println();
             allowedResources.forEach(r -> {
-                new Resource(r).render(this);
+                new Resource(r).render();
                 out.println();
             });
 

@@ -21,10 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class SetupLeadersState extends CliController {
-    private final Cli cli = Cli.getInstance();
-
     @Override
-    public void render(Cli cli) {
+    public void render() {
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
@@ -43,7 +41,7 @@ public class SetupLeadersState extends CliController {
         }
 
         cli.getOut().println();
-        new LeadersHand(lCards).render(cli);
+        new LeadersHand(lCards).render();
 
         cli.getOut().println();
 

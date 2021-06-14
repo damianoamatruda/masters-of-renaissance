@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class GuiController extends UiController implements Initializable {
-    private final Gui gui = Gui.getInstance();
+    protected final Gui gui = Gui.getInstance();
     
     public GuiController() {
         super(Gui.getInstance().getUi());

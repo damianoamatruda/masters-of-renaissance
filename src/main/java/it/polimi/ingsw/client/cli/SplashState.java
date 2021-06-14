@@ -7,8 +7,8 @@ import static it.polimi.ingsw.client.cli.Cli.convertStreamToString;
 
 public class SplashState extends CliController {
     @Override
-    public void render(Cli cli) {
-        new MainTitle().render(cli);
+    public void render() {
+        new MainTitle().render();
         renderCredits(cli);
         cli.getOut().println();
         renderCastle(cli);

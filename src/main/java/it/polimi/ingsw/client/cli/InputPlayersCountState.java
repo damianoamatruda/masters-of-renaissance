@@ -11,10 +11,8 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class InputPlayersCountState extends CliController {
-    private final Cli cli = Cli.getInstance();
-    
     @Override
-    public void render(Cli cli) {
+    public void render() {
         if (cli.getUi().isOffline()) {
             // cli.getOut().println(center("Preparing a new game..."));
             cli.getUi().dispatch(new ReqNewGame(1));

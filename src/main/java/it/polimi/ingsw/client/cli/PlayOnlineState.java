@@ -14,10 +14,9 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class PlayOnlineState extends CliController {
     private static final String serverConfigPath = "/config/server.json";
-    private final Cli cli = Cli.getInstance();
-
+    
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Play Online ~"));
 

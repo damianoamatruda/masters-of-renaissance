@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 
 public class MarketController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
-    private final Gui gui = Gui.getInstance();
 
     @FXML
     private StackPane backStackPane;

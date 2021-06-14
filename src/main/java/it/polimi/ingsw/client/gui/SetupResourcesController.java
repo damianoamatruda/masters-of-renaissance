@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 
 public class SetupResourcesController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
-    private final Gui gui = Gui.getInstance();
 
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private List<ReducedResourceType> choosableResources;

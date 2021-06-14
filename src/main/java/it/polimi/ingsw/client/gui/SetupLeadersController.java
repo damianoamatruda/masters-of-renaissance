@@ -30,7 +30,6 @@ import java.util.ResourceBundle;
 
 public class SetupLeadersController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
-    private final Gui gui = Gui.getInstance();
     
     private final List<LeaderCard> selection = new ArrayList<>();
     

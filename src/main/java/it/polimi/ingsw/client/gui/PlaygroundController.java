@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public abstract class PlaygroundController extends GuiController {
-    private final Gui gui = Gui.getInstance();
-
     @FXML private StackPane backStackPane;
     @FXML protected AnchorPane canvas;
     @FXML protected Playerboard pboard;

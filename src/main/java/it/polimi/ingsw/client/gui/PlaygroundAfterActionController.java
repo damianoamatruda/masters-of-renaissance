@@ -11,8 +11,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PlaygroundAfterActionController extends PlaygroundController {
-    private final Gui gui = Gui.getInstance();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);

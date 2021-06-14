@@ -11,7 +11,9 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class OptionsState extends CliController {
     @Override
-    public void render(Cli cli) {
+    public void render() {
+        Cli cli = Cli.getInstance();
+        
         cli.getOut().println();
         cli.getOut().println(center("~ Offline Play Config ~"));
 
@@ -19,7 +21,7 @@ public class OptionsState extends CliController {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('D', new Menu.Entry("Default Config", this::defaultConfig));
         entries.put('C', new Menu.Entry("Custom Config", this::customConfig));
-        new Menu(entries, this::goBack).render(cli);
+        new Menu(entries, this::goBack).render();
     }
 
     private void goBack(Cli cli) {

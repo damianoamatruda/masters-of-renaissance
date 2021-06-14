@@ -9,7 +9,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class TurnBeforeActionState extends CliTurnState {
     @Override
-    public void render(Cli cli) {
+    public void render() {
         if (!cli.getViewModel().isSetupDone()) {
             cli.getOut().println();
             cli.getOut().println("Waiting for all players to finish their setup...");
@@ -27,6 +27,6 @@ public class TurnBeforeActionState extends CliTurnState {
         entries.put('L', new Menu.Entry("Leader Actions", cli1 -> cli1.setState(new LeaderActionsState(this))));
         entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setState(new SwapShelvesState(this))));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
-        new Menu(entries, this::quitToTitle).render(cli);
+        new Menu(entries, this::quitToTitle).render();
     }
 }

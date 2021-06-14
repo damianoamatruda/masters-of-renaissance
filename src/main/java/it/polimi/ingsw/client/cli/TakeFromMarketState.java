@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class TakeFromMarketState extends CliController {
-    private final Cli cli = Cli.getInstance();
     private final CliController sourceState;
     private boolean isRow;
     private int index;
@@ -31,14 +30,14 @@ public class TakeFromMarketState extends CliController {
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Take Market Resources ~"));
 
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
-        new Market(vm.getMarket().orElseThrow()).render(cli);
+        new Market(vm.getMarket().orElseThrow()).render();
 
         cli.getOut().println();
         new ResourceContainers(
@@ -46,7 +45,7 @@ public class TakeFromMarketState extends CliController {
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 null)
-                .render(cli);
+                .render();
 
         chooseRowCol(cli);
     }
@@ -122,7 +121,7 @@ public class TakeFromMarketState extends CliController {
 
             // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {
-                new LeadersHand(zeroLeaders).render(cli);
+                new LeadersHand(zeroLeaders).render();
                 cli.getOut().println("These are the active leaders you can use to replace blank resources.");
 
                 AtomicBoolean valid = new AtomicBoolean(false);

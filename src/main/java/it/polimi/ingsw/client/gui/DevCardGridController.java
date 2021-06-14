@@ -35,7 +35,6 @@ import java.util.logging.Logger;
 
 public class DevCardGridController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
-    private final Gui gui = Gui.getInstance();
     
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 

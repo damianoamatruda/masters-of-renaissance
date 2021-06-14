@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class ActivateProductionsState extends CliController {
-    private final Cli cli = Cli.getInstance();
     private final CliController sourceState;
     private final List<ReducedProductionRequest> requests;
     private boolean done;
@@ -32,7 +31,7 @@ public class ActivateProductionsState extends CliController {
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         chooseProductions(cli);
     }
 

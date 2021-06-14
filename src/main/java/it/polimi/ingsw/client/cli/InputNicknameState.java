@@ -12,7 +12,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class InputNicknameState extends CliController {
-    private final Cli cli = Cli.getInstance();
     private final String title;
 
     public InputNicknameState(String title) {
@@ -20,7 +19,7 @@ public class InputNicknameState extends CliController {
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center(String.format("~ %s ~", title)));
 

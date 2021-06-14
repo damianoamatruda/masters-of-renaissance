@@ -3,10 +3,8 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 
 public class WaitingAfterTurnState extends CliController {
-    private final Cli cli = Cli.getInstance();
-
     @Override
-    public void render(Cli cli) {
+    public void render() {
         if (!cli.getViewModel().isLastRound())
             cli.getOut().println("Please wait for other players to end their turn...");
         else

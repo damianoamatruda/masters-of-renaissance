@@ -26,8 +26,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InputNicknameController extends GuiController {
-    private final Gui gui = Gui.getInstance();
-    
     @FXML
     private StackPane backStackPane;
     @FXML

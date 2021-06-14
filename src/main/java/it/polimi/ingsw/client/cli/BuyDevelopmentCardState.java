@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardState extends CliController {
-    private final Cli cli = Cli.getInstance();
     private final CliController sourceState;
     private ViewModel vm;
     private ReducedDevCardGrid grid;
@@ -37,7 +36,7 @@ public class BuyDevelopmentCardState extends CliController {
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         vm = cli.getViewModel();
         
         cli.getOut().println();
@@ -46,15 +45,15 @@ public class BuyDevelopmentCardState extends CliController {
         grid = vm.getDevCardGrid().orElseThrow();
 
         cli.getOut().println();
-        new DevCardGrid(grid).render(cli);
+        new DevCardGrid(grid).render();
         cli.getOut().println();
         new ResourceContainers(vm.getLocalPlayerNickname(),
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
-                .render(cli);
+                .render();
 
-        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render(cli);
+        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
 
         chooseColor(cli);
     }
@@ -125,7 +124,7 @@ public class BuyDevelopmentCardState extends CliController {
                             vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                             vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                             vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
-                            .render(cli);
+                            .render();
 
                     chooseShelves(cli);
                 }

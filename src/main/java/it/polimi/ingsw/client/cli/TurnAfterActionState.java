@@ -11,10 +11,8 @@ import java.util.Map;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class TurnAfterActionState extends CliTurnState {
-    private final Cli cli = Cli.getInstance();
-    
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ It's your turn ~"));
 
@@ -24,7 +22,7 @@ public class TurnAfterActionState extends CliTurnState {
         entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setState(new SwapShelvesState(this))));
         entries.put('E', new Menu.Entry("End Turn", this::endTurn));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
-        new Menu(entries, this::quitToTitle).render(cli);
+        new Menu(entries, this::quitToTitle).render();
     }
 
     private void endTurn(Cli cli) {

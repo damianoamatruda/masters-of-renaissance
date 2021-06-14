@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public abstract class CliController extends UiController implements Renderable {
-    private final Cli cli = Cli.getInstance();
+    protected final Cli cli = Cli.getInstance();
     
     public CliController() {
         super(Cli.getInstance().getUi());
     }
     
     @Override
-    public abstract void render(Cli cli);
+    public abstract void render();
 
     // TODO review all error states
 
@@ -162,7 +162,7 @@ public abstract class CliController extends UiController implements Renderable {
                 .getActionToken(event.getActionToken())
                 .ifPresent(t -> {
                     cli.getOut().println();
-                    new ActionToken(t).render(cli);
+                    new ActionToken(t).render();
                 });
         cli.promptPause();
     }
@@ -185,7 +185,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         cli.getOut().println();
-        new DevCardGrid(cli.getViewModel().getDevCardGrid().orElseThrow()).render(cli);
+        new DevCardGrid(cli.getViewModel().getDevCardGrid().orElseThrow()).render();
     }
 
     @Override
@@ -193,7 +193,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         new DevSlots(cli.getViewModel()
-                .getPlayerDevelopmentSlots(cli.getViewModel().getLocalPlayerNickname())).render(cli);
+                .getPlayerDevelopmentSlots(cli.getViewModel().getLocalPlayerNickname())).render();
     }
 
     @Override
@@ -213,7 +213,7 @@ public abstract class CliController extends UiController implements Renderable {
         Optional<ReducedFaithTrack> ft = vm.getFaithTrack();
         if (ft.isPresent()) {
             cli.getOut().println();
-            new FaithTrack(ft.get(), points).render(cli);
+            new FaithTrack(ft.get(), points).render();
         }
     }
 
@@ -246,7 +246,7 @@ public abstract class CliController extends UiController implements Renderable {
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));
         cli.getOut().println();
-        new FaithTrack(cli.getViewModel().getFaithTrack().orElseThrow(), points).render(cli);
+        new FaithTrack(cli.getViewModel().getFaithTrack().orElseThrow(), points).render();
     }
 
     @Override
@@ -273,7 +273,7 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println();
         cli.getOut().printf("%s activated leader card %d.%n", vm.getCurrentPlayer(), event.getLeader());
         cli.getOut().println();
-        new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow()).render(cli);
+        new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow()).render();
     }
 
     @Override
@@ -293,7 +293,7 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println();
         cli.getOut().println(center(String.format("%s's leader cards:", event.getPlayer())));
         cli.getOut().println();
-        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(event.getPlayer())).render(cli);
+        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(event.getPlayer())).render();
     }
 
     @Override
@@ -310,7 +310,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         cli.getOut().println();
-        new Market(event.getMarket()).render(cli);
+        new Market(event.getMarket()).render();
     }
 
     @Override
@@ -330,7 +330,7 @@ public abstract class CliController extends UiController implements Renderable {
                 vm.getPlayerWarehouseShelves(event.getPlayer()),
                 vm.getPlayerDepots(event.getPlayer()),
                 vm.getPlayerStrongbox(event.getPlayer()).orElse(null))
-                .render(cli);
+                .render();
 
         Optional<ReducedResourceTransactionRecipe> baseProds;
 

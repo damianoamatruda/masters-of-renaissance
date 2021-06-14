@@ -9,7 +9,6 @@ import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 
 public class SwapShelvesState extends CliController {
-    private final Cli cli = Cli.getInstance();
     private final CliController sourceState;
     private int shelfId1;
     private int shelfId2;
@@ -19,7 +18,7 @@ public class SwapShelvesState extends CliController {
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
@@ -31,7 +30,7 @@ public class SwapShelvesState extends CliController {
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 null)
-                .render(cli);
+                .render();
 
         promptFirstShelf(cli);
     }
