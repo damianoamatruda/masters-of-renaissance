@@ -63,7 +63,7 @@ public class TakeFromMarketState extends CliController {
                     chooseIndex(cli);
                 } else
                     valid.set(false);
-            }, () -> cli.setState(this.sourceState));
+            }, () -> cli.setController(this.sourceState));
         }
     }
 
@@ -170,6 +170,6 @@ public class TakeFromMarketState extends CliController {
     @Override
     public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(new TurnAfterActionState());
+        cli.setController(new TurnAfterActionState());
     }
 }

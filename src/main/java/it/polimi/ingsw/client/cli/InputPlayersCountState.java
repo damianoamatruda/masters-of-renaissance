@@ -45,7 +45,7 @@ public class InputPlayersCountState extends CliController {
 
     @Override
     public void on(ErrNewGame event) {
-        cli.repeatState(event.isInvalidPlayersCount() ?
+        cli.reloadController(event.isInvalidPlayersCount() ?
                 "Invalid players count." :
                 // should technically never happen
                 "You are not supposed to choose the players count for the game.");
@@ -71,9 +71,9 @@ public class InputPlayersCountState extends CliController {
 
         if (cli.getViewModel().isResumedGame()) {
             if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-                cli.setState(new TurnBeforeActionState());
+                cli.setController(new TurnBeforeActionState());
             else
-                cli.setState(new WaitingAfterTurnState());
+                cli.setController(new WaitingAfterTurnState());
         }
     }
 
@@ -85,6 +85,6 @@ public class InputPlayersCountState extends CliController {
             throw new RuntimeException("UpdateLeadersHand after resumed game.");
 
         cli.promptPause();
-        cli.setState(new SetupLeadersState());
+        cli.setController(new SetupLeadersState());
     }
 }

@@ -90,7 +90,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrNoSuchEntity event) {
         super.on(event);
         
-        cli.repeatState(
+        cli.reloadController(
             String.format("No such entity %s: ID %d, code %s.",
                 event.getOriginalEntity().toString().toLowerCase(),
                 event.getId(),
@@ -101,14 +101,14 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrObjectNotOwned event) {
         super.on(event);
         
-        cli.repeatState(String.format("%s with ID %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
+        cli.reloadController(String.format("%s with ID %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
     }
 
     @Override
     public void on(ErrReplacedTransRecipe event) {
         super.on(event);
         
-        cli.repeatState(
+        cli.reloadController(
                 String.format(
                         "Discrepancy in the transaction recipe.\nResource: %s, replaced count: %d, specified shelfmap count: %d",
                         event.getResType(), event.getReplacedCount(), event.getShelvesChoiceResCount()));
@@ -119,11 +119,11 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         if (event.isExcluded() || event.isNonStorable())
-            cli.repeatState(String.format("Error validating transaction request %s: %s resource found.",
+            cli.reloadController(String.format("Error validating transaction request %s: %s resource found.",
                     event.isInput() ? "input" : "output",
                     event.isNonStorable() ? "nonstorable" : "excluded"));
         else
-            cli.repeatState(String.format("Error validating transaction request: %d replaced resources when %d replaceable.",
+            cli.reloadController(String.format("Error validating transaction request: %d replaced resources when %d replaceable.",
                     event.getReplacedCount(),
                     event.getBlanks()));
     }
@@ -132,7 +132,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrResourceTransfer event) {
         super.on(event);
         
-        cli.repeatState(String.format("Error transferring resources: resource %s, %s, %s.",
+        cli.reloadController(String.format("Error transferring resources: resource %s, %s, %s.",
                 event.getResType(),
                 event.isAdded() ? "added" : "removed",
                 event.getReason().toString()));
@@ -143,7 +143,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         cli.getUi().closeClient();
-        cli.setState(new MainMenuState());
+        cli.setController(new MainMenuState());
     }
 
     @Override

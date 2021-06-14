@@ -73,7 +73,7 @@ public class BuyDevelopmentCardState extends CliController {
                     this.color = color.substring(0, 1).toUpperCase() + color.substring(1);
                     chooseLevel(cli);
                 }
-            }, () -> cli.setState(this.sourceState));
+            }, () -> cli.setController(this.sourceState));
         }
     }
 
@@ -146,7 +146,7 @@ public class BuyDevelopmentCardState extends CliController {
 
     @Override
     public void on(ErrBuyDevCard event) {
-        cli.repeatState(event.isStackEmpty() ?
+        cli.reloadController(event.isStackEmpty() ?
                 "Cannot buy development card. Deck is empty." :
                 "Cannot place devcard in slot, level mismatch.");
     }
@@ -166,12 +166,12 @@ public class BuyDevelopmentCardState extends CliController {
                 msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey(), e.getValue()));
         }
 
-        cli.repeatState(msg);
+        cli.reloadController(msg);
     }
 
     @Override
     public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(new TurnAfterActionState());
+        cli.setController(new TurnAfterActionState());
     }
 }

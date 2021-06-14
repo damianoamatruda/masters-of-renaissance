@@ -47,7 +47,7 @@ public class PlayOnlineState extends CliController {
                     }
                 } else
                     valid.set(false);
-            }, () -> cli.setState(new MainMenuState()));
+            }, () -> cli.setController(new MainMenuState()));
         }
     }
 
@@ -65,10 +65,10 @@ public class PlayOnlineState extends CliController {
         }
 
         if (connected)
-            cli.setState(new InputNicknameState("Play Online"));
+            cli.setController(new InputNicknameState("Play Online"));
         else {
             cli.promptPause();
-            cli.setState(new PlayOnlineState());
+            cli.setController(new PlayOnlineState());
         }
     }
 }

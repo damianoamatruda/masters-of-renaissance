@@ -48,15 +48,15 @@ public class SetupResourcesState extends CliController {
             if (input.equalsIgnoreCase("y"))
                 cli.getUi().dispatch(new ReqQuit());
             else
-                cli.setState(this);
-        }, () -> cli.setState(this)));
+                cli.setController(this);
+        }, () -> cli.setController(this)));
     }
 
     @Override
     public void on(ErrInitialChoice event) {
         // repeats either SetupLeadersState or SetupResourcesState
         // if it doesn't, that's really bad
-        cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
+        cli.reloadController(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
                         "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
@@ -93,8 +93,8 @@ public class SetupResourcesState extends CliController {
 
     private static void setNextState(Cli cli) {
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
     }
 }

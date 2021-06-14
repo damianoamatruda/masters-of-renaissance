@@ -29,7 +29,7 @@ public class LeaderActionsState extends CliController {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(true)));
         entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(false)));
-        new Menu(entries, cli1 -> cli1.setState(sourceState)).render();
+        new Menu(entries, cli1 -> cli1.setController(sourceState)).render();
     }
 
     private void executeLeaderAction(boolean isActivate) {
@@ -39,12 +39,12 @@ public class LeaderActionsState extends CliController {
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {
             this.leaderId = leaderId;
             cli.getUi().dispatch(new ReqLeaderAction(leaderId, isActivate));
-        }, () -> cli.setState(this));
+        }, () -> cli.setController(this));
     }
 
     @Override
     public void on(ErrActiveLeaderDiscarded event) {
-        cli.repeatState(String.format("Active leader %d tried to be discarded.", leaderId)); // TODO: Insert leader ID into event
+        cli.reloadController(String.format("Active leader %d tried to be discarded.", leaderId)); // TODO: Insert leader ID into event
     }
 
     @Override
@@ -62,12 +62,12 @@ public class LeaderActionsState extends CliController {
                 msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey(), e.getValue()));
         }
 
-        cli.repeatState(msg);
+        cli.reloadController(msg);
     }
 
     @Override
     public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(sourceState);
+        cli.setController(sourceState);
     }
 }

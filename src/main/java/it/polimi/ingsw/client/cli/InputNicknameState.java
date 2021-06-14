@@ -40,13 +40,13 @@ public class InputNicknameState extends CliController {
     @Override
     public void on(ErrNickname event) {
         // don't call super.on
-        cli.repeatState(String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()));
+        cli.reloadController(String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()));
     }
 
     @Override
     public void on(UpdateBookedSeats event) {
         if (event.canPrepareNewGame().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new InputPlayersCountState());
+            cli.setController(new InputPlayersCountState());
         else if (!cli.getViewModel().getLocalPlayerNickname().equals(""))
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
@@ -63,6 +63,6 @@ public class InputNicknameState extends CliController {
 
         if (cli.getViewModel().getPlayerNicknames().isEmpty())
         cli.promptPause();
-        cli.setState(new SetupLeadersState());
+        cli.setController(new SetupLeadersState());
     }
 }

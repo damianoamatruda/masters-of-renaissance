@@ -39,7 +39,7 @@ public class SwapShelvesState extends CliController {
         cli.promptInt("First shelf").ifPresentOrElse(shelfId1 -> {
             this.shelfId1 = shelfId1;
             promptSecondShelf(cli);
-        }, () -> cli.setState(sourceState));
+        }, () -> cli.setController(sourceState));
     }
 
     private void promptSecondShelf(Cli cli) {
@@ -52,6 +52,6 @@ public class SwapShelvesState extends CliController {
     @Override
     public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(sourceState);
+        cli.setController(sourceState);
     }
 }

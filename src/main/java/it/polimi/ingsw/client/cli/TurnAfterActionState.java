@@ -18,8 +18,8 @@ public class TurnAfterActionState extends CliTurnState {
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('L', new Menu.Entry("Leader Actions", cli1 -> cli1.setState(new LeaderActionsState(this))));
-        entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setState(new SwapShelvesState(this))));
+        entries.put('L', new Menu.Entry("Leader Actions", cli1 -> cli1.setController(new LeaderActionsState(this))));
+        entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setController(new SwapShelvesState(this))));
         entries.put('E', new Menu.Entry("End Turn", this::endTurn));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
         new Menu(entries, this::quitToTitle).render();
@@ -33,17 +33,17 @@ public class TurnAfterActionState extends CliTurnState {
     public void on(UpdateAction event) {
         cli.promptPause();
         if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
         else
-            cli.setState(new TurnAfterActionState());
+            cli.setController(new TurnAfterActionState());
     }
 
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
         if (cli.getViewModel().getLocalPlayerNickname().equals(event.getPlayer()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
     }
 }

@@ -37,7 +37,7 @@ public class SetupLeadersState extends CliController {
         if (lCards.isEmpty()) {
             cli.getOut().println("No leader cards to choose from. Setup cannot continue.");
             cli.promptPause();
-            cli.setState(new MainMenuState());
+            cli.setController(new MainMenuState());
         }
 
         cli.getOut().println();
@@ -72,9 +72,9 @@ public class SetupLeadersState extends CliController {
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
 
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SetupLeadersState extends CliController {
 
         // repeats either SetupLeadersState or SetupResourcesState
         // if it doesn't, that's really bad
-        cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
+        cli.reloadController(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
                         "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
@@ -98,7 +98,7 @@ public class SetupLeadersState extends CliController {
             return;
 
         if (cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources() > 0)
-            cli.setState(new SetupResourcesState());
+            cli.setController(new SetupResourcesState());
     }
 
     @Override
@@ -117,8 +117,8 @@ public class SetupLeadersState extends CliController {
 
     private static void setNextState(Cli cli) {
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
     }
 }

@@ -18,7 +18,7 @@ public class WaitingAfterTurnState extends CliController {
             cli.getOut().println();
             cli.getOut().println("It's your turn.");
             cli.promptPause();
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         }
     }
 }

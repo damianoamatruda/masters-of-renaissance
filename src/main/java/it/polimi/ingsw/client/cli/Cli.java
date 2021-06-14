@@ -27,7 +27,7 @@ public class Cli {
     private static Cli instance = null;
 
     /** The current state of the interface. */
-    private CliController state;
+    private CliController controller;
 
     private final PrintStream out;
     private final Scanner in;
@@ -50,7 +50,7 @@ public class Cli {
     }
 
     public synchronized void start() {
-        setState(new SplashState());
+        setController(new SplashState());
 
         /*
          * Sets the current state based on the next requested state.
@@ -72,7 +72,7 @@ public class Cli {
             // out.println();
             clear();
             // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
-            state.render();
+            controller.render();
         }
     }
 
@@ -81,17 +81,17 @@ public class Cli {
      *
      * @param state the next state
      */
-    synchronized void setState(CliController state) {
+    synchronized void setController(CliController state) {
         ui.setController(state);
-        this.state = state;
+        this.controller = state;
         this.ready = true;
         notifyAll();
     }
 
-    void repeatState(String str) {
+    void reloadController(String str) {
         out.println(str);
         promptPause();
-        setState(this.state);
+        setController(this.controller);
     }
 
     void quit() {
