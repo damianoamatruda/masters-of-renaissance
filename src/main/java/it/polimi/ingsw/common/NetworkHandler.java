@@ -125,7 +125,7 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
         out = null;
         in = null;
         onClose.run();
-        super.closeNow();
+        super.close();
         this.removeEventListener(ReqWelcome.class, reqWelcomeEventListener);
         this.removeEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
         this.removeEventListener(ReqGoodbye.class, reqGoodbyeEventListener);

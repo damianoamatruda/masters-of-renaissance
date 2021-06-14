@@ -27,8 +27,4 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
     public void close() {
         executor.shutdown();
     }
-
-    public void closeNow() {
-        executor.shutdownNow();
-    }
 }
