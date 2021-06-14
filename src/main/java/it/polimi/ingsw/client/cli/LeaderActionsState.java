@@ -13,12 +13,12 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class LeaderActionsState extends CliState {
+public class LeaderActionsState extends CliController {
     private final Cli cli = Cli.getInstance();
-    private final CliState sourceState;
+    private final CliController sourceState;
     private int leaderId;
 
-    public LeaderActionsState(CliState sourceState) {
+    public LeaderActionsState(CliController sourceState) {
         this.sourceState = sourceState;
     }
 

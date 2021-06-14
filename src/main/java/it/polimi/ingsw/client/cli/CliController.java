@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public abstract class CliState extends UiController implements Renderable {
+public abstract class CliController extends UiController implements Renderable {
     private final Cli cli = Cli.getInstance();
     
-    public CliState() {
+    public CliController() {
         super(Cli.getInstance().getUi());
     }
     

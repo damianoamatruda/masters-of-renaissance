@@ -8,13 +8,13 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 
-public class SwapShelvesState extends CliState {
+public class SwapShelvesState extends CliController {
     private final Cli cli = Cli.getInstance();
-    private final CliState sourceState;
+    private final CliController sourceState;
     private int shelfId1;
     private int shelfId2;
 
-    public SwapShelvesState(CliState sourceState) {
+    public SwapShelvesState(CliController sourceState) {
         this.sourceState = sourceState;
     }
 

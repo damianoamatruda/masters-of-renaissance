@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class BuyDevelopmentCardState extends CliState {
+public class BuyDevelopmentCardState extends CliController {
     private final Cli cli = Cli.getInstance();
-    private final CliState sourceState;
+    private final CliController sourceState;
     private ViewModel vm;
     private ReducedDevCardGrid grid;
     private String color;
@@ -30,7 +30,7 @@ public class BuyDevelopmentCardState extends CliState {
     private Map<Integer, Map<String, Integer>> shelves;
     private int slot;
 
-    public BuyDevelopmentCardState(CliState sourceState) {
+    public BuyDevelopmentCardState(CliController sourceState) {
         this.sourceState = sourceState;
 
         this.shelves = new HashMap<>();

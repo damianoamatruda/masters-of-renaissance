@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class InputNicknameState extends CliState {
+public class InputNicknameState extends CliController {
     private final Cli cli = Cli.getInstance();
     private final String title;
 

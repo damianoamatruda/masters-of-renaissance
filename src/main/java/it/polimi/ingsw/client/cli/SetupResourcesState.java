@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SetupResourcesState extends CliState {
+public class SetupResourcesState extends CliController {
     private final Cli cli = Cli.getInstance();
 
     @Override

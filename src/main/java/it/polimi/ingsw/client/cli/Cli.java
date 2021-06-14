@@ -27,7 +27,7 @@ public class Cli {
     private static Cli instance = null;
 
     /** The current state of the interface. */
-    private CliState state;
+    private CliController state;
 
     private final PrintStream out;
     private final Scanner in;
@@ -82,7 +82,7 @@ public class Cli {
      *
      * @param state the next state
      */
-    synchronized void setState(CliState state) {
+    synchronized void setState(CliController state) {
         this.state = state;
         this.ready = true;
         notifyAll();

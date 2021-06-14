@@ -10,7 +10,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class InputPlayersCountState extends CliState {
+public class InputPlayersCountState extends CliController {
     private final Cli cli = Cli.getInstance();
     
     @Override

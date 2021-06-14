@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class ActivateProductionsState extends CliState {
+public class ActivateProductionsState extends CliController {
     private final Cli cli = Cli.getInstance();
-    private final CliState sourceState;
+    private final CliController sourceState;
     private final List<ReducedProductionRequest> requests;
     private boolean done;
     private ReducedResourceTransactionRecipe selectedProd;
@@ -25,7 +25,7 @@ public class ActivateProductionsState extends CliState {
     private Map<String, Integer> outputReplacement;
     private Map<Integer, Map<String, Integer>> shelves;
 
-    public ActivateProductionsState(CliState sourceState) {
+    public ActivateProductionsState(CliController sourceState) {
         this.sourceState = sourceState;
         this.requests = new ArrayList<>();
         this.done = false;

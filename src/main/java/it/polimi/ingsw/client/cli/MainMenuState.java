@@ -6,7 +6,7 @@ import it.polimi.ingsw.client.cli.components.Menu;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class MainMenuState extends CliState {
+public class MainMenuState extends CliController {
     @Override
     public void render(Cli cli) {
         new MainTitle().render(cli);

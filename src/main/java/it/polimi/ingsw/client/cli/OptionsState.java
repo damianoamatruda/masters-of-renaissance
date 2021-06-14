@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class OptionsState extends CliState {
+public class OptionsState extends CliController {
     @Override
     public void render(Cli cli) {
         cli.getOut().println();

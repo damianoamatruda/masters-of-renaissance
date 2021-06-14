@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 
-public class WaitingAfterTurnState extends CliState {
+public class WaitingAfterTurnState extends CliController {
     private final Cli cli = Cli.getInstance();
 
     @Override

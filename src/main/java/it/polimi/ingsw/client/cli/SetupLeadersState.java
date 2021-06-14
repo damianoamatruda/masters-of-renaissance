@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SetupLeadersState extends CliState {
+public class SetupLeadersState extends CliController {
     private final Cli cli = Cli.getInstance();
 
     @Override

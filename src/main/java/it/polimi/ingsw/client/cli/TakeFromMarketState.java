@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class TakeFromMarketState extends CliState {
+public class TakeFromMarketState extends CliController {
     private final Cli cli = Cli.getInstance();
-    private final CliState sourceState;
+    private final CliController sourceState;
     private boolean isRow;
     private int index;
     private List<String> resources;
     private Map<String, Integer> replacements;
     private Map<Integer, Map<String, Integer>> shelves;
 
-    public TakeFromMarketState(CliState sourceState) {
+    public TakeFromMarketState(CliController sourceState) {
         this.sourceState = sourceState;
     }
 
