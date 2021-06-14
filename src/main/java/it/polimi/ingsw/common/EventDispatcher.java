@@ -2,13 +2,13 @@ package it.polimi.ingsw.common;
 
 import it.polimi.ingsw.common.events.Event;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class EventDispatcher {
-    private final transient Map<Class<? extends Event>, Set<EventListener<? extends Event>>> listeners;
+    private final transient Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners;
 
     public EventDispatcher() {
         listeners = new HashMap<>();
@@ -16,7 +16,7 @@ public class EventDispatcher {
 
     public <T extends Event> void addEventListener(Class<T> eventType, EventListener<? super T> listener) {
         if (!listeners.containsKey(eventType))
-            listeners.put(eventType, new HashSet<>());
+            listeners.put(eventType, new ArrayList<>());
         listeners.get(eventType).add(listener);
     }
 
