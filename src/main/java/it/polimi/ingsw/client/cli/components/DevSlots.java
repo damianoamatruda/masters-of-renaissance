@@ -6,6 +6,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
+
 public class DevSlots extends StringComponent {
     private final List<ReducedDevCard> slots;
 
@@ -30,7 +33,7 @@ public class DevSlots extends StringComponent {
                 devCardComponents.add(new DevelopmentCard(cards.get(j)));
 
             int maxWidth = devCardComponents.stream().map(c -> c.getString(cli)).mapToInt(Cli::maxLineWidth).max().orElse(0);
-            int maxHeight = Cli.maxLinesHeight(devCardComponents.stream().map(c -> c.getString(cli)).toList());
+            int maxHeight = maxLinesHeight(devCardComponents.stream().map(c -> c.getString(cli)).toList());
             
             List<List<String>> rows = new ArrayList<>();
             for (DevelopmentCard devCardComponent : devCardComponents)
@@ -48,6 +51,6 @@ public class DevSlots extends StringComponent {
             }
         }
 
-        return Cli.center(stringBuilder.toString());
+        return center(stringBuilder.toString());
     }
 }

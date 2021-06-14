@@ -5,6 +5,8 @@ import java.util.List;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class ResourceContainers extends StringComponent {
     private final String player;
     private final List<ReducedResourceContainer> warehouseShelves;
@@ -44,7 +46,7 @@ public class ResourceContainers extends StringComponent {
                     stringBuilder.append("\n").append(new ResourceContainer(c).getString(cli)));
         }
 
-        return Cli.center(stringBuilder.toString());
+        return center(stringBuilder.toString());
     }
 
     private String showStrongbox(Cli cli) {
@@ -56,6 +58,6 @@ public class ResourceContainers extends StringComponent {
         stringBuilder.append(String.format("%s's strongbox:", player)).append("\n");
         stringBuilder.append("\n").append(new Box(new ResourceContainer(strongbox)).getString(cli));
 
-        return Cli.center(stringBuilder.toString());
+        return center(stringBuilder.toString());
     }
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
+import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
 public class DevCardGrid extends StringComponent {
     private final static int cellWidth = 28;
@@ -34,7 +35,7 @@ public class DevCardGrid extends StringComponent {
                 topCards.get(i - 1).add(card);
             }
 
-            int maxHeight = Cli.maxLinesHeight(topCards.get(i - 1).stream().map(c -> new DevelopmentCard(c).getString(cli)).toList());
+            int maxHeight = maxLinesHeight(topCards.get(i - 1).stream().map(c -> new DevelopmentCard(c).getString(cli)).toList());
 
             List<List<String>> rows = new ArrayList<>();
             for (int j = 0; j < topCards.get(i - 1).size(); j++) {
