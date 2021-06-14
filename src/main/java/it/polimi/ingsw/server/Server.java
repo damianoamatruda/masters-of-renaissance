@@ -158,7 +158,7 @@ public class Server implements Network, Runnable {
         model.close();
     }
 
-    private void setVirtualViewListeners(View virtualView, NetworkHandler networkHandler) {
+    private static void setVirtualViewListeners(View virtualView, NetworkHandler networkHandler) {
         virtualView.setResQuitEventListener(networkHandler::send);
         virtualView.setUpdateBookedSeatsEventListener(networkHandler::send);
         virtualView.setUpdateJoinGameEventListener(networkHandler::send);
