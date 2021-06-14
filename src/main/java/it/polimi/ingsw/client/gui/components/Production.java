@@ -23,6 +23,7 @@ public class Production extends StackPane {
     private ImageView curlyBrace;
     private double maxRowHeight;
     private double elementScale;
+    private int productionId;
 
     public Production() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/production.fxml"));
@@ -37,6 +38,8 @@ public class Production extends StackPane {
     }
 
     public void setProduction(ReducedResourceTransactionRecipe production) {
+        this.productionId = production.getId();
+
         elementScale = (this.getMaxHeight() - (2 * padding)) / this.getMaxHeight();
         
         maxRowHeight = (this.getMaxHeight() - (2 * padding)) / Math.max(
@@ -99,5 +102,9 @@ public class Production extends StackPane {
 //        box.setBorder(new Border(new BorderStroke(Color.GREEN,
 //            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         return box;
+    }
+
+    public int getProductionId() {
+        return productionId;
     }
 }

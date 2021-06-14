@@ -77,7 +77,7 @@ public class LeaderCard extends Card {
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
-        this.prod.setLayoutY(getHeight() * 0.74);
+        this.production.setLayoutY(getHeight() * 0.74);
     }
 
     public void setZeroReplacement(String type) {

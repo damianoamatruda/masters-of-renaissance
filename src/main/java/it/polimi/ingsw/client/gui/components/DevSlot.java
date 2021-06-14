@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,16 +67,23 @@ public class DevSlot extends StackPane {
             this.getChildren().add(p);
         }
 
+        // grid.getChildren().forEach(c -> {
+        //     c.setScaleX(this.getWidth());
+        // });
+    }
+
+    public void addProduceButton(List<Integer> toActivate) {
         if(cards.size() > 0) {
+            DevelopmentCard top = cards.get(cards.size() - 1);
             AnchorPane p = new AnchorPane();
             SButton activate = new SButton();
             activate.setText("Produce");
             activate.setOnAction((event) -> {
-                if(!cards.get(cards.size() - 1).getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))
-                    cards.get(cards.size() - 1).pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
+                top.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
+                if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))
+                    toActivate.add(top.getProduction().getProductionId());
                 else
-                    cards.get(cards.size() - 1).pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
-                // TODO add to production set of ancestor playerboard/playground
+                    toActivate.remove(Integer.valueOf(top.getProduction().getProductionId()));
             });
             p.getChildren().add(activate);
             AnchorPane.setLeftAnchor(activate, 70d);
@@ -82,9 +91,5 @@ public class DevSlot extends StackPane {
 
             this.getChildren().add(p);
         }
-
-        // grid.getChildren().forEach(c -> {
-        //     c.setScaleX(this.getWidth());
-        // });
     }
 }

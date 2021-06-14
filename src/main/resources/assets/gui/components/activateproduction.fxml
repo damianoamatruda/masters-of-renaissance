@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import it.polimi.ingsw.client.gui.components.SButton?>
+<?import javafx.scene.text.Text?>
+<fx:root xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         prefHeight="400.0" prefWidth="600.0" type="BorderPane"
+         stylesheets="@../index.css" styleClass="main">
+
+  <left>
+    <SButton fx:id="back" text="Back"/>
+  </left>
+  <center>
+    <Text fx:id="text"/>
+  </center>
+</fx:root>

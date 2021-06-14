@@ -49,7 +49,7 @@ public class DevelopmentCard extends Card {
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
-        this.prod.setLayoutX(getWidth() * 0.12);
-        this.prod.setLayoutY(getHeight() * 0.52);
+        this.production.setLayoutX(getWidth() * 0.12);
+        this.production.setLayoutY(getHeight() * 0.52);
     }
 }

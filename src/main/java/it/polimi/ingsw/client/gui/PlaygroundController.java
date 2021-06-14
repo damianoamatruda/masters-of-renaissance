@@ -13,8 +13,6 @@ import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -40,6 +38,8 @@ public abstract class PlaygroundController extends GuiController {
     protected final Warehouse warehouse = new Warehouse();
 
     private NumberBinding maxScale;
+
+    private List<Integer> toActivate = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,6 +76,7 @@ public abstract class PlaygroundController extends GuiController {
             List<DevelopmentCard> cards = modelSlot.stream()
                     .map(c -> new DevelopmentCard(c)).toList();
             slot.setDevCards(cards);
+            slot.addProduceButton(toActivate);
 
             slots.add(slot);
         });
@@ -102,6 +103,14 @@ public abstract class PlaygroundController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setPauseHandlers(this.backStackPane, this.canvas, maxScale);
+
+        SButton activateProduction = new SButton();
+        activateProduction.setText("Activate production");
+        activateProduction.setOnAction((event) -> backStackPane.getChildren().add(new ActivateProduction(toActivate, maxScale)));
+        canvas.getChildren().add(activateProduction);
+        AnchorPane.setLeftAnchor(activateProduction, 365d);
+        AnchorPane.setBottomAnchor(activateProduction, 15d);
+
     }
 
     protected void setLeadersBox() {

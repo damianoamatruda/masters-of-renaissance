@@ -16,7 +16,7 @@ public abstract class Card extends Pane {
     protected Pane resourcePane;
     @FXML
     protected Text victoryPoints;
-    protected Production prod;
+    protected Production production;
     protected CardRequirement requirement;
 
     public Card(String type) {
@@ -45,16 +45,16 @@ public abstract class Card extends Pane {
     protected abstract String getFXMLName();
 
     public void setProduction(ReducedResourceTransactionRecipe prod) {
-        this.prod = new Production();
-        this.prod.setProduction(prod);
+        this.production = new Production();
+        this.production.setProduction(prod);
 
-        this.prod.maxWidthProperty().bind(this.maxWidthProperty());
-        this.prod.maxHeightProperty().bind(this.maxHeightProperty());
+        this.production.maxWidthProperty().bind(this.maxWidthProperty());
+        this.production.maxHeightProperty().bind(this.maxHeightProperty());
 
 //        this.setAlignment(Pos.BOTTOM_CENTER);
-        this.prod.setLayoutX(20);
+        this.production.setLayoutX(20);
 
-        this.getChildren().add(this.prod);
+        this.getChildren().add(this.production);
 //        this.setBorder(new Border(new BorderStroke(Color.BLACK,
 //                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
@@ -77,4 +77,7 @@ public abstract class Card extends Pane {
         return requirement;
     }
 
+    protected Production getProduction() {
+        return production;
+    }
 }
