@@ -9,8 +9,7 @@ import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.Event;
 
-public class Ui {
-    private final View view;
+public class Ui extends View {
     private final ViewModel viewModel;
     
     private Network client;
@@ -21,17 +20,12 @@ public class Ui {
     private boolean offline;
 
     public Ui() {
-        view = new View();
         viewModel = new ViewModel();
 
         setViewListeners();
 
         offline = false;
         gameConfigStream = null;
-    }
-
-    public View getView() {
-        return view;
     }
 
     public ViewModel getViewModel() {
@@ -43,7 +37,7 @@ public class Ui {
     }
 
     public void dispatch(Event event) {
-        view.dispatch(event);
+        dispatch(event);
     }
     
     public Optional<InputStream> getGameConfigStream() {
@@ -60,14 +54,14 @@ public class Ui {
 
     public void openOfflineClient() {
         closeClient();
-        client = new OfflineClient(view, gameConfigStream);
+        client = new OfflineClient(this, gameConfigStream);
         client.open();
         offline = true;
     }
 
     public void openOnlineClient(String host, int port) throws IOException {
         closeClient();
-        client = new OnlineClient(view, host, port);
+        client = new OnlineClient(this, host, port);
         client.open();
         offline = false;
     }
@@ -81,43 +75,43 @@ public class Ui {
 
     public void stop() {
         closeClient();
-        view.close();
+        close();
     }
 
     private void setViewListeners() {
-        view.setResQuitEventListener(event -> controller.on(event));
-        view.setUpdateBookedSeatsEventListener(event -> controller.on(event));
-        view.setUpdateJoinGameEventListener(event -> controller.on(event));
-        view.setErrNewGameEventListener(event -> controller.on(event));
-        view.setErrNicknameEventListener(event -> controller.on(event));
-        view.setErrActionEventListener(event -> controller.on(event));
-        view.setErrActiveLeaderDiscardedEventListener(event -> controller.on(event));
-        view.setErrBuyDevCardEventListener(event -> controller.on(event));
-        view.setErrCardRequirementsEventListener(event -> controller.on(event));
-        view.setErrInitialChoiceEventListener(event -> controller.on(event));
-        view.setErrNoSuchEntityEventListener(event -> controller.on(event));
-        view.setErrObjectNotOwnedEventListener(event -> controller.on(event));
-        view.setErrReplacedTransRecipeEventListener(event -> controller.on(event));
-        view.setErrResourceReplacementEventListener(event -> controller.on(event));
-        view.setErrResourceTransferEventListener(event -> controller.on(event));
-        view.setUpdateActionEventListener(event -> controller.on(event));
-        view.setUpdateActionTokenEventListener(event -> controller.on(event));
-        view.setUpdateCurrentPlayerEventListener(event -> controller.on(event));
-        view.setUpdateDevCardGridEventListener(event -> controller.on(event));
-        view.setUpdateDevCardSlotEventListener(event -> controller.on(event));
-        view.setUpdateFaithPointsEventListener(event -> controller.on(event));
-        view.setUpdateGameEventListener(event -> controller.on(event));
-        view.setUpdateGameEndEventListener(event -> controller.on(event));
-        view.setUpdateLastRoundEventListener(event -> controller.on(event));
-        view.setUpdateActivateLeaderEventListener(event -> controller.on(event));
-        view.setUpdateLeadersHandCountEventListener(event -> controller.on(event));
-        view.setUpdateMarketEventListener(event -> controller.on(event));
-        view.setUpdatePlayerEventListener(event -> controller.on(event));
-        view.setUpdatePlayerStatusEventListener(event -> controller.on(event));
-        view.setUpdateResourceContainerEventListener(event -> controller.on(event));
-        view.setUpdateSetupDoneEventListener(event -> controller.on(event));
-        view.setUpdateVaticanSectionEventListener(event -> controller.on(event));
-        view.setUpdateVictoryPointsEventListener(event -> controller.on(event));
-        view.setUpdateLeadersHandEventListener(event -> controller.on(event));
+        setResQuitEventListener(event -> controller.on(event));
+        setUpdateBookedSeatsEventListener(event -> controller.on(event));
+        setUpdateJoinGameEventListener(event -> controller.on(event));
+        setErrNewGameEventListener(event -> controller.on(event));
+        setErrNicknameEventListener(event -> controller.on(event));
+        setErrActionEventListener(event -> controller.on(event));
+        setErrActiveLeaderDiscardedEventListener(event -> controller.on(event));
+        setErrBuyDevCardEventListener(event -> controller.on(event));
+        setErrCardRequirementsEventListener(event -> controller.on(event));
+        setErrInitialChoiceEventListener(event -> controller.on(event));
+        setErrNoSuchEntityEventListener(event -> controller.on(event));
+        setErrObjectNotOwnedEventListener(event -> controller.on(event));
+        setErrReplacedTransRecipeEventListener(event -> controller.on(event));
+        setErrResourceReplacementEventListener(event -> controller.on(event));
+        setErrResourceTransferEventListener(event -> controller.on(event));
+        setUpdateActionEventListener(event -> controller.on(event));
+        setUpdateActionTokenEventListener(event -> controller.on(event));
+        setUpdateCurrentPlayerEventListener(event -> controller.on(event));
+        setUpdateDevCardGridEventListener(event -> controller.on(event));
+        setUpdateDevCardSlotEventListener(event -> controller.on(event));
+        setUpdateFaithPointsEventListener(event -> controller.on(event));
+        setUpdateGameEventListener(event -> controller.on(event));
+        setUpdateGameEndEventListener(event -> controller.on(event));
+        setUpdateLastRoundEventListener(event -> controller.on(event));
+        setUpdateActivateLeaderEventListener(event -> controller.on(event));
+        setUpdateLeadersHandCountEventListener(event -> controller.on(event));
+        setUpdateMarketEventListener(event -> controller.on(event));
+        setUpdatePlayerEventListener(event -> controller.on(event));
+        setUpdatePlayerStatusEventListener(event -> controller.on(event));
+        setUpdateResourceContainerEventListener(event -> controller.on(event));
+        setUpdateSetupDoneEventListener(event -> controller.on(event));
+        setUpdateVaticanSectionEventListener(event -> controller.on(event));
+        setUpdateVictoryPointsEventListener(event -> controller.on(event));
+        setUpdateLeadersHandEventListener(event -> controller.on(event));
     }
 }
