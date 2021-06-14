@@ -1,11 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.OfflineClient;
-import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
-import it.polimi.ingsw.common.Network;
-import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.Event;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +12,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -45,17 +40,12 @@ public class Gui extends Application {
 
     private static Gui instance = null;
 
-    private final View view;
-    private Network client;
+    private final Ui ui;
 
     private Scene scene;
     private Stage stage;
     private GuiController controller;
 
-    private final ViewModel viewModel;
-
-    private InputStream gameConfigStream;
-    private boolean offline;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
 
@@ -78,24 +68,12 @@ public class Gui extends Application {
     public Gui() {
         Gui.instance = this;
 
-        this.view = new View();
+        this.ui = new Ui();
+
         setViewListeners();
 
-        this.client = null;
-
-        this.viewModel = new ViewModel();
-
-        this.gameConfigStream = null;
-        this.offline = false;
         this.musicPlayer = null;
         this.soundFxVolume = 1;
-    }
-
-    /**
-     * @return the GUI's viewmodel
-     */
-    public ViewModel getViewModel() {
-        return viewModel;
     }
 
     @Override
@@ -110,39 +88,25 @@ public class Gui extends Application {
         this.stage = primaryStage;
     }
 
-    @Override
     public void stop() {
-        closeClient();
-        view.close();
+        ui.stop();
     }
 
-    public void dispatch(Event event) {
-        view.dispatch(event);
+    void quit() {
+        Platform.exit();
+        System.exit(0);
     }
 
     void setController(GuiController controller) {
         this.controller = controller;
     }
 
-    void openOfflineClient() {
-        closeClient();
-        client = new OfflineClient(view, gameConfigStream);
-        client.open();
-        offline = true;
+    public ViewModel getViewModel() {
+        return ui.getViewModel();
     }
 
-    void openOnlineClient(String host, int port) throws IOException {
-        closeClient();
-        client = new OnlineClient(view, host, port);
-        client.open();
-        offline = false;
-    }
-
-    void closeClient() {
-        if (client != null) {
-            client.close();
-            client = null;
-        }
+    public Ui getUi() {
+        return ui;
     }
 
     void setRoot(URL fxml, Consumer<?> callback) {
@@ -166,23 +130,6 @@ public class Gui extends Application {
         return stage;
     }
 
-    void quit() {
-        Platform.exit();
-        System.exit(0);
-    }
-
-    public Optional<InputStream> getGameConfigStream() {
-        return Optional.ofNullable(gameConfigStream);
-    }
-
-    public void setGameConfigStream(InputStream gameConfigStream) {
-        this.gameConfigStream = gameConfigStream;
-    }
-
-    boolean isOffline() {
-        return offline;
-    }
-
     public Optional<MediaPlayer> getMusicPlayer() {
         return Optional.ofNullable(musicPlayer);
     }
@@ -200,39 +147,39 @@ public class Gui extends Application {
     }
 
     private void setViewListeners() {
-        this.view.setResQuitEventListener(event -> controller.on(this, event));
-        this.view.setUpdateBookedSeatsEventListener(event -> controller.on(this, event));
-        this.view.setUpdateJoinGameEventListener(event -> controller.on(this, event));
-        this.view.setErrNewGameEventListener(event -> controller.on(this, event));
-        this.view.setErrNicknameEventListener(event -> controller.on(this, event));
-        this.view.setErrActionEventListener(event -> controller.on(this, event));
-        this.view.setErrActiveLeaderDiscardedEventListener(event -> controller.on(this, event));
-        this.view.setErrBuyDevCardEventListener(event -> controller.on(this, event));
-        this.view.setErrCardRequirementsEventListener(event -> controller.on(this, event));
-        this.view.setErrInitialChoiceEventListener(event -> controller.on(this, event));
-        this.view.setErrNoSuchEntityEventListener(event -> controller.on(this, event));
-        this.view.setErrObjectNotOwnedEventListener(event -> controller.on(this, event));
-        this.view.setErrReplacedTransRecipeEventListener(event -> controller.on(this, event));
-        this.view.setErrResourceReplacementEventListener(event -> controller.on(this, event));
-        this.view.setErrResourceTransferEventListener(event -> controller.on(this, event));
-        this.view.setUpdateActionEventListener(event -> controller.on(this, event));
-        this.view.setUpdateActionTokenEventListener(event -> controller.on(this, event));
-        this.view.setUpdateCurrentPlayerEventListener(event -> controller.on(this, event));
-        this.view.setUpdateDevCardGridEventListener(event -> controller.on(this, event));
-        this.view.setUpdateDevCardSlotEventListener(event -> controller.on(this, event));
-        this.view.setUpdateFaithPointsEventListener(event -> controller.on(this, event));
-        this.view.setUpdateGameEventListener(event -> controller.on(this, event));
-        this.view.setUpdateGameEndEventListener(event -> controller.on(this, event));
-        this.view.setUpdateLastRoundEventListener(event -> controller.on(this, event));
-        this.view.setUpdateActivateLeaderEventListener(event -> controller.on(this, event));
-        this.view.setUpdateLeadersHandCountEventListener(event -> controller.on(this, event));
-        this.view.setUpdateMarketEventListener(event -> controller.on(this, event));
-        this.view.setUpdatePlayerEventListener(event -> controller.on(this, event));
-        this.view.setUpdatePlayerStatusEventListener(event -> controller.on(this, event));
-        this.view.setUpdateResourceContainerEventListener(event -> controller.on(this, event));
-        this.view.setUpdateSetupDoneEventListener(event -> controller.on(this, event));
-        this.view.setUpdateVaticanSectionEventListener(event -> controller.on(this, event));
-        this.view.setUpdateVictoryPointsEventListener(event -> controller.on(this, event));
-        this.view.setUpdateLeadersHandEventListener(event -> controller.on(this, event));
+        ui.getView().setResQuitEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateBookedSeatsEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateJoinGameEventListener(event -> controller.on(this, event));
+        ui.getView().setErrNewGameEventListener(event -> controller.on(this, event));
+        ui.getView().setErrNicknameEventListener(event -> controller.on(this, event));
+        ui.getView().setErrActionEventListener(event -> controller.on(this, event));
+        ui.getView().setErrActiveLeaderDiscardedEventListener(event -> controller.on(this, event));
+        ui.getView().setErrBuyDevCardEventListener(event -> controller.on(this, event));
+        ui.getView().setErrCardRequirementsEventListener(event -> controller.on(this, event));
+        ui.getView().setErrInitialChoiceEventListener(event -> controller.on(this, event));
+        ui.getView().setErrNoSuchEntityEventListener(event -> controller.on(this, event));
+        ui.getView().setErrObjectNotOwnedEventListener(event -> controller.on(this, event));
+        ui.getView().setErrReplacedTransRecipeEventListener(event -> controller.on(this, event));
+        ui.getView().setErrResourceReplacementEventListener(event -> controller.on(this, event));
+        ui.getView().setErrResourceTransferEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateActionEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateActionTokenEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateCurrentPlayerEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateDevCardGridEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateDevCardSlotEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateFaithPointsEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateGameEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateGameEndEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateLastRoundEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateActivateLeaderEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateLeadersHandCountEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateMarketEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdatePlayerEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdatePlayerStatusEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateResourceContainerEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateSetupDoneEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateVaticanSectionEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateVictoryPointsEventListener(event -> controller.on(this, event));
+        ui.getView().setUpdateLeadersHandEventListener(event -> controller.on(this, event));
     }
 }

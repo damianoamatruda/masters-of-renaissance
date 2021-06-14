@@ -13,9 +13,9 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class InputPlayersCountState extends CliState {
     @Override
     public void render(Cli cli) {
-        if (cli.isOffline()) {
+        if (cli.getUi().isOffline()) {
             // cli.getOut().println(center("Preparing a new game..."));
-            cli.dispatch(new ReqNewGame(1));
+            cli.getUi().dispatch(new ReqNewGame(1));
             return;
         }
 
@@ -34,8 +34,8 @@ public class InputPlayersCountState extends CliState {
                 cli.promptInt("Players count").ifPresentOrElse(count -> {
                     if (count <= 0)
                         throw new NumberFormatException();
-                    cli.dispatch(new ReqNewGame(count));
-                }, () -> cli.dispatch(new ReqQuit()));
+                    cli.getUi().dispatch(new ReqNewGame(count));
+                }, () -> cli.getUi().dispatch(new ReqQuit()));
             } catch (NumberFormatException e) {
                 cli.getOut().println("Please input an integer greater than 0.");
                 valid = false;
@@ -58,7 +58,7 @@ public class InputPlayersCountState extends CliState {
 
     @Override
     public void on(Cli cli, UpdateJoinGame event) {
-        if (!cli.isOffline())
+        if (!cli.getUi().isOffline())
             cli.getOut().printf("A new player joined the game! Getting to %d...%n%n", event.getPlayersCount());
     }
 

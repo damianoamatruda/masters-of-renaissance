@@ -14,7 +14,7 @@ public class GameEndState extends CliState {
 
         cli.getOut().println(prefix + " with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points!");
 
-        cli.dispatch(new ReqQuit());
+        cli.getUi().dispatch(new ReqQuit());
         cli.promptPause();
     }
 }

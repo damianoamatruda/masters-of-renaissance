@@ -38,7 +38,7 @@ public class LeaderActionsState extends CliState {
         cli.getOut().println();
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {
             this.leaderId = leaderId;
-            cli.dispatch(new ReqLeaderAction(leaderId, isActivate));
+            cli.getUi().dispatch(new ReqLeaderAction(leaderId, isActivate));
         }, () -> cli.setState(this));
     }
 

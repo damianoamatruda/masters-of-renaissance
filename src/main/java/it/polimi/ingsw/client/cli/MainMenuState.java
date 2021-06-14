@@ -20,7 +20,7 @@ public class MainMenuState extends CliState {
     }
 
     private void playOffline(Cli cli) {
-        cli.openOfflineClient();
+        cli.getUi().openOfflineClient();
         cli.setState(new InputNicknameState("Play Offline"));
     }
 }

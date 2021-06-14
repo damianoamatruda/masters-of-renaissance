@@ -159,7 +159,7 @@ public class MarketController extends GuiController {
 
         List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname());
             
-        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
 
         warehouse.getChildren().forEach(shelf -> ((Shelf) shelf).getChildren().get(1).setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
@@ -355,7 +355,7 @@ public class MarketController extends GuiController {
     }
 
     private void submitPressed(ActionEvent actionEvent) {
-        Gui.getInstance().dispatch(new ReqTakeFromMarket(isRow, index, new HashMap<>(), selection));
+        Gui.getInstance().getUi().dispatch(new ReqTakeFromMarket(isRow, index, new HashMap<>(), selection));
     }
 
     private void back(ActionEvent actionEvent) {

@@ -94,7 +94,7 @@ public class WaitingBeforeGameController extends GuiController {
         RadioButton inputRadio = (RadioButton) group.getSelectedToggle();
         try {
             int count = Integer.parseInt(inputRadio.getText());
-            gui.dispatch(new ReqNewGame(count));
+            gui.getUi().dispatch(new ReqNewGame(count));
         } catch (NumberFormatException e) {
             Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", "Not a number", maxScale)));
         }

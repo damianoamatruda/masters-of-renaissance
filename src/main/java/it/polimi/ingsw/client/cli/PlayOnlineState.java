@@ -54,7 +54,7 @@ public class PlayOnlineState extends CliState {
     private void connect(Cli cli, String host, int port) {
         boolean connected = false;
         try {
-            cli.openOnlineClient(host, port);
+            cli.getUi().openOnlineClient(host, port);
             connected = true;
         } catch (UnknownHostException e) {
             cli.getOut().println();

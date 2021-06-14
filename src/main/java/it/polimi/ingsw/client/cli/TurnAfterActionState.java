@@ -26,7 +26,7 @@ public class TurnAfterActionState extends CliTurnState {
     }
 
     private void endTurn(Cli cli) {
-        cli.dispatch(new ReqEndTurn());
+        cli.getUi().dispatch(new ReqEndTurn());
     }
 
     @Override

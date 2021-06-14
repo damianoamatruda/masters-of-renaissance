@@ -21,7 +21,7 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         Button endTurn = new SButton();
         endTurn.setText("End turn");
         endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            gui.dispatch(new ReqEndTurn());
+            gui.getUi().dispatch(new ReqEndTurn());
         });
         canvas.getChildren().add(endTurn);
         AnchorPane.setBottomAnchor(endTurn, 0.0);

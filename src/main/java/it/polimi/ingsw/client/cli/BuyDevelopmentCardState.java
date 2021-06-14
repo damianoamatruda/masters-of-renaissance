@@ -129,7 +129,7 @@ public class BuyDevelopmentCardState extends CliState {
                     chooseShelves(cli);
                 }
 
-                cli.dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
+                cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
             }, () -> chooseLevel(cli));
         }
     }

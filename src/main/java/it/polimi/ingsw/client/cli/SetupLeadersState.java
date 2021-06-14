@@ -61,9 +61,9 @@ public class SetupLeadersState extends CliState {
         }
 
         if (!leaders.isEmpty())
-            cli.dispatch(new ReqChooseLeaders(leaders));
+            cli.getUi().dispatch(new ReqChooseLeaders(leaders));
         else
-            cli.dispatch(new ReqQuit());
+            cli.getUi().dispatch(new ReqQuit());
     }
 
     @Override

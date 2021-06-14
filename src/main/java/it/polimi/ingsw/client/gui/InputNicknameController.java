@@ -55,13 +55,13 @@ public class InputNicknameController extends GuiController {
     @FXML
     private void handleNicknameInput() {
         nicknameValue = nickname.getText();
-        Gui.getInstance().dispatch(new ReqJoin(nicknameValue));
+        Gui.getInstance().getUi().dispatch(new ReqJoin(nicknameValue));
     }
 
     @FXML
     private void handleBack() {
         Gui gui = Gui.getInstance();
-        gui.setRoot(getClass().getResource(gui.isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
+        gui.setRoot(getClass().getResource(gui.getUi().isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
     }
 
     public void setTitle(String value) {
@@ -80,8 +80,8 @@ public class InputNicknameController extends GuiController {
     public void on(Gui gui, UpdateBookedSeats event) {
         super.on(gui, event);
         gui.getViewModel().setLocalPlayerNickname(nicknameValue);
-        if (gui.isOffline())
-            gui.dispatch(new ReqNewGame(1));
+        if (gui.getUi().isOffline())
+            gui.getUi().dispatch(new ReqNewGame(1));
         else
             gui.setRoot(getClass().getResource("/assets/gui/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
                 controller.setBookedSeats(event.getBookedSeats());
@@ -103,7 +103,7 @@ public class InputNicknameController extends GuiController {
     @Override
     public void on(Gui gui, UpdateLeadersHand event) {
         super.on(gui, event);
-        if (gui.isOffline())
+        if (gui.getUi().isOffline())
             gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
     }
 }

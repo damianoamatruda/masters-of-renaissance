@@ -43,10 +43,10 @@ public class SetupResourcesState extends CliState {
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.promptShelvesSetup(allowedResources, totalQuantity, allowedShelves).ifPresentOrElse(shelves -> {
-            cli.dispatch(new ReqChooseResources(shelves));
+            cli.getUi().dispatch(new ReqChooseResources(shelves));
         }, () -> cli.prompt("You cannot go back. Do you want to quit to title? [y/n]").ifPresentOrElse(input -> {
             if (input.equalsIgnoreCase("y"))
-                cli.dispatch(new ReqQuit());
+                cli.getUi().dispatch(new ReqQuit());
             else
                 cli.setState(this);
         }, () -> cli.setState(this)));

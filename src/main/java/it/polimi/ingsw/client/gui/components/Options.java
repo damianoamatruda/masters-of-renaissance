@@ -91,7 +91,7 @@ public class Options extends BorderPane {
         soundFxSlider.setValue(gui.getSoundFxVolume());
         soundFxText.setText(getPercentage(gui.getSoundFxVolume()));
 
-        if (Gui.getInstance().getGameConfigStream().isEmpty())
+        if (Gui.getInstance().getUi().getGameConfigStream().isEmpty())
             resetConfigButton.setDisable(true);
 
         window.setBorder(new Border(new BorderStroke(Color.rgb(214, 150, 0),
@@ -142,7 +142,7 @@ public class Options extends BorderPane {
         File gameConfigFile = fileChooser.showOpenDialog(gui.getStage());
         if (gameConfigFile != null) {
             try {
-                gui.setGameConfigStream(new FileInputStream(gameConfigFile));
+                gui.getUi().setGameConfigStream(new FileInputStream(gameConfigFile));
                 resetConfigButton.setDisable(false);
             } catch (FileNotFoundException e) {
                 Platform.runLater(() ->
@@ -154,7 +154,7 @@ public class Options extends BorderPane {
 
     @FXML
     private void handleResetConfig() {
-        Gui.getInstance().setGameConfigStream(null);
+        Gui.getInstance().getUi().setGameConfigStream(null);
         resetConfigButton.setDisable(true);
     }
 

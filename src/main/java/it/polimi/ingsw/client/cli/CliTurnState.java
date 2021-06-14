@@ -4,6 +4,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 public abstract class CliTurnState extends CliState {
     protected void quitToTitle(Cli cli) {
-        cli.dispatch(new ReqQuit());
+        cli.getUi().dispatch(new ReqQuit());
     }
 }

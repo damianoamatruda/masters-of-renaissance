@@ -93,7 +93,7 @@ public class SetupResourcesController extends GuiController {
             resourceTypesContainer.getChildren().add(r);
         });
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
 
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
                     Dragboard db = event.getDragboard();
@@ -201,7 +201,7 @@ public class SetupResourcesController extends GuiController {
     }
 
     public void handleChoice() {
-        Gui.getInstance().dispatch(new ReqChooseResources(selection));
+        Gui.getInstance().getUi().dispatch(new ReqChooseResources(selection));
     }
 
 //    @Override

@@ -45,7 +45,7 @@ public class SwapShelvesState extends CliState {
     private void promptSecondShelf(Cli cli) {
         cli.promptInt("Second shelf").ifPresentOrElse(shelfId2 -> {
             this.shelfId2 = shelfId2;
-            cli.dispatch(new ReqSwapShelves(this.shelfId1, this.shelfId2));
+            cli.getUi().dispatch(new ReqSwapShelves(this.shelfId1, this.shelfId2));
         }, () -> promptFirstShelf(cli));
     }
 

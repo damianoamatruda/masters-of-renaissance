@@ -66,7 +66,7 @@ public class ActivateProductionsState extends CliState {
         }
 
         if (!this.requests.isEmpty())
-            cli.dispatch(new ReqActivateProduction(this.requests));
+            cli.getUi().dispatch(new ReqActivateProduction(this.requests));
         else
             cli.setState(this.sourceState);
     }

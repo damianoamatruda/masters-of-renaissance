@@ -59,7 +59,7 @@ public abstract class PlaygroundController extends GuiController {
                 "-fx-background-size: 100 100;");
         gui.getViewModel().getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(p -> prod.setProduction(p));
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
 
         Strongbox s = new Strongbox();
         gui.getViewModel().getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(sb -> s.setContent(sb));
@@ -210,14 +210,14 @@ public abstract class PlaygroundController extends GuiController {
 
     private void handleActivate(int leaderIndex) {
         int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
-        Gui.getInstance().dispatch(new ReqLeaderAction(leaderId, true));
+        Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leaderId, true));
     }
 
     private void handleDiscard(int leaderIndex) {
         LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
         if (toDiscard == null) {
             toDiscard = leader;
-            Gui.getInstance().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
+            Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
         }
     }
 
