@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
 import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
+import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.io.*;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 
 public class Server implements Network, Runnable {
     private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+    private static final int timeout = 25000;
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
     private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
 
@@ -29,20 +31,23 @@ public class Server implements Network, Runnable {
     private final ExecutorService executor;
     private final NetworkProtocol protocol;
     private final Lobby model;
-    private final Map<NetworkHandler, View> virtualViews;
+    private final Controller controller;
     private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
     private volatile boolean listening;
 
     public Server(int port, InputStream gameConfigStream) throws IOException {
         this.serverSocket = new ServerSocket(port);
+
         this.executor = Executors.newCachedThreadPool();
         this.protocol = new NetworkProtocol();
         this.listening = false;
 
         GameFactory gameFactory = new FileGameFactory(gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath));
+
         this.model = new Lobby(gameFactory);
 
-        this.virtualViews = new HashMap<>();
+        this.controller = new Controller(model);
+
         this.vcEventListeners = new HashMap<>();
     }
 
@@ -105,8 +110,6 @@ public class Server implements Network, Runnable {
 
     @Override
     public void run() {
-        Controller controller = new Controller(model);
-
         LOGGER.info("Server is ready");
         listening = true;
         while (listening) {
@@ -119,13 +122,7 @@ public class Server implements Network, Runnable {
                 continue;
             }
 
-            NetworkHandler networkHandler = new ServerClientHandler(socket, protocol);
-            networkHandler.setOnClose(() -> {
-                View virtualView1 = virtualViews.remove(networkHandler);
-                virtualView1.unregisterOnModelLobby(model);
-                controller.unregisterOnVC(virtualView1);
-                networkHandler.removeEventListener(VCEvent.class, vcEventListeners.remove(networkHandler));
-            });
+            NetworkHandler networkHandler = new NetworkHandler(socket, protocol, (input, protocol) -> protocol.processInputAsVCEvent(input), timeout);
 
             View virtualView = new View();
             virtualView.setResQuitEventListener(networkHandler::send);
@@ -167,6 +164,16 @@ public class Server implements Network, Runnable {
             virtualView.registerOnModelLobby(model);
             controller.registerOnVC(virtualView);
 
+            networkHandler.setOnClose(() -> {
+                /* ReqQuit needs to be dispatched directly from virtual view in order to be completely synchronous,
+                 * as it must be sent before closing the asynchronous event dispatcher NetworkHandler */
+                virtualView.awaitDispatch(new ReqQuit());
+
+                virtualView.unregisterOnModelLobby(model);
+                controller.unregisterOnVC(virtualView);
+                networkHandler.removeEventListener(VCEvent.class, vcEventListeners.remove(networkHandler));
+            });
+
             executor.submit(networkHandler);
         }
 
@@ -175,13 +182,10 @@ public class Server implements Network, Runnable {
 
     @Override
     public void close() {
-        if (listening) {
-            listening = false;
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        listening = false;
+        try {
+            serverSocket.close();
+        } catch (IOException ignored) {
         }
         executor.shutdownNow();
         model.close();
