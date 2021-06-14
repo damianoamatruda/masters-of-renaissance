@@ -44,40 +44,7 @@ public class Cli {
 
     public Cli() {
         this.view = new View();
-        this.view.setResQuitEventListener(event -> state.on(this, event));
-        this.view.setUpdateBookedSeatsEventListener(event -> state.on(this, event));
-        this.view.setUpdateJoinGameEventListener(event -> state.on(this, event));
-        this.view.setErrNewGameEventListener(event -> state.on(this, event));
-        this.view.setErrNicknameEventListener(event -> state.on(this, event));
-        this.view.setErrActionEventListener(event -> state.on(this, event));
-        this.view.setErrActiveLeaderDiscardedEventListener(event -> state.on(this, event));
-        this.view.setErrBuyDevCardEventListener(event -> state.on(this, event));
-        this.view.setErrCardRequirementsEventListener(event -> state.on(this, event));
-        this.view.setErrInitialChoiceEventListener(event -> state.on(this, event));
-        this.view.setErrNoSuchEntityEventListener(event -> state.on(this, event));
-        this.view.setErrObjectNotOwnedEventListener(event -> state.on(this, event));
-        this.view.setErrReplacedTransRecipeEventListener(event -> state.on(this, event));
-        this.view.setErrResourceReplacementEventListener(event -> state.on(this, event));
-        this.view.setErrResourceTransferEventListener(event -> state.on(this, event));
-        this.view.setUpdateActionEventListener(event -> state.on(this, event));
-        this.view.setUpdateActionTokenEventListener(event -> state.on(this, event));
-        this.view.setUpdateCurrentPlayerEventListener(event -> state.on(this, event));
-        this.view.setUpdateDevCardGridEventListener(event -> state.on(this, event));
-        this.view.setUpdateDevCardSlotEventListener(event -> state.on(this, event));
-        this.view.setUpdateFaithPointsEventListener(event -> state.on(this, event));
-        this.view.setUpdateGameEventListener(event -> state.on(this, event));
-        this.view.setUpdateGameEndEventListener(event -> state.on(this, event));
-        this.view.setUpdateLastRoundEventListener(event -> state.on(this, event));
-        this.view.setUpdateActivateLeaderEventListener(event -> state.on(this, event));
-        this.view.setUpdateLeadersHandCountEventListener(event -> state.on(this, event));
-        this.view.setUpdateMarketEventListener(event -> state.on(this, event));
-        this.view.setUpdatePlayerEventListener(event -> state.on(this, event));
-        this.view.setUpdatePlayerStatusEventListener(event -> state.on(this, event));
-        this.view.setUpdateResourceContainerEventListener(event -> state.on(this, event));
-        this.view.setUpdateSetupDoneEventListener(event -> state.on(this, event));
-        this.view.setUpdateVaticanSectionEventListener(event -> state.on(this, event));
-        this.view.setUpdateVictoryPointsEventListener(event -> state.on(this, event));
-        this.view.setUpdateLeadersHandEventListener(event -> state.on(this, event));
+        setViewListeners();
 
         this.client = null;
 
@@ -537,5 +504,42 @@ public class Cli {
 
     boolean isOffline() {
         return offline;
+    }
+
+    private void setViewListeners() {
+        this.view.setResQuitEventListener(event -> state.on(this, event));
+        this.view.setUpdateBookedSeatsEventListener(event -> state.on(this, event));
+        this.view.setUpdateJoinGameEventListener(event -> state.on(this, event));
+        this.view.setErrNewGameEventListener(event -> state.on(this, event));
+        this.view.setErrNicknameEventListener(event -> state.on(this, event));
+        this.view.setErrActionEventListener(event -> state.on(this, event));
+        this.view.setErrActiveLeaderDiscardedEventListener(event -> state.on(this, event));
+        this.view.setErrBuyDevCardEventListener(event -> state.on(this, event));
+        this.view.setErrCardRequirementsEventListener(event -> state.on(this, event));
+        this.view.setErrInitialChoiceEventListener(event -> state.on(this, event));
+        this.view.setErrNoSuchEntityEventListener(event -> state.on(this, event));
+        this.view.setErrObjectNotOwnedEventListener(event -> state.on(this, event));
+        this.view.setErrReplacedTransRecipeEventListener(event -> state.on(this, event));
+        this.view.setErrResourceReplacementEventListener(event -> state.on(this, event));
+        this.view.setErrResourceTransferEventListener(event -> state.on(this, event));
+        this.view.setUpdateActionEventListener(event -> state.on(this, event));
+        this.view.setUpdateActionTokenEventListener(event -> state.on(this, event));
+        this.view.setUpdateCurrentPlayerEventListener(event -> state.on(this, event));
+        this.view.setUpdateDevCardGridEventListener(event -> state.on(this, event));
+        this.view.setUpdateDevCardSlotEventListener(event -> state.on(this, event));
+        this.view.setUpdateFaithPointsEventListener(event -> state.on(this, event));
+        this.view.setUpdateGameEventListener(event -> state.on(this, event));
+        this.view.setUpdateGameEndEventListener(event -> state.on(this, event));
+        this.view.setUpdateLastRoundEventListener(event -> state.on(this, event));
+        this.view.setUpdateActivateLeaderEventListener(event -> state.on(this, event));
+        this.view.setUpdateLeadersHandCountEventListener(event -> state.on(this, event));
+        this.view.setUpdateMarketEventListener(event -> state.on(this, event));
+        this.view.setUpdatePlayerEventListener(event -> state.on(this, event));
+        this.view.setUpdatePlayerStatusEventListener(event -> state.on(this, event));
+        this.view.setUpdateResourceContainerEventListener(event -> state.on(this, event));
+        this.view.setUpdateSetupDoneEventListener(event -> state.on(this, event));
+        this.view.setUpdateVaticanSectionEventListener(event -> state.on(this, event));
+        this.view.setUpdateVictoryPointsEventListener(event -> state.on(this, event));
+        this.view.setUpdateLeadersHandEventListener(event -> state.on(this, event));
     }
 }

@@ -79,40 +79,7 @@ public class Gui extends Application {
         Gui.instance = this;
 
         this.view = new View();
-        this.view.setResQuitEventListener(event -> controller.on(this, event));
-        this.view.setUpdateBookedSeatsEventListener(event -> controller.on(this, event));
-        this.view.setUpdateJoinGameEventListener(event -> controller.on(this, event));
-        this.view.setErrNewGameEventListener(event -> controller.on(this, event));
-        this.view.setErrNicknameEventListener(event -> controller.on(this, event));
-        this.view.setErrActionEventListener(event -> controller.on(this, event));
-        this.view.setErrActiveLeaderDiscardedEventListener(event -> controller.on(this, event));
-        this.view.setErrBuyDevCardEventListener(event -> controller.on(this, event));
-        this.view.setErrCardRequirementsEventListener(event -> controller.on(this, event));
-        this.view.setErrInitialChoiceEventListener(event -> controller.on(this, event));
-        this.view.setErrNoSuchEntityEventListener(event -> controller.on(this, event));
-        this.view.setErrObjectNotOwnedEventListener(event -> controller.on(this, event));
-        this.view.setErrReplacedTransRecipeEventListener(event -> controller.on(this, event));
-        this.view.setErrResourceReplacementEventListener(event -> controller.on(this, event));
-        this.view.setErrResourceTransferEventListener(event -> controller.on(this, event));
-        this.view.setUpdateActionEventListener(event -> controller.on(this, event));
-        this.view.setUpdateActionTokenEventListener(event -> controller.on(this, event));
-        this.view.setUpdateCurrentPlayerEventListener(event -> controller.on(this, event));
-        this.view.setUpdateDevCardGridEventListener(event -> controller.on(this, event));
-        this.view.setUpdateDevCardSlotEventListener(event -> controller.on(this, event));
-        this.view.setUpdateFaithPointsEventListener(event -> controller.on(this, event));
-        this.view.setUpdateGameEventListener(event -> controller.on(this, event));
-        this.view.setUpdateGameEndEventListener(event -> controller.on(this, event));
-        this.view.setUpdateLastRoundEventListener(event -> controller.on(this, event));
-        this.view.setUpdateActivateLeaderEventListener(event -> controller.on(this, event));
-        this.view.setUpdateLeadersHandCountEventListener(event -> controller.on(this, event));
-        this.view.setUpdateMarketEventListener(event -> controller.on(this, event));
-        this.view.setUpdatePlayerEventListener(event -> controller.on(this, event));
-        this.view.setUpdatePlayerStatusEventListener(event -> controller.on(this, event));
-        this.view.setUpdateResourceContainerEventListener(event -> controller.on(this, event));
-        this.view.setUpdateSetupDoneEventListener(event -> controller.on(this, event));
-        this.view.setUpdateVaticanSectionEventListener(event -> controller.on(this, event));
-        this.view.setUpdateVictoryPointsEventListener(event -> controller.on(this, event));
-        this.view.setUpdateLeadersHandEventListener(event -> controller.on(this, event));
+        setViewListeners();
 
         this.client = null;
 
@@ -230,5 +197,42 @@ public class Gui extends Application {
 
     public void setSoundFxVolume(double soundFxVolume) {
         this.soundFxVolume = soundFxVolume;
+    }
+
+    private void setViewListeners() {
+        this.view.setResQuitEventListener(event -> controller.on(this, event));
+        this.view.setUpdateBookedSeatsEventListener(event -> controller.on(this, event));
+        this.view.setUpdateJoinGameEventListener(event -> controller.on(this, event));
+        this.view.setErrNewGameEventListener(event -> controller.on(this, event));
+        this.view.setErrNicknameEventListener(event -> controller.on(this, event));
+        this.view.setErrActionEventListener(event -> controller.on(this, event));
+        this.view.setErrActiveLeaderDiscardedEventListener(event -> controller.on(this, event));
+        this.view.setErrBuyDevCardEventListener(event -> controller.on(this, event));
+        this.view.setErrCardRequirementsEventListener(event -> controller.on(this, event));
+        this.view.setErrInitialChoiceEventListener(event -> controller.on(this, event));
+        this.view.setErrNoSuchEntityEventListener(event -> controller.on(this, event));
+        this.view.setErrObjectNotOwnedEventListener(event -> controller.on(this, event));
+        this.view.setErrReplacedTransRecipeEventListener(event -> controller.on(this, event));
+        this.view.setErrResourceReplacementEventListener(event -> controller.on(this, event));
+        this.view.setErrResourceTransferEventListener(event -> controller.on(this, event));
+        this.view.setUpdateActionEventListener(event -> controller.on(this, event));
+        this.view.setUpdateActionTokenEventListener(event -> controller.on(this, event));
+        this.view.setUpdateCurrentPlayerEventListener(event -> controller.on(this, event));
+        this.view.setUpdateDevCardGridEventListener(event -> controller.on(this, event));
+        this.view.setUpdateDevCardSlotEventListener(event -> controller.on(this, event));
+        this.view.setUpdateFaithPointsEventListener(event -> controller.on(this, event));
+        this.view.setUpdateGameEventListener(event -> controller.on(this, event));
+        this.view.setUpdateGameEndEventListener(event -> controller.on(this, event));
+        this.view.setUpdateLastRoundEventListener(event -> controller.on(this, event));
+        this.view.setUpdateActivateLeaderEventListener(event -> controller.on(this, event));
+        this.view.setUpdateLeadersHandCountEventListener(event -> controller.on(this, event));
+        this.view.setUpdateMarketEventListener(event -> controller.on(this, event));
+        this.view.setUpdatePlayerEventListener(event -> controller.on(this, event));
+        this.view.setUpdatePlayerStatusEventListener(event -> controller.on(this, event));
+        this.view.setUpdateResourceContainerEventListener(event -> controller.on(this, event));
+        this.view.setUpdateSetupDoneEventListener(event -> controller.on(this, event));
+        this.view.setUpdateVaticanSectionEventListener(event -> controller.on(this, event));
+        this.view.setUpdateVictoryPointsEventListener(event -> controller.on(this, event));
+        this.view.setUpdateLeadersHandEventListener(event -> controller.on(this, event));
     }
 }
