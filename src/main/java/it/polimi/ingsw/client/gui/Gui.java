@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.gui.components.PauseMenu;
 import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.Network;

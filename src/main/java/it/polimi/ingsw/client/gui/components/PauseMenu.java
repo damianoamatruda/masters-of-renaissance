@@ -1,5 +1,6 @@
-package it.polimi.ingsw.client.gui;
+package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.client.gui.components.Options;
 import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
