@@ -14,10 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -32,6 +29,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
 public class DevCardGridController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
@@ -132,7 +131,7 @@ public class DevCardGridController extends GuiController {
             event.consume();
         });
 
-        setPauseOnEsc();
+        setPauseHandlers(backStackPane, canvas, maxScale);
     }
 
     private boolean putChoice(String resource, int shelfID) {
@@ -252,13 +251,5 @@ public class DevCardGridController extends GuiController {
 
             warehouse.swapShelves(s1, s2);
         }
-    }
-
-    private void setPauseOnEsc() {
-        this.canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                backStackPane.getChildren().add(new PauseMenu(maxScale));
-            }
-        });
     }
 }

@@ -30,6 +30,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
+
 public class MarketController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
 
@@ -87,7 +89,7 @@ public class MarketController extends GuiController {
 
         back.setOnAction(this::back);
 
-        setPauseOnEsc();
+        setPauseHandlers(backStackPane, canvas, maxScale);
     }
 
     private void marketSelected(int index, boolean isRow) {
@@ -385,13 +387,5 @@ public class MarketController extends GuiController {
                 warehouse.swapShelves(s1, s2);
             });
         }
-    }
-
-    private void setPauseOnEsc() {
-        this.canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                backStackPane.getChildren().add(new PauseMenu(maxScale));
-            }
-        });
     }
 }

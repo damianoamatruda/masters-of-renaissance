@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
+
 public abstract class PlaygroundController extends GuiController {
     @FXML private StackPane backStackPane;
     @FXML protected AnchorPane canvas;
@@ -99,26 +101,7 @@ public abstract class PlaygroundController extends GuiController {
         pboard.setBorder(new Border(new BorderStroke(Color.GREEN,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        setPauseHandlers();
-    }
-
-    private void setPauseHandlers() {
-        this.canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                if(backStackPane.getChildren().size() == 1)
-                    backStackPane.getChildren().add(new PauseMenu(maxScale));
-                else backStackPane.getChildren().remove(backStackPane.getChildren().size() - 1);
-            }
-        });
-
-        Button pause = new SButton();
-        pause.setText("Pause");
-        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            backStackPane.getChildren().add(new PauseMenu(maxScale));
-        });
-        canvas.getChildren().add(pause);
-        AnchorPane.setBottomAnchor(pause, 0.0);
-        AnchorPane.setLeftAnchor(pause, 0.0);
+        setPauseHandlers(this.backStackPane, this.canvas, maxScale);
     }
 
     protected void setLeadersBox() {

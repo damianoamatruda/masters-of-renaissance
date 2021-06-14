@@ -2,16 +2,23 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.OfflineClient;
 import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.Event;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
@@ -89,6 +96,25 @@ public class Gui extends Application {
         this.offline = false;
         this.musicPlayer = null;
         this.soundFxVolume = 1;
+    }
+
+    public static void setPauseHandlers(StackPane backStackPane, AnchorPane canvas, NumberBinding maxScale) {
+        canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                if(backStackPane.getChildren().size() == 1)
+                    backStackPane.getChildren().add(new PauseMenu(maxScale));
+                else backStackPane.getChildren().remove(backStackPane.getChildren().size() - 1);
+            }
+        });
+
+        Button pause = new SButton();
+        pause.setText("Pause");
+        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
+            backStackPane.getChildren().add(new PauseMenu(maxScale));
+        });
+        canvas.getChildren().add(pause);
+        AnchorPane.setBottomAnchor(pause, 10.0);
+        AnchorPane.setLeftAnchor(pause, 10.0);
     }
 
     /**
