@@ -20,9 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SetupLeadersState extends CliState {
+public class SetupLeadersState extends CliController {
     @Override
-    public void render(Cli cli) {
+    public void render() {
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
@@ -37,11 +37,11 @@ public class SetupLeadersState extends CliState {
         if (lCards.isEmpty()) {
             cli.getOut().println("No leader cards to choose from. Setup cannot continue.");
             cli.promptPause();
-            cli.setState(new MainMenuState());
+            cli.setController(new MainMenuState());
         }
 
         cli.getOut().println();
-        new LeadersHand(lCards).render(cli);
+        new LeadersHand(lCards).render();
 
         cli.getOut().println();
 
@@ -61,29 +61,29 @@ public class SetupLeadersState extends CliState {
         }
 
         if (!leaders.isEmpty())
-            cli.dispatch(new ReqChooseLeaders(leaders));
+            cli.getUi().dispatch(new ReqChooseLeaders(leaders));
         else
-            cli.dispatch(new ReqQuit());
+            cli.getUi().dispatch(new ReqQuit());
     }
 
     @Override
-    public void on(Cli cli, ErrAction event) {
+    public void on(ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
 
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
     }
 
     @Override
-    public void on(Cli cli, ErrInitialChoice event) {
+    public void on(ErrInitialChoice event) {
         // TODO: Share method with SetupResourcesState
 
         // repeats either SetupLeadersState or SetupResourcesState
         // if it doesn't, that's really bad
-        cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
+        cli.reloadController(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
                         "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
@@ -91,34 +91,34 @@ public class SetupLeadersState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         if (event.getAction() != ActionType.CHOOSE_LEADERS && event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
         if (!event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             return;
 
         if (cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources() > 0)
-            cli.setState(new SetupResourcesState());
+            cli.setController(new SetupResourcesState());
     }
 
     @Override
-    public void on(Cli cli, UpdateSetupDone event) {
-        super.on(cli, event);
+    public void on(UpdateSetupDone event) {
+        super.on(event);
 
         setNextState(cli);
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        super.on(cli, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
 
         setNextState(cli);
     }
 
     private static void setNextState(Cli cli) {
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
     }
 }

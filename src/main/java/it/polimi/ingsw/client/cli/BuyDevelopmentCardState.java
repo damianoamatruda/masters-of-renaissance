@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class BuyDevelopmentCardState extends CliState {
-    private final CliState sourceState;
+public class BuyDevelopmentCardState extends CliController {
+    private final CliController sourceState;
     private ViewModel vm;
     private ReducedDevCardGrid grid;
     private String color;
@@ -29,14 +29,14 @@ public class BuyDevelopmentCardState extends CliState {
     private Map<Integer, Map<String, Integer>> shelves;
     private int slot;
 
-    public BuyDevelopmentCardState(CliState sourceState) {
+    public BuyDevelopmentCardState(CliController sourceState) {
         this.sourceState = sourceState;
 
         this.shelves = new HashMap<>();
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         vm = cli.getViewModel();
         
         cli.getOut().println();
@@ -45,15 +45,15 @@ public class BuyDevelopmentCardState extends CliState {
         grid = vm.getDevCardGrid().orElseThrow();
 
         cli.getOut().println();
-        new DevCardGrid(grid).render(cli);
+        new DevCardGrid(grid).render();
         cli.getOut().println();
         new ResourceContainers(vm.getLocalPlayerNickname(),
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
-                .render(cli);
+                .render();
 
-        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render(cli);
+        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
 
         chooseColor(cli);
     }
@@ -73,7 +73,7 @@ public class BuyDevelopmentCardState extends CliState {
                     this.color = color.substring(0, 1).toUpperCase() + color.substring(1);
                     chooseLevel(cli);
                 }
-            }, () -> cli.setState(this.sourceState));
+            }, () -> cli.setController(this.sourceState));
         }
     }
 
@@ -124,12 +124,12 @@ public class BuyDevelopmentCardState extends CliState {
                             vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                             vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                             vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
-                            .render(cli);
+                            .render();
 
                     chooseShelves(cli);
                 }
 
-                cli.dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
+                cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
             }, () -> chooseLevel(cli));
         }
     }
@@ -145,14 +145,14 @@ public class BuyDevelopmentCardState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrBuyDevCard event) {
-        cli.repeatState(event.isStackEmpty() ?
+    public void on(ErrBuyDevCard event) {
+        cli.reloadController(event.isStackEmpty() ?
                 "Cannot buy development card. Deck is empty." :
                 "Cannot place devcard in slot, level mismatch.");
     }
 
     @Override
-    public void on(Cli cli, ErrCardRequirements event) {
+    public void on(ErrCardRequirements event) {
         String msg;
         if (event.getMissingDevCards().isPresent()) {
             msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
@@ -166,12 +166,12 @@ public class BuyDevelopmentCardState extends CliState {
                 msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey(), e.getValue()));
         }
 
-        cli.repeatState(msg);
+        cli.reloadController(msg);
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(new TurnAfterActionState());
+        cli.setController(new TurnAfterActionState());
     }
 }

@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -21,7 +20,7 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         Button endTurn = new SButton();
         endTurn.setText("End turn");
         endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            gui.dispatch(new ReqEndTurn());
+            gui.getUi().dispatch(new ReqEndTurn());
         });
         canvas.getChildren().add(endTurn);
         AnchorPane.setBottomAnchor(endTurn, 0.0);
@@ -41,8 +40,8 @@ public class PlaygroundAfterActionController extends PlaygroundController {
     }
 
     @Override
-    public void on(Gui gui, UpdateActionToken event) {
-        super.on(gui, event);
+    public void on(UpdateActionToken event) {
+        super.on(event);
         gui.setRoot(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
     }
 }

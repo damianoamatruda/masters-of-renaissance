@@ -61,7 +61,7 @@ public abstract class PlaygroundController extends GuiController {
                 "-fx-background-size: 100 100;");
         gui.getViewModel().getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(p -> prod.setProduction(p));
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
 
         Strongbox s = new Strongbox();
         gui.getViewModel().getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(sb -> s.setContent(sb));
@@ -175,14 +175,14 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateFaithPoints event) {
+    public void on(UpdateFaithPoints event) {
         int oldPts;
 
         if (!event.isBlackCross())
             oldPts = gui.getViewModel().getPlayerFaithPoints(event.getPlayer());
         else oldPts = gui.getViewModel().getBlackCrossFP();
 
-        super.on(gui, event);
+        super.on(event);
 
         if (event.getPlayer().equals(gui.getViewModel().getCurrentPlayer()) && oldPts < gui.getViewModel().getFaithTrack().orElseThrow().getMaxFaith())
             Platform.runLater(() -> pboard.updateFaithPoints(event, oldPts));
@@ -190,8 +190,8 @@ public abstract class PlaygroundController extends GuiController {
 
 
     @Override
-    public void on(Gui gui, UpdateCurrentPlayer event) {
-        super.on(gui, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
         if(gui.getViewModel().getPlayerNicknames().size() > 1) {
             if (event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
                 gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
@@ -202,20 +202,20 @@ public abstract class PlaygroundController extends GuiController {
 
     private void handleActivate(int leaderIndex) {
         int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
-        Gui.getInstance().dispatch(new ReqLeaderAction(leaderId, true));
+        Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leaderId, true));
     }
 
     private void handleDiscard(int leaderIndex) {
         LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
         if (toDiscard == null) {
             toDiscard = leader;
-            Gui.getInstance().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
+            Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
         }
     }
 
     @Override
-    public void on(Gui gui, UpdateActivateLeader event) {
-        super.on(gui, event);
+    public void on(UpdateActivateLeader event) {
+        super.on(event);
 
         if(gui.getViewModel().isCurrentPlayer()) {
             LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
@@ -232,8 +232,8 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, ErrCardRequirements event) {
-        super.on(gui, event);
+    public void on(ErrCardRequirements event) {
+        super.on(event);
 
 //        Alert a = new Alert(Alert.AlertType.ERROR);
 //        a.setContentText("Requirements not met. Leader cannot be activated.");
@@ -243,8 +243,8 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateLeadersHandCount event) {
-        super.on(gui, event);
+    public void on(UpdateLeadersHandCount event) {
+        super.on(event);
 
         if(gui.getViewModel().isCurrentPlayer()) {
             int leaderIndex = leadersBox.getChildren().indexOf(toDiscard);
@@ -260,8 +260,8 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateAction event) {
-        super.on(gui, event);
+    public void on(UpdateAction event) {
+        super.on(event);
 
         if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname())) {
                 Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
@@ -272,15 +272,15 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateGameEnd event) {
-        super.on(gui, event);
+    public void on(UpdateGameEnd event) {
+        super.on(event);
 
         gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
     }
 
     @Override
-    public void on(Gui gui, UpdateResourceContainer event) {
-        super.on(gui, event);
+    public void on(UpdateResourceContainer event) {
+        super.on(event);
 
         if(!gui.getViewModel().isCurrentPlayer())
             Platform.runLater(() -> warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getCurrentPlayer()), (s1, s2) -> { }));

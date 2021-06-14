@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SetupResourcesState extends CliState {
+public class SetupResourcesState extends CliController {
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Choose initial resources ~"));
 
@@ -43,20 +43,20 @@ public class SetupResourcesState extends CliState {
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.promptShelvesSetup(allowedResources, totalQuantity, allowedShelves).ifPresentOrElse(shelves -> {
-            cli.dispatch(new ReqChooseResources(shelves));
+            cli.getUi().dispatch(new ReqChooseResources(shelves));
         }, () -> cli.prompt("You cannot go back. Do you want to quit to title? [y/n]").ifPresentOrElse(input -> {
             if (input.equalsIgnoreCase("y"))
-                cli.dispatch(new ReqQuit());
+                cli.getUi().dispatch(new ReqQuit());
             else
-                cli.setState(this);
-        }, () -> cli.setState(this)));
+                cli.setController(this);
+        }, () -> cli.setController(this)));
     }
 
     @Override
-    public void on(Cli cli, ErrInitialChoice event) {
+    public void on(ErrInitialChoice event) {
         // repeats either SetupLeadersState or SetupResourcesState
         // if it doesn't, that's really bad
-        cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
+        cli.reloadController(event.isLeadersChoice() ? // if the error is from the initial leaders choice
                 event.getMissingLeadersCount() == 0 ?
                         "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
@@ -64,7 +64,7 @@ public class SetupResourcesState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrAction event) {
+    public void on(ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Resources setup: ErrAction received with reason not LATE_SETUP_ACTION.");
             
@@ -78,23 +78,23 @@ public class SetupResourcesState extends CliState {
     // ErrResourceTransfer handled in CliState
 
     @Override
-    public void on(Cli cli, UpdateSetupDone event) {
-        super.on(cli, event);
+    public void on(UpdateSetupDone event) {
+        super.on(event);
 
         setNextState(cli);
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        super.on(cli, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
 
         setNextState(cli);
     }
 
     private static void setNextState(Cli cli) {
         if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         else
-            cli.setState(new WaitingAfterTurnState());
+            cli.setController(new WaitingAfterTurnState());
     }
 }

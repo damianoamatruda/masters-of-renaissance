@@ -34,7 +34,7 @@ import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
 public class DevCardGridController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
-
+    
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     @FXML
@@ -182,7 +182,7 @@ public class DevCardGridController extends GuiController {
         List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname());
 
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
-                warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2));
+                warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2));
             }, true);
 
         if (containersBox.getChildren().size() >= 1)
@@ -232,7 +232,7 @@ public class DevCardGridController extends GuiController {
     }
 
     private void submitPressed(ActionEvent actionEvent) {
-        Gui.getInstance().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
+        Gui.getInstance().getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
     }
 
     private void back(ActionEvent actionEvent) {
@@ -240,8 +240,8 @@ public class DevCardGridController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateAction event) {
-        super.on(gui, event);
+    public void on(UpdateAction event) {
+        super.on(event);
         if(event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 

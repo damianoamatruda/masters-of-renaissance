@@ -2,9 +2,9 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 
-public class WaitingAfterTurnState extends CliState {
+public class WaitingAfterTurnState extends CliController {
     @Override
-    public void render(Cli cli) {
+    public void render() {
         if (!cli.getViewModel().isLastRound())
             cli.getOut().println("Please wait for other players to end their turn...");
         else
@@ -12,13 +12,13 @@ public class WaitingAfterTurnState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        super.on(cli, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
         if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname())) {
             cli.getOut().println();
             cli.getOut().println("It's your turn.");
             cli.promptPause();
-            cli.setState(new TurnBeforeActionState());
+            cli.setController(new TurnBeforeActionState());
         }
     }
 }

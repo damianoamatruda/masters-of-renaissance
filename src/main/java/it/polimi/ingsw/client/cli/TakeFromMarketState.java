@@ -17,27 +17,27 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class TakeFromMarketState extends CliState {
-    private final CliState sourceState;
+public class TakeFromMarketState extends CliController {
+    private final CliController sourceState;
     private boolean isRow;
     private int index;
     private List<String> resources;
     private Map<String, Integer> replacements;
     private Map<Integer, Map<String, Integer>> shelves;
 
-    public TakeFromMarketState(CliState sourceState) {
+    public TakeFromMarketState(CliController sourceState) {
         this.sourceState = sourceState;
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Take Market Resources ~"));
 
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
-        new Market(vm.getMarket().orElseThrow()).render(cli);
+        new Market(vm.getMarket().orElseThrow()).render();
 
         cli.getOut().println();
         new ResourceContainers(
@@ -45,7 +45,7 @@ public class TakeFromMarketState extends CliState {
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 null)
-                .render(cli);
+                .render();
 
         chooseRowCol(cli);
     }
@@ -63,7 +63,7 @@ public class TakeFromMarketState extends CliState {
                     chooseIndex(cli);
                 } else
                     valid.set(false);
-            }, () -> cli.setState(this.sourceState));
+            }, () -> cli.setController(this.sourceState));
         }
     }
 
@@ -121,7 +121,7 @@ public class TakeFromMarketState extends CliState {
 
             // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {
-                new LeadersHand(zeroLeaders).render(cli);
+                new LeadersHand(zeroLeaders).render();
                 cli.getOut().println("These are the active leaders you can use to replace blank resources.");
 
                 AtomicBoolean valid = new AtomicBoolean(false);
@@ -157,7 +157,7 @@ public class TakeFromMarketState extends CliState {
         cli.getOut().println();
         cli.promptShelves(totalRes, allowedShelves, true).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
-            cli.dispatch(new ReqTakeFromMarket(this.isRow, this.index, this.replacements, this.shelves));
+            cli.getUi().dispatch(new ReqTakeFromMarket(this.isRow, this.index, this.replacements, this.shelves));
         }, () -> chooseIndex(cli)); // TODO: Check this
     }
 
@@ -168,8 +168,8 @@ public class TakeFromMarketState extends CliState {
     // ErrResourceTransfer handled in CliState
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(new TurnAfterActionState());
+        cli.setController(new TurnAfterActionState());
     }
 }

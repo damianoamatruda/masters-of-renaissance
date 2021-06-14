@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class ActivateProductionsState extends CliState {
-    private final CliState sourceState;
+public class ActivateProductionsState extends CliController {
+    private final CliController sourceState;
     private final List<ReducedProductionRequest> requests;
     private boolean done;
     private ReducedResourceTransactionRecipe selectedProd;
@@ -24,14 +24,14 @@ public class ActivateProductionsState extends CliState {
     private Map<String, Integer> outputReplacement;
     private Map<Integer, Map<String, Integer>> shelves;
 
-    public ActivateProductionsState(CliState sourceState) {
+    public ActivateProductionsState(CliController sourceState) {
         this.sourceState = sourceState;
         this.requests = new ArrayList<>();
         this.done = false;
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         chooseProductions(cli);
     }
 
@@ -66,9 +66,9 @@ public class ActivateProductionsState extends CliState {
         }
 
         if (!this.requests.isEmpty())
-            cli.dispatch(new ReqActivateProduction(this.requests));
+            cli.getUi().dispatch(new ReqActivateProduction(this.requests));
         else
-            cli.setState(this.sourceState);
+            cli.setController(this.sourceState);
     }
 
     private void chooseInputReplacements(Cli cli) {
@@ -135,8 +135,8 @@ public class ActivateProductionsState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(new TurnAfterActionState());
+        cli.setController(new TurnAfterActionState());
     }
 }

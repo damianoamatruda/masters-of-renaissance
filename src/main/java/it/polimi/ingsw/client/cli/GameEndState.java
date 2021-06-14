@@ -3,9 +3,10 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
-public class GameEndState extends CliState {
+public class GameEndState extends CliController {
     @Override
-    public void render(Cli cli) {
+    public void render() {
+        Cli cli = Cli.getInstance();
         ViewModel vm = cli.getViewModel();
 
         String prefix = vm.getWinner() + " is the winner";
@@ -14,7 +15,7 @@ public class GameEndState extends CliState {
 
         cli.getOut().println(prefix + " with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points!");
 
-        cli.dispatch(new ReqQuit());
+        cli.getUi().dispatch(new ReqQuit());
         cli.promptPause();
     }
 }

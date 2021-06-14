@@ -66,7 +66,7 @@ public class PauseMenu extends StackPane {
 
     @FXML
     private void handleQuit() {
-        Gui.getInstance().dispatch(new ReqQuit());
+        Gui.getInstance().getUi().dispatch(new ReqQuit());
     }
 
     private void setHandlers() {

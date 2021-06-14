@@ -12,11 +12,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class PlayOnlineState extends CliState {
+public class PlayOnlineState extends CliController {
     private static final String serverConfigPath = "/config/server.json";
-
+    
     @Override
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Play Online ~"));
 
@@ -40,21 +40,21 @@ public class PlayOnlineState extends CliState {
 
                         try {
                             inputPort = Integer.parseInt(addressTokens[1]);
-                            connect(cli, inputHost, inputPort);
+                            connect(inputHost, inputPort);
                         } catch (NumberFormatException ignored) {
                             valid.set(false);
                         }
                     }
                 } else
                     valid.set(false);
-            }, () -> cli.setState(new MainMenuState()));
+            }, () -> cli.setController(new MainMenuState()));
         }
     }
 
-    private void connect(Cli cli, String host, int port) {
+    private void connect(String host, int port) {
         boolean connected = false;
         try {
-            cli.openOnlineClient(host, port);
+            cli.getUi().openOnlineClient(host, port);
             connected = true;
         } catch (UnknownHostException e) {
             cli.getOut().println();
@@ -65,10 +65,10 @@ public class PlayOnlineState extends CliState {
         }
 
         if (connected)
-            cli.setState(new InputNicknameState("Play Online"));
+            cli.setController(new InputNicknameState("Play Online"));
         else {
             cli.promptPause();
-            cli.setState(new PlayOnlineState());
+            cli.setController(new PlayOnlineState());
         }
     }
 }

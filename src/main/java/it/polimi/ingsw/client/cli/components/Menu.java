@@ -27,8 +27,10 @@ public class Menu implements Renderable {
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
+        Cli cli = Cli.getInstance();
         StringBuilder stringBuilder = new StringBuilder();
+        
         entries.forEach((c, entry) -> stringBuilder.append(String.format("[%c] %s%n", c, entry.description)));
         cli.getOut().println(center(stringBuilder.toString()));
         cli.getOut().println();

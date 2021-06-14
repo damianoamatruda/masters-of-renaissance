@@ -13,42 +13,42 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class LeaderActionsState extends CliState {
-    private final CliState sourceState;
+public class LeaderActionsState extends CliController {
+    private final CliController sourceState;
     private int leaderId;
 
-    public LeaderActionsState(CliState sourceState) {
+    public LeaderActionsState(CliController sourceState) {
         this.sourceState = sourceState;
     }
 
-    public void render(Cli cli) {
+    public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Leader Actions ~"));
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(cli1, true)));
-        entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(cli1, false)));
-        new Menu(entries, cli1 -> cli1.setState(sourceState)).render(cli);
+        entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(true)));
+        entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(false)));
+        new Menu(entries, cli1 -> cli1.setController(sourceState)).render();
     }
 
-    private void executeLeaderAction(Cli cli, boolean isActivate) {
-        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render(cli);
+    private void executeLeaderAction(boolean isActivate) {
+        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render();
 
         cli.getOut().println();
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {
             this.leaderId = leaderId;
-            cli.dispatch(new ReqLeaderAction(leaderId, isActivate));
-        }, () -> cli.setState(this));
+            cli.getUi().dispatch(new ReqLeaderAction(leaderId, isActivate));
+        }, () -> cli.setController(this));
     }
 
     @Override
-    public void on(Cli cli, ErrActiveLeaderDiscarded event) {
-        cli.repeatState(String.format("Active leader %d tried to be discarded.", leaderId)); // TODO: Insert leader ID into event
+    public void on(ErrActiveLeaderDiscarded event) {
+        cli.reloadController(String.format("Active leader %d tried to be discarded.", leaderId)); // TODO: Insert leader ID into event
     }
 
     @Override
-    public void on(Cli cli, ErrCardRequirements event) {
+    public void on(ErrCardRequirements event) {
         String msg;
         if (event.getMissingDevCards().isPresent()) {
             msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
@@ -62,12 +62,12 @@ public class LeaderActionsState extends CliState {
                 msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey(), e.getValue()));
         }
 
-        cli.repeatState(msg);
+        cli.reloadController(msg);
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(sourceState);
+        cli.setController(sourceState);
     }
 }

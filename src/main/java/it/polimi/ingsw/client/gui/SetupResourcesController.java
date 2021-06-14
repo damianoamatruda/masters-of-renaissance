@@ -93,7 +93,7 @@ public class SetupResourcesController extends GuiController {
             resourceTypesContainer.getChildren().add(r);
         });
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
 
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
                     Dragboard db = event.getDragboard();
@@ -201,11 +201,11 @@ public class SetupResourcesController extends GuiController {
     }
 
     public void handleChoice() {
-        Gui.getInstance().dispatch(new ReqChooseResources(selection));
+        Gui.getInstance().getUi().dispatch(new ReqChooseResources(selection));
     }
 
 //    @Override
-//    public void on(Gui gui, UpdateAction event) {
+//    public void on(UpdateAction event) {
 //        super.on(gui, event);
 //        if (event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
 //                && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
@@ -213,10 +213,9 @@ public class SetupResourcesController extends GuiController {
 //    }
 
     @Override
-    public void on(Gui gui, UpdateSetupDone event) {
-        super.on(gui, event);
+    public void on(UpdateSetupDone event) {
+        super.on(event);
 
-        super.on(gui, event);
         if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
         else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));

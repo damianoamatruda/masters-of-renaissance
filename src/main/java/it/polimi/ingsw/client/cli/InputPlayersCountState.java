@@ -10,12 +10,12 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class InputPlayersCountState extends CliState {
+public class InputPlayersCountState extends CliController {
     @Override
-    public void render(Cli cli) {
-        if (cli.isOffline()) {
+    public void render() {
+        if (cli.getUi().isOffline()) {
             // cli.getOut().println(center("Preparing a new game..."));
-            cli.dispatch(new ReqNewGame(1));
+            cli.getUi().dispatch(new ReqNewGame(1));
             return;
         }
 
@@ -34,8 +34,8 @@ public class InputPlayersCountState extends CliState {
                 cli.promptInt("Players count").ifPresentOrElse(count -> {
                     if (count <= 0)
                         throw new NumberFormatException();
-                    cli.dispatch(new ReqNewGame(count));
-                }, () -> cli.dispatch(new ReqQuit()));
+                    cli.getUi().dispatch(new ReqNewGame(count));
+                }, () -> cli.getUi().dispatch(new ReqQuit()));
             } catch (NumberFormatException e) {
                 cli.getOut().println("Please input an integer greater than 0.");
                 valid = false;
@@ -44,47 +44,47 @@ public class InputPlayersCountState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrNewGame event) {
-        cli.repeatState(event.isInvalidPlayersCount() ?
+    public void on(ErrNewGame event) {
+        cli.reloadController(event.isInvalidPlayersCount() ?
                 "Invalid players count." :
                 // should technically never happen
                 "You are not supposed to choose the players count for the game.");
     }
 
     @Override
-    public void on(Cli cli, UpdateBookedSeats event) {
+    public void on(UpdateBookedSeats event) {
         cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
 
     @Override
-    public void on(Cli cli, UpdateJoinGame event) {
-        if (!cli.isOffline())
+    public void on(UpdateJoinGame event) {
+        if (!cli.getUi().isOffline())
             cli.getOut().printf("A new player joined the game! Getting to %d...%n%n", event.getPlayersCount());
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
+    public void on(UpdateCurrentPlayer event) {
         // having this overriding may prove necessary:
         // if the setState isn't fast enough, the next event after UpdateGame is CurrentPlayer and
         // this means it might not get handled in WaitingAfterTurnState
-        super.on(cli, event);
+        super.on(event);
 
         if (cli.getViewModel().isResumedGame()) {
             if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
-                cli.setState(new TurnBeforeActionState());
+                cli.setController(new TurnBeforeActionState());
             else
-                cli.setState(new WaitingAfterTurnState());
+                cli.setController(new WaitingAfterTurnState());
         }
     }
 
     @Override
-    public void on(Cli cli, UpdateLeadersHand event) {
+    public void on(UpdateLeadersHand event) {
         cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
 
         if (cli.getViewModel().isResumedGame())
             throw new RuntimeException("UpdateLeadersHand after resumed game.");
 
         cli.promptPause();
-        cli.setState(new SetupLeadersState());
+        cli.setController(new SetupLeadersState());
     }
 }

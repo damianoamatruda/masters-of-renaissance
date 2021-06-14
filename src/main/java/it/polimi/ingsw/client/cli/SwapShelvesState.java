@@ -8,17 +8,17 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 
-public class SwapShelvesState extends CliState {
-    private final CliState sourceState;
+public class SwapShelvesState extends CliController {
+    private final CliController sourceState;
     private int shelfId1;
     private int shelfId2;
 
-    public SwapShelvesState(CliState sourceState) {
+    public SwapShelvesState(CliController sourceState) {
         this.sourceState = sourceState;
     }
 
     @Override
-    public void render(Cli cli) {
+    public void render() {
         ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
@@ -30,7 +30,7 @@ public class SwapShelvesState extends CliState {
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 null)
-                .render(cli);
+                .render();
 
         promptFirstShelf(cli);
     }
@@ -39,19 +39,19 @@ public class SwapShelvesState extends CliState {
         cli.promptInt("First shelf").ifPresentOrElse(shelfId1 -> {
             this.shelfId1 = shelfId1;
             promptSecondShelf(cli);
-        }, () -> cli.setState(sourceState));
+        }, () -> cli.setController(sourceState));
     }
 
     private void promptSecondShelf(Cli cli) {
         cli.promptInt("Second shelf").ifPresentOrElse(shelfId2 -> {
             this.shelfId2 = shelfId2;
-            cli.dispatch(new ReqSwapShelves(this.shelfId1, this.shelfId2));
+            cli.getUi().dispatch(new ReqSwapShelves(this.shelfId1, this.shelfId2));
         }, () -> promptFirstShelf(cli));
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
-        cli.setState(sourceState);
+        cli.setController(sourceState);
     }
 }

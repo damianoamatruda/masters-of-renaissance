@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 
 public class SetupLeadersController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
+    
     private final List<LeaderCard> selection = new ArrayList<>();
     
     @FXML private StackPane backStackPane;
@@ -105,12 +106,12 @@ public class SetupLeadersController extends GuiController {
 
     @FXML
     private void handleChoice() {
-        Gui.getInstance().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
+        Gui.getInstance().getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
     }
 
     @Override
-    public void on(Gui gui, UpdateAction event) {
-        super.on(gui, event);
+    public void on(UpdateAction event) {
+        super.on(event);
         if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
@@ -123,8 +124,8 @@ public class SetupLeadersController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateSetupDone event) {
-        super.on(gui, event);
+    public void on(UpdateSetupDone event) {
+        super.on(event);
 
         if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));

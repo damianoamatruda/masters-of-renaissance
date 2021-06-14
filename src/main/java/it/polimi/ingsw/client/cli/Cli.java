@@ -1,17 +1,12 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.OfflineClient;
-import it.polimi.ingsw.client.OnlineClient;
+import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
-import it.polimi.ingsw.common.Network;
-import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.events.Event;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
@@ -29,36 +24,101 @@ public class Cli {
     private volatile boolean running;
     private volatile boolean ready;
 
-    private final View view;
-    private Network client;
+    private final Ui ui;
+    private static Cli instance = null;
 
     /** The current state of the interface. */
-    private CliState state;
-
-    private final ViewModel viewModel;
+    private CliController controller;
 
     private final PrintStream out;
     private final Scanner in;
 
-    private InputStream gameConfigStream;
-    private boolean offline;
-
     public Cli() {
-        this.view = new View();
-        setViewListeners();
+        Cli.instance = this;
 
-        this.client = null;
+        this.ui = new Ui();
 
-        this.viewModel = new ViewModel();
         this.out = System.out;
         this.in = new Scanner(System.in);
-
-        this.gameConfigStream = null;
-        this.offline = false;
     }
 
     public static void main(String[] args) {
         new Cli().start(); // new Thread(this::start).start();
+    }
+
+    public static Cli getInstance() {
+        return instance;
+    }
+
+    public synchronized void start() {
+        setController(new SplashState());
+
+        /*
+         * Sets the current state based on the next requested state.
+         * If no state is requested, waits for a request.
+         * While a state is being rendered, requested states aren't applied:
+         * only the last requested state is applied, and only as soon as the current state has finished rendering.
+         */
+        running = true;
+        while (running) {
+            while (!ready) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    ready = true;
+                }
+            }
+            ready = false;
+
+            // out.println();
+            clear();
+            // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
+            controller.render();
+        }
+    }
+
+    /**
+     * Sets the state.
+     *
+     * @param state the next state
+     */
+    synchronized void setController(CliController state) {
+        ui.setController(state);
+        this.controller = state;
+        this.ready = true;
+        notifyAll();
+    }
+
+    void reloadController(String str) {
+        out.println(str);
+        promptPause();
+        setController(this.controller);
+    }
+
+    void quit() {
+        clear();
+        stop();
+    }
+
+    public void stop() {
+        running = false;
+        ui.stop();
+    }
+
+    public Ui getUi() {
+        return ui;
+    }
+
+    public PrintStream getOut() {
+        return out;
+    }
+
+    public Scanner getIn() {
+        return in;
+    }
+
+    public ViewModel getViewModel() {
+        return ui.getViewModel();
     }
 
     public static String convertStreamToString(InputStream is) {
@@ -150,45 +210,27 @@ public class Cli {
         return slimLine(width);
     }
 
+    public void trackSlimLine() {
+        out.print(slimLine());
+    }
+
     /* public static String spaced(String str) {
         return String.format("%n%s%n", str);
     } */
 
-    public synchronized void start() {
-        setState(new SplashState());
-
-        /*
-         * Sets the current state based on the next requested state.
-         * If no state is requested, waits for a request.
-         * While a state is being rendered, requested states aren't applied:
-         * only the last requested state is applied, and only as soon as the current state has finished rendering.
-         */
-        running = true;
-        while (running) {
-            while (!ready) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    ready = true;
-                }
-            }
-            ready = false;
-
-            // out.println();
-            clear();
-            // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
-            state.render(this);
-        }
+    void pause() {
+        in.nextLine();
     }
 
-    public void stop() {
-        running = false;
-        closeClient();
-        view.close();
+    void promptPause() {
+        out.println();
+        out.println(center("[Press ENTER to continue]"));
+        pause();
     }
 
-    public void dispatch(Event event) {
-        view.dispatch(event);
+    void clear() {
+        out.print("\033[H\033[2J");
+        out.flush();
     }
 
     public Optional<String> prompt(String prompt, String defaultValue) {
@@ -232,85 +274,16 @@ public class Cli {
         return Optional.of(new File(path.get()));
     }
 
-    public PrintStream getOut() {
-        return out;
-    }
-
-    public Scanner getIn() {
-        return in;
-    }
-
-    public ViewModel getViewModel() {
-        return viewModel;
-    }
-
-    /**
-     * Sets the state.
-     *
-     * @param state the next state
-     */
-    synchronized void setState(CliState state) {
-        this.state = state;
-        this.ready = true;
-        notifyAll();
-    }
-
-    void clear() {
-        out.print("\033[H\033[2J");
-        out.flush();
-    }
-
-    void pause() {
-        in.nextLine();
-    }
-
-    void promptPause() {
-        out.println();
-        out.println(center("[Press ENTER to continue]"));
-        pause();
-    }
-
-    public void trackSlimLine() {
-        out.print(slimLine());
-    }
-
-    void repeatState(String str) {
-        out.println(str);
-        promptPause();
-        setState(this.state);
-    }
-
-    void openOfflineClient() {
-        closeClient();
-        client = new OfflineClient(view, gameConfigStream);
-        client.open();
-        offline = true;
-    }
-
-    void openOnlineClient(String host, int port) throws IOException {
-        closeClient();
-        client = new OnlineClient(view, host, port);
-        client.open();
-        offline = false;
-    }
-
-    void closeClient() {
-        if (client != null) {
-            client.close();
-            client = null;
-        }
-    }
-
     // TODO: Maybe make it a component, like Menu
     Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves, boolean discardable) {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         new ResourceContainers(
-                viewModel.getLocalPlayerNickname(),
-                viewModel.getPlayerWarehouseShelves(viewModel.getLocalPlayerNickname()),
-                viewModel.getPlayerDepots(viewModel.getLocalPlayerNickname()),
+                ui.getViewModel().getLocalPlayerNickname(),
+                ui.getViewModel().getPlayerWarehouseShelves(ui.getViewModel().getLocalPlayerNickname()),
+                ui.getViewModel().getPlayerDepots(ui.getViewModel().getLocalPlayerNickname()),
                 null)
-                .render(this);
+                .render();
 
         Map<String, Integer> remainingResMap = new HashMap<>(resMap);
         int totalQuantity = remainingResMap.values().stream().mapToInt(Integer::intValue).sum();
@@ -376,7 +349,7 @@ public class Cli {
 
         out.println();
         allowedResources.forEach(r -> {
-            new Resource(r).render(this);
+            new Resource(r).render();
             out.println();
         });
 
@@ -406,11 +379,11 @@ public class Cli {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         new ResourceContainers(
-                viewModel.getLocalPlayerNickname(),
-                viewModel.getPlayerWarehouseShelves(viewModel.getLocalPlayerNickname()),
-                viewModel.getPlayerDepots(viewModel.getLocalPlayerNickname()),
+                ui.getViewModel().getLocalPlayerNickname(),
+                ui.getViewModel().getPlayerWarehouseShelves(ui.getViewModel().getLocalPlayerNickname()),
+                ui.getViewModel().getPlayerDepots(ui.getViewModel().getLocalPlayerNickname()),
                 null)
-                .render(this);
+                .render();
 
         AtomicInteger allocQuantity = new AtomicInteger();
         while (allocQuantity.get() < totalQuantity) {
@@ -419,7 +392,7 @@ public class Cli {
 
             out.println();
             allowedResources.forEach(r -> {
-                new Resource(r).render(this);
+                new Resource(r).render();
                 out.println();
             });
 
@@ -494,59 +467,5 @@ public class Cli {
             }
         }
         return Optional.of(shelfId);
-    }
-
-    void quit() {
-        clear();
-        stop();
-    }
-
-    Optional<InputStream> getGameConfigStream() {
-        return Optional.ofNullable(gameConfigStream);
-    }
-
-    void setGameConfigStream(InputStream gameConfigStream) {
-        this.gameConfigStream = gameConfigStream;
-    }
-
-    boolean isOffline() {
-        return offline;
-    }
-
-    private void setViewListeners() {
-        this.view.setResQuitEventListener(event -> state.on(this, event));
-        this.view.setUpdateBookedSeatsEventListener(event -> state.on(this, event));
-        this.view.setUpdateJoinGameEventListener(event -> state.on(this, event));
-        this.view.setErrNewGameEventListener(event -> state.on(this, event));
-        this.view.setErrNicknameEventListener(event -> state.on(this, event));
-        this.view.setErrActionEventListener(event -> state.on(this, event));
-        this.view.setErrActiveLeaderDiscardedEventListener(event -> state.on(this, event));
-        this.view.setErrBuyDevCardEventListener(event -> state.on(this, event));
-        this.view.setErrCardRequirementsEventListener(event -> state.on(this, event));
-        this.view.setErrInitialChoiceEventListener(event -> state.on(this, event));
-        this.view.setErrNoSuchEntityEventListener(event -> state.on(this, event));
-        this.view.setErrObjectNotOwnedEventListener(event -> state.on(this, event));
-        this.view.setErrReplacedTransRecipeEventListener(event -> state.on(this, event));
-        this.view.setErrResourceReplacementEventListener(event -> state.on(this, event));
-        this.view.setErrResourceTransferEventListener(event -> state.on(this, event));
-        this.view.setUpdateActionEventListener(event -> state.on(this, event));
-        this.view.setUpdateActionTokenEventListener(event -> state.on(this, event));
-        this.view.setUpdateCurrentPlayerEventListener(event -> state.on(this, event));
-        this.view.setUpdateDevCardGridEventListener(event -> state.on(this, event));
-        this.view.setUpdateDevCardSlotEventListener(event -> state.on(this, event));
-        this.view.setUpdateFaithPointsEventListener(event -> state.on(this, event));
-        this.view.setUpdateGameEventListener(event -> state.on(this, event));
-        this.view.setUpdateGameEndEventListener(event -> state.on(this, event));
-        this.view.setUpdateLastRoundEventListener(event -> state.on(this, event));
-        this.view.setUpdateActivateLeaderEventListener(event -> state.on(this, event));
-        this.view.setUpdateLeadersHandCountEventListener(event -> state.on(this, event));
-        this.view.setUpdateMarketEventListener(event -> state.on(this, event));
-        this.view.setUpdatePlayerEventListener(event -> state.on(this, event));
-        this.view.setUpdatePlayerStatusEventListener(event -> state.on(this, event));
-        this.view.setUpdateResourceContainerEventListener(event -> state.on(this, event));
-        this.view.setUpdateSetupDoneEventListener(event -> state.on(this, event));
-        this.view.setUpdateVaticanSectionEventListener(event -> state.on(this, event));
-        this.view.setUpdateVictoryPointsEventListener(event -> state.on(this, event));
-        this.view.setUpdateLeadersHandEventListener(event -> state.on(this, event));
     }
 }
