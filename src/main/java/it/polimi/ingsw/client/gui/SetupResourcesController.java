@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 
 public class SetupResourcesController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
+    private final Gui gui = Gui.getInstance();
 
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private List<ReducedResourceType> choosableResources;
@@ -205,7 +206,7 @@ public class SetupResourcesController extends GuiController {
     }
 
 //    @Override
-//    public void on(Gui gui, UpdateAction event) {
+//    public void on(UpdateAction event) {
 //        super.on(gui, event);
 //        if (event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
 //                && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
@@ -213,10 +214,9 @@ public class SetupResourcesController extends GuiController {
 //    }
 
     @Override
-    public void on(Gui gui, UpdateSetupDone event) {
-        super.on(gui, event);
+    public void on(UpdateSetupDone event) {
+        super.on(event);
 
-        super.on(gui, event);
         if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
         else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));

@@ -11,6 +11,8 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class InputPlayersCountState extends CliState {
+    private final Cli cli = Cli.getInstance();
+    
     @Override
     public void render(Cli cli) {
         if (cli.getUi().isOffline()) {
@@ -44,7 +46,7 @@ public class InputPlayersCountState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrNewGame event) {
+    public void on(ErrNewGame event) {
         cli.repeatState(event.isInvalidPlayersCount() ?
                 "Invalid players count." :
                 // should technically never happen
@@ -52,22 +54,22 @@ public class InputPlayersCountState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateBookedSeats event) {
+    public void on(UpdateBookedSeats event) {
         cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
 
     @Override
-    public void on(Cli cli, UpdateJoinGame event) {
+    public void on(UpdateJoinGame event) {
         if (!cli.getUi().isOffline())
             cli.getOut().printf("A new player joined the game! Getting to %d...%n%n", event.getPlayersCount());
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
+    public void on(UpdateCurrentPlayer event) {
         // having this overriding may prove necessary:
         // if the setState isn't fast enough, the next event after UpdateGame is CurrentPlayer and
         // this means it might not get handled in WaitingAfterTurnState
-        super.on(cli, event);
+        super.on(event);
 
         if (cli.getViewModel().isResumedGame()) {
             if (event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
@@ -78,7 +80,7 @@ public class InputPlayersCountState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateLeadersHand event) {
+    public void on(UpdateLeadersHand event) {
         cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
 
         if (cli.getViewModel().isResumedGame())

@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 
 public class MarketController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
+    private final Gui gui = Gui.getInstance();
 
     @FXML
     private StackPane backStackPane;
@@ -363,8 +364,8 @@ public class MarketController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateAction event) {
-        super.on(gui, event);
+    public void on(UpdateAction event) {
+        super.on(event);
         if(event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 

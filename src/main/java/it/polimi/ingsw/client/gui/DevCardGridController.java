@@ -35,7 +35,8 @@ import java.util.logging.Logger;
 
 public class DevCardGridController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
-
+    private final Gui gui = Gui.getInstance();
+    
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     @FXML
@@ -241,8 +242,8 @@ public class DevCardGridController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateAction event) {
-        super.on(gui, event);
+    public void on(UpdateAction event) {
+        super.on(event);
         if(event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 

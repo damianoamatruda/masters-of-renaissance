@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardState extends CliState {
+    private final Cli cli = Cli.getInstance();
     private final CliState sourceState;
     private ViewModel vm;
     private ReducedDevCardGrid grid;
@@ -145,14 +146,14 @@ public class BuyDevelopmentCardState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrBuyDevCard event) {
+    public void on(ErrBuyDevCard event) {
         cli.repeatState(event.isStackEmpty() ?
                 "Cannot buy development card. Deck is empty." :
                 "Cannot place devcard in slot, level mismatch.");
     }
 
     @Override
-    public void on(Cli cli, ErrCardRequirements event) {
+    public void on(ErrCardRequirements event) {
         String msg;
         if (event.getMissingDevCards().isPresent()) {
             msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
@@ -170,7 +171,7 @@ public class BuyDevelopmentCardState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
         cli.setState(new TurnAfterActionState());
     }

@@ -14,6 +14,7 @@ import java.util.Map;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class LeaderActionsState extends CliState {
+    private final Cli cli = Cli.getInstance();
     private final CliState sourceState;
     private int leaderId;
 
@@ -27,12 +28,12 @@ public class LeaderActionsState extends CliState {
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(cli1, true)));
-        entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(cli1, false)));
+        entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(true)));
+        entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(false)));
         new Menu(entries, cli1 -> cli1.setState(sourceState)).render(cli);
     }
 
-    private void executeLeaderAction(Cli cli, boolean isActivate) {
+    private void executeLeaderAction(boolean isActivate) {
         new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render(cli);
 
         cli.getOut().println();
@@ -43,12 +44,12 @@ public class LeaderActionsState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrActiveLeaderDiscarded event) {
+    public void on(ErrActiveLeaderDiscarded event) {
         cli.repeatState(String.format("Active leader %d tried to be discarded.", leaderId)); // TODO: Insert leader ID into event
     }
 
     @Override
-    public void on(Cli cli, ErrCardRequirements event) {
+    public void on(ErrCardRequirements event) {
         String msg;
         if (event.getMissingDevCards().isPresent()) {
             msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
@@ -66,7 +67,7 @@ public class LeaderActionsState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
         cli.setState(sourceState);
     }

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class TakeFromMarketState extends CliState {
+    private final Cli cli = Cli.getInstance();
     private final CliState sourceState;
     private boolean isRow;
     private int index;
@@ -168,7 +169,7 @@ public class TakeFromMarketState extends CliState {
     // ErrResourceTransfer handled in CliState
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
         cli.setState(new TurnAfterActionState());
     }

@@ -26,6 +26,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class WaitingBeforeGameController extends GuiController {
+    private final Gui gui = Gui.getInstance();
+
     @FXML
     private StackPane backStackPane;
     @FXML
@@ -70,20 +72,20 @@ public class WaitingBeforeGameController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateBookedSeats event) {
-        super.on(gui, event);
+    public void on(UpdateBookedSeats event) {
+        super.on(event);
         setBookedSeats(event.getBookedSeats());
     }
 
     @Override
-    public void on(Gui gui, UpdateLeadersHand event) {
-        super.on(gui, event);
+    public void on(UpdateLeadersHand event) {
+        super.on(event);
         gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
     }
 
     @Override
-    public void on(Gui gui, UpdateJoinGame event) {
-        super.on(gui, event);
+    public void on(UpdateJoinGame event) {
+        super.on(event);
         if (youCanPrepare)
             canPrepare.setVisible(false);
     }

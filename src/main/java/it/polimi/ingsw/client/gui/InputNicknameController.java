@@ -26,6 +26,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InputNicknameController extends GuiController {
+    private final Gui gui = Gui.getInstance();
+    
     @FXML
     private StackPane backStackPane;
     @FXML
@@ -69,16 +71,16 @@ public class InputNicknameController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, ErrNickname event) {
-        super.on(gui, event);
+    public void on(ErrNickname event) {
+        super.on(event);
         Platform.runLater(() ->
             backStackPane.getChildren().add(
                 new Alert("Play Online", String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()), maxScale)));
     }
 
     @Override
-    public void on(Gui gui, UpdateBookedSeats event) {
-        super.on(gui, event);
+    public void on(UpdateBookedSeats event) {
+        super.on(event);
         gui.getViewModel().setLocalPlayerNickname(nicknameValue);
         if (gui.getUi().isOffline())
             gui.getUi().dispatch(new ReqNewGame(1));
@@ -90,8 +92,8 @@ public class InputNicknameController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateGame event) {
-        super.on(gui, event);
+    public void on(UpdateGame event) {
+        super.on(event);
 
         if(event.isResumed()) {
             if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
@@ -101,8 +103,8 @@ public class InputNicknameController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateLeadersHand event) {
-        super.on(gui, event);
+    public void on(UpdateLeadersHand event) {
+        super.on(event);
         if (gui.getUi().isOffline())
             gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
     }

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class ActivateProductionsState extends CliState {
+    private final Cli cli = Cli.getInstance();
     private final CliState sourceState;
     private final List<ReducedProductionRequest> requests;
     private boolean done;
@@ -135,7 +136,7 @@ public class ActivateProductionsState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
         cli.setState(new TurnAfterActionState());
     }

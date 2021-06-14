@@ -9,6 +9,7 @@ import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 
 public class SwapShelvesState extends CliState {
+    private final Cli cli = Cli.getInstance();
     private final CliState sourceState;
     private int shelfId1;
     private int shelfId2;
@@ -50,7 +51,7 @@ public class SwapShelvesState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
         cli.setState(sourceState);
     }

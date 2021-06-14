@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public abstract class PlaygroundController extends GuiController {
+    private final Gui gui = Gui.getInstance();
+
     @FXML private StackPane backStackPane;
     @FXML protected AnchorPane canvas;
     @FXML protected Playerboard pboard;
@@ -183,14 +185,14 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateFaithPoints event) {
+    public void on(UpdateFaithPoints event) {
         int oldPts;
 
         if (!event.isBlackCross())
             oldPts = gui.getViewModel().getPlayerFaithPoints(event.getPlayer());
         else oldPts = gui.getViewModel().getBlackCrossFP();
 
-        super.on(gui, event);
+        super.on(event);
 
         if (event.getPlayer().equals(gui.getViewModel().getCurrentPlayer()) && oldPts < gui.getViewModel().getFaithTrack().orElseThrow().getMaxFaith())
             Platform.runLater(() -> pboard.updateFaithPoints(event, oldPts));
@@ -198,8 +200,8 @@ public abstract class PlaygroundController extends GuiController {
 
 
     @Override
-    public void on(Gui gui, UpdateCurrentPlayer event) {
-        super.on(gui, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
         if(gui.getViewModel().getPlayerNicknames().size() > 1) {
             if (event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
                 gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
@@ -222,8 +224,8 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateActivateLeader event) {
-        super.on(gui, event);
+    public void on(UpdateActivateLeader event) {
+        super.on(event);
 
         if(gui.getViewModel().isCurrentPlayer()) {
             LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
@@ -240,8 +242,8 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, ErrCardRequirements event) {
-        super.on(gui, event);
+    public void on(ErrCardRequirements event) {
+        super.on(event);
 
 //        Alert a = new Alert(Alert.AlertType.ERROR);
 //        a.setContentText("Requirements not met. Leader cannot be activated.");
@@ -251,8 +253,8 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateLeadersHandCount event) {
-        super.on(gui, event);
+    public void on(UpdateLeadersHandCount event) {
+        super.on(event);
 
         if(gui.getViewModel().isCurrentPlayer()) {
             int leaderIndex = leadersBox.getChildren().indexOf(toDiscard);
@@ -268,8 +270,8 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateAction event) {
-        super.on(gui, event);
+    public void on(UpdateAction event) {
+        super.on(event);
 
         if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname())) {
                 Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
@@ -280,15 +282,15 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     @Override
-    public void on(Gui gui, UpdateGameEnd event) {
-        super.on(gui, event);
+    public void on(UpdateGameEnd event) {
+        super.on(event);
 
         gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
     }
 
     @Override
-    public void on(Gui gui, UpdateResourceContainer event) {
-        super.on(gui, event);
+    public void on(UpdateResourceContainer event) {
+        super.on(event);
 
         if(!gui.getViewModel().isCurrentPlayer())
             Platform.runLater(() -> warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getCurrentPlayer()), (s1, s2) -> { }));

@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class SetupResourcesState extends CliState {
+    private final Cli cli = Cli.getInstance();
+
     @Override
     public void render(Cli cli) {
         cli.getOut().println();
@@ -53,7 +55,7 @@ public class SetupResourcesState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrInitialChoice event) {
+    public void on(ErrInitialChoice event) {
         // repeats either SetupLeadersState or SetupResourcesState
         // if it doesn't, that's really bad
         cli.repeatState(event.isLeadersChoice() ? // if the error is from the initial leaders choice
@@ -64,7 +66,7 @@ public class SetupResourcesState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrAction event) {
+    public void on(ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Resources setup: ErrAction received with reason not LATE_SETUP_ACTION.");
             
@@ -78,15 +80,15 @@ public class SetupResourcesState extends CliState {
     // ErrResourceTransfer handled in CliState
 
     @Override
-    public void on(Cli cli, UpdateSetupDone event) {
-        super.on(cli, event);
+    public void on(UpdateSetupDone event) {
+        super.on(event);
 
         setNextState(cli);
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        super.on(cli, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
 
         setNextState(cli);
     }

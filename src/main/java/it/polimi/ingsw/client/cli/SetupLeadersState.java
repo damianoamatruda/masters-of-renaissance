@@ -21,6 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class SetupLeadersState extends CliState {
+    private final Cli cli = Cli.getInstance();
+
     @Override
     public void render(Cli cli) {
         ViewModel vm = cli.getViewModel();
@@ -67,7 +69,7 @@ public class SetupLeadersState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrAction event) {
+    public void on(ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
 
@@ -78,7 +80,7 @@ public class SetupLeadersState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, ErrInitialChoice event) {
+    public void on(ErrInitialChoice event) {
         // TODO: Share method with SetupResourcesState
 
         // repeats either SetupLeadersState or SetupResourcesState
@@ -91,7 +93,7 @@ public class SetupLeadersState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         if (event.getAction() != ActionType.CHOOSE_LEADERS && event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
         if (!event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
@@ -102,15 +104,15 @@ public class SetupLeadersState extends CliState {
     }
 
     @Override
-    public void on(Cli cli, UpdateSetupDone event) {
-        super.on(cli, event);
+    public void on(UpdateSetupDone event) {
+        super.on(event);
 
         setNextState(cli);
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        super.on(cli, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
 
         setNextState(cli);
     }

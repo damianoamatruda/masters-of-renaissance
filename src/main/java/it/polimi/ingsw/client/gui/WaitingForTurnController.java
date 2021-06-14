@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;

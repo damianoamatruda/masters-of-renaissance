@@ -11,6 +11,8 @@ import java.util.Map;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class TurnAfterActionState extends CliTurnState {
+    private final Cli cli = Cli.getInstance();
+    
     @Override
     public void render(Cli cli) {
         cli.getOut().println();
@@ -30,7 +32,7 @@ public class TurnAfterActionState extends CliTurnState {
     }
 
     @Override
-    public void on(Cli cli, UpdateAction event) {
+    public void on(UpdateAction event) {
         cli.promptPause();
         if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
             cli.setState(new WaitingAfterTurnState());
@@ -39,8 +41,8 @@ public class TurnAfterActionState extends CliTurnState {
     }
 
     @Override
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        super.on(cli, event);
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
         if (cli.getViewModel().getLocalPlayerNickname().equals(event.getPlayer()))
             cli.setState(new TurnBeforeActionState());
         else

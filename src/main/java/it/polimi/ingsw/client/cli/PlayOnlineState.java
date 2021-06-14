@@ -14,6 +14,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class PlayOnlineState extends CliState {
     private static final String serverConfigPath = "/config/server.json";
+    private final Cli cli = Cli.getInstance();
 
     @Override
     public void render(Cli cli) {
@@ -40,7 +41,7 @@ public class PlayOnlineState extends CliState {
 
                         try {
                             inputPort = Integer.parseInt(addressTokens[1]);
-                            connect(cli, inputHost, inputPort);
+                            connect(inputHost, inputPort);
                         } catch (NumberFormatException ignored) {
                             valid.set(false);
                         }
@@ -51,7 +52,7 @@ public class PlayOnlineState extends CliState {
         }
     }
 
-    private void connect(Cli cli, String host, int port) {
+    private void connect(String host, int port) {
         boolean connected = false;
         try {
             cli.getUi().openOnlineClient(host, port);

@@ -24,6 +24,7 @@ public class Cli {
     private volatile boolean ready;
 
     private final Ui ui;
+    private static Cli instance = null;
 
     /** The current state of the interface. */
     private CliState state;
@@ -32,6 +33,8 @@ public class Cli {
     private final Scanner in;
 
     public Cli() {
+        Cli.instance = this;
+
         this.ui = new Ui();
         setViewListeners();
 
@@ -41,6 +44,10 @@ public class Cli {
 
     public static void main(String[] args) {
         new Cli().start(); // new Thread(this::start).start();
+    }
+
+    public static Cli getInstance() {
+        return instance;
     }
 
     public synchronized void start() {
@@ -456,39 +463,39 @@ public class Cli {
     }
 
     private void setViewListeners() {
-        ui.getView().setResQuitEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateBookedSeatsEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateJoinGameEventListener(event -> state.on(this, event));
-        ui.getView().setErrNewGameEventListener(event -> state.on(this, event));
-        ui.getView().setErrNicknameEventListener(event -> state.on(this, event));
-        ui.getView().setErrActionEventListener(event -> state.on(this, event));
-        ui.getView().setErrActiveLeaderDiscardedEventListener(event -> state.on(this, event));
-        ui.getView().setErrBuyDevCardEventListener(event -> state.on(this, event));
-        ui.getView().setErrCardRequirementsEventListener(event -> state.on(this, event));
-        ui.getView().setErrInitialChoiceEventListener(event -> state.on(this, event));
-        ui.getView().setErrNoSuchEntityEventListener(event -> state.on(this, event));
-        ui.getView().setErrObjectNotOwnedEventListener(event -> state.on(this, event));
-        ui.getView().setErrReplacedTransRecipeEventListener(event -> state.on(this, event));
-        ui.getView().setErrResourceReplacementEventListener(event -> state.on(this, event));
-        ui.getView().setErrResourceTransferEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateActionEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateActionTokenEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateCurrentPlayerEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateDevCardGridEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateDevCardSlotEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateFaithPointsEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateGameEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateGameEndEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateLastRoundEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateActivateLeaderEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateLeadersHandCountEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateMarketEventListener(event -> state.on(this, event));
-        ui.getView().setUpdatePlayerEventListener(event -> state.on(this, event));
-        ui.getView().setUpdatePlayerStatusEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateResourceContainerEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateSetupDoneEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateVaticanSectionEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateVictoryPointsEventListener(event -> state.on(this, event));
-        ui.getView().setUpdateLeadersHandEventListener(event -> state.on(this, event));
+        ui.getView().setResQuitEventListener(event -> state.on(event));
+        ui.getView().setUpdateBookedSeatsEventListener(event -> state.on(event));
+        ui.getView().setUpdateJoinGameEventListener(event -> state.on(event));
+        ui.getView().setErrNewGameEventListener(event -> state.on(event));
+        ui.getView().setErrNicknameEventListener(event -> state.on(event));
+        ui.getView().setErrActionEventListener(event -> state.on(event));
+        ui.getView().setErrActiveLeaderDiscardedEventListener(event -> state.on(event));
+        ui.getView().setErrBuyDevCardEventListener(event -> state.on(event));
+        ui.getView().setErrCardRequirementsEventListener(event -> state.on(event));
+        ui.getView().setErrInitialChoiceEventListener(event -> state.on(event));
+        ui.getView().setErrNoSuchEntityEventListener(event -> state.on(event));
+        ui.getView().setErrObjectNotOwnedEventListener(event -> state.on(event));
+        ui.getView().setErrReplacedTransRecipeEventListener(event -> state.on(event));
+        ui.getView().setErrResourceReplacementEventListener(event -> state.on(event));
+        ui.getView().setErrResourceTransferEventListener(event -> state.on(event));
+        ui.getView().setUpdateActionEventListener(event -> state.on(event));
+        ui.getView().setUpdateActionTokenEventListener(event -> state.on(event));
+        ui.getView().setUpdateCurrentPlayerEventListener(event -> state.on(event));
+        ui.getView().setUpdateDevCardGridEventListener(event -> state.on(event));
+        ui.getView().setUpdateDevCardSlotEventListener(event -> state.on(event));
+        ui.getView().setUpdateFaithPointsEventListener(event -> state.on(event));
+        ui.getView().setUpdateGameEventListener(event -> state.on(event));
+        ui.getView().setUpdateGameEndEventListener(event -> state.on(event));
+        ui.getView().setUpdateLastRoundEventListener(event -> state.on(event));
+        ui.getView().setUpdateActivateLeaderEventListener(event -> state.on(event));
+        ui.getView().setUpdateLeadersHandCountEventListener(event -> state.on(event));
+        ui.getView().setUpdateMarketEventListener(event -> state.on(event));
+        ui.getView().setUpdatePlayerEventListener(event -> state.on(event));
+        ui.getView().setUpdatePlayerStatusEventListener(event -> state.on(event));
+        ui.getView().setUpdateResourceContainerEventListener(event -> state.on(event));
+        ui.getView().setUpdateSetupDoneEventListener(event -> state.on(event));
+        ui.getView().setUpdateVaticanSectionEventListener(event -> state.on(event));
+        ui.getView().setUpdateVictoryPointsEventListener(event -> state.on(event));
+        ui.getView().setUpdateLeadersHandEventListener(event -> state.on(event));
     }
 }

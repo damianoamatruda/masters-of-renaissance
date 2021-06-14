@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -12,6 +11,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PlaygroundAfterActionController extends PlaygroundController {
+    private final Gui gui = Gui.getInstance();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
@@ -41,8 +42,8 @@ public class PlaygroundAfterActionController extends PlaygroundController {
     }
 
     @Override
-    public void on(Gui gui, UpdateActionToken event) {
-        super.on(gui, event);
+    public void on(UpdateActionToken event) {
+        super.on(event);
         gui.setRoot(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
     }
 }

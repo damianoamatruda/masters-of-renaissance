@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
@@ -14,13 +15,20 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public abstract class CliState implements Renderable {
+public abstract class CliState extends UiController implements Renderable {
+    private final Cli cli = Cli.getInstance();
+    
+    public CliState() {
+        super(Cli.getInstance().getUi());
+    }
+    
     @Override
     public abstract void render(Cli cli);
 
     // TODO review all error states
 
-    public void on(Cli cli, ErrAction event) {
+    @Override
+    public void on(ErrAction event) {
         ViewModel vm = cli.getViewModel();
 
         // TODO: handle
@@ -48,25 +56,40 @@ public abstract class CliState implements Renderable {
         // }
     }
 
-    public void on(Cli cli, ErrActiveLeaderDiscarded event) {
+    @Override
+    public void on(ErrActiveLeaderDiscarded event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, ErrBuyDevCard event) {
+    @Override
+    public void on(ErrBuyDevCard event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, ErrCardRequirements event) {
+    @Override
+    public void on(ErrCardRequirements event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, ErrInitialChoice event) {
+    @Override
+    public void on(ErrInitialChoice event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, ErrNewGame event) {
+    @Override
+    public void on(ErrNewGame event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, ErrNickname event) {
+    @Override
+    public void on(ErrNickname event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, ErrNoSuchEntity event) {
+    @Override
+    public void on(ErrNoSuchEntity event) {
+        super.on(event);
+        
         cli.repeatState(
             String.format("No such entity %s: ID %d, code %s.",
                 event.getOriginalEntity().toString().toLowerCase(),
@@ -74,18 +97,27 @@ public abstract class CliState implements Renderable {
                 event.getCode()));
     }
 
-    public void on(Cli cli, ErrObjectNotOwned event) {
+    @Override
+    public void on(ErrObjectNotOwned event) {
+        super.on(event);
+        
         cli.repeatState(String.format("%s with ID %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
     }
 
-    public void on(Cli cli, ErrReplacedTransRecipe event) {
+    @Override
+    public void on(ErrReplacedTransRecipe event) {
+        super.on(event);
+        
         cli.repeatState(
                 String.format(
                         "Discrepancy in the transaction recipe.\nResource: %s, replaced count: %d, specified shelfmap count: %d",
                         event.getResType(), event.getReplacedCount(), event.getShelvesChoiceResCount()));
     }
 
-    public void on(Cli cli, ErrResourceReplacement event) {
+    @Override
+    public void on(ErrResourceReplacement event) {
+        super.on(event);
+        
         if (event.isExcluded() || event.isNonStorable())
             cli.repeatState(String.format("Error validating transaction request %s: %s resource found.",
                     event.isInput() ? "input" : "output",
@@ -96,23 +128,35 @@ public abstract class CliState implements Renderable {
                     event.getBlanks()));
     }
 
-    public void on(Cli cli, ErrResourceTransfer event) {
+    @Override
+    public void on(ErrResourceTransfer event) {
+        super.on(event);
+        
         cli.repeatState(String.format("Error transferring resources: resource %s, %s, %s.",
                 event.getResType(),
                 event.isAdded() ? "added" : "removed",
                 event.getReason().toString()));
     }
 
-    public void on(Cli cli, ResQuit event) {
+    @Override
+    public void on(ResQuit event) {
+        super.on(event);
+        
         cli.getUi().closeClient();
         cli.setState(new MainMenuState());
     }
 
-    public void on(Cli cli, UpdateAction event) {
+    @Override
+    public void on(UpdateAction event) {
+        super.on(event);
+        
         // TODO: IMPLEMENT IN STATES
     }
 
-    public void on(Cli cli, UpdateActionToken event) {
+    @Override
+    public void on(UpdateActionToken event) {
+        super.on(event);
+        
         // print only, no cache update
         cli.getViewModel()
                 .getActionToken(event.getActionToken())
@@ -123,29 +167,39 @@ public abstract class CliState implements Renderable {
         cli.promptPause();
     }
 
-    public void on(Cli cli, UpdateBookedSeats event) {
+    @Override
+    public void on(UpdateBookedSeats event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, UpdateCurrentPlayer event) {
-        cli.getViewModel().setCurrentPlayer(event.getPlayer());
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
     }
 
-    public void on(Cli cli, UpdateDevCardGrid event) {
-        cli.getViewModel().setDevCardGrid(event.getCards());
+    @Override
+    public void on(UpdateDevCardGrid event) {
+        super.on(event);
+        
         cli.getOut().println();
         new DevCardGrid(cli.getViewModel().getDevCardGrid().orElseThrow()).render(cli);
     }
 
-    public void on(Cli cli, UpdateDevCardSlot event) {
-        cli.getViewModel().getCurrentPlayerData().orElseThrow().pushToDevSlot(event.getDevSlot(), event.getDevCard());
+    @Override
+    public void on(UpdateDevCardSlot event) {
+        super.on(event);
         
         new DevSlots(cli.getViewModel()
                 .getPlayerDevelopmentSlots(cli.getViewModel().getLocalPlayerNickname())).render(cli);
     }
 
-    public void on(Cli cli, UpdateFaithPoints event) {
+    @Override
+    public void on(UpdateFaithPoints event) {
+        super.on(event);
+        
         ViewModel vm = cli.getViewModel();
 
         if (event.isBlackCross())
@@ -163,13 +217,18 @@ public abstract class CliState implements Renderable {
         }
     }
 
-    public void on(Cli cli, UpdateGameEnd event) {
-        cli.getViewModel().setWinner(event.getWinner());
+    @Override
+    public void on(UpdateGameEnd event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().println("Game ended!");
     }
 
-    public void on(Cli cli, UpdateGame event) {
+    @Override
+    public void on(UpdateGame event) {
+        super.on(event);
+    
         ViewModel vm = cli.getViewModel();
 
         vm.setActionTokens(event.getActionTokens());
@@ -190,16 +249,23 @@ public abstract class CliState implements Renderable {
         new FaithTrack(cli.getViewModel().getFaithTrack().orElseThrow(), points).render(cli);
     }
 
-    public void on(Cli cli, UpdateJoinGame event) {
+    @Override
+    public void on(UpdateJoinGame event) {
+        super.on(event);
     }
 
-    public void on(Cli cli, UpdateLastRound event) {
-        cli.getViewModel().setLastRound();
+    @Override
+    public void on(UpdateLastRound event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().println("Last round!");
     }
 
-    public void on(Cli cli, UpdateActivateLeader event) {
+    @Override
+    public void on(UpdateActivateLeader event) {
+        super.on(event);
+        
         ViewModel vm = cli.getViewModel();
 
         vm.activateLeaderCard(event.getLeader());
@@ -210,7 +276,10 @@ public abstract class CliState implements Renderable {
         new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow()).render(cli);
     }
 
-    public void on(Cli cli, UpdateLeadersHand event) {
+    @Override
+    public void on(UpdateLeadersHand event) {
+        super.on(event);
+        
         /* this message arrives last among the starting events:
             joingame
             updategame
@@ -220,27 +289,34 @@ public abstract class CliState implements Renderable {
             player
             leadershand -> client has enough info for leader choice */
 
-        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
+        super.on(event);
         cli.getOut().println();
         cli.getOut().println(center(String.format("%s's leader cards:", event.getPlayer())));
         cli.getOut().println();
         new LeadersHand(cli.getViewModel().getPlayerLeaderCards(event.getPlayer())).render(cli);
     }
 
-    public void on(Cli cli, UpdateLeadersHandCount event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersCount(event.getLeadersCount());
+    @Override
+    public void on(UpdateLeadersHandCount event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().println(center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
         cli.promptPause();
     }
 
-    public void on(Cli cli, UpdateMarket event) {
-        cli.getViewModel().setMarket(event.getMarket());
+    @Override
+    public void on(UpdateMarket event) {
+        super.on(event);
+        
         cli.getOut().println();
         new Market(event.getMarket()).render(cli);
     }
 
-    public void on(Cli cli, UpdatePlayer event) {
+    @Override
+    public void on(UpdatePlayer event) {
+        super.on(event);
+        
         ViewModel vm = cli.getViewModel();
         vm.setPlayerData(event.getPlayer(), new PlayerData(
                 event.getBaseProduction(),
@@ -265,34 +341,44 @@ public abstract class CliState implements Renderable {
         cli.getOut().println(center(new Box(new ResourceTransactionRecipe(baseProds.orElseThrow()), -1).getString(cli)));
     }
 
-    public void on(Cli cli, UpdatePlayerStatus event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).ifPresent(pdata -> pdata.setActive(event.isActive()));
+    @Override
+    public void on(UpdatePlayerStatus event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().printf("Player %s became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
     }
 
-    public void on(Cli cli, UpdateResourceContainer event) {
-        cli.getViewModel().setContainer(event.getResContainer());
+    @Override
+    public void on(UpdateResourceContainer event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().println(center(new Box(new ResourceContainer(event.getResContainer())).getString(cli)));
     }
 
-    public void on(Cli cli, UpdateSetupDone event) {
-        cli.getViewModel().setSetupDone(true);
+    @Override
+    public void on(UpdateSetupDone event) {
+        super.on(event);
+        
         if (cli.getViewModel().getPlayerNicknames().size() > 1) {
             cli.getOut().println();
             cli.getOut().println("All players have finished their setup! Game starting...");
         }
     }
 
-    public void on(Cli cli, UpdateVaticanSection event) {
-        cli.getViewModel().setVaticanSection(event.getVaticanSection());
+    @Override
+    public void on(UpdateVaticanSection event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().printf("Activated vatican section %d%n", event.getVaticanSection()); // TODO: improve
     }
 
-    public void on(Cli cli, UpdateVictoryPoints event) {
-        cli.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setVictoryPoints(event.getVictoryPoints());
+    @Override
+    public void on(UpdateVictoryPoints event) {
+        super.on(event);
+        
         cli.getOut().println();
         cli.getOut().printf("Victory points for %s: %d.%n", event.getPlayer(), event.getVictoryPoints());
     }
