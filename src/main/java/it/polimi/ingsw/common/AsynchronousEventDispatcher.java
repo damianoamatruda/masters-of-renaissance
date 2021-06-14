@@ -4,7 +4,6 @@ import it.polimi.ingsw.common.events.Event;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class AsynchronousEventDispatcher extends EventDispatcher implements AutoCloseable {
     private final ExecutorService executor;
@@ -29,14 +28,7 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
         executor.shutdown();
     }
 
-    public void close(Runnable callback) {
-        if (executor.isShutdown())
-            return;
-        executor.shutdown();
-        try {
-            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-        } catch (InterruptedException ignored) {
-        }
-        callback.run();
+    public void closeNow() {
+        executor.shutdownNow();
     }
 }

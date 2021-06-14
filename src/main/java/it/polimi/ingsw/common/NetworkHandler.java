@@ -20,17 +20,19 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
     private final NetworkProtocol protocol;
     private final BiFunction<String, NetworkProtocol, Event> processInput;
     private final int timeout;
-    private final EventListener<ResHeartbeat> resHeartbeatEventListener = this::on;
+
+    private final EventListener<ReqWelcome> reqWelcomeEventListener = this::on;
+    private final EventListener<ReqHeartbeat> reqHeartbeatEventListener = this::on;
     private final EventListener<ResWelcome> resWelcomeEventListener = this::on;
+    private final EventListener<ResGoodbye> resGoodbyeEventListener = this::on;
+    private final EventListener<ResHeartbeat> resHeartbeatEventListener = this::on;
+    private final EventListener<ReqGoodbye> reqGoodbyeEventListener = this::on;
+
     private PrintWriter out;
     private BufferedReader in;
     private volatile boolean listening;
-    private final EventListener<ReqHeartbeat> reqHeartbeatEventListener = this::on;
-    private final EventListener<ReqWelcome> reqWelcomeEventListener = this::on;
     private Runnable onClose = () -> {
     };
-    private final EventListener<ReqGoodbye> reqGoodbyeEventListener = this::on;
-    private final EventListener<ResGoodbye> resGoodbyeEventListener = this::on;
 
     public NetworkHandler(Socket socket, NetworkProtocol protocol, BiFunction<String, NetworkProtocol, Event> processInput, int timeout) {
         this.socket = socket;
@@ -44,12 +46,12 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
 
     @Override
     public void run() {
-        this.addEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
-        this.addEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
         this.addEventListener(ReqWelcome.class, reqWelcomeEventListener);
-        this.addEventListener(ResGoodbye.class, resGoodbyeEventListener);
-        this.addEventListener(ResHeartbeat.class, resHeartbeatEventListener);
+        this.addEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
+        this.addEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
         this.addEventListener(ResWelcome.class, resWelcomeEventListener);
+        this.addEventListener(ResHeartbeat.class, resHeartbeatEventListener);
+        this.addEventListener(ResGoodbye.class, resGoodbyeEventListener);
 
         try (
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -114,6 +116,7 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
     }
 
     public void shutdown() {
+        LOGGER.info("Running NetworkHandler::shutdown"); // TODO: Use LOGGER.entering
         listening = false;
         try {
             socket.close();
@@ -121,15 +124,14 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
         }
         out = null;
         in = null;
-        close(() -> {
-            onClose.run();
-            this.removeEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
-            this.removeEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
-            this.removeEventListener(ReqWelcome.class, reqWelcomeEventListener);
-            this.removeEventListener(ResGoodbye.class, resGoodbyeEventListener);
-            this.removeEventListener(ResHeartbeat.class, resHeartbeatEventListener);
-            this.removeEventListener(ResWelcome.class, resWelcomeEventListener);
-        });
+        onClose.run();
+        super.closeNow();
+        this.removeEventListener(ReqWelcome.class, reqWelcomeEventListener);
+        this.removeEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
+        this.removeEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
+        this.removeEventListener(ResWelcome.class, resWelcomeEventListener);
+        this.removeEventListener(ResHeartbeat.class, resHeartbeatEventListener);
+        this.removeEventListener(ResGoodbye.class, resGoodbyeEventListener);
     }
 
     public void send(Event event) {
