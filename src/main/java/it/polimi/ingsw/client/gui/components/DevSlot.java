@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,6 +20,7 @@ import java.util.List;
 public class DevSlot extends StackPane {
     // @FXML private GridPane grid;
     private List<DevelopmentCard> cards;
+    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     public DevSlot() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devslot.fxml"));
@@ -48,9 +50,10 @@ public class DevSlot extends StackPane {
         //        bottomPaddingPercent = 0.095;
         // this.setPadding(new Insets(this.getHeight() * topPaddingPercent, 0, this.getHeight() * bottomPaddingPercent, 0));
 
+        DevelopmentCard c;
         for (int i = 0; i < cards.size(); i++) {
             // grid.add(cards.get(i), 0, 3 - i);
-            DevelopmentCard c = cards.get(i);
+            c = cards.get(i);
 
             AnchorPane p = new AnchorPane();
 
@@ -61,7 +64,24 @@ public class DevSlot extends StackPane {
 
             this.getChildren().add(p);
         }
-        
+
+        if(cards.size() > 0) {
+            AnchorPane p = new AnchorPane();
+            SButton activate = new SButton();
+            activate.setText("Produce");
+            activate.setOnAction((event) -> {
+                if(!cards.get(cards.size() - 1).getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))
+                    cards.get(cards.size() - 1).pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
+                else
+                    cards.get(cards.size() - 1).pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
+                // TODO add to production set of ancestor playerboard/playground
+            });
+            p.getChildren().add(activate);
+            AnchorPane.setLeftAnchor(activate, 70d);
+            AnchorPane.setBottomAnchor(activate, 50d);
+
+            this.getChildren().add(p);
+        }
 
         // grid.getChildren().forEach(c -> {
         //     c.setScaleX(this.getWidth());
