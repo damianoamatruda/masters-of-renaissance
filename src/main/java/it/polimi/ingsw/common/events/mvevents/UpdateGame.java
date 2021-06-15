@@ -16,7 +16,7 @@ public class UpdateGame extends ViewEvent {
     private final List<ReducedResourceTransactionRecipe> productions;
     private final List<ReducedActionToken> actionTokens;
     private final ReducedFaithTrack faithTrack;
-    private final boolean resumed;
+    private final boolean isSetupDone;
     private final int slotsCount;
 
     /**
@@ -44,7 +44,7 @@ public class UpdateGame extends ViewEvent {
                       ReducedFaithTrack faithTrack,
                       int slotsCount,
                       List<ReducedActionToken> actionTokens,
-                      boolean resumed) {
+                      boolean isSetupDone) {
         super(view);
         this.players = players;
         this.leaderCards = leaderCards;
@@ -55,7 +55,7 @@ public class UpdateGame extends ViewEvent {
         this.colors = colors;
         this.resourceTypes = resourceTypes;
         this.faithTrack = faithTrack;
-        this.resumed = resumed;
+        this.isSetupDone = isSetupDone;
         this.slotsCount = slotsCount;
     }
 
@@ -69,8 +69,8 @@ public class UpdateGame extends ViewEvent {
                       ReducedFaithTrack faithTrack,
                       int slotsCount,
                       List<ReducedActionToken> actionTokens,
-                      boolean resumed) {
-        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, faithTrack, slotsCount, actionTokens, resumed);
+                      boolean isSetupDone) {
+        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, faithTrack, slotsCount, actionTokens, isSetupDone);
     }
 
     /**
@@ -130,10 +130,10 @@ public class UpdateGame extends ViewEvent {
     }
 
     /**
-     * @return <code>true</code> if the game is resumed; <code>false</code> otherwise.
+     * @return <code>true</code> if the game's setup phase is finished
      */
-    public boolean isResumed() {
-        return resumed;
+    public boolean isSetupDone() {
+        return isSetupDone;
     }
 
     public ReducedFaithTrack getFaithTrack() {

@@ -93,11 +93,11 @@ public class InputNicknameController extends GuiController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        if(event.isResumed()) {
-            if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-            else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-        }
+        // if(event.isResumed()) {
+        //     if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+        //         gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        //     else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+        // }
     }
 
     @Override

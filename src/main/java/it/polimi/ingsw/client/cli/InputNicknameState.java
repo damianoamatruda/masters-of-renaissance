@@ -60,6 +60,13 @@ public class InputNicknameState extends CliController {
     public void on(UpdateLeadersHand event) {
         super.on(event);
 
+        /* Client receives UpdateGame, UpdatePlayer and then UpdateLeadersHand.
+           Upon UpdateGame reception it will know
+           whether the setup is still ongoing or not.
+           Upon localplayer's UpdatePlayer reception it will know
+           which state to change to.
+           If the leaders hand still needs to be chosen,
+           the client will need to wait for UpdateLeadersHand. */
         if (vm.getPlayerNicknames().isEmpty())
         cli.promptPause();
         cli.setController(new SetupLeadersState());

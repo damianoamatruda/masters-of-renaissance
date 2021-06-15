@@ -97,7 +97,7 @@ public abstract class UiController {
         vm.setFaithTrack(event.getFaithTrack());
         vm.setDevCardColors(event.getColors());
         vm.setResourceTypes(event.getResourceTypes());
-        vm.setResumedGame(event.isResumed());
+        vm.setSetupDone(event.isSetupDone());
         vm.setSlotsCount(event.getSlotsCount());
     }
 

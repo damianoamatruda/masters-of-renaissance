@@ -15,7 +15,6 @@ public class ViewModel {
     private final Map<String, PlayerData> playerData;
 
     private String localPlayerNickname = "";
-    private boolean isResumedGame;
     private boolean isSetupDone;
 
     private List<ReducedActionToken> actionTokens;
@@ -572,20 +571,6 @@ public class ViewModel {
     }
 
     /**
-     * @return whether the game is resumed
-     */
-    public boolean isResumedGame() {
-        return isResumedGame;
-    }
-
-    /**
-     * @param isResumedGame whether the game is resumed
-     */
-    public void setResumedGame(boolean isResumedGame) {
-        this.isResumedGame = isResumedGame;
-    }
-
-    /**
      * @param isSetupDone whether the player setup is done
      */
     public void setSetupDone(boolean isSetupDone) {
@@ -596,7 +581,7 @@ public class ViewModel {
      * @return whether the player setup is done
      */
     public boolean isSetupDone() {
-        return isResumedGame || isSetupDone; // when resuming setup is still false
+        return isSetupDone; // when resuming setup is still false
     }
 
     /**

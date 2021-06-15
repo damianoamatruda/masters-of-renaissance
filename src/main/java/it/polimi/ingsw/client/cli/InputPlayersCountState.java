@@ -69,20 +69,20 @@ public class InputPlayersCountState extends CliController {
         // this means it might not get handled in WaitingAfterTurnState
         super.on(event);
 
-        if (vm.isResumedGame()) {
-            if (event.getPlayer().equals(vm.getLocalPlayerNickname()))
-                cli.setController(new TurnBeforeActionState());
-            else
-                cli.setController(new WaitingAfterTurnState());
-        }
+        // if (vm.isResumedGame()) {
+        //     if (event.getPlayer().equals(vm.getLocalPlayerNickname()))
+        //         cli.setController(new TurnBeforeActionState());
+        //     else
+        //         cli.setController(new WaitingAfterTurnState());
+        // }
     }
 
     @Override
     public void on(UpdateLeadersHand event) {
-        vm.getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
+        super.on(event);
 
-        if (vm.isResumedGame())
-            throw new RuntimeException("UpdateLeadersHand after resumed game.");
+        // if (vm.isResumedGame())
+        //     throw new RuntimeException("UpdateLeadersHand after resumed game.");
 
         cli.promptPause();
         cli.setController(new SetupLeadersState());
