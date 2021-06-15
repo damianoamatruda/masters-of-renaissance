@@ -89,7 +89,7 @@ public class SetupResourcesState extends CliController {
     }
 
     private void setNextState(Cli cli) {
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayer().get().equals(vm.getLocalPlayerNickname()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());

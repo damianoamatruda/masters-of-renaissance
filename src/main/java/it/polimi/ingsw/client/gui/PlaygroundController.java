@@ -180,7 +180,7 @@ public abstract class PlaygroundController extends GuiController {
 
         super.on(event);
 
-        if (event.getPlayer().equals(gui.getViewModel().getCurrentPlayer()) && oldPts < gui.getViewModel().getFaithTrack().orElseThrow().getMaxFaith())
+        if (event.getPlayer().equals(gui.getViewModel().getCurrentPlayer().get()) && oldPts < gui.getViewModel().getFaithTrack().orElseThrow().getMaxFaith())
             Platform.runLater(() -> pboard.updateFaithPoints(event, oldPts));
     }
 

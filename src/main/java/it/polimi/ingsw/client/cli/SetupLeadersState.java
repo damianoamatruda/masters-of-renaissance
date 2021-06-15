@@ -68,7 +68,7 @@ public class SetupLeadersState extends CliController {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
 
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayer().get().equals(vm.getLocalPlayerNickname()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());
@@ -113,7 +113,7 @@ public class SetupLeadersState extends CliController {
     }
 
     private void setNextState(Cli cli) {
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayer().get().equals(vm.getLocalPlayerNickname()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());
