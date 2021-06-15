@@ -15,12 +15,12 @@ public class ViewModel {
     private final Map<String, PlayerData> playerData;
 
     private String localPlayerNickname = "";
-    private boolean isSetupDone;
+    private Boolean isSetupDone;
 
     private List<ReducedActionToken> actionTokens;
     private int blackCrossFP;
     private List<ReducedResourceContainer> containers;
-    private String currentPlayer = "";
+    private String currentPlayer;
     private List<ReducedColor> devCardColors;
     private ReducedDevCardGrid devCardGrid;
     private List<ReducedDevCard> developmentCards;
@@ -56,7 +56,6 @@ public class ViewModel {
         this.playerData = new HashMap<>();
 
         isLastRound = false;
-        isSetupDone = false;
 
         mappedColors = new HashMap<>();
     }
@@ -70,7 +69,7 @@ public class ViewModel {
     }
     
     public Optional<PlayerData> getCurrentPlayerData() {
-        return getPlayerData(getCurrentPlayer());
+        return getPlayerData(getCurrentPlayer().orElse(null));
     }
 
     public Optional<PlayerData> getLocalPlayerData() {
@@ -327,8 +326,8 @@ public class ViewModel {
     /**
      * @return the currentPlayer
      */
-    public String getCurrentPlayer() {
-        return currentPlayer;
+    public Optional<String> getCurrentPlayer() {
+        return Optional.ofNullable(currentPlayer);
     }
 
     /**
@@ -578,10 +577,10 @@ public class ViewModel {
     }
 
     /**
-     * @return whether the player setup is done
+     * @return whether all the players' setup is done
      */
-    public boolean isSetupDone() {
-        return isSetupDone; // when resuming setup is still false
+    public Optional<Boolean> isSetupDone() {
+        return Optional.ofNullable(isSetupDone);
     }
 
     /**

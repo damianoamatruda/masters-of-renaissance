@@ -56,16 +56,16 @@ public abstract class PlaygroundController extends GuiController {
                 "-fx-background-repeat: stretch;" +
                 "-fx-opacity: 1;" +
                 "-fx-background-size: 100 100;");
-        gui.getViewModel().getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(p -> prod.setProduction(p));
+        gui.getViewModel().getPlayerBaseProduction(vm.getCurrentPlayer().get()).ifPresent(p -> prod.setProduction(p));
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer().get()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
 
         Strongbox s = new Strongbox();
-        gui.getViewModel().getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(sb -> s.setContent(sb));
+        gui.getViewModel().getPlayerStrongbox(vm.getCurrentPlayer().get()).ifPresent(sb -> s.setContent(sb));
 
         List<DevSlot> slots = new ArrayList<>();
 
-        List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
+        List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer().get());
         
         modelSlots.forEach(modelSlot -> {
             DevSlot slot = new DevSlot();
@@ -279,6 +279,6 @@ public abstract class PlaygroundController extends GuiController {
         super.on(event);
 
         if(!gui.getViewModel().isCurrentPlayer())
-            Platform.runLater(() -> warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getCurrentPlayer()), (s1, s2) -> { }));
+            Platform.runLater(() -> warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getCurrentPlayer().get()), (s1, s2) -> { }));
     }
 }

@@ -209,7 +209,7 @@ public class DevCardGridController extends GuiController {
 
     private void resetSlots() {
         devSlots = new ArrayList<>();
-        List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
+        List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer().get());
         
         modelSlots.forEach(modelSlot -> {
             DevSlot slot = new DevSlot();
