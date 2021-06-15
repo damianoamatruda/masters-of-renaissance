@@ -1,28 +1,23 @@
 package it.polimi.ingsw.client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Optional;
-
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+
 public class Ui extends View {
     private final ViewModel viewModel;
-    
     private Network client;
-
     private UiController controller;
-
     private InputStream gameConfigStream;
     private boolean offline;
 
     public Ui() {
+        setListeners();
         viewModel = new ViewModel();
-
-        setViewListeners();
-
         offline = false;
         gameConfigStream = null;
     }
@@ -73,7 +68,7 @@ public class Ui extends View {
         close();
     }
 
-    private void setViewListeners() {
+    private void setListeners() {
         setResQuitEventListener(event -> controller.on(event));
         setUpdateBookedSeatsEventListener(event -> controller.on(event));
         setUpdateJoinGameEventListener(event -> controller.on(event));

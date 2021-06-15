@@ -125,8 +125,7 @@ public class Server implements Network, Runnable {
 
             NetworkHandler networkHandler = new NetworkHandler(socket, protocol, (input, protocol) -> protocol.processInputAsVCEvent(input), timeout);
 
-            View virtualView = new View();
-            setVirtualViewListeners(virtualView, networkHandler);
+            View virtualView = new VirtualView(networkHandler);
             networkHandler.addEventListener(VCEvent.class, vcEventListeners.computeIfAbsent(networkHandler, n -> virtualView::dispatch));
 
             virtualView.registerOnModelLobby(model);
@@ -149,42 +148,5 @@ public class Server implements Network, Runnable {
         vcEventListeners.keySet().forEach(NetworkHandler::close);
         executor.shutdown();
         model.close();
-    }
-
-    private static void setVirtualViewListeners(View virtualView, NetworkHandler networkHandler) {
-        virtualView.setResQuitEventListener(networkHandler::send);
-        virtualView.setUpdateBookedSeatsEventListener(networkHandler::send);
-        virtualView.setUpdateJoinGameEventListener(networkHandler::send);
-        virtualView.setErrNewGameEventListener(networkHandler::send);
-        virtualView.setErrNicknameEventListener(networkHandler::send);
-        virtualView.setErrActionEventListener(networkHandler::send);
-        virtualView.setErrActiveLeaderDiscardedEventListener(networkHandler::send);
-        virtualView.setErrBuyDevCardEventListener(networkHandler::send);
-        virtualView.setErrCardRequirementsEventListener(networkHandler::send);
-        virtualView.setErrInitialChoiceEventListener(networkHandler::send);
-        virtualView.setErrNoSuchEntityEventListener(networkHandler::send);
-        virtualView.setErrObjectNotOwnedEventListener(networkHandler::send);
-        virtualView.setErrReplacedTransRecipeEventListener(networkHandler::send);
-        virtualView.setErrResourceReplacementEventListener(networkHandler::send);
-        virtualView.setErrResourceTransferEventListener(networkHandler::send);
-        virtualView.setUpdateActionEventListener(networkHandler::send);
-        virtualView.setUpdateActionTokenEventListener(networkHandler::send);
-        virtualView.setUpdateCurrentPlayerEventListener(networkHandler::send);
-        virtualView.setUpdateDevCardGridEventListener(networkHandler::send);
-        virtualView.setUpdateDevCardSlotEventListener(networkHandler::send);
-        virtualView.setUpdateFaithPointsEventListener(networkHandler::send);
-        virtualView.setUpdateGameEventListener(networkHandler::send);
-        virtualView.setUpdateGameEndEventListener(networkHandler::send);
-        virtualView.setUpdateLastRoundEventListener(networkHandler::send);
-        virtualView.setUpdateActivateLeaderEventListener(networkHandler::send);
-        virtualView.setUpdateLeadersHandCountEventListener(networkHandler::send);
-        virtualView.setUpdateMarketEventListener(networkHandler::send);
-        virtualView.setUpdatePlayerEventListener(networkHandler::send);
-        virtualView.setUpdatePlayerStatusEventListener(networkHandler::send);
-        virtualView.setUpdateResourceContainerEventListener(networkHandler::send);
-        virtualView.setUpdateSetupDoneEventListener(networkHandler::send);
-        virtualView.setUpdateVaticanSectionEventListener(networkHandler::send);
-        virtualView.setUpdateVictoryPointsEventListener(networkHandler::send);
-        virtualView.setUpdateLeadersHandEventListener(networkHandler::send);
     }
 }
