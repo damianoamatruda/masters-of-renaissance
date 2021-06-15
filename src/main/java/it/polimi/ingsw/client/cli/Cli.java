@@ -56,7 +56,7 @@ public class Cli implements Runnable {
                     wait();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    return;
+                    break;
                 }
             }
             ready = false;
