@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.*;
 import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
-import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
@@ -26,28 +25,21 @@ public class Server implements Network, Runnable {
     private static final int timeout = 25000;
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
     private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
-
+    private final Thread runThread;
     private final ServerSocket serverSocket;
     private final ExecutorService executor;
     private final NetworkProtocol protocol;
     private final Lobby model;
     private final Controller controller;
     private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
-    private volatile boolean listening;
 
     public Server(int port, InputStream gameConfigStream) throws IOException {
+        this.runThread = new Thread(this);
         this.serverSocket = new ServerSocket(port);
-
         this.executor = Executors.newCachedThreadPool();
         this.protocol = new NetworkProtocol();
-        this.listening = false;
-
-        GameFactory gameFactory = new FileGameFactory(gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath));
-
-        this.model = new Lobby(gameFactory);
-
+        this.model = new Lobby(new FileGameFactory(gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath)));
         this.controller = new Controller(model);
-
         this.vcEventListeners = new HashMap<>();
     }
 
@@ -97,7 +89,7 @@ public class Server implements Network, Runnable {
         }
 
         try {
-            new Server(port, gameConfigStream).run();
+            new Server(port, gameConfigStream).open();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, String.format("Couldn't listen on port %d", port), e);
         }
@@ -105,21 +97,30 @@ public class Server implements Network, Runnable {
 
     @Override
     public void open() {
-        new Thread(this).start();
+        runThread.start();
+    }
+
+    @Override
+    public void close() {
+        runThread.interrupt();
+        if (!serverSocket.isClosed()) {
+            try {
+                serverSocket.close();
+            } catch (IOException ignored) {
+            }
+        }
     }
 
     @Override
     public void run() {
         LOGGER.info("Server is ready");
-        listening = true;
-        while (listening) {
+        while (!Thread.currentThread().isInterrupted()) {
             Socket socket;
 
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "Couldn't listen for a connection", e);
-                continue;
+                break;
             }
 
             NetworkHandler networkHandler = new NetworkHandler(socket, protocol, (input, protocol) -> protocol.processInputAsVCEvent(input), timeout);
@@ -144,17 +145,9 @@ public class Server implements Network, Runnable {
             executor.submit(networkHandler);
         }
 
-        close();
-    }
-
-    @Override
-    public void close() {
-        listening = false;
-        try {
-            serverSocket.close();
-        } catch (IOException ignored) {
-        }
-        executor.shutdownNow();
+        LOGGER.info("Server closed by self");
+        vcEventListeners.keySet().forEach(NetworkHandler::close);
+        executor.shutdown();
         model.close();
     }
 

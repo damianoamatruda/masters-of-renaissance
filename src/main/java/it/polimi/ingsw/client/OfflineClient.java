@@ -4,7 +4,6 @@ import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.Controller;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
-import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
 
 import java.io.InputStream;
@@ -17,12 +16,7 @@ public class OfflineClient implements Network {
 
     public OfflineClient(View view, InputStream gameConfigStream) {
         this.view = view;
-
-        GameFactory gameFactory = new FileGameFactory(gameConfigStream != null ?
-                gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath));
-
-        this.model = new Lobby(gameFactory);
-
+        this.model = new Lobby(new FileGameFactory(gameConfigStream != null ? gameConfigStream : getClass().getResourceAsStream(defaultGameConfigPath)));
         this.controller = new Controller(model);
     }
 

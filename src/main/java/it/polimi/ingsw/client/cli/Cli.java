@@ -12,79 +12,73 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Cli {
-    private static final Logger LOGGER = Logger.getLogger(Cli.class.getName());
+public class Cli implements Runnable {
     private static final int width = 179;
     private static final String backValue = " ";
-
-    private volatile boolean running;
-    private volatile boolean ready;
-
-    private final Ui ui;
     private static Cli instance = null;
-
-    /** The current state of the interface. */
-    private CliController controller;
-
+    private final Ui ui;
+    private final Thread runThread;
     private final PrintStream out;
     private final Scanner in;
+    private volatile boolean ready;
+    private volatile CliController controller;
 
     public Cli() {
         Cli.instance = this;
-
         this.ui = new Ui();
-
+        this.runThread = new Thread(this);
         this.out = System.out;
         this.in = new Scanner(System.in);
+        this.ready = false;
+        this.controller = null;
     }
 
     public static void main(String[] args) {
-        new Cli().start(); // new Thread(this::start).start();
+        new Cli().start();
     }
 
     public static Cli getInstance() {
         return instance;
     }
 
-    public synchronized void start() {
-        setController(new SplashState());
-
-        /*
-         * Sets the current state based on the next requested state.
-         * If no state is requested, waits for a request.
-         * While a state is being rendered, requested states aren't applied:
-         * only the last requested state is applied, and only as soon as the current state has finished rendering.
-         */
-        running = true;
-        while (running) {
-            while (!ready) {
+    /**
+     * Sets the current state based on the next requested state. If no state is requested, waits for a request. While a
+     * state is being rendered, requested states aren't applied: only the last requested state is applied, and only as
+     * soon as the current state has finished rendering.
+     */
+    @Override
+    public synchronized void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            if (!ready) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    ready = true;
+                    Thread.currentThread().interrupt();
+                    return;
                 }
             }
             ready = false;
 
-            // out.println();
             clear();
-            // out.println(center(String.format("\u001b[31m%s\u001B[0m", state.getClass().getSimpleName())));
             controller.render();
         }
     }
 
+    public void start() {
+        runThread.start();
+        setController(new SplashState());
+    }
+
     /**
-     * Sets the state.
+     * Sets the controller.
      *
-     * @param state the next state
+     * @param controller the controller
      */
-    synchronized void setController(CliController state) {
-        ui.setController(state);
-        this.controller = state;
+    synchronized void setController(CliController controller) {
+        ui.setController(controller);
+        this.controller = controller;
         this.ready = true;
         notifyAll();
     }
@@ -92,7 +86,7 @@ public class Cli {
     void reloadController(String str) {
         out.println(str);
         promptPause();
-        setController(this.controller);
+        setController(controller);
     }
 
     void quit() {
@@ -101,7 +95,7 @@ public class Cli {
     }
 
     public void stop() {
-        running = false;
+        runThread.interrupt();
         ui.stop();
     }
 
@@ -209,14 +203,6 @@ public class Cli {
     public static String slimLine() {
         return slimLine(width);
     }
-
-    public void trackSlimLine() {
-        out.print(slimLine());
-    }
-
-    /* public static String spaced(String str) {
-        return String.format("%n%s%n", str);
-    } */
 
     void pause() {
         in.nextLine();

@@ -31,31 +31,35 @@ import java.util.logging.Logger;
  */
 public class Gui extends Application {
     private static final Logger LOGGER = Logger.getLogger(Gui.class.getName());
-    private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
-    private static final String title = "Masters of Renaissance";
+
     /* Adjusting the ratio between 'real' and 'starting' sizes
        will result in the whole GUI changing its intrinsinc scaling.
        'real' values reflect the sizes set in the FXMLs.
        Therefore, if both 'starting' and 'real' sizes are set to 720p,
        the scale will result in a ratio of 1:1 for all sizes
        (the screen size of the components will be the same as their logical size). */
-    static final double realWidth = 1280;
-    static final double realHeight = 720;
     private static final double startWidth = 854;
     private static final double startHeight = 480;
     private static final double minWidth = 640;
     private static final double minHeight = 360;
+    static final double realWidth = 1280;
+    static final double realHeight = 720;
 
+    private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
+    private static final String title = "Masters of Renaissance";
     private static Gui instance = null;
-
     private final Ui ui;
-
     private Scene scene;
     private Stage stage;
-    private GuiController controller;
-
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
+
+    public Gui() {
+        Gui.instance = this;
+        this.ui = new Ui();
+        this.musicPlayer = null;
+        this.soundFxVolume = 1;
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -71,34 +75,6 @@ public class Gui extends Application {
 
     private static String javafxVersion() {
         return System.getProperty("javafx.version");
-    }
-
-    public Gui() {
-        Gui.instance = this;
-
-        this.ui = new Ui();
-
-        this.musicPlayer = null;
-        this.soundFxVolume = 1;
-    }
-
-    public static void setPauseHandlers(StackPane backStackPane, AnchorPane canvas, NumberBinding maxScale) {
-        canvas.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                if(backStackPane.getChildren().size() == 1)
-                    backStackPane.getChildren().add(new PauseMenu(maxScale));
-                else backStackPane.getChildren().remove(backStackPane.getChildren().size() - 1);
-            }
-        });
-
-        Button pause = new SButton();
-        pause.setText("Pause");
-        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            backStackPane.getChildren().add(new PauseMenu(maxScale));
-        });
-        canvas.getChildren().add(pause);
-        AnchorPane.setBottomAnchor(pause, 10.0);
-        AnchorPane.setLeftAnchor(pause, 10.0);
     }
 
     @Override
@@ -124,7 +100,6 @@ public class Gui extends Application {
 
     void setController(GuiController controller) {
         ui.setController(controller);
-        this.controller = controller;
     }
 
     public ViewModel getViewModel() {
@@ -160,12 +135,31 @@ public class Gui extends Application {
         return Optional.ofNullable(musicPlayer);
     }
 
-    void setMusicPlayer(MediaPlayer musicPlayer) {
-        this.musicPlayer = musicPlayer;
+    public static void setPauseHandlers(StackPane backStackPane, AnchorPane canvas, NumberBinding maxScale) {
+        canvas.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                if (backStackPane.getChildren().size() == 1)
+                    backStackPane.getChildren().add(new PauseMenu(maxScale));
+                else backStackPane.getChildren().remove(backStackPane.getChildren().size() - 1);
+            }
+        });
+
+        Button pause = new SButton();
+        pause.setText("Pause");
+        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
+            backStackPane.getChildren().add(new PauseMenu(maxScale));
+        });
+        canvas.getChildren().add(pause);
+        AnchorPane.setBottomAnchor(pause, 10.0);
+        AnchorPane.setLeftAnchor(pause, 10.0);
     }
 
     public double getSoundFxVolume() {
         return soundFxVolume;
+    }
+
+    public void setMusicPlayer(MediaPlayer musicPlayer) {
+        this.musicPlayer = musicPlayer;
     }
 
     public void setSoundFxVolume(double soundFxVolume) {

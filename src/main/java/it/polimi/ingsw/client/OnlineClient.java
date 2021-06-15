@@ -6,26 +6,20 @@ import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 public class OnlineClient implements Network {
-    private static final Logger LOGGER = Logger.getLogger(OnlineClient.class.getName());
     private static final int timeout = 30000;
     private final View view;
-    private final ExecutorService executor;
     private final NetworkHandler networkHandler;
+    private final Thread networkHandlerThread;
     private final EventListener<VCEvent> vcEventListener;
 
     public OnlineClient(View view, String host, int port) throws IOException {
         Socket socket = new Socket(host, port);
-
         this.view = view;
-
-        executor = Executors.newCachedThreadPool();
-        networkHandler = new NetworkHandler(socket, new NetworkProtocol(), (input, protocol) -> protocol.processInputAsMVEvent(input), timeout);
-        vcEventListener = networkHandler::send;
+        this.networkHandler = new NetworkHandler(socket, new NetworkProtocol(), (input, protocol) -> protocol.processInputAsMVEvent(input), timeout);
+        this.networkHandlerThread = new Thread(networkHandler);
+        this.vcEventListener = networkHandler::send;
     }
 
     @Override
@@ -42,12 +36,12 @@ public class OnlineClient implements Network {
             view.removeEventListener(VCEvent.class, vcEventListener);
         });
 
-        executor.submit(networkHandler);
+        networkHandlerThread.start();
     }
 
     @Override
     public void close() {
-        executor.shutdown();
         networkHandler.close();
+        networkHandlerThread.interrupt();
     }
 }
