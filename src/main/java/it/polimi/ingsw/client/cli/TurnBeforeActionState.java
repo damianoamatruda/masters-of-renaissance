@@ -10,7 +10,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class TurnBeforeActionState extends CliTurnState {
     @Override
     public void render() {
-        if (!cli.getViewModel().isSetupDone()) {
+        if (!vm.isSetupDone()) {
             cli.getOut().println();
             cli.getOut().println("Waiting for all players to finish their setup...");
             return;

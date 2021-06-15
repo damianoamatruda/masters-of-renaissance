@@ -7,9 +7,11 @@ import it.polimi.ingsw.common.events.mvevents.errors.*;
 
 public abstract class UiController {
     private final Ui ui;
+    protected final ViewModel vm;
 
     public UiController(Ui ui) {
         this.ui = ui;
+        vm = ui.getViewModel();
     }
 
     public void on(ErrAction event) {
@@ -49,6 +51,7 @@ public abstract class UiController {
     }
 
     public void on(ResQuit event) {
+        ui.closeClient();
     }
 
     public void on(UpdateAction event) {
@@ -62,20 +65,18 @@ public abstract class UiController {
     }
 
     public void on(UpdateCurrentPlayer event) {
-        ui.getViewModel().setCurrentPlayer(event.getPlayer());
+        vm.setCurrentPlayer(event.getPlayer());
     }
 
     public void on(UpdateDevCardGrid event) {
-        ui.getViewModel().setDevCardGrid(event.getCards());
+        vm.setDevCardGrid(event.getCards());
     }
 
     public void on(UpdateDevCardSlot event) {
-        ui.getViewModel().getCurrentPlayerData().orElseThrow().pushToDevSlot(event.getDevSlot(), event.getDevCard());
+        vm.getCurrentPlayerData().orElseThrow().pushToDevSlot(event.getDevSlot(), event.getDevCard());
     }
 
     public void on(UpdateFaithPoints event) {
-        ViewModel vm = ui.getViewModel();
-
         if (event.isBlackCross())
             vm.setBlackCrossFP(event.getFaithPoints());
         else
@@ -83,12 +84,10 @@ public abstract class UiController {
     }
 
     public void on(UpdateGameEnd event) {
-        ui.getViewModel().setWinner(event.getWinner());
+        vm.setWinner(event.getWinner());
     }
 
     public void on(UpdateGame event) {
-        ViewModel vm = ui.getViewModel();
-
         vm.setActionTokens(event.getActionTokens());
         vm.setContainers(event.getResContainers());
         vm.setDevelopmentCards(event.getDevelopmentCards());
@@ -106,12 +105,10 @@ public abstract class UiController {
     }
 
     public void on(UpdateLastRound event) {
-        ui.getViewModel().setLastRound();
+        vm.setLastRound();
     }
 
     public void on(UpdateActivateLeader event) {
-        ViewModel vm = ui.getViewModel();
-
         vm.activateLeaderCard(event.getLeader());
     }
 
@@ -125,19 +122,18 @@ public abstract class UiController {
             player
             leadershand -> client has enough info for leader choice */
 
-        ui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
+        vm.getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
     }
 
     public void on(UpdateLeadersHandCount event) {
-        ui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setLeadersCount(event.getLeadersCount());
+        vm.getPlayerData(event.getPlayer()).orElseThrow().setLeadersCount(event.getLeadersCount());
     }
 
     public void on(UpdateMarket event) {
-        ui.getViewModel().setMarket(event.getMarket());
+        vm.setMarket(event.getMarket());
     }
 
     public void on(UpdatePlayer event) {
-        ViewModel vm = ui.getViewModel();
         vm.setPlayerData(event.getPlayer(), new PlayerData(
                 event.getBaseProduction(),
                 event.getPlayerSetup(),
@@ -147,24 +143,24 @@ public abstract class UiController {
     }
 
     public void on(UpdatePlayerStatus event) {
-        ui.getViewModel().getPlayerData(event.getPlayer()).ifPresent(pdata -> pdata.setActive(event.isActive()));
+        vm.getPlayerData(event.getPlayer()).ifPresent(pdata -> pdata.setActive(event.isActive()));
     }
 
     public void on(UpdateResourceContainer event) {
-        ui.getViewModel().setContainer(event.getResContainer());
+        vm.setContainer(event.getResContainer());
     }
 
     public void on(UpdateSetupDone event) {
-        ui.getViewModel().setSetupDone(true);
-        if (ui.getViewModel().getPlayerNicknames().size() > 1) {
+        vm.setSetupDone(true);
+        if (vm.getPlayerNicknames().size() > 1) {
         }
     }
 
     public void on(UpdateVaticanSection event) {
-        ui.getViewModel().setVaticanSection(event.getVaticanSection());
+        vm.setVaticanSection(event.getVaticanSection());
     }
 
     public void on(UpdateVictoryPoints event) {
-        ui.getViewModel().getPlayerData(event.getPlayer()).orElseThrow().setVictoryPoints(event.getVictoryPoints());
+        vm.getPlayerData(event.getPlayer()).orElseThrow().setVictoryPoints(event.getVictoryPoints());
     }
 }

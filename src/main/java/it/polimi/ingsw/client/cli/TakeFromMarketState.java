@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.Market;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
@@ -33,8 +32,6 @@ public class TakeFromMarketState extends CliController {
     public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Take Market Resources ~"));
-
-        ViewModel vm = cli.getViewModel();
 
         cli.getOut().println();
         new Market(vm.getMarket().orElseThrow()).render();
@@ -74,9 +71,9 @@ public class TakeFromMarketState extends CliController {
             cli.promptInt("Number").ifPresentOrElse(number -> {
                 this.index = number - 1;
                 if (this.index >= 0
-                        && (this.isRow && this.index < cli.getViewModel().getMarket().orElseThrow().getGrid().size()
-                        || !this.isRow && cli.getViewModel().getMarket().orElseThrow().getGrid().size() > 0
-                        && this.index < cli.getViewModel().getMarket().orElseThrow().getGrid().get(0).size()))
+                        && (this.isRow && this.index < vm.getMarket().orElseThrow().getGrid().size()
+                        || !this.isRow && vm.getMarket().orElseThrow().getGrid().size() > 0
+                        && this.index < vm.getMarket().orElseThrow().getGrid().get(0).size()))
                     chooseReplacements(cli);
                 else
                     valid.set(false);
@@ -85,8 +82,6 @@ public class TakeFromMarketState extends CliController {
     }
 
     private void chooseReplacements(Cli cli) {
-        ViewModel vm = cli.getViewModel();
-
         // get a list with the selected resources
         this.resources = new ArrayList<>();
         if (this.isRow)
@@ -145,8 +140,6 @@ public class TakeFromMarketState extends CliController {
     }
 
     private void chooseShelves(Cli cli) {
-        ViewModel vm = cli.getViewModel();
-
         Map<String, Integer> totalRes = new HashMap<>(this.replacements);
         this.resources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 

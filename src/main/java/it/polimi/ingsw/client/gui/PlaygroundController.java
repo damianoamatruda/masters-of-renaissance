@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
@@ -49,8 +48,6 @@ public abstract class PlaygroundController extends GuiController {
         canvas.scaleYProperty().bind(maxScale);
 
         Gui gui = Gui.getInstance();
-
-        ViewModel vm = gui.getViewModel();
 
         Production prod = new Production();
         prod.setStyle("-fx-background-image: url('/assets/gui/playerboard/baseproduction.png');" +
@@ -114,7 +111,6 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     protected void setLeadersBox() {
-        ViewModel vm = Gui.getInstance().getViewModel();
         List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .map(reducedLeader -> {
                 LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());

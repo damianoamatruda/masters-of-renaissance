@@ -29,7 +29,7 @@ public class InputNicknameState extends CliController {
             valid.set(true);
             cli.prompt("Nickname").ifPresentOrElse(nickname -> {
                 if (!nickname.isBlank()) {
-                    cli.getViewModel().setLocalPlayerNickname(nickname);
+                    vm.setLocalPlayerNickname(nickname);
                     cli.getUi().dispatch(new ReqJoin(nickname));
                 } else
                     valid.set(false);
@@ -39,15 +39,14 @@ public class InputNicknameState extends CliController {
 
     @Override
     public void on(ErrNickname event) {
-        // don't call super.on
         cli.reloadController(String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()));
     }
 
     @Override
     public void on(UpdateBookedSeats event) {
-        if (event.canPrepareNewGame().equals(cli.getViewModel().getLocalPlayerNickname()))
+        if (event.canPrepareNewGame().equals(vm.getLocalPlayerNickname()))
             cli.setController(new InputPlayersCountState());
-        else if (!cli.getViewModel().getLocalPlayerNickname().equals(""))
+        else if (!vm.getLocalPlayerNickname().equals("")) // if the nickname isn't set don't print updates (do not disturb)
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
 
@@ -61,7 +60,7 @@ public class InputNicknameState extends CliController {
     public void on(UpdateLeadersHand event) {
         super.on(event);
 
-        if (cli.getViewModel().getPlayerNicknames().isEmpty())
+        if (vm.getPlayerNicknames().isEmpty())
         cli.promptPause();
         cli.setController(new SetupLeadersState());
     }

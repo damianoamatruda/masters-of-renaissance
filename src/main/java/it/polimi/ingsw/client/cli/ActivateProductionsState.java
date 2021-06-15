@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.ProductionSet;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
@@ -39,8 +38,6 @@ public class ActivateProductionsState extends CliController {
         cli.getOut().println();
         cli.getOut().println(center("~ Activate Productions ~"));
 
-        ViewModel vm = cli.getViewModel();
-
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getPlayerProductions(vm.getLocalPlayerNickname());
 
         cli.getOut().println();
@@ -72,8 +69,6 @@ public class ActivateProductionsState extends CliController {
     }
 
     private void chooseInputReplacements(Cli cli) {
-        ViewModel vm = cli.getViewModel();
-
         cli.getOut().println();
         cli.getOut().println(center("-- Input replacements --"));
         cli.getOut().println();
@@ -90,8 +85,6 @@ public class ActivateProductionsState extends CliController {
     }
 
     private void chooseOutputReplacements(Cli cli) {
-        ViewModel vm = cli.getViewModel();
-
         cli.getOut().println();
         cli.getOut().println(center("-- Output replacements --"));
         cli.getOut().println();
@@ -108,8 +101,6 @@ public class ActivateProductionsState extends CliController {
     }
 
     private void chooseShelves(Cli cli) {
-        ViewModel vm = cli.getViewModel();
-
         Map<String, Integer> totalRes = new HashMap<>(this.selectedProd.getInput());
         this.inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 

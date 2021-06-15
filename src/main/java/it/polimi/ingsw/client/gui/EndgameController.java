@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -37,14 +36,12 @@ public class EndgameController extends GuiController {
         bpane.setBorder(new Border(new BorderStroke(Color.RED,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
-        ViewModel viewModel = Gui.getInstance().getViewModel();
-
-        if (viewModel.getWinner() != null && viewModel.getWinner().equals(viewModel.getLocalPlayerNickname()))
-            outcome.setText("You won with " + viewModel.getPlayerVictoryPoints(viewModel.getWinner()) + " points! CONGRATULATIONS!");
-        else if (viewModel.getWinner() != null)
+        if (vm.getWinner() != null && vm.getWinner().equals(vm.getLocalPlayerNickname()))
+            outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points! CONGRATULATIONS!");
+        else if (vm.getWinner() != null)
             outcome.setText(
-                    viewModel.getWinner() + " is the winner with " +
-                            viewModel.getPlayerVictoryPoints(viewModel.getWinner()) + " points!");
+                    vm.getWinner() + " is the winner with " +
+                            vm.getPlayerVictoryPoints(vm.getWinner()) + " points!");
         else
             outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
     }

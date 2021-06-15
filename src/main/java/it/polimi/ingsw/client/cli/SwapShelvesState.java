@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 
 public class SwapShelvesState extends CliController {
     private final CliController sourceState;
@@ -19,8 +18,6 @@ public class SwapShelvesState extends CliController {
 
     @Override
     public void render() {
-        ViewModel vm = cli.getViewModel();
-
         cli.getOut().println();
         cli.getOut().println(center("~ Swap Shelves ~"));
 

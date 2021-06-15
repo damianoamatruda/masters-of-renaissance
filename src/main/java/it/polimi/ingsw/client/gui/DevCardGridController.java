@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
@@ -55,7 +54,6 @@ public class DevCardGridController extends GuiController {
 
     private NumberBinding maxScale;
 
-    private ViewModel vm;
     private DevCardGrid devCardGrid;
     private List<DevSlot> devSlots;
     private Warehouse warehouse;
@@ -80,7 +78,6 @@ public class DevCardGridController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         
         Gui gui = Gui.getInstance();
-        vm = gui.getViewModel();
 
         devCardGrid = new DevCardGrid();
         devCardGrid.setGrid(vm.getDevCardGrid().orElseThrow());

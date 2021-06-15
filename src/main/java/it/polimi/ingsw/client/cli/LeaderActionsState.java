@@ -33,7 +33,7 @@ public class LeaderActionsState extends CliController {
     }
 
     private void executeLeaderAction(boolean isActivate) {
-        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(cli.getViewModel().getLocalPlayerNickname())).render();
+        new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname())).render();
 
         cli.getOut().println();
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {
@@ -51,12 +51,12 @@ public class LeaderActionsState extends CliController {
     public void on(ErrCardRequirements event) {
         String msg;
         if (event.getMissingDevCards().isPresent()) {
-            msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
+            msg = String.format("\nPlayer %s does not satisfy the following entries:", vm.getLocalPlayerNickname());
 
             for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
                 msg = msg.concat(String.format("\nColor %s, level %d, missing %s", e.getColor(), e.getLevel(), e.getAmount()));
         } else {
-            msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", cli.getViewModel().getLocalPlayerNickname());
+            msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", vm.getLocalPlayerNickname());
 
             for (Map.Entry<String, Integer> e : event.getMissingResources().get().entrySet())
                 msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey(), e.getValue()));

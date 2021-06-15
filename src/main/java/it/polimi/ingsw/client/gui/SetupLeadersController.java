@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
@@ -52,7 +51,6 @@ public class SetupLeadersController extends GuiController {
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         Gui gui = Gui.getInstance();
-        ViewModel vm = gui.getViewModel();
 
         if (vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()) == null)
             throw new RuntimeException();

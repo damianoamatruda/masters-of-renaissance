@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.*;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
@@ -74,8 +73,7 @@ public class MarketController extends GuiController {
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         Gui gui = Gui.getInstance();
-        ViewModel vm = gui.getViewModel();
-    
+
         market = new Market();
         market.setContent(vm.getMarket().orElseThrow());
         market.setSelectionListener(this::marketSelected);
@@ -95,8 +93,6 @@ public class MarketController extends GuiController {
     private void marketSelected(int index, boolean isRow) {
         this.isRow = isRow;
         this.index = index;
-
-        ViewModel vm = Gui.getInstance().getViewModel();
 
         // get a list with the selected resources
         List<String> chosenResources = new ArrayList<>();
@@ -155,7 +151,6 @@ public class MarketController extends GuiController {
 
     private void resetWarehouse() {
         Gui gui = Gui.getInstance();
-        ViewModel vm = gui.getViewModel();
 
         warehouse = new Warehouse();
 
@@ -271,7 +266,6 @@ public class MarketController extends GuiController {
 
     private void resetLeaders() {
         Gui gui = Gui.getInstance();
-        ViewModel vm = gui.getViewModel();
         
         leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .filter(c -> c.isActive() &&

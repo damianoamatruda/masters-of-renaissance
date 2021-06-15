@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.DevCardGrid;
 import it.polimi.ingsw.client.cli.components.DevSlots;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
@@ -21,7 +20,6 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardState extends CliController {
     private final CliController sourceState;
-    private ViewModel vm;
     private ReducedDevCardGrid grid;
     private String color;
     private int level;
@@ -37,8 +35,6 @@ public class BuyDevelopmentCardState extends CliController {
 
     @Override
     public void render() {
-        vm = cli.getViewModel();
-        
         cli.getOut().println();
         cli.getOut().println(center("~ Buy a Development Card ~"));
 
@@ -155,12 +151,12 @@ public class BuyDevelopmentCardState extends CliController {
     public void on(ErrCardRequirements event) {
         String msg;
         if (event.getMissingDevCards().isPresent()) {
-            msg = String.format("\nPlayer %s does not satisfy the following entries:", cli.getViewModel().getLocalPlayerNickname());
+            msg = String.format("\nPlayer %s does not satisfy the following entries:", vm.getLocalPlayerNickname());
     
             for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
                 msg = msg.concat(String.format("\nColor %s, level %d, missing %s", e.getColor(), e.getLevel(), e.getAmount()));
         } else {
-            msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", cli.getViewModel().getLocalPlayerNickname());
+            msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", vm.getLocalPlayerNickname());
 
             for (Map.Entry<String, Integer> e : event.getMissingResources().get().entrySet())
                 msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey(), e.getValue()));

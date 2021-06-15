@@ -2,8 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.cli.components.*;
-import it.polimi.ingsw.client.viewmodel.PlayerData;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
@@ -29,7 +27,7 @@ public abstract class CliController extends UiController implements Renderable {
 
     @Override
     public void on(ErrAction event) {
-        ViewModel vm = cli.getViewModel();
+        super.on(event);
 
         // TODO: handle
         // switch (event.getReason()) {
@@ -142,7 +140,6 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ResQuit event) {
         super.on(event);
         
-        cli.getUi().closeClient();
         cli.setController(new MainMenuState());
     }
 
@@ -158,8 +155,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         // print only, no cache update
-        cli.getViewModel()
-                .getActionToken(event.getActionToken())
+        vm.getActionToken(event.getActionToken())
                 .ifPresent(t -> {
                     cli.getOut().println();
                     new ActionToken(t).render();
@@ -185,28 +181,20 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         cli.getOut().println();
-        new DevCardGrid(cli.getViewModel().getDevCardGrid().orElseThrow()).render();
+        new DevCardGrid(vm.getDevCardGrid().orElseThrow()).render();
     }
 
     @Override
     public void on(UpdateDevCardSlot event) {
         super.on(event);
         
-        new DevSlots(cli.getViewModel()
-                .getPlayerDevelopmentSlots(cli.getViewModel().getLocalPlayerNickname())).render();
+        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
     }
 
     @Override
     public void on(UpdateFaithPoints event) {
         super.on(event);
-        
-        ViewModel vm = cli.getViewModel();
 
-        if (event.isBlackCross())
-            vm.setBlackCrossFP(event.getFaithPoints());
-        else
-            vm.getPlayerData(event.getPlayer()).orElseThrow().setFaithPoints(event.getFaithPoints());
-        
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(n -> n, n -> vm.getPlayerFaithPoints(n)));
 
@@ -228,25 +216,11 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateGame event) {
         super.on(event);
-    
-        ViewModel vm = cli.getViewModel();
-
-        vm.setActionTokens(event.getActionTokens());
-        vm.setContainers(event.getResContainers());
-        vm.setDevelopmentCards(event.getDevelopmentCards());
-        vm.setLeaderCards(event.getLeaderCards());
-        vm.setPlayerNicknames(event.getPlayers());
-        vm.setProductions(event.getProductions());
-        vm.setFaithTrack(event.getFaithTrack());
-        vm.setDevCardColors(event.getColors());
-        vm.setResourceTypes(event.getResourceTypes());
-        vm.setResumedGame(event.isResumed());
-        vm.setSlotsCount(event.getSlotsCount());
 
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
             .collect(Collectors.toMap(nick -> nick, nick -> 0));
         cli.getOut().println();
-        new FaithTrack(cli.getViewModel().getFaithTrack().orElseThrow(), points).render();
+        new FaithTrack(vm.getFaithTrack().orElseThrow(), points).render();
     }
 
     @Override
@@ -265,10 +239,6 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateActivateLeader event) {
         super.on(event);
-        
-        ViewModel vm = cli.getViewModel();
-
-        vm.activateLeaderCard(event.getLeader());
         
         cli.getOut().println();
         cli.getOut().printf("%s activated leader card %d.%n", vm.getCurrentPlayer(), event.getLeader());
@@ -293,7 +263,7 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println();
         cli.getOut().println(center(String.format("%s's leader cards:", event.getPlayer())));
         cli.getOut().println();
-        new LeadersHand(cli.getViewModel().getPlayerLeaderCards(event.getPlayer())).render();
+        new LeadersHand(vm.getPlayerLeaderCards(event.getPlayer())).render();
     }
 
     @Override
@@ -317,14 +287,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdatePlayer event) {
         super.on(event);
         
-        ViewModel vm = cli.getViewModel();
-        vm.setPlayerData(event.getPlayer(), new PlayerData(
-                event.getBaseProduction(),
-                event.getPlayerSetup(),
-                event.getStrongbox(),
-                event.getWarehouseShelves()));
         cli.getOut().println();
-        
         new ResourceContainers(
                 event.getPlayer(),
                 vm.getPlayerWarehouseShelves(event.getPlayer()),
@@ -361,7 +324,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateSetupDone event) {
         super.on(event);
         
-        if (cli.getViewModel().getPlayerNicknames().size() > 1) {
+        if (vm.getPlayerNicknames().size() > 1) {
             cli.getOut().println();
             cli.getOut().println("All players have finished their setup! Game starting...");
         }

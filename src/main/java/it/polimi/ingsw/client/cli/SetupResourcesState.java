@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
@@ -23,8 +22,6 @@ public class SetupResourcesState extends CliController {
     public void render() {
         cli.getOut().println();
         cli.getOut().println(center("~ Choose initial resources ~"));
-
-        ViewModel vm = cli.getViewModel();
 
         Set<String> allowedResources = vm.getResourceTypes().stream()
                 .map(ReducedResourceType::getName)
@@ -91,8 +88,8 @@ public class SetupResourcesState extends CliController {
         setNextState(cli);
     }
 
-    private static void setNextState(Cli cli) {
-        if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+    private void setNextState(Cli cli) {
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());

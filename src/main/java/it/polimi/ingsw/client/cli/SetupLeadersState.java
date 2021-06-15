@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.LeadersHand;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
@@ -23,12 +22,10 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class SetupLeadersState extends CliController {
     @Override
     public void render() {
-        ViewModel vm = cli.getViewModel();
-
         cli.getOut().println();
-        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
+        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
 
-        int leadersToChoose = cli.getViewModel()
+        int leadersToChoose = vm
                 .getLocalPlayerData().orElseThrow()
                 .getSetup().orElseThrow()
                 .getChosenLeadersCount();
@@ -71,7 +68,7 @@ public class SetupLeadersState extends CliController {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Leader setup: ErrAction received with reason not LATE_SETUP_ACTION.");
 
-        if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());
@@ -92,12 +89,12 @@ public class SetupLeadersState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        if (event.getAction() != ActionType.CHOOSE_LEADERS && event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+        if (event.getAction() != ActionType.CHOOSE_LEADERS && event.getPlayer().equals(vm.getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
-        if (!event.getPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+        if (!event.getPlayer().equals(vm.getLocalPlayerNickname()))
             return;
 
-        if (cli.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources() > 0)
+        if (vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources() > 0)
             cli.setController(new SetupResourcesState());
     }
 
@@ -115,8 +112,8 @@ public class SetupLeadersState extends CliController {
         setNextState(cli);
     }
 
-    private static void setNextState(Cli cli) {
-        if (cli.getViewModel().getCurrentPlayer().equals(cli.getViewModel().getLocalPlayerNickname()))
+    private void setNextState(Cli cli) {
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());

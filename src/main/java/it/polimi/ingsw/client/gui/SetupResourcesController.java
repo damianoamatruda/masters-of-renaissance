@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.gui.components.Resource;
 import it.polimi.ingsw.client.gui.components.Shelf;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.client.gui.components.Warehouse;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
@@ -67,7 +66,6 @@ public class SetupResourcesController extends GuiController {
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         Gui gui = Gui.getInstance();
-        ViewModel vm = gui.getViewModel();
 
         titleComponent.setText(String.format("Choose %d resources.",
                 gui.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources()));

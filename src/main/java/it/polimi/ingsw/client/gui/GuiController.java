@@ -23,7 +23,8 @@ public abstract class GuiController extends UiController implements Initializabl
 
     @Override
     public void on(ResQuit event) {
-        gui.getUi().closeClient();
+        super.on(event);
+        
         gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }

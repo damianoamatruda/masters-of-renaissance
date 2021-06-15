@@ -41,7 +41,7 @@ public class TurnAfterActionState extends CliTurnState {
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
-        if (cli.getViewModel().getLocalPlayerNickname().equals(event.getPlayer()))
+        if (vm.getLocalPlayerNickname().equals(event.getPlayer()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());
