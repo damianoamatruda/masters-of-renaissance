@@ -322,7 +322,8 @@ public class ViewModel {
      * @param container the container to set
      */
     public synchronized void setContainer(ReducedResourceContainer container) {
-        containers.replaceAll(c -> c.getId() == container.getId() ? container : c);
+        if (container != null)
+            containers.replaceAll(c -> c.getId() == container.getId() ? container : c);
     }
 
     /**
@@ -549,9 +550,9 @@ public class ViewModel {
     }
 
     /**
-     * @param id the ID of the activated section
+     * @param id the ID of the section to activate
      */
-    public synchronized void setVaticanSection(int id) {
+    public synchronized void activateVaticanSection(int id) {
         if (faithTrack != null)
             faithTrack.getVaticanSections().entrySet().stream()
                 .map(Entry::getValue)
@@ -569,6 +570,8 @@ public class ViewModel {
      * @param winner the winner to set
      */
     public synchronized void setWinner(String winner) {
+        if (winner == null)
+            winner = "";
         this.winner = winner;
         this.isGameEnded = true;
     }
@@ -598,6 +601,8 @@ public class ViewModel {
      * @param localPlayerNickname the nickname to set
      */
     public synchronized void setLocalPlayerNickname(String localPlayerNickname) {
+        if (localPlayerNickname == null)
+            localPlayerNickname = "Player 1";
         this.localPlayerNickname = localPlayerNickname;
     }
 
