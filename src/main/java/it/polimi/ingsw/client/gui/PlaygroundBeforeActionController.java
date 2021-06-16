@@ -46,6 +46,8 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
 
         warehouse.enableSwapper();
 
+        addProduceButtons();
+
     }
 
     @Override

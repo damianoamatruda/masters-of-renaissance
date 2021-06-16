@@ -1,25 +1,29 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Shelf extends BorderPane {
     private static final Logger LOGGER = Logger.getLogger(Shelf.class.getName());
+
+    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     private int shelfId;
     private int size;
@@ -57,6 +61,7 @@ public class Shelf extends BorderPane {
         
         BorderPane.setMargin(content, new Insets(0, 10, 0, 10));
         BorderPane.setAlignment(sizeText, Pos.CENTER_LEFT);
+        this.setPickOnBounds(false);
     }
 
     public void setContent(HBox content) {
@@ -162,6 +167,37 @@ public class Shelf extends BorderPane {
                     event.consume();
                 }
             );
+        }
+    }
+
+    public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, ReducedResourceContainer reducedShelf) {
+        for (Node r : content.getChildren()) {
+            r.setOnMouseClicked(e -> {
+                String name = ((Resource) r).getName();
+                // doesn't work? => r.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !r.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
+
+                if(r.getOpacity() != 0.5) {
+                    r.setOpacity(0.5);
+                    reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) - 1);
+                    if (containers.get(shelfId) == null) {
+                        Map<String, Integer> content = new HashMap<>();
+                        content.put(name, 1);
+                        containers.put(shelfId, content);
+                    } else if (containers.get(shelfId).get(name) == null) {
+                        containers.get(shelfId).put(name, 1);
+                    } else {
+                        containers.get(shelfId).put(name, containers.get(shelfId).get(name) + 1);
+                    }
+                } else {
+                    r.setOpacity(1);
+                    reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) + 1);
+                    containers.get(shelfId).put(name, containers.get(shelfId).get(name) - 1);
+                    if (containers.get(shelfId).get(name) == 0)
+                        containers.get(shelfId).remove(name);
+                    if (containers.get(shelfId).keySet().size() == 0)
+                        containers.remove(shelfId);
+                }
+            });
         }
     }
 

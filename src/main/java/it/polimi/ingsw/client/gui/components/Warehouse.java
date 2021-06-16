@@ -151,4 +151,11 @@ public class Warehouse extends VBox {
     public Optional<Shelf> getShelfByResource(String resource) {
         return shelves.values().stream().filter(sh -> sh.getBoundResource() != null && sh.getBoundResource().equals(resource)).findAny();
     }
+
+    public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, List<ReducedResourceContainer> newTempShelves) {
+        for(Shelf s : shelves.values()) {
+            Optional<ReducedResourceContainer> reduced = newTempShelves.stream().filter(red -> red.getId() == s.getShelfId()).findAny();
+            reduced.ifPresent(value -> s.addResourcesSelector(containers, value));
+        }
+    }
 }

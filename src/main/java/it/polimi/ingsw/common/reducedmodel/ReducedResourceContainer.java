@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class ReducedResourceContainer {
             
         this.id = id;
         this.size = size;
-        this.content = content;
+        this.content = new HashMap<>(content);
         this.boundedResType = boundedResType;
     }
 

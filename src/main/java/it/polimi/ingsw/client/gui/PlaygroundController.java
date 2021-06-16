@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -73,7 +74,6 @@ public abstract class PlaygroundController extends GuiController {
             List<DevelopmentCard> cards = modelSlot.stream()
                     .map(c -> new DevelopmentCard(c)).toList();
             slot.setDevCards(cards);
-            slot.addProduceButton(toActivate);
 
             slots.add(slot);
         });
@@ -100,13 +100,6 @@ public abstract class PlaygroundController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         setPauseHandlers(this.backStackPane, this.canvas, maxScale);
-
-        SButton activateProduction = new SButton();
-        activateProduction.setText("Activate production");
-        activateProduction.setOnAction((event) -> backStackPane.getChildren().add(new ActivateProduction(toActivate, maxScale)));
-        canvas.getChildren().add(activateProduction);
-        AnchorPane.setLeftAnchor(activateProduction, 365d);
-        AnchorPane.setBottomAnchor(activateProduction, 15d);
 
     }
 
@@ -280,5 +273,23 @@ public abstract class PlaygroundController extends GuiController {
 
         if(!gui.getViewModel().isCurrentPlayer())
             Platform.runLater(() -> warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getCurrentPlayer().get()), (s1, s2) -> { }));
+    }
+
+    protected void addProduceButtons() {
+        // add button to proceed to payment
+        SButton activateProduction = new SButton();
+        activateProduction.setText("Activate production");
+        activateProduction.setOnAction((event) ->
+                backStackPane.getChildren().add(new ActivateProduction(toActivate, 0,
+                        new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer().get())), maxScale)));
+        activateProduction.setDisable(true);
+
+        canvas.getChildren().add(activateProduction);
+        AnchorPane.setLeftAnchor(activateProduction, 365d);
+        AnchorPane.setBottomAnchor(activateProduction, 15d);
+
+        // add button to each production
+        pboard.addProduceButtons(toActivate, activateProduction);
+
     }
 }

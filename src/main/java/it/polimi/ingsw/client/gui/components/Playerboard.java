@@ -139,4 +139,11 @@ public class Playerboard extends HBox {
         else if (Gui.getInstance().getViewModel().getCurrentPlayer().get().equals(event.getPlayer()))
             faithTrack.updatePlayerMarker(event.getFaithPoints(), oldPts);
     }
+
+
+    public void addProduceButtons(List<Integer> toActivate, SButton activateProduction) {
+        slots.forEach(slot -> slot.addProduceButton(toActivate, activateProduction));
+
+        p.addProduceButton(toActivate, activateProduction);
+    }
 }

@@ -4,15 +4,44 @@
 
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.scene.text.Text?>
-<fx:root xmlns="http://javafx.com/javafx"
+<?import it.polimi.ingsw.client.gui.components.Warehouse?>
+<?import it.polimi.ingsw.client.gui.components.Production?>
+<fx:root fx:id="backStackPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
-         prefHeight="400.0" prefWidth="600.0" type="BorderPane"
+         prefHeight="400.0" prefWidth="600.0" type="StackPane"
          stylesheets="@../index.css" styleClass="main">
 
-  <left>
-    <SButton fx:id="back" text="Back"/>
-  </left>
-  <center>
-    <Text fx:id="text"/>
-  </center>
+  <BorderPane fx:id="bpane">
+    <top>
+      <Text fx:id="text"/>
+    </top>
+
+    <center>
+      <VBox>
+        <HBox alignment="CENTER" spacing="30">
+          <Text text="Input replacements:  "/>
+          <HBox fx:id="choosableInputResources"/>
+        </HBox>
+        <HBox alignment="CENTER" spacing="30">
+          <Text text="Output replacements:"/>
+          <HBox fx:id="choosableOutputResources"/>
+        </HBox>
+        <HBox alignment="CENTER" spacing="50">
+          <VBox>
+            <Text text="Choose from containers:"/>
+            <Warehouse fx:id="guiShelves"/>
+          </VBox>
+          <Production fx:id="productionRecipe"/>
+        </HBox>
+      </VBox>
+
+    </center>
+    <bottom>
+      <HBox alignment="CENTER" spacing="40">
+        <SButton fx:id="back" text="Back"/>
+        <SButton fx:id="next" text="Next"/>
+        <SButton fx:id="submit" text="Submit"/>
+      </HBox>
+    </bottom>
+  </BorderPane>
 </fx:root>

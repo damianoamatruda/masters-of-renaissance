@@ -179,6 +179,8 @@ public class SetupResourcesController extends GuiController {
 
                     success = true;
                 } catch (NumberFormatException e) { // TODO: Handle this, don't simply log it
+                    // Reply to To-Do: not much to handle, it is normal if it gets here:
+                    // it means that the resource hasn't been dropped inside of any shelf, but outside instead
                     LOGGER.log(Level.SEVERE, "NumberFormatException (TODO: Handle this)", e);
                 }
 

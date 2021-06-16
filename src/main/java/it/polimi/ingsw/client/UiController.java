@@ -59,6 +59,7 @@ public abstract class UiController {
     }
 
     public void on(UpdateActionToken event) {
+        vm.getActionToken(event.getActionToken()).ifPresent(vm::setLatestToken);
     }
 
     public void on(UpdateBookedSeats event) {

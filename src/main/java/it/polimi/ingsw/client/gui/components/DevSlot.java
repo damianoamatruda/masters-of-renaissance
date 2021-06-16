@@ -72,18 +72,21 @@ public class DevSlot extends StackPane {
         // });
     }
 
-    public void addProduceButton(List<Integer> toActivate) {
-        if(cards.size() > 0) {
+    public void addProduceButton(List<Integer> toActivate, SButton activateProduction) {
+        if(cards != null && cards.size() > 0) {
             DevelopmentCard top = cards.get(cards.size() - 1);
             AnchorPane p = new AnchorPane();
             SButton activate = new SButton();
             activate.setText("Produce");
             activate.setOnAction((event) -> {
                 top.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
-                if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))
+                if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
                     toActivate.add(top.getProduction().getProductionId());
-                else
+                    activateProduction.setDisable(false);
+                } else {
                     toActivate.remove(Integer.valueOf(top.getProduction().getProductionId()));
+                    if(toActivate.size() == 0) activateProduction.setDisable(true);
+                }
             });
             p.getChildren().add(activate);
             AnchorPane.setLeftAnchor(activate, 70d);
