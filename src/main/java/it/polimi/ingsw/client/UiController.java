@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import java.util.Optional;
+
 import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
@@ -12,6 +14,39 @@ public abstract class UiController {
     public UiController(Ui ui) {
         this.ui = ui;
         vm = ui.getViewModel();
+    }
+
+    /**
+     * @return <code>true</code> if the local player's leader setup phase has concluded,
+     *         <code>false</code> if it has not or if there's not enough data to know whether it has
+     */
+    public boolean isLocalLeaderSetupDone() {
+        /* if req not accepted in a previous connection by server,
+           card count to choose > 0 and cards can be discarded (hand size - count > 0) */
+        return vm.getPlayerData(vm.getLocalPlayerNickname()).map(pd -> pd.getSetup().map(setup ->
+                setup.hasChosenLeaders() || setup.getChosenLeadersCount() == 0 ||
+                vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() == setup.getChosenLeadersCount()))
+                .orElse(Optional.of(false))
+                .get();
+    }
+
+    public boolean isLeaderSetupAvailable() {
+        return !isLocalLeaderSetupDone() && vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() > 0;
+    }
+
+    /**
+     * @return <code>true</code> if the local player's resource setup phase has concluded,
+     *         <code>false</code> if it has not or if there's not enough data to know whether it has
+     */
+    public boolean isLocalResourceSetupDone() {
+        return vm.getPlayerData(vm.getLocalPlayerNickname()).map(pd -> pd.getSetup().map(setup ->
+                setup.hasChosenResources() || setup.getInitialResources() == 0))
+                .orElse(Optional.of(false))
+                .get();
+    }
+
+    public boolean isResourceSetupAvailable() {
+        return isLocalLeaderSetupDone() && !isLocalResourceSetupDone();
     }
 
     public void on(ErrAction event) {
