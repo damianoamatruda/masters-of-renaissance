@@ -2,8 +2,10 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
+import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
+import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
@@ -63,28 +65,31 @@ public class InputPlayersCountState extends CliController {
     }
 
     @Override
-    public void on(UpdateCurrentPlayer event) {
-        // having this overriding may prove necessary:
-        // if the setState isn't fast enough, the next event after UpdateGame is CurrentPlayer and
-        // this means it might not get handled in WaitingAfterTurnState
+    public void on(UpdateGame event) {
         super.on(event);
 
-        // if (vm.isResumedGame()) {
-        //     if (event.getPlayer().equals(vm.getLocalPlayerNickname()))
-        //         cli.setController(new TurnBeforeActionState());
-        //     else
-        //         cli.setController(new WaitingAfterTurnState());
-        // }
+        setNextSetupState();
+    }
+
+    @Override
+    public void on(UpdatePlayer event) {
+        super.on(event);
+
+        setNextSetupState();
+    }
+
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextSetupState();
     }
 
     @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
 
-        // if (vm.isResumedGame())
-        //     throw new RuntimeException("UpdateLeadersHand after resumed game.");
-
         cli.promptPause();
-        cli.setController(new SetupLeadersState());
+        setNextSetupState();
     }
 }

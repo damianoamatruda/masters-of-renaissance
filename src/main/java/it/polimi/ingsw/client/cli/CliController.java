@@ -19,6 +19,38 @@ public abstract class CliController extends UiController implements Renderable {
     public CliController() {
         super(Cli.getInstance().getUi());
     }
+
+    /**
+     * Sets the next state based on the following algorithm:
+     * 
+     * UpdateGame tells the client whether the game's setup phase is still ongoing or not.
+     * If the setup is done, the client needs to wait until UpdateCurrentPlayer to know which state to change to.
+     * If the setup phase is not done:
+     * The local player's UpdatePlayer tells the client what part of the player setup to switch to.
+     * If the leaders hand still needs to be chosen the client will need to wait for UpdateLeadersHand.
+     */
+    protected void setNextSetupState() {
+        vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
+            if (isSetupDone) // setup is done
+                vm.getCurrentPlayer().ifPresent(nick -> { // received UpdateCurrentPlayer
+                    if (nick.equals(vm.getLocalPlayerNickname()))
+                        cli.setController(new TurnBeforeActionState());
+                    
+                    cli.setController(new WaitingAfterTurnState());
+                });
+            else // setup not done
+                vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
+                    pd.getSetup().ifPresent(setup -> { // received local player's setup
+                        if (!setup.hasChosenLeaders() && setup.getChosenLeadersCount() > 0 &&
+                            vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() > setup.getChosenLeadersCount())
+                            cli.setController(new SetupLeadersState());
+                        else if (vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() == setup.getChosenLeadersCount() &&
+                                 !setup.hasChosenResources() && setup.getInitialResources() > 0)
+                            cli.setController(new SetupResourcesState());
+                    });
+                });
+        });
+    }
     
     @Override
     public abstract void render();

@@ -1,10 +1,9 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction.ErrActionReason;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SetupResourcesState extends CliController {
+public class SetupResourcesState extends SetupState {
     @Override
     public void render() {
         cli.getOut().println();
@@ -50,22 +49,11 @@ public class SetupResourcesState extends CliController {
     }
 
     @Override
-    public void on(ErrInitialChoice event) {
-        // repeats either SetupLeadersState or SetupResourcesState
-        // if it doesn't, that's really bad
-        cli.reloadController(event.isLeadersChoice() ? // if the error is from the initial leaders choice
-                event.getMissingLeadersCount() == 0 ?
-                        "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
-                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
-                "Resources already chosen");          // else it's from the resources choice
-    }
-
-    @Override
     public void on(ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Resources setup: ErrAction received with reason not LATE_SETUP_ACTION.");
-            
-        setNextState(cli);
+        
+        super.on(event);
     }
 
     // ErrObjectNotOwned handled in CliState
@@ -75,23 +63,10 @@ public class SetupResourcesState extends CliController {
     // ErrResourceTransfer handled in CliState
 
     @Override
-    public void on(UpdateSetupDone event) {
-        super.on(event);
-
-        setNextState(cli);
-    }
-
-    @Override
-    public void on(UpdateCurrentPlayer event) {
-        super.on(event);
-
-        setNextState(cli);
-    }
-
-    private void setNextState(Cli cli) {
-        if (vm.getCurrentPlayer().get().equals(vm.getLocalPlayerNickname()))
-            cli.setController(new TurnBeforeActionState());
-        else
-            cli.setController(new WaitingAfterTurnState());
+    public void on(UpdateAction event) {
+        if (event.getAction() != ActionType.CHOOSE_RESOURCES && event.getPlayer().equals(vm.getLocalPlayerNickname()))
+            throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
+        
+        // super.on(event); // not needed, as UpdateSetupDone will take care of state switching, see SetupState
     }
 }

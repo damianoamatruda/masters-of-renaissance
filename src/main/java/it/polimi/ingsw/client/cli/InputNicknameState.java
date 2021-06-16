@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
@@ -10,9 +9,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
-import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
@@ -41,15 +38,6 @@ public class InputNicknameState extends CliController {
                     valid.set(false);
             }, () -> cli.getUi().dispatch(new ReqQuit()));
         }
-
-        /* Upon UpdateGame reception the client will know
-           whether the setup is still ongoing or not.
-           Upon localplayer's UpdatePlayer reception it will know
-           which state to change to.
-           If the leaders hand still needs to be chosen,
-           the client will need to wait for UpdateLeadersHand.
-           If the setup is done, the client needs to wait until
-           UpdateCurrentPlayer to know which state to change to. */
     }
 
     @Override
@@ -75,48 +63,28 @@ public class InputNicknameState extends CliController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        setNextState();
+        setNextSetupState();
     }
 
     @Override
     public void on(UpdatePlayer event) {
         super.on(event);
 
-        setNextState();
+        setNextSetupState();
     }
 
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        setNextState();
+        setNextSetupState();
     }
     
     @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
-
-        setNextState();
-    }
-
-    private void setNextState() {
-        vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame
-            if (isSetupDone) // setup is done
-                vm.getCurrentPlayer().ifPresent(nick -> { // received UpdateCurrentPlayer
-                    if (nick.equals(vm.getLocalPlayerNickname()))
-                        cli.setController(new TurnBeforeActionState());
-                    
-                    cli.setController(new WaitingAfterTurnState());
-                });
-            else // setup not done
-                vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
-                    pd.getSetup().ifPresent(setup -> { // received local player's setup
-                        if (!setup.hasChosenLeaders())
-                            cli.setController(new SetupLeadersState());
-                        if (!setup.hasChosenResources())
-                            cli.setController(new SetupResourcesState());
-                    });
-                });
-        });
+        
+        cli.promptPause();
+        setNextSetupState();
     }
 }
