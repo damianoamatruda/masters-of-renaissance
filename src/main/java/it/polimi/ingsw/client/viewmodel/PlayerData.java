@@ -62,7 +62,7 @@ public class PlayerData {
      * @param slot   the index of the slot (0-based) to place the card into
      * @param cardID the ID of the card to place on top (set at position 0)
      */
-    public void pushToDevSlot(int slot, int cardID) {
+    public synchronized void pushToDevSlot(int slot, int cardID) {
         while (devSlots.size() - 1 < slot)
             devSlots.add(new ArrayList<>());
 
@@ -79,7 +79,7 @@ public class PlayerData {
     /**
      * @param faithPoints the faithPoints to set
      */
-    public void setFaithPoints(int faithPoints) {
+    public synchronized void setFaithPoints(int faithPoints) {
         this.faithPoints = faithPoints;
     }
 
@@ -93,7 +93,7 @@ public class PlayerData {
     /**
      * @param isActive the isActive to set
      */
-    public void setActive(boolean isActive) {
+    public synchronized void setActive(boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -107,7 +107,7 @@ public class PlayerData {
     /**
      * @param leadersCount the leadersCount to set
      */
-    public void setLeadersCount(int leadersCount) {
+    public synchronized void setLeadersCount(int leadersCount) {
         this.leadersCount = leadersCount;
     }
 
@@ -121,7 +121,7 @@ public class PlayerData {
     /**
      * @param leadersHand the leadersHand to set
      */
-    public void setLeadersHand(List<Integer> leadersHand) {
+    public synchronized void setLeadersHand(List<Integer> leadersHand) {
         if (leadersHand != null)
             this.leadersHand = new ArrayList<>(leadersHand);
     }
@@ -129,7 +129,7 @@ public class PlayerData {
     /**
      * @return the setup
      */
-    public Optional<ReducedPlayerSetup> getSetup() {
+    public synchronized Optional<ReducedPlayerSetup> getSetup() {
         return Optional.ofNullable(setup);
     }
 
@@ -150,7 +150,7 @@ public class PlayerData {
     /**
      * @param victoryPoints the victoryPoints to set
      */
-    public void setVictoryPoints(int victoryPoints) {
+    public synchronized void setVictoryPoints(int victoryPoints) {
         this.victoryPoints = victoryPoints;
     }
 

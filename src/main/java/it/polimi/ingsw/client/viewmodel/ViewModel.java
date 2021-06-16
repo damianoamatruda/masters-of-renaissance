@@ -64,15 +64,15 @@ public class ViewModel {
      * @param nickname the nickname of the player whose data needs to be retrieved.
      * @return the playerData of the specified player
      */
-    public Optional<PlayerData> getPlayerData(String nickname) {
+    public synchronized Optional<PlayerData> getPlayerData(String nickname) {
         return Optional.ofNullable(playerData.get(nickname));
     }
     
-    public Optional<PlayerData> getCurrentPlayerData() {
+    public synchronized Optional<PlayerData> getCurrentPlayerData() {
         return getPlayerData(getCurrentPlayer().orElse(null));
     }
 
-    public Optional<PlayerData> getLocalPlayerData() {
+    public synchronized Optional<PlayerData> getLocalPlayerData() {
         return getPlayerData(getLocalPlayerNickname());
     }
     
@@ -81,7 +81,7 @@ public class ViewModel {
      * 
      * @param playerData the player's data
      */
-    public void setPlayerData(String nickname, PlayerData playerData) {
+    public synchronized void setPlayerData(String nickname, PlayerData playerData) {
         this.playerData.put(nickname, playerData);
     }
 
@@ -89,7 +89,7 @@ public class ViewModel {
      * @param nickname
      * @return the topmost development cards in the player's slots
      */
-    public Optional<ReducedResourceTransactionRecipe> getPlayerBaseProduction(String nickname) {
+    public synchronized Optional<ReducedResourceTransactionRecipe> getPlayerBaseProduction(String nickname) {
         if (!playerData.containsKey(nickname))
             return Optional.empty();
 
@@ -100,7 +100,7 @@ public class ViewModel {
      * @param nickname
      * @return all the development cards in the player's slots
      */
-    public List<List<ReducedDevCard>> getPlayerDevelopmentCards(String nickname) {
+    public synchronized List<List<ReducedDevCard>> getPlayerDevelopmentCards(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
@@ -116,7 +116,7 @@ public class ViewModel {
      * @param nickname
      * @return the topmost development cards in the player's slots
      */
-    public List<ReducedDevCard> getPlayerDevelopmentSlots(String nickname) {
+    public synchronized List<ReducedDevCard> getPlayerDevelopmentSlots(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
@@ -131,7 +131,7 @@ public class ViewModel {
      * @param nickname the player whose faith points are to be returned
      * @return the faith points of the selected player
      */
-    public int getPlayerFaithPoints(String nickname) {
+    public synchronized int getPlayerFaithPoints(String nickname) {
         if (!playerData.containsKey(nickname))
             return 0;
         
@@ -142,7 +142,7 @@ public class ViewModel {
      * @param nickname the player whose state to be returned
      * @return the state of the selected player
      */
-    public boolean isPlayerActive(String nickname) {
+    public synchronized boolean isPlayerActive(String nickname) {
         if (!playerData.containsKey(nickname))
             return false;
         
@@ -153,7 +153,7 @@ public class ViewModel {
      * @param nickname
      * @return the reduced leader cards owned by the player
      */
-    public List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
+    public synchronized List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
@@ -167,7 +167,7 @@ public class ViewModel {
      * @param nickname
      * @return the number of leader cards owned by the player
      */
-    public int getPlayerLeadersCount(String nickname) {
+    public synchronized int getPlayerLeadersCount(String nickname) {
         if (!playerData.containsKey(nickname))
             return 0;
 
@@ -183,7 +183,7 @@ public class ViewModel {
      *              <li>the leader cards productions
      *          </ul>
      */
-    public List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
+    public synchronized List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
         
@@ -207,7 +207,7 @@ public class ViewModel {
      * @param nickname
      * @return the player's warehouse shelves and depots
      */
-    public List<ReducedResourceContainer> getPlayerShelves(String nickname) {
+    public synchronized List<ReducedResourceContainer> getPlayerShelves(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
@@ -221,7 +221,7 @@ public class ViewModel {
      * @param nickname
      * @return the player's warehouse shelves
      */
-    public List<ReducedResourceContainer> getPlayerWarehouseShelves(String nickname) {
+    public synchronized List<ReducedResourceContainer> getPlayerWarehouseShelves(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
@@ -236,7 +236,7 @@ public class ViewModel {
      * @param nickname
      * @return the player's active leaders' depots
      */
-    public List<ReducedResourceContainer> getPlayerDepots(String nickname) {
+    public synchronized List<ReducedResourceContainer> getPlayerDepots(String nickname) {
         if (!playerData.containsKey(nickname))
             return new ArrayList<>();
 
@@ -249,14 +249,14 @@ public class ViewModel {
                 .toList();
     }
 
-    public Optional<ReducedResourceContainer> getPlayerStrongbox(String nickname) {
+    public synchronized Optional<ReducedResourceContainer> getPlayerStrongbox(String nickname) {
         if (!playerData.containsKey(nickname))
             return Optional.empty();
 
         return getContainer(playerData.get(nickname).getStrongbox());
     }
 
-    public int getPlayerVictoryPoints(String nickname) {
+    public synchronized int getPlayerVictoryPoints(String nickname) {
         if (!playerData.containsKey(nickname))
             return 0;
 
@@ -267,14 +267,14 @@ public class ViewModel {
      * @param id the ID of the token to be returned
      * @return the token associated with the ID
      */
-    public Optional<ReducedActionToken> getActionToken(int id) {
+    public synchronized Optional<ReducedActionToken> getActionToken(int id) {
         return actionTokens.stream().filter(t -> t.getId() == id).findAny();
     }
 
     /**
      * @param actionTokens the actionTokens to set
      */
-    public void setActionTokens(List<ReducedActionToken> actionTokens) {
+    public synchronized void setActionTokens(List<ReducedActionToken> actionTokens) {
         if (actionTokens != null)
             this.actionTokens = new ArrayList<>(actionTokens);
     }
@@ -282,14 +282,14 @@ public class ViewModel {
     /**
      * @return blackCross' faith points
      */
-    public int getBlackCrossFP() {
+    public synchronized int getBlackCrossFP() {
         return blackCrossFP;
     }
 
     /**
      * @param blackCrossFP the blackCross faith points to set
      */
-    public void setBlackCrossFP(int blackCrossFP) {
+    public synchronized void setBlackCrossFP(int blackCrossFP) {
         this.blackCrossFP = blackCrossFP;
     }
 
@@ -297,21 +297,21 @@ public class ViewModel {
      * @param id the id of the container to be returned
      * @return the container corresponding to the id
      */
-    public Optional<ReducedResourceContainer> getContainer(int id) {
+    public synchronized Optional<ReducedResourceContainer> getContainer(int id) {
         return containers.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
      * @return the containers
      */
-    public List<ReducedResourceContainer> getContainers() {
+    public synchronized List<ReducedResourceContainer> getContainers() {
         return containers;
     }
 
     /**
      * @param containers the containers to set
      */
-    public void setContainers(List<ReducedResourceContainer> containers) {
+    public synchronized void setContainers(List<ReducedResourceContainer> containers) {
         if (containers != null)
             this.containers = new ArrayList<>(containers);
     }
@@ -319,35 +319,35 @@ public class ViewModel {
     /**
      * @param container the container to set
      */
-    public void setContainer(ReducedResourceContainer container) {
+    public synchronized void setContainer(ReducedResourceContainer container) {
         containers.replaceAll(c -> c.getId() == container.getId() ? container : c);
     }
 
     /**
      * @return the currentPlayer
      */
-    public Optional<String> getCurrentPlayer() {
+    public synchronized Optional<String> getCurrentPlayer() {
         return Optional.ofNullable(currentPlayer);
     }
 
     /**
      * @param currentPlayer the currentPlayer to set
      */
-    public void setCurrentPlayer(String currentPlayer) {
+    public synchronized void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
     /**
      * @return the devCardColors
      */
-    public List<ReducedColor> getDevCardColors() {
+    public synchronized List<ReducedColor> getDevCardColors() {
         return devCardColors;
     }
 
     /**
      * @param devCardColors the devCardColors to set
      */
-    public void setDevCardColors(List<ReducedColor> devCardColors) {
+    public synchronized void setDevCardColors(List<ReducedColor> devCardColors) {
         if (devCardColors != null)
             this.devCardColors = new ArrayList<>(devCardColors);
     }
@@ -355,14 +355,14 @@ public class ViewModel {
     /**
      * @return the devCardGrid
      */
-    public Optional<ReducedDevCardGrid> getDevCardGrid() {
+    public synchronized Optional<ReducedDevCardGrid> getDevCardGrid() {
         return Optional.ofNullable(devCardGrid);
     }
 
     /**
      * @param devCardGrid the devCardGrid to set
      */
-    public void setDevCardGrid(ReducedDevCardGrid devCardGrid) {
+    public synchronized void setDevCardGrid(ReducedDevCardGrid devCardGrid) {
         this.devCardGrid = devCardGrid;
     }
 
@@ -370,7 +370,7 @@ public class ViewModel {
      * @param id the ID of the card to be returned
      * @return the developmentCard matching the ID
      */
-    public Optional<ReducedDevCard> getDevelopmentCard(int id) {
+    public synchronized Optional<ReducedDevCard> getDevelopmentCard(int id) {
         return developmentCards.stream().filter(c -> c.getId() == id).findAny();
     }
 
@@ -382,7 +382,7 @@ public class ViewModel {
      * @param level the card's level
      * @return the card of the specified color and level
      */
-    public Optional<ReducedDevCard> getDevCardFromGrid(String color, int level) {
+    public synchronized Optional<ReducedDevCard> getDevCardFromGrid(String color, int level) {
         if (devCardGrid == null ||
             !devCardGrid.getTopCards().keySet().contains(color) ||
             !devCardGrid.getTopCards().get(color).stream()
@@ -398,7 +398,7 @@ public class ViewModel {
     /**
      * @param developmentCards the developmentCards to set
      */
-    public void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
+    public synchronized void setDevelopmentCards(List<ReducedDevCard> developmentCards) {
         if (developmentCards != null)
             this.developmentCards = new ArrayList<>(developmentCards);
     }
@@ -406,40 +406,40 @@ public class ViewModel {
     /**
      * @return the faithTrack
      */
-    public Optional<ReducedFaithTrack> getFaithTrack() {
+    public synchronized Optional<ReducedFaithTrack> getFaithTrack() {
         return Optional.ofNullable(faithTrack);
     }
 
     /**
      * @param faithTrack the faithTrack to set
      */
-    public void setFaithTrack(ReducedFaithTrack faithTrack) {
+    public synchronized void setFaithTrack(ReducedFaithTrack faithTrack) {
         this.faithTrack = faithTrack;
     }
 
-    public boolean isGameEnded() {
+    public synchronized boolean isGameEnded() {
         return isGameEnded;
     }
 
     /**
      * @return whether it's the last round of the match
      */
-    public boolean isLastRound() {
+    public synchronized boolean isLastRound() {
         return isLastRound;
     }
 
     /**
      * Sets last round to true.
      */
-    public void setLastRound() {
+    public synchronized void setLastRound() {
         this.isLastRound = true;
     }
 
-    public Optional<ReducedActionToken> getLatestToken() {
+    public synchronized Optional<ReducedActionToken> getLatestToken() {
         return Optional.ofNullable(latestToken);
     }
 
-    public void setLatestToken(ReducedActionToken latestToken) {
+    public synchronized void setLatestToken(ReducedActionToken latestToken) {
         this.latestToken = latestToken;
     }
 
@@ -447,21 +447,21 @@ public class ViewModel {
      * @param id the ID of the card to be returned
      * @return the leaderCard matching the ID
      */
-    public Optional<ReducedLeaderCard> getLeaderCard(int id) {
+    public synchronized Optional<ReducedLeaderCard> getLeaderCard(int id) {
         return leaderCards.stream().filter(c -> c.getId() == id).findAny();
     }
 
     /**
      * @param id the ID of the card to be activated
      */
-    public void activateLeaderCard(int id) {
+    public synchronized void activateLeaderCard(int id) {
         leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
     }
 
     /**
      * @param leaderCards the leaderCards to set
      */
-    public void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
+    public synchronized void setLeaderCards(List<ReducedLeaderCard> leaderCards) {
         if (leaderCards != null)
             this.leaderCards = new ArrayList<>(leaderCards);
     }
@@ -469,28 +469,28 @@ public class ViewModel {
     /**
      * @return the market
      */
-    public Optional<ReducedMarket> getMarket() {
+    public synchronized Optional<ReducedMarket> getMarket() {
         return Optional.ofNullable(market);
     }
 
     /**
      * @param market the market to set
      */
-    public void setMarket(ReducedMarket market) {
+    public synchronized void setMarket(ReducedMarket market) {
         this.market = market;
     }
 
     /**
      * @return the playerNicknames
      */
-    public List<String> getPlayerNicknames() {
+    public synchronized List<String> getPlayerNicknames() {
         return playerNicknames;
     }
 
     /**
      * @param playerNicknames the playerNicknames to set
      */
-    public void setPlayerNicknames(List<String> playerNicknames) {
+    public synchronized void setPlayerNicknames(List<String> playerNicknames) {
         if (this.playerNicknames != null)
             this.playerNicknames = new ArrayList<>(playerNicknames);
             
@@ -502,14 +502,14 @@ public class ViewModel {
      * @param id the ID of the production to be returned
      * @return the reduced production (transaction recipe)
      */
-     public Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
+     public synchronized Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
         return productions.stream().filter(p -> p.getId() == id).findAny();
     }
 
     /**
      * @param productions the productions to set
      */
-    public void setProductions(List<ReducedResourceTransactionRecipe> productions) {
+    public synchronized void setProductions(List<ReducedResourceTransactionRecipe> productions) {
         if (productions != null)
             this.productions = new ArrayList<>(productions);
     }
@@ -517,37 +517,37 @@ public class ViewModel {
     /**
      * @return the resourceTypes
      */
-    public List<ReducedResourceType> getResourceTypes() {
+    public synchronized List<ReducedResourceType> getResourceTypes() {
         return resourceTypes;
     }
 
     /**
      * @param resourceTypes the resourceTypes to set
      */
-    public void setResourceTypes(List<ReducedResourceType> resourceTypes) {
+    public synchronized void setResourceTypes(List<ReducedResourceType> resourceTypes) {
         if (resourceTypes!= null)
             this.resourceTypes = new ArrayList<>(resourceTypes);
     }
 
-    public int getSlotsCount() {
+    public synchronized int getSlotsCount() {
         return slotsCount;
     }
 
-    public void setSlotsCount(int slotsCount) {
+    public synchronized void setSlotsCount(int slotsCount) {
         this.slotsCount = slotsCount;
     }
 
     /**
      * @return the vaticanSections
      */
-    public Map<Integer, ReducedVaticanSection> getVaticanSections() {
+    public synchronized Map<Integer, ReducedVaticanSection> getVaticanSections() {
         return getFaithTrack().isEmpty() ? new HashMap<>() : getFaithTrack().get().getVaticanSections();
     }
 
     /**
      * @param id the ID of the activated section
      */
-    public void setVaticanSection(int id) {
+    public synchronized void setVaticanSection(int id) {
         if (faithTrack != null)
             faithTrack.getVaticanSections().entrySet().stream()
                 .map(Entry::getValue)
@@ -557,14 +557,14 @@ public class ViewModel {
     /**
      * @return the winner
      */
-    public String getWinner() {
+    public synchronized String getWinner() {
         return winner;
     }
 
     /**
      * @param winner the winner to set
      */
-    public void setWinner(String winner) {
+    public synchronized void setWinner(String winner) {
         this.winner = winner;
         this.isGameEnded = true;
     }
@@ -572,36 +572,36 @@ public class ViewModel {
     /**
      * @param isSetupDone whether the player setup is done
      */
-    public void setSetupDone(boolean isSetupDone) {
+    public synchronized void setSetupDone(boolean isSetupDone) {
         this.isSetupDone = isSetupDone;
     }
 
     /**
      * @return whether all the players' setup is done
      */
-    public Optional<Boolean> isSetupDone() {
+    public synchronized Optional<Boolean> isSetupDone() {
         return Optional.ofNullable(isSetupDone);
     }
 
     /**
      * @return the local player's nickname
      */
-    public String getLocalPlayerNickname() {
+    public synchronized String getLocalPlayerNickname() {
         return localPlayerNickname;
     }
 
     /**
      * @param localPlayerNickname the nickname to set
      */
-    public void setLocalPlayerNickname(String localPlayerNickname) {
+    public synchronized void setLocalPlayerNickname(String localPlayerNickname) {
         this.localPlayerNickname = localPlayerNickname;
     }
 
-    public String getClientColor(String nick) {
+    public synchronized String getClientColor(String nick) {
         return mappedColors.get(nick);
     }
 
-    public boolean isCurrentPlayer() {
+    public synchronized boolean isCurrentPlayer() {
         return currentPlayer.equals(localPlayerNickname);
     }
 }
