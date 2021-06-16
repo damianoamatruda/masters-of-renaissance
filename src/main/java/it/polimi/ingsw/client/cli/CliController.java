@@ -39,13 +39,9 @@ public abstract class CliController extends UiController implements Renderable {
             } else // setup not done
                 vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
-                        /* if req not accepted in a previous connection by server,
-                           card count to choose > 0 and cards can be discarded (hand size - count > 0) */
-                        if (!setup.hasChosenLeaders() && setup.getChosenLeadersCount() > 0 &&
-                            vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() > setup.getChosenLeadersCount())
+                        if (isLeaderSetupAvailable())
                             cli.setController(new SetupLeadersState());
-                        else if (vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() == setup.getChosenLeadersCount() &&
-                                 !setup.hasChosenResources() && setup.getInitialResources() > 0)
+                        else if (isResourceSetupAvailable())
                             cli.setController(new SetupResourcesState());
                     });
                 });
