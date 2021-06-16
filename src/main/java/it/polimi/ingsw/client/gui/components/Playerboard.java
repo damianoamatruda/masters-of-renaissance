@@ -136,7 +136,7 @@ public class Playerboard extends HBox {
     public void updateFaithPoints(UpdateFaithPoints event, int oldPts) {
         if (event.isBlackCross())
             faithTrack.updateBlackMarker(event.getFaithPoints(), oldPts);
-        else if (Gui.getInstance().getViewModel().getCurrentPlayer().get().equals(event.getPlayer()))
+        else if (Gui.getInstance().getViewModel().getCurrentPlayer().equals(event.getPlayer()))
             faithTrack.updatePlayerMarker(event.getFaithPoints(), oldPts);
     }
 
