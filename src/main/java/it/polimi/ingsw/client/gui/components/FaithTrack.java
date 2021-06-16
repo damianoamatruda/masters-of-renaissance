@@ -74,7 +74,7 @@ public class FaithTrack extends VBox {
         if(vm.getPlayerNicknames().size() == 1)
             updateBlackMarker(vm.getBlackCrossFP(), -1);
 
-        updatePlayerMarker(vm.getPlayerFaithPoints(vm.getCurrentPlayer().get()), -1);
+        updatePlayerMarker(vm.getPlayerFaithPoints(vm.getCurrentPlayer()), -1);
 //        if(!vm.getLocalPlayerNickname().equals(vm.getCurrentPlayer()))
 //            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
     }

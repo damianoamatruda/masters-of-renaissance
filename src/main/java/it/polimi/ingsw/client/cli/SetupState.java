@@ -13,7 +13,7 @@ public abstract class SetupState extends CliController {
            This different handler, which keeps track of the current player only,
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
-        if (vm.getCurrentPlayer().get().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             cli.setController(new TurnBeforeActionState());
         else
             cli.setController(new WaitingAfterTurnState());

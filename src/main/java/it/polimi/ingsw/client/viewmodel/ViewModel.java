@@ -58,6 +58,8 @@ public class ViewModel {
         isLastRound = false;
 
         mappedColors = new HashMap<>();
+
+        currentPlayer = "";
     }
 
     /**
@@ -69,7 +71,7 @@ public class ViewModel {
     }
     
     public synchronized Optional<PlayerData> getCurrentPlayerData() {
-        return getPlayerData(getCurrentPlayer().orElse(null));
+        return getPlayerData(getCurrentPlayer());
     }
 
     public synchronized Optional<PlayerData> getLocalPlayerData() {
@@ -326,14 +328,16 @@ public class ViewModel {
     /**
      * @return the currentPlayer
      */
-    public synchronized Optional<String> getCurrentPlayer() {
-        return Optional.ofNullable(currentPlayer);
+    public synchronized String getCurrentPlayer() {
+        return currentPlayer;
     }
 
     /**
      * @param currentPlayer the currentPlayer to set
      */
     public synchronized void setCurrentPlayer(String currentPlayer) {
+        if (currentPlayer == null)
+            currentPlayer = "";
         this.currentPlayer = currentPlayer;
     }
 
