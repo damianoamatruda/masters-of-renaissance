@@ -3,8 +3,10 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
+import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
@@ -55,6 +57,7 @@ public class InputNicknameController extends GuiController {
     @FXML
     private void handleNicknameInput() {
         nicknameValue = nickname.getText();
+        gui.getViewModel().setLocalPlayerNickname(nicknameValue);
         Gui.getInstance().getUi().dispatch(new ReqJoin(nicknameValue));
     }
 
@@ -78,8 +81,6 @@ public class InputNicknameController extends GuiController {
 
     @Override
     public void on(UpdateBookedSeats event) {
-        super.on(event);
-        gui.getViewModel().setLocalPlayerNickname(nicknameValue);
         if (gui.getUi().isOffline())
             gui.getUi().dispatch(new ReqNewGame(1));
         else
@@ -93,17 +94,27 @@ public class InputNicknameController extends GuiController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        // if(event.isResumed()) {
-        //     if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-        //         gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-        //     else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-        // }
+        setNextSetupState();
+    }
+
+    @Override
+    public void on(UpdatePlayer event) {
+        super.on(event);
+
+        setNextSetupState();
+    }
+
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextSetupState();
     }
 
     @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
-        if (gui.getUi().isOffline())
-            gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
+
+        setNextSetupState();
     }
 }

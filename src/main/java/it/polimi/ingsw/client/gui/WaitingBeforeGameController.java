@@ -2,8 +2,11 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
+import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
+import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -69,25 +72,6 @@ public class WaitingBeforeGameController extends GuiController {
         }
     }
 
-    @Override
-    public void on(UpdateBookedSeats event) {
-        super.on(event);
-        setBookedSeats(event.getBookedSeats());
-    }
-
-    @Override
-    public void on(UpdateLeadersHand event) {
-        super.on(event);
-        gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
-    }
-
-    @Override
-    public void on(UpdateJoinGame event) {
-        super.on(event);
-        if (youCanPrepare)
-            canPrepare.setVisible(false);
-    }
-
     @FXML
     private void handleNewGame() {
         Gui gui = Gui.getInstance();
@@ -98,5 +82,46 @@ public class WaitingBeforeGameController extends GuiController {
         } catch (NumberFormatException e) {
             Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", "Not a number", maxScale)));
         }
+    }
+
+    @Override
+    public void on(UpdateBookedSeats event) {
+        super.on(event);
+        setBookedSeats(event.getBookedSeats());
+    }
+
+    @Override
+    public void on(UpdateGame event) {
+        super.on(event);
+
+        setNextSetupState();
+    }
+
+    @Override
+    public void on(UpdateJoinGame event) {
+        super.on(event);
+        if (youCanPrepare)
+            canPrepare.setVisible(false);
+    }
+
+    @Override
+    public void on(UpdatePlayer event) {
+        super.on(event);
+
+        setNextSetupState();
+    }
+
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextSetupState();
+    }
+
+    @Override
+    public void on(UpdateLeadersHand event) {
+        super.on(event);
+        
+        setNextSetupState();
     }
 }

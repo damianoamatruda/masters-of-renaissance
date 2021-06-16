@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import javafx.beans.binding.Bindings;
@@ -102,6 +103,12 @@ public class SetupLeadersController extends GuiController {
         updateChoiceButton();
     }
 
+    private void updateChoiceButton() {
+        choiceButton.setDisable(
+                selection.size() != Gui.getInstance().getViewModel()
+                        .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+    }
+
     @FXML
     private void handleChoice() {
         Gui.getInstance().getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
@@ -109,32 +116,23 @@ public class SetupLeadersController extends GuiController {
 
     @Override
     public void on(UpdateAction event) {
-        super.on(event);
         if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
-        if(event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname())) {
-            int choosable = gui.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
+        setNextSetupState();
+    }
 
-            if (choosable > 0)
-                gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
-        }
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextSetupState();
     }
 
     @Override
     public void on(UpdateSetupDone event) {
         super.on(event);
 
-        if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-        else {
-            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-        }
-    }
-
-    private void updateChoiceButton() {
-        choiceButton.setDisable(
-                selection.size() != Gui.getInstance().getViewModel()
-                        .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+        setNextSetupState();
     }
 }

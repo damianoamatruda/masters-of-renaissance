@@ -4,7 +4,10 @@ import it.polimi.ingsw.client.gui.components.Resource;
 import it.polimi.ingsw.client.gui.components.Shelf;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.client.gui.components.Warehouse;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
@@ -204,21 +207,23 @@ public class SetupResourcesController extends GuiController {
         Gui.getInstance().getUi().dispatch(new ReqChooseResources(selection));
     }
 
-//    @Override
-//    public void on(UpdateAction event) {
-//        super.on(gui, event);
-//        if (event.getAction() == UpdateAction.ActionType.CHOOSE_RESOURCES
-//                && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-//            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-//    }
+    @Override
+    public void on(UpdateAction event) {
+        if (event.getAction() != ActionType.CHOOSE_RESOURCES && event.getPlayer().equals(vm.getLocalPlayerNickname()))
+            throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
+    }
+
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextSetupState();
+    }
 
     @Override
     public void on(UpdateSetupDone event) {
         super.on(event);
 
-        if (gui.getViewModel().getCurrentPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-        else gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-
+        setNextSetupState();
     }
 }
