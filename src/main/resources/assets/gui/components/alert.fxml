@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import it.polimi.ingsw.client.gui.components.SButton?>
+<?import it.polimi.ingsw.client.gui.components.Title?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<fx:root xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+         type="BorderPane"
+         maxHeight="720" minHeight="720"
+         maxWidth="1280" minWidth="1280">
+   <center>
+      <VBox maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER" stylesheets="@../index.css" styleClass="main" fx:id="window">
+        <VBox alignment="CENTER">
+          <VBox.margin>
+             <Insets top="20.0" bottom="40.0"/>
+          </VBox.margin>
+          <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+             <Image url="@../logo.png"/>
+          </ImageView>
+        </VBox>
+        <Title maxWidth="-Infinity" fx:id="titleText">
+          <VBox.margin>
+            <Insets bottom="30.0"/>
+          </VBox.margin>
+        </Title>
+        <Text fx:id="contentText"></Text>
+        <SButton alignment="CENTER" fx:id="okButton" prefWidth="150.0" text="OK">
+          <VBox.margin>
+             <Insets top="30.0" bottom="30.0"/>
+          </VBox.margin>
+       </SButton>
+      </VBox>
+   </center>
+</fx:root>
