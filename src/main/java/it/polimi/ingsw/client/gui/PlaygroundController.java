@@ -18,12 +18,15 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
+/**
+ * Gui abstract controller for the main turn scenes,
+ * which will show the playerboard of the current player and the available actions, depending on the turn phase.
+ */
 public abstract class PlaygroundController extends GuiController {
     @FXML private StackPane backStackPane;
     @FXML protected AnchorPane canvas;
@@ -104,9 +107,10 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     /**
-     *
+     * Sets the leaders hand view component, that also includes the activation/discard buttons under which card
      */
     protected void setLeadersBox() {
+        // Sets the leader gui cards
         List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .map(reducedLeader -> {
                 LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
@@ -138,6 +142,7 @@ public abstract class PlaygroundController extends GuiController {
         leadersBox.setPrefWidth(166);
         leadersBox.setSpacing(20);
 
+        // Adds activate/discard buttons
         int i = 0;
         for(LeaderCard leader : leaders) {
             leadersBox.getChildren().add(leader);
@@ -193,8 +198,9 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     /**
+     * Sends a request of activation of a leader card to the backend
      *
-     * @param leaderIndex
+     * @param leaderIndex the leader card to be activated
      */
     private void handleActivate(int leaderIndex) {
         int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
@@ -202,8 +208,9 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     /**
+     * Sends a request of discard of a leader card to the backend
      *
-     * @param leaderIndex
+     * @param leaderIndex the leader card to be discarded
      */
     private void handleDiscard(int leaderIndex) {
         LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
@@ -287,7 +294,7 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     /**
-     *
+     * Adds buttons for production activation on all the components that have a production
      */
     protected void addProduceButtons() {
         // add button to proceed to payment
@@ -305,5 +312,6 @@ public abstract class PlaygroundController extends GuiController {
         // add button to each production
         pboard.addProduceButtons(toActivate, activateProduction);
 
+        //TODO Add produce button to production leaders
     }
 }

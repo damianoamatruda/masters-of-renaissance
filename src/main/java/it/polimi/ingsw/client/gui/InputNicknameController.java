@@ -27,6 +27,7 @@ import javafx.scene.layout.CornerRadii;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Gui controller that manages the input of a nickname. */
 public class InputNicknameController extends GuiController {
     @FXML
     private StackPane backStackPane;
@@ -55,7 +56,7 @@ public class InputNicknameController extends GuiController {
     }
 
     /**
-     *
+     * Sends a join request to the server with the given nickname.
      */
     @FXML
     private void handleNicknameInput() {
@@ -65,7 +66,7 @@ public class InputNicknameController extends GuiController {
     }
 
     /**
-     *
+     * Handles going back to previous scene.
      */
     @FXML
     private void handleBack() {
@@ -74,8 +75,9 @@ public class InputNicknameController extends GuiController {
     }
 
     /**
+     * Adds header text to the scene.
      *
-     * @param value
+     * @param value the text to be added to the component
      */
     public void setTitle(String value) {
         titleComponent.setText(value);

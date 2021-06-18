@@ -38,6 +38,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/** Gui controller used for the resources setup scene. */
 public class SetupResourcesController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
 
@@ -78,6 +79,7 @@ public class SetupResourcesController extends GuiController {
 
         choosableResources = vm.getResourceTypes().stream().filter(r -> r.isStorable() && !r.getName().equalsIgnoreCase("Faith")).toList();
 
+        // enable resources from choice box as drag source
         choosableResources.forEach(res -> {
             Resource r = new Resource();
             r.setResourceType(res.getName());
@@ -96,6 +98,7 @@ public class SetupResourcesController extends GuiController {
 
         warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
 
+        // On drag over + dropped for the warehouse shelves
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
                     Dragboard db = event.getDragboard();
                     if (db.hasImage()) {
@@ -156,6 +159,7 @@ public class SetupResourcesController extends GuiController {
                 }
         ));
 
+        // On drag over + dropped outside of warehouse
         this.bpane.setOnDragOver((event) -> {
                 Dragboard db = event.getDragboard();
                 if (db.hasImage()) {
@@ -197,7 +201,7 @@ public class SetupResourcesController extends GuiController {
     }
 
     /**
-     *
+     * Refresh of the Choose button, disabling it if the count of chosen resources does not match.
      */
     private void updateChoiceButton() {
         int count = selection.keySet().stream()
@@ -207,7 +211,7 @@ public class SetupResourcesController extends GuiController {
     }
 
     /**
-     *
+     * Dispatches a request of resources choice to the backend.
      */
     public void handleChoice() {
         Gui.getInstance().getUi().dispatch(new ReqChooseResources(selection));

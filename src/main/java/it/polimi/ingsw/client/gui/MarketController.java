@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
+/** Gui controller class of the take Market resources action. */
 public class MarketController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
 
@@ -91,9 +92,10 @@ public class MarketController extends GuiController {
     }
 
     /**
+     * Fills the choice box with the resources included in the row or column selected.
      *
-     * @param index
-     * @param isRow
+     * @param index the index of the row or column selected
+     * @param isRow true if row has been selected
      */
     private void marketSelected(int index, boolean isRow) {
         this.isRow = isRow;
@@ -133,10 +135,11 @@ public class MarketController extends GuiController {
     }
 
     /**
+     * Inserts a chosen resource inside of a shelf.
      *
-     * @param resource
-     * @param shelfID
-     * @return
+     * @param resource  the resource to be inserted
+     * @param shelfID   the ID of the shelf involved
+     * @return true if transaction successful
      */
     private boolean putChoice(String resource, int shelfID) {
         boolean success = false;
@@ -156,8 +159,9 @@ public class MarketController extends GuiController {
     }
 
     /**
+     * Removes a resource from the choice container after it is chosen
      *
-     * @param resource
+     * @param resource the resource type to be removed from the choice box (because chosen)
      */
     private void removeResourceFromBox(String resource) {
         resourcesBox.getChildren().remove(
@@ -165,7 +169,7 @@ public class MarketController extends GuiController {
     }
 
     /**
-     *
+     * Resets warehouse content to state from before market action
      */
     private void resetWarehouse() {
         Gui gui = Gui.getInstance();
@@ -236,9 +240,10 @@ public class MarketController extends GuiController {
     }
 
     /**
-     *
+     * Adds drag and drop handling for throwing resources out of the warehouse.
      */
     private void setDnDCanvas() {
+        //On drag over
         this.canvas.setOnDragOver((event) -> {
                 Dragboard db = event.getDragboard();
                 if (db.hasImage()) {
@@ -247,6 +252,8 @@ public class MarketController extends GuiController {
                 event.consume();
             }
         );
+
+        // On drag dropped
         this.canvas.setOnDragDropped((event) -> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
@@ -286,7 +293,7 @@ public class MarketController extends GuiController {
 
 
     /**
-     *
+     * Resets the leaders box view component.
      */
     private void resetLeaders() {
         Gui gui = Gui.getInstance();
@@ -368,7 +375,7 @@ public class MarketController extends GuiController {
     }
 
     /**
-     *
+     * Resets the player's choices.
      */
     private void resetChoice() {
         resetWarehouse();
@@ -379,16 +386,18 @@ public class MarketController extends GuiController {
     }
 
     /**
+     * Submits a request to the backend for taking the resources.
      *
-     * @param actionEvent
+     * @param actionEvent the event object
      */
     private void submitPressed(ActionEvent actionEvent) {
         Gui.getInstance().getUi().dispatch(new ReqTakeFromMarket(isRow, index, new HashMap<>(), selection));
     }
 
     /**
+     * Handles going back to previous scene.
      *
-     * @param actionEvent
+     * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));

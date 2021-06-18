@@ -20,6 +20,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
+/** Gui controller used to prompt a destination server, and open a connection with it. */
 public class PlayOnlineController extends GuiController {
     @FXML private StackPane backStackPane;
     @FXML private BorderPane bpane;
@@ -41,7 +42,7 @@ public class PlayOnlineController extends GuiController {
     }
 
     /**
-     *
+     * Tries to open a connection with the specified server.
      */
     @FXML
     private void handleServerInput() {
@@ -87,7 +88,7 @@ public class PlayOnlineController extends GuiController {
     }
 
     /**
-     *
+     * Handles going back to main menu.
      */
     @FXML
     private void handleBack() {

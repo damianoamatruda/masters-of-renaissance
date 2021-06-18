@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/** Gui controller used for the leader cards setup scene. */
 public class SetupLeadersController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
     
@@ -104,7 +105,7 @@ public class SetupLeadersController extends GuiController {
     }
 
     /**
-     *
+     * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
      */
     private void updateChoiceButton() {
         choiceButton.setDisable(
@@ -113,7 +114,7 @@ public class SetupLeadersController extends GuiController {
     }
 
     /**
-     *
+     * Dispatches a request of leader choice to the backend.
      */
     @FXML
     private void handleChoice() {

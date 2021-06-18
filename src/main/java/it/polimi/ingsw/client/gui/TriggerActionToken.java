@@ -21,6 +21,7 @@ import javafx.scene.layout.CornerRadii;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Gui controller used on Solo game turn switch, which displays the activated action token. */
 public class TriggerActionToken extends GuiController {
     @FXML private StackPane backStackPane;
     @FXML private BorderPane canvas;
@@ -57,9 +58,10 @@ public class TriggerActionToken extends GuiController {
     }
 
     /**
+     * Get the path to the ActionToken Image component matching the activated token type
      *
-     * @param token
-     * @return
+     * @param token the activated token
+     * @return the path to the correct ActionToken Image component
      */
     private String getTokenImage(ReducedActionToken token) {
         return "/assets/gui/actiontokens/" + token.getKind().toLowerCase() +

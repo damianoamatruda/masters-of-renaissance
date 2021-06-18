@@ -28,6 +28,7 @@ import javafx.scene.layout.CornerRadii;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Gui controller used when waiting for a game after joining a lobby, or to create a new game. */
 public class WaitingBeforeGameController extends GuiController {
     @FXML
     private StackPane backStackPane;
@@ -62,16 +63,18 @@ public class WaitingBeforeGameController extends GuiController {
     }
 
     /**
+     * Sets the count of players who currently joined at runtime, and displays it.
      *
-     * @param bookedSeatsValue
+     * @param bookedSeatsValue the count of players who joined the lobby
      */
     public void setBookedSeats(int bookedSeatsValue) {
         bookedSeats.setText(Integer.toString(bookedSeatsValue));
     }
 
     /**
+     * Displays the input field for game creation only to the player that has the right to it.
      *
-     * @param canPrepareNewGame
+     * @param canPrepareNewGame true if the player can create a new game
      */
     public void setCanPrepareNewGame(String canPrepareNewGame) {
         if (Gui.getInstance().getViewModel().getLocalPlayerNickname().equals(canPrepareNewGame)) {
@@ -81,7 +84,7 @@ public class WaitingBeforeGameController extends GuiController {
     }
 
     /**
-     *
+     * Handles request for a new game, with the given players count
      */
     @FXML
     private void handleNewGame() {

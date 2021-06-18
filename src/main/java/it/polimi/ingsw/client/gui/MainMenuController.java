@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/** Gui controller that manages the main menu. */
 public class MainMenuController extends GuiController {
     private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
 
@@ -57,7 +58,7 @@ public class MainMenuController extends GuiController {
     }
 
     /**
-     *
+     * Handles choice of playing offline Solo.
      */
     @FXML
     private void handlePlayOffline() {
@@ -68,7 +69,7 @@ public class MainMenuController extends GuiController {
     }
 
     /**
-     *
+     * Handles choice of playing with a server.
      */
     @FXML
     private void handlePlayOnline() {
@@ -76,7 +77,7 @@ public class MainMenuController extends GuiController {
     }
 
     /**
-     *
+     * Opens the options screen.
      */
     @FXML
     private void handleOptions() {
@@ -86,7 +87,7 @@ public class MainMenuController extends GuiController {
     }
 
     /**
-     *
+     * Soft quits the application.
      */
     @FXML
     private void handleQuit() {

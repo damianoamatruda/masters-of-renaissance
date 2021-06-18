@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
-/** Controller class of the development card purchase action. */
+/** Gui controller class of the development card purchase action. */
 public class DevCardGridController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
     
@@ -156,9 +156,10 @@ public class DevCardGridController extends GuiController {
     }
 
     /**
+     * Handles click on a development card.
      *
-     * @param card
-     * @param guicard
+     * @param card      the cached model card
+     * @param guicard   the clicked card GUI component
      */
     private void devCardPressed(ReducedDevCard card, DevelopmentCard guicard) {
         if (guicard == selectedCard) {
@@ -183,7 +184,7 @@ public class DevCardGridController extends GuiController {
     }
 
     /**
-     *
+     *  Resets warehouse content to its state from before moving any resources.
      */
     private void resetWarehouse() {
         warehouse = new Warehouse();
@@ -207,7 +208,7 @@ public class DevCardGridController extends GuiController {
     }
 
     /**
-     *
+     * Resets strongbox content to its state from before moving any resources.
      */
     private void resetStrongbox() {
         strongbox = new Strongbox();
@@ -226,7 +227,7 @@ public class DevCardGridController extends GuiController {
     }
 
     /**
-     *
+     * Resets card slots content to its state from before doing the action.
      */
     private void resetSlots() {
         devSlots = new ArrayList<>();
@@ -250,16 +251,18 @@ public class DevCardGridController extends GuiController {
     }
 
     /**
+     * Handles submit of a card purchase.
      *
-     * @param actionEvent
+     * @param actionEvent the event object
      */
     private void submitPressed(ActionEvent actionEvent) {
         Gui.getInstance().getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
     }
 
     /**
+     * Handles going back to previous scene.
      *
-     * @param actionEvent
+     * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));

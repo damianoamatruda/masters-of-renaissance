@@ -17,6 +17,7 @@ import javafx.scene.layout.CornerRadii;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Gui controller used on game end, which shows who won, and the leaderboars. */
 public class EndgameController extends GuiController {
     @FXML private StackPane backStackPane;
     @FXML private BorderPane bpane;
@@ -47,7 +48,7 @@ public class EndgameController extends GuiController {
     }
 
     /**
-     *
+     * Handles quit from game to title
      */
     @FXML
     private void handleQuit() {
