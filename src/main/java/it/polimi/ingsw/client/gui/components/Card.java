@@ -109,7 +109,7 @@ public abstract class Card extends Pane {
      *
      * @return
      */
-    protected Production getProduction() {
+    public Production getProduction() {
         return production;
     }
 }

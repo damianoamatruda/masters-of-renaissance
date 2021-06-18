@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -28,6 +29,8 @@ import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
  * which will show the playerboard of the current player and the available actions, depending on the turn phase.
  */
 public abstract class PlaygroundController extends GuiController {
+    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
+
     @FXML private StackPane backStackPane;
     @FXML protected AnchorPane canvas;
     @FXML protected Playerboard pboard;
@@ -160,8 +163,12 @@ public abstract class PlaygroundController extends GuiController {
 
                 h.getChildren().addAll(List.of(activate, discard));
             }
-
             leadersBox.getChildren().add(h);
+
+            HBox produceBtnContainer = new HBox();
+            produceBtnContainer.setAlignment(Pos.CENTER);
+            leadersBox.getChildren().add(produceBtnContainer);
+
             i++;
         }
 
@@ -203,7 +210,7 @@ public abstract class PlaygroundController extends GuiController {
      * @param leaderIndex the leader card to be activated
      */
     private void handleActivate(int leaderIndex) {
-        int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
+        int leaderId = ((LeaderCard) leadersBox.getChildren().get(3 * leaderIndex)).getLeaderId();
         Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leaderId, true));
     }
 
@@ -213,7 +220,7 @@ public abstract class PlaygroundController extends GuiController {
      * @param leaderIndex the leader card to be discarded
      */
     private void handleDiscard(int leaderIndex) {
-        LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
+        LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(3 * leaderIndex);
         if (toDiscard == null) {
             toDiscard = leader;
             Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
@@ -312,6 +319,24 @@ public abstract class PlaygroundController extends GuiController {
         // add button to each production
         pboard.addProduceButtons(toActivate, activateProduction);
 
-        //TODO Add produce button to production leaders
+        // add button to production leader cards
+        for(int i = 0; i < leadersBox.getChildren().size() / 3; i++) {
+            LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(3 * i);
+            if(leader.getLeaderType().equalsIgnoreCase("ProductionLeader")) {
+                SButton activate = new SButton();
+                activate.setText("Produce");
+                activate.setOnAction((event) -> {
+                    leader.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !leader.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
+                    if(leader.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
+                        toActivate.add(leader.getProduction().getProductionId());
+                        activateProduction.setDisable(false);
+                    } else {
+                        toActivate.remove(Integer.valueOf(leader.getProduction().getProductionId()));
+                        if(toActivate.size() == 0) activateProduction.setDisable(true);
+                    }
+                });
+                ((HBox) leadersBox.getChildren().get(3 * i + 2)).getChildren().add(activate);
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import java.util.Map;
 
 public class LeaderCard extends Card {
+    private final String leaderType;
     @FXML
     private Pane leaderCard;
     @FXML
@@ -31,10 +32,11 @@ public class LeaderCard extends Card {
 
     public LeaderCard(String leaderType) {
         super(leaderType);
+        this.leaderType = leaderType;
     }
 
     public String getLeaderType() {
-        return leaderTypeProperty().get();
+        return leaderType;
     }
 
     public void setLeaderType(String value) {
