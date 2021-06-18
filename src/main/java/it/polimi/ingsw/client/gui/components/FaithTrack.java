@@ -15,6 +15,10 @@ import java.util.stream.IntStream;
 public class FaithTrack extends VBox {
     Map<Integer, FaithTile> tiles = new HashMap<>();
 
+    /**
+     *
+     * @param track
+     */
     public FaithTrack(ReducedFaithTrack track) {
         ViewModel vm = Gui.getInstance().getViewModel();
 
@@ -79,11 +83,21 @@ public class FaithTrack extends VBox {
 //            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
     }
 
+    /**
+     *
+     * @param faithPoints
+     * @param oldPts
+     */
     public void updatePlayerMarker(int faithPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removePlayerMarker();
         tiles.get(Integer.min(faithPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addPlayerMarker();
     }
 
+    /**
+     *
+     * @param blackPoints
+     * @param oldPts
+     */
     public void updateBlackMarker(int blackPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removeBlackMarker();
         tiles.get(Integer.min(blackPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addBlackMarker();

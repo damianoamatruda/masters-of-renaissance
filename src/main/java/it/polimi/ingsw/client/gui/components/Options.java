@@ -46,10 +46,19 @@ public class Options extends BorderPane {
 
     private NumberBinding maxScale;
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     private static String getPercentage(double value) {
         return String.format("%d%%", (int) (value * 100));
     }
 
+    /**
+     *
+     * @param sizeBinding
+     */
     public Options(NumberBinding sizeBinding) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/options.fxml"));
         fxmlLoader.setRoot(this);
@@ -98,6 +107,9 @@ public class Options extends BorderPane {
             BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
     }
 
+    /**
+     *
+     */
     private void setHandlers() {
         musicText.setOnMouseClicked(e -> handleMusicClick());
         soundFxText.setOnMouseClicked(e -> handleSoundFxClick());
@@ -106,11 +118,17 @@ public class Options extends BorderPane {
         backButton.setOnAction(e -> handleBack());
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleBack() {
         ((Pane) this.getParent()).getChildren().remove(this);
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleMusicClick() {
         if (musicSlider.getValue() == 0)
@@ -121,6 +139,9 @@ public class Options extends BorderPane {
         }
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleSoundFxClick() {
         if (soundFxSlider.getValue() == 0)
@@ -131,6 +152,9 @@ public class Options extends BorderPane {
         }
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleConfig() {
         Gui gui = Gui.getInstance();
@@ -152,12 +176,19 @@ public class Options extends BorderPane {
         }
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleResetConfig() {
         Gui.getInstance().getUi().setGameConfigStream(null);
         resetConfigButton.setDisable(true);
     }
 
+    /**
+     *
+     * @param isPresent
+     */
     public void setConfigContainer(boolean isPresent) {
         if (!isPresent) {
             ((VBox) configContainer.getParent()).getChildren().remove(configContainer);

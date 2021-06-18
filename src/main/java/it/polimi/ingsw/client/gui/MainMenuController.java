@@ -56,6 +56,9 @@ public class MainMenuController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
+    /**
+     *
+     */
     @FXML
     private void handlePlayOffline() {
         Gui gui = Gui.getInstance();
@@ -64,11 +67,17 @@ public class MainMenuController extends GuiController {
                 controller.setTitle("Play Offline"));
     }
 
+    /**
+     *
+     */
     @FXML
     private void handlePlayOnline() {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playonline.fxml"));
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleOptions() {
         Options options = new Options(maxScale);
@@ -76,6 +85,9 @@ public class MainMenuController extends GuiController {
         backStackPane.getChildren().add(options);
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleQuit() {
         Gui.getInstance().quit();

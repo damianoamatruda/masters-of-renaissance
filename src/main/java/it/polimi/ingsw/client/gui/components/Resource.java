@@ -10,6 +10,9 @@ import java.util.Objects;
 public class Resource extends ImageView {
     private String name;
 
+    /**
+     *
+     */
     public Resource() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/resource.fxml"));
         fxmlLoader.setRoot(this);
@@ -22,6 +25,10 @@ public class Resource extends ImageView {
         }
     }
 
+    /**
+     *
+     * @param resourceName
+     */
     public void setResourceType(String resourceName) {
         this.name = resourceName;
         try {
@@ -32,10 +39,19 @@ public class Resource extends ImageView {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public static String getMarblePath(String type) {
         return String.format("/assets/gui/market/%smarble.png", type.toLowerCase());
     }

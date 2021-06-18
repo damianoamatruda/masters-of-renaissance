@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
+/** Controller class of the development card purchase action. */
 public class DevCardGridController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
     
@@ -131,6 +132,12 @@ public class DevCardGridController extends GuiController {
         setPauseHandlers(backStackPane, canvas, maxScale);
     }
 
+    /**
+     *
+     * @param resource
+     * @param shelfID
+     * @return
+     */
     private boolean putChoice(String resource, int shelfID) {
         boolean success = false;
         try {
@@ -148,6 +155,11 @@ public class DevCardGridController extends GuiController {
         return success;
     }
 
+    /**
+     *
+     * @param card
+     * @param guicard
+     */
     private void devCardPressed(ReducedDevCard card, DevelopmentCard guicard) {
         if (guicard == selectedCard) {
             selectedCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
@@ -170,6 +182,9 @@ public class DevCardGridController extends GuiController {
         resetSlots();
     }
 
+    /**
+     *
+     */
     private void resetWarehouse() {
         warehouse = new Warehouse();
 
@@ -191,6 +206,9 @@ public class DevCardGridController extends GuiController {
 //        warehouse.enableSwapper();
     }
 
+    /**
+     *
+     */
     private void resetStrongbox() {
         strongbox = new Strongbox();
 
@@ -207,6 +225,9 @@ public class DevCardGridController extends GuiController {
         // strongbox.setScaleY(0.71);
     }
 
+    /**
+     *
+     */
     private void resetSlots() {
         devSlots = new ArrayList<>();
         List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
@@ -228,10 +249,18 @@ public class DevCardGridController extends GuiController {
         devSlotsBox.getChildren().addAll(devSlots);
     }
 
+    /**
+     *
+     * @param actionEvent
+     */
     private void submitPressed(ActionEvent actionEvent) {
         Gui.getInstance().getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
     }
 
+    /**
+     *
+     * @param actionEvent
+     */
     private void back(ActionEvent actionEvent) {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }

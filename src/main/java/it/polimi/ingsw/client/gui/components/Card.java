@@ -19,6 +19,10 @@ public abstract class Card extends Pane {
     protected Production production;
     protected CardRequirement requirement;
 
+    /**
+     *
+     * @param type
+     */
     public Card(String type) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(String.format("/assets/gui/components/%s.fxml", getFXMLName())));
         fxmlLoader.setRoot(this);
@@ -42,8 +46,16 @@ public abstract class Card extends Pane {
         setShape(r);
     }
 
+    /**
+     *
+     * @return
+     */
     protected abstract String getFXMLName();
 
+    /**
+     *
+     * @param prod
+     */
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         this.production = new Production();
         this.production.setProduction(prod);
@@ -59,24 +71,44 @@ public abstract class Card extends Pane {
 //                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
+    /**
+     *
+     * @param requirement
+     */
     public void setRequirement(ReducedResourceRequirement requirement) {
         this.requirement = new CardRequirement();
         this.requirement.setRequirements(requirement);
         this.getChildren().addAll(this.requirement);
     }
 
+    /**
+     *
+     * @param pts
+     */
     public void setVictoryPoints(String pts) {
         victoryPoints.setText(pts);
     }
 
+    /**
+     *
+     * @return
+     */
     public String getVictoryPoints() {
         return victoryPoints.getText();
     }
 
+    /**
+     *
+     * @return
+     */
     public CardRequirement getRequirement() {
         return requirement;
     }
 
+    /**
+     *
+     * @return
+     */
     protected Production getProduction() {
         return production;
     }

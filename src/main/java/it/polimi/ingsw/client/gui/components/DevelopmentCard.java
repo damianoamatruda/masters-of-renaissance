@@ -13,10 +13,18 @@ public class DevelopmentCard extends Card {
     @FXML
     private Text levelRight;
 
+    /**
+     *
+     * @param color
+     */
     public DevelopmentCard(String color) {
         super(color);
     }
 
+    /**
+     *
+     * @param card
+     */
     public DevelopmentCard(ReducedDevCard card) {
         super(card.getColor());
         card.getCost().ifPresent(cost -> setRequirement(cost));
@@ -24,11 +32,19 @@ public class DevelopmentCard extends Card {
         setVictoryPoints(card.getVictoryPoints()+"");
     }
 
+    /**
+     *
+     * @param level
+     */
     public void setLevel(int level){
         levelLeft.setText(level+"");
         levelRight.setText(level+"");
     }
 
+    /**
+     *
+     * @param pts
+     */
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
         victoryPoints.setLayoutX(getWidth() * 0.47);
@@ -40,6 +56,10 @@ public class DevelopmentCard extends Card {
         return "developmentcard";
     }
 
+    /**
+     *
+     * @param requirement
+     */
     public void setRequirement(ReducedResourceRequirement requirement) {
         super.setRequirement(requirement);
         this.requirement.setLayoutX(getWidth() * 0.12);
@@ -47,6 +67,10 @@ public class DevelopmentCard extends Card {
 //        this.requirement.setLayoutY();
     }
 
+    /**
+     *
+     * @param prod
+     */
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
         this.production.setLayoutX(getWidth() * 0.12);

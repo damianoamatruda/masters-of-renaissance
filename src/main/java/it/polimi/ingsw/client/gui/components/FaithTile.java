@@ -13,6 +13,13 @@ public class FaithTile extends StackPane {
     private int tileId;
     private ImageView bg;
 
+    /**
+     *
+     * @param tileId
+     * @param isYellow
+     * @param isSection
+     * @param isSectionEnd
+     */
     public FaithTile(int tileId, boolean isYellow, boolean isSection, boolean isSectionEnd) {
         this.tileId = tileId;
         String template;
@@ -56,11 +63,17 @@ public class FaithTile extends StackPane {
 //        return tileId;
 //    }
 
+    /**
+     *
+     */
     public FaithTile() {
         this(0, false, false, false);
         this.setOpacity(0);
     }
 
+    /**
+     *
+     */
     public void addPlayerMarker() {
         ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/faithmarker.png"));
         marker.setScaleX(bg.getScaleX() / 1.5);
@@ -68,6 +81,9 @@ public class FaithTile extends StackPane {
         this.getChildren().add(marker);
     }
 
+    /**
+     *
+     */
     public void addBlackMarker() {
         ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/blackcross.png"));
         marker.setScaleX(bg.getScaleX() / 1.2);
@@ -75,10 +91,16 @@ public class FaithTile extends StackPane {
         this.getChildren().add(marker);
     }
 
+    /**
+     *
+     */
     public void removePlayerMarker() {
         this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("faithmarker"));
     }
 
+    /**
+     *
+     */
     public void removeBlackMarker() {
         this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("blackcross"));
     }

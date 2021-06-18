@@ -46,6 +46,9 @@ public class EndgameController extends GuiController {
             outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleQuit() {
         Gui.getInstance().getUi().dispatch(new ReqQuit());

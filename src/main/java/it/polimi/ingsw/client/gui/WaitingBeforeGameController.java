@@ -61,10 +61,18 @@ public class WaitingBeforeGameController extends GuiController {
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
+    /**
+     *
+     * @param bookedSeatsValue
+     */
     public void setBookedSeats(int bookedSeatsValue) {
         bookedSeats.setText(Integer.toString(bookedSeatsValue));
     }
 
+    /**
+     *
+     * @param canPrepareNewGame
+     */
     public void setCanPrepareNewGame(String canPrepareNewGame) {
         if (Gui.getInstance().getViewModel().getLocalPlayerNickname().equals(canPrepareNewGame)) {
             youCanPrepare = true;
@@ -72,6 +80,9 @@ public class WaitingBeforeGameController extends GuiController {
         }
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleNewGame() {
         Gui gui = Gui.getInstance();

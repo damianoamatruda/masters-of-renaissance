@@ -12,6 +12,9 @@ public class Title extends HBox {
     @FXML
     private Text titleText;
 
+    /**
+     *
+     */
     public Title() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/title.fxml"));
         fxmlLoader.setRoot(this);
@@ -24,14 +27,26 @@ public class Title extends HBox {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getText() {
         return textProperty().get();
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setText(String value) {
         textProperty().set(value);
     }
 
+    /**
+     *
+     * @return
+     */
     public StringProperty textProperty() {
         return titleText.textProperty();
     }

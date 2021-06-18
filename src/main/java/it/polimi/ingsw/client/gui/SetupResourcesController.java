@@ -196,6 +196,9 @@ public class SetupResourcesController extends GuiController {
 
     }
 
+    /**
+     *
+     */
     private void updateChoiceButton() {
         int count = selection.keySet().stream()
                 .mapToInt(k -> selection.get(k).keySet().stream().mapToInt(h -> selection.get(k).get(h)).sum()).sum();
@@ -203,6 +206,9 @@ public class SetupResourcesController extends GuiController {
                 .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources());
     }
 
+    /**
+     *
+     */
     public void handleChoice() {
         Gui.getInstance().getUi().dispatch(new ReqChooseResources(selection));
     }

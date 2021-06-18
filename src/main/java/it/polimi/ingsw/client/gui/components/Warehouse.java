@@ -29,6 +29,9 @@ public class Warehouse extends VBox {
     
     private int waitingForSwap1, waitingForSwap2;
 
+    /**
+     *
+     */
     public Warehouse() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/warehouse.fxml"));
         fxmlLoader.setRoot(this);
@@ -43,10 +46,21 @@ public class Warehouse extends VBox {
         //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
+    /**
+     *
+     * @param shelves
+     * @param callback
+     */
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback) {
         setWarehouseShelves(shelves, callback, false);
     }
 
+    /**
+     *
+     * @param shelves
+     * @param callback
+     * @param wantsDnD
+     */
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback, boolean wantsDnD) {
         this.getChildren().clear();
         maxRowHeight = getPrefHeight() / shelves.size();
@@ -77,6 +91,11 @@ public class Warehouse extends VBox {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param resource
+     */
     public void addResourceDraggable(int id, String resource) {
         Shelf shelf = shelves.get(id);
         Resource r = new Resource();
@@ -94,33 +113,63 @@ public class Warehouse extends VBox {
         );
     }
 
+    /**
+     *
+     * @param id
+     */
     public void refreshShelfRemove(int id) {
         Shelf shelf = shelves.get(id);
         shelf.removeResource();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Shelf getShelf(int id) {
         return shelves.get(id);
     }
 
+    /**
+     *
+     * @param s1
+     * @param s2
+     */
     public void setWaitingForSwap(Integer s1, Integer s2) {
         waitingForSwap1 = s1;
         waitingForSwap2 = s2;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getWaitingForSwap1() {
         return waitingForSwap1;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getWaitingForSwap2() {
         return waitingForSwap2;
     }
 
+    /**
+     *
+     */
     public void enableSwapper() {
         for(Shelf shelf : shelves.values())
             shelf.addSwapper();
     }
 
+    /**
+     *
+     * @param s1
+     * @param s2
+     */
     public void swapShelves(Shelf s1, Shelf s2) {
         int tempIndex1 = this.getChildren().indexOf(s1);
         int tempIndex2 = this.getChildren().indexOf(s2);
@@ -148,10 +197,20 @@ public class Warehouse extends VBox {
         });
     }
 
+    /**
+     *
+     * @param resource
+     * @return
+     */
     public Optional<Shelf> getShelfByResource(String resource) {
         return shelves.values().stream().filter(sh -> sh.getBoundResource() != null && sh.getBoundResource().equals(resource)).findAny();
     }
 
+    /**
+     *
+     * @param containers
+     * @param newTempShelves
+     */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, List<ReducedResourceContainer> newTempShelves) {
         for(Shelf s : shelves.values()) {
             Optional<ReducedResourceContainer> reduced = newTempShelves.stream().filter(red -> red.getId() == s.getShelfId()).findAny();

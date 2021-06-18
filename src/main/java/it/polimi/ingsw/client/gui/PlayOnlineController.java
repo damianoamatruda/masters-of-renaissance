@@ -40,6 +40,9 @@ public class PlayOnlineController extends GuiController {
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleServerInput() {
         Gui gui = Gui.getInstance();
@@ -83,6 +86,9 @@ public class PlayOnlineController extends GuiController {
                 controller.setTitle("Play Online"));
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleBack() {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));

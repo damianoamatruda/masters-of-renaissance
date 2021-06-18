@@ -11,6 +11,9 @@ public class SButton extends Button {
     private static final String soundPath = "/assets/gui/29301__junggle__btn121.wav";
     private final AudioClip clip;
 
+    /**
+     *
+     */
     public SButton() {
         clip = new AudioClip(Objects.requireNonNull(getClass().getResource(soundPath)).toExternalForm());
         this.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
@@ -21,6 +24,10 @@ public class SButton extends Button {
         });
     }
 
+    /**
+     *
+     * @param text
+     */
     public SButton(String text) {
         this();
         this.setText(text);

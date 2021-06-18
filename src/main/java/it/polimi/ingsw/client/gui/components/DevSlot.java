@@ -24,6 +24,9 @@ public class DevSlot extends StackPane {
     private List<DevelopmentCard> cards;
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
+    /**
+     *
+     */
     public DevSlot() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devslot.fxml"));
         fxmlLoader.setRoot(this);
@@ -45,6 +48,10 @@ public class DevSlot extends StackPane {
         }
     }
 
+    /**
+     *
+     * @param cards
+     */
     public void setDevCards(List<DevelopmentCard> cards) {
         this.cards = cards;
 
@@ -72,6 +79,11 @@ public class DevSlot extends StackPane {
         // });
     }
 
+    /**
+     *
+     * @param toActivate
+     * @param activateProduction
+     */
     public void addProduceButton(List<Integer> toActivate, SButton activateProduction) {
         if(cards != null && cards.size() > 0) {
             DevelopmentCard top = cards.get(cards.size() - 1);

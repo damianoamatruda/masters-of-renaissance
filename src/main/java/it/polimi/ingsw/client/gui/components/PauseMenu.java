@@ -29,6 +29,10 @@ public class PauseMenu extends StackPane {
 
     private NumberBinding maxScale;
 
+    /**
+     *
+     * @param sizeBinding
+     */
     public PauseMenu(NumberBinding sizeBinding) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/pausemenu.fxml"));
         fxmlLoader.setRoot(this);
@@ -52,11 +56,17 @@ public class PauseMenu extends StackPane {
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleBack() {
         ((Pane) this.getParent()).getChildren().remove(this);
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleOptions() {
         Options options = new Options(maxScale);
@@ -64,11 +74,17 @@ public class PauseMenu extends StackPane {
         backStackPane.getChildren().add(options);
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleQuit() {
         Gui.getInstance().getUi().dispatch(new ReqQuit());
     }
 
+    /**
+     *
+     */
     private void setHandlers() {
         back.setOnAction((e) -> handleBack());
         opt.setOnAction((e) -> handleOptions());

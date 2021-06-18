@@ -56,7 +56,11 @@ public class TriggerActionToken extends GuiController {
 
     }
 
-
+    /**
+     *
+     * @param token
+     * @return
+     */
     private String getTokenImage(ReducedActionToken token) {
         return "/assets/gui/actiontokens/" + token.getKind().toLowerCase() +
                 (token.getDiscardedDevCardColor().isPresent() ? token.getDiscardedDevCardColor().get().toLowerCase() : "") + ".png";

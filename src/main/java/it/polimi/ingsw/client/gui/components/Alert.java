@@ -25,8 +25,12 @@ public class Alert extends BorderPane {
     @FXML private SButton okButton;
     @FXML private Text contentText;
 
-    public Alert() {}
-
+    /**
+     *
+     * @param title
+     * @param content
+     * @param sizeBinding
+     */
     public Alert(String title, String content, NumberBinding sizeBinding) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/alert.fxml"));
         fxmlLoader.setRoot(this);

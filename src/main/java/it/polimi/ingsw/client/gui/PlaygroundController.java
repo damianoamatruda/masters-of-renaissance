@@ -103,6 +103,9 @@ public abstract class PlaygroundController extends GuiController {
 
     }
 
+    /**
+     *
+     */
     protected void setLeadersBox() {
         List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .map(reducedLeader -> {
@@ -189,11 +192,19 @@ public abstract class PlaygroundController extends GuiController {
         }
     }
 
+    /**
+     *
+     * @param leaderIndex
+     */
     private void handleActivate(int leaderIndex) {
         int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
         Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leaderId, true));
     }
 
+    /**
+     *
+     * @param leaderIndex
+     */
     private void handleDiscard(int leaderIndex) {
         LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
         if (toDiscard == null) {
@@ -275,6 +286,9 @@ public abstract class PlaygroundController extends GuiController {
             Platform.runLater(() -> warehouse.setWarehouseShelves(gui.getViewModel().getPlayerShelves(gui.getViewModel().getCurrentPlayer()), (s1, s2) -> { }));
     }
 
+    /**
+     *
+     */
     protected void addProduceButtons() {
         // add button to proceed to payment
         SButton activateProduction = new SButton();

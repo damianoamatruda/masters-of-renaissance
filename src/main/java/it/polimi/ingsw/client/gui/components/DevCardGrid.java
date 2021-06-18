@@ -17,6 +17,9 @@ import java.util.function.BiConsumer;
 public class DevCardGrid extends HBox {
     private BiConsumer<ReducedDevCard, DevelopmentCard> controllerListener;
 
+    /**
+     *
+     */
     public DevCardGrid() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devcardgrid.fxml"));
         fxmlLoader.setRoot(this);
@@ -29,10 +32,18 @@ public class DevCardGrid extends HBox {
         }
     }
 
+    /**
+     *
+     * @param f
+     */
     public void setControllerListener(BiConsumer<ReducedDevCard, DevelopmentCard> f) {
         controllerListener = f;
     }
 
+    /**
+     *
+     * @param grid
+     */
     public void setGrid(ReducedDevCardGrid grid) {
         for (String color : grid.getTopCards().keySet()) {
             VBox column = new VBox(5);

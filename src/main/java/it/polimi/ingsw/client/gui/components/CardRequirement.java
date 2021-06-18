@@ -20,6 +20,9 @@ public class CardRequirement extends HBox {
     private static final double maxRowHeight = 30; // TODO: Parameterize
     private List<HBox> requirements;
 
+    /**
+     *
+     */
     public CardRequirement() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/cardrequirement.fxml"));
         fxmlLoader.setRoot(this);
@@ -32,6 +35,10 @@ public class CardRequirement extends HBox {
         }
     }
 
+    /**
+     *
+     * @param requirements
+     */
     public void setRequirements(ReducedResourceRequirement requirements) {
         this.requirements = new ArrayList<>();
         for (String resource : requirements.getRequirements().keySet()) {
@@ -61,6 +68,10 @@ public class CardRequirement extends HBox {
         }
     }
 
+    /**
+     *
+     * @param requirements
+     */
     public void setRequirements(ReducedDevCardRequirement requirements) {
         this.requirements = new ArrayList<>();
         for (ReducedDevCardRequirementEntry color : requirements.getEntries()) {

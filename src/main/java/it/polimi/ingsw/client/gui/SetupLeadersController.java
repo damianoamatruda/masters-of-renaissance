@@ -103,12 +103,18 @@ public class SetupLeadersController extends GuiController {
         updateChoiceButton();
     }
 
+    /**
+     *
+     */
     private void updateChoiceButton() {
         choiceButton.setDisable(
                 selection.size() != Gui.getInstance().getViewModel()
                         .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleChoice() {
         Gui.getInstance().getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));

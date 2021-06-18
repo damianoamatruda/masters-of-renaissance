@@ -33,6 +33,14 @@ public class Playerboard extends HBox {
     private final double bgPixelHeight = 646;
     private final double bgRatio = bgPixelWidth / bgPixelHeight;
 
+    /**
+     *
+     * @param w
+     * @param s
+     * @param p
+     * @param slots
+     * @param faithTrack
+     */
     public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots, FaithTrack faithTrack) {
         this.w = w;
         this.s = s;
@@ -75,6 +83,13 @@ public class Playerboard extends HBox {
         this.heightProperty().addListener(this::changedSize);
     }
 
+    /**
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     * @param <T>
+     */
     private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
         double boardWidth = 1050, boardHeight = 745,
                storageColWidth = 232;
@@ -121,11 +136,20 @@ public class Playerboard extends HBox {
         faithTrack.setScaleY(ftScaleFactor);
     }
 
+    /**
+     *
+     * @param child
+     * @param parentSizeLimitWidth
+     * @param componentRatio
+     */
     private static void scalePreservingRatio(Pane child, double parentSizeLimitWidth, double componentRatio) {
         child.setPrefWidth(parentSizeLimitWidth);
         child.setPrefHeight(parentSizeLimitWidth / componentRatio);
     }
 
+    /**
+     *
+     */
     private void setBackground() {
         Image frontBGImage = new Image(
                 Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background.png")).toExternalForm());
@@ -133,6 +157,11 @@ public class Playerboard extends HBox {
         frontBG.setImage(frontBGImage);
     }
 
+    /**
+     *
+     * @param event
+     * @param oldPts
+     */
     public void updateFaithPoints(UpdateFaithPoints event, int oldPts) {
         if (event.isBlackCross())
             faithTrack.updateBlackMarker(event.getFaithPoints(), oldPts);
@@ -140,7 +169,11 @@ public class Playerboard extends HBox {
             faithTrack.updatePlayerMarker(event.getFaithPoints(), oldPts);
     }
 
-
+    /**
+     *
+     * @param toActivate
+     * @param activateProduction
+     */
     public void addProduceButtons(List<Integer> toActivate, SButton activateProduction) {
         slots.forEach(slot -> slot.addProduceButton(toActivate, activateProduction));
 

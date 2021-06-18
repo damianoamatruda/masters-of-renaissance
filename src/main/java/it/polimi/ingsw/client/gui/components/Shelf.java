@@ -32,6 +32,13 @@ public class Shelf extends BorderPane {
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
 
+    /**
+     *
+     * @param shelf
+     * @param maxHeight
+     * @param contentWidth
+     * @param callback
+     */
     public Shelf(ReducedResourceContainer shelf, double maxHeight, double contentWidth, BiConsumer<Integer, Integer> callback) {
         this.callback = callback;
         this.shelfId = shelf.getId();
@@ -64,16 +71,28 @@ public class Shelf extends BorderPane {
         this.setPickOnBounds(false);
     }
 
+    /**
+     *
+     * @param content
+     */
     public void setContent(HBox content) {
         this.content = content;
     }
 
+    /**
+     *
+     * @param r
+     */
     public void addResource(Resource r) {
         r.setPreserveRatio(true);
         r.setFitHeight(this.getMinHeight());
         ((HBox) this.getCenter()).getChildren().add(r);
     }
 
+    /**
+     *
+     * @param resource
+     */
     public void addResource(String resource) {
         Resource r = new Resource();
         r.setResourceType(resource);
@@ -81,27 +100,49 @@ public class Shelf extends BorderPane {
         addResource(r);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getShelfId() {
         return shelfId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     *
+     */
     public void removeResource() {
         content.getChildren().remove(content.getChildren().size() - 1);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getContentSize() {
         return content.getChildren().size();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getBoundResource() {
         if (content.getChildren().size() <= 0) return null;
         return ((Resource)content.getChildren().get(0)).getName();
     }
 
+    /**
+     *
+     */
     public void addSwapper() {
         setSwapDnD();
         this.setRight(swapIcon);
@@ -109,6 +150,9 @@ public class Shelf extends BorderPane {
         BorderPane.setAlignment(swapIcon, Pos.CENTER_RIGHT);
     }
 
+    /**
+     *
+     */
     private void setSwapDnD() {
         swapIcon.setOnDragDetected((event -> {
             Dragboard db = this.startDragAndDrop(TransferMode.ANY);
@@ -149,6 +193,11 @@ public class Shelf extends BorderPane {
         });
     }
 
+    /**
+     *
+     * @param size
+     * @param newId
+     */
     public void refresh(int size, int newId) {
         //adjust size
         this.size = size;
@@ -170,6 +219,11 @@ public class Shelf extends BorderPane {
         }
     }
 
+    /**
+     *
+     * @param containers
+     * @param reducedShelf
+     */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, ReducedResourceContainer reducedShelf) {
         for (Node r : content.getChildren()) {
             r.setOnMouseClicked(e -> {

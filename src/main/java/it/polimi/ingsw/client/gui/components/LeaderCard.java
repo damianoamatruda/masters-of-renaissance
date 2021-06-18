@@ -69,17 +69,29 @@ public class LeaderCard extends Card {
         return "leadercard";
     }
 
+    /**
+     *
+     * @param pts
+     */
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
         this.victoryPoints.setLayoutX(getWidth() * 0.47);
         this.victoryPoints.setLayoutY(getHeight() * 0.62);
     }
 
+    /**
+     *
+     * @param prod
+     */
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
         this.production.setLayoutY(getHeight() * 0.74);
     }
 
+    /**
+     *
+     * @param type
+     */
     public void setZeroReplacement(String type) {
         Resource res = new Resource();
         res.setResourceType(type);
@@ -93,6 +105,11 @@ public class LeaderCard extends Card {
         this.getChildren().add(res);
     }
 
+    /**
+     *
+     * @param type
+     * @param discount
+     */
     public void setDiscount(String type, int discount) {
         HBox bonus = new HBox(-3);
         bonus.setAlignment(Pos.CENTER);
@@ -115,10 +132,19 @@ public class LeaderCard extends Card {
         this.getChildren().add(bonus);
     }
 
+    /**
+     *
+     * @return
+     */
     public ReducedResourceContainer getContainer() {
         return content;
     }
 
+    /**
+     *
+     * @param container
+     * @param boundRes
+     */
     public void setDepotContent(ReducedResourceContainer container, String boundRes) {
         content = container;
 
@@ -145,6 +171,13 @@ public class LeaderCard extends Card {
 
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param boundRes
+     * @param isEmpty
+     */
     private void fillDepot(double x, double y, String boundRes, boolean isEmpty) {
         ImageView img = new ImageView(new Image(getResourcePlaceholderPath(boundRes, isEmpty)));
         img.setX(x);
@@ -155,24 +188,46 @@ public class LeaderCard extends Card {
         this.getChildren().add(img);
     }
 
+    /**
+     *
+     * @param resourceType
+     * @param isEmpty
+     * @return
+     */
     private String getResourcePlaceholderPath(String resourceType, boolean isEmpty) {
         if (isEmpty)
             return String.format("/assets/gui/leadertemplates/%sdepot.png", resourceType.toLowerCase());
         return String.format("/assets/gui/resourcetypes/%s.png", resourceType.toLowerCase());
     }
 
+    /**
+     *
+     * @return
+     */
     public int getLeaderId() {
         return leaderId;
     }
 
+    /**
+     *
+     * @param leaderId
+     */
     public void setLeaderId(int leaderId) {
         this.leaderId = leaderId;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isActivated() {
         return isActivated;
     }
 
+    /**
+     *
+     * @param activated
+     */
     public void setActivated(boolean activated) {
         isActivated = activated;
     }

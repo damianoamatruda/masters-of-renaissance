@@ -29,6 +29,9 @@ public class Market extends StackPane {
     private final int selectedIndex = 0;
     private final boolean isColumnSelected = false;
 
+    /**
+     *
+     */
     public Market() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/market.fxml"));
         fxmlLoader.setRoot(this);
@@ -41,10 +44,18 @@ public class Market extends StackPane {
         }
     }
 
+    /**
+     *
+     * @param f
+     */
     public void setSelectionListener(BiConsumer<Integer, Boolean> f) {
         this.controllerListener = f;
     }
 
+    /**
+     *
+     * @param m
+     */
     public void setContent(ReducedMarket m) {
         // this.setBorder(new Border(new BorderStroke(Color.RED, 
         //         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -122,6 +133,9 @@ public class Market extends StackPane {
         });
     }
 
+    /**
+     *
+     */
     private static class IndexRadioButton extends RadioButton {
         private final boolean isRow;
         private final int index;

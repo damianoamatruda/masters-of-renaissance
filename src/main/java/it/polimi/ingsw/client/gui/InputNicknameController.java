@@ -53,7 +53,10 @@ public class InputNicknameController extends GuiController {
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
     }
-    
+
+    /**
+     *
+     */
     @FXML
     private void handleNicknameInput() {
         nicknameValue = nickname.getText();
@@ -61,12 +64,19 @@ public class InputNicknameController extends GuiController {
         Gui.getInstance().getUi().dispatch(new ReqJoin(nicknameValue));
     }
 
+    /**
+     *
+     */
     @FXML
     private void handleBack() {
         Gui gui = Gui.getInstance();
         gui.setRoot(getClass().getResource(gui.getUi().isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
     }
 
+    /**
+     *
+     * @param value
+     */
     public void setTitle(String value) {
         titleComponent.setText(value);
     }

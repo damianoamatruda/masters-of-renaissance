@@ -28,6 +28,9 @@ public class Production extends StackPane {
     private double elementScale;
     private int productionId;
 
+    /**
+     *
+     */
     public Production() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/production.fxml"));
         fxmlLoader.setRoot(this);
@@ -40,6 +43,10 @@ public class Production extends StackPane {
         }
     }
 
+    /**
+     *
+     * @param production
+     */
     public void setProduction(ReducedResourceTransactionRecipe production) {
         this.productionId = production.getId();
 
@@ -76,6 +83,11 @@ public class Production extends StackPane {
         this.setPadding(new Insets(padding));
     }
 
+    /**
+     *
+     * @param resourceMap
+     * @return
+     */
     private List<HBox> buildResourceLines(Map<String, Integer> resourceMap) {
         return resourceMap.entrySet().stream().map(e -> {
             Resource r = new Resource();
@@ -85,6 +97,12 @@ public class Production extends StackPane {
         }).toList();
     }
 
+    /**
+     *
+     * @param key
+     * @param r
+     * @return
+     */
     private HBox row(int key, Resource r) {
         HBox box = new HBox(5);
         Text l = new Text(String.valueOf(key));
@@ -107,10 +125,19 @@ public class Production extends StackPane {
         return box;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getProductionId() {
         return productionId;
     }
 
+    /**
+     *
+     * @param toActivate
+     * @param activateProduction
+     */
     public void addProduceButton(List<Integer> toActivate, SButton activateProduction) {
         // TODO duplicated code
         AnchorPane pane = new AnchorPane();

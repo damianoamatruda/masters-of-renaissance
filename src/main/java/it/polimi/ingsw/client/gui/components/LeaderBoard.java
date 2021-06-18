@@ -20,6 +20,9 @@ import java.util.List;
 public class LeaderBoard extends VBox {
     @FXML private TableView<LeaderBoardEntry> content;
 
+    /**
+     *
+     */
     public LeaderBoard() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/leaderboard.fxml"));
         fxmlLoader.setRoot(this);
@@ -55,9 +58,12 @@ public class LeaderBoard extends VBox {
         content.setMaxHeight(42 * (content.getItems().size() + 1.01));
     }
 
-    public class LeaderBoardEntry {
-        private String player;
-        private int points;
+    /**
+     *
+     */
+    public static class LeaderBoardEntry {
+        private final String player;
+        private final int points;
 
         public LeaderBoardEntry(String player, int points) {
             this.player = player;

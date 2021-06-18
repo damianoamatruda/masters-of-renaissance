@@ -45,6 +45,14 @@ public class ActivateProduction extends StackPane {
     private Map<String, Integer> outputBlanks = new HashMap<>();
     private Map<Integer, Map<String, Integer>> containers = new HashMap<>();
 
+    /**
+     *
+     * @param toActivate
+     * @param index
+     * @param requests
+     * @param tempShelves
+     * @param sizeBinding
+     */
     public ActivateProduction(List<Integer> toActivate, int index,
                               List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
                               NumberBinding sizeBinding) {
@@ -110,12 +118,18 @@ public class ActivateProduction extends StackPane {
         Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
     }
 
+    /**
+     *
+     */
     private void handleSubmit() {
         buildRequest();
 
         Gui.getInstance().getUi().dispatch(new ReqActivateProduction(requests));
     }
 
+    /**
+     *
+     */
     private void handleNext() {
         buildRequest();
 
@@ -124,6 +138,9 @@ public class ActivateProduction extends StackPane {
                      requests, newTempShelves, maxScale));
     }
 
+    /**
+     *
+     */
     private void buildRequest() {
         // get chosen blanks
         choosableInputResources.getChildren().forEach(hbox ->
@@ -138,10 +155,12 @@ public class ActivateProduction extends StackPane {
         requests.add(new ReducedProductionRequest(toActivate.get(index), inputBlanks, outputBlanks, containers));
     }
 
+    /**
+     *
+     */
     private void handleBack() {
         if(index > 0)
             requests.remove(index - 1);
         ((Pane) this.getParent()).getChildren().remove(this);
     }
-
 }

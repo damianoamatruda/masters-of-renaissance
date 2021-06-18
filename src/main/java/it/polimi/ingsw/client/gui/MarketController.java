@@ -90,6 +90,11 @@ public class MarketController extends GuiController {
         setPauseHandlers(backStackPane, canvas, maxScale);
     }
 
+    /**
+     *
+     * @param index
+     * @param isRow
+     */
     private void marketSelected(int index, boolean isRow) {
         this.isRow = isRow;
         this.index = index;
@@ -127,6 +132,12 @@ public class MarketController extends GuiController {
         resetChoice();
     }
 
+    /**
+     *
+     * @param resource
+     * @param shelfID
+     * @return
+     */
     private boolean putChoice(String resource, int shelfID) {
         boolean success = false;
         try {
@@ -144,11 +155,18 @@ public class MarketController extends GuiController {
         return success;
     }
 
+    /**
+     *
+     * @param resource
+     */
     private void removeResourceFromBox(String resource) {
         resourcesBox.getChildren().remove(
             resourcesBox.getChildren().stream().filter(r -> ((Resource)r).getName().equals(resource)).findAny().orElse(null));
     }
 
+    /**
+     *
+     */
     private void resetWarehouse() {
         Gui gui = Gui.getInstance();
 
@@ -217,6 +235,9 @@ public class MarketController extends GuiController {
         warehouse.enableSwapper();
     }
 
+    /**
+     *
+     */
     private void setDnDCanvas() {
         this.canvas.setOnDragOver((event) -> {
                 Dragboard db = event.getDragboard();
@@ -264,6 +285,9 @@ public class MarketController extends GuiController {
     }
 
 
+    /**
+     *
+     */
     private void resetLeaders() {
         Gui gui = Gui.getInstance();
         
@@ -342,7 +366,10 @@ public class MarketController extends GuiController {
         leaderCardsBox.getChildren().clear();
         leaderCardsBox.getChildren().addAll(leaderCards);
     }
-    
+
+    /**
+     *
+     */
     private void resetChoice() {
         resetWarehouse();
 
@@ -351,10 +378,18 @@ public class MarketController extends GuiController {
         selection = new HashMap<>();
     }
 
+    /**
+     *
+     * @param actionEvent
+     */
     private void submitPressed(ActionEvent actionEvent) {
         Gui.getInstance().getUi().dispatch(new ReqTakeFromMarket(isRow, index, new HashMap<>(), selection));
     }
 
+    /**
+     *
+     * @param actionEvent
+     */
     private void back(ActionEvent actionEvent) {
         Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
