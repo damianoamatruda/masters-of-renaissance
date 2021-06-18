@@ -7,7 +7,7 @@ public class ReducedDevCardRequirement {
     private final List<ReducedDevCardRequirementEntry> entries;
 
     /**
-     * @param entries
+     * @param entries the development card requirement entries
      */
     public ReducedDevCardRequirement(List<ReducedDevCardRequirementEntry> entries) {
         if (entries == null)

@@ -32,8 +32,10 @@ public class Game extends EventDispatcher {
     /** The productions used in the game. */
     protected final List<ResourceTransactionRecipe> productions;
 
+    /** The development card colors used in the game. */
     protected List<DevCardColor> colors;
 
+    /** The resource types used in the game. */
     protected List<ResourceType> resourceTypes;
 
     /** The "Development Card Grid", from which development cards can be "bought". */
@@ -58,9 +60,9 @@ public class Game extends EventDispatcher {
 
     /**
      * Constructor of Game instances.
-     *  @param players               the list of nicknames of players who joined
-     * @param colors
-     * @param resourceTypes
+     * @param players               the list of nicknames of players who joined
+     * @param colors                the list of development card colors
+     * @param resourceTypes         the list of resource types
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
      * @param resContainers         the list of resource containers

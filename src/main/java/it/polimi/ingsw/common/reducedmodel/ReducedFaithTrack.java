@@ -9,8 +9,8 @@ public class ReducedFaithTrack {
     private final int maxFaith;
 
     /**
-     * @param vaticanSections
-     * @param yellowTiles
+     * @param vaticanSections   the vatican sections in the faith track
+     * @param yellowTiles       the bonus point tiles in the faith track
      */
     public ReducedFaithTrack(Map<Integer, ReducedVaticanSection> vaticanSections, List<ReducedYellowTile> yellowTiles, int maxFaith) {
         if (vaticanSections == null)

@@ -16,10 +16,10 @@ public class ReducedVaticanSection {
     private boolean activated;
 
     /**
-     * @param id
-     * @param faithPointsBeginning
-     * @param faithPointsEnd
-     * @param victoryPoints
+     * @param id                    the ID of the vatican section
+     * @param faithPointsBeginning  the first tile
+     * @param faithPointsEnd        the last (Vatican Report) tile
+     * @param victoryPoints         the bonus victory points of the section
      */
     public ReducedVaticanSection(int id, int faithPointsBeginning, int faithPointsEnd, int victoryPoints) {
         this.id = id;

@@ -29,8 +29,8 @@ public class SoloGame extends Game {
      * Initializes the solo game with the following parameters.
      *
      * @param player                the nickname of the player who joined
-     * @param colors
-     * @param resourceTypes
+     * @param colors                the list of development card colors
+     * @param resourceTypes         the list of resource types
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
      * @param resContainers         the list of resource containers

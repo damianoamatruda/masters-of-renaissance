@@ -13,14 +13,14 @@ public class ReducedLeaderCard extends ReducedCard {
     private final int discount;
 
     /**
-     * @param id
-     * @param victoryPoints
-     * @param resourceType
-     * @param leaderType
-     * @param isActive
-     * @param containerId
-     * @param discount
-     * @param production
+     * @param id            the ID of the card
+     * @param victoryPoints the victory points given by the card
+     * @param resourceType  the target resource type
+     * @param leaderType    the type of leader card
+     * @param isActive      the activation status
+     * @param containerId   the ID of the depots, if present
+     * @param discount      the resource discount, if present
+     * @param production    the included production recipe, if present
      */
     public ReducedLeaderCard(int id, int victoryPoints, String resourceType, String leaderType, boolean isActive,
                              ReducedDevCardRequirement devCardRequirement,

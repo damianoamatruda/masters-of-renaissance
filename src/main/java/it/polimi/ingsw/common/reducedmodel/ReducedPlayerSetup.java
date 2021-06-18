@@ -12,15 +12,17 @@ public class ReducedPlayerSetup {
     /** The resources that cannot be chosen. */
     private final List<String> initialExcludedResources;
 
+    /** The status of finalization of leader cards choice. */
     private final boolean hasChosenLeaders;
 
+    /** The status of finalization of resources choice. */
     private final boolean hasChosenResources;
 
     /**
      * @param initialResources         the number of choosable resources obtained at the beginning
      * @param initialExcludedResources the resources that cannot be chosen
-     * @param hasChosenLeaders
-     * @param hasChosenResources
+     * @param hasChosenLeaders         whether all allowed leader cards have been chosen
+     * @param hasChosenResources       whether all allowed resources have been chosen
      */
     public ReducedPlayerSetup(int chosenLeadersCount, int initialResources, List<String> initialExcludedResources, boolean hasChosenLeaders, boolean hasChosenResources) {
         this.chosenLeadersCount = chosenLeadersCount;

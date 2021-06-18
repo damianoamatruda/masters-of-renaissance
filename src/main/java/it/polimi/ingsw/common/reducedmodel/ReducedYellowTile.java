@@ -8,8 +8,8 @@ public class ReducedYellowTile {
     private final int victoryPoints;
     
     /**
-     * @param faithPoints
-     * @param victoryPoints
+     * @param faithPoints   the progressive tile number
+     * @param victoryPoints the bonus victory points
      */
     public ReducedYellowTile(int faithPoints, int victoryPoints) {
         this.faithPoints = faithPoints;

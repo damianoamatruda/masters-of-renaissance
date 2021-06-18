@@ -8,9 +8,9 @@ public class ReducedActionToken {
     private final String discardedDevCardColor;
     
     /**
-     * @param id
-     * @param kind
-     * @param discardedDevCardColor
+     * @param id                    the ID of the action token
+     * @param kind                  the type of token
+     * @param discardedDevCardColor the target card color of discard, if existent
      */
     public ReducedActionToken(int id, String kind, String discardedDevCardColor) {
         this.id = id;

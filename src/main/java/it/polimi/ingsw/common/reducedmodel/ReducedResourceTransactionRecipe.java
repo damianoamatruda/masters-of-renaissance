@@ -16,14 +16,14 @@ public class ReducedResourceTransactionRecipe {
     private final boolean discardableOutput;
     
     /**
-     * @param id
-     * @param input
-     * @param inputBlanks
-     * @param inputBlanksExclusions
-     * @param output
-     * @param outputBlanks
-     * @param outputBlanksExclusions
-     * @param discardableOutput
+     * @param id                      the ID of the production
+     * @param input                   the input resources
+     * @param inputBlanks             the blanks in input
+     * @param inputBlanksExclusions   the resources forbidden as input blank replacement
+     * @param output                  the output resources
+     * @param outputBlanks            the blanks in output
+     * @param outputBlanksExclusions  the resources forbidden as output blank replacement
+     * @param discardableOutput       whether the output can be discarded
      */
     public ReducedResourceTransactionRecipe(int id, Map<String, Integer> input, int inputBlanks,
             List<String> inputBlanksExclusions, Map<String, Integer> output, int outputBlanks,

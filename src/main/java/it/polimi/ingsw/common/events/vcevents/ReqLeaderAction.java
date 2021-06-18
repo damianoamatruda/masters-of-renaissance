@@ -9,8 +9,8 @@ public class ReqLeaderAction implements VCEvent {
     private final boolean isActivate;
     
     /**
-     * @param leader
-     * @param isActivate
+     * @param leader     the leader card involved
+     * @param isActivate true if action requested is an activation
      */
     public ReqLeaderAction(int leader, boolean isActivate) {
         this.leader = leader;

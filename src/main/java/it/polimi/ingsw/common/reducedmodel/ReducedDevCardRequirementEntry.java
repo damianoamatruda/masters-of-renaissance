@@ -6,9 +6,9 @@ public class ReducedDevCardRequirementEntry {
     private final int level;
  
     /**
-     * @param color
-     * @param level
-     * @param amount
+     * @param color     the color of the required card
+     * @param level     the level of the required card
+     * @param amount    the amount of cards required
      */
     public ReducedDevCardRequirementEntry(String color, int level, int amount) {
         if (color == null)

@@ -7,7 +7,7 @@ public class ReducedResourceRequirement {
     private final Map<String, Integer> requirements;
 
     /**
-     * @param requirements
+     * @param requirements the map of resource requirement entries
      */
     public ReducedResourceRequirement(Map<String, Integer> requirements) {
         if (requirements == null)

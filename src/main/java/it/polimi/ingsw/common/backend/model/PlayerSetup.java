@@ -78,7 +78,7 @@ public class PlayerSetup {
     /**
      * Chooses leaders from the hand of the player.
      *
-     * @param view
+     * @param view          the view to which the model dispatches the update
      * @param chosenLeaders the leader cards to choose
      * @throws CannotChooseException if the leader cards have already been chosen
      */
