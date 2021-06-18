@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/** Gui component that represents a production recipe. */
 public class Production extends StackPane {
     private final double padding = 2;
     @FXML
@@ -29,7 +30,7 @@ public class Production extends StackPane {
     private int productionId;
 
     /**
-     *
+     * Class constructor.
      */
     public Production() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/production.fxml"));
@@ -44,8 +45,9 @@ public class Production extends StackPane {
     }
 
     /**
+     * Sets and displays the production recipe.
      *
-     * @param production
+     * @param production    the cached production
      */
     public void setProduction(ReducedResourceTransactionRecipe production) {
         this.productionId = production.getId();
@@ -84,6 +86,7 @@ public class Production extends StackPane {
     }
 
     /**
+     *
      *
      * @param resourceMap
      * @return
@@ -126,17 +129,19 @@ public class Production extends StackPane {
     }
 
     /**
+     * Getter of the production ID.
      *
-     * @return
+     * @return the production ID
      */
     public int getProductionId() {
         return productionId;
     }
 
     /**
+     * Adds the buttons to select the productions to be activated.
      *
-     * @param toActivate
-     * @param activateProduction
+     * @param toActivate         the list of productions to be activated
+     * @param activateProduction the button to be disabled, if no production is selected
      */
     public void addProduceButton(List<Integer> toActivate, SButton activateProduction) {
         // TODO duplicated code

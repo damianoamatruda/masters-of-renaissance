@@ -20,6 +20,7 @@ import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/** Gui component representing a warehouse shelf. */
 public class Shelf extends BorderPane {
     private static final Logger LOGGER = Logger.getLogger(Shelf.class.getName());
 
@@ -33,11 +34,12 @@ public class Shelf extends BorderPane {
     private final Text sizeText;
 
     /**
+     * Class constructor.
      *
-     * @param shelf
-     * @param maxHeight
-     * @param contentWidth
-     * @param callback
+     * @param shelf         the cached shelf
+     * @param maxHeight     the max height dimension of the component
+     * @param contentWidth  the max width dimension of the content in the component
+     * @param callback      the callback function (used for shelf swapping)
      */
     public Shelf(ReducedResourceContainer shelf, double maxHeight, double contentWidth, BiConsumer<Integer, Integer> callback) {
         this.callback = callback;
@@ -72,16 +74,18 @@ public class Shelf extends BorderPane {
     }
 
     /**
+     * Sets and displays the shelf content.
      *
-     * @param content
+     * @param content the content, as HBox component
      */
     public void setContent(HBox content) {
         this.content = content;
     }
 
     /**
+     * Adds a Resource component to the shelf content
      *
-     * @param r
+     * @param r the resource as Gui component
      */
     public void addResource(Resource r) {
         r.setPreserveRatio(true);
@@ -90,8 +94,9 @@ public class Shelf extends BorderPane {
     }
 
     /**
+     * Adds a Resource component to the shelf content
      *
-     * @param resource
+     * @param resource the resource type
      */
     public void addResource(String resource) {
         Resource r = new Resource();
@@ -101,39 +106,43 @@ public class Shelf extends BorderPane {
     }
 
     /**
+     * Getter of the shelf ID.
      *
-     * @return
+     * @return the shelf ID
      */
     public int getShelfId() {
         return shelfId;
     }
 
     /**
+     * Getter of the shelf size.
      *
-     * @return
+     * @return the shelf size
      */
     public int getSize() {
         return size;
     }
 
     /**
-     *
+     * Removes a resource from the shelf
      */
     public void removeResource() {
         content.getChildren().remove(content.getChildren().size() - 1);
     }
 
     /**
+     * Getter of the quantity of resources currently stored.
      *
-     * @return
+     * @return the quantity of stored resources
      */
     public int getContentSize() {
         return content.getChildren().size();
     }
 
     /**
+     * Getter of the shelf's bound resource type (non null if non empty shelf).
      *
-     * @return
+     * @return the shelf's bound resource type
      */
     public String getBoundResource() {
         if (content.getChildren().size() <= 0) return null;
@@ -141,7 +150,7 @@ public class Shelf extends BorderPane {
     }
 
     /**
-     *
+     * Adds an icon that enables shelves swapping.
      */
     public void addSwapper() {
         setSwapDnD();
@@ -151,7 +160,7 @@ public class Shelf extends BorderPane {
     }
 
     /**
-     *
+     * Links a swap shelves event handler to the swap icon.
      */
     private void setSwapDnD() {
         swapIcon.setOnDragDetected((event -> {
@@ -176,17 +185,12 @@ public class Shelf extends BorderPane {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString() && db.getString().startsWith("[swap]")) {
-                try {
                     int sourceShelfID = Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" ")));
 
                     callback.accept(sourceShelfID, this.shelfId);
 
-                    // TODO disable temporarily dnd until response is received
-
-                } catch (Exception e) { // TODO remove this catch once debugged
-                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
+                    // TODO disable temporarily dnd until response is received (?)
                 }
-            }
 
             event.setDropCompleted(success);
             event.consume();
@@ -194,9 +198,10 @@ public class Shelf extends BorderPane {
     }
 
     /**
+     * Refreshes the shelf after a swap, so that only the content is swapped.
      *
-     * @param size
-     * @param newId
+     * @param size the shelf max size
+     * @param newId the ID of the shelf
      */
     public void refresh(int size, int newId) {
         //adjust size
@@ -220,9 +225,10 @@ public class Shelf extends BorderPane {
     }
 
     /**
+     * Handles the choice of a resource contained in this shelf, when paying
      *
-     * @param containers
-     * @param reducedShelf
+     * @param containers    the map of the input of a resource transaction
+     * @param reducedShelf  the cached shelf which content to edit on resource click
      */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, ReducedResourceContainer reducedShelf) {
         for (Node r : content.getChildren()) {

@@ -8,6 +8,9 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+/**
+ *
+ */
 public class Title extends HBox {
     @FXML
     private Text titleText;

@@ -19,13 +19,14 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 import java.util.List;
 
+/** Gui component that represents a runtime development slot. */
 public class DevSlot extends StackPane {
     // @FXML private GridPane grid;
     private List<DevelopmentCard> cards;
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     /**
-     *
+     * Class constructor.
      */
     public DevSlot() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devslot.fxml"));
@@ -49,8 +50,9 @@ public class DevSlot extends StackPane {
     }
 
     /**
+     * Sets and displays the development cards inserted in this slot.
      *
-     * @param cards
+     * @param cards the cards belonging to this slot
      */
     public void setDevCards(List<DevelopmentCard> cards) {
         this.cards = cards;
@@ -80,9 +82,10 @@ public class DevSlot extends StackPane {
     }
 
     /**
+     * Method used to add input buttons to activate the top card's production.
      *
-     * @param toActivate
-     * @param activateProduction
+     * @param toActivate         the list of productions to be activated
+     * @param activateProduction the button to be disabled, if no production is selected
      */
     public void addProduceButton(List<Integer> toActivate, SButton activateProduction) {
         if(cards != null && cards.size() > 0) {

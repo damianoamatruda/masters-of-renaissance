@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/** Gui component representing the Options screen. */
 public class Options extends BorderPane {
     @FXML
     private VBox window;

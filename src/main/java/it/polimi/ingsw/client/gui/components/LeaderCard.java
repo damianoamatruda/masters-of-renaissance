@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 
 import java.util.Map;
 
+/** Gui component that represents a leader card. */
 public class LeaderCard extends Card {
     private final String leaderType;
     @FXML
@@ -29,12 +30,21 @@ public class LeaderCard extends Card {
 
     private boolean isActivated;
 
-
+    /**
+     * Class constructor.
+     *
+     * @param leaderType the type of leader card
+     */
     public LeaderCard(String leaderType) {
         super(leaderType);
         this.leaderType = leaderType;
     }
 
+    /**
+     * Getter of the leader type.
+     *
+     * @return the type of leader card
+     */
     public String getLeaderType() {
         return leaderType;
     }
@@ -47,6 +57,11 @@ public class LeaderCard extends Card {
         return leaderTypeText.textProperty();
     }
 
+    /**
+     * Getter of the leader's target resource type.
+     *
+     * @return the target resource type of the leader card
+     */
     public String getResourceType() {
         return resourceTypeProperty().get();
     }
@@ -60,6 +75,11 @@ public class LeaderCard extends Card {
         return resourceTypeText.textProperty();
     }
 
+    /**
+     * Sets and displays the development card requirements.
+     *
+     * @param requirement the development card requirements of this card
+     */
     public void setRequirement(ReducedDevCardRequirement requirement) {
         this.requirement = new CardRequirement();
         this.requirement.setRequirements(requirement);
@@ -72,8 +92,9 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Sets and displays the card bonus victory points.
      *
-     * @param pts
+     * @param pts the victory points given to the player by this card
      */
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
@@ -82,8 +103,9 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Sets and displays the production included in this leader (valid for production leaders).
      *
-     * @param prod
+     * @param prod the cached production recipe
      */
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);
@@ -91,8 +113,9 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Sets and displays the available Zero replacement (valid for leaders of type zero leader).
      *
-     * @param type
+     * @param type  the resource type to replace the Zero
      */
     public void setZeroReplacement(String type) {
         Resource res = new Resource();
@@ -108,9 +131,10 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Sets and displays the leader discount (valid for discount leaders).
      *
-     * @param type
-     * @param discount
+     * @param type      the discounted resource type
+     * @param discount  the discount in unities
      */
     public void setDiscount(String type, int discount) {
         HBox bonus = new HBox(-3);
@@ -135,17 +159,19 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Getter of the leader depots (valid for depot leaders).
      *
-     * @return
+     * @return the cached model resource container
      */
     public ReducedResourceContainer getContainer() {
         return content;
     }
 
     /**
+     * Sets and displays the depots content (valid for depot leaders).
      *
-     * @param container
-     * @param boundRes
+     * @param container the resource container of the leader card
+     * @param boundRes  the depots' bound resource type
      */
     public void setDepotContent(ReducedResourceContainer container, String boundRes) {
         content = container;
@@ -174,11 +200,12 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Displays the depot content (using a placeholder if empty).
      *
-     * @param x
-     * @param y
-     * @param boundRes
-     * @param isEmpty
+     * @param x         the horizontal coordinate for placing the ImageView
+     * @param y         the vertical coordinate for placing the ImageView
+     * @param boundRes  the depot's bound resource type
+     * @param isEmpty   true if the leader depot is unoccupied
      */
     private void fillDepot(double x, double y, String boundRes, boolean isEmpty) {
         ImageView img = new ImageView(new Image(getResourcePlaceholderPath(boundRes, isEmpty)));
@@ -191,10 +218,11 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Getter of the path to the PNG of the depot content.
      *
-     * @param resourceType
-     * @param isEmpty
-     * @return
+     * @param resourceType  the depot's bound resource type
+     * @param isEmpty       true if the leader depot is unoccupied
+     * @return  the path to the PNG resource representing the depot content
      */
     private String getResourcePlaceholderPath(String resourceType, boolean isEmpty) {
         if (isEmpty)
@@ -203,32 +231,36 @@ public class LeaderCard extends Card {
     }
 
     /**
+     * Getter of the card ID.
      *
-     * @return
+     * @return the card ID
      */
     public int getLeaderId() {
         return leaderId;
     }
 
     /**
+     * Sets the ID of the card.
      *
-     * @param leaderId
+     * @param leaderId the card's ID
      */
     public void setLeaderId(int leaderId) {
         this.leaderId = leaderId;
     }
 
     /**
+     * Getter of the activation status.
      *
-     * @return
+     * @return true if leader is active
      */
     public boolean isActivated() {
         return isActivated;
     }
 
     /**
+     * Changes activation status.
      *
-     * @param activated
+     * @param activated the updated activation status of the card.
      */
     public void setActivated(boolean activated) {
         isActivated = activated;

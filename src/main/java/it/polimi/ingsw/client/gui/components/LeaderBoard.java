@@ -17,11 +17,12 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
+/** Gui component used to show the leaderboards of the game. */
 public class LeaderBoard extends VBox {
     @FXML private TableView<LeaderBoardEntry> content;
 
     /**
-     *
+     * Class constructor.
      */
     public LeaderBoard() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/leaderboard.fxml"));
@@ -59,7 +60,7 @@ public class LeaderBoard extends VBox {
     }
 
     /**
-     *
+     * Class representing a single entry in the leaderboards.
      */
     public static class LeaderBoardEntry {
         private final String player;

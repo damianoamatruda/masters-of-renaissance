@@ -7,12 +7,13 @@ import javafx.scene.media.AudioClip;
 
 import java.util.Objects;
 
+/** Gui component representing a button with sound on click. */
 public class SButton extends Button {
     private static final String soundPath = "/assets/gui/29301__junggle__btn121.wav";
     private final AudioClip clip;
 
     /**
-     *
+     * Class constructor.
      */
     public SButton() {
         clip = new AudioClip(Objects.requireNonNull(getClass().getResource(soundPath)).toExternalForm());
@@ -25,8 +26,9 @@ public class SButton extends Button {
     }
 
     /**
+     * Class constructor.
      *
-     * @param text
+     * @param text the text of the button
      */
     public SButton(String text) {
         this();

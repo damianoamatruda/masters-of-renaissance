@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/** Gui component used to show card requirements. */
 public class CardRequirement extends HBox {
     private static final double maxRowHeight = 30; // TODO: Parameterize
     private List<HBox> requirements;
 
     /**
-     *
+     * Class constructor.
      */
     public CardRequirement() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/cardrequirement.fxml"));
@@ -36,8 +37,9 @@ public class CardRequirement extends HBox {
     }
 
     /**
+     * Builds graphic components for the resource requirements.
      *
-     * @param requirements
+     * @param requirements the resource requirements of the card
      */
     public void setRequirements(ReducedResourceRequirement requirements) {
         this.requirements = new ArrayList<>();
@@ -69,8 +71,9 @@ public class CardRequirement extends HBox {
     }
 
     /**
+     * Builds graphic components for the development card requirements.
      *
-     * @param requirements
+     * @param requirements the requirements on owned cards for this card
      */
     public void setRequirements(ReducedDevCardRequirement requirements) {
         this.requirements = new ArrayList<>();

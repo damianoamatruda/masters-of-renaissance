@@ -7,11 +7,12 @@ import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.util.Objects;
 
+/** Gui component representing the resource types. */
 public class Resource extends ImageView {
     private String name;
 
     /**
-     *
+     * Class constructor.
      */
     public Resource() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/resource.fxml"));
@@ -26,8 +27,9 @@ public class Resource extends ImageView {
     }
 
     /**
+     * Sets the resource type name and displays the correct PNG.
      *
-     * @param resourceName
+     * @param resourceName the resource type name
      */
     public void setResourceType(String resourceName) {
         this.name = resourceName;
@@ -40,17 +42,19 @@ public class Resource extends ImageView {
     }
 
     /**
+     * Getter of the resource type name.
      *
-     * @return
+     * @return the resource type name
      */
     public String getName() {
         return name;
     }
 
     /**
+     * Gets the path to the correct PNG.
      *
-     * @param type
-     * @return
+     * @param type  the resource type to be represented
+     * @return  the file path to the PNG
      */
     public static String getMarblePath(String type) {
         return String.format("/assets/gui/market/%smarble.png", type.toLowerCase());

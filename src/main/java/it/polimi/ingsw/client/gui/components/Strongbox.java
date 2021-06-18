@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.Map.Entry;
 
+/** Gui component representing a strongbox. */
 public class Strongbox extends StackPane {
     @FXML
     private ImageView background;
@@ -23,7 +24,7 @@ public class Strongbox extends StackPane {
     private ReducedResourceContainer c;
 
     /**
-     *
+     * Class constructor.
      */
     public Strongbox() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/strongbox.fxml"));
@@ -41,16 +42,18 @@ public class Strongbox extends StackPane {
     }
 
     /**
+     * Getter of the content, wrapped in an Optional.
      *
-     * @return
+     * @return the content
      */
     public Optional<ReducedResourceContainer> getContent() {
         return Optional.ofNullable(c);
     }
 
     /**
+     * Sets and displays the content.
      *
-     * @param c
+     * @param c the cached model strongbox
      */
     public void setContent(ReducedResourceContainer c) {
         this.c = c;
@@ -152,8 +155,9 @@ public class Strongbox extends StackPane {
     }
 
     /**
+     * Refreshes the view after removing a resource.
      *
-     * @param resource
+     * @param resource the resource type involved
      */
     public void refreshRemove(String resource) {
         Cell cell = grid.getChildren().stream().map(n -> (Cell)n).filter(c -> c.getResource().equals(resource)).findAny().orElseThrow();

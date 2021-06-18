@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+/** Gui component representing the market. */
 public class Market extends StackPane {
     @FXML
     private ImageView background;
@@ -30,7 +31,7 @@ public class Market extends StackPane {
     private final boolean isColumnSelected = false;
 
     /**
-     *
+     * Class constructor.
      */
     public Market() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/market.fxml"));
@@ -53,8 +54,9 @@ public class Market extends StackPane {
     }
 
     /**
+     * Sets and displays the market marbles.
      *
-     * @param m
+     * @param m the cached market state
      */
     public void setContent(ReducedMarket m) {
         // this.setBorder(new Border(new BorderStroke(Color.RED, 
@@ -134,7 +136,7 @@ public class Market extends StackPane {
     }
 
     /**
-     *
+     * Class that represents a radio button indexing one market row or column.
      */
     private static class IndexRadioButton extends RadioButton {
         private final boolean isRow;

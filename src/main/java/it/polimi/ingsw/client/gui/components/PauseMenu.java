@@ -19,6 +19,7 @@ import javafx.scene.layout.CornerRadii;
 
 import java.io.IOException;
 
+/** Gui component representing the pause menu. */
 public class PauseMenu extends StackPane {
     public BorderPane options;
     @FXML private StackPane backStackPane;
@@ -57,7 +58,7 @@ public class PauseMenu extends StackPane {
     }
 
     /**
-     *
+     * Handles closing the pause menu.
      */
     @FXML
     private void handleBack() {
@@ -65,7 +66,7 @@ public class PauseMenu extends StackPane {
     }
 
     /**
-     *
+     * Handles accessing the Options screen.
      */
     @FXML
     private void handleOptions() {

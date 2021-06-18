@@ -12,12 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+/** Gui component representing the faith track. */
 public class FaithTrack extends VBox {
     Map<Integer, FaithTile> tiles = new HashMap<>();
 
     /**
+     * Class constructor.
      *
-     * @param track
+     * @param track the cached faith track
      */
     public FaithTrack(ReducedFaithTrack track) {
         ViewModel vm = Gui.getInstance().getViewModel();
@@ -84,9 +86,10 @@ public class FaithTrack extends VBox {
     }
 
     /**
+     * Updates the position of the player's faith marker.
      *
-     * @param faithPoints
-     * @param oldPts
+     * @param faithPoints   the updated player's faith points
+     * @param oldPts        the player's faith points before moving (used to remove marker from old tile)
      */
     public void updatePlayerMarker(int faithPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removePlayerMarker();
@@ -94,9 +97,10 @@ public class FaithTrack extends VBox {
     }
 
     /**
+     * Updates the position of Lorenzo's faith marker.
      *
-     * @param blackPoints
-     * @param oldPts
+     * @param blackPoints   the updated Lorenzo's faith points
+     * @param oldPts        Lorenzo's faith points before moving (used to remove marker from old tile)
      */
     public void updateBlackMarker(int blackPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removeBlackMarker();

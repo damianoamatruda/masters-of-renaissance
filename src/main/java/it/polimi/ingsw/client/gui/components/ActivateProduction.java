@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Pane component used to choose input source for a selected production. */
 public class ActivateProduction extends StackPane {
     private NumberBinding maxScale;
 
@@ -46,11 +47,12 @@ public class ActivateProduction extends StackPane {
     private Map<Integer, Map<String, Integer>> containers = new HashMap<>();
 
     /**
+     * Class constructor.
      *
-     * @param toActivate
-     * @param index
-     * @param requests
-     * @param tempShelves
+     * @param toActivate    the production involved
+     * @param index         an index used to move between the selected productions in the list
+     * @param requests      the already completed production requests
+     * @param tempShelves   the temporary shelves, containing the remaining payable resources for the remaining productions
      * @param sizeBinding
      */
     public ActivateProduction(List<Integer> toActivate, int index,
@@ -119,7 +121,7 @@ public class ActivateProduction extends StackPane {
     }
 
     /**
-     *
+     * Finished building the last production request, and dispatches all the requests to the backend
      */
     private void handleSubmit() {
         buildRequest();
@@ -128,7 +130,7 @@ public class ActivateProduction extends StackPane {
     }
 
     /**
-     *
+     * Move to the next production input choice
      */
     private void handleNext() {
         buildRequest();
@@ -139,7 +141,7 @@ public class ActivateProduction extends StackPane {
     }
 
     /**
-     *
+     * Builds a new production request and adds it to the others that already have been formed.
      */
     private void buildRequest() {
         // get chosen blanks
@@ -156,7 +158,7 @@ public class ActivateProduction extends StackPane {
     }
 
     /**
-     *
+     * Handles going back to previous production, or back to playground scene.
      */
     private void handleBack() {
         if(index > 0)

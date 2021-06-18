@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+/** Gui component representing a Warehouse. */
 public class Warehouse extends VBox {
     private double maxRowHeight;
     private final Map<Integer, Shelf> shelves = new HashMap<>();
@@ -30,7 +31,7 @@ public class Warehouse extends VBox {
     private int waitingForSwap1, waitingForSwap2;
 
     /**
-     *
+     * Class constructor.
      */
     public Warehouse() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/warehouse.fxml"));
@@ -47,19 +48,21 @@ public class Warehouse extends VBox {
     }
 
     /**
+     * Sets and displays the warehouse shelves, without enabling drag and drop of resources.
      *
-     * @param shelves
-     * @param callback
+     * @param shelves   the cached player's shelves
+     * @param callback  the callback function (used for shelf swapping)
      */
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback) {
         setWarehouseShelves(shelves, callback, false);
     }
 
     /**
+     * Sets and displays the warehouse shelves.
      *
-     * @param shelves
-     * @param callback
-     * @param wantsDnD
+     * @param shelves   the cached player's shelves
+     * @param callback  the callback function (used for shelf swapping)
+     * @param wantsDnD  true if drag and drop of resources is needed
      */
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback, boolean wantsDnD) {
         this.getChildren().clear();
@@ -92,9 +95,10 @@ public class Warehouse extends VBox {
     }
 
     /**
+     * Adds a resource to a shelf, also enabling its drag and drop.
      *
-     * @param id
-     * @param resource
+     * @param id        the destination shelf ID
+     * @param resource  the resource type
      */
     public void addResourceDraggable(int id, String resource) {
         Shelf shelf = shelves.get(id);
@@ -114,8 +118,9 @@ public class Warehouse extends VBox {
     }
 
     /**
+     * Refreshes the view after removing a resource.
      *
-     * @param id
+     * @param id the involved shelf ID
      */
     public void refreshShelfRemove(int id) {
         Shelf shelf = shelves.get(id);
@@ -123,18 +128,20 @@ public class Warehouse extends VBox {
     }
 
     /**
+     * Retrieves a contained shelf by the ID.
      *
-     * @param id
-     * @return
+     * @param id    the shelf ID
+     * @return  the Shelf component
      */
     public Shelf getShelf(int id) {
         return shelves.get(id);
     }
 
     /**
+     * Marks two shelves enqueued for swap, until a response is received.
      *
-     * @param s1
-     * @param s2
+     * @param s1    shelf one (source)
+     * @param s2    shelf two (destination)
      */
     public void setWaitingForSwap(Integer s1, Integer s2) {
         waitingForSwap1 = s1;
@@ -142,23 +149,25 @@ public class Warehouse extends VBox {
     }
 
     /**
+     * Gets the source shelf of swap.
      *
-     * @return
+     * @return shelf one
      */
     public int getWaitingForSwap1() {
         return waitingForSwap1;
     }
 
     /**
+     * Gets the destination shelf of swap.
      *
-     * @return
+     * @return shelf two
      */
     public int getWaitingForSwap2() {
         return waitingForSwap2;
     }
 
     /**
-     *
+     * Adds an icon that enables swapping shelves.
      */
     public void enableSwapper() {
         for(Shelf shelf : shelves.values())
@@ -166,9 +175,10 @@ public class Warehouse extends VBox {
     }
 
     /**
+     * Swaps the content of two shelves.
      *
-     * @param s1
-     * @param s2
+     * @param s1    shelf one (source)
+     * @param s2    shelf two (destination)
      */
     public void swapShelves(Shelf s1, Shelf s2) {
         int tempIndex1 = this.getChildren().indexOf(s1);
@@ -198,18 +208,20 @@ public class Warehouse extends VBox {
     }
 
     /**
+     * Retrieves the shelf that is bound to a given resource type.
      *
-     * @param resource
-     * @return
+     * @param resource  the resource type
+     * @return  the Shelf component
      */
     public Optional<Shelf> getShelfByResource(String resource) {
         return shelves.values().stream().filter(sh -> sh.getBoundResource() != null && sh.getBoundResource().equals(resource)).findAny();
     }
 
     /**
+     * Handles the choice of a resource contained in the warehouse, when paying
      *
-     * @param containers
-     * @param newTempShelves
+     * @param containers      the map of the input of a resource transaction
+     * @param newTempShelves  the list of temporary shelves which content to edit on resource click
      */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, List<ReducedResourceContainer> newTempShelves) {
         for(Shelf s : shelves.values()) {

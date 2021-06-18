@@ -9,16 +9,18 @@ import javafx.scene.text.Text;
 
 import java.util.Objects;
 
+/** Gui component representing a single Faith Track tile. */
 public class FaithTile extends StackPane {
     private int tileId;
     private ImageView bg;
 
     /**
+     * Class constructor.
      *
-     * @param tileId
-     * @param isYellow
-     * @param isSection
-     * @param isSectionEnd
+     * @param tileId        progressive number of tile
+     * @param isYellow      true if it is a milestone to higher bonus points
+     * @param isSection     true if included inside of a Vatican Section
+     * @param isSectionEnd  true if Vatican Report Tile
      */
     public FaithTile(int tileId, boolean isYellow, boolean isSection, boolean isSectionEnd) {
         this.tileId = tileId;
@@ -64,7 +66,7 @@ public class FaithTile extends StackPane {
 //    }
 
     /**
-     *
+     * Invisible tile, used only for alignment between other faith track tiles.
      */
     public FaithTile() {
         this(0, false, false, false);
@@ -72,7 +74,7 @@ public class FaithTile extends StackPane {
     }
 
     /**
-     *
+     * Sets and displays the player's faith marker.
      */
     public void addPlayerMarker() {
         ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/faithmarker.png"));
@@ -82,7 +84,7 @@ public class FaithTile extends StackPane {
     }
 
     /**
-     *
+     * Sets and displays Lorenzo's faith marker.
      */
     public void addBlackMarker() {
         ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/blackcross.png"));
@@ -92,14 +94,14 @@ public class FaithTile extends StackPane {
     }
 
     /**
-     *
+     * Removes the player's faith marker (used when it has to be updated to a new position).
      */
     public void removePlayerMarker() {
         this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("faithmarker"));
     }
 
     /**
-     *
+     * Removes Lorenzo's faith marker (used when it has to be updated to a new position).
      */
     public void removeBlackMarker() {
         this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("blackcross"));

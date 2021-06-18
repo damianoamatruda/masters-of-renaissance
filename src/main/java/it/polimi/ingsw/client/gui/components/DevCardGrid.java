@@ -14,11 +14,12 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+/** Gui component that represent the development card grid. */
 public class DevCardGrid extends HBox {
     private BiConsumer<ReducedDevCard, DevelopmentCard> controllerListener;
 
     /**
-     *
+     * Class constructor.
      */
     public DevCardGrid() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devcardgrid.fxml"));
@@ -41,8 +42,9 @@ public class DevCardGrid extends HBox {
     }
 
     /**
+     * Sets and displays the actual grid, based on the cached model state.
      *
-     * @param grid
+     * @param grid the grid to be displayed
      */
     public void setGrid(ReducedDevCardGrid grid) {
         for (String color : grid.getTopCards().keySet()) {

@@ -7,6 +7,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
+/** Gui component that represents a development card. */
 public class DevelopmentCard extends Card {
     @FXML
     private Text levelLeft;
@@ -14,27 +15,30 @@ public class DevelopmentCard extends Card {
     private Text levelRight;
 
     /**
+     * Class constructor.
      *
-     * @param color
+     * @param color the card color
      */
     public DevelopmentCard(String color) {
         super(color);
     }
 
     /**
+     * Another class constructor.
      *
-     * @param card
+     * @param card the reduced model card
      */
     public DevelopmentCard(ReducedDevCard card) {
         super(card.getColor());
-        card.getCost().ifPresent(cost -> setRequirement(cost));
+        card.getCost().ifPresent(this::setRequirement);
         setProduction(Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow());
         setVictoryPoints(card.getVictoryPoints()+"");
     }
 
     /**
+     * Sets and displays the card level, as text.
      *
-     * @param level
+     * @param level the card level
      */
     public void setLevel(int level){
         levelLeft.setText(level+"");
@@ -42,8 +46,9 @@ public class DevelopmentCard extends Card {
     }
 
     /**
+     * Sets and displays the card bonus victory points.
      *
-     * @param pts
+     * @param pts the victory points given to the player by this card
      */
     public void setVictoryPoints(String pts) {
         super.setVictoryPoints(pts);
@@ -57,8 +62,9 @@ public class DevelopmentCard extends Card {
     }
 
     /**
+     * Sets and displays the card's resource requirements.
      *
-     * @param requirement
+     * @param requirement the resource requirements of the card
      */
     public void setRequirement(ReducedResourceRequirement requirement) {
         super.setRequirement(requirement);
@@ -68,8 +74,9 @@ public class DevelopmentCard extends Card {
     }
 
     /**
+     * Sets and displays the card's production.
      *
-     * @param prod
+     * @param prod the card's production
      */
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         super.setProduction(prod);

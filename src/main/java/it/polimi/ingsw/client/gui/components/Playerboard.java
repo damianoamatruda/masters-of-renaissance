@@ -17,6 +17,7 @@ import java.util.Objects;
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
 
+/** Gui component representing a player's playerboard. */
 public class Playerboard extends HBox {
     @FXML private HBox canvas;
     @FXML private ImageView frontBG;
@@ -34,17 +35,18 @@ public class Playerboard extends HBox {
     private final double bgRatio = bgPixelWidth / bgPixelHeight;
 
     /**
+     * Class constructor.
      *
-     * @param w
-     * @param s
-     * @param p
-     * @param slots
-     * @param faithTrack
+     * @param warehouse     the player's warehouse
+     * @param strongbox     the player's strongbox
+     * @param production    the base production
+     * @param slots         the player's development slots
+     * @param faithTrack    the faith track
      */
-    public Playerboard(Warehouse w, Strongbox s, Production p, List<DevSlot> slots, FaithTrack faithTrack) {
-        this.w = w;
-        this.s = s;
-        this.p = p;
+    public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> slots, FaithTrack faithTrack) {
+        this.w = warehouse;
+        this.s = strongbox;
+        this.p = production;
         this.slots = slots;
         this.faithTrack = faithTrack;
 
@@ -60,12 +62,12 @@ public class Playerboard extends HBox {
 
         setBackground();
 
-        Group wh = new Group(w);
+        Group wh = new Group(warehouse);
 
         storageColumn.add(wh, 0, 1);
-        storageColumn.add(s, 0, 3);
+        storageColumn.add(strongbox, 0, 3);
 
-        board.add(p, 3, 1);
+        board.add(production, 3, 1);
 
         for(int i = 0; i < slots.size(); i++){
             slots.get(i).setAlignment(Pos.BOTTOM_CENTER);
@@ -84,6 +86,7 @@ public class Playerboard extends HBox {
     }
 
     /**
+     *
      *
      * @param observable
      * @param oldValue
@@ -148,7 +151,7 @@ public class Playerboard extends HBox {
     }
 
     /**
-     *
+     * Sets and displays a background for the playerboard.
      */
     private void setBackground() {
         Image frontBGImage = new Image(
@@ -158,9 +161,10 @@ public class Playerboard extends HBox {
     }
 
     /**
+     * Updates a marker in the faith track.
      *
-     * @param event
-     * @param oldPts
+     * @param event     the event object containing the info
+     * @param oldPts    the faith points before update
      */
     public void updateFaithPoints(UpdateFaithPoints event, int oldPts) {
         if (event.isBlackCross())
@@ -170,9 +174,10 @@ public class Playerboard extends HBox {
     }
 
     /**
+     * Adds the buttons to select the productions to be activated.
      *
-     * @param toActivate
-     * @param activateProduction
+     * @param toActivate         the list of productions to be activated
+     * @param activateProduction the button to be disabled, if no production is selected
      */
     public void addProduceButtons(List<Integer> toActivate, SButton activateProduction) {
         slots.forEach(slot -> slot.addProduceButton(toActivate, activateProduction));
