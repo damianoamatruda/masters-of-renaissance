@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+/** Gui abstract component representing a game card. */
 public abstract class Card extends Pane {
     private static final double backgroundRadius = 16.6;
     @FXML
@@ -20,8 +21,9 @@ public abstract class Card extends Pane {
     protected CardRequirement requirement;
 
     /**
+     * Class constructor.
      *
-     * @param type
+     * @param type the type of leader card, or the color of development card
      */
     public Card(String type) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(String.format("/assets/gui/components/%s.fxml", getFXMLName())));
@@ -47,14 +49,16 @@ public abstract class Card extends Pane {
     }
 
     /**
+     * Retrieves the name of the FXML file to search for.
      *
-     * @return
+     * @return the name of the FXML file
      */
     protected abstract String getFXMLName();
 
     /**
+     * Sets and displays the card's production.
      *
-     * @param prod
+     * @param prod the card's production
      */
     public void setProduction(ReducedResourceTransactionRecipe prod) {
         this.production = new Production();
@@ -72,8 +76,9 @@ public abstract class Card extends Pane {
     }
 
     /**
+     * Sets and displays the card's resource requirements.
      *
-     * @param requirement
+     * @param requirement the resource requirements of the card
      */
     public void setRequirement(ReducedResourceRequirement requirement) {
         this.requirement = new CardRequirement();
@@ -82,32 +87,36 @@ public abstract class Card extends Pane {
     }
 
     /**
+     * Sets and displays the card bonus victory points.
      *
-     * @param pts
+     * @param pts the victory points given to the player by this card
      */
     public void setVictoryPoints(String pts) {
         victoryPoints.setText(pts);
     }
 
     /**
+     * Getter of the card's victory points.
      *
-     * @return
+     * @return the victory points
      */
     public String getVictoryPoints() {
         return victoryPoints.getText();
     }
 
     /**
+     * Getter of the card requirements, either of resources or of cards.
      *
-     * @return
+     * @return the card requirements
      */
     public CardRequirement getRequirement() {
         return requirement;
     }
 
     /**
+     * Getter of the card production.
      *
-     * @return
+     * @return the card production
      */
     public Production getProduction() {
         return production;
