@@ -10,6 +10,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.*;
@@ -50,6 +51,10 @@ public class BuyDevelopmentCardState extends CliController {
                 .render();
 
         new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
+
+        List<ReducedLeaderCard> discountLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
+                .filter(c -> c.isActive() && c.getLeaderType().equals("DiscountLeader")).toList();
+        new LeadersHand(discountLeaders).render();
 
         chooseColor(cli);
     }
