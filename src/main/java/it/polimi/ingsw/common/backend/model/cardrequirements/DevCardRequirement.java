@@ -32,7 +32,7 @@ public class DevCardRequirement implements CardRequirement {
      * @param requirements the development cards that form the requirement.
      */
     public DevCardRequirement(Set<Entry> requirements) {
-        entryList = requirements.stream().filter(e -> e.amount > 0).collect(Collectors.toUnmodifiableSet());
+        entryList = new HashSet<>(requirements);
     }
 
     @Override
@@ -47,7 +47,9 @@ public class DevCardRequirement implements CardRequirement {
         playerCards.addAll(player.getDevSlots().stream().flatMap(Stack::stream).toList());
 
         Set<Entry> playerState = new HashSet<>(),
-                reqCopy = new HashSet<>(entryList), // never touch the original set
+                reqCopy = new HashSet<>(entryList.stream()
+                        .filter(e -> e.amount > 0)
+                        .collect(Collectors.toUnmodifiableSet())),
                 missing = new HashSet<>();
 
         playerCards.forEach(card -> {

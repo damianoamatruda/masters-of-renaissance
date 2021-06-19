@@ -33,9 +33,7 @@ public class ResourceRequirement implements CardRequirement {
      * @param resources the resources that form the requirement
      */
     public ResourceRequirement(Map<ResourceType, Integer> resources) {
-        this.resources = resources.entrySet().stream()
-                .filter(e -> e.getValue() > 0)
-                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        this.resources = new HashMap<>(resources);
     }
 
     /**
@@ -45,7 +43,9 @@ public class ResourceRequirement implements CardRequirement {
      * @return the discounted cost of this requirement.
      */
     public Map<ResourceType, Integer> getDiscountedCost(Player p) {
-        Map<ResourceType, Integer> discountedRes = new HashMap<>(resources);
+        Map<ResourceType, Integer> discountedRes = new HashMap<>(resources.entrySet().stream()
+                .filter(e -> e.getValue() > 0)
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
 
         for (LeaderCard l : p.getLeaders())
             discountedRes = l.getDevCardCost(discountedRes);
