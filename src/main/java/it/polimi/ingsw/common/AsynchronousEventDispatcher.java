@@ -31,7 +31,16 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
         }
     }
 
+    private <T extends Event> Future<?> dispatchImmediately(T event) {
+        FutureTask<?> f = new FutureTask<>(() -> super.dispatch(event), null);
+        f.run();
+        return f;
+    }
+
     private <T extends Event> Future<?> asyncDispatch(T event) {
+        if (event.isPrioritized())
+            return dispatchImmediately(event);
+        
         return executor.submit(() -> super.dispatch(event));
     }
 
