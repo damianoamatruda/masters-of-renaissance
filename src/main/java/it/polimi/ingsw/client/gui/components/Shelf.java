@@ -66,14 +66,20 @@ public class Shelf extends BorderPane {
                 "-fx-alignment: center;" +
                 "-fx-opacity: 1;" +
                 "-fx-background-size: 300 100;");
-
-        sizeText = new Text("Size: " + shelf.getSize());
-
-        this.setLeft(sizeText);
-        this.setCenter(content);
-        
         BorderPane.setMargin(content, new Insets(0, 10, 0, 10));
-        BorderPane.setAlignment(sizeText, Pos.CENTER_LEFT);
+
+        sizeText = new Text(String.format("Size: %d", shelf.getSize()));
+
+        BorderPane sizePane = new BorderPane();
+        sizePane.setMinWidth(70);
+        sizePane.setMaxWidth(70);
+        sizePane.setMinHeight(maxHeight);
+        sizePane.setMaxHeight(maxHeight);
+        sizePane.setCenter(sizeText);
+
+        this.setLeft(sizePane);
+        this.setCenter(content);
+
         this.setPickOnBounds(false);
     }
 
