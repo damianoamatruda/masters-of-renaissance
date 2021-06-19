@@ -62,6 +62,6 @@ public class DiscountLeaderTest {
         if (ogCost == null)
             assertNull(leader.getDevCardCost(null)); // leader.getDevCardCost(ogCost)
         else
-            ogCost.forEach((r, c) -> assertEquals(r != coin ? c : (c == null ? null : c - discount), postCost.get(r)));
+            ogCost.forEach((r, c) -> assertEquals(r != coin ? c : (c == null ? null : c - discount > 0 ? c - discount : null), postCost.get(r)));
     }
 }
