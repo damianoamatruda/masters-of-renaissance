@@ -114,7 +114,7 @@ public class BuyDevelopmentCardState extends CliController {
 
                 ReducedDevCard card = vm.getDevCardFromGrid(color, level).orElseThrow();
 
-                this.cost = card.getCost().isPresent() ? new HashMap<>(card.getCost().get().getRequirements()) : new HashMap<>();
+                this.cost = vm.getDevCardDiscountedCost(card.getId());
 
                 if (!this.cost.isEmpty()) {
                     cli.getOut().println();

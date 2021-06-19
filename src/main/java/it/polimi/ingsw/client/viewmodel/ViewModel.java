@@ -134,6 +134,29 @@ public class ViewModel {
     }
 
     /**
+     * @param id the ID of the development card the discounted cost of which needs to be computed
+     * @return the cost of the development card
+     *         discounted by the active leader cards of the local player
+     */
+    public Map<String, Integer> getDevCardDiscountedCost(int id) {
+        Optional<ReducedResourceRequirement> cost = getDevelopmentCard(id).get().getCost();
+        if (!cost.isPresent())
+            return new HashMap<>();
+
+        List<ReducedLeaderCard> discountLeaders = getPlayerLeaderCards(getLocalPlayerNickname()).stream()
+                .filter(c -> c.isActive() && c.getLeaderType().equals("DiscountLeader")).toList();
+        if (discountLeaders.isEmpty())
+            return cost.get().getRequirements();
+
+        Map<String, Integer> discountedCost = new HashMap<>(cost.get().getRequirements());
+        discountLeaders.forEach(l ->
+            discountedCost.computeIfPresent(l.getResourceType(), (r, oldCost) -> oldCost - l.getDiscount() > 0 ? oldCost - l.getDiscount() : null)
+        );
+
+        return discountedCost;
+    }
+
+    /**
      * Retrieves the development cards owned by a player.
      *
      * @param nickname the nickname of the player whose development cards need to be retrieved
