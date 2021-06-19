@@ -51,7 +51,7 @@ public class Cli implements Runnable {
     @Override
     public synchronized void run() {
         while (!Thread.currentThread().isInterrupted()) {
-            if (!ready) {
+            while (!ready) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
