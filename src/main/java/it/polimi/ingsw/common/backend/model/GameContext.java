@@ -76,6 +76,8 @@ public class GameContext extends AsynchronousEventDispatcher {
 
     public void dispatchResumeStates(View view, String nickname) {
         game.dispatchState(view);
+        game.getMarket().dispatchInitialState();
+        game.getDevCardGrid().dispatchInitialState();
         game.getPlayers().forEach(p -> p.dispatchPublicState(view));
         getPlayerByNickname(nickname).dispatchPrivateState(view);
     }

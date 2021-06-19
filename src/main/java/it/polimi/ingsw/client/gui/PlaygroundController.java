@@ -195,13 +195,15 @@ public abstract class PlaygroundController extends GuiController {
 
     @Override
     public void on(UpdateCurrentPlayer event) {
+        String previous = gui.getViewModel().getCurrentPlayer();
         super.on(event);
         if(gui.getViewModel().getPlayerNicknames().size() > 1) {
             if (event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
                 gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
             else
                 gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-        }
+        } else if(previous.equals(event.getPlayer()))
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     /**
