@@ -261,6 +261,21 @@ public class Shelf extends BorderPane {
         }
     }
 
+    public void addResourcesSelector(BiConsumer<String, Integer> insert, BiConsumer<String, Integer> remove) {
+        for (Node r : content.getChildren()) {
+            r.setOnMouseClicked(e -> {
+                String name = ((Resource) r).getName();
+                if (r.getOpacity() != 0.5) {
+                    r.setOpacity(0.5);
+                    insert.accept(name, shelfId);
+                } else {
+                    r.setOpacity(1);
+                    remove.accept(name, shelfId);
+                }
+            });
+        }
+    }
+
 //    private void disableSwapDnD() {
 //        swapIcon.removeEventHandler(EventType.ROOT);
 //    }

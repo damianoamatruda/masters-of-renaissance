@@ -229,4 +229,16 @@ public class Warehouse extends VBox {
             reduced.ifPresent(value -> s.addResourcesSelector(containers, value));
         }
     }
+
+    /**
+     * Handles the choice of a resource contained in the warehouse, when paying
+     *
+     * @param insert
+     * @param remove
+     */
+    public void addResourcesSelector(BiConsumer<String, Integer> insert, BiConsumer<String, Integer> remove) {
+        for(Shelf s : shelves.values()) {
+            s.addResourcesSelector(insert, remove);
+        }
+    }
 }

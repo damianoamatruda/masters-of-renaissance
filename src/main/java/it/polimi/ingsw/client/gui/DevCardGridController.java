@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -26,7 +25,6 @@ import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
@@ -100,35 +98,6 @@ public class DevCardGridController extends GuiController {
         resetStrongbox();
         resetSlots();
 
-        this.canvas.setOnDragOver((event) -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasImage()) {
-                event.acceptTransferModes(TransferMode.ANY);
-            }
-            event.consume();
-        });
-        this.canvas.setOnDragDropped((event) -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            try {
-                int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                String resource = ((Resource) event.getGestureSource()).getName();
-
-                putChoice(resource, id);
-
-                strongbox.getContent().ifPresentOrElse(
-                        c -> strongbox.refreshRemove(resource),
-                        () -> warehouse.refreshShelfRemove(id));
-
-                success = true;
-            } catch (NumberFormatException e) { // TODO: Handle this, don't simply log it
-                LOGGER.log(Level.SEVERE, "NumberFormatException (TODO: Handle this)", e);
-            }
-
-            event.setDropCompleted(success);
-            event.consume();
-        });
-
         setPauseHandlers(backStackPane, canvas, maxScale);
     }
 
@@ -152,7 +121,21 @@ public class DevCardGridController extends GuiController {
                 success = true;
             }
         }
+
         return success;
+    }
+
+    /**
+     *
+     * @param resource
+     * @param shelfID
+     * @return
+     */
+    private void removeChoice(String resource, int shelfID) {
+        int amount = shelvesMap.get(shelfID).get(resource) - 1;
+        shelvesMap.get(shelfID).put(resource, amount);
+        if(shelvesMap.get(shelfID).get(resource) == 0)
+            shelvesMap.get(shelfID).remove(resource);
     }
 
     /**
@@ -196,15 +179,13 @@ public class DevCardGridController extends GuiController {
 
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
                 warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2));
-            }, true);
+            }, false);
+
+        warehouse.addResourcesSelector(this::putChoice, this::removeChoice);
 
         if (containersBox.getChildren().size() >= 1)
             containersBox.getChildren().remove(0);
         containersBox.getChildren().add(0, warehouse);
-        // warehouse.setScaleX(0.62);
-        // warehouse.setScaleY(0.62);
-
-//        warehouse.enableSwapper();
     }
 
     /**
