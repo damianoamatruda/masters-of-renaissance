@@ -43,7 +43,7 @@ public class ResourceContainers extends StringComponent {
             stringBuilder.append("\n");
             stringBuilder.append(String.format("%s's available leader depots:%n", player));
             depots.forEach(c ->
-                    stringBuilder.append("\n").append(new ResourceContainer(c).getString(cli)));
+                    stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(cli)));
         }
 
         return center(stringBuilder.toString());
@@ -55,7 +55,7 @@ public class ResourceContainers extends StringComponent {
         
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(String.format("%s's strongbox:", player)).append("\n");
+        stringBuilder.append(String.format("%n%s's strongbox:", player)).append("\n");
         stringBuilder.append("\n").append(new Box(new ResourceContainer(strongbox)).getString(cli));
 
         return center(stringBuilder.toString());
