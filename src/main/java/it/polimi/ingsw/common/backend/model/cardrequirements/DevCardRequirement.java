@@ -59,7 +59,7 @@ public class DevCardRequirement implements CardRequirement {
 
         for (Entry entry : reqCopy) {
             // entry not found in player's cards -> requirements not satisfied
-            if (playerState.stream().noneMatch(e -> e.equals(entry)))
+            if (entry.amount > 0 && playerState.stream().noneMatch(e -> e.equals(entry)))
                 missing.add(entry);
                 // if the entry is found the amount of cards the player owns in that entry is subtracted from the requirements
             else {
