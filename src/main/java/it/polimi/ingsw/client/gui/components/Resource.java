@@ -1,50 +1,39 @@
 package it.polimi.ingsw.client.gui.components;
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.IOException;
 import java.util.Objects;
 
 /** Gui component representing the resource types. */
 public class Resource extends ImageView {
-    private boolean isBlank;
-    private String name;
-
-    /**
-     * Class constructor.
-     */
-    public Resource() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/resource.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    public Resource(boolean isZeroReplacement) {
-        this();
-        this.isBlank = isZeroReplacement;
-    }
+    private static final double width = 100;
+    private final boolean isBlank;
+    private final String name;
 
     /**
      * Sets the resource type name and displays the correct PNG.
      *
-     * @param resourceName the resource type name
+     * @param resourceName      the resource type name
+     * @param isZeroReplacement
      */
-    public void setResourceType(String resourceName) {
+    public Resource(String resourceName, boolean isZeroReplacement) {
         this.name = resourceName;
+        this.isBlank = isZeroReplacement;
+
+        this.setPreserveRatio(true);
+        this.setFitWidth(width);
+
         try {
             Image bg = new Image(Objects.requireNonNull(getClass().getResource(String.format("/assets/gui/resourcetypes/%s.png", resourceName.toLowerCase()))).toExternalForm());
             this.setImage(bg);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(String.format("No image file for resource '%s'.", resourceName));
         }
+    }
+
+    public Resource(String resourceName) {
+        this(resourceName, false);
     }
 
     /**

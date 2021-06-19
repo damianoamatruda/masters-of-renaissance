@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.VBox?>
-
-
-<fx:root fx:id="warehouse" maxHeight="300" maxWidth="360.0" minHeight="300.0" minWidth="360.0" prefHeight="300.0" prefWidth="360.0" type="VBox" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
-</fx:root>

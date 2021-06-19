@@ -2,9 +2,7 @@
 
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import it.polimi.ingsw.client.gui.components.Title?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.Cursor?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
@@ -28,7 +26,7 @@
             <Insets bottom="30.0"/>
           </VBox.margin>
         </Title>
-        <Text fx:id="contentText"></Text>
+        <Text fx:id="contentText"/>
         <SButton alignment="CENTER" fx:id="okButton" prefWidth="150.0" text="OK">
           <VBox.margin>
              <Insets top="30.0" bottom="30.0"/>

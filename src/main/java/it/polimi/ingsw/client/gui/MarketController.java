@@ -15,9 +15,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.*;
@@ -58,7 +60,7 @@ public class MarketController extends GuiController {
     private List<LeaderCard> leaderCards;
     private Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private boolean isZeroReplaceable;
-    private Map<String, Integer> replacements = new HashMap<>();
+    private final Map<String, Integer> replacements = new HashMap<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -111,8 +113,7 @@ public class MarketController extends GuiController {
 
         resourcesBox.getChildren().clear();
         resourcesBox.getChildren().addAll(chosenResources.stream().map(n -> {
-            Resource r = new Resource(isZeroReplaceable && n.equalsIgnoreCase("Zero"));
-            r.setResourceType(n);
+            Resource r = new Resource(n, isZeroReplaceable && n.equalsIgnoreCase("Zero"));
             setDragAndDropSource(r);
             return r;
         }).toList());
@@ -392,8 +393,7 @@ public class MarketController extends GuiController {
 
         blank.ifPresent(node -> {
             Platform.runLater(() -> {
-                Resource replacement = new Resource();
-                replacement.setResourceType(resourceType);
+                Resource replacement = new Resource(resourceType);
                 setDragAndDropSource(replacement);
                 resourcesBox.getChildren().set(resourcesBox.getChildren().indexOf(node), replacement);
             });

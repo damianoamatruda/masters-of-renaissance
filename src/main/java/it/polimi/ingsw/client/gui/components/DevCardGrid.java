@@ -4,13 +4,11 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -18,19 +16,8 @@ import java.util.function.BiConsumer;
 public class DevCardGrid extends HBox {
     private BiConsumer<ReducedDevCard, DevelopmentCard> controllerListener;
 
-    /**
-     * Class constructor.
-     */
     public DevCardGrid() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devcardgrid.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        this.setSpacing(5.0);
     }
 
     /**

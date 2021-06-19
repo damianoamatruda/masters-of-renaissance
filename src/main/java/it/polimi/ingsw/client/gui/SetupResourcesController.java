@@ -5,9 +5,9 @@ import it.polimi.ingsw.client.gui.components.Shelf;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.client.gui.components.Warehouse;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
@@ -68,8 +68,7 @@ public class SetupResourcesController extends GuiController {
 
         // enable resources from choice box as drag source
         choosableResources.forEach(res -> {
-            Resource r = new Resource();
-            r.setResourceType(res.getName());
+            Resource r = new Resource(res.getName());
 
             r.setOnDragDetected((event) -> {
                     Dragboard db = r.startDragAndDrop(TransferMode.ANY);

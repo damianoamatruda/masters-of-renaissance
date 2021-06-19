@@ -6,13 +6,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-
-import java.util.Map;
 
 /** Gui component that represents a leader card. */
 public class LeaderCard extends Card {
@@ -122,8 +118,7 @@ public class LeaderCard extends Card {
      * @param type  the resource type to replace the Zero
      */
     public void setZeroReplacement(String type) {
-        Resource res = new Resource();
-        res.setResourceType(type);
+        Resource res = new Resource(type);
 
         res.setLayoutX(getWidth() * 0.60);
         res.setLayoutY(getHeight() * 0.77);
@@ -146,9 +141,8 @@ public class LeaderCard extends Card {
 
         Text amount = new Text();
         amount.setText(String.valueOf(-1 * discount));
-        
-        Resource res = new Resource();
-        res.setResourceType(type);
+
+        Resource res = new Resource(type);
 
         res.setFitHeight(getHeight() * 0.14);
         res.setFitWidth(getHeight() * 0.14);

@@ -124,8 +124,7 @@ public class Shelf extends BorderPane {
      */
     public void addResource(String resource) {
         removePlaceholder();
-        Resource r = new Resource();
-        r.setResourceType(resource);
+        Resource r = new Resource(resource);
 
         addResource(r);
     }
@@ -336,8 +335,7 @@ public class Shelf extends BorderPane {
 
     public void addResourceDraggable(String resource) {
         //TODO duplicated in Warehouse
-        Resource r = new Resource();
-        r.setResourceType(resource);
+        Resource r = new Resource(resource);
         this.addResource(r);
 
         r.setOnDragDetected((event) -> {

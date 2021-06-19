@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -11,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,21 +18,6 @@ import java.util.Objects;
 public class CardRequirement extends HBox {
     private static final double maxRowHeight = 30; // TODO: Parameterize
     private List<HBox> requirements;
-
-    /**
-     * Class constructor.
-     */
-    public CardRequirement() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/cardrequirement.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
 
     /**
      * Builds graphic components for the resource requirements.
@@ -50,8 +33,7 @@ public class CardRequirement extends HBox {
             l.maxHeight(maxRowHeight);
             HBox.setMargin(l, new Insets(0, 0, 0, 6));
 
-            Resource r = new Resource();
-            r.setResourceType(resource);
+            Resource r = new Resource(resource);
             r.setPreserveRatio(true);
             r.setFitHeight(maxRowHeight);
             r.setFitWidth(30);

@@ -10,9 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Spinner;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -23,33 +20,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 /** Pane component used to choose input source for a selected production. */
 public class ActivateProduction extends StackPane {
-    private NumberBinding maxScale;
+    private final NumberBinding maxScale;
 
     @FXML private StackPane backStackPane;
     @FXML private SButton back;
-    @FXML private SButton next;
-    @FXML private SButton submit;
-    @FXML private Warehouse guiShelves;
-    @FXML private HBox choosableInputResources;
-    @FXML private HBox choosableOutputResources;
-    @FXML private Text text;
-    @FXML private Production productionRecipe;
-    @FXML private Strongbox strongbox;
-    @FXML private HBox leadersBox;
+    @FXML
+    private SButton next;
+    @FXML
+    private SButton submit;
+    @FXML
+    private Warehouse guiShelves;
+    @FXML
+    private HBox choosableInputResources;
+    @FXML
+    private HBox choosableOutputResources;
+    @FXML
+    private Text text;
+    @FXML
+    private Production productionRecipe;
+    @FXML
+    private Strongbox strongbox;
+    @FXML
+    private HBox leadersBox;
 
-    private List<ReducedProductionRequest> requests;
-    private List<ReducedResourceContainer> tempShelves;
-    private List<ReducedResourceContainer> newTempShelves;
-    private List<ReducedResourceContainer> newTempDepots;
-    private List<Integer> toActivate;
-    private int index;
-    private Map<String, Integer> inputBlanks = new HashMap<>();
-    private Map<String, Integer> outputBlanks = new HashMap<>();
-    private Map<Integer, Map<String, Integer>> containers = new HashMap<>();
+    private final List<ReducedProductionRequest> requests;
+    private final List<ReducedResourceContainer> tempShelves;
+    private final List<ReducedResourceContainer> newTempShelves;
+    private final List<ReducedResourceContainer> newTempDepots;
+    private final List<Integer> toActivate;
+    private final int index;
+    private final Map<String, Integer> inputBlanks = new HashMap<>();
+    private final Map<String, Integer> outputBlanks = new HashMap<>();
+    private final Map<Integer, Map<String, Integer>> containers = new HashMap<>();
 
     /**
      * Class constructor.
@@ -94,8 +99,7 @@ public class ActivateProduction extends StackPane {
             spinner.setMaxWidth(50);
             spinner.editorProperty().get().setAlignment(Pos.CENTER);
             entry.getChildren().add(spinner);
-            Resource resource = new Resource();
-            resource.setResourceType(r.getName());
+            Resource resource = new Resource(r.getName());
             resource.setScaleX(0.8);
             resource.setScaleY(0.8);
             entry.getChildren().add(resource);
@@ -108,8 +112,7 @@ public class ActivateProduction extends StackPane {
             spinner.setMaxWidth(50);
             spinner.editorProperty().get().setAlignment(Pos.CENTER);
             entry.getChildren().add(spinner);
-            Resource resource = new Resource();
-            resource.setResourceType(r.getName());
+            Resource resource = new Resource(r.getName());
             resource.setScaleX(0.8);
             resource.setScaleY(0.8);
             entry.getChildren().add(resource);

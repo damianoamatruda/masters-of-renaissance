@@ -1,23 +1,11 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import it.polimi.ingsw.client.gui.Gui;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.css.PseudoClass;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /** Gui component that represents a runtime development slot. */
 public class DevSlot extends StackPane {
@@ -29,10 +17,6 @@ public class DevSlot extends StackPane {
      * Class constructor.
      */
     public DevSlot() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/devslot.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
         Image bgimg = new Image(
                 Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/devslot.PNG")).toExternalForm());
 
@@ -41,12 +25,6 @@ public class DevSlot extends StackPane {
                 new BackgroundSize(1.0, 1.0, true, true, true, false));
 
         this.setBackground(new Background(bg));
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
     }
 
     /**

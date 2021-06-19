@@ -11,8 +11,8 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 /** Gui component representing a strongbox. */
 public class Strongbox extends StackPane {
@@ -113,7 +113,7 @@ public class Strongbox extends StackPane {
      */
     private class Cell extends HBox {
         private int count;
-        private String resource;
+        private final String resource;
 
         public Cell(String resource, int count, double cellWidth, double cellHeight, double scaleRatio) {
             this.resource = resource;
@@ -122,8 +122,7 @@ public class Strongbox extends StackPane {
             this.setSpacing(cellWidth * 0.2);
             this.setAlignment(Pos.CENTER);
 
-            Resource r = new Resource();
-            r.setResourceType(resource);
+            Resource r = new Resource(resource);
             r.setFitHeight(cellHeight * 0.8);
 
             Text t = new Text(String.valueOf(count));

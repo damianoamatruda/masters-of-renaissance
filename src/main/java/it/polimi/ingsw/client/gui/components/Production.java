@@ -71,14 +71,14 @@ public class Production extends StackPane {
         input.getChildren().addAll(buildResourceLines(production.getInput()));
 
         if (production.getInputBlanks() > 0) {
-            Resource blank = new Resource(); blank.setResourceType("Zero"); // TODO: parameterize
+            Resource blank = new Resource("Zero"); // TODO: parameterize
             input.getChildren().add(row(production.getInputBlanks(), blank));
         }
 
         output.getChildren().addAll(buildResourceLines(production.getOutput()));
 
         if (production.getOutputBlanks() > 0) {
-            Resource blank = new Resource(); blank.setResourceType("Zero"); // TODO: parameterize
+            Resource blank = new Resource("Zero"); // TODO: parameterize
             output.getChildren().add(row(production.getOutputBlanks(), blank));
         }
         
@@ -93,8 +93,7 @@ public class Production extends StackPane {
      */
     private List<HBox> buildResourceLines(Map<String, Integer> resourceMap) {
         return resourceMap.entrySet().stream().map(e -> {
-            Resource r = new Resource();
-            r.setResourceType(e.getKey());
+            Resource r = new Resource(e.getKey());
 
             return row(e.getValue(), r);
         }).toList();

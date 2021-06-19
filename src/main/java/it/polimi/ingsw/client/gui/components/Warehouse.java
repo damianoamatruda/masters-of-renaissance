@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -10,7 +9,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,24 +17,16 @@ import java.util.function.BiConsumer;
 
 /** Gui component representing a Warehouse. */
 public class Warehouse extends VBox {
+    private static final double minWidth = 360.0;
+    private static final double minHeight = 300.0;
     private double maxRowHeight;
     private final Map<Integer, Shelf> shelves = new HashMap<>();
-    
+
     private int waitingForSwap1, waitingForSwap2;
 
-    /**
-     * Class constructor.
-     */
     public Warehouse() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/warehouse.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        this.setPrefWidth(minWidth);
+        this.setPrefHeight(minHeight);
     }
 
     /**
@@ -61,7 +51,7 @@ public class Warehouse extends VBox {
         maxRowHeight = getPrefHeight() / shelves.size();
         if(shelves != null) {
             for (ReducedResourceContainer shelf : shelves) {
-                Shelf content = new Shelf(shelf, maxRowHeight, this.getMinHeight(), callback);
+                Shelf content = new Shelf(shelf, maxRowHeight, minHeight, callback);
 
                 this.shelves.put(shelf.getId(), content);
                 for(String resource : shelf.getContent().keySet()) {
@@ -91,8 +81,7 @@ public class Warehouse extends VBox {
      */
     public void addResourceDraggable(int id, String resource) {
         Shelf shelf = shelves.get(id);
-        Resource r = new Resource();
-        r.setResourceType(resource);
+        Resource r = new Resource(resource);
         shelf.addResource(r);
 
         r.setOnDragDetected((event) -> {
