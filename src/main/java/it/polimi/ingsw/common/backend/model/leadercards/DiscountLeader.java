@@ -38,7 +38,7 @@ public class DiscountLeader extends LeaderCard {
 
         Map<ResourceType, Integer> discountedCost = new HashMap<>(cost);
 
-        discountedCost.computeIfPresent(this.getResource(), (r, oldCost) -> oldCost - discount);
+        discountedCost.computeIfPresent(this.getResource(), (r, oldCost) -> oldCost - discount > 0 ? oldCost - discount : null);
 
         return discountedCost;
     }
