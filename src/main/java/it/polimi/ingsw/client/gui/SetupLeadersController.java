@@ -69,7 +69,7 @@ public class SetupLeadersController extends GuiController {
                 leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
             else
                 leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                        reducedLeader.getResourceType());
+                        reducedLeader.getResourceType(), false);
 
             leaderCard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                 if (selection.contains(leaderCard)) {

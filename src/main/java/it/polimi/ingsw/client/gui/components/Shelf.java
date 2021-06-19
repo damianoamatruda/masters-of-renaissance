@@ -1,10 +1,13 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -16,6 +19,7 @@ import javafx.scene.text.Text;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
@@ -31,6 +35,8 @@ public class Shelf extends BorderPane {
     private final Circle swapIcon = new Circle(10, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
+    private boolean hasPlaceholder;
+    private boolean isLeaderDepot;
 
     /**
      * Class constructor.
@@ -72,6 +78,19 @@ public class Shelf extends BorderPane {
     }
 
     /**
+     * Class constructor.
+     *
+     * @param shelf         the cached shelf
+     * @param maxHeight     the max height dimension of the component
+     * @param contentWidth  the max width dimension of the content in the component
+     * @param isLeaderDepot true if belonging to a leader card
+     */
+    public Shelf(ReducedResourceContainer shelf, double maxHeight, double contentWidth, boolean isLeaderDepot) {
+        this(shelf, maxHeight, contentWidth, (a, b) -> {});
+        this.isLeaderDepot = isLeaderDepot;
+    }
+
+    /**
      * Sets and displays the shelf content.
      *
      * @param content the content, as HBox component
@@ -86,6 +105,7 @@ public class Shelf extends BorderPane {
      * @param r the resource as Gui component
      */
     public void addResource(Resource r) {
+        removePlaceholder();
         r.setPreserveRatio(true);
         r.setFitHeight(this.getMinHeight());
         ((HBox) this.getCenter()).getChildren().add(r);
@@ -97,6 +117,7 @@ public class Shelf extends BorderPane {
      * @param resource the resource type
      */
     public void addResource(String resource) {
+        removePlaceholder();
         Resource r = new Resource();
         r.setResourceType(resource);
 
@@ -126,6 +147,8 @@ public class Shelf extends BorderPane {
      */
     public void removeResource() {
         content.getChildren().remove(content.getChildren().size() - 1);
+        if(isLeaderDepot)
+            setPlaceholder(getBoundResource());
     }
 
     /**
@@ -143,7 +166,8 @@ public class Shelf extends BorderPane {
      * @return the shelf's bound resource type
      */
     public String getBoundResource() {
-        if (content.getChildren().size() <= 0) return null;
+        if (content.getChildren().size() <= 0 && !isLeaderDepot) return null;
+        if(isLeaderDepot) return Gui.getInstance().getViewModel().getContainer(shelfId).flatMap(ReducedResourceContainer::getBoundedResType).orElse(null);
         return ((Resource)content.getChildren().get(0)).getName();
     }
 
@@ -272,6 +296,52 @@ public class Shelf extends BorderPane {
                 }
             });
         }
+    }
+
+    public void setPlaceholder(String resource) {
+        this.hasPlaceholder = true;
+        ImageView img = new ImageView(new Image(getResourcePlaceholderPath(resource)));
+
+        img.setFitHeight(30);
+        img.setFitWidth(30);
+        content.getChildren().add(img);
+    }
+
+    /**
+     * Getter of the path to the PNG of the depot placeholder.
+     *
+     * @param resourceType  the depot's bound resource type
+     * @return  the path to the PNG resource representing a depot placeholder
+     */
+    private String getResourcePlaceholderPath(String resourceType) {
+        return String.format("/assets/gui/leadertemplates/%sdepot.png", resourceType.toLowerCase());
+    }
+
+    private void removePlaceholder() {
+        Optional<ReducedResourceContainer> container = Gui.getInstance().getViewModel().getContainer(shelfId);
+        container.ifPresent(c -> {
+            if(content.getChildren().size() == 1 && c.getContent().size() == 0) {
+                this.hasPlaceholder = false;
+                content.getChildren().clear();
+            }
+        });
+    }
+
+    public void addResourceDraggable(String resource) {
+        //TODO duplicated in Warehouse
+        Resource r = new Resource();
+        r.setResourceType(resource);
+        this.addResource(r);
+
+        r.setOnDragDetected((event) -> {
+                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(r.getImage());
+                    content.putString(this.getShelfId()+"");
+                    db.setContent(content);
+                    event.consume();
+                }
+        );
     }
 
 //    private void disableSwapDnD() {

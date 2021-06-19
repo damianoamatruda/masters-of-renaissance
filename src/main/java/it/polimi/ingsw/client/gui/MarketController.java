@@ -159,8 +159,6 @@ public class MarketController extends GuiController {
      * Resets warehouse content to state from before market action
      */
     private void resetWarehouse() {
-        Gui gui = Gui.getInstance();
-
         warehouse = new Warehouse();
 
         List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname());
@@ -203,6 +201,7 @@ public class MarketController extends GuiController {
                     LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                 }
             }
+            // if the resource of choice was previously inserted in another shelf the moved
             if(db.hasString() && success) {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                 String resource = ((Resource) event.getGestureSource()).getName();
@@ -256,7 +255,11 @@ public class MarketController extends GuiController {
                         else
                             selection.get(id).remove(resource);
 
-                        warehouse.refreshShelfRemove(id);
+                        if(warehouse.getShelf(id) != null)
+                            warehouse.refreshShelfRemove(id);
+                        else leaderCards.stream()
+                                .filter(l -> l.getGuiDepot() != null && l.getGuiDepot().getBoundResource().equals(resource))
+                                .map(LeaderCard::getGuiDepot).findAny().ifPresent(Shelf::removeResource);
                         resourcesBox.getChildren().add(res);
                         setDragAndDropSource(res);
 //                        replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) - 1 : 0);
@@ -312,39 +315,38 @@ public class MarketController extends GuiController {
                         // TODO handle substitution
                     } else {
                         leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                                reducedLeader.getResourceType());
+                                reducedLeader.getResourceType(), true);
 
                         leaderCard.setOnDragOver((event) -> {
                             Dragboard db = event.getDragboard();
                             if (db.hasImage()) {
-                                event.acceptTransferModes(TransferMode.COPY);
+                                event.acceptTransferModes(TransferMode.MOVE);
                             }
                             event.consume();
                         });
 
-                        leaderCard.setOnDragDropped((event) -> {
+                        leaderCard.getGuiDepot().setOnDragDropped((event) -> {
+                            Shelf s = leaderCard.getGuiDepot();
                             Dragboard db = event.getDragboard();
                             boolean success = false;
-                            if (db.hasImage()) {
-
-                                int id = reducedLeader.getContainerId();
+                            try {
+                                int shelfID = (leaderCard.getGuiDepot()).getShelfId();
                                 String resource = ((Resource) event.getGestureSource()).getName();
 
-                                success = putChoice(resource, id);
-                                if(success) { // TODO check edge cases, ex adding more than 2 resources
-                                    ReducedResourceContainer lCont = leaderCard.getContainer();
-                                    Map<String, Integer> content = lCont.getContent();
-                                    content.compute(resource, (k, v) -> v == null ? 1 : v++);
-                                    ReducedResourceContainer newContainer = new ReducedResourceContainer(lCont.getId(), lCont.getSize(), content, lCont.getBoundedResType().orElse(null));
-
-                                    leaderCard.setDepotContent(newContainer, reducedLeader.getResourceType());
-
-                                    removeResourceFromBox(resource);
+                                if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource))) {
+                                    success = putChoice(resource, shelfID);
+                                    if (success) {
+                                        s.addResourceDraggable(resource);
+                                        if(!db.hasString())
+                                            removeResourceFromBox(resource);
+                                        replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);
+                                    }
                                 }
 
+                            } catch (Exception e) { // TODO remove this catch once debugged
+                                LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                             }
                             if(db.hasString() && success) {
-                                success = false;
                                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                                 String resource = ((Resource) event.getGestureSource()).getName();
 
@@ -354,11 +356,11 @@ public class MarketController extends GuiController {
                                 else
                                     selection.get(id).remove(resource);
 
-                                // warehouse.refreshShelfRemove(id, resource);
-                                success = false;
+                                s.removeResource();
                             }
                             event.setDropCompleted(success);
                             event.consume();
+
                         });
                     }
 

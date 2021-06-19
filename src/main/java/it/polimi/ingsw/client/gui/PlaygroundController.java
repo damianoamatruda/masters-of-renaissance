@@ -127,7 +127,7 @@ public abstract class PlaygroundController extends GuiController {
                     leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
                 else
                     leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                            reducedLeader.getResourceType());
+                            reducedLeader.getResourceType(), false);
 
                 leaderCard.setActivated(reducedLeader.isActive());
 

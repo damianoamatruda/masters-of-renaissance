@@ -30,6 +30,7 @@ public class LeaderCard extends Card {
     private int leaderId;
 
     private boolean isActivated;
+    private Shelf depot;
 
     /**
      * Class constructor.
@@ -170,67 +171,33 @@ public class LeaderCard extends Card {
         return content;
     }
 
+    public Shelf getGuiDepot() { return depot; }
+
     /**
      * Sets and displays the depots content (valid for depot leaders).
      *
      * @param container the resource container of the leader card
      * @param boundRes  the depots' bound resource type
      */
-    public void setDepotContent(ReducedResourceContainer container, String boundRes) {
+    public void setDepotContent(ReducedResourceContainer container, String boundRes, boolean wantsDnD) {
         content = container;
 
-        double x1 = getWidth() * 0.22;
-        double x2 = getWidth() * 0.59;
-        double y = getHeight() * 0.80;
+        Shelf shelf = new Shelf(container, 40, 95, true);
+        shelf.setLayoutY(200);
+        this.getChildren().add(shelf);
 
-        if (container == null) {
-            fillDepot(x1, y, boundRes, true);
-            fillDepot(x2, y, boundRes, true);
-            return;
+        if(container.getContent().size() == 0)
+            shelf.setPlaceholder(boundRes);
+        else
+            for(int i = 0; i < container.getContent().get(boundRes); i++) {
+            if(wantsDnD)
+                shelf.addResourceDraggable(boundRes);
+            else
+                shelf.addResource(boundRes);
         }
 
-        Map<String, Integer> content = container.getContent();
+        this.depot = shelf;
 
-        content.keySet().stream().findAny().ifPresentOrElse(r -> {
-            int size = content.get(r);
-            fillDepot(x1, y, r, false);
-            fillDepot(x2, y, r, size < 2);
-        }, () -> {
-            fillDepot(x1, y, boundRes, true);
-            fillDepot(x2, y, boundRes, true);
-        });
-
-    }
-
-    /**
-     * Displays the depot content (using a placeholder if empty).
-     *
-     * @param x         the horizontal coordinate for placing the ImageView
-     * @param y         the vertical coordinate for placing the ImageView
-     * @param boundRes  the depot's bound resource type
-     * @param isEmpty   true if the leader depot is unoccupied
-     */
-    private void fillDepot(double x, double y, String boundRes, boolean isEmpty) {
-        ImageView img = new ImageView(new Image(getResourcePlaceholderPath(boundRes, isEmpty)));
-        img.setX(x);
-        img.setY(y);
-
-        img.setFitHeight(getHeight() * 0.14);
-        img.setFitWidth(getHeight() * 0.14);
-        this.getChildren().add(img);
-    }
-
-    /**
-     * Getter of the path to the PNG of the depot content.
-     *
-     * @param resourceType  the depot's bound resource type
-     * @param isEmpty       true if the leader depot is unoccupied
-     * @return  the path to the PNG resource representing the depot content
-     */
-    private String getResourcePlaceholderPath(String resourceType, boolean isEmpty) {
-        if (isEmpty)
-            return String.format("/assets/gui/leadertemplates/%sdepot.png", resourceType.toLowerCase());
-        return String.format("/assets/gui/resourcetypes/%s.png", resourceType.toLowerCase());
     }
 
     /**
