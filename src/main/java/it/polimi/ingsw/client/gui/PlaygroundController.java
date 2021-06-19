@@ -47,6 +47,8 @@ public abstract class PlaygroundController extends GuiController {
 
     private List<Integer> toActivate = new ArrayList<>();
 
+    private SButton activateProduction;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
@@ -165,9 +167,9 @@ public abstract class PlaygroundController extends GuiController {
             }
             leadersBox.getChildren().add(h);
 
-            HBox produceBtnContainer = new HBox();
-            produceBtnContainer.setAlignment(Pos.CENTER);
-            leadersBox.getChildren().add(produceBtnContainer);
+//            HBox produceBtnContainer = new HBox();
+//            produceBtnContainer.setAlignment(Pos.CENTER);
+//            leadersBox.getChildren().add(produceBtnContainer);
 
             i++;
         }
@@ -212,7 +214,7 @@ public abstract class PlaygroundController extends GuiController {
      * @param leaderIndex the leader card to be activated
      */
     private void handleActivate(int leaderIndex) {
-        int leaderId = ((LeaderCard) leadersBox.getChildren().get(3 * leaderIndex)).getLeaderId();
+        int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
         Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leaderId, true));
     }
 
@@ -222,7 +224,7 @@ public abstract class PlaygroundController extends GuiController {
      * @param leaderIndex the leader card to be discarded
      */
     private void handleDiscard(int leaderIndex) {
-        LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(3 * leaderIndex);
+        LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
         if (toDiscard == null) {
             toDiscard = leader;
             Gui.getInstance().getUi().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
@@ -233,16 +235,16 @@ public abstract class PlaygroundController extends GuiController {
     public void on(UpdateActivateLeader event) {
         super.on(event);
 
-        if(gui.getViewModel().isCurrentPlayer()) {
-            LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
-            int leaderIndex = leadersBox.getChildren().indexOf(leader);
-
+        if (gui.getViewModel().isCurrentPlayer()) {
+            LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> leadersBox.getChildren().indexOf(l) % 2 == 0 && ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
+            int leaderIndex = leadersBox.getChildren().stream().filter(node -> leadersBox.getChildren().indexOf(node) % 2 == 0).toList().indexOf(leader);
+            System.out.println(leaderIndex);
             leader.setActivated(true);
 
-            HBox buttons = (HBox) leadersBox.getChildren().get(leaderIndex + 1);
-            buttons.getChildren().forEach(b -> {
-                b.setDisable(true);
-                b.setVisible(false);
+            HBox buttons = (HBox) leadersBox.getChildren().get(2 * leaderIndex + 1);
+            Platform.runLater(() -> {
+                buttons.getChildren().clear();
+                refreshLeadersProduceButton();
             });
         }
     }
@@ -263,13 +265,13 @@ public abstract class PlaygroundController extends GuiController {
         super.on(event);
 
         if(gui.getViewModel().isCurrentPlayer()) {
-            int leaderIndex = leadersBox.getChildren().indexOf(toDiscard);
+            int leaderIndex = leadersBox.getChildren().stream().filter(node -> leadersBox.getChildren().indexOf(node) % 2 == 0).toList().indexOf(toDiscard);
 
 //        leadersBox.getChildren().remove(leaderIndex, leaderIndex + 2);
-            leadersBox.getChildren().get(leaderIndex).setVisible(false);
+            leadersBox.getChildren().get(2 * leaderIndex).setVisible(false);
 
-            leadersBox.getChildren().get(leaderIndex + 1).setDisable(true);
-            leadersBox.getChildren().get(leaderIndex + 1).setVisible(false);
+            leadersBox.getChildren().get(2 * leaderIndex + 1).setDisable(true);
+            leadersBox.getChildren().get(2 * leaderIndex + 1).setVisible(false);
 
             toDiscard = null;
         }
@@ -307,7 +309,7 @@ public abstract class PlaygroundController extends GuiController {
      */
     protected void addProduceButtons() {
         // add button to proceed to payment
-        SButton activateProduction = new SButton();
+        activateProduction = new SButton();
         activateProduction.setText("Activate production");
         activateProduction.setOnAction((event) ->
                 backStackPane.getChildren().add(new ActivateProduction(toActivate, 0,
@@ -321,10 +323,18 @@ public abstract class PlaygroundController extends GuiController {
         // add button to each production
         pboard.addProduceButtons(toActivate, activateProduction);
 
+        refreshLeadersProduceButton();
+
+    }
+
+    /**
+     * Refreshes buttons for production activation on the leader cards
+     */
+    private void refreshLeadersProduceButton() {
         // add button to production leader cards
-        for(int i = 0; i < leadersBox.getChildren().size() / 3; i++) {
-            LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(3 * i);
-            if(leader.getLeaderType().equalsIgnoreCase("ProductionLeader")) {
+        for(int i = 0; i < leadersBox.getChildren().size() / 2; i++) {
+            LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * i);
+            if(leader.getLeaderType().equalsIgnoreCase("ProductionLeader") && leader.isActivated()) {
                 SButton activate = new SButton();
                 activate.setText("Produce");
                 activate.setOnAction((event) -> {
@@ -337,7 +347,7 @@ public abstract class PlaygroundController extends GuiController {
                         if(toActivate.size() == 0) activateProduction.setDisable(true);
                     }
                 });
-                ((HBox) leadersBox.getChildren().get(3 * i + 2)).getChildren().add(activate);
+                ((HBox) leadersBox.getChildren().get(2 * i + 1)).getChildren().add(activate);
             }
         }
     }
