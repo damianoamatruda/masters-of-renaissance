@@ -10,6 +10,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +33,9 @@ public class ResourceRequirement implements CardRequirement {
      * @param resources the resources that form the requirement
      */
     public ResourceRequirement(Map<ResourceType, Integer> resources) {
-        this.resources = resources;
+        this.resources = resources.entrySet().stream()
+                .filter(e -> e.getValue() > 0)
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
     /**

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * Requirement for leader card activation. Specifies what kind of development cards the player must have to be able to
@@ -30,7 +32,7 @@ public class DevCardRequirement implements CardRequirement {
      * @param requirements the development cards that form the requirement.
      */
     public DevCardRequirement(Set<Entry> requirements) {
-        entryList = requirements;
+        entryList = requirements.stream().filter(e -> e.amount > 0).collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
@@ -41,33 +43,33 @@ public class DevCardRequirement implements CardRequirement {
          * are present in the ones extracted from the player */
 
         List<DevelopmentCard> playerCards = new ArrayList<>();
-        for (int i = 0; i < player.getDevSlots().size(); i++)
-            playerCards.addAll(player.getDevSlots().get(i));
+        
+        playerCards.addAll(player.getDevSlots().stream().flatMap(Stack::stream).toList());
 
         Set<Entry> playerState = new HashSet<>(),
                 reqCopy = new HashSet<>(entryList), // never touch the original set
                 missing = new HashSet<>();
 
         playerCards.forEach(card -> {
-            Entry currCard = new Entry(card.getColor(), card.getLevel());
-            // if not present add a new entry
-            if (!playerState.contains(currCard))
-                playerState.add(currCard.setAmount(1));
-                // else increment the amount available
-            else playerState.stream().filter(e -> e.equals(currCard)).findAny().ifPresent(e -> e.amount++);
+            Entry currCard = new Entry(card.getColor(), card.getLevel(), 1);
+
+            playerState.stream().filter(e -> e.equals(currCard))
+                    .findAny()
+                    .ifPresentOrElse(
+                            e -> e.amount++,
+                            () -> playerState.add(currCard));
         });
 
         for (Entry entry : reqCopy) {
             // entry not found in player's cards -> requirements not satisfied
-            if (entry.amount > 0 && playerState.stream().noneMatch(e -> e.equals(entry)))
+            if (playerState.stream().noneMatch(e -> e.equals(entry)))
                 missing.add(entry);
                 // if the entry is found the amount of cards the player owns in that entry is subtracted from the requirements
-            else {
+            else
                 playerState.stream().filter(e -> e.equals(entry)).findAny().ifPresent(e -> {
                     if (entry.amount - e.amount > 0)
                         missing.add(new Entry(entry.color, entry.level, entry.amount - e.amount));
                 });
-            }
         }
 
         // if the missing set isn't empty the requirements haven't been met

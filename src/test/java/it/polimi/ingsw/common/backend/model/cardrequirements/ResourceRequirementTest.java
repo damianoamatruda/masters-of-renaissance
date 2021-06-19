@@ -54,4 +54,17 @@ public class ResourceRequirementTest {
 
         assertDoesNotThrow(() -> req.checkRequirements(p));
     }
+
+    /**
+     * Tests whether the checking process for a resource requirement succeeds if the requirements have zero-values.
+     */
+    @Test
+    void checkEmptyRequirements() {
+        Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
+        assertDoesNotThrow(() -> p.getStrongbox().addResource(coin));
+
+        ResourceRequirement req = new ResourceRequirement(Map.of(coin, 0));
+
+        assertDoesNotThrow(() -> req.checkRequirements(p));
+    }
 }
