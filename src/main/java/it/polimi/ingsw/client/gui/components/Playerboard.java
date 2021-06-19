@@ -8,7 +8,6 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,13 +69,12 @@ public class Playerboard extends HBox {
         board.add(production, 3, 1);
 
         for(int i = 0; i < slots.size(); i++){
-            slots.get(i).setAlignment(Pos.BOTTOM_CENTER);
+            slots.get(i).setAlignment(Pos.TOP_CENTER);
             board.add(slots.get(i), 4 + i, 1);
         }
 
         Group g = new Group(faithTrack);
         board.add(g, 1, 0);
-
 
         changedSize(null, 0, 0);
 
@@ -94,9 +92,8 @@ public class Playerboard extends HBox {
      * @param <T>
      */
     private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-        double boardWidth = 1050, boardHeight = 745,
-               storageColWidth = 232;
-
+        double boardWidth = 1012, boardHeight = 720,
+               storageColWidth = 224;
         if (this.getHeight() > 0 && this.getWidth() > 0) {
             double newDimRatio = this.getWidth() / this.getHeight();
             double newBoardHeight = newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / bgRatio;
