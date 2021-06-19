@@ -71,8 +71,8 @@ public class Shelf extends BorderPane {
         sizeText = new Text(String.format("Size: %d", shelf.getSize()));
 
         BorderPane sizePane = new BorderPane();
-        sizePane.setMinWidth(70);
-        sizePane.setMaxWidth(70);
+        sizePane.setMinWidth(50);
+        sizePane.setMaxWidth(50);
         sizePane.setMinHeight(maxHeight);
         sizePane.setMaxHeight(maxHeight);
         sizePane.setCenter(sizeText);
