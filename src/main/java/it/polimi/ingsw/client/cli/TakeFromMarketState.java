@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.Market;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
-import it.polimi.ingsw.common.backend.model.leadercards.ZeroLeader;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
@@ -94,7 +93,7 @@ public class TakeFromMarketState extends CliController {
                 .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .filter(ReducedResourceType::isStorable)
+                .filter(r -> r.isStorable() || vm.getMarket().get().getReplaceableResType().equals(r.getName()))
                 .map(ReducedResourceType::getName)
                 .toList();
 
@@ -112,25 +111,20 @@ public class TakeFromMarketState extends CliController {
         if (blanksCount > 0) {
             List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                     .filter(c -> c.isActive() &&
-                            c.getLeaderType().equals(ZeroLeader.class.getSimpleName())).toList();
+                            c.getLeaderType().equals("ZeroLeader")).toList();
 
             // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {
                 new LeadersHand(zeroLeaders).render();
-                cli.getOut().println("These are the active leaders you can use to replace blank resources.");
+                cli.getOut().println(center("These are the active leaders you can use to replace blank resources."));
 
                 AtomicBoolean valid = new AtomicBoolean(false);
                 while (!valid.get()) {
                     valid.set(true);
-                    cli.prompt("Replace resources? [y/n]").ifPresentOrElse(input -> {
-                        valid.set(input.equalsIgnoreCase("y") || input.equalsIgnoreCase("n"));
-                        if (input.equalsIgnoreCase("y")) {
-                            cli.promptResources(
-                                    zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).collect(Collectors.toUnmodifiableSet()), blanksCount
-                            ).ifPresentOrElse(replacements -> {
-                                this.replacements = replacements;
-                            }, () -> chooseIndex(cli)); // TODO: Refactor logic of this
-                        }
+                    cli.promptResources(
+                            zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).collect(Collectors.toUnmodifiableSet()), blanksCount
+                    ).ifPresentOrElse(replacements -> {
+                        this.replacements = replacements;
                     }, () -> chooseIndex(cli));
                 }
             }

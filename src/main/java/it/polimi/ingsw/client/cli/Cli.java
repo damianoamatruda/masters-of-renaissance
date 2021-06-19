@@ -348,7 +348,7 @@ public class Cli implements Runnable {
             promptResource(allowedResources).ifPresentOrElse(res -> {
                 promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> {
                     allocQuantity.addAndGet(quantity);
-                    replacedRes.put(res, quantity);
+                    replacedRes.compute(res, (r, q) -> q == null ? quantity : q + quantity);
                 }, () -> valid.set(false));
             }, () -> valid.set(false));
 
