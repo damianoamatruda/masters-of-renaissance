@@ -13,10 +13,8 @@
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="22.15"/>
         <ColumnConstraints hgrow="SOMETIMES"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="10.6"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="19.24"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="19.32"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="19.24"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="5.06"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="57.72"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="5.14"/>
       </columnConstraints>
       <rowConstraints>
         <RowConstraints percentHeight="35.1" valignment="BOTTOM" vgrow="SOMETIMES"/>

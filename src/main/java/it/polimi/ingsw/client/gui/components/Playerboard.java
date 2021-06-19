@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,19 +9,20 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import it.polimi.ingsw.client.gui.Gui;
-import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
-
 /** Gui component representing a player's playerboard. */
 public class Playerboard extends HBox {
-    @FXML private HBox canvas;
-    @FXML private ImageView frontBG;
+    @FXML
+    private final HBox canvas;
+    @FXML
+    private ImageView frontBG;
     @FXML private GridPane board;
     @FXML private GridPane storageColumn;
 
@@ -68,10 +71,12 @@ public class Playerboard extends HBox {
 
         board.add(production, 3, 1);
 
-        for(int i = 0; i < slots.size(); i++){
-            slots.get(i).setAlignment(Pos.TOP_CENTER);
-            board.add(slots.get(i), 4 + i, 1);
-        }
+        HBox devSlotsBox = new HBox();
+        devSlotsBox.getChildren().addAll(slots);
+        devSlotsBox.setAlignment(Pos.TOP_CENTER);
+        slots.forEach(s -> s.setMinWidth(200));
+
+        board.add(devSlotsBox, 4, 1);
 
         Group g = new Group(faithTrack);
         board.add(g, 1, 0);
