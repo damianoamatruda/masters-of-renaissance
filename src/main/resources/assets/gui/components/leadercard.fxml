@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="leaderCard" styleClass="card" focusTraversable="true"
          prefWidth="166.0" prefHeight="251.0" minWidth="166.0" minHeight="251.0" type="Pane" stylesheets="@../index.css"
          xmlns="http://javafx.com/javafx/16">
-   <cursor>
-      <Cursor fx:constant="OPEN_HAND"/>
-   </cursor>
    <VBox>
       <!--Text>LEADERCARD</Text-->
       <Text fx:id="leaderTypeText" layoutX="5.0" layoutY="9.0"/>
