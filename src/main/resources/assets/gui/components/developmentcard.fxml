@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -8,9 +7,6 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="devCard" styleClass="card" focusTraversable="true"
          prefWidth="166.0" prefHeight="251.0" minWidth="166.0" minHeight="251.0" type="Pane" stylesheets="@../index.css"
          xmlns="http://javafx.com/javafx/16">
-   <cursor>
-      <Cursor fx:constant="OPEN_HAND"/>
-   </cursor>
    <Text fx:id="victoryPoints"/>
    <Text fx:id="levelLeft" layoutY="65" layoutX="22"/>
    <Text fx:id="levelRight" layoutY="65" layoutX="133"/>
