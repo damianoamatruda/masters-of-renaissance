@@ -117,15 +117,10 @@ public class BuyDevelopmentCardState extends CliController {
                 this.cost = card.getCost().isPresent() ? new HashMap<>(card.getCost().get().getRequirements()) : new HashMap<>();
 
                 if (!this.cost.isEmpty()) {
-                    cli.getOut().println("Resources need to be paid.");
-                    cli.getOut().println("Please specify how many resources to take from which container.");
-
                     cli.getOut().println();
-                    new ResourceContainers(vm.getLocalPlayerNickname(),
-                            vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
-                            vm.getPlayerDepots(vm.getLocalPlayerNickname()),
-                            vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElse(null))
-                            .render();
+                    cli.getOut().println(center("Resources need to be paid."));
+                    cli.getOut().println(center("Please specify how many resources to take from which container."));
+                    cli.getOut().println();
 
                     chooseShelves(cli);
                 }
