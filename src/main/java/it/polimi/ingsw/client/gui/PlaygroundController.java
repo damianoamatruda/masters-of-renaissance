@@ -175,7 +175,7 @@ public abstract class PlaygroundController extends GuiController {
         }
 
         canvas.getChildren().add(leadersBox);
-        AnchorPane.setRightAnchor(leadersBox, 10.0);
+        AnchorPane.setRightAnchor(leadersBox, 55.0);
         AnchorPane.setBottomAnchor(leadersBox, 50.0);
 
     }
