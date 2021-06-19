@@ -51,7 +51,7 @@ public class SetupLeadersController extends GuiController {
         leadersContainer.setAlignment(Pos.CENTER);
 
         List<LeaderCard> leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeader -> {
-            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
+            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getLeaderType());
             leaderCard.setLeaderId(reducedLeader.getId());
             leaderCard.setLeaderType(reducedLeader.getLeaderType());
             leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");

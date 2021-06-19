@@ -9,6 +9,7 @@ import java.util.Objects;
 
 /** Gui component representing the resource types. */
 public class Resource extends ImageView {
+    private boolean isBlank;
     private String name;
 
     /**
@@ -24,6 +25,11 @@ public class Resource extends ImageView {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public Resource(boolean isZeroReplacement) {
+        this();
+        this.isBlank = isZeroReplacement;
     }
 
     /**
@@ -58,5 +64,9 @@ public class Resource extends ImageView {
      */
     public static String getMarblePath(String type) {
         return String.format("/assets/gui/market/%smarble.png", type.toLowerCase());
+    }
+
+    public boolean isBlank() {
+        return isBlank;
     }
 }

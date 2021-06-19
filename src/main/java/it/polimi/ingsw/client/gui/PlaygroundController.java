@@ -109,7 +109,7 @@ public abstract class PlaygroundController extends GuiController {
         // Sets the leader gui cards
         List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .map(reducedLeader -> {
-                LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType());
+                LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getLeaderType());
                 leaderCard.setLeaderId(reducedLeader.getId());
                 leaderCard.setLeaderType(reducedLeader.getLeaderType());
                 leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
@@ -229,7 +229,6 @@ public abstract class PlaygroundController extends GuiController {
         if (gui.getViewModel().isCurrentPlayer()) {
             LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> leadersBox.getChildren().indexOf(l) % 2 == 0 && ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
             int leaderIndex = leadersBox.getChildren().stream().filter(node -> leadersBox.getChildren().indexOf(node) % 2 == 0).toList().indexOf(leader);
-            System.out.println(leaderIndex);
             leader.setActivated(true);
 
             HBox buttons = (HBox) leadersBox.getChildren().get(2 * leaderIndex + 1);

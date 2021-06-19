@@ -17,6 +17,7 @@ import java.util.Map;
 /** Gui component that represents a leader card. */
 public class LeaderCard extends Card {
     private final String leaderType;
+    private final String resourceType;
     @FXML
     private Pane leaderCard;
     @FXML
@@ -33,11 +34,13 @@ public class LeaderCard extends Card {
     /**
      * Class constructor.
      *
-     * @param leaderType the type of leader card
+     * @param leaderType    the type of leader card
+     * @param resourceType  the target resource type of the leader card
      */
-    public LeaderCard(String leaderType) {
+    public LeaderCard(String leaderType, String resourceType) {
         super(leaderType);
         this.leaderType = leaderType;
+        this.resourceType = resourceType;
     }
 
     /**
@@ -63,7 +66,7 @@ public class LeaderCard extends Card {
      * @return the target resource type of the leader card
      */
     public String getResourceType() {
-        return resourceTypeProperty().get();
+        return resourceType;
     }
 
     public void setResourceType(String value) {
