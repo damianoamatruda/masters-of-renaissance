@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.DevCardGrid;
 import it.polimi.ingsw.client.cli.components.DevSlots;
+import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
@@ -21,6 +22,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardState extends CliController {
     private final CliController sourceState;
+    private AtomicBoolean isExitingState;
     private ReducedDevCardGrid grid;
     private String color;
     private int level;
@@ -30,7 +32,7 @@ public class BuyDevelopmentCardState extends CliController {
 
     public BuyDevelopmentCardState(CliController sourceState) {
         this.sourceState = sourceState;
-
+        isExitingState = new AtomicBoolean(false);
         this.shelves = new HashMap<>();
     }
 
@@ -68,13 +70,17 @@ public class BuyDevelopmentCardState extends CliController {
         while (!valid.get()) {
             valid.set(true);
             cli.prompt("Card color").ifPresentOrElse(color -> {
+                isExitingState.set(false);
                 if (!allowedColors.contains(color.toLowerCase()))
                     valid.set(false);
                 else {
                     this.color = color.substring(0, 1).toUpperCase() + color.substring(1);
                     chooseLevel(cli);
                 }
-            }, () -> cli.setController(this.sourceState));
+            }, () -> {
+                isExitingState.set(true);
+                cli.setController(this.sourceState);
+            });
         }
     }
 
@@ -90,6 +96,7 @@ public class BuyDevelopmentCardState extends CliController {
         while (!valid.get()) {
             valid.set(true);
             cli.promptInt("Card level").ifPresentOrElse(level -> {
+                isExitingState.set(false);
                 if (!levels.contains(level))
                     valid.set(false);
                 else {    
@@ -105,6 +112,7 @@ public class BuyDevelopmentCardState extends CliController {
         while (!valid.get()) {
             valid.set(true);
             cli.promptInt("Player board slot index to assign the card to").ifPresentOrElse(slot -> {
+                isExitingState.set(false);
                 if (slot < 1 || slot > vm.getSlotsCount()) {
                     valid.set(false);
                     return;
@@ -125,7 +133,8 @@ public class BuyDevelopmentCardState extends CliController {
                     chooseShelves(cli);
                 }
 
-                cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
+                if (!isExitingState.get())
+                    cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
             }, () -> chooseLevel(cli));
         }
     }
@@ -136,6 +145,7 @@ public class BuyDevelopmentCardState extends CliController {
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
+            isExitingState.set(false);
             this.shelves = shelves;
         }, () -> chooseSlot(cli));
     }
