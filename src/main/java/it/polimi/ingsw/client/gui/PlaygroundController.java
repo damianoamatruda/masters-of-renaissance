@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -303,7 +304,8 @@ public abstract class PlaygroundController extends GuiController {
         activateProduction.setText("Activate production");
         activateProduction.setOnAction((event) ->
                 backStackPane.getChildren().add(new ActivateProduction(toActivate, 0,
-                        new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())), maxScale)));
+                        new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())),
+                        new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayerNickname())), maxScale)));
         activateProduction.setDisable(true);
 
         canvas.getChildren().add(activateProduction);

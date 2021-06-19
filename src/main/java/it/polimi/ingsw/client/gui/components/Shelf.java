@@ -259,34 +259,35 @@ public class Shelf extends BorderPane {
      * @param reducedShelf  the cached shelf which content to edit on resource click
      */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, ReducedResourceContainer reducedShelf) {
-        for (Node r : content.getChildren()) {
-            r.setOnMouseClicked(e -> {
-                String name = ((Resource) r).getName();
-                // doesn't work? => r.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !r.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
+        if(Gui.getInstance().getViewModel().getContainer(shelfId).orElseThrow().getContent().size() > 0)
+            for (Node r : content.getChildren()) {
+                r.setOnMouseClicked(e -> {
+                    String name = ((Resource) r).getName();
+                    // doesn't work? => r.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !r.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
 
-                if(r.getOpacity() != 0.5) {
-                    r.setOpacity(0.5);
-                    reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) - 1);
-                    if (containers.get(shelfId) == null) {
-                        Map<String, Integer> content = new HashMap<>();
-                        content.put(name, 1);
-                        containers.put(shelfId, content);
-                    } else if (containers.get(shelfId).get(name) == null) {
-                        containers.get(shelfId).put(name, 1);
+                    if(r.getOpacity() != 0.5) {
+                        r.setOpacity(0.5);
+                        reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) - 1);
+                        if (containers.get(shelfId) == null) {
+                            Map<String, Integer> content = new HashMap<>();
+                            content.put(name, 1);
+                            containers.put(shelfId, content);
+                        } else if (containers.get(shelfId).get(name) == null) {
+                            containers.get(shelfId).put(name, 1);
+                        } else {
+                            containers.get(shelfId).put(name, containers.get(shelfId).get(name) + 1);
+                        }
                     } else {
-                        containers.get(shelfId).put(name, containers.get(shelfId).get(name) + 1);
+                        r.setOpacity(1);
+                        reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) + 1);
+                        containers.get(shelfId).put(name, containers.get(shelfId).get(name) - 1);
+                        if (containers.get(shelfId).get(name) == 0)
+                            containers.get(shelfId).remove(name);
+                        if (containers.get(shelfId).keySet().size() == 0)
+                            containers.remove(shelfId);
                     }
-                } else {
-                    r.setOpacity(1);
-                    reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) + 1);
-                    containers.get(shelfId).put(name, containers.get(shelfId).get(name) - 1);
-                    if (containers.get(shelfId).get(name) == 0)
-                        containers.get(shelfId).remove(name);
-                    if (containers.get(shelfId).keySet().size() == 0)
-                        containers.remove(shelfId);
-                }
-            });
-        }
+                });
+            }
     }
 
     public void addResourcesSelector(BiConsumer<String, Integer> insert, BiConsumer<String, Integer> remove) {

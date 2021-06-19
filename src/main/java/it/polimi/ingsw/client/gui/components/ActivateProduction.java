@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
-import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
@@ -11,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Spinner;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 /** Pane component used to choose input source for a selected production. */
 public class ActivateProduction extends StackPane {
@@ -36,10 +38,13 @@ public class ActivateProduction extends StackPane {
     @FXML private HBox choosableOutputResources;
     @FXML private Text text;
     @FXML private Production productionRecipe;
+    @FXML private Strongbox strongbox;
+    @FXML private HBox leadersBox;
 
     private List<ReducedProductionRequest> requests;
     private List<ReducedResourceContainer> tempShelves;
     private List<ReducedResourceContainer> newTempShelves;
+    private List<ReducedResourceContainer> newTempDepots;
     private List<Integer> toActivate;
     private int index;
     private Map<String, Integer> inputBlanks = new HashMap<>();
@@ -53,11 +58,13 @@ public class ActivateProduction extends StackPane {
      * @param index         an index used to move between the selected productions in the list
      * @param requests      the already completed production requests
      * @param tempShelves   the temporary shelves, containing the remaining payable resources for the remaining productions
+     * @param tempDepots
      * @param sizeBinding
      */
     public ActivateProduction(List<Integer> toActivate, int index,
                               List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
-                              NumberBinding sizeBinding) {
+                              List<ReducedResourceContainer> tempDepots, NumberBinding sizeBinding) {
+        Gui gui = Gui.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/activateproduction.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -72,15 +79,16 @@ public class ActivateProduction extends StackPane {
         this.index = index;
         this.tempShelves = tempShelves;
         this.newTempShelves = new ArrayList<>(tempShelves); // this does need to be a deep copy
+        this.newTempDepots = new ArrayList<>(tempDepots); // this as well
         this.requests = requests;
         this.maxScale = sizeBinding;
 
-//        this.scaleXProperty().bind(maxScale);
-//        this.scaleYProperty().bind(maxScale);
+        this.scaleXProperty().bind(maxScale);
+        this.scaleYProperty().bind(maxScale);
 
         text.setText(String.format("Production: %s", toActivate.get(index)));
 
-        Gui.getInstance().getViewModel().getResourceTypes().stream().filter(ReducedResourceType::isStorable).forEach(r -> {
+        gui.getViewModel().getResourceTypes().stream().filter(ReducedResourceType::isStorable).forEach(r -> {
             HBox entry = new HBox();
             Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
             spinner.setMaxWidth(50);
@@ -94,7 +102,7 @@ public class ActivateProduction extends StackPane {
             choosableInputResources.getChildren().add(entry);
         });
 
-        Gui.getInstance().getViewModel().getResourceTypes().stream().filter(ReducedResourceType::isStorable).forEach(r -> {
+        gui.getViewModel().getResourceTypes().stream().filter(ReducedResourceType::isStorable).forEach(r -> {
             HBox entry = new HBox();
             Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
             spinner.setMaxWidth(50);
@@ -118,6 +126,38 @@ public class ActivateProduction extends StackPane {
         else submit.setOnAction(e -> handleSubmit());
 
         Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
+
+        //strongbox
+        gui.getViewModel().getPlayerStrongbox(gui.getViewModel().getCurrentPlayer()).ifPresent(sb -> strongbox.setContent(sb));
+
+        //leaders
+        List<LeaderCard> leaders = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
+                .filter(c -> c.isActive() &&
+                        (c.getLeaderType().equals("DepotLeader")))
+                .map(reducedLeader -> {
+                    LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
+                    leaderCard.setLeaderId(reducedLeader.getId());
+                    leaderCard.setLeaderType(reducedLeader.getLeaderType());
+                    leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
+                    leaderCard.setResourceType(reducedLeader.getResourceType());
+                    if (reducedLeader.getResourceRequirement().isPresent())
+                        leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
+                    if (reducedLeader.getDevCardRequirement().isPresent())
+                        leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
+
+                    leaderCard.setDepotContent(tempDepots.stream()
+                                    .filter(d -> d.getId() == reducedLeader.getContainerId()).findAny().orElseThrow(),
+                            reducedLeader.getResourceType(), true);
+
+                    leaderCard.getGuiDepot().addResourcesSelector(this.containers,
+                            newTempDepots.stream().filter(d -> d.getId() == reducedLeader.getContainerId()).findAny().orElseThrow());
+
+                    return leaderCard;
+
+                }).toList();
+
+        leadersBox.getChildren().addAll(leaders);
+        leadersBox.setMaxHeight(251);
     }
 
     /**
@@ -137,7 +177,7 @@ public class ActivateProduction extends StackPane {
 
         // go to next production
         backStackPane.getChildren().add(new ActivateProduction(toActivate, index + 1,
-                     requests, newTempShelves, maxScale));
+                     requests, newTempShelves, newTempDepots, maxScale));
     }
 
     /**

@@ -182,8 +182,9 @@ public class LeaderCard extends Card {
     public void setDepotContent(ReducedResourceContainer container, String boundRes, boolean wantsDnD) {
         content = container;
 
-        Shelf shelf = new Shelf(container, 40, 95, true);
-        shelf.setLayoutY(200);
+        Shelf shelf = new Shelf(container, 48, 100, true);
+        shelf.setLayoutY(193);
+        shelf.setLayoutX(-15);
         this.getChildren().add(shelf);
 
         if(container.getContent().size() == 0)
