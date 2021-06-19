@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
-import it.polimi.ingsw.client.gui.components.Options;
-import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
@@ -10,12 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 
 import java.io.IOException;
 
@@ -50,11 +42,6 @@ public class PauseMenu extends StackPane {
         maxScale = sizeBinding;
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
-
-        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        bpane.setBorder(new Border(new BorderStroke(Color.RED,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     /**

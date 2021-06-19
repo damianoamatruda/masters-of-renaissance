@@ -7,12 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.scene.paint.Color;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,11 +25,6 @@ public class EndgameController extends GuiController {
                 backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
-
-        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        bpane.setBorder(new Border(new BorderStroke(Color.RED,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         if (vm.getWinner() != null && vm.getWinner().equals(vm.getLocalPlayerNickname()))
             outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points! CONGRATULATIONS!");

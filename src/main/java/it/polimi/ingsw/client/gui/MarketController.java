@@ -17,12 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.*;
@@ -68,13 +62,6 @@ public class MarketController extends GuiController {
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
         
-        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        canvas.setBorder(new Border(new BorderStroke(Color.RED,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        Gui gui = Gui.getInstance();
-
         market = new Market();
         market.setContent(vm.getMarket().orElseThrow());
         market.setSelectionListener(this::marketSelected);

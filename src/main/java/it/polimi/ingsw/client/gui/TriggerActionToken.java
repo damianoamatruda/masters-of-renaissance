@@ -11,12 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.scene.paint.Color;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,14 +30,8 @@ public class TriggerActionToken extends GuiController {
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
 
-        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        canvas.setBorder(new Border(new BorderStroke(Color.RED,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        Gui gui = Gui.getInstance();
         next.setOnAction(actionEvent -> {
-            if (!gui.getViewModel().isGameEnded())
+            if (!vm.isGameEnded())
                 gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
             else gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
         });

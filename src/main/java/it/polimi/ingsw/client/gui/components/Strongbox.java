@@ -59,12 +59,7 @@ public class Strongbox extends StackPane {
         this.c = c;
         grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(5));
-        // grid.setGridLinesVisible(true);
-        // this.setBorder(new Border(new BorderStroke(Color.GREEN,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        // background.setBorder(new Border(new BorderStroke(Color.PINK,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
+        
         background.setFitWidth(this.getPrefWidth());
         background.setFitHeight(this.getPrefHeight());
 
@@ -126,9 +121,6 @@ public class Strongbox extends StackPane {
 
             this.setSpacing(cellWidth * 0.2);
             this.setAlignment(Pos.CENTER);
-
-        //    cell.setBorder(new Border(new BorderStroke(Color.RED,
-        //        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
             Resource r = new Resource();
             r.setResourceType(resource);

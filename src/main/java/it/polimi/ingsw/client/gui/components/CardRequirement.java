@@ -63,9 +63,6 @@ public class CardRequirement extends HBox {
             entry.setAlignment(Pos.CENTER);
             entry.maxHeight(maxRowHeight);
 
-//                entry.setBorder(new Border(new BorderStroke(Color.BLACK,
-//                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
             this.getChildren().add(entry);
         }
     }
@@ -98,10 +95,6 @@ public class CardRequirement extends HBox {
 
             entry.maxHeight(maxRowHeight);
 
-//                entry.setBorder(new Border(new BorderStroke(Color.BLACK,
-//                        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-//            this.requirements.add(entry);
             this.getChildren().add(entry);
         }
     }

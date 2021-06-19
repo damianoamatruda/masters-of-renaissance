@@ -122,9 +122,7 @@ public class Production extends StackPane {
 
         box.setMinHeight(0);
         box.setMaxHeight(maxRowHeight);
-
-//        box.setBorder(new Border(new BorderStroke(Color.GREEN,
-//            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        
         return box;
     }
 

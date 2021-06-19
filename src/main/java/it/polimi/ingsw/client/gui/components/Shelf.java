@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Gui component representing a warehouse shelf. */
@@ -63,8 +62,7 @@ public class Shelf extends BorderPane {
                 "-fx-background-size: 300 100;");
 
         sizeText = new Text("Size: " + shelf.getSize());
-        // content.setBorder(new Border(new BorderStroke(Color.PINK,
-        //     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
         this.setLeft(sizeText);
         this.setCenter(content);
         

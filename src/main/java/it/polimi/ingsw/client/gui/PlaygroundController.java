@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -100,15 +99,7 @@ public abstract class PlaygroundController extends GuiController {
         AnchorPane.setLeftAnchor(pboard, 0d);
         AnchorPane.setRightAnchor(pboard, 0d);
 
-        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        canvas.setBorder(new Border(new BorderStroke(Color.RED,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        pboard.setBorder(new Border(new BorderStroke(Color.GREEN,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
         setPauseHandlers(this.backStackPane, this.canvas, maxScale);
-
     }
 
     /**

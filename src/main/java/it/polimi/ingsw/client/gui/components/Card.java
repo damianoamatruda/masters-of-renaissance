@@ -71,8 +71,6 @@ public abstract class Card extends Pane {
         this.production.setLayoutX(20);
 
         this.getChildren().add(this.production);
-//        this.setBorder(new Border(new BorderStroke(Color.BLACK,
-//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     /**

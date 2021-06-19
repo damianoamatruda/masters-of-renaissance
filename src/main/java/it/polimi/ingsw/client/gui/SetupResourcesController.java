@@ -23,12 +23,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -64,15 +58,8 @@ public class SetupResourcesController extends GuiController {
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
 
-        backStackPane.setBorder(new Border(new BorderStroke(Color.BLUE,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        bpane.setBorder(new Border(new BorderStroke(Color.RED,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        Gui gui = Gui.getInstance();
-
         titleComponent.setText(String.format("Choose %d resources.",
-                gui.getViewModel().getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources()));
+                vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources()));
 
         resourceTypesContainer.setSpacing(40);
         resourceTypesContainer.setAlignment(Pos.CENTER);
