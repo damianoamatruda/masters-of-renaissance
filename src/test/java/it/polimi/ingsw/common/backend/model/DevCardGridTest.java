@@ -99,7 +99,7 @@ public class DevCardGridTest {
      */
     @Test
     void buyCardTest() throws Exception {
-        buyer.getStrongbox().addResource(r1);
+        buyer.getStrongbox().addResources(Map.of(r1, 1));
 
         List<List<DevelopmentCard>> oldTop = devCardGrid.peekDevCards();
 
@@ -121,7 +121,7 @@ public class DevCardGridTest {
      */
     @Test
     void buyCardWrongLevel() {
-        assertDoesNotThrow(() -> buyer.getStrongbox().addResource(r1));
+        assertDoesNotThrow(() -> buyer.getStrongbox().addResources(Map.of(r1, 1)));
 
         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
                 buyer.getStrongbox(), Map.of(r1, 1)

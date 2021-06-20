@@ -56,7 +56,7 @@ public class LeaderCardTest {
     @Test
     void activateWithRequirements() {
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        assertDoesNotThrow(() -> p.getStrongbox().addResource(coin));
+        assertDoesNotThrow(() -> p.getStrongbox().addResources(Map.of(coin, 1)));
 
         assertDoesNotThrow(() -> leader.activate(p));
         assertTrue(leader.isActive());
@@ -68,7 +68,7 @@ public class LeaderCardTest {
     @Test
     void activateWrongResources() {
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        assertDoesNotThrow(() -> p.getStrongbox().addResource(new ResourceType("Shield", true)));
+        assertDoesNotThrow(() -> p.getStrongbox().addResources(Map.of(new ResourceType("Shield", true), 1)));
 
         assertThrows(CardRequirementsNotMetException.class, () -> leader.activate(p));
         assertFalse(leader.isActive());

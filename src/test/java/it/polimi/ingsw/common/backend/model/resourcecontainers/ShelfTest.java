@@ -111,7 +111,7 @@ public class ShelfTest {
         ResourceType r2 = new ResourceType("r2", true);
         Shelf shelf = new Shelf(5);
         shelf.addResources(Map.of(r1, 2));
-        assertThrows(IllegalResourceTransferException.class, () -> shelf.addResource(r2));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.addResources(Map.of(r2, 1)));
     }
 
     @Test
@@ -120,14 +120,14 @@ public class ShelfTest {
         ResourceType r2 = new ResourceType("r2", true);
         Shelf shelf = new Shelf(5);
         shelf.addResources(Map.of(r1, 3));
-        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r2));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResources(Map.of(r2, 1)));
     }
 
     @Test
     void emptyShelfShouldNotBeAbleToRemoveResource() {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
-        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResources(Map.of(r, 1)));
     }
 
     @ParameterizedTest
@@ -136,7 +136,7 @@ public class ShelfTest {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         shelf.addResources(Map.of(r, resourcesCount));
-        shelf.removeResource(r);
+        shelf.removeResources(Map.of(r, 1));
         assertEquals(resourcesCount - 1, shelf.getQuantity());
     }
 
@@ -146,7 +146,7 @@ public class ShelfTest {
         ResourceType r = new ResourceType("r", true);
         Shelf shelf = new Shelf(5);
         shelf.addResources(Map.of(r, resourcesCount));
-        shelf.removeResource(r);
+        shelf.removeResources(Map.of(r, 1));
         assertEquals(resourcesCount - 1, shelf.getResourceQuantity(r));
     }
 
@@ -217,7 +217,7 @@ public class ShelfTest {
         Shelf shelf = new Shelf(5);
         shelf.addResources(Map.of(r, resourcesCount));
         shelf.removeResources(Map.of(r, resourcesCount));
-        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> shelf.removeResources(Map.of(r, 1)));
     }
 
     @ParameterizedTest

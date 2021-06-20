@@ -96,7 +96,7 @@ class StrongboxTest {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
-        assertDoesNotThrow(() -> strongbox.removeResource(r));
+        assertDoesNotThrow(() -> strongbox.removeResources(Map.of(r, 1)));
         assertEquals(resourcesCount - 1, strongbox.getQuantity());
     }
 
@@ -106,7 +106,7 @@ class StrongboxTest {
         Strongbox strongbox = new Strongbox();
         ResourceType r = new ResourceType("r", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
-        assertDoesNotThrow(() -> strongbox.removeResource(r));
+        assertDoesNotThrow(() -> strongbox.removeResources(Map.of(r, 1)));
         assertEquals(resourcesCount - 1, strongbox.getResourceQuantity(r));
     }
 
@@ -127,6 +127,6 @@ class StrongboxTest {
         ResourceType r = new ResourceType("r", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertDoesNotThrow(() -> strongbox.removeResources(Map.of(r, resourcesCount)));
-        assertThrows(IllegalResourceTransferException.class, () -> strongbox.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> strongbox.removeResources(Map.of(r, 1)));
     }
 }

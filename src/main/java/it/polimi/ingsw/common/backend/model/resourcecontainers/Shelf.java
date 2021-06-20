@@ -113,11 +113,6 @@ public class Shelf extends ResourceContainer {
     }
 
     @Override
-    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
-        addResources(Map.of(resType, 1));
-    }
-
-    @Override
     public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
         if (resMap.values().stream().noneMatch(v -> v > 0))
             return;
@@ -136,11 +131,6 @@ public class Shelf extends ResourceContainer {
         this.quantity -= resMap.get(resType);
 
         dispatch(new UpdateResourceContainer(reduce()));
-    }
-
-    @Override
-    public void removeResource(ResourceType resType) throws IllegalResourceTransferException {
-        removeResources(Map.of(resType, 1));
     }
 
     @Override

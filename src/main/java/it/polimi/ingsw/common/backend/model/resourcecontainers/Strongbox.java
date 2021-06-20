@@ -72,11 +72,6 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
-    public void addResource(ResourceType resType) throws IllegalResourceTransferException {
-        addResources(Map.of(resType, 1));
-    }
-
-    @Override
     public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
         if (!resMap.keySet().stream().allMatch(resources::containsKey)) {
             ResourceType resType = resMap.keySet().stream().filter(r -> !resources.containsKey(r)).findAny().orElseThrow();
@@ -93,11 +88,6 @@ public class Strongbox extends ResourceContainer {
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
 
         dispatch(new UpdateResourceContainer(reduce()));
-    }
-
-    @Override
-    public void removeResource(ResourceType resType) throws IllegalResourceTransferException {
-        removeResources(Map.of(resType, 1));
     }
 
     @Override

@@ -1,9 +1,7 @@
 package it.polimi.ingsw.common.backend.model.resourcecontainers;
 
 import it.polimi.ingsw.common.EventDispatcher;
-import it.polimi.ingsw.common.EventListener;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.Map;
@@ -124,28 +122,12 @@ public abstract class ResourceContainer extends EventDispatcher {
     public abstract void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException;
 
     /**
-     * Adds a resource of the given type.
-     *
-     * @param resType the resource to add
-     * @throws IllegalResourceTransferException if the container is full
-     */
-    public abstract void addResource(ResourceType resType) throws IllegalResourceTransferException;
-
-    /**
      * Removes resources.
      *
      * @param resMap the resources to remove
-     * @throws IllegalResourceTransferException if the container is full
-     */
-    public abstract void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException;
-
-    /**
-     * Removes a resource of the given type.
-     *
-     * @param resType the resource to remove
      * @throws IllegalResourceTransferException if the container is empty
      */
-    public abstract void removeResource(ResourceType resType) throws IllegalResourceTransferException;
+    public abstract void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException;
 
     /**
      * Returns whether the resource container is empty.

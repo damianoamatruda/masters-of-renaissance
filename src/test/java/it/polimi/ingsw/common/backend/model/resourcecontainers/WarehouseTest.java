@@ -139,7 +139,7 @@ public class WarehouseTest {
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r1, 2));
-        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.addResource(r2));
+        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.addResources(Map.of(r2, 1)));
     }
 
     @Test
@@ -148,10 +148,10 @@ public class WarehouseTest {
         Warehouse warehouse = new Warehouse(2);
 
         Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(0);
-        warehouseShelf1.addResource(r);
+        warehouseShelf1.addResources(Map.of(r, 1));
 
         Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(1);
-        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf2.addResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf2.addResources(Map.of(r, 1)));
     }
 
     @Test
@@ -161,7 +161,7 @@ public class WarehouseTest {
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r1, 3));
-        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResource(r2));
+        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResources(Map.of(r2, 1)));
     }
 
     @Test
@@ -169,7 +169,7 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
-        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResources(Map.of(r, 1)));
     }
 
     @ParameterizedTest
@@ -179,7 +179,7 @@ public class WarehouseTest {
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
-        warehouseShelf.removeResource(r);
+        warehouseShelf.removeResources(Map.of(r, 1));
         assertEquals(resourcesCount - 1, warehouseShelf.getQuantity());
     }
 
@@ -190,7 +190,7 @@ public class WarehouseTest {
         Warehouse warehouse = new Warehouse(5);
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
-        warehouseShelf.removeResource(r);
+        warehouseShelf.removeResources(Map.of(r, 1));
         assertEquals(resourcesCount - 1, warehouseShelf.getResourceQuantity(r));
     }
 
@@ -268,7 +268,7 @@ public class WarehouseTest {
         Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
-        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResource(r));
+        assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResources(Map.of(r, 1)));
     }
 
     @ParameterizedTest

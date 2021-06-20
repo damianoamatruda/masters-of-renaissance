@@ -92,7 +92,7 @@ public class PlayerTest {
         player.getStrongbox().addResources(Map.of(coin, 4, servant, 7));
         player.getWarehouse().getShelves().get(1).addResources(Map.of(stone, 2));
 
-        player.getWarehouse().getShelves().get(0).addResource(shield);
+        player.getWarehouse().getShelves().get(0).addResources(Map.of(shield, 1));
         assertEquals(14, player.getResourcesCount());
     }
 
@@ -166,7 +166,7 @@ public class PlayerTest {
             player.getStrongbox().addResources(Map.of(coin, 4, servant, 7));
             player.getWarehouse().getShelves().get(1).addResources(Map.of(stone, 2));
 
-            player.getWarehouse().getShelves().get(0).addResource(shield);
+            player.getWarehouse().getShelves().get(0).addResources(Map.of(shield, 1));
 
             player.addToDevSlot(game, 1, new DevelopmentCard(blue, 1,
                             new ResourceRequirement(

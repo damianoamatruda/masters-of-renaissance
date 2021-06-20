@@ -34,8 +34,8 @@ public class ResourceRequirementTest {
      */
     @Test
     void checkReqsWrongRes() {
-        assertDoesNotThrow(() -> p.getStrongbox().addResource(coin));
-        assertDoesNotThrow(() -> p.getWarehouse().getShelves().get(0).addResource(coin));
+        assertDoesNotThrow(() -> p.getStrongbox().addResources(Map.of(coin, 1)));
+        assertDoesNotThrow(() -> p.getWarehouse().getShelves().get(0).addResources(Map.of(coin, 1)));
 
         ResourceRequirement req = new ResourceRequirement(Map.of(shield, 1));
 
@@ -48,7 +48,7 @@ public class ResourceRequirementTest {
     @Test
     void checkRequirements() {
         Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        assertDoesNotThrow(() -> p.getStrongbox().addResource(coin));
+        assertDoesNotThrow(() -> p.getStrongbox().addResources(Map.of(coin, 1)));
 
         ResourceRequirement req = new ResourceRequirement(Map.of(coin, 1));
 
@@ -61,7 +61,7 @@ public class ResourceRequirementTest {
     @Test
     void checkEmptyRequirements() {
         Player p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        assertDoesNotThrow(() -> p.getStrongbox().addResource(coin));
+        assertDoesNotThrow(() -> p.getStrongbox().addResources(Map.of(coin, 1)));
 
         ResourceRequirement req = new ResourceRequirement(Map.of(coin, 0));
 
