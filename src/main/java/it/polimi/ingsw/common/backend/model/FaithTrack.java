@@ -6,10 +6,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -110,6 +107,9 @@ public class FaithTrack extends EventDispatcher {
         /** <code>true</code> if the Vatican report is already over; <code>false</code> otherwise. */
         private boolean activated;
 
+        /** The list of players that earned a Pope's favor in this section. */
+        private final List<Player> bonusGivenPlayers;
+
         /**
          * Constructor of the Vatican Section.
          *
@@ -127,6 +127,7 @@ public class FaithTrack extends EventDispatcher {
             this.faithPointsEnd = faithPointsEnd;
             this.victoryPoints = victoryPoints;
             this.activated = false;
+            this.bonusGivenPlayers = new ArrayList<>();
         }
 
         /**
@@ -169,10 +170,17 @@ public class FaithTrack extends EventDispatcher {
 
         /**
          * Sets the state of activation of the Vatican Section.
+         *
+         * @param players   the players of the game that might or might not receive a bonus
          */
-        public void activate() {
+        public void activate(List<Player> players) {
             this.activated = true;
-            dispatch(new UpdateVaticanSection(id));
+            for (Player p : players)
+                if (p.getFaithPoints() >= this.getFaithPointsBeginning()) {
+                    p.incrementVictoryPoints(this.getVictoryPoints());
+                    bonusGivenPlayers.add(p);
+                }
+            dispatch(new UpdateVaticanSection(id, bonusGivenPlayers.stream().map(Player::getNickname).toList()));
         }
 
         public ReducedVaticanSection reduce() {

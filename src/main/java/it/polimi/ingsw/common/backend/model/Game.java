@@ -157,10 +157,8 @@ public class Game extends EventDispatcher {
     public void onIncrementFaithPoints(int faithPoints) {
         FaithTrack.VaticanSection vaticanSection = faithTrack.getVaticanSectionReport(faithPoints);
         if (vaticanSection != null && !vaticanSection.isActivated()) {
-            for (Player p : players)
-                if (p.getFaithPoints() >= vaticanSection.getFaithPointsBeginning())
-                    p.incrementVictoryPoints(vaticanSection.getVictoryPoints());
-            vaticanSection.activate();
+
+            vaticanSection.activate(players);
         }
 
         if (faithPoints == faithTrack.getMaxFaithPointsCount())

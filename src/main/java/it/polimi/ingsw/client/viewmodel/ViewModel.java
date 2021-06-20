@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.viewmodel;
 
+import it.polimi.ingsw.common.backend.model.Player;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
@@ -728,12 +729,16 @@ public class ViewModel {
      * Activates the vatican section given by the ID.
      *
      * @param id the ID of the section to activate
+     * @param bonusGivenPlayers the players that earned the bonus
      */
-    public synchronized void activateVaticanSection(int id) {
-        if (faithTrack != null)
-            faithTrack.getVaticanSections().entrySet().stream()
-                .map(Entry::getValue)
-                .filter(vs -> vs.getId() == id).findAny().ifPresent(vs -> vs.setActive());
+    public synchronized void activateVaticanSection(int id, List<String> bonusGivenPlayers) {
+        if (faithTrack != null) {
+            faithTrack.getVaticanSections().values().stream()
+                    .filter(vs -> vs.getId() == id).findAny().ifPresent(vs -> {
+                        vs.setActive();
+                        vs.setBonusGivenPlayers(bonusGivenPlayers);
+                    });
+        }
     }
 
     /**

@@ -5,7 +5,12 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +18,10 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 /** Gui component representing the faith track. */
-public class FaithTrack extends VBox {
+public class FaithTrack extends HBox {
     Map<Integer, FaithTile> tiles = new HashMap<>();
+    private VBox tilesBox = new VBox();
+    private VBox popesFavors = new VBox();
 
     /**
      * Class constructor.
@@ -30,7 +37,10 @@ public class FaithTrack extends VBox {
         List<Integer> sectionEnds = sections.keySet().stream().map(k -> sections.get(k).getFaithPointsEnd()).toList();
         List<Integer> sectionTiles = sections.keySet().stream().flatMapToInt(k -> IntStream.range(sections.get(k).getFaithPointsBeginning(), sections.get(k).getFaithPointsEnd()+1)).boxed().toList();
 
-        this.setSpacing(-40);
+        this.setAlignment(Pos.CENTER);
+        this.setSpacing(-165);
+        this.setPadding(new Insets(100,100,0,100));
+
         HBox hBox = new HBox();
         hBox.setScaleX(new FaithTile().getScaleX() / 1.5);
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
@@ -44,7 +54,7 @@ public class FaithTrack extends VBox {
                 hBox.getChildren().add(new FaithTile());
             }
         }
-        this.getChildren().add(hBox);
+        tilesBox.getChildren().add(hBox);
 
         hBox = new HBox();
         hBox.setScaleX(new FaithTile().getScaleX() / 1.5);
@@ -59,7 +69,7 @@ public class FaithTrack extends VBox {
                 hBox.getChildren().add(new FaithTile());
             }
         }
-        this.getChildren().add(hBox);
+        tilesBox.getChildren().add(hBox);
 
 
         hBox = new HBox();
@@ -75,7 +85,7 @@ public class FaithTrack extends VBox {
                 hBox.getChildren().add(new FaithTile());
             }
         }
-        this.getChildren().add(hBox);
+        tilesBox.getChildren().add(hBox);
 
         if(vm.getPlayerNicknames().size() == 1)
             updateBlackMarker(vm.getBlackCrossFP(), -1);
@@ -83,6 +93,38 @@ public class FaithTrack extends VBox {
         updatePlayerMarker(vm.getPlayerFaithPoints(vm.getCurrentPlayer()), -1);
 //        if(!vm.getLocalPlayerNickname().equals(vm.getCurrentPlayer()))
 //            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
+
+        // display pope's favors
+        int i = 1;
+        for(ReducedVaticanSection section : sections.values()) {
+            HBox hbox = new HBox();
+            hbox.setAlignment(Pos.CENTER);
+            hbox.setSpacing(50);
+
+            Text sectionText = new Text("Section:" + i);
+            sectionText.setScaleX(2);
+            sectionText.setScaleY(2);
+            hbox.getChildren().add(sectionText);
+
+            boolean gotBonus = section.getBonusGivenPlayers().contains(vm.getCurrentPlayer());
+            boolean isActivated = section.isActivated();
+            StackPane favorPane = new StackPane();
+            ImageView popesFavor = getPopesFavorImage(isActivated, gotBonus);
+            popesFavor.setFitHeight(110);
+            popesFavor.setFitWidth(110);
+            favorPane.getChildren().add(popesFavor);
+            if(gotBonus && isActivated) favorPane.getChildren().add(new Text(section.getVictoryPoints() + ""));
+
+            hbox.getChildren().add(favorPane);
+            popesFavors.getChildren().add(hbox);
+            i++;
+        }
+
+        popesFavors.setSpacing(5);
+        this.getChildren().add(popesFavors);
+        tilesBox.setSpacing(-40);
+        this.getChildren().add(tilesBox);
+
     }
 
     /**
@@ -105,5 +147,15 @@ public class FaithTrack extends VBox {
     public void updateBlackMarker(int blackPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removeBlackMarker();
         tiles.get(Integer.min(blackPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addBlackMarker();
+    }
+
+    public ImageView getPopesFavorImage(boolean isActivated, boolean gotBonus) {
+        ImageView popesFavor;
+        if(!isActivated) return new ImageView("/assets/gui/faithtrack/popesfavorinactive.png");
+        if(gotBonus)
+            popesFavor = new ImageView(new Image("/assets/gui/faithtrack/popesfavor.png"));
+        else
+            popesFavor = new ImageView(new Image("/assets/gui/faithtrack/popesfavormissed.png"));
+        return popesFavor;
     }
 }

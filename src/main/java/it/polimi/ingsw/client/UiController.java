@@ -193,7 +193,7 @@ public abstract class UiController {
     }
 
     public void on(UpdateVaticanSection event) {
-        vm.activateVaticanSection(event.getVaticanSection());
+        vm.activateVaticanSection(event.getVaticanSection(), event.getBonusGivenPlayers());
     }
 
     public void on(UpdateVictoryPoints event) {

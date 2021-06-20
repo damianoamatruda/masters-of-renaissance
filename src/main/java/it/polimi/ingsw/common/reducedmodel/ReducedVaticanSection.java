@@ -1,5 +1,10 @@
 package it.polimi.ingsw.common.reducedmodel;
 
+import it.polimi.ingsw.common.backend.model.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ReducedVaticanSection {
     private final int id;
 
@@ -15,6 +20,9 @@ public class ReducedVaticanSection {
     /** <code>true</code> if the Vatican report is already over; <code>false</code> otherwise. */
     private boolean activated;
 
+    /** The list of players that earned a Pope's favor in this section. */
+    private ArrayList<String> bonusGivenPlayers;
+
     /**
      * @param id                    the ID of the vatican section
      * @param faithPointsBeginning  the first tile
@@ -27,6 +35,7 @@ public class ReducedVaticanSection {
         this.faithPointsEnd = faithPointsEnd;
         this.victoryPoints = victoryPoints;
         this.activated = false;
+        this.bonusGivenPlayers = new ArrayList<>();
     }
 
     /**
@@ -65,9 +74,27 @@ public class ReducedVaticanSection {
     }
 
     /**
-     * Activates the section
+     * Activates the section.
      */
     public void setActive() {
         this.activated = true;
+    }
+
+    /**
+     * Updates the players that earned the bonus.
+     *
+     * @param bonusGivenPlayers the players that earned the bonus
+     */
+    public void setBonusGivenPlayers(List<String> bonusGivenPlayers) {
+        this.bonusGivenPlayers = new ArrayList<>(bonusGivenPlayers);
+    }
+
+    /**
+     * Getter of the players that earned the bonus.
+     *
+     * @return the players that earned the bonus
+     */
+    public ArrayList<String> getBonusGivenPlayers() {
+        return bonusGivenPlayers;
     }
 }
