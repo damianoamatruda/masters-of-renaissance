@@ -80,14 +80,18 @@ public abstract class ResourceContainer extends EventDispatcher {
             throw new IllegalArgumentException("Illegal negative map values.");
     }
 
-    public static void validateStorableResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+    public static void validateStorableResourceMap(Map<ResourceType, Integer> resMap) {
         validateResourceMap(resMap);
 
-        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
-            ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
-            // TODO: Make this IllegalArgumentException (or extend it)
-            throw new IllegalResourceTransferException(nonStorable, true, IllegalResourceTransferException.Kind.NON_STORABLE);
-        }
+        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable))
+            throw new IllegalArgumentException(); // TODO: Add message
+    }
+
+    public static void validateNonStorableResourceMap(Map<ResourceType, Integer> resMap) {
+        validateResourceMap(resMap);
+
+        if (resMap.keySet().stream().anyMatch(ResourceType::isStorable))
+            throw new IllegalArgumentException(); // TODO: Add message
     }
 
     public static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {

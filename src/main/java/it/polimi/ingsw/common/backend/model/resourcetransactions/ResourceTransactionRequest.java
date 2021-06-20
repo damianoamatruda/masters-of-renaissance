@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer.*;
+
 /**
  * This class represents a resource transaction request.
  */
@@ -35,18 +37,47 @@ public class ResourceTransactionRequest {
                                       Map<ResourceType, Integer> inputNonStorableRep,
                                       Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers,
                                       Map<ResourceType, Integer> outputNonStorableRep) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
-        Map<ResourceContainer, Map<ResourceType, Integer>> inputContainersSanitized = sanitizeContainerMap(inputContainers);
-        Map<ResourceType, Integer> inputNonStorableRepSanitized = ResourceContainer.sanitizeResourceMap(inputNonStorableRep);
-        Map<ResourceContainer, Map<ResourceType, Integer>> outputContainersSanitized = sanitizeContainerMap(outputContainers);
-        Map<ResourceType, Integer> outputNonStorableRepSanitized = ResourceContainer.sanitizeResourceMap(outputNonStorableRep);
-
-        validate(recipe, inputContainersSanitized, outputContainersSanitized, inputNonStorableRepSanitized, outputNonStorableRepSanitized);
+        validate(recipe, inputContainers, inputNonStorableRep, outputContainers, outputNonStorableRep);
 
         this.recipe = recipe;
-        this.inputContainers = Map.copyOf(inputContainersSanitized);
-        this.inputNonStorableRep = Map.copyOf(inputNonStorableRepSanitized);
-        this.outputContainers = Map.copyOf(outputContainersSanitized);
-        this.outputNonStorableRep = Map.copyOf(inputNonStorableRepSanitized);
+        this.inputContainers = sanitizeContainerMap(inputContainers);
+        this.inputNonStorableRep = sanitizeResourceMap(inputNonStorableRep);
+        this.outputContainers = sanitizeContainerMap(outputContainers);
+        this.outputNonStorableRep = sanitizeResourceMap(outputNonStorableRep);
+    }
+
+    public static void validateInputResourceMap(Map<ResourceType, Integer> resMap) {
+        validateResourceMap(resMap);
+
+        if (!resMap.keySet().stream().allMatch(r -> r.isStorable() || r.isTakeableFromPlayer()))
+            throw new IllegalArgumentException();
+    }
+
+    public static void validateOutputResourceMap(Map<ResourceType, Integer> resMap) {
+        validateResourceMap(resMap);
+
+        if (!resMap.keySet().stream().allMatch(r -> r.isStorable() || r.isGiveableToPlayer()))
+            throw new IllegalArgumentException();
+    }
+
+    public static void validateInputStorableResourceMap(Map<ResourceType, Integer> resMap) {
+        validateStorableResourceMap(resMap);
+        validateInputResourceMap(resMap);
+    }
+
+    public static void validateInputNonStorableResourceMap(Map<ResourceType, Integer> resMap) {
+        validateNonStorableResourceMap(resMap);
+        validateInputResourceMap(resMap);
+    }
+
+    public static void validateOutputStorableResourceMap(Map<ResourceType, Integer> resMap) {
+        validateStorableResourceMap(resMap);
+        validateOutputResourceMap(resMap);
+    }
+
+    public static void validateOutputNonStorableResourceMap(Map<ResourceType, Integer> resMap) {
+        validateNonStorableResourceMap(resMap);
+        validateOutputResourceMap(resMap);
     }
 
     public static void validateContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
@@ -54,13 +85,29 @@ public class ResourceTransactionRequest {
             throw new NullPointerException();
 
         for (Map<ResourceType, Integer> resMap : containerMap.values())
-            ResourceContainer.validateResourceMap(resMap);
+            validateStorableResourceMap(resMap);
+    }
+
+    public static void validateInputContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
+        if (containerMap == null)
+            throw new NullPointerException();
+
+        for (Map<ResourceType, Integer> resMap : containerMap.values())
+            validateInputStorableResourceMap(resMap);
+    }
+
+    public static void validateOutputContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
+        if (containerMap == null)
+            throw new NullPointerException();
+
+        for (Map<ResourceType, Integer> resMap : containerMap.values())
+            validateOutputStorableResourceMap(resMap);
     }
 
     public static Map<ResourceContainer, Map<ResourceType, Integer>> sanitizeContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
         validateContainerMap(containerMap);
         return new HashMap<>(containerMap.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> ResourceContainer.sanitizeResourceMap(e.getValue()))));
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> sanitizeResourceMap(e.getValue()))));
     }
 
     /**
@@ -102,9 +149,24 @@ public class ResourceTransactionRequest {
      */
     private static void validate(ResourceTransactionRecipe recipe,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                                 Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers,
                                  Map<ResourceType, Integer> inputNonStorableRep,
+                                 Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers,
                                  Map<ResourceType, Integer> outputNonStorableRep) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
+        if (recipe == null)
+            throw new NullPointerException();
+
+        validateInputContainerMap(inputContainers);
+        inputContainers = sanitizeContainerMap(inputContainers);
+
+        validateInputNonStorableResourceMap(inputNonStorableRep);
+        inputNonStorableRep = sanitizeResourceMap(inputNonStorableRep);
+
+        validateOutputContainerMap(outputContainers);
+        outputContainers = sanitizeContainerMap(outputContainers);
+
+        validateOutputNonStorableResourceMap(outputNonStorableRep);
+        outputNonStorableRep = sanitizeResourceMap(outputNonStorableRep);
+
         if (!inputNonStorableRep.keySet().stream().allMatch(resType -> !resType.isStorable() && resType.isTakeableFromPlayer()))
             throw new IllegalResourceTransactionReplacementsException(true, true, false, 0, 0);
 
@@ -194,7 +256,7 @@ public class ResourceTransactionRequest {
      * @return a map of chosen resources including replaced blanks
      */
     public Map<ResourceType, Integer> getInputNonStorable() {
-        return ResourceContainer.mergeResourceMaps(recipe.getInput().entrySet().stream()
+        return mergeResourceMaps(recipe.getInput().entrySet().stream()
                 .filter(e -> !e.getKey().isStorable())
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)), inputNonStorableRep);
     }
@@ -205,7 +267,7 @@ public class ResourceTransactionRequest {
      * @return a map of chosen resources including replaced blanks
      */
     public Map<ResourceType, Integer> getOutputNonStorable() {
-        return ResourceContainer.mergeResourceMaps(recipe.getOutput().entrySet().stream()
+        return mergeResourceMaps(recipe.getOutput().entrySet().stream()
                 .filter(e -> !e.getKey().isStorable())
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)), outputNonStorableRep);
     }

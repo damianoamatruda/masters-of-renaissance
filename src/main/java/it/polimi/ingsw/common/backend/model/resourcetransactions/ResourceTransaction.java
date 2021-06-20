@@ -12,6 +12,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer.mergeResourceMaps;
+
 /**
  * This class represents a transaction of resources.
  */
@@ -47,7 +49,7 @@ public class ResourceTransaction {
     }
 
     private static Map<ResourceType, Integer> getInputNonStorable(List<ResourceTransactionRequest> transactionRequests) {
-        return ResourceContainer.mergeResourceMaps(
+        return mergeResourceMaps(
                 transactionRequests.stream().map(ResourceTransactionRequest::getInputNonStorable).toList());
     }
 
@@ -57,12 +59,12 @@ public class ResourceTransaction {
     }
 
     private static Map<ResourceType, Integer> getOutputNonStorable(List<ResourceTransactionRequest> transactionRequests) {
-        return ResourceContainer.mergeResourceMaps(
+        return mergeResourceMaps(
                 transactionRequests.stream().map(ResourceTransactionRequest::getOutputNonStorable).toList());
     }
 
     private static Map<ResourceType, Integer> getDiscardedOutput(List<ResourceTransactionRequest> transactionRequests) {
-        return ResourceContainer.mergeResourceMaps(
+        return mergeResourceMaps(
                 transactionRequests.stream().map(ResourceTransactionRequest::getDiscardedOutput).toList());
     }
 

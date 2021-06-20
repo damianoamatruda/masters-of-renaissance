@@ -292,10 +292,10 @@ public class PlayerTest {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
 
-            assertAll(() -> assertThrows(IllegalResourceTransactionContainersException.class, () -> fourth.getSetup().chooseResources(
+            assertAll(() -> assertThrows(IllegalArgumentException.class, () -> fourth.getSetup().chooseResources(
                     game, fourth, Map.of(shelf, Map.of(zero, 1))
                     )),
-                    () -> assertThrows(IllegalResourceTransactionContainersException.class, () -> fourth.getSetup().chooseResources(
+                    () -> assertThrows(IllegalArgumentException.class, () -> fourth.getSetup().chooseResources(
                             game, fourth, Map.of(shelf, Map.of(faith, 1))
                     )));
         }
