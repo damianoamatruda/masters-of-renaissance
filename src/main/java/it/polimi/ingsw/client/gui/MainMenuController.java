@@ -83,4 +83,12 @@ public class MainMenuController extends GuiController {
     private void handleQuit() {
         Gui.getInstance().quit();
     }
+
+    public StackPane getBackStackPane() {
+        return backStackPane;
+    }
+
+    public NumberBinding getMaxScale() {
+        return maxScale;
+    }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.UiController;
+import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -54,5 +55,17 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
         
         gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
+    }
+
+    @Override
+    public void on(UpdateServerUnavailable event) {
+        super.on(event);
+
+        gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"),
+                (MainMenuController controller) ->
+                        controller.getBackStackPane().getChildren()
+                                .add(new Alert("Connection error", "Server is down. Try again later.",
+                                        controller.getMaxScale())));
+
     }
 }
