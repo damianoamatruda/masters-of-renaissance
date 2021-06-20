@@ -50,8 +50,12 @@ public class ResourceShelf extends Shelf {
 
     @Override
     public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        ResourceType resType = getShelfResourceType(resMap);
         resMap = sanitizeResourceMap(resMap);
+
+        if (resMap.size() == 0)
+            return;
+
+        ResourceType resType = getShelfResourceType(resMap);
 
         if (!resType.equals(this.boundedResType))
             throw new IllegalResourceTransferException(resType, true, Kind.BOUNDED_RESTYPE_DIFFER);

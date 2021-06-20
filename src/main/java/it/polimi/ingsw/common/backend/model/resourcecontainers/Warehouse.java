@@ -77,8 +77,12 @@ public class Warehouse implements ResourceContainerGroup {
 
         @Override
         public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-            ResourceType resType = getShelfResourceType(resMap);
             resMap = sanitizeResourceMap(resMap);
+
+            if (resMap.size() == 0)
+                return;
+
+            ResourceType resType = getShelfResourceType(resMap);
 
             if (group.getResourceContainers().stream()
                     .filter(c -> !c.equals(this))

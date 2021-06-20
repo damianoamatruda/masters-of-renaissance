@@ -46,7 +46,7 @@ public class Shelf extends ResourceContainer {
         quantity = shelf.quantity;
     }
 
-    public static ResourceType getShelfResourceType(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+    public static ResourceType getShelfResourceType(Map<ResourceType, Integer> resMap) {
         validateStorableResourceMap(resMap);
         resMap = sanitizeResourceMap(resMap);
 
@@ -115,8 +115,12 @@ public class Shelf extends ResourceContainer {
 
     @Override
     public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        ResourceType resType = getShelfResourceType(resMap);
         resMap = sanitizeResourceMap(resMap);
+
+        if (resMap.size() == 0)
+            return;
+
+        ResourceType resType = getShelfResourceType(resMap);
 
         if (this.resType != null && !resType.equals(this.resType))
             throw new IllegalResourceTransferException(resType, true, Kind.BOUNDED_RESTYPE_DIFFER);
@@ -132,8 +136,12 @@ public class Shelf extends ResourceContainer {
 
     @Override
     public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        ResourceType resType = getShelfResourceType(resMap);
         resMap = sanitizeResourceMap(resMap);
+
+        if (resMap.size() == 0)
+            return;
+
+        ResourceType resType = getShelfResourceType(resMap);
 
         if (this.resType != null && !resType.equals(this.resType))
             throw new IllegalResourceTransferException(resType, false, Kind.BOUNDED_RESTYPE_DIFFER);
