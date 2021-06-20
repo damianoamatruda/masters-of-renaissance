@@ -16,8 +16,11 @@ import java.util.stream.Collectors;
  * This class represents a transaction of multiple requests.
  */
 public class ResourceTransaction {
-    /** The immutable list of the transaction requests to activate. */
-    private final List<ResourceTransactionRequest> transactionRequests;
+    private final Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers;
+    private final Map<ResourceType, Integer> inputNonStorable;
+    private final Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers;
+    private final Map<ResourceType, Integer> outputNonStorable;
+    private final Map<ResourceType, Integer> discardedOutput;
 
     /**
      * Initializes a resource transaction.
@@ -25,16 +28,58 @@ public class ResourceTransaction {
      * @param transactionRequests the list of the transaction requests to activate
      */
     public ResourceTransaction(List<ResourceTransactionRequest> transactionRequests) {
-        this.transactionRequests = List.copyOf(transactionRequests);
+        this.inputContainers = getInputContainers(transactionRequests);
+        this.inputNonStorable = getInputNonStorable(transactionRequests);
+        this.outputContainers = getOutputContainers(transactionRequests);
+        this.outputNonStorable = getOutputNonStorable(transactionRequests);
+        this.discardedOutput = getDiscardedOutput(transactionRequests);
     }
 
-    private static Map<ResourceContainer, ResourceContainer> getClonedContainers(
-            Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-            Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) {
+    private static Map<ResourceContainer, Map<ResourceType, Integer>> getInputContainers(List<ResourceTransactionRequest> transactionRequests) {
+        return ResourceTransactionRequest.mergeContainerMaps(
+                transactionRequests.stream().map(ResourceTransactionRequest::getInputContainers).toList());
+    }
+
+    private static Map<ResourceType, Integer> getInputNonStorable(List<ResourceTransactionRequest> transactionRequests) {
+        return ResourceTransactionRequest.mergeResourceMaps(
+                transactionRequests.stream().map(ResourceTransactionRequest::getInputNonStorable).toList());
+    }
+
+    private static Map<ResourceContainer, Map<ResourceType, Integer>> getOutputContainers(List<ResourceTransactionRequest> transactionRequests) {
+        return ResourceTransactionRequest.mergeContainerMaps(
+                transactionRequests.stream().map(ResourceTransactionRequest::getOutputContainers).toList());
+    }
+
+    private static Map<ResourceType, Integer> getOutputNonStorable(List<ResourceTransactionRequest> transactionRequests) {
+        return ResourceTransactionRequest.mergeResourceMaps(
+                transactionRequests.stream().map(ResourceTransactionRequest::getOutputNonStorable).toList());
+    }
+
+    private static Map<ResourceType, Integer> getDiscardedOutput(List<ResourceTransactionRequest> transactionRequests) {
+        return ResourceTransactionRequest.mergeResourceMaps(
+                transactionRequests.stream().map(ResourceTransactionRequest::getDiscardedOutput).toList());
+    }
+
+    /**
+     * Get set of all resource containers, in input and in output
+     *
+     * @return the set of all containers
+     */
+    private Set<ResourceContainer> getAllContainers() {
         /* Get set of all resource containers, in input and in output */
         Set<ResourceContainer> allContainers = new HashSet<>();
         allContainers.addAll(inputContainers.keySet());
         allContainers.addAll(outputContainers.keySet());
+        return allContainers;
+    }
+
+    /**
+     * Get map of clones of all resource containers, in input and in output
+     *
+     * @return the map of all cloned containers
+     */
+    private Map<ResourceContainer, ResourceContainer> getClonedContainers() {
+        Set<ResourceContainer> allContainers = getAllContainers();
 
         /* Make map of clones of all resource containers */
         Map<ResourceContainer, ResourceContainer> clonedContainers = allContainers.stream()
@@ -72,12 +117,7 @@ public class ResourceTransaction {
      * @throws IllegalResourceTransferException if the transaction failed
      */
     public void activate(Game game, Player player) throws IllegalResourceTransferException {
-        Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = getInputContainers();
-        Map<ResourceType, Integer> inputNonStorable = getInputNonStorable();
-        Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers = getOutputContainers();
-        Map<ResourceType, Integer> outputNonStorable = getOutputNonStorable();
-        Map<ResourceType, Integer> discardedOutput = getDiscardedOutput();
-        Map<ResourceContainer, ResourceContainer> clonedContainers = getClonedContainers(inputContainers, outputContainers);
+        Map<ResourceContainer, ResourceContainer> clonedContainers = getClonedContainers();
 
         /* Try removing all input storable resources from cloned resource containers.
          * If a resource transfer exception is thrown, the requested activation is not possible. */
@@ -117,30 +157,5 @@ public class ResourceTransaction {
         /* Give all output non-storable resources to player */
         for (ResourceType resType : outputNonStorable.keySet())
             resType.giveToPlayer(game, player, outputNonStorable.get(resType));
-    }
-
-    private Map<ResourceContainer, Map<ResourceType, Integer>> getInputContainers() {
-        return ResourceTransactionRequest.mergeContainerMaps(
-                transactionRequests.stream().map(ResourceTransactionRequest::getInputContainers).toList());
-    }
-
-    private Map<ResourceType, Integer> getInputNonStorable() {
-        return ResourceTransactionRequest.mergeResourceMaps(
-                transactionRequests.stream().map(ResourceTransactionRequest::getInputNonStorable).toList());
-    }
-
-    private Map<ResourceContainer, Map<ResourceType, Integer>> getOutputContainers() {
-        return ResourceTransactionRequest.mergeContainerMaps(
-                transactionRequests.stream().map(ResourceTransactionRequest::getOutputContainers).toList());
-    }
-
-    private Map<ResourceType, Integer> getOutputNonStorable() {
-        return ResourceTransactionRequest.mergeResourceMaps(
-                transactionRequests.stream().map(ResourceTransactionRequest::getOutputNonStorable).toList());
-    }
-
-    private Map<ResourceType, Integer> getDiscardedOutput() {
-        return ResourceTransactionRequest.mergeResourceMaps(
-                transactionRequests.stream().map(ResourceTransactionRequest::getDiscardedOutput).toList());
     }
 }
