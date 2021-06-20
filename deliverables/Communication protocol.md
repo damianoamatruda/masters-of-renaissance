@@ -321,22 +321,25 @@ When a request message from a client references the ID of an object that is not 
 ```
 
 # Game phase - Player setup
+When the game starts, the server instantiates its internal model.  
+It will then send the game data to the clients (see TODO), and the player setup phase will start.
 
-When the game starts, the server instantiates its internal model. To set up the player objects, the clients will need to
-make choices. Those include which leader cards to keep and what resources to take, since the players are entitled to
-receive bonus resources and faith points.
+During this phase the players will have to choose the amount of leader cards and resources specified in the configuration file.
 
 ## Choosing leader cards
-
 As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's
 duration.
 
 The client will be sent the IDs of the leader cards they can choose from, and will send back a subset of them.  
-To confirm the success of the operation, the server will echo back the indices. Else, the player will be notified with
-an error message.
 
-The client is designed to go through this process after the game starts. If other clients don't do the same and the
-leaders remain to be chosen, the server will fail to process the move, sending an `ErrLeadersNotChosen` message.
+The leader cards are shown only to the player owning them until activated. Therefore, two kinds of messages will be sent as state updates from the server: `UpdateLeadersHand`, which contains the IDs of the cards, will be sent to the player who chose them; `UpdateLeadersHandCount`, which contains only the number of cards in the player's hand, will be sent to every other player.  
+See TODO for the messages' structure.
+
+If the request is executed successfully, the server will notify the client that all state update messages have been sent with an `UpdateAction` message.
+Possible error cases:
+1. The request message is sent too late (the setup phase is already concluded): the server will answer with an `ErrAction` message, with reason `LATE_SETUP_ACTION`
+2. The request message contains IDs that are not in the player's card list: an `ErrObjectNotOwned` message will be sent
+3. The request message contains either too few IDs: an `ErrInitialChoice` will be sent, containing the amount of missing leader cards
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -349,38 +352,56 @@ leaders remain to be chosen, the server will fail to process the move, sending a
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │               ResChooseLeaders │ ╰──────────────────╯
+               │              UpdateLeadersHand │ ╰──────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │         UpdateLeadersHandCount │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                   UpdateAction │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
+               │              ErrObjectNotOwned │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │               ErrInitialChoice │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
 ```
-
 **ReqChooseLeaders (client)**
 ```json
 {
   "type": "ReqChooseLeaders",
-  "leadersId": [ 3, 15 ]
+  "leaders": [ 3, 15 ]
 }
 ```
-**ResChooseLeaders (server)**
-
+**UpdateLeadersHand (server)**
 ```json
 {
-  "type": "ResChooseLeaders",
-  "leadersId": [ 3, 15 ]
+  "type": "UpdateLeadersHand",
+  "player": "NicknameA",
+  "leaders": [ 3, 15 ]
 }
 ```
-**ErrAction (server)**
-
+**UpdateLeadersHandCount (server)**
 ```json
 {
-  "type": "ErrChooseLeaders",
-  "msg": "Invalid leader cards: 3, 25."
+  "type": "UpdateLeadersHandCount",
+  "player": "NicknameA",
+  "leadersCount": 2
 }
 ```
-
+**ErrInitialChoice (server)**
+```json
+{
+  "type": "ErrInitialChoice",
+  "isLeadersChoice": true,
+  "missingLeadersCount": 2
+}
+```
 
 ## Choosing starting resources
 
