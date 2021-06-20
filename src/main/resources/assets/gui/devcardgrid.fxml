@@ -7,7 +7,7 @@
    <AnchorPane fx:id="canvas"
                maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
       <HBox AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="-20.0"
-            AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="-20.0" spacing="-50.0">
+            AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="-20.0" spacing="-50.0" maxHeight="700">
          <VBox spacing="-80.0">
             <StackPane fx:id="devCardGridPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="740.0"
                        prefWidth="640.0" />
@@ -17,12 +17,11 @@
                         textAlignment="CENTER"/>
             </HBox>
          </VBox>
-         <VBox alignment="CENTER" spacing="-75.0">
-            <HBox minHeight="110"/>
+         <VBox alignment="CENTER" spacing="-5.0">
+            <HBox minHeight="50"/>
             <HBox fx:id="containersBox" alignment="CENTER" spacing="10.0" scaleX="0.9" scaleY="0.9"/>
-            <HBox minHeight="120"/>
-            <HBox fx:id="leadersBox" alignment="CENTER" spacing="10.0" minHeight="100" maxHeight="100" scaleX="0.9" scaleY="0.9"/>
-            <HBox fx:id="devSlotsBox" alignment="CENTER" scaleX="0.75" scaleY="0.75"/>
+            <HBox fx:id="leadersBox" alignment="CENTER" spacing="10.0" scaleX="0.9" scaleY="0.9"/>
+            <HBox fx:id="devSlotsBox" alignment="TOP_CENTER" scaleX="0.75" scaleY="0.75"/>
          </VBox>
       </HBox>
       <SButton fx:id="back" alignment="BOTTOM_LEFT" text="Back" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>

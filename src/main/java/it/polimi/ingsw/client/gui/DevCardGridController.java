@@ -160,9 +160,8 @@ public class DevCardGridController extends GuiController {
             containersBox.setScaleX(0.7);
             containersBox.setScaleY(0.7);
 
-            HBox padding = new HBox();
-            padding.setMinHeight(90);
-            ((VBox) leadersBox.getParent()).getChildren().set(0, padding);
+            devSlotsBox.setMinHeight(100);
+            devSlotsBox.setMaxHeight(100);
         }
 
     }
