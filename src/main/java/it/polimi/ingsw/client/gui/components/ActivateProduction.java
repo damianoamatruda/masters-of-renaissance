@@ -9,6 +9,7 @@ import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -97,7 +98,7 @@ public class ActivateProduction extends StackPane {
         ReducedResourceTransactionRecipe selectedProd = Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).orElseThrow();
 
         gui.getViewModel().getResourceTypes().stream()
-                .filter(r -> (r.isStorable() || r.isTakeableFromPlayer()) &&
+                .filter(r -> (!r.isStorable() && r.isTakeableFromPlayer()) &&
                         !selectedProd.getInputBlanksExclusions().contains(r.getName()))
                 .forEach(r -> {
                     HBox entry = new HBox();
@@ -127,6 +128,11 @@ public class ActivateProduction extends StackPane {
                     entry.getChildren().add(resource);
                     choosableOutputResources.getChildren().add(entry);
         });
+
+        if(choosableInputResources.getChildren().isEmpty())
+            ((HBox) choosableInputResources.getParent()).getChildren().remove(0);
+        if(choosableOutputResources.getChildren().isEmpty())
+            ((HBox) choosableOutputResources.getParent()).getChildren().remove(0);
 
         guiShelves.setWarehouseShelves(tempShelves, (a, b) -> {});
         guiShelves.addResourcesSelector(this.containers, newTempShelves);
@@ -197,13 +203,17 @@ public class ActivateProduction extends StackPane {
      */
     private void buildRequest() {
         // get chosen blanks
-        choosableInputResources.getChildren().forEach(hbox ->
-                inputBlanks.put(((Resource) ((HBox) hbox).getChildren().get(1)).getName(),
-                        ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue()));
+        choosableInputResources.getChildren().forEach(hbox -> {
+                if(((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
+                    inputBlanks.put(((Resource) ((HBox) hbox).getChildren().get(1)).getName(),
+                            ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue());
+                });
 
-        choosableOutputResources.getChildren().forEach(hbox ->
+        choosableOutputResources.getChildren().forEach(hbox -> {
+            if(((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
                 outputBlanks.put(((Resource) ((HBox) hbox).getChildren().get(1)).getName(),
-                        ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue()));
+                        ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue());
+        });
 
         // add production request
         requests.add(new ReducedProductionRequest(toActivate.get(index), containers, inputBlanks, outputBlanks));
