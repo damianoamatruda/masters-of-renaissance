@@ -39,6 +39,8 @@ This document describes the client-server communication protocol used by the imp
 All messages are encoded using the GSON library and follow therefore the JSON specification, language-wise.  
 Every value shown in the messages is to be taken as an example, having been written only to show the messages' structure.  
 
+
+
 # Client-server connection management - Network level
 To make the protocol more resilient and situation-aware, `NetEvents` have been separated from application-level events.  
 
@@ -251,6 +253,7 @@ See the [Game start](#game-start) section for information on how the protocol de
 ## Quitting the game
 When the player quits the game, the client will send a `ReqQuit` message:
 
+**ReqQuit (client)**
 ```json
 {
   "type":"ReqQuit"
@@ -258,6 +261,15 @@ When the player quits the game, the client will send a `ReqQuit` message:
 ```
 
 The server will then execute an internal routine that will allow the player to reconnect at a later time and join back the match they were in, notifying at the same time the other players of the match of the event (see TODO player status).  
+A `ResQuit` message will be sent to the client to notify it about the closing routine being completed.  
+
+**ResQuit (server)**
+```json
+{
+  "type":"ResQuit"
+}
+```
+
 The network-level closing routine will then start (see TODO).
 
 ## Reconnection
