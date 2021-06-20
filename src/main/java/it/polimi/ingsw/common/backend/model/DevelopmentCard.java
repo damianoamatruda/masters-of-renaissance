@@ -94,7 +94,7 @@ public class DevelopmentCard extends Card {
         ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
                 transactionRecipe, resContainers, Map.of(), Map.of(), Map.of());
 
-        new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
+        new ResourceTransaction(game, player, List.of(transactionRequest)).execute();
     }
 
     public ReducedDevCard reduce() {

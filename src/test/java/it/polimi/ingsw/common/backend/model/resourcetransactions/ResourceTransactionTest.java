@@ -50,8 +50,8 @@ public class ResourceTransactionTest {
                 Map.of(), Map.of(player.getStrongbox(), Map.of(r2, 3)),
                 Map.of()
         );
-        ResourceTransaction transaction = new ResourceTransaction(List.of(pr1));
-        transaction.activate(game, player);
+        ResourceTransaction transaction = new ResourceTransaction(game, player, List.of(pr1));
+        transaction.execute();
 
         assertAll("getResourceQuantity",
                 () -> assertEquals(4, player.getStrongbox().getResourceQuantity(r1)),
@@ -77,8 +77,8 @@ public class ResourceTransactionTest {
                 Map.of(player.getStrongbox(), Map.of(r2, 3)),
                 Map.of()
         );
-        ResourceTransaction transaction = new ResourceTransaction(List.of(transactionRequest));
-        transaction.activate(game, player);
+        ResourceTransaction transaction = new ResourceTransaction(game, player, List.of(transactionRequest));
+        transaction.execute();
 
         assertAll("getResourceQuantity",
                 () -> assertEquals(3, player.getStrongbox().getResourceQuantity(r1)),
@@ -104,8 +104,8 @@ public class ResourceTransactionTest {
                 Map.of(player.getStrongbox(), Map.of(r2, 5, r3, 1)),
                 Map.of()
         );
-        ResourceTransaction transaction = new ResourceTransaction(List.of(transactionRequest));
-        transaction.activate(game, player);
+        ResourceTransaction transaction = new ResourceTransaction(game, player, List.of(transactionRequest));
+        transaction.execute();
 
         assertAll("getResourceQuantity",
                 () -> assertEquals(4, player.getStrongbox().getResourceQuantity(r1)),
@@ -126,9 +126,9 @@ public class ResourceTransactionTest {
                 Map.of()
         );
 
-        ResourceTransaction transaction = new ResourceTransaction(List.of(request));
+        ResourceTransaction transaction = new ResourceTransaction(g, pl, List.of(request));
 
-        assertDoesNotThrow(() -> transaction.activate(g, pl));
+        assertDoesNotThrow(transaction::execute);
         assertAll(
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rIn) == null),
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rOut) == 1),
@@ -149,9 +149,9 @@ public class ResourceTransactionTest {
                 Map.of(pl.getStrongbox(), Map.of(rOut, 1, rOutRepl, 1)),
                 Map.of());
 
-        ResourceTransaction transaction = new ResourceTransaction(List.of(request));
+        ResourceTransaction transaction = new ResourceTransaction(g, pl, List.of(request));
 
-        assertDoesNotThrow(() -> transaction.activate(g, pl));
+        assertDoesNotThrow(transaction::execute);
         assertAll(
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rIn) == null),
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rInRepl) == null),
@@ -177,9 +177,9 @@ public class ResourceTransactionTest {
                 Map.of()
         );
 
-        ResourceTransaction transaction = new ResourceTransaction(List.of(request));
+        ResourceTransaction transaction = new ResourceTransaction(g2, pl, List.of(request));
 
-        assertDoesNotThrow(() -> transaction.activate(g2, pl));
+        assertDoesNotThrow(transaction::execute);
         assertAll(
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rIn) == null),
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rOut) == null),
@@ -202,9 +202,9 @@ public class ResourceTransactionTest {
                 Map.of()
         );
 
-        ResourceTransaction transaction = new ResourceTransaction(List.of(request));
+        ResourceTransaction transaction = new ResourceTransaction(g, pl, List.of(request));
 
-        assertDoesNotThrow(() -> transaction.activate(g, pl));
+        assertDoesNotThrow(transaction::execute);
         assertAll(
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rIn) == null),
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rInRepl) == null),
@@ -228,9 +228,9 @@ public class ResourceTransactionTest {
                 Map.of()
         );
 
-        ResourceTransaction transaction = new ResourceTransaction(List.of(request));
+        ResourceTransaction transaction = new ResourceTransaction(g, pl, List.of(request));
 
-        assertThrows(IllegalResourceTransferException.class, () -> transaction.activate(g, pl));
+        assertThrows(IllegalResourceTransferException.class, transaction::execute);
         assertAll(
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rIn) == 1),
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rInRepl) == null),
@@ -262,9 +262,9 @@ public class ResourceTransactionTest {
                 Map.of()
         );
 
-        ResourceTransaction transaction = new ResourceTransaction(List.of(request, request2));
+        ResourceTransaction transaction = new ResourceTransaction(g, pl, List.of(request, request2));
 
-        assertDoesNotThrow(() -> transaction.activate(g, pl));
+        assertDoesNotThrow(transaction::execute);
         assertAll(
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rIn) == null),
                 () -> assertTrue(() -> pl.getStrongbox().getResourceMap().get(rInRepl) == null),

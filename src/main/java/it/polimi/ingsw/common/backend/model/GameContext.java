@@ -485,9 +485,9 @@ public class GameContext extends AsynchronousEventDispatcher {
             }
         }
 
-        ResourceTransaction transaction = new ResourceTransaction(List.copyOf(prodRequests));
+        ResourceTransaction transaction = new ResourceTransaction(game, player, List.copyOf(prodRequests));
         try {
-            transaction.activate(game, player);
+            transaction.execute();
         } catch (IllegalResourceTransferException e) {
             dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
             return;

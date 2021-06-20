@@ -115,7 +115,7 @@ public class PlayerSetup {
         ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
                 transactionRecipe, Map.of(), Map.of(), Map.copyOf(shelves), Map.of());
 
-        new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
+        new ResourceTransaction(game, player, List.of(transactionRequest)).execute();
 
         hasChosenResources = true;
         if (isDone())

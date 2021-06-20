@@ -13,9 +13,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * This class represents a transaction of multiple requests.
+ * This class represents a transaction of resources.
  */
 public class ResourceTransaction {
+    private final Game game;
+    private final Player player;
     private final Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers;
     private final Map<ResourceType, Integer> inputNonStorable;
     private final Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers;
@@ -25,9 +27,13 @@ public class ResourceTransaction {
     /**
      * Initializes a resource transaction.
      *
-     * @param transactionRequests the list of the transaction requests to activate
+     * @param game                the game the player is playing in
+     * @param player              the player on which to trigger the actions of the non-storable resources
+     * @param transactionRequests the list of the transaction requests to execute
      */
-    public ResourceTransaction(List<ResourceTransactionRequest> transactionRequests) {
+    public ResourceTransaction(Game game, Player player, List<ResourceTransactionRequest> transactionRequests) {
+        this.game = game;
+        this.player = player;
         this.inputContainers = getInputContainers(transactionRequests);
         this.inputNonStorable = getInputNonStorable(transactionRequests);
         this.outputContainers = getOutputContainers(transactionRequests);
@@ -66,7 +72,6 @@ public class ResourceTransaction {
      * @return the set of all containers
      */
     private Set<ResourceContainer> getAllContainers() {
-        /* Get set of all resource containers, in input and in output */
         Set<ResourceContainer> allContainers = new HashSet<>();
         allContainers.addAll(inputContainers.keySet());
         allContainers.addAll(outputContainers.keySet());
@@ -104,19 +109,17 @@ public class ResourceTransaction {
     }
 
     /**
-     * Activates the transaction requests. Replaces the blanks in input and in output with the given resources, removes
-     * the input storable resources from the given resource containers, adds the output storable resources into the
-     * given resource containers, takes the non-storable input resources from the player and gives the non-storable
-     * output resources to the player.
+     * Executes the transaction. Replaces the blanks in input and in output with the given resources, removes the input
+     * storable resources from the given resource containers, adds the output storable resources into the given resource
+     * containers, takes the non-storable input resources from the player and gives the non-storable output resources to
+     * the player.
      * <p>
      * This is a transaction: if the transfer is unsuccessful, a checked exception is thrown and the states of the game,
      * the player and the resource containers remain unchanged.
      *
-     * @param game   the game the player is playing in
-     * @param player the player on which to trigger the actions of the non-storable resources
      * @throws IllegalResourceTransferException if the transaction failed
      */
-    public void activate(Game game, Player player) throws IllegalResourceTransferException {
+    public void execute() throws IllegalResourceTransferException {
         Map<ResourceContainer, ResourceContainer> clonedContainers = getClonedContainers();
 
         /* Try removing all input storable resources from cloned resource containers.
