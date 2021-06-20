@@ -112,10 +112,10 @@ public class Shelf extends BorderPane {
      * @param r the resource as Gui component
      */
     public void addResource(Resource r) {
-        removePlaceholder();
+        if(isLeaderDepot) removePlaceholder();
         r.setPreserveRatio(true);
         r.setFitHeight(this.getMinHeight());
-        ((HBox) this.getCenter()).getChildren().add(r);
+        content.getChildren().add(r);
     }
 
     /**
@@ -124,7 +124,7 @@ public class Shelf extends BorderPane {
      * @param resource the resource type
      */
     public void addResource(String resource) {
-        removePlaceholder();
+        if(isLeaderDepot) removePlaceholder();
         Resource r = new Resource(resource);
 
         addResource(r);
