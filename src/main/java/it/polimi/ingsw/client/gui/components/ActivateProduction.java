@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -93,30 +93,39 @@ public class ActivateProduction extends StackPane {
 
         text.setText(String.format("Production: %s", toActivate.get(index)));
 
-        gui.getViewModel().getResourceTypes().stream().filter(ReducedResourceType::isStorable).forEach(r -> {
-            HBox entry = new HBox();
-            Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
-            spinner.setMaxWidth(50);
-            spinner.editorProperty().get().setAlignment(Pos.CENTER);
-            entry.getChildren().add(spinner);
-            Resource resource = new Resource(r.getName());
-            resource.setScaleX(0.8);
-            resource.setScaleY(0.8);
-            entry.getChildren().add(resource);
-            choosableInputResources.getChildren().add(entry);
-        });
+        // TODO: Maybe use ifPresent()
+        ReducedResourceTransactionRecipe selectedProd = Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).orElseThrow();
 
-        gui.getViewModel().getResourceTypes().stream().filter(ReducedResourceType::isStorable).forEach(r -> {
-            HBox entry = new HBox();
-            Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
-            spinner.setMaxWidth(50);
-            spinner.editorProperty().get().setAlignment(Pos.CENTER);
-            entry.getChildren().add(spinner);
-            Resource resource = new Resource(r.getName());
-            resource.setScaleX(0.8);
-            resource.setScaleY(0.8);
-            entry.getChildren().add(resource);
-            choosableOutputResources.getChildren().add(entry);
+        gui.getViewModel().getResourceTypes().stream()
+                .filter(r -> (r.isStorable() || r.isTakeableFromPlayer()) &&
+                        !selectedProd.getInputBlanksExclusions().contains(r.getName()))
+                .forEach(r -> {
+                    HBox entry = new HBox();
+                    Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
+                    spinner.setMaxWidth(50);
+                    spinner.editorProperty().get().setAlignment(Pos.CENTER);
+                    entry.getChildren().add(spinner);
+                    Resource resource = new Resource(r.getName());
+                    resource.setScaleX(0.8);
+                    resource.setScaleY(0.8);
+                    entry.getChildren().add(resource);
+                    choosableInputResources.getChildren().add(entry);
+                });
+
+        gui.getViewModel().getResourceTypes().stream()
+                .filter(r -> (r.isStorable() || r.isGiveableToPlayer()) &&
+                        !selectedProd.getOutputBlanksExclusions().contains(r.getName()))
+                .forEach(r -> {
+                    HBox entry = new HBox();
+                    Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
+                    spinner.setMaxWidth(50);
+                    spinner.editorProperty().get().setAlignment(Pos.CENTER);
+                    entry.getChildren().add(spinner);
+                    Resource resource = new Resource(r.getName());
+                    resource.setScaleX(0.8);
+                    resource.setScaleY(0.8);
+                    entry.getChildren().add(resource);
+                    choosableOutputResources.getChildren().add(entry);
         });
 
         guiShelves.setWarehouseShelves(tempShelves, (a, b) -> {});
