@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +97,7 @@ public class FaithTrack extends HBox {
 
         // display pope's favors
         int i = 1;
-        for(ReducedVaticanSection section : sections.values()) {
+        for(ReducedVaticanSection section : sections.values().stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getId)).toList()) {
             HBox hbox = new HBox();
             hbox.setAlignment(Pos.CENTER);
             hbox.setSpacing(50);
@@ -113,7 +114,10 @@ public class FaithTrack extends HBox {
             popesFavor.setFitHeight(110);
             popesFavor.setFitWidth(110);
             favorPane.getChildren().add(popesFavor);
-            if(gotBonus && isActivated) favorPane.getChildren().add(new Text(section.getVictoryPoints() + ""));
+            Text pointsText = new Text(section.getVictoryPoints() + "");
+            pointsText.setScaleX(1.8);
+            pointsText.setScaleY(1.8);
+            if(gotBonus && isActivated) favorPane.getChildren().add(pointsText);
 
             hbox.getChildren().add(favorPane);
             popesFavors.getChildren().add(hbox);

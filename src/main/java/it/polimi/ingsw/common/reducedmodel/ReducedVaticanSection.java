@@ -28,14 +28,16 @@ public class ReducedVaticanSection {
      * @param faithPointsBeginning  the first tile
      * @param faithPointsEnd        the last (Vatican Report) tile
      * @param victoryPoints         the bonus victory points of the section
+     * @param activated             the status of activation
+     * @param bonusGivenPlayers     the players that earned the bonus
      */
-    public ReducedVaticanSection(int id, int faithPointsBeginning, int faithPointsEnd, int victoryPoints) {
+    public ReducedVaticanSection(int id, int faithPointsBeginning, int faithPointsEnd, int victoryPoints, boolean activated, List<String> bonusGivenPlayers) {
         this.id = id;
         this.faithPointsBeginning = faithPointsBeginning;
         this.faithPointsEnd = faithPointsEnd;
         this.victoryPoints = victoryPoints;
-        this.activated = false;
-        this.bonusGivenPlayers = new ArrayList<>();
+        this.activated = activated;
+        this.bonusGivenPlayers = new ArrayList<>(bonusGivenPlayers);
     }
 
     /**

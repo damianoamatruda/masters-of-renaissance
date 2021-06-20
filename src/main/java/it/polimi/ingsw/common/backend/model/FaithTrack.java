@@ -46,7 +46,10 @@ public class FaithTrack extends EventDispatcher {
      * @return the Vatican Section ending there
      */
     public VaticanSection getVaticanSectionReport(int faithPoints) {
-        return vaticanSectionsMap.get(faithPoints);
+        OptionalInt latestSectionTile = vaticanSectionsMap.values()
+                .stream().filter(v -> v.getFaithPointsEnd() <= faithPoints)
+                .mapToInt(VaticanSection::getFaithPointsEnd).reduce(Integer::max);
+        return  latestSectionTile.stream().mapToObj(vaticanSectionsMap::get).findAny().orElse(null);
     }
 
     /**
@@ -184,7 +187,8 @@ public class FaithTrack extends EventDispatcher {
         }
 
         public ReducedVaticanSection reduce() {
-            return new ReducedVaticanSection(id, faithPointsBeginning, faithPointsEnd, victoryPoints);
+            return new ReducedVaticanSection(id, faithPointsBeginning, faithPointsEnd, victoryPoints,
+                    activated, bonusGivenPlayers.stream().map(Player::getNickname).toList());
         }
     }
 
