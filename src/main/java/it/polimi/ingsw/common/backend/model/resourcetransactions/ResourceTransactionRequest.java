@@ -54,7 +54,7 @@ public class ResourceTransactionRequest {
             throw new NullPointerException();
 
         if (resMap.values().stream().anyMatch(q -> q < 0))
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal negative map values.");
     }
 
     public static void validateContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {

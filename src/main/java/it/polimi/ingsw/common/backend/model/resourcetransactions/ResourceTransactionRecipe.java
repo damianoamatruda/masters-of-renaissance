@@ -52,36 +52,29 @@ public class ResourceTransactionRecipe {
     public ResourceTransactionRecipe(Map<ResourceType, Integer> input, int inputBlanks, Set<ResourceType> inputBlanksExclusions,
                                      Map<ResourceType, Integer> output, int outputBlanks, Set<ResourceType> outputBlanksExclusions,
                                      boolean discardableOutput) {
-        // TODO: Do not use C-like error codes, use booleans
-
-        int errorCode = 0;
-
-        if (input.values().stream().filter(v -> v < 0).findAny().isPresent())
-            errorCode = 1;
-        if (output.values().stream().filter(v -> v < 0).findAny().isPresent())
-            errorCode = 2;
-
-        if (errorCode > 0)
-            throw new IllegalArgumentException(String.format("Illegal negative %s map values constructing transaction recipe.",
-                    errorCode == 1 ? "input" : "output"));
-
-        if (inputBlanks < 0)
-            errorCode = 1;
-        if (outputBlanks < 0)
-            errorCode = 2;
-
-        if (errorCode > 0)
-            throw new IllegalArgumentException(String.format("Illegal negative %s replacements value constructing transaction recipe.",
-                errorCode == 1 ? "input" : "output"));
-        
+        validateBlanksCount(inputBlanks);
+        validateBlanksCount(outputBlanks);
         this.id = idCounter.getAndIncrement();
-        this.input = Map.copyOf(input);
+        this.input = ResourceTransactionRequest.sanitizeResourceMap(input);
         this.inputBlanks = inputBlanks;
-        this.inputBlanksExclusions = Set.copyOf(inputBlanksExclusions);
-        this.output = Map.copyOf(output);
+        this.inputBlanksExclusions = sanitizeInputBlanksExclusions(inputBlanksExclusions);
+        this.output = ResourceTransactionRequest.sanitizeResourceMap(output);
         this.outputBlanks = outputBlanks;
-        this.outputBlanksExclusions = Set.copyOf(outputBlanksExclusions);
+        this.outputBlanksExclusions = sanitizeOutputBlanksExclusions(outputBlanksExclusions);
         this.discardableOutput = discardableOutput;
+    }
+
+    private static void validateBlanksCount(int blanksCount) {
+        if (blanksCount < 0)
+            throw new IllegalArgumentException("Illegal negative blanks count.");
+    }
+
+    private static Set<ResourceType> sanitizeInputBlanksExclusions(Set<ResourceType> inputBlanksExclusions) {
+        return inputBlanksExclusions.stream().filter(r -> r.isStorable() || r.isTakeableFromPlayer()).collect(Collectors.toUnmodifiableSet());
+    }
+
+    private static Set<ResourceType> sanitizeOutputBlanksExclusions(Set<ResourceType> outputBlanksExclusions) {
+        return outputBlanksExclusions.stream().filter(r -> r.isStorable() || r.isGiveableToPlayer()).collect(Collectors.toUnmodifiableSet());
     }
 
     public int getId() {
