@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client;
 
-import java.util.Optional;
-
 import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
+
+import java.util.Optional;
 
 public abstract class UiController {
     private final Ui ui;
@@ -184,6 +184,9 @@ public abstract class UiController {
 
     public void on(UpdateResourceContainer event) {
         vm.setContainer(event.getResContainer());
+    }
+
+    public void on(UpdateServerUnavailable event) {
     }
 
     public void on(UpdateSetupDone event) {

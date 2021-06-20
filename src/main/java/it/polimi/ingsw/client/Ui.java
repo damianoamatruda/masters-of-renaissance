@@ -69,11 +69,12 @@ public class Ui extends View {
     }
 
     private void setListeners() {
+        setErrNewGameEventListener(event -> controller.on(event));
+        setErrNicknameEventListener(event -> controller.on(event));
         setResQuitEventListener(event -> controller.on(event));
         setUpdateBookedSeatsEventListener(event -> controller.on(event));
         setUpdateJoinGameEventListener(event -> controller.on(event));
-        setErrNewGameEventListener(event -> controller.on(event));
-        setErrNicknameEventListener(event -> controller.on(event));
+        setUpdateServerUnavailableEventListener(event -> controller.on(event));
         setErrActionEventListener(event -> controller.on(event));
         setErrActiveLeaderDiscardedEventListener(event -> controller.on(event));
         setErrBuyDevCardEventListener(event -> controller.on(event));

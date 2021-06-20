@@ -9,11 +9,12 @@ public class VirtualView extends View {
     }
 
     private void setListeners(NetworkHandler networkHandler) {
+        setErrNewGameEventListener(networkHandler::send);
+        setErrNicknameEventListener(networkHandler::send);
         setResQuitEventListener(networkHandler::send);
         setUpdateBookedSeatsEventListener(networkHandler::send);
         setUpdateJoinGameEventListener(networkHandler::send);
-        setErrNewGameEventListener(networkHandler::send);
-        setErrNicknameEventListener(networkHandler::send);
+        setUpdateServerUnavailableEventListener(networkHandler::send);
         setErrActionEventListener(networkHandler::send);
         setErrActiveLeaderDiscardedEventListener(networkHandler::send);
         setErrBuyDevCardEventListener(networkHandler::send);

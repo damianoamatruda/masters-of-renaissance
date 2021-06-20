@@ -12,15 +12,17 @@ import java.util.logging.Logger;
 public class View extends AsynchronousEventDispatcher {
     private static final Logger LOGGER = Logger.getLogger(View.class.getName());
 
+    private EventListener<ErrNewGame> errNewGameEventListener = event -> {
+    };
+    private EventListener<ErrNickname> errNicknameEventListener = event -> {
+    };
     private EventListener<ResQuit> resQuitEventListener = event -> {
     };
     private EventListener<UpdateBookedSeats> updateBookedSeatsEventListener = event -> {
     };
     private EventListener<UpdateJoinGame> updateJoinGameEventListener = event -> {
     };
-    private EventListener<ErrNewGame> errNewGameEventListener = event -> {
-    };
-    private EventListener<ErrNickname> errNicknameEventListener = event -> {
+    private EventListener<UpdateServerUnavailable> updateServerUnavailableEventListener = event -> {
     };
     private EventListener<ErrAction> errActionEventListener = event -> {
     };
@@ -82,19 +84,20 @@ public class View extends AsynchronousEventDispatcher {
     };
 
     public void registerOnModelLobby(EventDispatcher lobby) {
+        lobby.addEventListener(ErrNewGame.class, errNewGameEventListener);
+        lobby.addEventListener(ErrNickname.class, errNicknameEventListener);
         lobby.addEventListener(ResQuit.class, resQuitEventListener);
         lobby.addEventListener(UpdateBookedSeats.class, updateBookedSeatsEventListener);
         lobby.addEventListener(UpdateJoinGame.class, updateJoinGameEventListener);
-        lobby.addEventListener(ErrNewGame.class, errNewGameEventListener);
-        lobby.addEventListener(ErrNickname.class, errNicknameEventListener);
+        lobby.addEventListener(UpdateServerUnavailable.class, updateServerUnavailableEventListener);
     }
 
     public void unregisterOnModelLobby(EventDispatcher lobby) {
+        lobby.removeEventListener(ErrNewGame.class, errNewGameEventListener);
+        lobby.removeEventListener(ErrNickname.class, errNicknameEventListener);
         lobby.removeEventListener(ResQuit.class, resQuitEventListener);
         lobby.removeEventListener(UpdateBookedSeats.class, updateBookedSeatsEventListener);
         lobby.removeEventListener(UpdateJoinGame.class, updateJoinGameEventListener);
-        lobby.removeEventListener(ErrNewGame.class, errNewGameEventListener);
-        lobby.removeEventListener(ErrNickname.class, errNicknameEventListener);
     }
 
     public void registerOnModelGameContext(EventDispatcher gameContext) {
@@ -161,6 +164,14 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.removeEventListener(UpdateVictoryPoints.class, updateVictoryPointsEventListener);
     }
 
+    public void setErrNewGameEventListener(EventListener<ErrNewGame> errNewGameEventListener) {
+        this.errNewGameEventListener = event -> on(event, errNewGameEventListener);
+    }
+
+    public void setErrNicknameEventListener(EventListener<ErrNickname> errNicknameEventListener) {
+        this.errNicknameEventListener = event -> on(event, errNicknameEventListener);
+    }
+
     public void setResQuitEventListener(EventListener<ResQuit> resQuitEventListener) {
         this.resQuitEventListener = event -> on(event, resQuitEventListener);
     }
@@ -173,12 +184,8 @@ public class View extends AsynchronousEventDispatcher {
         this.updateJoinGameEventListener = event -> on(event, updateJoinGameEventListener);
     }
 
-    public void setErrNewGameEventListener(EventListener<ErrNewGame> errNewGameEventListener) {
-        this.errNewGameEventListener = event -> on(event, errNewGameEventListener);
-    }
-
-    public void setErrNicknameEventListener(EventListener<ErrNickname> errNicknameEventListener) {
-        this.errNicknameEventListener = event -> on(event, errNicknameEventListener);
+    public void setUpdateServerUnavailableEventListener(EventListener<UpdateServerUnavailable> updateServerUnavailableEventListener) {
+        this.updateServerUnavailableEventListener = event -> on(event, updateServerUnavailableEventListener);
     }
 
     public void setErrActionEventListener(EventListener<ErrAction> errActionEventListener) {
