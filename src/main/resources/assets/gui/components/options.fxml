@@ -15,9 +15,12 @@
          maxWidth="1280" minWidth="1280">
    <center>
       <VBox maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER" stylesheets="@../index.css" styleClass="main" fx:id="window">
+         <padding>
+            <Insets left="30.0" right="30.0"/>
+         </padding>
          <VBox alignment="CENTER">
             <VBox.margin>
-               <Insets bottom="40.0"/>
+               <Insets top="10.0" bottom="40.0"/>
             </VBox.margin>
             <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../logo.png"/>
@@ -77,12 +80,9 @@
          </VBox>
          <SButton alignment="CENTER" fx:id="backButton" prefWidth="400.0" text="Back">
             <VBox.margin>
-               <Insets top="30.0"/>
+               <Insets top="30.0" bottom="30.0"/>
             </VBox.margin>
          </SButton>
-         <padding>
-            <Insets bottom="80.0"/>
-         </padding>
       </VBox>
    </center>
 </fx:root>
