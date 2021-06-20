@@ -16,6 +16,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
@@ -44,11 +45,12 @@ public class DevCardGridController extends GuiController {
     @FXML
     private Button submitBtn;
     @FXML private Button back;
+    @FXML
+    private HBox leadersBox;
 
     private NumberBinding maxScale;
 
     private DevCardGrid devCardGrid;
-    private List<DevSlot> devSlots;
     private Warehouse warehouse;
     private Strongbox strongbox;
 
@@ -69,8 +71,8 @@ public class DevCardGridController extends GuiController {
         devCardGrid.setGrid(vm.getDevCardGrid().orElseThrow());
         devCardGrid.setControllerListener(this::devCardPressed);
 
-        devCardGrid.setScaleX(0.75);
-        devCardGrid.setScaleY(0.75);
+        devCardGrid.setScaleX(0.7);
+        devCardGrid.setScaleY(0.7);
 
         devCardGridPane.getChildren().add(devCardGrid);
 
@@ -84,6 +86,7 @@ public class DevCardGridController extends GuiController {
         resetWarehouse();
         resetStrongbox();
         resetSlots();
+        resetLeaders();
 
         setPauseHandlers(backStackPane, canvas, maxScale);
     }
@@ -110,6 +113,58 @@ public class DevCardGridController extends GuiController {
         }
 
         return success;
+    }
+
+    private void resetLeaders() {
+        leadersBox.getChildren().clear();
+        List<LeaderCard> leaders = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
+                .filter(c -> c.isActive() &&
+                        (c.getLeaderType().equals("DepotLeader") || c.getLeaderType().equals("DiscountLeader")))
+                .map(reducedLeader -> {
+                    LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
+                    leaderCard.setLeaderId(reducedLeader.getId());
+                    leaderCard.setLeaderType(reducedLeader.getLeaderType());
+                    leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
+                    leaderCard.setResourceType(reducedLeader.getResourceType());
+                    if (reducedLeader.getResourceRequirement().isPresent())
+                        leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
+                    if (reducedLeader.getDevCardRequirement().isPresent())
+                        leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
+
+                    if(reducedLeader.getLeaderType().equals("DepotLeader")) {
+                        leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
+                                reducedLeader.getResourceType(), true);
+
+                        leaderCard.getGuiDepot().addResourcesSelector(shelvesMap,
+                                vm.getContainer(reducedLeader.getContainerId())
+                                        .stream().filter(d -> d.getId() == reducedLeader.getContainerId())
+                                        .findAny().orElseThrow());
+                    } else
+                        leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
+
+                    leaderCard.setScaleX(0.8);
+                    leaderCard.setScaleY(0.8);
+
+                    return leaderCard;
+
+                }).toList();
+
+        leadersBox.getChildren().addAll(leaders);
+
+        // adjust components sizes and positioning if leadersBox has cards
+        if(!leaders.isEmpty()) {
+            leadersBox.setMinHeight(200);
+            leadersBox.setMaxHeight(200);
+            devSlotsBox.setScaleX(0.6);
+            devSlotsBox.setScaleY(0.6);
+            containersBox.setScaleX(0.7);
+            containersBox.setScaleY(0.7);
+
+            HBox padding = new HBox();
+            padding.setMinHeight(90);
+            ((VBox) leadersBox.getParent()).getChildren().set(0, padding);
+        }
+
     }
 
     /**
@@ -151,6 +206,7 @@ public class DevCardGridController extends GuiController {
         resetWarehouse();
         resetStrongbox();
         resetSlots();
+        resetLeaders();
     }
 
     /**
@@ -198,7 +254,7 @@ public class DevCardGridController extends GuiController {
      * Resets card slots content to its state from before doing the action.
      */
     private void resetSlots() {
-        devSlots = new ArrayList<>();
+        List<DevSlot> devSlots = new ArrayList<>();
         List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
         
         modelSlots.forEach(modelSlot -> {
@@ -209,6 +265,10 @@ public class DevCardGridController extends GuiController {
             slot.setDevCards(cards);
 
             devSlots.add(slot);
+
+            for(int i = 0; i < cards.size(); i++)
+                AnchorPane.setBottomAnchor(cards.get(i), 40 + 50d * i);
+
         });
         
         for(int i = 0; i < vm.getSlotsCount() - modelSlots.size(); i++)
@@ -216,6 +276,8 @@ public class DevCardGridController extends GuiController {
 
         devSlotsBox.getChildren().clear();
         devSlotsBox.getChildren().addAll(devSlots);
+        devSlots.forEach(s -> s.setMinWidth(200));
+        devSlots.forEach(s -> s.setMinHeight(450));
     }
 
     /**
