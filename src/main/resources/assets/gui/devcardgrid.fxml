@@ -2,14 +2,15 @@
 
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.*?>
 <StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.DevCardGridController" stylesheets="@index.css">
    <AnchorPane fx:id="canvas"
                maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
-      <HBox AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="-20.0"
-            AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="-20.0" spacing="-50.0" maxHeight="700">
-         <VBox spacing="-80.0">
-            <StackPane fx:id="devCardGridPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="740.0"
+      <HBox AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0"
+            AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" spacing="0.0" alignment="CENTER">
+         <VBox alignment="CENTER">
+            <StackPane fx:id="devCardGridPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="680.0"
                        prefWidth="640.0" />
             <HBox alignment="CENTER" spacing="20.0">
                <ChoiceBox fx:id="devSlotChoicePicker" prefHeight="20.0" prefWidth="100.0"/>
@@ -17,11 +18,16 @@
                         textAlignment="CENTER"/>
             </HBox>
          </VBox>
-         <VBox alignment="CENTER" spacing="-5.0">
-            <HBox minHeight="50"/>
-            <HBox fx:id="containersBox" alignment="CENTER" spacing="10.0" scaleX="0.9" scaleY="0.9"/>
-            <HBox fx:id="leadersBox" alignment="CENTER" spacing="10.0" scaleX="0.9" scaleY="0.9"/>
-            <HBox fx:id="devSlotsBox" alignment="TOP_CENTER" scaleX="0.75" scaleY="0.75"/>
+         <VBox alignment="CENTER" spacing="5.0" fx:id="rightVBox" prefWidth="640.0">
+            <Group>
+               <HBox fx:id="containersBox" alignment="CENTER" spacing="10.0"/>
+            </Group>
+            <Group>
+               <HBox fx:id="leadersBox" alignment="CENTER" spacing="10.0"/>
+            </Group>
+            <Group>
+               <HBox fx:id="devSlotsBox" alignment="TOP_CENTER"/>
+            </Group>
          </VBox>
       </HBox>
       <SButton fx:id="back" alignment="BOTTOM_LEFT" text="Back" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>

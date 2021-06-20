@@ -17,6 +17,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.*;
@@ -40,6 +46,8 @@ public class DevCardGridController extends GuiController {
     private HBox containersBox;
     @FXML
     private HBox devSlotsBox;
+    @FXML
+    private VBox rightVBox;
     @FXML
     private ChoiceBox<Integer> devSlotChoicePicker;
     @FXML
@@ -89,6 +97,20 @@ public class DevCardGridController extends GuiController {
         resetLeaders();
 
         setPauseHandlers(backStackPane, canvas, maxScale);
+
+        canvas.setBorder(new Border(new BorderStroke(Color.RED,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        
+        devCardGridPane.setBorder(new Border(new BorderStroke(Color.BLACK,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        containersBox.setBorder(new Border(new BorderStroke(Color.BLACK,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        devSlotsBox.setBorder(new Border(new BorderStroke(Color.BLACK,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        leadersBox.setBorder(new Border(new BorderStroke(Color.BLACK,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        rightVBox.setBorder(new Border(new BorderStroke(Color.PINK,
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     /**
@@ -153,15 +175,17 @@ public class DevCardGridController extends GuiController {
 
         // adjust components sizes and positioning if leadersBox has cards
         if(!leaders.isEmpty()) {
-            leadersBox.setMinHeight(200);
-            leadersBox.setMaxHeight(200);
+            leadersBox.setMinHeight(180);
+            leadersBox.setMaxHeight(180);
+            // devSlotsBox.setMinHeight(400);
+            // devSlotsBox.setMaxHeight(400);
             devSlotsBox.setScaleX(0.6);
             devSlotsBox.setScaleY(0.6);
             containersBox.setScaleX(0.7);
             containersBox.setScaleY(0.7);
 
-            devSlotsBox.setMinHeight(100);
-            devSlotsBox.setMaxHeight(100);
+            // devSlotsBox.setMinHeight(100);
+            // devSlotsBox.setMaxHeight(100);
         }
 
     }
