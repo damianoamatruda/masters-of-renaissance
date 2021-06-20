@@ -205,6 +205,7 @@ public class Cli implements Runnable {
     }
 
     void pause() {
+        out.flush();
         in.nextLine();
     }
 
@@ -223,6 +224,7 @@ public class Cli implements Runnable {
         if (prompt.isEmpty())
             throw new IllegalArgumentException("Prompt cannot be empty.");
         out.print(right(String.format("%s (default: %s): ", prompt, defaultValue), width / 3));
+        out.flush();
         String value = in.nextLine();
         if (value.equals(backValue))
             return Optional.empty();
@@ -232,6 +234,7 @@ public class Cli implements Runnable {
     public Optional<String> prompt(String prompt) {
         if (!prompt.isEmpty())
             out.print(right(String.format("%s: ", prompt), width / 3));
+        out.flush();
         String value = in.nextLine();
         if (value.equals(backValue))
             return Optional.empty();

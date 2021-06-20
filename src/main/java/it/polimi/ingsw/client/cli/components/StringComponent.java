@@ -11,5 +11,6 @@ public abstract class StringComponent implements Renderable {
         Cli cli = Cli.getInstance();
         
         cli.getOut().println(getString(cli));
+        cli.getOut().flush();
     }
 }
