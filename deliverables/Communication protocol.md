@@ -277,15 +277,46 @@ A player can reconnect to a match they left, if it's still ongoing.
 This is done at connection time by choosing the same nickname as they previously had.
 
 When reconnecting, the server will send all the necessary game data for the client to cache (see TODO game start). The client will therefore be able to judge what phase of the game is currently in place (setup, turns, who the current player is, etc.).
+
+
+
+# General Errors
+Error messages that are sent in multiple occasions are reported here.  
+Any successive mentions of these messages refer to this section for syntax and examples.
+
+Every error message is unicast to the client that sent the illegal request.
+
+## ErrAction
+This message signals to the client that the action is being requested at the wrong time.  
+The `reason` field offers a more detailed explanation:
+1. `LATE_SETUP_ACTION` - a setup request is sent after the setup phase is concluded
+2. `EARLY_MANDATORY_ACTION` - an action request (non-setup) is sent during the setup phase
+3. `LATE_MANDATORY_ACTION` - a action request (non-setup) is sent for the second time during a player's turn
+4. `EARLY_TURN_END` - a request to end the player's turn is sent before a mandatory action request
+5. `GAME_ENDED` - an action request is sent after the match's end
+6. `NOT_CURRENT_PLAYER` - the player requesting the action is not the current player
+
+**ErrAction (server)**
 ```json
-{ "type": "ReqGoodbye" }
+{
+  "type": "ErrAction",
+  "reason": "LATE_SETUP_ACTION"
+}
 ```
 
-A `ResGoodbye` message will be sent by the server as an acknowledgement:
 
 ```json
 {
   "type": "ResGoodbye"
+## ErrObjectNotOwned
+When a request message from a client references the ID of an object that is not owned by the player, an `ErrObjectNotOwned` message will be sent by the server, detailing the erroneus ID and the object's kind.
+
+**ErrObjectNotOwned (server)**
+```json
+{
+  "type": "ErrObjectNotOwned",
+  "id": "NicknameA",
+  "objectType": "LeaderCard"
 }
 ```
 
