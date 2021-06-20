@@ -89,8 +89,10 @@ public class ActivateProduction extends StackPane {
         this.requests = requests;
         this.maxScale = sizeBinding;
 
-        this.scaleXProperty().bind(maxScale);
-        this.scaleYProperty().bind(maxScale);
+        if(index == 0) {
+            this.scaleXProperty().bind(maxScale);
+            this.scaleYProperty().bind(maxScale);
+        }
 
         text.setText(String.format("Production: %s", toActivate.get(index)));
 
