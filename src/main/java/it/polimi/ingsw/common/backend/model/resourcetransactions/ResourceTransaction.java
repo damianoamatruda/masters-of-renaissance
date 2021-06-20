@@ -42,23 +42,13 @@ public class ResourceTransaction {
      * @throws IllegalResourceTransferException if the transaction failed
      */
     public void activate(Game game, Player player) throws IllegalResourceTransferException {
+        Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
+        Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers = new HashMap<>();
         Map<ResourceType, Integer> inputNonStorable = new HashMap<>();
         Map<ResourceType, Integer> outputNonStorable = new HashMap<>();
         Map<ResourceType, Integer> discardedOutput = new HashMap<>();
-        Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers = new HashMap<>();
-        Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers = new HashMap<>();
 
         for (ResourceTransactionRequest request : transactionRequests) {
-            request.getReplacedInput().entrySet().stream()
-                    .filter(e -> !e.getKey().isStorable())
-                    .forEach(e -> inputNonStorable.merge(e.getKey(), e.getValue(), Integer::sum));
-
-            request.getReplacedOutput().entrySet().stream()
-                    .filter(e -> !e.getKey().isStorable())
-                    .forEach(e -> outputNonStorable.merge(e.getKey(), e.getValue(), Integer::sum));
-
-            request.getDiscardedOutput().forEach((r, q) -> discardedOutput.merge(r, q, Integer::sum));
-
             request.getInputContainers().forEach((c, oldResMap) -> inputContainers.merge(c, oldResMap, (r1, r2) -> {
                 Map<ResourceType, Integer> r1new = new HashMap<>(r1);
                 r2.forEach((r, q) -> r1new.merge(r, q, Integer::sum));
@@ -70,6 +60,12 @@ public class ResourceTransaction {
                 r2.forEach((r, q) -> r1new.merge(r, q, Integer::sum));
                 return r1new;
             }));
+
+            request.getInputNonStorable().forEach((r, q) -> inputNonStorable.merge(r, q, Integer::sum));
+
+            request.getOutputNonStorable().forEach((r, q) -> outputNonStorable.merge(r, q, Integer::sum));
+
+            request.getDiscardedOutput().forEach((r, q) -> discardedOutput.merge(r, q, Integer::sum));
         }
 
         /* Get set of all resource containers, in input and in output */

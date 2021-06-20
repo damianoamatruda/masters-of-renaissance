@@ -113,7 +113,7 @@ public class ActivateProductionsState extends CliController {
         cli.getOut().println();
         cli.promptShelves(totalRes, allowedShelves, false).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
-            this.requests.add(new ReducedProductionRequest(this.selectedProd.getId(), this.inputReplacement, this.outputReplacement, this.shelves));
+            this.requests.add(new ReducedProductionRequest(this.selectedProd.getId(), this.shelves, this.inputReplacement, this.outputReplacement));
             chooseDone(cli);
         }, () -> chooseOutputReplacements(cli));
     }

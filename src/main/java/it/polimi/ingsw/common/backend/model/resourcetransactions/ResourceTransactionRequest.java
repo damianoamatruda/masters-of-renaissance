@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -12,38 +13,68 @@ import java.util.stream.Collectors;
  */
 public class ResourceTransactionRequest {
     private final ResourceTransactionRecipe recipe;
-    private final Map<ResourceType, Integer> inputBlanksRep;
-    private final Map<ResourceType, Integer> outputBlanksRep;
     private final Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers;
+    private final Map<ResourceType, Integer> inputNonStorableRep;
     private final Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers;
+    private final Map<ResourceType, Integer> outputNonStorableRep;
 
     /**
      * Initializes a resource transaction request.
      *
-     * @param recipe           the recipe to use
-     * @param inputBlanksRep   the map of the resources chosen as replacement for blanks in input
-     * @param outputBlanksRep  the map of the resources chosen as replacement for blanks in output
-     * @param inputContainers  the map of the resource containers from which to remove the input storable resources
-     * @param outputContainers the map of the resource containers into which to add the output storable resources
+     * @param recipe               the recipe to use
+     * @param inputContainers      the map of the resource containers from which to remove the input storable resources
+     * @param inputNonStorableRep  the map of the non-storable resources chosen as replacement for blanks in input
+     * @param outputContainers     the map of the resource containers into which to add the output storable resources
+     * @param outputNonStorableRep the map of the non-storable resources chosen as replacement for blanks in output
      * @throws IllegalResourceTransactionReplacementsException if the request's replacements are invalid
      * @throws IllegalResourceTransactionContainersException   if the request's container-resource mappings are invalid
      */
     public ResourceTransactionRequest(ResourceTransactionRecipe recipe,
-                                      Map<ResourceType, Integer> inputBlanksRep,
-                                      Map<ResourceType, Integer> outputBlanksRep,
                                       Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                                      Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
-        Map<ResourceType, Integer> inputReplacements = new HashMap<>(inputBlanksRep);
-        Map<ResourceType, Integer> outputReplacements = new HashMap<>(outputBlanksRep);
-        inputReplacements.entrySet().removeIf(e -> e.getValue() == 0);
-        outputReplacements.entrySet().removeIf(e -> e.getValue() == 0);
+                                      Map<ResourceType, Integer> inputNonStorableRep,
+                                      Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers,
+                                      Map<ResourceType, Integer> outputNonStorableRep) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
+        Map<ResourceContainer, Map<ResourceType, Integer>> inputContainersSanitized = sanitizeContainerMap(inputContainers);
+        Map<ResourceType, Integer> inputNonStorableRepSanitized = sanitizeResourceMap(inputNonStorableRep);
+        Map<ResourceContainer, Map<ResourceType, Integer>> outputContainersSanitized = sanitizeContainerMap(outputContainers);
+        Map<ResourceType, Integer> outputNonStorableRepSanitized = sanitizeResourceMap(outputNonStorableRep);
 
-        validate(recipe, inputReplacements, outputReplacements, inputContainers, outputContainers);
+        validate(recipe, inputContainersSanitized, outputContainersSanitized, inputNonStorableRepSanitized, outputNonStorableRepSanitized);
+
         this.recipe = recipe;
-        this.inputBlanksRep = Map.copyOf(inputReplacements);
-        this.outputBlanksRep = Map.copyOf(outputReplacements);
-        this.inputContainers = Map.copyOf(inputContainers);
-        this.outputContainers = Map.copyOf(outputContainers);
+        this.inputContainers = Map.copyOf(inputContainersSanitized);
+        this.inputNonStorableRep = Map.copyOf(inputNonStorableRepSanitized);
+        this.outputContainers = Map.copyOf(outputContainersSanitized);
+        this.outputNonStorableRep = Map.copyOf(inputNonStorableRepSanitized);
+    }
+
+    private static void validateResourceMap(Map<ResourceType, Integer> resMap) {
+        if (resMap == null)
+            throw new NullPointerException();
+
+        if (resMap.values().stream().anyMatch(q -> q < 0))
+            throw new IllegalArgumentException();
+    }
+
+    private static void validateContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
+        if (containerMap == null)
+            throw new NullPointerException();
+
+        for (Map<ResourceType, Integer> resMap : containerMap.values())
+            validateResourceMap(resMap);
+    }
+
+    private static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {
+        validateResourceMap(resMap);
+        return new HashMap<>(resMap.entrySet().stream()
+                .filter(e -> e.getValue() > 0)
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)));
+    }
+
+    private static Map<ResourceContainer, Map<ResourceType, Integer>> sanitizeContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
+        validateContainerMap(containerMap);
+        return new HashMap<>(containerMap.entrySet().stream()
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> sanitizeResourceMap(e.getValue()))));
     }
 
     /**
@@ -63,46 +94,27 @@ public class ResourceTransactionRequest {
      * @throws IllegalResourceTransactionContainersException   if the request's container-resource mappings are invalid
      */
     private static void validate(ResourceTransactionRecipe recipe,
-                                 Map<ResourceType, Integer> inputBlanksRep,
-                                 Map<ResourceType, Integer> outputBlanksRep,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
-                                 Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
-        // TODO: Check that the given maps have values >= 0
-
-        if (inputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isTakeableFromPlayer()))
+                                 Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers,
+                                 Map<ResourceType, Integer> inputNonStorableRep,
+                                 Map<ResourceType, Integer> outputNonStorableRep) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
+        if (!inputNonStorableRep.keySet().stream().allMatch(resType -> !resType.isStorable() && resType.isTakeableFromPlayer()))
             throw new IllegalResourceTransactionReplacementsException(true, true, false, 0, 0);
-        if (outputBlanksRep.keySet().stream().anyMatch(resType -> !resType.isStorable() && !resType.isGiveableToPlayer()))
+
+        if (!outputNonStorableRep.keySet().stream().allMatch(resType -> !resType.isStorable() && resType.isGiveableToPlayer()))
             throw new IllegalResourceTransactionReplacementsException(false, true, false, 0, 0);
 
-
-        if (inputBlanksRep.keySet().stream().anyMatch(resType -> recipe.getInputBlanksExclusions().contains(resType)))
+        if (inputNonStorableRep.keySet().stream().anyMatch(resType -> recipe.getInputBlanksExclusions().contains(resType)))
             throw new IllegalResourceTransactionReplacementsException(true, false, true, 0, 0);
 
-        if (outputBlanksRep.keySet().stream().anyMatch(resType -> recipe.getOutputBlanksExclusions().contains(resType)))
+        if (outputNonStorableRep.keySet().stream().anyMatch(resType -> recipe.getOutputBlanksExclusions().contains(resType)))
             throw new IllegalResourceTransactionReplacementsException(false, false, true, 0, 0);
 
-        if (inputBlanksRep.values().stream().reduce(0, Integer::sum) != recipe.getInputBlanks())
-            throw new IllegalResourceTransactionReplacementsException(true, false, false, inputBlanksRep.values().stream().reduce(0, Integer::sum), recipe.getInputBlanks());
+        int inputNonStorableRepCount = inputNonStorableRep.values().stream().reduce(0, Integer::sum);
+        checkContainers(recipe.getInput(), recipe.getInputBlanks() - inputNonStorableRepCount, recipe.getInputBlanksExclusions(), inputContainers, false);
 
-        if (outputBlanksRep.values().stream().reduce(0, Integer::sum) != recipe.getOutputBlanks())
-            throw new IllegalResourceTransactionReplacementsException(false, false, false, outputBlanksRep.values().stream().reduce(0, Integer::sum), recipe.getInputBlanks());
-
-        Map<ResourceType, Integer> discardedOut = getDiscardedOutput(recipe.getOutput(), outputBlanksRep, outputContainers);
-        if (discardedOut.values().stream().filter(v -> v < 0).findAny().isPresent()) {
-            ResourceType r = discardedOut.entrySet().stream().filter(e -> e.getValue() < 0).map(e -> e.getKey()).findAny().get();
-            throw new IllegalResourceTransactionContainersException(
-                    r.getName(),
-                    discardedOut.get(r), outputContainers.values().stream()
-                        .flatMap(m -> m.entrySet().stream())
-                        .filter(e -> e.getKey() == r)
-                        .map(e -> e.getValue())
-                        .reduce(0, Integer::sum),
-                    true);
-        }
-        
-        checkContainers(getReplacedInput(recipe.getInput(), inputBlanksRep), recipe.hasDiscardableOutput(), inputContainers, true);
-
-        checkContainers(getReplacedOutput(recipe.getOutput(), outputBlanksRep), recipe.hasDiscardableOutput(), outputContainers, false);
+        int outputNonStorableRepCount = outputNonStorableRep.values().stream().reduce(0, Integer::sum);
+        checkContainers(recipe.getOutput(), recipe.getOutputBlanks() - outputNonStorableRepCount, recipe.getOutputBlanksExclusions(), outputContainers, recipe.hasDiscardableOutput());
     }
 
     /**
@@ -113,79 +125,45 @@ public class ResourceTransactionRequest {
      * @throws IllegalResourceTransactionContainersException if the request's container-resource mappings are invalid
      */
     private static void checkContainers(Map<ResourceType, Integer> resourceMap,
-                                        boolean isDiscardable,
+                                        int blanksCount,
+                                        Set<ResourceType> blanksExclusions,
                                         Map<ResourceContainer, Map<ResourceType, Integer>> resContainers,
-                                        boolean isInputContainers) throws IllegalResourceTransactionContainersException {
+                                        boolean discardable) throws IllegalResourceTransactionContainersException {
         /* Filter the storable resources */
         resourceMap = resourceMap.entrySet().stream()
                 .filter(e -> e.getKey().isStorable())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        /* Check that the map of resources and the map of resource containers contain the same number of storable
-           resources */
+        /* Check that the map of resources contains the necessary resource types */
+        if (!discardable && !resContainers.values().stream().flatMap(resMap -> resMap.keySet().stream()).collect(Collectors.toSet()).containsAll(resourceMap.keySet()))
+            throw new IllegalResourceTransactionContainersException("", 0, 0, false); // TODO: These are dummy parameter values
+
+        /* Check that the map of resource containers contains the right quantities of resources */
         int resourceMapResourcesCount = resourceMap.values().stream().reduce(0, Integer::sum);
         int resContainersResourcesCount = resContainers.values().stream()
                 .map(m -> m.values().stream().reduce(0, Integer::sum))
                 .reduce(0, Integer::sum);
-        if (resContainersResourcesCount > resourceMapResourcesCount ||
-            (resContainersResourcesCount < resourceMapResourcesCount && (!isDiscardable || isInputContainers)))
-            throw new IllegalResourceTransactionContainersException(
-                "", resourceMapResourcesCount, resContainersResourcesCount, false);
+        if (resContainersResourcesCount > resourceMapResourcesCount + blanksCount || resContainersResourcesCount < resourceMapResourcesCount + blanksCount && !discardable)
+            throw new IllegalResourceTransactionContainersException("", resourceMapResourcesCount, resContainersResourcesCount, false);
 
-        /* Check that the quantity of each storable resource type in the map of resources is the same as in the map
-           of resource containers */
+        /* Check that the leftover resources can be chosen as blanks */
         for (ResourceType resType : resourceMap.keySet()) {
-            int resourceCount = 0;
-            for (ResourceContainer resContainer : resContainers.keySet())
-                resourceCount += resContainers.get(resContainer).getOrDefault(resType, 0);
-            if (resourceCount < resourceMap.get(resType) && !isDiscardable)
-                throw new IllegalResourceTransactionContainersException(
-                    resType.getName(), resourceMap.get(resType), resourceCount, false);
+            int resourceCount = resContainers.values().stream().mapToInt(containerResMap -> containerResMap.getOrDefault(resType, 0)).sum();
+            if (resourceCount > resourceMap.get(resType) && blanksExclusions.contains(resType))
+                throw new IllegalResourceTransactionContainersException(resType.getName(), resourceMap.get(resType), resourceCount, false);
         }
     }
 
     /**
-     * Builds an input resource map with replaced blanks.
+     * Merges two resource maps.
      *
-     * @return a map of chosen resources including replaced blanks
+     * @return a merged map of resources
      */
-    public static Map<ResourceType, Integer> getReplacedInput(Map<ResourceType, Integer> recipeInput,
-                                                              Map<ResourceType, Integer> inputBlanksRep) {
-        Map<ResourceType, Integer> replacedInput = new HashMap<>(recipeInput);
-        inputBlanksRep.forEach((r, q) -> replacedInput.merge(r, q, Integer::sum));
-        return Map.copyOf(replacedInput);
-    }
-
-    /**
-     * Builds an output resource map with replaced blanks and without discarded resources.
-     *
-     * @return a map of chosen resources including replaced blanks
-     */
-    public static Map<ResourceType, Integer> getReplacedOutput(Map<ResourceType, Integer> recipeOutput,
-                                                               Map<ResourceType, Integer> outputBlanksRep) {
-        Map<ResourceType, Integer> replacedOutput = new HashMap<>(recipeOutput);
-        outputBlanksRep.forEach((r, q) -> replacedOutput.merge(r, q, Integer::sum));
-        return Map.copyOf(replacedOutput);
-    }
-
-    /**
-     * Returns the requested output storable resources to be discarded.
-     *
-     * @return the output storable resources to be discarded
-     */
-    public static Map<ResourceType, Integer> getDiscardedOutput(Map<ResourceType, Integer> recipeOutput,
-                                                                Map<ResourceType, Integer> outputBlanksRep,
-                                                                Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers) {
-        Map<ResourceType, Integer> chosenOutput = new HashMap<>(recipeOutput);
-        outputBlanksRep.forEach((r, q) -> chosenOutput.merge(r, q, Integer::sum));
-        Map<ResourceType, Integer> chosenOutputStorable = chosenOutput.entrySet().stream()
-                .filter(e -> e.getKey().isStorable())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-        Map<ResourceType, Integer> discardedResources = new HashMap<>(chosenOutputStorable);
-        for (ResourceContainer resContainer : outputContainers.keySet())
-            for (ResourceType resType : outputContainers.get(resContainer).keySet())
-                discardedResources.computeIfPresent(resType, (r, q) -> q.equals(outputContainers.get(resContainer).get(resType)) ? null : q - outputContainers.get(resContainer).get(resType));
-        return discardedResources;
+    public static Map<ResourceType, Integer> mergeResourceMaps(Map<ResourceType, Integer> resMap1,
+                                                               Map<ResourceType, Integer> resMap2) {
+        Map<ResourceType, Integer> resMap = new HashMap<>(resMap1);
+        resMap2.forEach((r, q) -> resMap.merge(r, q, Integer::sum));
+        return Map.copyOf(resMap);
     }
 
     /**
@@ -195,33 +173,6 @@ public class ResourceTransactionRequest {
      */
     public ResourceTransactionRecipe getRecipe() {
         return recipe;
-    }
-
-    /**
-     * Builds an input resource map with replaced blanks.
-     *
-     * @return a map of chosen resources including replaced blanks
-     */
-    public Map<ResourceType, Integer> getReplacedInput() {
-        return getReplacedInput(recipe.getInput(), inputBlanksRep);
-    }
-
-    /**
-     * Builds an output resource map with replaced blanks and without discarded resources.
-     *
-     * @return a map of chosen resources including replaced blanks
-     */
-    public Map<ResourceType, Integer> getReplacedOutput() {
-        return getReplacedOutput(recipe.getOutput(), outputBlanksRep);
-    }
-
-    /**
-     * Returns the requested output storable resources to be discarded.
-     *
-     * @return the output storable resources to be discarded
-     */
-    public Map<ResourceType, Integer> getDiscardedOutput() {
-        return getDiscardedOutput(recipe.getOutput(), outputBlanksRep, outputContainers);
     }
 
     /**
@@ -240,5 +191,43 @@ public class ResourceTransactionRequest {
      */
     public Map<ResourceContainer, Map<ResourceType, Integer>> getOutputContainers() {
         return outputContainers;
+    }
+
+    /**
+     * Builds an input non-storable resource map with replaced blanks.
+     *
+     * @return a map of chosen resources including replaced blanks
+     */
+    public Map<ResourceType, Integer> getInputNonStorable() {
+        return mergeResourceMaps(recipe.getInput().entrySet().stream()
+                .filter(e -> !e.getKey().isStorable())
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)), inputNonStorableRep);
+    }
+
+    /**
+     * Builds an output non-storable resource map with replaced blanks and without discarded resources.
+     *
+     * @return a map of chosen resources including replaced blanks
+     */
+    public Map<ResourceType, Integer> getOutputNonStorable() {
+        return mergeResourceMaps(recipe.getOutput().entrySet().stream()
+                .filter(e -> !e.getKey().isStorable())
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)), outputNonStorableRep);
+    }
+
+    /**
+     * Returns the requested output storable resources to be discarded.
+     *
+     * @return the output storable resources to be discarded
+     */
+    public Map<ResourceType, Integer> getDiscardedOutput() {
+        Map<ResourceType, Integer> chosenOutputStorable = recipe.getOutput().entrySet().stream()
+                .filter(e -> e.getKey().isStorable())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map<ResourceType, Integer> discardedResources = new HashMap<>(chosenOutputStorable);
+        for (ResourceContainer resContainer : outputContainers.keySet())
+            for (ResourceType resType : outputContainers.get(resContainer).keySet())
+                discardedResources.computeIfPresent(resType, (r, q) -> q.equals(outputContainers.get(resContainer).get(resType)) ? null : q - outputContainers.get(resContainer).get(resType));
+        return discardedResources;
     }
 }

@@ -107,7 +107,7 @@ public class Market extends EventDispatcher {
                 Map.of(), 0, Set.of(), output, 0, Set.of(), true);
 
         ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
-                transactionRecipe, Map.of(), Map.of(), Map.of(), Map.copyOf(shelves));
+                transactionRecipe, Map.of(), Map.of(), Map.copyOf(shelves), Map.of());
 
         new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
 

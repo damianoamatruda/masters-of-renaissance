@@ -8,11 +8,9 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.*;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /** This class represents player setup in the early game. */
 public class PlayerSetup {
@@ -111,16 +109,11 @@ public class PlayerSetup {
         if (hasChosenResources)
             throw new CannotChooseException(0);
 
-        Map<ResourceType, Integer> chosenResources = shelves.values().stream()
-                .map(Map::entrySet)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue, Integer::sum));
-
         ResourceTransactionRecipe transactionRecipe = new ResourceTransactionRecipe(
                 Map.of(), 0, Set.of(), Map.of(), initialResources, initialExcludedResources, false);
 
         ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
-                transactionRecipe, Map.of(), chosenResources, Map.of(), Map.copyOf(shelves));
+                transactionRecipe, Map.of(), Map.of(), Map.copyOf(shelves), Map.of());
 
         new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
 

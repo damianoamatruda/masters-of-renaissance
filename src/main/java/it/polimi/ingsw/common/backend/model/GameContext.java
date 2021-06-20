@@ -467,9 +467,10 @@ public class GameContext extends AsynchronousEventDispatcher {
                 prodRequests.add(
                         new ProductionRequest(
                                 player.getProductionById(r.getProduction()).orElseThrow(),
-                                translateResMap(r.getInputBlanksRep()),
-                                translateResMap(r.getOutputBlanksRep()),
-                                inputContainers, player.getStrongbox()));
+                                inputContainers,
+                                translateResMap(r.getInputNonStorableRep()),
+                                player.getStrongbox(),
+                                translateResMap(r.getOutputRep())));
             } catch (IllegalResourceTransactionReplacementsException e) {
                 // illegal replaced resources
                 dispatch(new ErrResourceReplacement(view, e.isInput(), e.isNonStorable(), e.isExcluded(), e.getReplacedCount(), e.getBlanks()));

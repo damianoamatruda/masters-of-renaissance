@@ -92,7 +92,7 @@ public class DevelopmentCard extends Card {
                 cost.getDiscountedCost(player), 0, Map.of(), 0);
 
         ResourceTransactionRequest transactionRequest = new ResourceTransactionRequest(
-                transactionRecipe, Map.of(), Map.of(), resContainers, Map.of());
+                transactionRecipe, resContainers, Map.of(), Map.of(), Map.of());
 
         new ResourceTransaction(List.of(transactionRequest)).activate(game, player);
     }

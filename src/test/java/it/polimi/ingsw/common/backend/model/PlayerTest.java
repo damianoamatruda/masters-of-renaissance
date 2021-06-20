@@ -9,7 +9,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse.WarehouseShelf;
-import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionReplacementsException;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionContainersException;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
@@ -278,8 +278,8 @@ public class PlayerTest {
         void fourthPlayerTwoResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            
-            assertAll(() -> assertThrows(IllegalResourceTransactionReplacementsException.class, () -> fourth.getSetup().chooseResources(
+
+            assertAll(() -> assertThrows(IllegalResourceTransactionContainersException.class, () -> fourth.getSetup().chooseResources(
                     game, fourth, Map.of(shelf, Map.of(coin, 3))
                     )),
                     () -> assertDoesNotThrow(() -> fourth.getSetup().chooseResources(
@@ -291,11 +291,11 @@ public class PlayerTest {
         void illegalResources() {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
-            
-            assertAll(() -> assertThrows(IllegalResourceTransactionReplacementsException.class, () -> fourth.getSetup().chooseResources(
+
+            assertAll(() -> assertThrows(IllegalResourceTransactionContainersException.class, () -> fourth.getSetup().chooseResources(
                     game, fourth, Map.of(shelf, Map.of(zero, 1))
                     )),
-                    () -> assertThrows(IllegalResourceTransactionReplacementsException.class, () -> fourth.getSetup().chooseResources(
+                    () -> assertThrows(IllegalResourceTransactionContainersException.class, () -> fourth.getSetup().chooseResources(
                             game, fourth, Map.of(shelf, Map.of(faith, 1))
                     )));
         }

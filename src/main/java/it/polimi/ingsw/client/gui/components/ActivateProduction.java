@@ -206,7 +206,7 @@ public class ActivateProduction extends StackPane {
                         ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue()));
 
         // add production request
-        requests.add(new ReducedProductionRequest(toActivate.get(index), inputBlanks, outputBlanks, containers));
+        requests.add(new ReducedProductionRequest(toActivate.get(index), containers, inputBlanks, outputBlanks));
     }
 
     /**
