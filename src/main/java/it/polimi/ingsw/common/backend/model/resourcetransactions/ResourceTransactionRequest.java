@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class ResourceTransactionRequest {
         this.outputNonStorableRep = Map.copyOf(inputNonStorableRepSanitized);
     }
 
-    private static void validateResourceMap(Map<ResourceType, Integer> resMap) {
+    public static void validateResourceMap(Map<ResourceType, Integer> resMap) {
         if (resMap == null)
             throw new NullPointerException();
 
@@ -56,7 +57,7 @@ public class ResourceTransactionRequest {
             throw new IllegalArgumentException();
     }
 
-    private static void validateContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
+    public static void validateContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
         if (containerMap == null)
             throw new NullPointerException();
 
@@ -64,17 +65,59 @@ public class ResourceTransactionRequest {
             validateResourceMap(resMap);
     }
 
-    private static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {
+    public static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {
         validateResourceMap(resMap);
         return new HashMap<>(resMap.entrySet().stream()
                 .filter(e -> e.getValue() > 0)
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
-    private static Map<ResourceContainer, Map<ResourceType, Integer>> sanitizeContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
+    public static Map<ResourceContainer, Map<ResourceType, Integer>> sanitizeContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
         validateContainerMap(containerMap);
         return new HashMap<>(containerMap.entrySet().stream()
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> sanitizeResourceMap(e.getValue()))));
+    }
+
+    /**
+     * Merges two resource maps.
+     *
+     * @return a merged map of resources
+     */
+    public static Map<ResourceType, Integer> mergeResourceMaps(Map<ResourceType, Integer> resMap1,
+                                                               Map<ResourceType, Integer> resMap2) {
+        Map<ResourceType, Integer> resMap = new HashMap<>(resMap1);
+        resMap2.forEach((r, q) -> resMap.merge(r, q, Integer::sum));
+        return Map.copyOf(resMap);
+    }
+
+    /**
+     * Merges resource maps.
+     *
+     * @return a merged map of resources
+     */
+    public static Map<ResourceType, Integer> mergeResourceMaps(List<Map<ResourceType, Integer>> resMaps) {
+        return resMaps.stream().reduce(ResourceTransactionRequest::mergeResourceMaps).orElse(Map.of());
+    }
+
+    /**
+     * Merges two container maps.
+     *
+     * @return a merged map of containers
+     */
+    public static Map<ResourceContainer, Map<ResourceType, Integer>> mergeContainerMaps(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap1,
+                                                                                        Map<ResourceContainer, Map<ResourceType, Integer>> containerMap2) {
+        Map<ResourceContainer, Map<ResourceType, Integer>> containerMap = new HashMap<>(containerMap1);
+        containerMap2.forEach((r, q) -> containerMap.merge(r, q, ResourceTransactionRequest::mergeResourceMaps));
+        return Map.copyOf(containerMap);
+    }
+
+    /**
+     * Merges container maps.
+     *
+     * @return a merged map of containers
+     */
+    public static Map<ResourceContainer, Map<ResourceType, Integer>> mergeContainerMaps(List<Map<ResourceContainer, Map<ResourceType, Integer>>> containerMaps) {
+        return containerMaps.stream().reduce(ResourceTransactionRequest::mergeContainerMaps).orElse(Map.of());
     }
 
     /**
@@ -155,18 +198,6 @@ public class ResourceTransactionRequest {
     }
 
     /**
-     * Merges two resource maps.
-     *
-     * @return a merged map of resources
-     */
-    public static Map<ResourceType, Integer> mergeResourceMaps(Map<ResourceType, Integer> resMap1,
-                                                               Map<ResourceType, Integer> resMap2) {
-        Map<ResourceType, Integer> resMap = new HashMap<>(resMap1);
-        resMap2.forEach((r, q) -> resMap.merge(r, q, Integer::sum));
-        return Map.copyOf(resMap);
-    }
-
-    /**
      * Returns the requested recipe.
      *
      * @return the recipe
@@ -228,6 +259,6 @@ public class ResourceTransactionRequest {
         for (ResourceContainer resContainer : outputContainers.keySet())
             for (ResourceType resType : outputContainers.get(resContainer).keySet())
                 discardedResources.computeIfPresent(resType, (r, q) -> q.equals(outputContainers.get(resContainer).get(resType)) ? null : q - outputContainers.get(resContainer).get(resType));
-        return discardedResources;
+        return Map.copyOf(discardedResources);
     }
 }
