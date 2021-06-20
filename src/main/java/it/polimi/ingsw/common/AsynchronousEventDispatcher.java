@@ -8,7 +8,7 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
     private final ExecutorService executor;
 
     public AsynchronousEventDispatcher() {
-        executor = Executors.newSingleThreadScheduledExecutor();
+        executor = Executors.newSingleThreadExecutor();
     }
 
     @Override
