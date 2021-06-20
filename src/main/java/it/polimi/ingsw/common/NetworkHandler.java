@@ -123,6 +123,7 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
         }
         LOGGER.info(String.format("Sent: %s", output));
         out.println(output);
+        out.flush();
     }
 
     public void setOnClose(Runnable onClose) {
