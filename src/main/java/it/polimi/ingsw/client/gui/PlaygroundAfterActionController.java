@@ -30,7 +30,7 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         AnchorPane.setBottomAnchor(endTurn, 0.0);
         AnchorPane.setRightAnchor(endTurn, 0.0);
 
-        setLeadersBox();
+        setLeadersBox(20, 50);
 
         topText.setText("End your turn or do an extra action");
 
@@ -40,7 +40,6 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         canvas.getChildren().add(topText);
 
         warehouse.enableSwapper();
-
     }
 
     @Override

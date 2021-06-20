@@ -98,7 +98,7 @@ public abstract class PlaygroundController extends GuiController {
         AnchorPane.setBottomAnchor(pboard, 0d);
         AnchorPane.setTopAnchor(pboard, 0d);
         AnchorPane.setLeftAnchor(pboard, 0d);
-        AnchorPane.setRightAnchor(pboard, 0d);
+        AnchorPane.setRightAnchor(pboard, 90d);
 
         setPauseHandlers(this.backStackPane, this.canvas, maxScale);
     }
@@ -106,7 +106,7 @@ public abstract class PlaygroundController extends GuiController {
     /**
      * Sets the leaders hand view component, that also includes the activation/discard buttons under which card
      */
-    protected void setLeadersBox() {
+    protected void setLeadersBox(double rightAnchor, double bottomAnchor) {
         // Sets the leader gui cards
         List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .map(reducedLeader -> {
@@ -167,8 +167,8 @@ public abstract class PlaygroundController extends GuiController {
         }
 
         canvas.getChildren().add(leadersBox);
-        AnchorPane.setRightAnchor(leadersBox, 55.0);
-        AnchorPane.setBottomAnchor(leadersBox, 50.0);
+        AnchorPane.setRightAnchor(leadersBox, rightAnchor);
+        AnchorPane.setBottomAnchor(leadersBox, bottomAnchor);
 
     }
 

@@ -39,7 +39,7 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
         AnchorPane.setRightAnchor(right, 0d);
         AnchorPane.setTopAnchor(right, 0d);
 
-        setLeadersBox();
+        setLeadersBox(54.0, 30.0);
 
         topText.setText("Your turn");
 
