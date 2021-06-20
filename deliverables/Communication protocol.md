@@ -1,14 +1,23 @@
 # Table of Contents
 1. [Communication protocol documentation](#communication-protocol-documentation)
-2. [Errors](#errors)
-3. [Client-server connection](#client-server-connection)
-    1. [Connecting - choosing a nickname](#connecting---choosing-a-nickname)
+2. [Client-server connection management - Network level](#client-server-connection-management---network-level)
+    1. [Connecting to the server](#connecting-to-the-server)
+    2. [Closing the connection](#closing-the-connection)
+    3. [Reconnection](#reconnection)
+    4. [Heartbeat](#heartbeat)
+    5. [Errors](#errors)
+3. [Client-server connection management - Application level](#client-server-connection-management---application-level)
+    1. [Choosing a nickname](#choosing-a-nickname)
     2. [Choosing the number of players](#choosing-the-number-of-players)
     3. [Quitting the game](#quitting-the-game)
-4. [Game phase - Player setup](#game-phase---player-setup)
+    4. [Reconnection](#reconnecting)
+4. [General Errors](#general-errors)
+    1. [ErrAction](#erraction)
+    2. [ErrObjectNotOwned](#errobjectnotowned)
+5. [Game phase - Player setup](#game-phase---player-setup)
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
-5. [Game phase - Turns](#game-phase---turns)
+6. [Game phase - Turns](#game-phase---turns)
     1. [Main actions](#main-actions)
         1. [Getting resources from the market](#getting-resources-from-the-market)
         2. [Buying a development card](#buying-a-development-card)
@@ -18,7 +27,6 @@
         1. [Swapping two shelves](#swapping-two-shelves)
         2. [Leader Actions](#leader-actions)
     3. [State messages](#state-messages)
-        1. [Heartbeat](#heartbeat)
         2. [Game start](#game-start)
         3. [Updating the players list](#updating-the-players-list)
         4. [Updating the current player](#updating-the-current-player)
@@ -272,7 +280,7 @@ A `ResQuit` message will be sent to the client to notify it about the closing ro
 
 The network-level closing routine will then start (see TODO).
 
-## Reconnection
+## Reconnecting
 A player can reconnect to a match they left, if it's still ongoing.  
 This is done at connection time by choosing the same nickname as they previously had.
 
