@@ -63,6 +63,10 @@ public class Ui extends View {
         }
     }
 
+    public boolean hasClientOpen() {
+        return client != null;
+    }
+
     public void stop() {
         closeClient();
         close();
