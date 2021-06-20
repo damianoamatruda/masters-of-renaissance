@@ -21,7 +21,7 @@ public class ProductionRequest extends ResourceTransactionRequest {
                 recipe,
                 inputContainers,
                 inputNonStorableRep,
-                Map.of(outputStrongbox, mergeResourceMaps(
+                Map.of(outputStrongbox, ResourceContainer.mergeResourceMaps(
                         recipe.getOutput(),
                         outputRep.entrySet().stream()
                                 .filter(e -> e.getKey().isStorable())

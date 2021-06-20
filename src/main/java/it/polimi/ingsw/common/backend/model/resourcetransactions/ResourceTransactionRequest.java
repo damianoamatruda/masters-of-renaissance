@@ -36,9 +36,9 @@ public class ResourceTransactionRequest {
                                       Map<ResourceContainer, Map<ResourceType, Integer>> outputContainers,
                                       Map<ResourceType, Integer> outputNonStorableRep) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
         Map<ResourceContainer, Map<ResourceType, Integer>> inputContainersSanitized = sanitizeContainerMap(inputContainers);
-        Map<ResourceType, Integer> inputNonStorableRepSanitized = sanitizeResourceMap(inputNonStorableRep);
+        Map<ResourceType, Integer> inputNonStorableRepSanitized = ResourceContainer.sanitizeResourceMap(inputNonStorableRep);
         Map<ResourceContainer, Map<ResourceType, Integer>> outputContainersSanitized = sanitizeContainerMap(outputContainers);
-        Map<ResourceType, Integer> outputNonStorableRepSanitized = sanitizeResourceMap(outputNonStorableRep);
+        Map<ResourceType, Integer> outputNonStorableRepSanitized = ResourceContainer.sanitizeResourceMap(outputNonStorableRep);
 
         validate(recipe, inputContainersSanitized, outputContainersSanitized, inputNonStorableRepSanitized, outputNonStorableRepSanitized);
 
@@ -49,54 +49,18 @@ public class ResourceTransactionRequest {
         this.outputNonStorableRep = Map.copyOf(inputNonStorableRepSanitized);
     }
 
-    public static void validateResourceMap(Map<ResourceType, Integer> resMap) {
-        if (resMap == null)
-            throw new NullPointerException();
-
-        if (resMap.values().stream().anyMatch(q -> q < 0))
-            throw new IllegalArgumentException("Illegal negative map values.");
-    }
-
     public static void validateContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
         if (containerMap == null)
             throw new NullPointerException();
 
         for (Map<ResourceType, Integer> resMap : containerMap.values())
-            validateResourceMap(resMap);
-    }
-
-    public static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {
-        validateResourceMap(resMap);
-        return new HashMap<>(resMap.entrySet().stream()
-                .filter(e -> e.getValue() > 0)
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)));
+            ResourceContainer.validateResourceMap(resMap);
     }
 
     public static Map<ResourceContainer, Map<ResourceType, Integer>> sanitizeContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
         validateContainerMap(containerMap);
         return new HashMap<>(containerMap.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> sanitizeResourceMap(e.getValue()))));
-    }
-
-    /**
-     * Merges two resource maps.
-     *
-     * @return a merged map of resources
-     */
-    public static Map<ResourceType, Integer> mergeResourceMaps(Map<ResourceType, Integer> resMap1,
-                                                               Map<ResourceType, Integer> resMap2) {
-        Map<ResourceType, Integer> resMap = new HashMap<>(resMap1);
-        resMap2.forEach((r, q) -> resMap.merge(r, q, Integer::sum));
-        return Map.copyOf(resMap);
-    }
-
-    /**
-     * Merges resource maps.
-     *
-     * @return a merged map of resources
-     */
-    public static Map<ResourceType, Integer> mergeResourceMaps(List<Map<ResourceType, Integer>> resMaps) {
-        return resMaps.stream().reduce(ResourceTransactionRequest::mergeResourceMaps).orElse(Map.of());
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> ResourceContainer.sanitizeResourceMap(e.getValue()))));
     }
 
     /**
@@ -107,7 +71,7 @@ public class ResourceTransactionRequest {
     public static Map<ResourceContainer, Map<ResourceType, Integer>> mergeContainerMaps(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap1,
                                                                                         Map<ResourceContainer, Map<ResourceType, Integer>> containerMap2) {
         Map<ResourceContainer, Map<ResourceType, Integer>> containerMap = new HashMap<>(containerMap1);
-        containerMap2.forEach((r, q) -> containerMap.merge(r, q, ResourceTransactionRequest::mergeResourceMaps));
+        containerMap2.forEach((r, q) -> containerMap.merge(r, q, ResourceContainer::mergeResourceMaps));
         return Map.copyOf(containerMap);
     }
 
@@ -230,7 +194,7 @@ public class ResourceTransactionRequest {
      * @return a map of chosen resources including replaced blanks
      */
     public Map<ResourceType, Integer> getInputNonStorable() {
-        return mergeResourceMaps(recipe.getInput().entrySet().stream()
+        return ResourceContainer.mergeResourceMaps(recipe.getInput().entrySet().stream()
                 .filter(e -> !e.getKey().isStorable())
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)), inputNonStorableRep);
     }
@@ -241,7 +205,7 @@ public class ResourceTransactionRequest {
      * @return a map of chosen resources including replaced blanks
      */
     public Map<ResourceType, Integer> getOutputNonStorable() {
-        return mergeResourceMaps(recipe.getOutput().entrySet().stream()
+        return ResourceContainer.mergeResourceMaps(recipe.getOutput().entrySet().stream()
                 .filter(e -> !e.getKey().isStorable())
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)), outputNonStorableRep);
     }

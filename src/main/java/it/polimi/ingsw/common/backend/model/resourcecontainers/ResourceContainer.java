@@ -4,10 +4,9 @@ import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * This interface represents a container of storable resources.
@@ -73,6 +72,52 @@ public abstract class ResourceContainer extends EventDispatcher {
         container2.addResources(clone2.getResourceMap());
     }
 
+    public static void validateResourceMap(Map<ResourceType, Integer> resMap) {
+        if (resMap == null)
+            throw new NullPointerException();
+
+        if (resMap.values().stream().anyMatch(q -> q < 0))
+            throw new IllegalArgumentException("Illegal negative map values.");
+    }
+
+    public static void validateStorableResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        validateResourceMap(resMap);
+
+        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
+            ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
+            // TODO: Make this IllegalArgumentException (or extend it)
+            throw new IllegalResourceTransferException(nonStorable, true, IllegalResourceTransferException.Kind.NON_STORABLE);
+        }
+    }
+
+    public static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {
+        validateResourceMap(resMap);
+        return new HashMap<>(resMap.entrySet().stream()
+                .filter(e -> e.getValue() > 0)
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue)));
+    }
+
+    /**
+     * Merges two resource maps.
+     *
+     * @return a merged map of resources
+     */
+    public static Map<ResourceType, Integer> mergeResourceMaps(Map<ResourceType, Integer> resMap1,
+                                                               Map<ResourceType, Integer> resMap2) {
+        Map<ResourceType, Integer> resMap = new HashMap<>(resMap1);
+        resMap2.forEach((r, q) -> resMap.merge(r, q, Integer::sum));
+        return Map.copyOf(resMap);
+    }
+
+    /**
+     * Merges resource maps.
+     *
+     * @return a merged map of resources
+     */
+    public static Map<ResourceType, Integer> mergeResourceMaps(List<Map<ResourceType, Integer>> resMaps) {
+        return resMaps.stream().reduce(ResourceContainer::mergeResourceMaps).orElse(Map.of());
+    }
+
     public int getId() {
         return id;
     }
@@ -114,6 +159,21 @@ public abstract class ResourceContainer extends EventDispatcher {
     public abstract int getResourceQuantity(ResourceType resType);
 
     /**
+     * Returns whether the resource container is empty.
+     *
+     * @return <code>true</code> if the resource container contains no resources; <code>false</code> otherwise.
+     */
+    public abstract boolean isEmpty();
+
+    public Optional<ResourceContainerGroup> getGroup() {
+        return Optional.ofNullable(group);
+    }
+
+    public void setGroup(ResourceContainerGroup group) {
+        this.group = group;
+    }
+
+    /**
      * Adds resources.
      *
      * @param resMap the resources to add
@@ -128,21 +188,6 @@ public abstract class ResourceContainer extends EventDispatcher {
      * @throws IllegalResourceTransferException if the container is empty
      */
     public abstract void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException;
-
-    /**
-     * Returns whether the resource container is empty.
-     *
-     * @return <code>true</code> if the resource container contains no resources; <code>false</code> otherwise.
-     */
-    public abstract boolean isEmpty();
-
-    public Optional<ResourceContainerGroup> getGroup() {
-        return Optional.ofNullable(group);
-    }
-
-    public void setGroup(ResourceContainerGroup group) {
-        this.group = group;
-    }
 
     /**
      * Converts the container to a map.

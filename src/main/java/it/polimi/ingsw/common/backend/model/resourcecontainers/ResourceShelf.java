@@ -39,19 +39,6 @@ public class ResourceShelf extends Shelf {
         return new ResourceShelf(this);
     }
 
-    @Override
-    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        if (resMap.values().stream().noneMatch(v -> v > 0))
-            return;
-        if (resMap.values().stream().filter(v -> v > 0).count() != 1)
-            throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
-        ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
-
-        if (!resType.equals(this.boundedResType))
-            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDED_RESTYPE_DIFFER);
-        super.addResources(resMap);
-    }
-
     /**
      * Returns the specific type of resources the shelf can contain.
      *
@@ -59,6 +46,17 @@ public class ResourceShelf extends Shelf {
      */
     public ResourceType getBoundedResType() {
         return boundedResType;
+    }
+
+    @Override
+    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        ResourceType resType = getShelfResourceType(resMap);
+        resMap = sanitizeResourceMap(resMap);
+
+        if (!resType.equals(this.boundedResType))
+            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDED_RESTYPE_DIFFER);
+
+        super.addResources(resMap);
     }
 
     @Override

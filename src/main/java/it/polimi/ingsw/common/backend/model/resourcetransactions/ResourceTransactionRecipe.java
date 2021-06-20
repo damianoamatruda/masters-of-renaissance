@@ -1,5 +1,6 @@
 package it.polimi.ingsw.common.backend.model.resourcetransactions;
 
+import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
@@ -55,10 +56,10 @@ public class ResourceTransactionRecipe {
         validateBlanksCount(inputBlanks);
         validateBlanksCount(outputBlanks);
         this.id = idCounter.getAndIncrement();
-        this.input = ResourceTransactionRequest.sanitizeResourceMap(input);
+        this.input = ResourceContainer.sanitizeResourceMap(input);
         this.inputBlanks = inputBlanks;
         this.inputBlanksExclusions = sanitizeInputBlanksExclusions(inputBlanksExclusions);
-        this.output = ResourceTransactionRequest.sanitizeResourceMap(output);
+        this.output = ResourceContainer.sanitizeResourceMap(output);
         this.outputBlanks = outputBlanks;
         this.outputBlanksExclusions = sanitizeOutputBlanksExclusions(outputBlanksExclusions);
         this.discardableOutput = discardableOutput;

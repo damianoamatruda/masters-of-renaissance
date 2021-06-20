@@ -47,7 +47,7 @@ public class ResourceTransaction {
     }
 
     private static Map<ResourceType, Integer> getInputNonStorable(List<ResourceTransactionRequest> transactionRequests) {
-        return ResourceTransactionRequest.mergeResourceMaps(
+        return ResourceContainer.mergeResourceMaps(
                 transactionRequests.stream().map(ResourceTransactionRequest::getInputNonStorable).toList());
     }
 
@@ -57,12 +57,12 @@ public class ResourceTransaction {
     }
 
     private static Map<ResourceType, Integer> getOutputNonStorable(List<ResourceTransactionRequest> transactionRequests) {
-        return ResourceTransactionRequest.mergeResourceMaps(
+        return ResourceContainer.mergeResourceMaps(
                 transactionRequests.stream().map(ResourceTransactionRequest::getOutputNonStorable).toList());
     }
 
     private static Map<ResourceType, Integer> getDiscardedOutput(List<ResourceTransactionRequest> transactionRequests) {
-        return ResourceTransactionRequest.mergeResourceMaps(
+        return ResourceContainer.mergeResourceMaps(
                 transactionRequests.stream().map(ResourceTransactionRequest::getDiscardedOutput).toList());
     }
 

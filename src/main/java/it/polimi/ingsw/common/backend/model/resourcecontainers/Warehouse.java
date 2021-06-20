@@ -77,17 +77,15 @@ public class Warehouse implements ResourceContainerGroup {
 
         @Override
         public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-            if (resMap.values().stream().noneMatch(v -> v > 0))
-                return;
-            if (resMap.values().stream().filter(v -> v > 0).count() != 1)
-                throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
-            ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
+            ResourceType resType = getShelfResourceType(resMap);
+            resMap = sanitizeResourceMap(resMap);
 
             if (group.getResourceContainers().stream()
                     .filter(c -> !c.equals(this))
                     .map(ResourceContainer::getResourceTypes)
                     .anyMatch(resTypes -> resTypes.contains(resType)))
                 throw new IllegalResourceTransferException(resType, true, Kind.DUPLICATE_BOUNDED_RESOURCE);
+
             super.addResources(resMap);
         }
     }

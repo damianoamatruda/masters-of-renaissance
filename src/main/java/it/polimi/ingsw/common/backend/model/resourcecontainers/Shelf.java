@@ -46,6 +46,16 @@ public class Shelf extends ResourceContainer {
         quantity = shelf.quantity;
     }
 
+    public static ResourceType getShelfResourceType(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        validateStorableResourceMap(resMap);
+        resMap = sanitizeResourceMap(resMap);
+
+        if (resMap.size() != 1)
+            throw new IllegalArgumentException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
+
+        return resMap.keySet().stream().findAny().orElseThrow();
+    }
+
     @Override
     public ResourceContainer copy() {
         return new Shelf(this);
@@ -90,50 +100,6 @@ public class Shelf extends ResourceContainer {
     }
 
     @Override
-    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        // TODO: Share this portion with other methods
-        // TODO: Make checks of null resource types in resource maps
-        if (resMap.values().stream().noneMatch(v -> v > 0))
-            return;
-        if (resMap.values().stream().filter(v -> v > 0).count() != 1)
-            throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
-        ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
-
-        if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDED_RESTYPE_DIFFER);
-        if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, true, Kind.NON_STORABLE);
-        if (this.quantity + resMap.get(resType) > size)
-            throw new IllegalResourceTransferException(resType, true, Kind.CAPACITY_REACHED);
-
-        this.resType = resType;
-        this.quantity += resMap.get(resType);
-
-        dispatch(new UpdateResourceContainer(reduce()));
-    }
-
-    @Override
-    public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        if (resMap.values().stream().noneMatch(v -> v > 0))
-            return;
-        if (resMap.values().stream().filter(v -> v > 0).count() != 1)
-            throw new RuntimeException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
-        ResourceType resType = resMap.entrySet().stream().filter(e -> e.getValue() > 0).map(Map.Entry::getKey).findAny().orElseThrow();
-
-        if (this.resType != null && !resType.equals(this.resType))
-            throw new IllegalResourceTransferException(resType, false, Kind.BOUNDED_RESTYPE_DIFFER);
-        if (!resType.isStorable())
-            throw new IllegalResourceTransferException(resType, false, Kind.NON_STORABLE);
-        if (this.quantity < resMap.get(resType))
-            throw new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED);
-        if (this.quantity == resMap.get(resType))
-            this.resType = null;
-        this.quantity -= resMap.get(resType);
-
-        dispatch(new UpdateResourceContainer(reduce()));
-    }
-
-    @Override
     public boolean isEmpty() {
         return quantity == 0;
     }
@@ -145,6 +111,42 @@ public class Shelf extends ResourceContainer {
      */
     public boolean isFull() {
         return quantity == size;
+    }
+
+    @Override
+    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        ResourceType resType = getShelfResourceType(resMap);
+        resMap = sanitizeResourceMap(resMap);
+
+        if (this.resType != null && !resType.equals(this.resType))
+            throw new IllegalResourceTransferException(resType, true, Kind.BOUNDED_RESTYPE_DIFFER);
+
+        if (this.quantity + resMap.get(resType) > size)
+            throw new IllegalResourceTransferException(resType, true, Kind.CAPACITY_REACHED);
+
+        this.resType = resType;
+        this.quantity += resMap.get(resType);
+
+        dispatch(new UpdateResourceContainer(reduce()));
+    }
+
+    @Override
+    public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
+        ResourceType resType = getShelfResourceType(resMap);
+        resMap = sanitizeResourceMap(resMap);
+
+        if (this.resType != null && !resType.equals(this.resType))
+            throw new IllegalResourceTransferException(resType, false, Kind.BOUNDED_RESTYPE_DIFFER);
+
+        if (this.quantity < resMap.get(resType))
+            throw new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED);
+
+        if (this.quantity == resMap.get(resType))
+            this.resType = null;
+
+        this.quantity -= resMap.get(resType);
+
+        dispatch(new UpdateResourceContainer(reduce()));
     }
 
     @Override

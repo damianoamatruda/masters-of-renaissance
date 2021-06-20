@@ -60,39 +60,31 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
+    public boolean isEmpty() {
+        return resources.isEmpty();
+    }
+
+    @Override
     public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
-            ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
-            throw new IllegalResourceTransferException(nonStorable, true, Kind.NON_STORABLE);
-        }
-        for (ResourceType resType : resMap.keySet())
-            resources.compute(resType, (r, q) -> q == null ? resMap.get(resType) : q + resMap.get(resType));
+        validateStorableResourceMap(resMap);
+
+        resMap.forEach((r, q) -> resources.merge(r, q, Integer::sum));
 
         dispatch(new UpdateResourceContainer(reduce()));
     }
 
     @Override
     public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        if (!resMap.keySet().stream().allMatch(resources::containsKey)) {
-            ResourceType resType = resMap.keySet().stream().filter(r -> !resources.containsKey(r)).findAny().orElseThrow();
-            throw new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED);
-        }
-        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable)) {
-            ResourceType nonStorable = resMap.keySet().stream().filter(r -> !r.isStorable()).findAny().orElseThrow();
-            throw new IllegalResourceTransferException(nonStorable, false, Kind.NON_STORABLE);
-        }
+        validateStorableResourceMap(resMap);
+
         for (ResourceType resType : resMap.keySet())
-            if (resources.get(resType) < resMap.get(resType))
+            if (resources.getOrDefault(resType, 0) < resMap.get(resType))
                 throw new IllegalResourceTransferException(resType, false, Kind.CAPACITY_REACHED);
+
         for (ResourceType resType : resMap.keySet())
             resources.computeIfPresent(resType, (r, q) -> q.equals(resMap.get(resType)) ? null : q - resMap.get(resType));
 
         dispatch(new UpdateResourceContainer(reduce()));
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return resources.isEmpty();
     }
 
     @Override
