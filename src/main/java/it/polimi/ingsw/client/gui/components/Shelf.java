@@ -79,6 +79,7 @@ public class Shelf extends BorderPane {
 
         this.setLeft(sizePane);
         this.setCenter(content);
+        this.setMaxWidth(400);
 
         this.setPickOnBounds(false);
     }
