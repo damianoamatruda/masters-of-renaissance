@@ -1,11 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateGame;
-import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
-import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
+import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
@@ -89,7 +84,9 @@ public class InputPlayersCountState extends CliController {
     public void on(UpdateLeadersHand event) {
         super.on(event);
 
-        cli.promptPause();
-        setNextSetupState();
+        new Thread(() -> {
+            cli.promptPause();
+            setNextSetupState();
+        }).start();
     }
 }

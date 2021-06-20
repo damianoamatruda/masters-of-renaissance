@@ -67,7 +67,9 @@ public class LeaderActionsState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.promptPause();
-        cli.setController(sourceState);
+        new Thread(() -> {
+            cli.promptPause();
+            cli.setController(sourceState);
+        }).start();
     }
 }

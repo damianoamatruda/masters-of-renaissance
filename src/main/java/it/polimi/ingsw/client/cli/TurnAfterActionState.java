@@ -31,11 +31,13 @@ public class TurnAfterActionState extends CliTurnState {
 
     @Override
     public void on(UpdateAction event) {
-        cli.promptPause();
-        if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
-            cli.setController(new WaitingAfterTurnState());
-        else
-            cli.setController(new TurnAfterActionState());
+        new Thread(() -> {
+            cli.promptPause();
+            if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
+                cli.setController(new WaitingAfterTurnState());
+            else
+                cli.setController(new TurnAfterActionState());
+        }).start();
     }
 
     @Override

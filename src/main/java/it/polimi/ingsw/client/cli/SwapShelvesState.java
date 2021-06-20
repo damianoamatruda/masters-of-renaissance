@@ -1,11 +1,10 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
-
-import it.polimi.ingsw.client.cli.components.ResourceContainers;
 
 public class SwapShelvesState extends CliController {
     private final CliController sourceState;
@@ -48,7 +47,9 @@ public class SwapShelvesState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.promptPause();
-        cli.setController(sourceState);
+        new Thread(() -> {
+            cli.promptPause();
+            cli.setController(sourceState);
+        }).start();
     }
 }

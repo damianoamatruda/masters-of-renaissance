@@ -8,11 +8,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
-import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,7 +18,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardState extends CliController {
     private final CliController sourceState;
-    private AtomicBoolean isExitingState;
+    private final AtomicBoolean isExitingState;
     private ReducedDevCardGrid grid;
     private String color;
     private int level;
@@ -177,7 +173,9 @@ public class BuyDevelopmentCardState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.promptPause();
-        cli.setController(new TurnAfterActionState());
+        new Thread(() -> {
+            cli.promptPause();
+            cli.setController(new TurnAfterActionState());
+        }).start();
     }
 }

@@ -188,7 +188,7 @@ public abstract class CliController extends UiController implements Renderable {
                     cli.getOut().println();
                     new ActionToken(t).render();
                 });
-        cli.promptPause();
+        new Thread(cli::promptPause).start();
     }
 
     @Override
@@ -300,7 +300,7 @@ public abstract class CliController extends UiController implements Renderable {
         
         cli.getOut().println();
         cli.getOut().println(center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
-        cli.promptPause();
+        new Thread(cli::promptPause).start();
     }
 
     @Override

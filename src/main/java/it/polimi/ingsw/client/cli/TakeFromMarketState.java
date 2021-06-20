@@ -156,7 +156,9 @@ public class TakeFromMarketState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.promptPause();
-        cli.setController(new TurnAfterActionState());
+        new Thread(() -> {
+            cli.promptPause();
+            cli.setController(new TurnAfterActionState());
+        }).start();
     }
 }

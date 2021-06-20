@@ -83,7 +83,7 @@ public class Cli implements Runnable {
         notifyAll();
     }
 
-    void reloadController(String str) {
+    synchronized void reloadController(String str) {
         out.println(str);
         promptPause();
         setController(controller);
@@ -204,23 +204,23 @@ public class Cli implements Runnable {
         return slimLine(width);
     }
 
-    void pause() {
+    synchronized void pause() {
         out.flush();
         in.nextLine();
     }
 
-    void promptPause() {
+    synchronized void promptPause() {
         out.println();
         out.println(center("[Press ENTER to continue]"));
         pause();
     }
 
-    void clear() {
+    synchronized void clear() {
         out.print("\033[H\033[2J");
         out.flush();
     }
 
-    public Optional<String> prompt(String prompt, String defaultValue) {
+    public synchronized Optional<String> prompt(String prompt, String defaultValue) {
         if (prompt.isEmpty())
             throw new IllegalArgumentException("Prompt cannot be empty.");
         out.print(right(String.format("%s (default: %s): ", prompt, defaultValue), width / 3));
@@ -231,7 +231,7 @@ public class Cli implements Runnable {
         return Optional.of(!value.isBlank() ? value : defaultValue);
     }
 
-    public Optional<String> prompt(String prompt) {
+    public synchronized Optional<String> prompt(String prompt) {
         if (!prompt.isEmpty())
             out.print(right(String.format("%s: ", prompt), width / 3));
         out.flush();
