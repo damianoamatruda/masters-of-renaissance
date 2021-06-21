@@ -117,6 +117,14 @@ A `ResGoodbye` message will be sent by the server as an acknowledgement:
 
 Only then the network sockets will be closed by both parties.
 
+## UpdateServerUnavailable
+This message is used internally by the network layer to notify the application layer of the fact that the connection with the server was closed by the server itself.
+
+**UpdateServerUnavailable**
+```json
+{ "type": "UpdateServerUnavailable" }
+```
+
 ## Reconnection
 The player is allowed to connect back to the server and join the game they were previously in.  
 The reconnection routine at the network level is exactly the same as a normal connection.
