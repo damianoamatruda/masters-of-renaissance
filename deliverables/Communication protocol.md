@@ -324,11 +324,11 @@ The `reason` field offers a more detailed explanation:
 This message signals the absence of an entity to match an ID with.
 
 The `originalEntity` field describes the kind of entity the request pertained to, which include:
-1. MARKET_INDEX - index of a market's row/column does not exist
-2. LEADER - leader card with referenced ID does not exist
-3. DEVCARD - development card with referenced ID does not exist
-4. COLOR - referenced color does not exist
-5. RESOURCE - referenced resource type does not exist
+1. `MARKET_INDEX` - index of a market's row/column does not exist
+2. `LEADER` - leader card with referenced ID does not exist
+3. `DEVCARD` - development card with referenced ID does not exist
+4. `COLOR` - referenced color does not exist
+5. `RESOURCE` - referenced resource type does not exist
 
 The message also reports the `id` or the `code` string of the missing object.
 
@@ -353,6 +353,27 @@ When a request message from a client references the ID of an object that is not 
   "objectType": "LeaderCard"
 }
 ```
+
+## ErrResourceTransfer
+This error signals an error with a resource transfer request.
+
+Reasons included in the message are:
+1. `BOUNDED_RESTYPE_DIFFER` - a resource is trying to be added/removed to a shelf that's bound to another resource type
+2. `NON_STORABLE` - a non-storable resource is trying to be added/removed to a resource container
+3. `CAPACITY_REACHED` - the resource transfer requests that the number of resulting resources in the container is either less than zero or greater than the container's capacity
+4. `DUPLICATE_BOUNDED_RESOURCE` - a resource is trying to be added to a shelf while there's another shelf bound to the same resource type
+
+**ErrResourceTransfer (server)**
+```json
+{
+  "type": "ErrResourceTransfer",
+  "resType": "Coin",
+  "isAdded": true,
+  "reason": "CAPACITY_REACHED"
+}
+```
+
+
 
 # Game phase - Player setup
 When the game starts, the server instantiates its internal model.  
