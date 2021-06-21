@@ -320,6 +320,28 @@ The `reason` field offers a more detailed explanation:
 ```json
 {
   "type": "ResGoodbye"
+## ErrNoSuchEntity
+This message signals the absence of an entity to match an ID with.
+
+The `originalEntity` field describes the kind of entity the request pertained to, which include:
+1. MARKET_INDEX - index of a market's row/column does not exist
+2. LEADER - leader card with referenced ID does not exist
+3. DEVCARD - development card with referenced ID does not exist
+4. COLOR - referenced color does not exist
+5. RESOURCE - referenced resource type does not exist
+
+The message also reports the `id` or the `code` string of the missing object.
+
+**ErrNoSuchEntity (server)**
+```json
+{
+  "type": "ErrNoSuchEntity",
+  "originalEntity": "LEADER",
+  "id": 50,
+  "code": null
+}
+```
+
 ## ErrObjectNotOwned
 When a request message from a client references the ID of an object that is not owned by the player, an `ErrObjectNotOwned` message will be sent by the server, detailing the erroneus ID and the object's kind.
 
