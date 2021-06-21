@@ -444,14 +444,17 @@ Errors related to this action are:
 ```
 
 ## Choosing starting resources
+After choosing the leader cards the players will be prompted to choose their starting resources, following the configuration file's settings.
 
-The players have to choose their bonus starting resources.  
-The server will notify the player of the event, signaling the amount of resources the player can choose and which
-resource types they can choose from.  
-The client will respond by specifying the resource types and the respective quantities.
+The client is sent the amount of resources and the resource types the player has to choose from (see TODO).  
+Every player will have to choose the resources before the match's turns can start, thereby concluding the setup phase.
 
-As with the initial choice of leader cards, if the client doesn't go through the process of choosing the initial
-resources, every other move is negated.
+Error messages will be fired in these situations:
+1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is already concluded)
+2. `ErrObjectNotOwned` - the request message contains resource container IDs that are not owned the player
+3. `ErrNoSuchEntity` - a resource type that doesn't exist is specified
+4. `ErrInitialChoice` - the resurces were already chosen
+5. `ErrResourceTransfer` - a number of resources exceeding the shelf's capacity is requested to be added to a shelf
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -464,13 +467,25 @@ resources, every other move is negated.
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │        UpdateResourceContainer │ ╰──────────────────╯
+               │        *state update messages* │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │               UpdateFaithTrack │
+               │                   UpdateAction │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │              ErrObjectNotOwned │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                ErrNoSuchEntity │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │               ErrInitialChoice │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │            ErrResourceTransfer │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -484,6 +499,14 @@ resources, every other move is negated.
   ]
 }
 ```
+**UpdateAction (server)**
+```json
+{
+  "type": "UpdateAction",
+  "action": "CHOOSE_RESOURCES",
+  "player": "NicknameA"
+}
+```
 **ErrAction (server)**
 ```json
 {
@@ -491,6 +514,15 @@ resources, every other move is negated.
   "msg": "Cannot choose 2 starting resources, only 1 available."
 }
 ```
+**ErrInitialChoice (server)**
+```json
+{
+  "type": "ErrInitialChoice",
+  "isLeadersChoice": false,
+  "missingLeadersCount": 0
+}
+```
+
 
 
 # Game phase - Turns
