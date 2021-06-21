@@ -344,14 +344,10 @@ duration.
 
 The client will be sent the IDs of the leader cards they can choose from, and will send back a subset of them.  
 
-The leader cards are shown only to the player owning them until activated. Therefore, two kinds of messages will be sent as state updates from the server: `UpdateLeadersHand`, which contains the IDs of the cards, will be sent to the player who chose them; `UpdateLeadersHandCount`, which contains only the number of cards in the player's hand, will be sent to every other player.  
-See TODO for the messages' structure.
-
-If the request is executed successfully, the server will notify the client that all state update messages have been sent with an `UpdateAction` message.
-Possible error cases:
-1. The request message is sent too late (the setup phase is already concluded): the server will answer with an `ErrAction` message, with reason `LATE_SETUP_ACTION`
-2. The request message contains IDs that are not in the player's card list: an `ErrObjectNotOwned` message will be sent
-3. The request message contains either too few IDs: an `ErrInitialChoice` will be sent, containing the amount of missing leader cards
+Errors related to this action are:
+1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is already concluded)
+2. `ErrObjectNotOwned` - the request message contains IDs that are not in the player's card list
+3. `ErrInitialChoice` - the request message contains too few IDs or the leader cards have alerady been chosen by the player
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -364,10 +360,7 @@ Possible error cases:
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │              UpdateLeadersHand │ ╰──────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │         UpdateLeadersHandCount │
+               │        *state update messages* │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                   UpdateAction │
@@ -388,22 +381,6 @@ Possible error cases:
 {
   "type": "ReqChooseLeaders",
   "leaders": [ 3, 15 ]
-}
-```
-**UpdateLeadersHand (server)**
-```json
-{
-  "type": "UpdateLeadersHand",
-  "player": "NicknameA",
-  "leaders": [ 3, 15 ]
-}
-```
-**UpdateLeadersHandCount (server)**
-```json
-{
-  "type": "UpdateLeadersHandCount",
-  "player": "NicknameA",
-  "leadersCount": 2
 }
 ```
 **ErrInitialChoice (server)**
