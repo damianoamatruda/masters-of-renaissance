@@ -372,6 +372,25 @@ The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be rec
 }
 ```
 
+## ErrResourceReplacement
+This message signals an error when replacing a production's resources.
+
+The `isNonStorable` field is set to true when a resource in the request is defined as non-storable and takeable/givable to players.  
+The `isExcluded` field is set to true if a forbidden resource type is requested as a replacement.  
+The `replacedCount` and `blanks` fields are used to indicate a discrepancy between the number of specified replacements and the amount of blanks needing to be filled.
+
+**ErrResourceReplacement (server)**
+```json
+{
+  "type": "ErrResourceReplacement",
+  "isInput": true,
+  "isNonStorable": false,
+  "isExcluded": false,
+  "replacedCount": 1,
+  "blanks": 0
+}
+```
+
 ## ErrResourceTransfer
 This error signals an error with a resource transfer request.
 
