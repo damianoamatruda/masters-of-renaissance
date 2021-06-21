@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 import java.util.List;
 
 public class UpdatePlayer extends ViewEvent {
-    // TODO commproto docs
     private final String player;
     private final int baseProduction;
     private final List<Integer> warehouseShelves;

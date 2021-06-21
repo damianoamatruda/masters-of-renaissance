@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-import it.polimi.ingsw.common.backend.model.Player;
-
 import java.util.List;
 
 /** Vatican section activation state update. */

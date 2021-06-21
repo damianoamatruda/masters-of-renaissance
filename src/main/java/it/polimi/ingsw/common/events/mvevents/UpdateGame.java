@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.reducedmodel.*;
 import java.util.List;
 
 public class UpdateGame extends ViewEvent {
-    // TODO commproto docs
     private final List<ReducedColor> colors;
     private final List<ReducedResourceType> resourceTypes;
     private final List<String> players;
