@@ -321,10 +321,6 @@ The `reason` field offers a more detailed explanation:
 }
 ```
 
-
-```json
-{
-  "type": "ResGoodbye"
 ## ErrNoSuchEntity
 This message signals the absence of an entity to match an ID with.
 
@@ -939,6 +935,8 @@ During their turn, in addition to one of the main three actions, a player can ch
 
 To activate or discard a leader the server needs to know which card the player wants to act on and which action to perform.
 
+### Activating a leader card
+
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
@@ -965,9 +963,6 @@ To activate or discard a leader the server needs to know which card the player w
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-
-### Activating a leader card
-
 **ReqLeaderAction (client)**
 ```json
 {
@@ -1003,6 +998,32 @@ If a leader is activated while already active no error is raised, since it's not
 
 ### Discarding a leader card
 
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+╭────────────╮ │                                │
+│ user input ├─┤                                │ 
+╰────────────╯ │ ReqLeaderAction                │
+               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
+               │                                │ ╭──────────────────╮
+               │                                ├─┤ try exec / check │
+               │        *state update messages* │ ╰──────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                   UpdateAction │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                      ErrAction │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │              ErrObjectNotOwned │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │       ErrActiveLeaderDiscarded │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
 **ReqLeaderAction (client)**
 ```json
 {
@@ -1019,6 +1040,15 @@ If a leader is activated while already active no error is raised, since it's not
   "player": "NicknameA"
 }
 ```
+**ErrActiveLeaderDiscarded (server)**
+```json
+{
+  "type": "ErrActiveLeaderDiscarded"
+}
+```
+
+The `ErrActiveLeaderDiscarded` error message is sent by the server when a player tries to discard an active leader card.
+
 
 
 # State messages
