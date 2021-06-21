@@ -383,6 +383,14 @@ Errors related to this action are:
   "leaders": [ 3, 15 ]
 }
 ```
+**UpdateAction (server)**
+```json
+{
+  "type": "UpdateAction",
+  "action": "CHOOSE_LEADERS",
+  "player": "NicknameA"
+}
+```
 **ErrInitialChoice (server)**
 ```json
 {
