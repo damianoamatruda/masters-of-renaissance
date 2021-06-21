@@ -900,11 +900,9 @@ This is technically only useful when taking resources from the market, as no oth
 ```
 
 ## Leader actions
-During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards (acting on one or both, performing both actions or the same action twice in the same turn).
+During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards.
 
-To activate or discard a leader the server needs to know which card(s) the player wants to act on.
-
-Leader activation:
+To activate or discard a leader the server needs to know which card the player wants to act on and which action to perform.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -912,64 +910,78 @@ Leader activation:
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │ ReqActivateLeader              │
+╰────────────╯ │ ReqLeaderAction                │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                   UpdateLeader │ ╰──────────────────╯
+               │        *state update messages* │ ╰──────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                   UpdateAction │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-```
-**ReqActivateLeader (client)**
-```json
-{
-  "type": "ReqActivateLeader",
-  "leader": 0
-}
-```
-**ErrAction (server)**
-```json
-{
-  "type": "ErrAction",
-  "msg": "Leader 0 cannot be activated: leader does not exist."
-}
-```
-If a leader is already active no error is raised, since it's not a critical event.
-
-Discarding a leader:
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-╭────────────╮ │                                │
-│ user input ├─┤                                │ 
-╰────────────╯ │ ReqDiscardLeader               │
-               ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
-               │                                │ ╭──────────────────╮
-               │                                ├─┤ try exec / check │
-               │                   UpdateLeader │ ╰──────────────────╯
+               │              ErrObjectNotOwned │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
-               │                      ErrAction │
+               │            ErrCardRequirements │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqDiscardLeader (client)**
+
+### Activating a leader card
+
+**ReqLeaderAction (client)**
 ```json
 {
-  "type": "ReqDiscardLeader",
-  "leader": 0
+  "type": "ReqLeaderAction",
+  "leader": 0,
+  "isActivate": true
 }
 ```
-**ErrAction (server)**
+**UpdateAction (server)**
 ```json
 {
-  "type": "ErrAction",
-  "msg": "Leader 0 cannot be discarded: leader 0 is active."
+  "type": "UpdateAction",
+  "action": "ACTIVATE_LEADER",
+  "player": "NicknameA"
+}
+```
+**ErrCardRequirements (server)**
+```json
+{
+  "type": "ErrCardRequirements",
+  "missingDevCards": [
+    {
+      "color": "Blue",
+      "level": 1,
+      "amount": 2
+    }
+  ],
+  "missingResources": null
+}
+```
+
+If a leader is activated while already active no error is raised, since it's not a critical event.
+
+### Discarding a leader card
+
+**ReqLeaderAction (client)**
+```json
+{
+  "type": "ReqLeaderAction",
+  "leader": 0,
+  "isActivate": false
+}
+```
+**UpdateAction (server)**
+```json
+{
+  "type": "UpdateAction",
+  "action": "DISCARD_LEADER",
+  "player": "NicknameA"
 }
 ```
 
