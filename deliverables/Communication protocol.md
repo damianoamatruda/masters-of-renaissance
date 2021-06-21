@@ -354,6 +354,24 @@ When a request message from a client references the ID of an object that is not 
 }
 ```
 
+## ErrReplacedTransRecipe
+This message signals a discrepancy between the available and specified numbers of resources to be put in a container.
+
+The `replacedCount` field details the number of available resources in the transaction after the replacements have been factored in.  
+The `shelvesChoiceResCount` field details the number of resources requested to be put in the container.  
+The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be reconduced to illegally discarded resources in output.
+
+**ErrReplacedTransRecipe (server)**
+```json
+{
+  "type": "ErrReplacedTransRecipe",
+  "resType": "Coin",
+  "replacedCount": 3,
+  "shelvesChoiceResCount": 4,
+  "isIllegalDiscardedOut": false
+}
+```
+
 ## ErrResourceTransfer
 This error signals an error with a resource transfer request.
 
