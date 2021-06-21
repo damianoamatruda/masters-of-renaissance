@@ -887,7 +887,7 @@ Secondary moves can be performed as often as the player wants and at any point o
 2. Activating/discarding a leader card
 
 ## Swapping two shelves
-During their turn, the player can decide to reorder their warehouse.
+During their turn, the player can decide to reorder the content of their warehouse's shelves and leader depots.
 
 This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
 
@@ -901,10 +901,19 @@ This is technically only useful when taking resources from the market, as no oth
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │        UpdateResourceContainer │ ╰──────────────────╯
+               │        *state update messages* │ ╰──────────────────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                   UpdateAction │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │              ErrObjectNotOwned │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │            ErrResourceTransfer │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -916,11 +925,12 @@ This is technically only useful when taking resources from the market, as no oth
   "shelf2": 3
 }
 ```
-**ErrAction (server)**
+**UpdateAction (server)**
 ```json
 {
-  "type": "ErrAction",
-  "msg": "Shelves 0 and 3 cannot be swapped: too many resources in shelf 3."
+  "type": "UpdateAction",
+  "action": "SWAP_SHELVES",
+  "player": "NicknameA"
 }
 ```
 
