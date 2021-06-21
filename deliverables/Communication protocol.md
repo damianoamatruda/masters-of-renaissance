@@ -572,13 +572,14 @@ The messages in this section can be differentiated into:
 3. [State messages](#state-messages), which update the local caches' state to match the server's
 
 
+
 # Main actions
-During their turn, the player has to choose among three main actions to carry out:
+During their turn, the player has to choose which action to take among these:
 1. Getting resources from the market
 2. Buying a development card
 3. Activating the production
 
-Since the player may want to make a secondary move after the main action, the server waits for a `TurnEnd` message to switch to the next player (timeouts are used in case the player takes too long to make a move/is AFK).
+Since the player may want to make a secondary move after the main action, the server waits for a `TurnEnd` message before switching to the next player.
 
 ## Getting resources from the market
 The following needs to be specified:
