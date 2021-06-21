@@ -818,28 +818,41 @@ See TODO for more details on a specific error.
 ## Ending the turn
 Since the server cannot at any point assume that the player has finished choosing their moves (see [secondary actions](#secondary-actions)), an explicit message has to be sent.
 
+If a player ends their turn early (without having done a mandatory action) an `ErrAction` with `"reason": "EARLY_TURN_END"` is generated.
+
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │ ReqTurnEnd                     │
+╰────────────╯ │ ReqEndTurn                     │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────╮
                │                                ├─┤ exec │
-               │            UpdateCurrentPlayer │ ╰──────╯
+               │        *state update messages* │ ╰──────╯
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                   UpdateAction │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                      ErrAction │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqTurnEnd (client)**
+**ReqEndTurn (client)**
 ```json
-{ "type": "ReqTurnEnd" }
+{ "type": "ReqEndTurn" }
 ```
-**ResTurnEnd (server)**
+**UpdateAction (server)**
 ```json
-{ "type": "UpdateCurrentPlayer" }
+{
+  "type": "UpdateAction",
+  "action": "END_TURN",
+  "player": "NicknameA"
+}
 ```
+
 
 
 # Secondary actions
