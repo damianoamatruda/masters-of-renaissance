@@ -78,10 +78,10 @@ Two data structures that are often used inside messages are:
 To make the protocol more resilient and situation-aware, `NetEvents` have been separated from application-level events.  
 
 The player, when starting the client, can choose whether to connect to the server (singleplayer and multiplayer playmodes) or playing locally (singleplayer only).  
-In both cases the messages sent will be the same and happen in the exact same way: the network side of the project has been implemented to allow changing the transport layer transparently to both the client and the server.
+In both cases the messages sent are the same and happen in the exact same way: the network side of the project has been implemented to allow changing the transport layer transparently to both the client and the server.
 
 ## Connecting to the server
-Upon connection, a handshake will take place:
+Upon connection, a handshake takes place:
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -114,15 +114,15 @@ The event of the connection closing can happen for three reasons:
 2. The client crashes
 3. The server crashes
 
-Quitting the client will send one final application-level message to the server (see TODO), allowing the server to distinguish between the situations.
+Quitting the client sends one final application-level message to the server (see TODO), allowing the server to distinguish between the situations.
 After the server has executed the quit routine, the sockets can now be closed.  
-A `ReqGoodbye` event will be sent by the client:
+A `ReqGoodbye` event is sent by the client:
 
 ```json
 { "type": "ReqGoodbye" }
 ```
 
-A `ResGoodbye` message will be sent by the server as an acknowledgement:
+A `ResGoodbye` message is sent by the server as an acknowledgement:
 
 ```json
 {
@@ -130,7 +130,7 @@ A `ResGoodbye` message will be sent by the server as an acknowledgement:
 }
 ```
 
-Only then the network sockets will be closed by both parties.
+Only then the network sockets is closed by both parties.
 
 ## UpdateServerUnavailable
 This message is used internally by the network layer to notify the application layer of the fact that the connection with the server was closed by the server itself.
@@ -146,7 +146,7 @@ The reconnection routine at the network level is exactly the same as a normal co
 
 ## Heartbeat
 The server checks whether the clients are still alive using both normal messages and heartbeat messages (the timeout resets with any kind of message).  
-Heartbeat messages will be sent at regular intervals.
+Heartbeat messages are sent at regular intervals.
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -174,7 +174,7 @@ Heartbeat messages will be sent at regular intervals.
 ```
 
 ## Errors
-Broken (unparsable) messages will be signaled with a `ErrProtocol` messsage containing information about the error itself:
+Broken (unparsable) messages are signaled with a `ErrProtocol` messsage containing information about the error itself:
 
 ```json
 {
@@ -193,13 +193,13 @@ A summary of the requirements highlighting the relevant parts is reported below:
 > - The server manages the players' turns as per the game's rules. The server must handle a player disconnecting or leaving the game; if there are no players left the game will terminate and all players have to be notified.
 
 The following specification for the additional feature "Multiple Games" is taken into account in the communication protocol's design:
-> - Only one waiting room will be used to manage the players who join the server.
+> - Only one waiting room is used to manage the players who join the server.
 > - Players who disconnect can successively reconnect to continue the match. While a player isn't connected, the game continues skipping the player's turns.
 
 Given those requirements, the communication at connection time has been modeled the following way.
 
 ## Choosing a nickname
-After establishing a connection with the server, the client will ask the player to input a nickname of their choice. The entry will be sent to the server, and, if acceptable (unique among the registered nicknames, not empty, not already set), will be accepted. Else, the server will signal the error, restarting the process.
+After establishing a connection with the server, the client will ask the player to input a nickname of their choice. The entry is sent to the server, and, if acceptable (unique among the registered nicknames, not empty, not already set), is accepted. Else, the server will signal the error, restarting the process.
 
 Information about the player being the first of the match is included in the response sent to the client. This is necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
 
@@ -288,7 +288,7 @@ When a player is assigned by the server as the first of a new game, they have to
 ```
 
 The `UpdateJoinGame` message signals to the first `playersCount` waiting clients that a new match is undergoing creation and the number of players included. Any other client that joins the server and is assigned to the starting match will also receive the message.  
-If a `ReqNewGame` is received from a client that is not allowed to request a new match, `ErrNewGame.isInvalidPlayersCount` will be set to false.
+If a `ReqNewGame` is received from a client that is not allowed to request a new match, `ErrNewGame.isInvalidPlayersCount` is set to false.
 
 See the [Game start](#game-start) section for information on how the protocol defines the initial data transfer after joining a match.
 
@@ -303,7 +303,7 @@ When the player quits the game, the client will send a `ReqQuit` message:
 ```
 
 The server will then execute an internal routine that will allow the player to reconnect at a later time and join back the match they were in, notifying at the same time the other players of the match of the event (see TODO player status).  
-A `ResQuit` message will be sent to the client to notify it about the closing routine being completed.  
+A `ResQuit` message is sent to the client to notify it about the closing routine being completed.  
 
 **ResQuit (server)**
 ```json
@@ -367,7 +367,7 @@ The message also reports the `id` or the `code` string of the missing object.
 ```
 
 ## ErrObjectNotOwned
-When a request message from a client references the ID of an object that is not owned by the player, an `ErrObjectNotOwned` message will be sent by the server, detailing the erroneus ID and the object's kind.
+When a request message from a client references the ID of an object that is not owned by the player, an `ErrObjectNotOwned` message is sent by the server, detailing the erroneus ID and the object's kind.
 
 **ErrObjectNotOwned (server)**
 ```json
@@ -446,7 +446,7 @@ During this phase the players will have to choose the amount of leader cards and
 As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's
 duration.
 
-The client will be sent the IDs of the leader cards they can choose from, and will send back a subset of them.
+The client is sent the IDs of the leader cards they can choose from, and will send back a subset of them.
 
 Errors related to this action are:
 1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is already concluded)
@@ -505,14 +505,14 @@ Errors related to this action are:
 ```
 
 ## Choosing starting resources
-After choosing the leader cards the players will be prompted to choose their starting resources, following the configuration file's settings.
+After choosing the leader cards the players is prompted to choose their starting resources, following the configuration file's settings.
 
 The client is sent the amount of resources and the resource types the player has to choose from (see TODO).  
 Every player will have to choose the resources before the match's turns can start, thereby concluding the setup phase.
 
 The `shelves` field is a standard [resource container map](#common-data-structures)
 
-Error messages will be fired in these situations:
+Error messages are fired in these situations:
 1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is already concluded)
 2. `ErrObjectNotOwned` - the request message contains resource container IDs that are not owned the player
 3. `ErrNoSuchEntity` - a resource type that doesn't exist is specified
@@ -1558,7 +1558,7 @@ If there's no binding resource the `boundedResType` field is not specified.
 ```
 
 ## UpdateSetupDone
-When every player has chosen their leader cards and starting resources the conclusion of the setup phase will be notified to the clients.
+When every player has chosen their leader cards and starting resources the conclusion of the setup phase is notified to the clients.
 
 ```
  ┌────────┒                      ┌────────┒ 
