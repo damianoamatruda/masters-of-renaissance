@@ -584,13 +584,13 @@ Since the player may want to make a secondary move after the main action, the se
 ## Getting resources from the market
 The following needs to be specified:
 1. Which row/column the player wants to take the resources from
-2. For each replaceable resource, which leader to use (if applicable)
-3. For each resource (its type considered after the leader's processing), which shelf to use to store it
+2. For each replaceable resource, which resource type to convert it to (if applicable)
+3. For each resource (its type considered after the leaders' processing), which shelf to use to store it
 4. What resources, among the ones taken from the market, to discard
 
 Discarding is simply handled by specifying a lower quantity of resources to add to a shelf. This also easily matches the rule for which only the resources given by the market can be discarded.
 
-The `Replacements` field specifies how the resource conversion should be handled. Since the player knows what type of resource the leader convert to, they can easily select them by specifying, for each type of resource they want as output, how many replaceable resources (of the available ones) to use.
+The `replacements` field specifies how the resource conversion should be handled. Since the player knows what type of resource the leader converts to, they can easily select them by specifying, for each type of resource they want as output, how many replaceable resources (of the available ones) to use.
 
 Errors may arise from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding enough resources.
 
@@ -604,16 +604,25 @@ Errors may arise from fitting the resources in the shelves, either by specifying
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
-               │                   UpdateMarket │ ╰──────────────────╯
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │        UpdateResourceContainer │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-               │                   UpdateLeader │
+               │        *state update messages* │ ╰──────────────────╯
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
                │                      ErrAction │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │              ErrObjectNotOwned │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │                ErrNoSuchEntity │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │         ErrResourceReplacement │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │         ErrReplacedTransRecipe │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+               │            ErrResourceTransfer │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
@@ -625,16 +634,9 @@ Errors may arise from fitting the resources in the shelves, either by specifying
   "index": 0,
   "replacements": { "Coin": 2 },
   "shelves": [
-    [ 1, { "Coin": 2 } ],
-    [ 3, { "Shield": 2 } ]
+    { "1": { "Coin": 2 } },
+    { "3": { "Shield": 1 } }
   ]
-}
-```
-**ErrAction (server)**
-```json
-{
-  "type": "ErrAction",
-  "msg": "Cannot fit the resources in the shelves: no space left in shelf 3."
 }
 ```
 
