@@ -47,8 +47,7 @@ This document describes the client-server communication protocol used by the imp
 All messages are encoded using the GSON library and follow therefore the JSON specification, language-wise.  
 Every value shown in the messages is to be taken as an example, having been written only to show the messages' structure.  
 
-State update messages are sent autonomously by the updated entities. Clients cannot assume that a state update message will be sent or the timing it will be sent with (ordering with respect to other messages, etc.).  
-State update messages are broadcast unless specified.
+Important details about state update messages in TODO.
 
 `UpdateAction` messages confirm the success of the requested action and mark the end of the state update messages stream.
 
@@ -1054,14 +1053,11 @@ The `ErrActiveLeaderDiscarded` error message is sent by the server when a player
 # State messages
 These messages are used to update the clients' caches so that the data is synchronized with the server's.
 
-The server automatically sends incremental updates to the player whenever an object changes.  
-With that said, in order to carry out a choice-heavy move, the player may want to see objects that were updated long before. On the GUI side, the player can glance at the entire board, but when playing from the CLI finding the last update of an object would be unoptimal.  
-In those cases the player can request a fresh view of the objects via commands, which, instead of reaching the server, will be served by the local cache. This allows for improved responsiveness and cuts back on the amount of data transferred, simplifying the communication protocol as well.  
-This solution allows every player to prepare their moves before their turn comes, speeding up the gameplay and improving the experience.
+State update messages are sent autonomously by the updated entities. Clients cannot assume that a state update message will be sent or the timing it will be sent with (ordering with respect to other messages, etc.).  
+State update messages are broadcast unless specified.
 
-Indices reference the data given in [game start](#game-start).
+IDs reference the data given in [game start](#game-start).
 
-All messages are broadcast to all players, as the game rules don't specify that some objects should remain hidden.
 
 
 
