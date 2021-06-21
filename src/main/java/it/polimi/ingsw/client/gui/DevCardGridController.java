@@ -79,8 +79,8 @@ public class DevCardGridController extends GuiController {
         devCardGrid.setGrid(vm.getDevCardGrid().orElseThrow());
         devCardGrid.setControllerListener(this::devCardPressed);
 
-        devCardGrid.setScaleX(0.7);
-        devCardGrid.setScaleY(0.7);
+//        devCardGrid.setScaleX(0.7);
+//        devCardGrid.setScaleY(0.7);
 
         devCardGridPane.getChildren().add(devCardGrid);
 
@@ -100,7 +100,7 @@ public class DevCardGridController extends GuiController {
 
         canvas.setBorder(new Border(new BorderStroke(Color.RED,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        
+
         devCardGridPane.setBorder(new Border(new BorderStroke(Color.BLACK,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         containersBox.setBorder(new Border(new BorderStroke(Color.BLACK,
