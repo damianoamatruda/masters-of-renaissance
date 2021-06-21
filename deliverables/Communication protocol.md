@@ -1058,10 +1058,143 @@ State update messages are broadcast unless specified.
 
 IDs reference the data given in [game start](#game-start).
 
+## UpdateActionToken
+Notifies clients of the activation of an action token, sending its ID.
 
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │              UpdateActionToken │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateActionToken (server)**
+```json
+{
+  "type": "UpdateActionToken",
+  "actionToken": 6
+}
+```
 
+## UpdateActivateLeader
+Notifies clients when a leader card is activated.
 
-## Game start
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │           UpdateActivateLeader │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateActivateLeader (server)**
+```json
+{
+  "type": "UpdateActivateLeader",
+  "leader": 1
+}
+```
+
+## UpdateCurrentPlayer
+Notifies clients of who the current player is from the moment the message is sent.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │            UpdateCurrentPlayer │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateCurrentPlayer (server)**
+```json
+{
+  "type": "UpdateCurrentPlayer",
+  "nickname": "NicknameA"
+}
+```
+
+## UpdateDevCardGrid
+Notifies the clients of an update in the development card grid's state.
+
+The list of IDs are the respective top cards of each deck, the level of which is the card's position in the list and the color of which is specified in the enclosing map.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │              UpdateDevCardGrid │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateDevCardGrid (server)**
+```json
+{
+  "type": "UpdateDevCardGrid",
+  "topCards": {
+    "levelsCount": 3,
+    "colorsCount": 4,
+    "grid": {
+      "Purple": [
+        [ 2, 0, 1, 3 ]
+      ],
+      "Green": [
+        [ 8, 7, 6, 4 ]
+      ]
+    }
+  }
+}
+```
+
+## UpdateDevCardSlot
+Notifies the clients of a card being added to a player's board's development card slot.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │              UpdateDevCardSlot │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateDevCardSlot (server)**
+```json
+{
+  "type": "UpdateDevCardSlot",
+  "slot": 0,
+  "card": 7
+}
+```
+
+## UpdateFaithPoints
+Notifies clients of a player progressing on the faith track.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │               UpdateFaithTrack │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateFaithTrack (server)**
+```json
+{
+  "type": "UpdateFaithTrack",
+  "isBlackCross": false,
+  "faithPoints": 14,
+  "player": "NicknameA"
+}
+```
+
+## UpdateGame
 As the game starts, the server notifies all players of the event.
 
 ### Caching
@@ -1072,86 +1205,285 @@ Caching allows partial checks to be preemptively (but not exclusively) done clie
 The game's model has been parameterized to allow for flexibility. The parameters are set via
 a [configuration file](../src/main/resources/config/config.json), which also contains serialized game data (e.g. cards,
 resources, etc...).  
-This file is available to both clients and server, which will use it to instantiate the game objects. It is therefore
-extremely important for both parties to have matching ordering in the file's objects, since it will be used by the
-identification system.  
-The matching and ordering properties of the objects in the configuration file are used to identify game objects and
-synchronize the game state at the start of the match, eliminating the need for a more complex ID system.
 
-This implies that every ID/index specified in this document has been synchronized at game start either by being taken
-from the configuration file or by being specified in the `UpdateGameStart` message.
+Clients have a default configuration file embedded to allow for local single player matches. Both clients and server also support loading custom configuration files.
 
-The market's resources are placed randomly at creation, therefore needing to be synchronized: the entire market's state
-needs to be sent.  
-The development cards will be shuffled by the server before being placed in the grid: the field `devCardGrid` maps to
-each color a list of lists (levels-deck). Each deck is a list of IDs, where each ID references a card in the
-configuration file ([ 0, 2 ] means that in that deck there's the first and third card, taken with the same ordering they
-appear in the configuration file). The same principle applies to the solo action tokens.
-
-After reordering the cached objects to match the server's state, all indices sent from the server can be used to reference the correct objects.
+Since the file on a server may be different from the one embedded in a client, all game elements need to be sent at the start of a match, ensuring proper synchronization between the clients and the server, both in terms of IDs and actual game data.
 
 ```
  ┌────────┒                      ┌────────┒ 
  │ Client ┃                      │ Server ┃
  ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
      │                                │
-     │                UpdateGameStart │
+     │                     UpdateGame │
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
-**UpdateGameStart (server)**
+**UpdateGame (server)**
 ```json
 {
-  "type": "UpdateGameStart",
-  "nicknames": [ "NicknameA", "NicknameB", "NicknameC" ],
+  "type": "UpdateGame",
+  "colors": [
+    {
+      "name": "Yellow",
+      "colorValue": "\u001B[33m"
+    }, {
+      "name": "Purple",
+      "colorValue": "\u001B[35m"
+    }
+  ],
+  "resourceTypes": [
+    {
+      "name": "Servant",
+      "storable": true,
+      "colorValue": "\u001B[95m",
+      "isGiveableToPlayer": true,
+      "isTakeableFromPlayer": true
+    }, {
+      "name": "Zero",
+      "storable": false,
+      "colorValue": "\u001B[37m",
+      "isGiveableToPlayer": false,
+      "isTakeableFromPlayer": false
+    }
+  ],
+  "players": [ "NicknameA", "NicknameB", "NicknameC" ],
+  "leaderCards": [
+    {
+      "resourceType": "Servant",
+      "leaderType": "DiscountLeader",
+      "devCardRequirement": {
+        "entries": [
+          { "color": "Yellow", "amount": 1, "level": 2 }
+        ]
+      },
+      "isActive": false,
+      "containerId": -1,
+      "discount": 1,
+      "id": 0,
+      "victoryPoints": 2,
+      "production": -1
+    }
+  ],
+  "developmentCards": [
+    {
+      "color": "Green",
+      "cost": {
+        "requirements": { "Shield": 1 }
+      },
+      "level": 1,
+      "id": 0,
+      "victoryPoints": 1,
+      "production": 5
+    }
+  ],
+  "resContainers": [
+    {
+      "id": 4,
+      "content": {},
+      "boundedResType": "Stone",
+      "size": 2
+    }, {
+      "id": 3,
+      "content": {},
+      "size": -1
+    }
+  ],
+  "productions": [
+    {
+      "id": 0,
+      "input": {},
+      "inputBlanks": 2,
+      "inputBlanksExclusions": [],
+      "output": {},
+      "outputBlanks": 1,
+      "outputBlanksExclusions": [ "Faith" ],
+      "discardableOutput": false
+    }
+  ],
+  "actionTokens": [
+    {
+      "id": 0,
+      "kind": "ActionTokenBlackMoveOneShuffle"
+    }, {
+      "id": 3,
+      "kind": "ActionTokenDiscardTwo",
+      "discardedDevCardColor": "Blue"
+    }
+  ],
+  "faithTrack": {
+    "vaticanSections": {
+      "16": {
+        "id": 2,
+        "faithPointsBeginning": 12,
+        "faithPointsEnd": 16,
+        "victoryPoints": 3,
+        "activated": false,
+        "bonusGivenPlayers": []
+      }
+    },
+    "yellowTiles": [
+      {
+        "faithPoints": 12,
+        "victoryPoints": 6
+      }
+    ]
+  },
+  "isSetupDone": false,
+  "slotsCount": 3
+}
+```
+
+## UpdateGameEnd
+Notifies the clients of the end of the match, detailing the winner player.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │                  UpdateGameEnd │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateGameEnd (server)**
+```json
+{
+  "type": "UpdateGameEnd",
+  "winner": "NicknameA"
+}
+```
+
+## UpdateLastRound
+Notifies the clients of the current round being the last.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │                UpdateLastRound │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateLastRound (server)**
+```json
+{
+  "type": "UpdateLastRound"
+}
+```
+
+## UpdateLeadersHand
+A player's leader cards are hidden from the other players until activated. This message is therefore sent only to the owner of the cards, whom can see their IDs.  
+The other players will receive a TODO, which only contains the number of cards owned by the other player.  
+Upon receiving a TODO, the non-owner players will know that the currently-playing player has activated a card and its ID. They can therefore add the ID to the current player's leader cards hand.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │              UpdateLeadersHand │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateLeadersHand (server)**
+```json
+{
+  "type": "UpdateLeadersHand",
+  "player": "NicknameA",
+  "leaders": [ 3, 5 ]
+}
+```
+
+## UpdateLeadersHandCount
+Given the explanation of [UpdateLeadersHand](#updateleadershand), this message contains the number of leader card a player is holding.  
+This allows for the cards' IDs to remain hidden while informing clients of events such as a card being discarded.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │         UpdateLeadersHandCount │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateLeadersHandCount (server)**
+```json
+{
+  "type": "UpdateLeadersHandCount",
+  "player": "NicknameA",
+  "leadersCount": 1
+}
+```
+
+## UpdateMarket
+This message holds the current state of the match's market.
+
+It specifies what resource type is to be accounted for as replaceable, since the configuration file allows for it to be changed.
+
+```
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │                   UpdateMarket │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
+```
+**UpdateMarket (server)**
+```json
+{
+  "type": "UpdateMarket",
   "market": {
     "grid": [
-      [ "Coin", "Shield", "Coin" ],
-      [ "Coin", "Shield", "Stone" ]
+      [ "Coin", "Servant", "Stone", "Shield" ],
+      [ "Shield", "Faith", "Zero", "Zero" ]
     ],
-    "slide": "Shield"
-  },
-  "devCardGrid": {
-    "levelsCount": 3,
-    "colorsCount": 4,
-    "grid": {
-      "Purple": [
-        [ 2, 0, 1 ],
-        [ 3, 4, 5 ]
-      ],
-      "Green": [
-        [ 8, 7, 6 ],
-        [ 9, 11, 10 ]
-      ]
-    }
-  },
-  "soloActionTokens": [ 4, 3, 0, 1, 2 ]
+    "replaceableResType": "Zero",
+    "slide": "Stone"
+  }
 }
 ```
-<!-- TODO update this to reflect actual message -->
 
-## Setup done
-When every player has chosen their leader cards and starting resources, the conclusion of the setup phase will be notified to the clients.
+## UpdatePlayer
+This message holds the state of a player object.  
+It is usually only sent at match start time, since other state messages take care of incrementally updating the player's data.
+
+This message also contains the player's setup details, which are needed for the setup phase.  
+The `chosenLeadersCount` field specifies how many leader cards must be retained during setup, among the ones sent in the first [UpdateLeadersHand](#updateleadershand) message the client receives.
+In the same way, the `initialResources` field specifies the number of resources the player needs to choose during the setup phase.
+
 ```
- ┌────────┒                      ┌────────┒ 
- │ Client ┃                      │ Server ┃
- ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-     │                                │
-     │                UpdateSetupDone │
-     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-     │                                │
+           ┌────────┒                      ┌────────┒ 
+           │ Client ┃                      │ Server ┃
+           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+               │                                │
+               │                   UpdatePlayer │
+               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+               │                                │
 ```
-**UpdateSetupDone (server)**
+**UpdatePlayer (server)**
 ```json
 {
-  "type": "UpdateSetupDone"
+  "type": "UpdatePlayer",
+  "player": "NicknameA",
+  "baseProduction": 0,
+  "warehouseShelves": [ 0, 1, 2 ],
+  "strongbox": 3,
+  "playerSetup": {
+    "chosenLeadersCount": 2,
+    "initialResources": 1,
+    "initialExcludedResources": [ "Faith" ],
+    "hasChosenLeaders": false,
+    "hasChosenResources":false
+  }
 }
 ```
 
-## Updating the players list
-Notifications about players connecting/disconnecting from a match will be sent.
-
-When the match is waiting for players to join before its start, sending notifications allows the players who already joined to know how many empty seats are left, therefore getting a sense for how much waiting time there's left.
+## UpdatePlayerStatus
+Notifications about players connecting/disconnecting from a match are sent via this message.
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -1171,50 +1503,11 @@ When the match is waiting for players to join before its start, sending notifica
 }
 ```
 
-## Updating the current player
+## UpdateResourceContainer
+This message details the current state of the resource container with the specified ID.
 
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │                UpdateCurrentPlayer │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-**UpdateCurrentPlayer (server)**
-```json
-{
-  "type": "UpdateCurrentPlayer",
-  "nickname": "NicknameB"
-}
-```
-
-## Updating the market
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │                   UpdateMarket │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-**UpdateMarket (server)**
-```json
-{
-  "type": "UpdateMarket",
-  "market": {
-    "isRow": true,
-    "index": 1,
-    "resources": [ "Coin", "Shield", "Stone" ],
-    "slideRes": "Shield"
-  }
-}
-```
-
-## Updating the shelves
+Strongboxes have size set to -1.  
+If there's no binding resource the `boundedResType` field is not specified.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -1226,191 +1519,78 @@ When the match is waiting for players to join before its start, sending notifica
                │                                │
 ```
 **UpdateResourceContainer (server)**
-
 ```json
 {
   "type": "UpdateResourceContainer",
-  "container": {
+  "resContainer": {
     "id": 3,
-    "content": [
-      { "Coin": 3 },
-      { "Shield": 1 }
-    ],
-    "bindingResource": null
+    "content": {
+      "Coin": 3
+    },
+    "boundedResType": "Coin",
+    "size": 1
   }
 }
 ```
 
-## Updating the leader cards
+## UpdateSetupDone
+When every player has chosen their leader cards and starting resources the conclusion of the setup phase will be notified to the clients.
 
 ```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │                   UpdateLeader │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
+ ┌────────┒                      ┌────────┒ 
+ │ Client ┃                      │ Server ┃
+ ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
+     │                                │
+     │                UpdateSetupDone │
+     │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
+     │                                │
 ```
-**UpdateLeader (server)**
+**UpdateSetupDone (server)**
 ```json
 {
-  "type": "UpdateLeader",
-  "leader": 1,
-  "isActive": true,
-  "isDiscarded": false
+  "type": "UpdateSetupDone"
 }
 ```
 
-## Updating the development card grid
+## UpdateVaticanSection
+This message contains the list of players who benefit from the vatican section's bonus points.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │              UpdateDevCardGrid │
+               │           UpdateVaticanSection │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateDevCardGrid (server)**
-
+**UpdateVaticanSection (server)**
 ```json
 {
-  "type": "UpdateDevCardGrid",
-  "topCards": {
-    "levelsCount": 3,
-    "colorsCount": 4,
-    "grid": {
-      "Purple": [
-        [ 2, 0, 1 ],
-        [ 3, 4, 5 ]
-      ],
-      "Green": [
-        [ 8, 7, 6 ],
-        [ 9, 11, 10 ]
-      ]
-    }
-  }
+  "type": "UpdateVaticanSection",
+  "id": 60,
+  "bonusGivenPlayers": "NicknameA"
 }
 ```
 
-## Updating the development card slots
+## UpdateVictoryPoints
+This message contains the current amount of victory points for the specified player.  
+The victory points' amount is updated in real time.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │              UpdateDevCardSlot │
+               │            UpdateVictoryPoints │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateDevCardSlot (server)**
-
+**UpdateVictoryPoints (server)**
 ```json
 {
-  "type": "UpdateDevCardSlot",
-  "slot": 0,
-  "card": 7
-}
-```
-
-## Updating the position on the faith track
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │               UpdateFaithTrack │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-**UpdateFaithTrack (server)**
-```json
-{
-  "type": "UpdateFaithTrack",
-  "isBlackCross": false,
-  "position": 14,
-  "nickname": "NicknameA"
-}
-```
-
-## Updating the vatican sections
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │      UpdateActivatedVatSection │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-**UpdateActivatedVatSection (server)**
-```json
-{
-  "type": "UpdateActivatedVatSection",
-  "id": 66
-}
-```
-
-## Sending the activated solo action token
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │              UpdateActionToken │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-
-**UpdateActionToken (server)**
-
-```json
-{
-  "type": "UpdateActionToken",
-  "actionToken": 6,
-  "stack": [ 3, 5, 1, 2, 4, 6, 0 ]
-}
-```
-
-## Notifying the last round
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │                UpdateLastRound │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-**UpdateLastRound (server)**
-```json
-{
-  "type": "UpdateLastRound"
-}
-```
-## Declaring a winner
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │                  UpdateGameEnd │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-**UpdateGameEnd (server)**
-```json
-{
-  "type": "UpdateGameEnd",
-  "winner": "NicknameA",
-  "victoryPoints": { "NicknameA": 20, "NicknameB": 16, "NicknameC": 12 }
+  "type": "UpdateVictoryPoints",
+  "player": "NicknameA",
+  "victoryPoints": 20
 }
 ```
