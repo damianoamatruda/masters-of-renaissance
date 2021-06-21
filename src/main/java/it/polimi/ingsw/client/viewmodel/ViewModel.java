@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.viewmodel;
 
-import it.polimi.ingsw.common.backend.model.Player;
 import it.polimi.ingsw.common.reducedmodel.*;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 /** Data storage cache on the Masters Of Renaissance client. */
 public class ViewModel {
@@ -601,12 +599,19 @@ public class ViewModel {
     }
 
     /**
-     * Sets the status of a leader card to activated.
+     * Sets the status of a leader card to activated and adds it to the leader
      *
      * @param id the ID of the card to be activated
      */
     public synchronized void activateLeaderCard(int id) {
         leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
+
+        if (playerData.keySet().contains(getCurrentPlayer()) &&
+            playerData.get(getCurrentPlayer()) != null) {
+            Set<Integer> lc = playerData.get(getCurrentPlayer()).getLeadersHand();
+            lc.add(id);
+            playerData.get(getCurrentPlayer()).setLeadersHand(lc);
+        }
     }
 
     /**

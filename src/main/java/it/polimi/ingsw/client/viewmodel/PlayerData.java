@@ -3,8 +3,10 @@ package it.polimi.ingsw.client.viewmodel;
 import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /** Data relative to a player's objects. */
 public class PlayerData {
@@ -20,7 +22,7 @@ public class PlayerData {
        the IDs of all the leader cards in their hand.
        For every other player, this contains the IDs of the activated (therefore, visible) cards
        of the player that owns them. */
-    private List<Integer> leadersHand;
+    private Set<Integer> leadersHand;
     private final ReducedPlayerSetup setup;
     private final int strongbox;
     private int victoryPoints;
@@ -36,7 +38,7 @@ public class PlayerData {
      */
     public PlayerData(int baseProduction, ReducedPlayerSetup setup, int strongbox, List<Integer> warehouseShelves) {
         devSlots = new ArrayList<>();
-        leadersHand = new ArrayList<>();
+        leadersHand = new HashSet<>();
         
         this.baseProduction = baseProduction;
         this.setup = setup;
@@ -114,16 +116,16 @@ public class PlayerData {
     /**
      * @return the leadersHand
      */
-    List<Integer> getLeadersHand() {
+    Set<Integer> getLeadersHand() {
         return leadersHand;
     }
 
     /**
      * @param leadersHand the leadersHand to set
      */
-    public synchronized void setLeadersHand(List<Integer> leadersHand) {
+    public synchronized void setLeadersHand(Set<Integer> leadersHand) {
         if (leadersHand != null)
-            this.leadersHand = new ArrayList<>(leadersHand);
+            this.leadersHand = new HashSet<>(leadersHand);
     }
 
     /**

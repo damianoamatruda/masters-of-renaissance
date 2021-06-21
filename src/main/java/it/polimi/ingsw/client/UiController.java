@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 public abstract class UiController {
@@ -158,7 +159,7 @@ public abstract class UiController {
             player
             leadershand -> client has enough info for leader choice */
 
-        vm.getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(event.getLeaders());
+        vm.getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(new HashSet<>(event.getLeaders()));
     }
 
     public void on(UpdateLeadersHandCount event) {

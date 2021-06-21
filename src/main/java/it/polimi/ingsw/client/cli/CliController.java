@@ -278,16 +278,6 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateLeadersHand event) {
         super.on(event);
         
-        /* this message arrives last among the starting events:
-            joingame
-            updategame
-            currplayer
-            market
-            devcardgrid
-            player
-            leadershand -> client has enough info for leader choice */
-
-        super.on(event);
         cli.getOut().println();
         cli.getOut().println(center(String.format("%s's leader cards:", event.getPlayer())));
         cli.getOut().println();
