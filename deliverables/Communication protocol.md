@@ -47,6 +47,12 @@ This document describes the client-server communication protocol used by the imp
 All messages are encoded using the GSON library and follow therefore the JSON specification, language-wise.  
 Every value shown in the messages is to be taken as an example, having been written only to show the messages' structure.  
 
+State update messages are sent autonomously by the updated entities. Clients cannot assume that a state update message will be sent or the timing it will be sent with (ordering with respect to other messages, etc.).  
+State update messages are broadcast unless specified.
+
+`UpdateAction` messages confirm the success of the requested action and mark the end of the state update messages stream.
+
+Error messages are unicast to the client that sent the illegal request.
 
 
 # Client-server connection management - Network level
@@ -291,8 +297,6 @@ When reconnecting, the server will send all the necessary game data for the clie
 # General Errors
 Error messages that are sent in multiple occasions are reported here.  
 Any successive mentions of these messages refer to this section for syntax and examples.
-
-Every error message is unicast to the client that sent the illegal request.
 
 ## ErrAction
 This message signals to the client that the action is being requested at the wrong time.  
