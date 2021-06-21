@@ -228,6 +228,7 @@ Information about the player being the first of the match is included in the res
 ```
 
 The `UpdateBookedSeats` message gives the client information about who is the first in the waiting list (and therefore can choose the new game's player count) and the amount of players in the waiting list.
+When the match is waiting for players to join before its start, sending notifications allows the players who already joined to know how many empty seats are left, therefore getting a sense for how much waiting time there's left.
 
 ## Choosing the number of players
 When a player is assigned by the server as the first of a new game, they have to decide the number of players required to start it.
