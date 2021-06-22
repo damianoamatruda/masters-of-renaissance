@@ -29,6 +29,10 @@ public class Ui extends View {
     public void setController(UiController controller) {
         this.controller = controller;
     }
+
+    public UiController getController() {
+        return controller;
+    }
     
     public Optional<InputStream> getGameConfigStream() {
         return Optional.ofNullable(gameConfigStream);
