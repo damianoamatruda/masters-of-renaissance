@@ -7,10 +7,10 @@ import it.polimi.ingsw.common.events.mvevents.UpdateGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
 import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
 import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -37,7 +37,6 @@ public class WaitingBeforeGameController extends GuiController {
 
     private boolean youCanPrepare;
 
-    
     public WaitingBeforeGameController() {
         youCanPrepare = false;
     }
@@ -89,6 +88,22 @@ public class WaitingBeforeGameController extends GuiController {
         } catch (NumberFormatException e) {
             Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", "Not a number", maxScale)));
         }
+    }
+
+    @Override
+    public void on(ErrNewGame event) {
+        if (event.isInvalidPlayersCount())
+            gui.reloadRoot(c ->
+                getRootElement().getChildren().add(
+                    new Alert("Error setting players number",
+                        "Invalid number.",
+                        maxScale)));
+        else
+            setNextState(c ->
+                getRootElement().getChildren().add(
+                    new Alert("Error setting players number",
+                        "You are not allowed to set the players' number for this match.",
+                        maxScale)));
     }
 
     @Override
