@@ -54,11 +54,15 @@ public class Gui extends Application {
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
 
+    private URL currentRoot;
+
     public Gui() {
         Gui.instance = this;
         this.ui = new Ui();
         this.musicPlayer = null;
         this.soundFxVolume = 1;
+
+        this.currentRoot = null;
     }
 
     public static void main(String[] args) {
@@ -115,6 +119,7 @@ public class Gui extends Application {
     }
 
     void setRoot(URL fxml, Consumer<?> callback) {
+        this.currentRoot = fxml;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(fxml);
             Parent root = fxmlLoader.load();
@@ -129,6 +134,10 @@ public class Gui extends Application {
 
     void setRoot(URL fxml) {
         setRoot(fxml, null);
+    }
+
+    void reloadRoot(Consumer<?> callback) {
+        setRoot(currentRoot, callback);
     }
 
     public Stage getStage() {
