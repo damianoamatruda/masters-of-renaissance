@@ -324,6 +324,26 @@ public class DevCardGridController extends GuiController {
     }
 
     @Override
+    public void on(ErrBuyDevCard event) {
+        if (event.isStackEmpty())
+            gui.reloadRoot(c ->
+                    getRootElement().getChildren().add(
+                        new Alert("Error buying development card",
+                            String.format("Cannot buy development card with color %s and level %d: deck is empty.",
+                                selectedColor, selectedLevel),
+                            maxScale)));
+        else {
+            ReducedDevCard card = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue());
+            gui.reloadRoot(c ->
+                    getRootElement().getChildren().add(
+                        new Alert("Error buying development card",
+                            String.format("Cannot place development card in slot %d: card level %d, slot level %d.",
+                                devSlotChoicePicker.getValue(), selectedLevel, card == null ? 0 : card.getLevel()),
+                            maxScale)));
+        }
+    }
+
+    @Override
     public void on(UpdateAction event) {
         super.on(event);
         if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
