@@ -104,6 +104,11 @@ public abstract class PlaygroundController extends GuiController {
         setPauseHandlers(this.backStackPane, this.canvas, maxScale);
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+    
     /**
      * Sets the leaders hand view component, that also includes the activation/discard buttons under which card
      */

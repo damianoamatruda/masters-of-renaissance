@@ -36,6 +36,11 @@ public class EndgameController extends GuiController {
             outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Handles quit from game to title
      */

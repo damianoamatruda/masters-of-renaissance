@@ -45,6 +45,11 @@ public class TriggerActionToken extends GuiController {
 
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Get the path to the ActionToken Image component matching the activated token type
      *

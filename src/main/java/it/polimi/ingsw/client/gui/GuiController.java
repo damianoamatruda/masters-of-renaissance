@@ -51,6 +51,8 @@ public abstract class GuiController extends UiController implements Initializabl
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
+    abstract StackPane getRootElement();
+
     @Override
     public void on(ResQuit event) {
         super.on(event);

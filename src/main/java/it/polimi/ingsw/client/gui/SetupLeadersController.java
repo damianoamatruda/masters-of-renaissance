@@ -91,6 +91,11 @@ public class SetupLeadersController extends GuiController {
         updateChoiceButton();
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
      */

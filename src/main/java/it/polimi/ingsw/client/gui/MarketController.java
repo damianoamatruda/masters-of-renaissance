@@ -85,6 +85,11 @@ public class MarketController extends GuiController {
         setPauseHandlers(backStackPane, canvas, maxScale);
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Fills the choice box with the resources included in the row or column selected.
      *

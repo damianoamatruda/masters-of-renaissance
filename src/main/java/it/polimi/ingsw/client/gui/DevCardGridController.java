@@ -113,6 +113,11 @@ public class DevCardGridController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      *
      * @param resource

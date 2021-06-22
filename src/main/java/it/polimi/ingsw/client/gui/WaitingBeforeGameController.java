@@ -51,6 +51,11 @@ public class WaitingBeforeGameController extends GuiController {
         bpane.scaleYProperty().bind(maxScale);
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Sets the count of players who currently joined at runtime, and displays it.
      *

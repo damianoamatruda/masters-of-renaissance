@@ -47,6 +47,11 @@ public class MainMenuController extends GuiController {
         }
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Handles choice of playing offline Solo.
      */

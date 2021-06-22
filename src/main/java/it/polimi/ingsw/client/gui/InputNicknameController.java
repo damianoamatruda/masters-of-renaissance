@@ -44,6 +44,11 @@ public class InputNicknameController extends GuiController {
         bpane.scaleYProperty().bind(maxScale);
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Sends a join request to the server with the given nickname.
      */

@@ -76,6 +76,11 @@ public class PlayOnlineController extends GuiController {
                 controller.setTitle("Play Online"));
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Handles going back to main menu.
      */

@@ -186,6 +186,11 @@ public class SetupResourcesController extends GuiController {
 
     }
 
+    @Override
+    StackPane getRootElement() {
+        return backStackPane;
+    }
+
     /**
      * Refresh of the Choose button, disabling it if the count of chosen resources does not match.
      */
