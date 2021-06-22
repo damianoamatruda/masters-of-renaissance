@@ -1,10 +1,13 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -21,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 /** Gui controller used for the leader cards setup scene. */
 public class SetupLeadersController extends GuiController {
@@ -111,6 +115,41 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private void handleChoice() {
         Gui.getInstance().getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
+    }
+
+    @Override
+    public void on(ErrAction event) {
+        /* If the data in the VM is correct setNextSetupState() could be used here as well.
+           This different handler, which keeps track of the current player only,
+           forces the client in a state that's compatible with the server's response,
+           accepting it as a universal source of truth. */
+        Consumer<?> callback = c ->
+            getRootElement().getChildren().add(
+                new Alert("Action error", "Setup phase is concluded, advancing to game turns.", maxScale));
+
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
+        else
+            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
+    }
+
+    @Override
+    public void on(ErrInitialChoice event) {
+        if (event.isLeadersChoice()) // if the error is from the initial leaders choice
+            if (event.getMissingLeadersCount() == 0) // no leaders missing -> already chosen
+                setNextState(c ->
+                    getRootElement().getChildren().add(
+                        new Alert("Error choosing leader cards", "Leader cards already chosen, advancing to next state.", maxScale)));
+            else
+                gui.reloadRoot(c ->
+                    getRootElement().getChildren().add(
+                        new Alert("Error buying development card",
+                            String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()),
+                            maxScale)));
+        else
+            setNextState(c ->
+                getRootElement().getChildren().add(
+                    new Alert("Error choosing leader cards", "Initial resources already chosen, advancing to next state.", maxScale)));
     }
 
     @Override
