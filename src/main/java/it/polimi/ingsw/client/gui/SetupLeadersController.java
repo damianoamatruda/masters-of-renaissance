@@ -118,20 +118,20 @@ public class SetupLeadersController extends GuiController {
         if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateSetupDone event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 }

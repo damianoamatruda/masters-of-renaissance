@@ -91,8 +91,4 @@ public class MainMenuController extends GuiController {
     public StackPane getBackStackPane() {
         return backStackPane;
     }
-
-    public NumberBinding getMaxScale() {
-        return maxScale;
-    }
 }

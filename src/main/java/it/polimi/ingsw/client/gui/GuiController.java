@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
@@ -30,23 +31,27 @@ public abstract class GuiController extends UiController implements Initializabl
      * The local player's UpdatePlayer tells the client what part of the player setup to switch to.
      * If the leaders hand still needs to be chosen the client will need to wait for UpdateLeadersHand.
      */
-    protected void setNextSetupState() {
+    protected void setNextState(Consumer<?> callback) {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
             if (isSetupDone) { // setup is done
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                    gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+                    gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
                 else
-                    gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+                    gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
             } else // setup not done
                 vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
-                            gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"));
+                            gui.setRoot(getClass().getResource("/assets/gui/setupleaders.fxml"), callback);
                         else if (isResourceSetupAvailable())
-                            gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"));
+                            gui.setRoot(getClass().getResource("/assets/gui/setupresources.fxml"), callback);
                     });
                 });
         });
+    }
+
+    protected void setNextState() {
+        setNextState(null);
     }
 
     @FXML

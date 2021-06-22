@@ -98,27 +98,27 @@ public class InputNicknameController extends GuiController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdatePlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 }

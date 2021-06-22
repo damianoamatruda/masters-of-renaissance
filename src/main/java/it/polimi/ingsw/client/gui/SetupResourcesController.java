@@ -218,13 +218,13 @@ public class SetupResourcesController extends GuiController {
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateSetupDone event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 }
