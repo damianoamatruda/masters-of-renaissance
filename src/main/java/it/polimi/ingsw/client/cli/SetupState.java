@@ -21,12 +21,18 @@ public abstract class SetupState extends CliController {
 
     @Override
     public void on(ErrInitialChoice event) {
-        // repeats either SetupLeadersState or SetupResourcesState
-        cli.reloadController(event.isLeadersChoice() ? // if the error is from the initial leaders choice
-                event.getMissingLeadersCount() == 0 ?
-                        "Leaders already chosen" :        // if the count is zero it means the leaders were already chosen
-                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()) :
-                "Resources already chosen");          // else it's from the resources choice
+        if (event.isLeadersChoice()) // if the error is from the initial leaders choice
+            if (event.getMissingLeadersCount() == 0) { // no leaders missing -> already chosen
+                cli.getOut().println("Leader cards already chosen, advancing to next state.");
+                setNextState();
+            }
+            else
+                cli.reloadController(
+                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
+        else {
+            cli.getOut().println("Initial resources already chosen, advancing to next state.");
+            setNextState();
+        }
     }
 
     @Override
@@ -34,20 +40,20 @@ public abstract class SetupState extends CliController {
         if (!event.getPlayer().equals(vm.getLocalPlayerNickname()))
             return;
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateSetupDone event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 }

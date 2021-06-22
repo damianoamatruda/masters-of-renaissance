@@ -36,11 +36,6 @@ public class InputNicknameState extends CliController {
     }
 
     @Override
-    public void on(ErrNickname event) {
-        cli.reloadController(String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()));
-    }
-
-    @Override
     public void on(UpdateBookedSeats event) {
         if (event.canPrepareNewGame().equals(vm.getLocalPlayerNickname()))
             cli.setController(new InputPlayersCountState());
@@ -58,21 +53,21 @@ public class InputNicknameState extends CliController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdatePlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
     
     @Override
@@ -81,7 +76,7 @@ public class InputNicknameState extends CliController {
 
         new Thread(() -> {
             cli.promptPause();
-            setNextSetupState();
+            setNextState();
         }).start();
     }
 }

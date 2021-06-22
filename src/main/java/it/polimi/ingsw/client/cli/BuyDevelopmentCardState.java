@@ -148,24 +148,32 @@ public class BuyDevelopmentCardState extends CliController {
 
     @Override
     public void on(ErrBuyDevCard event) {
-        cli.reloadController(event.isStackEmpty() ?
-                "Cannot buy development card. Deck is empty." :
-                "Cannot place devcard in slot, level mismatch.");
+        if (event.isStackEmpty())
+        cli.reloadController(
+                String.format("Cannot buy development card with color %s and level %d: deck is empty.", color, level));
+        else {
+            ReducedDevCard c = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(slot);
+            cli.reloadController(
+                    String.format("Cannot place development card in slot %d: card level %d, slot level %d.",
+                            slot,
+                            vm.getDevCardFromGrid(color, level).map(ReducedDevCard::getId).orElse(0),
+                            c == null ? 0 : c.getId()));
+        }
     }
 
     @Override
     public void on(ErrCardRequirements event) {
-        String msg;
+        String msg = "\nUnsatisfied card requirements:\n";
         if (event.getMissingDevCards().isPresent()) {
-            msg = String.format("\nPlayer %s does not satisfy the following entries:", vm.getLocalPlayerNickname());
+            msg = msg.concat("Missing development cards:\n");
     
             for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
-                msg = msg.concat(String.format("\nColor %s, level %d, missing %s", e.getColor(), e.getLevel(), e.getAmount()));
+                msg = msg.concat(String.format("Color: %s, level: %d, missing: %d\n", e.getColor(), e.getLevel(), e.getAmount()));
         } else {
-            msg = String.format("\nPlayer %s lacks the following resources by the following amounts:", vm.getLocalPlayerNickname());
+            msg = msg.concat("Missing resources:\n");
 
             for (Map.Entry<String, Integer> e : event.getMissingResources().get().entrySet())
-                msg = msg.concat(String.format("\nResource %s, missing %s", e.getKey(), e.getValue()));
+                msg = msg.concat(String.format("Resource type: %s, missing %d\n", e.getKey(), e.getValue()));
         }
 
         cli.reloadController(msg);

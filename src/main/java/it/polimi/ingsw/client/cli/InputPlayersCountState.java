@@ -42,10 +42,12 @@ public class InputPlayersCountState extends CliController {
 
     @Override
     public void on(ErrNewGame event) {
-        cli.reloadController(event.isInvalidPlayersCount() ?
-                "Invalid players count." :
-                // should technically never happen
-                "You are not supposed to choose the players count for the game.");
+        if (event.isInvalidPlayersCount())
+            cli.reloadController("Invalid players count.");
+        else {
+            cli.getOut().println("You cannot choose the players' number for this match.");
+            setNextState();
+        }
     }
 
     @Override
@@ -63,21 +65,21 @@ public class InputPlayersCountState extends CliController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdatePlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        setNextSetupState();
+        setNextState();
     }
 
     @Override
@@ -86,7 +88,7 @@ public class InputPlayersCountState extends CliController {
 
         new Thread(() -> {
             cli.promptPause();
-            setNextSetupState();
+            setNextState();
         }).start();
     }
 }

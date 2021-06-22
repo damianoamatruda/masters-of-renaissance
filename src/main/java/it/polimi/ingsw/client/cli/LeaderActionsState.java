@@ -44,7 +44,7 @@ public class LeaderActionsState extends CliController {
 
     @Override
     public void on(ErrActiveLeaderDiscarded event) {
-        cli.reloadController(String.format("Active leader %d tried to be discarded.", leaderId)); // TODO: Insert leader ID into event
+        cli.reloadController(String.format("Leader card with ID %d cannot be discarded: leader card is active.", leaderId));
     }
 
     @Override

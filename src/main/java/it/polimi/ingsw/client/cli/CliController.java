@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
@@ -29,7 +30,7 @@ public abstract class CliController extends UiController implements Renderable {
      * The local player's UpdatePlayer tells the client what part of the player setup to switch to.
      * If the leaders hand still needs to be chosen the client will need to wait for UpdateLeadersHand.
      */
-    protected void setNextSetupState() {
+    protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
             if (isSetupDone) { // setup is done
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
@@ -51,40 +52,59 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public abstract void render();
 
-    // TODO review all error states
-
     @Override
     public void on(ErrAction event) {
         super.on(event);
 
-        // TODO: handle
-        // switch (event.getReason()) {
-        // case LATE_SETUP_ACTION:
-        //     if ()
-        // break;
-        // case EARLY_MANDATORY_ACTION:
+        switch (event.getReason()) {
+        case LATE_SETUP_ACTION:
+            cli.getOut().println(
+                    center("Setup phase is concluded, advancing to game turns."));
+            
+            if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+                cli.setController(new TurnBeforeActionState());
+            else
+                cli.setController(new WaitingAfterTurnState());
+        break;
+        case EARLY_MANDATORY_ACTION:
+            cli.getOut().println(
+                    center("A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase."));
+            
+            if (!isLocalLeaderSetupDone())
+                cli.setController(new SetupLeadersState());
+            else if (!isLocalResourceSetupDone())
+                cli.setController(new SetupResourcesState());
+            else
+                setNextState();
+        break;
+        case LATE_MANDATORY_ACTION:
+            cli.getOut().println(
+                    center("A mandatory action has already been executed, advancing to optional actions."));
 
-        // break;
-        // case LATE_MANDATORY_ACTION:
+            cli.setController(new TurnAfterActionState());
+        break;
+        case EARLY_TURN_END:
+            cli.getOut().println(
+                center("A mandatory action needs to be executed before ending the turn."));
 
-        // break;
-        // case EARLY_TURN_END:
+            cli.setController(new TurnBeforeActionState());
+        break;
+        case GAME_ENDED:
+            cli.getOut().println(
+                center("The match is finished, advancing to ending screen."));
 
-        // break;
-        // case GAME_ENDED:
+            cli.setController(new GameEndState());
+        break;
+        case NOT_CURRENT_PLAYER:
+            cli.getOut().println(
+                center("You are not the current player. Please wait for your turn."));
 
-        // break;
-        // case NOT_CURRENT_PLAYER:
-
-        // break;
-        // default:
-        //         break;
-        // }
-    }
-
-    @Override
-    public void on(ErrActiveLeaderDiscarded event) {
-        super.on(event);
+            cli.setController(new WaitingAfterTurnState());
+        break;
+        default:
+            cli.getOut().println(center(String.format("Unsupported ErrAction reason %s.", event.getReason().toString())));
+        break;
+        }
     }
 
     @Override
@@ -110,6 +130,27 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(ErrNickname event) {
         super.on(event);
+
+        if (event.getReason() == ErrNicknameReason.NOT_IN_GAME) {
+            cli.getOut().println("Match not joined yet.");
+            cli.setController(new InputNicknameState(""));
+            return;
+        }
+
+        String reason = "";
+        switch (event.getReason()) {
+            case ALREADY_SET:
+            case TAKEN:
+            reason = String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
+            break;
+            case NOT_SET:
+                reason = "nickname is blank.";
+            break;
+            default:
+                reason = "unsupported ErrNickname option";
+            break;
+        }
+        cli.reloadController(String.format("Error setting nickname: %s", reason));
     }
 
     @Override
@@ -117,10 +158,10 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
         
         cli.reloadController(
-            String.format("No such entity %s: ID %d, code %s.",
-                event.getOriginalEntity().toString().toLowerCase(),
-                event.getId(),
-                event.getCode()));
+            String.format("No such entity %s: %s%s.",
+                event.getOriginalEntity().toString().toLowerCase().replace("_", " "),
+                event.getId() < 0 ? "" : String.format("ID %d", event.getId()),
+                event.getCode() == null ? "" : String.format("code %s", event.getCode())));
     }
 
     @Override
@@ -134,10 +175,14 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrReplacedTransRecipe event) {
         super.on(event);
         
-        cli.reloadController(
-                String.format(
-                        "Discrepancy in the transaction recipe.\nResource: %s, replaced count: %d, specified shelfmap count: %d",
-                        event.getResType(), event.getReplacedCount(), event.getShelvesChoiceResCount()));
+        if (event.isIllegalDiscardedOut())
+            cli.reloadController("Output of resource transfer cannot be discarded");
+        else
+            cli.reloadController(String.format(
+                    "Irregular amount of %s specified in the container map: %d specified, %d required.",
+                    event.getResType().isEmpty() ? "resources" : event.getResType(),
+                    event.getReplacedCount(),
+                    event.getShelvesChoiceResCount()));
     }
 
     @Override
@@ -149,7 +194,7 @@ public abstract class CliController extends UiController implements Renderable {
                     event.isInput() ? "input" : "output",
                     event.isNonStorable() ? "nonstorable" : "excluded"));
         else
-            cli.reloadController(String.format("Error validating transaction request: %d replaced resources when %d replaceable.",
+            cli.reloadController(String.format("Error validating transaction request: %d replaced resources, %d replaceable.",
                     event.getReplacedCount(),
                     event.getBlanks()));
     }
@@ -157,11 +202,31 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(ErrResourceTransfer event) {
         super.on(event);
-        
-        cli.reloadController(String.format("Error transferring resources: resource %s, %s, %s.",
+
+        String reason = "";
+
+        switch (event.getReason()) {
+            case BOUNDED_RESTYPE_DIFFER:
+                reason = "shelf's binding resource type is different from transferring resource";
+            break;
+            case NON_STORABLE:
+                reason = "resource type is not storable";
+            break;
+            case CAPACITY_REACHED:
+                reason = "shelf's capacity boundaries reached";
+            break;
+            case DUPLICATE_BOUNDED_RESOURCE:
+                reason = "resource type is already bound to another shelf";
+            break;
+            default:
+                reason = "unsupported ErrResourceTransfer option";
+                break;
+        }
+
+        cli.reloadController(String.format("Error %s resource %s from container: %s.",
+                event.isAdded() ? "adding" : "removing",
                 event.getResType(),
-                event.isAdded() ? "added" : "removed",
-                event.getReason().toString()));
+                reason));
     }
 
     @Override
