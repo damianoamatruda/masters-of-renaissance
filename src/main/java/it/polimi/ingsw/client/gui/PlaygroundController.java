@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -20,6 +19,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
@@ -80,6 +80,7 @@ public abstract class PlaygroundController extends GuiController {
             DevSlot slot = new DevSlot();
 
             List<DevelopmentCard> cards = modelSlot.stream()
+                    .filter(Objects::nonNull)
                     .map(c -> new DevelopmentCard(c)).toList();
             slot.setDevCards(cards);
 

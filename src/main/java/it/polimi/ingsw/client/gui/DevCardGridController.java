@@ -284,6 +284,7 @@ public class DevCardGridController extends GuiController {
             DevSlot slot = new DevSlot();
 
             List<DevelopmentCard> cards = modelSlot.stream()
+                    .filter(Objects::nonNull)
                     .map(c -> new DevelopmentCard(c)).toList();
             slot.setDevCards(cards);
 

@@ -157,37 +157,38 @@ public class ViewModel {
 
     /**
      * Retrieves the development cards owned by a player.
+     * Empty slots are represented by empty lists.
      *
      * @param nickname the nickname of the player whose development cards need to be retrieved
      * @return all the development cards in the player's slots
      */
     public synchronized List<List<ReducedDevCard>> getPlayerDevelopmentCards(String nickname) {
-        if (!playerData.containsKey(nickname))
-            return new ArrayList<>();
+        List<List<ReducedDevCard>> cards = new ArrayList<>(slotsCount);
+        
+        if (playerData.containsKey(nickname)) {
+            List<List<Integer>> slots = playerData.get(nickname).getDevSlots();
 
-        return playerData.get(nickname).getDevSlots().stream()
-            .map(slot -> slot.stream()
-                             .map(c -> getDevelopmentCard(c).orElse(null))
-                             .filter(Objects::nonNull)
-                             .toList())
-            .toList();
+            // iterate over each slot
+            for (int i = 0; i < cards.size(); i++) {
+                // get the IDs of all the cards in the slot
+                List<Integer> slotIDs = slots.size() > i ? slots.get(i) : new ArrayList<>();
+                
+                cards.add(slotIDs.stream().map(id -> getDevelopmentCard(id).orElse(null)).toList());
+            }
+        }
+        
+        return cards;
     }
 
     /**
      * Retrieves the topmost development cards in a player's development slots.
+     * If a slot is empty the corresponding position in the list contains a null element.
      *
      * @param nickname the nickname of the player whose topmost development cards need to be retrieved
-     * @return the topmost development cards in the player's slots
+     * @return a list containing, for each slot, either the topmost development card or null if absent
      */
     public synchronized List<ReducedDevCard> getPlayerDevelopmentSlots(String nickname) {
-        if (!playerData.containsKey(nickname))
-            return new ArrayList<>();
-
-        return playerData.get(nickname).getDevSlots().stream()
-            .map(slot -> slot.isEmpty() ? -1 : slot.get(0))
-            .map(cardID -> getDevelopmentCard(cardID).orElse(null))
-            .filter(Objects::nonNull)
-            .toList();
+        return getPlayerDevelopmentCards(nickname).stream().map(slot -> slot.isEmpty() ? null : slot.get(0)).toList();
     }
 
     /**
@@ -267,7 +268,8 @@ public class ViewModel {
         getPlayerLeaderCards(nickname).stream()
             .filter(ReducedLeaderCard::isActive)
             .forEach(c -> ids.add(c.getProduction()));
-        getPlayerDevelopmentSlots(nickname)
+        getPlayerDevelopmentSlots(nickname).stream()
+            .filter(Objects::nonNull)
             .forEach(c -> ids.add(c.getProduction()));
 
         return ids.stream()
