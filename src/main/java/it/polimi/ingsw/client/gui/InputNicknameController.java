@@ -76,14 +76,6 @@ public class InputNicknameController extends GuiController {
     }
 
     @Override
-    public void on(ErrNickname event) {
-        super.on(event);
-        Platform.runLater(() ->
-            backStackPane.getChildren().add(
-                new Alert("Play Online", String.format("Nickname is invalid. Reason: %s.", event.getReason().toString().toLowerCase()), maxScale)));
-    }
-
-    @Override
     public void on(UpdateBookedSeats event) {
         if (gui.getUi().isOffline())
             gui.getUi().dispatch(new ReqNewGame(1));

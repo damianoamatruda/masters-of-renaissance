@@ -3,10 +3,12 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrServerUnavailable;
+import it.polimi.ingsw.common.events.mvevents.errors.*;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -61,12 +63,210 @@ public abstract class GuiController extends UiController implements Initializabl
     abstract StackPane getRootElement();
 
     @Override
-    public void on(ResQuit event) {
+    public void on(ErrAction event) {
         super.on(event);
-        
-        gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
+
+        String title = "Action error";
+
+        switch (event.getReason()) {
+        case LATE_SETUP_ACTION:
+            setNextState(c ->
+                getRootElement().getChildren().add(
+                    new Alert(title, "Setup phase is concluded, advancing to game turns.", maxScale)));
+        break;
+        case EARLY_MANDATORY_ACTION:
+            setNextState(c ->
+                getRootElement().getChildren().add(
+                    new Alert(title,
+                        "A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase.",
+                        maxScale)));
+        break;
+        case LATE_MANDATORY_ACTION:
+            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), c ->
+                getRootElement().getChildren().add(
+                    new Alert(title,
+                        "A mandatory action has already been executed, advancing to optional actions.",
+                        maxScale)));
+        break;
+        case EARLY_TURN_END:
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), c ->
+                getRootElement().getChildren().add(
+                    new Alert(title,
+                        "A mandatory action needs to be executed before ending the turn.",
+                        maxScale)));
+            break;
+        case GAME_ENDED:
+            gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"), c ->
+                getRootElement().getChildren().add(
+                    new Alert(title,
+                        "The match is finished, advancing to ending screen.",
+                        maxScale)));
+        break;
+        case NOT_CURRENT_PLAYER:
+            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), c ->
+                getRootElement().getChildren().add(
+                    new Alert(title,
+                        "You are not the current player. Please wait for your turn.",
+                        maxScale)));
+        break;
+        default:
+            gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"), c ->
+                getRootElement().getChildren().add(
+                    new Alert(title,
+                        String.format("Unsupported ErrAction reason %s.", event.getReason().toString()),
+                        maxScale)));
+        break;
+        }
     }
 
+    @Override
+    public void on(ErrBuyDevCard event) {
+        super.on(event);
+    }
+
+    @Override
+    public void on(ErrCardRequirements event) {
+        super.on(event);
+    }
+
+    @Override
+    public void on(ErrInitialChoice event) {
+        super.on(event);
+    }
+
+    @Override
+    public void on(ErrNewGame event) {
+        super.on(event);
+    }
+
+    @Override
+    public void on(ErrNickname event) {
+        super.on(event);
+
+        if (event.getReason() == ErrNicknameReason.NOT_IN_GAME) {
+            gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), c ->
+                getRootElement().getChildren().add(
+                    new Alert("Nickname error",
+                        "Match not joined yet.",
+                        maxScale)));
+            return;
+        }
+
+        final String reason;
+        switch (event.getReason()) {
+            case ALREADY_SET:
+            case TAKEN:
+                reason = String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
+            break;
+            case NOT_SET:
+                reason = "nickname is blank.";
+            break;
+            default:
+                reason = "unsupported ErrNickname option";
+            break;
+        }
+
+        gui.reloadRoot(c ->
+            getRootElement().getChildren().add(
+                new Alert("Nickname error",
+                    String.format("Error setting nickname: %s", reason),
+                    maxScale)));
+    }
+
+    @Override
+    public void on(ErrNoSuchEntity event) {
+        super.on(event);
+        
+        gui.reloadRoot(c ->
+            getRootElement().getChildren().add(
+                new Alert("Nonexistent entity",
+                    String.format("No such entity %s: %s%s.",
+                        event.getOriginalEntity().toString().toLowerCase().replace("_", " "),
+                        event.getId() < 0 ? "" : String.format("ID %d", event.getId()),
+                        event.getCode() == null ? "" : String.format("code %s", event.getCode())),
+                    maxScale)));
+    }
+
+    @Override
+    public void on(ErrObjectNotOwned event) {
+        super.on(event);
+        
+        gui.reloadRoot(c ->
+            getRootElement().getChildren().add(
+                new Alert("Nonexistent entity",
+                    String.format("%s with ID %d isn't yours. Are you sure you typed that right?",
+                        event.getObjectType(), event.getId()),
+                    maxScale)));
+    }
+
+    @Override
+    public void on(ErrReplacedTransRecipe event) {
+        super.on(event);
+        
+        if (event.isIllegalDiscardedOut())
+            gui.reloadRoot(c ->
+                getRootElement().getChildren().add(
+                    new Alert("Nonexistent entity",
+                        "Output of resource transfer cannot be discarded",
+                        maxScale)));
+        else
+            gui.reloadRoot(c ->
+                getRootElement().getChildren().add(
+                    new Alert("Nonexistent entity",
+                        String.format(
+                            "Irregular amount of %s specified in the container map: %d specified, %d required.",
+                            event.getResType().isEmpty() ? "resources" : event.getResType(),
+                            event.getReplacedCount(),
+                            event.getShelvesChoiceResCount()),
+                        maxScale)));
+    }
+
+    @Override
+    public void on(ErrResourceReplacement event) {
+        super.on(event);
+        
+        gui.reloadRoot(c ->
+            getRootElement().getChildren().add(
+                new Alert("Nonexistent entity",
+                    String.format("Error validating transaction request %s: %s resource found.",
+                        event.isInput() ? "input" : "output",
+                        event.isNonStorable() ? "nonstorable" : "excluded"),
+                    maxScale)));
+    }
+
+    @Override
+    public void on(ErrResourceTransfer event) {
+        super.on(event);
+
+        final String reason;
+
+        switch (event.getReason()) {
+            case BOUNDED_RESTYPE_DIFFER:
+                reason = "shelf's binding resource type is different from transferring resource";
+            break;
+            case NON_STORABLE:
+                reason = "resource type is not storable";
+            break;
+            case CAPACITY_REACHED:
+                reason = "shelf's capacity boundaries reached";
+            break;
+            case DUPLICATE_BOUNDED_RESOURCE:
+                reason = "resource type is already bound to another shelf";
+            break;
+            default:
+                reason = "unsupported ErrResourceTransfer option";
+                break;
+        }
+        gui.reloadRoot(c ->
+            getRootElement().getChildren().add(
+                new Alert("Nonexistent entity",
+                    String.format("Error %s resource %s from container: %s.",
+                        event.isAdded() ? "adding" : "removing",
+                        event.getResType(),
+                        reason),
+                    maxScale)));
+    }
+    
     @Override
     public void on(ErrServerUnavailable event) {
         super.on(event);
@@ -78,9 +278,16 @@ public abstract class GuiController extends UiController implements Initializabl
 
         gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"),
                 (MainMenuController controller) ->
-                        controller.getBackStackPane().getChildren()
+                        getRootElement().getChildren()
                                 .add(new Alert("Connection error", "Server is down. Try again later.",
-                                        controller.getMaxScale())));
+                                        maxScale)));
 
+    }
+
+    @Override
+    public void on(ResQuit event) {
+        super.on(event);
+
+        gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }
