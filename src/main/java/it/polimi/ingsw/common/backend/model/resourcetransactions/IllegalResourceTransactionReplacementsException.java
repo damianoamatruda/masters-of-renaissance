@@ -12,13 +12,8 @@ public class IllegalResourceTransactionReplacementsException extends IllegalReso
      * @param isInput
      * @param isNonStorable
      * @param isExcluded
-     * @param replacedCount
-     * @param blanks
      */
-    public IllegalResourceTransactionReplacementsException (
-        boolean isInput,
-        boolean isNonStorable,
-        boolean isExcluded) {
+    public IllegalResourceTransactionReplacementsException (boolean isInput, boolean isNonStorable, boolean isExcluded) {
         this.isInput = isInput;
         this.isNonStorable = isNonStorable;
         this.isExcluded = isExcluded;

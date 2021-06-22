@@ -13,8 +13,6 @@ public class ErrResourceReplacement extends ViewEvent {
      * @param isInput
      * @param isNonStorable
      * @param isExcluded
-     * @param replacedCount
-     * @param blanks
      */
     public ErrResourceReplacement(View view, boolean isInput, boolean isNonStorable, boolean isExcluded) {
         super(view);
