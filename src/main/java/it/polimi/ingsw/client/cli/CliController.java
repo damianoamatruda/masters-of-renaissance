@@ -58,48 +58,66 @@ public abstract class CliController extends UiController implements Renderable {
 
         switch (event.getReason()) {
         case LATE_SETUP_ACTION:
-            cli.getOut().println(
+            new Thread(() -> {
+                cli.getOut().println(
                     center("Setup phase is concluded, advancing to game turns."));
+                cli.promptPause();
             
-            if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                cli.setController(new TurnBeforeActionState());
-            else
-                cli.setController(new WaitingAfterTurnState());
+                if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+                    cli.setController(new TurnBeforeActionState());
+                else
+                    cli.setController(new WaitingAfterTurnState());
+            }).start();
         break;
         case EARLY_MANDATORY_ACTION:
-            cli.getOut().println(
+            new Thread(() -> {
+                cli.getOut().println(
                     center("A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase."));
+                cli.promptPause();
             
-            if (!isLocalLeaderSetupDone())
-                cli.setController(new SetupLeadersState());
-            else if (!isLocalResourceSetupDone())
-                cli.setController(new SetupResourcesState());
-            else
-                setNextState();
+                if (!isLocalLeaderSetupDone())
+                    cli.setController(new SetupLeadersState());
+                else if (!isLocalResourceSetupDone())
+                    cli.setController(new SetupResourcesState());
+                else
+                    setNextState();
+            }).start();
         break;
         case LATE_MANDATORY_ACTION:
-            cli.getOut().println(
+            new Thread(() -> {
+                cli.getOut().println(
                     center("A mandatory action has already been executed, advancing to optional actions."));
+                cli.promptPause();
 
-            cli.setController(new TurnAfterActionState());
+                cli.setController(new TurnAfterActionState());
+            }).start();
         break;
         case EARLY_TURN_END:
-            cli.getOut().println(
-                center("A mandatory action needs to be executed before ending the turn."));
+            new Thread(() -> {
+                cli.getOut().println(
+                    center("A mandatory action needs to be executed before ending the turn."));
+                cli.promptPause();
 
-            cli.setController(new TurnBeforeActionState());
-        break;
+                cli.setController(new TurnBeforeActionState());
+            }).start();
+            break;
         case GAME_ENDED:
-            cli.getOut().println(
-                center("The match is finished, advancing to ending screen."));
+            new Thread(() -> {
+                cli.getOut().println(
+                    center("The match is finished, advancing to ending screen."));
+                cli.promptPause();
 
-            cli.setController(new GameEndState());
+                cli.setController(new GameEndState());
+            }).start();
         break;
         case NOT_CURRENT_PLAYER:
-            cli.getOut().println(
-                center("You are not the current player. Please wait for your turn."));
-
-            cli.setController(new WaitingAfterTurnState());
+            new Thread(() -> {
+                cli.getOut().println(
+                    center("You are not the current player. Please wait for your turn."));
+                cli.promptPause();
+                    
+                cli.setController(new WaitingAfterTurnState());
+            }).start();
         break;
         default:
             cli.getOut().println(center(String.format("Unsupported ErrAction reason %s.", event.getReason().toString())));
@@ -132,8 +150,11 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         if (event.getReason() == ErrNicknameReason.NOT_IN_GAME) {
-            cli.getOut().println("Match not joined yet.");
-            cli.setController(new InputNicknameState(""));
+            new Thread(() -> {
+                cli.getOut().println("Match not joined yet.");
+                cli.promptPause();
+                cli.setController(new InputNicknameState(""));
+            }).start();
             return;
         }
 
@@ -222,6 +243,15 @@ public abstract class CliController extends UiController implements Renderable {
                 event.isAdded() ? "adding" : "removing",
                 event.getResType(),
                 reason));
+    }
+
+    @Override
+    public void on(ErrServerUnavailable event) {
+        new Thread(() -> {
+            cli.getOut().println("Server disconnected, returning to main menu");
+            cli.promptPause();
+            cli.setController(new MainMenuState());
+        }).start();
     }
 
     @Override

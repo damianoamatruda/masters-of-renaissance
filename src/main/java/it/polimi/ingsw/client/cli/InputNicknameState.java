@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.*;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
