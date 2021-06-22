@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
@@ -123,6 +124,11 @@ public abstract class CliController extends UiController implements Renderable {
             cli.getOut().println(center(String.format("Unsupported ErrAction reason %s.", event.getReason().toString())));
         break;
         }
+    }
+
+    @Override
+    public void on(ErrActiveLeaderDiscarded event) {
+        super.on(event);
     }
 
     @Override

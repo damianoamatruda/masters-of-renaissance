@@ -122,6 +122,17 @@ public abstract class GuiController extends UiController implements Initializabl
     }
 
     @Override
+    public void on(ErrActiveLeaderDiscarded event) {
+        super.on(event);
+
+        gui.reloadRoot(c ->
+            getRootElement().getChildren().add(
+                new Alert("Leader discard error",
+                    "Active leader cannot be discarded.",
+                    maxScale)));
+    }
+
+    @Override
     public void on(ErrBuyDevCard event) {
         super.on(event);
     }
