@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.common.*;
-import it.polimi.ingsw.common.events.mvevents.UpdateServerUnavailable;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrServerUnavailable;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class OnlineClient implements Network {
         view.addEventListener(VCEvent.class, vcEventListener);
 
         networkHandler.setOnClose(() -> {
-            networkHandler.awaitDispatch(new UpdateServerUnavailable());
+            networkHandler.awaitDispatch(new ErrServerUnavailable());
 
             view.unregisterOnModelLobby(networkHandler);
             view.unregisterOnModelGameContext(networkHandler);

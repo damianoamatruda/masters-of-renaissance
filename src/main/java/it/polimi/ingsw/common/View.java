@@ -22,7 +22,7 @@ public class View extends AsynchronousEventDispatcher {
     };
     private EventListener<UpdateJoinGame> updateJoinGameEventListener = event -> {
     };
-    private EventListener<UpdateServerUnavailable> updateServerUnavailableEventListener = event -> {
+    private EventListener<ErrServerUnavailable> updateServerUnavailableEventListener = event -> {
     };
     private EventListener<ErrAction> errActionEventListener = event -> {
     };
@@ -89,7 +89,7 @@ public class View extends AsynchronousEventDispatcher {
         lobby.addEventListener(ResQuit.class, resQuitEventListener);
         lobby.addEventListener(UpdateBookedSeats.class, updateBookedSeatsEventListener);
         lobby.addEventListener(UpdateJoinGame.class, updateJoinGameEventListener);
-        lobby.addEventListener(UpdateServerUnavailable.class, updateServerUnavailableEventListener);
+        lobby.addEventListener(ErrServerUnavailable.class, updateServerUnavailableEventListener);
     }
 
     public void unregisterOnModelLobby(EventDispatcher lobby) {
@@ -184,7 +184,7 @@ public class View extends AsynchronousEventDispatcher {
         this.updateJoinGameEventListener = event -> on(event, updateJoinGameEventListener);
     }
 
-    public void setUpdateServerUnavailableEventListener(EventListener<UpdateServerUnavailable> updateServerUnavailableEventListener) {
+    public void setUpdateServerUnavailableEventListener(EventListener<ErrServerUnavailable> updateServerUnavailableEventListener) {
         this.updateServerUnavailableEventListener = event -> on(event, updateServerUnavailableEventListener);
     }
 

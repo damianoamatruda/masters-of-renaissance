@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
-import it.polimi.ingsw.common.events.mvevents.UpdateServerUnavailable;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrServerUnavailable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -59,7 +59,7 @@ public abstract class GuiController extends UiController implements Initializabl
     }
 
     @Override
-    public void on(UpdateServerUnavailable event) {
+    public void on(ErrServerUnavailable event) {
         super.on(event);
 
         if (!gui.getUi().hasClientOpen())

@@ -187,7 +187,7 @@ public abstract class UiController {
         vm.setContainer(event.getResContainer());
     }
 
-    public void on(UpdateServerUnavailable event) {
+    public void on(ErrServerUnavailable event) {
     }
 
     public void on(UpdateSetupDone event) {
