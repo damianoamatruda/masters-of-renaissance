@@ -51,8 +51,7 @@ public class MarketController extends GuiController {
     @FXML
     private Button back;
 
-    private NumberBinding maxScale;
-
+    
     private boolean isRow;
     private int index;
     private Market market;

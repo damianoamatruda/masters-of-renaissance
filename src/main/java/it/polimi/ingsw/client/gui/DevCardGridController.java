@@ -56,8 +56,7 @@ public class DevCardGridController extends GuiController {
     @FXML
     private HBox leadersBox;
 
-    private NumberBinding maxScale;
-
+    
     private DevCardGrid devCardGrid;
     private Warehouse warehouse;
     private Strongbox strongbox;

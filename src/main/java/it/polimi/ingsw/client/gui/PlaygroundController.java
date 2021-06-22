@@ -43,8 +43,7 @@ public abstract class PlaygroundController extends GuiController {
 
     protected final Warehouse warehouse = new Warehouse();
 
-    private NumberBinding maxScale;
-
+    
     private List<Integer> toActivate = new ArrayList<>();
 
     private SButton activateProduction;

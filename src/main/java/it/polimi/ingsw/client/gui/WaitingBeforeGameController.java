@@ -37,8 +37,7 @@ public class WaitingBeforeGameController extends GuiController {
 
     private boolean youCanPrepare;
 
-    private NumberBinding maxScale;
-
+    
     public WaitingBeforeGameController() {
         youCanPrepare = false;
     }

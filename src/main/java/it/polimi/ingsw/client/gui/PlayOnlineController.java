@@ -20,8 +20,7 @@ public class PlayOnlineController extends GuiController {
     @FXML private BorderPane bpane;
     @FXML private TextField server;
 
-    private NumberBinding maxScale;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),

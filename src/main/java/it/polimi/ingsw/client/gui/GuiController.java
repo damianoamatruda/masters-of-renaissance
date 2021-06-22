@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrServerUnavailable;
+import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -12,6 +13,7 @@ import java.util.ResourceBundle;
 
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
+    protected NumberBinding maxScale;
     
     public GuiController() {
         super(Gui.getInstance().getUi());
