@@ -6,7 +6,6 @@ import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.reducedmodel.*;
 
@@ -155,28 +154,8 @@ public class BuyDevelopmentCardState extends CliController {
             ReducedDevCard c = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(slot);
             cli.reloadController(
                     String.format("Cannot place development card in slot %d: card level %d, slot level %d.",
-                            slot,
-                            vm.getDevCardFromGrid(color, level).map(ReducedDevCard::getId).orElse(0),
-                            c == null ? 0 : c.getId()));
+                            slot, level, c == null ? 0 : c.getLevel()));
         }
-    }
-
-    @Override
-    public void on(ErrCardRequirements event) {
-        String msg = "\nUnsatisfied card requirements:\n";
-        if (event.getMissingDevCards().isPresent()) {
-            msg = msg.concat("Missing development cards:\n");
-    
-            for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
-                msg = msg.concat(String.format("Color: %s, level: %d, missing: %d\n", e.getColor(), e.getLevel(), e.getAmount()));
-        } else {
-            msg = msg.concat("Missing resources:\n");
-
-            for (Map.Entry<String, Integer> e : event.getMissingResources().get().entrySet())
-                msg = msg.concat(String.format("Resource type: %s, missing %d\n", e.getKey(), e.getValue()));
-        }
-
-        cli.reloadController(msg);
     }
 
     @Override

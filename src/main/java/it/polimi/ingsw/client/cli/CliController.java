@@ -132,7 +132,20 @@ public abstract class CliController extends UiController implements Renderable {
 
     @Override
     public void on(ErrCardRequirements event) {
-        super.on(event);
+        String msg = "\nUnsatisfied card requirements:\n";
+        if (event.getMissingDevCards().isPresent()) {
+            msg = msg.concat("Missing development cards:\n");
+    
+            for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
+                msg = msg.concat(String.format("Color: %s, level: %d, missing: %d\n", e.getColor(), e.getLevel(), e.getAmount()));
+        } else {
+            msg = msg.concat("Missing resources:\n");
+
+            for (Map.Entry<String, Integer> e : event.getMissingResources().get().entrySet())
+                msg = msg.concat(String.format("Resource type: %s, missing %d\n", e.getKey(), e.getValue()));
+        }
+
+        cli.reloadController(msg);
     }
 
     @Override
