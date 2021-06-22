@@ -189,14 +189,9 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrResourceReplacement event) {
         super.on(event);
         
-        if (event.isExcluded() || event.isNonStorable())
-            cli.reloadController(String.format("Error validating transaction request %s: %s resource found.",
-                    event.isInput() ? "input" : "output",
-                    event.isNonStorable() ? "nonstorable" : "excluded"));
-        else
-            cli.reloadController(String.format("Error validating transaction request: %d replaced resources, %d replaceable.",
-                    event.getReplacedCount(),
-                    event.getBlanks()));
+        cli.reloadController(String.format("Error validating transaction request %s: %s resource found.",
+                event.isInput() ? "input" : "output",
+                event.isNonStorable() ? "nonstorable" : "excluded"));
     }
 
     @Override

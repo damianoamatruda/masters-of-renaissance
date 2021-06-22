@@ -168,15 +168,14 @@ public class PlayerTest {
 
             player.getWarehouse().getShelves().get(0).addResources(Map.of(shield, 1));
 
-            player.addToDevSlot(game, 1, new DevelopmentCard(blue, 1,
-                            new ResourceRequirement(
-                                    Map.of(
-                                            coin, 3,
-                                            stone, 2
-                                    )
-                            ), null, 2, 0),
-                    resContainers);
-
+            assertDoesNotThrow(() -> player.addToDevSlot(game, 1, new DevelopmentCard(blue, 1,
+                    new ResourceRequirement(
+                            Map.of(
+                                    coin, 3,
+                                    stone, 2
+                            )
+                    ), null, 2, 0),
+                    resContainers));
         }
 
         /**

@@ -7,7 +7,6 @@ public class IllegalResourceTransactionReplacementsException extends IllegalReso
     private final boolean isInput;
     private final boolean isNonStorable;
     private final boolean isExcluded;
-    private final int replacedCount, blanks;
 
     /**
      * @param isInput
@@ -19,32 +18,16 @@ public class IllegalResourceTransactionReplacementsException extends IllegalReso
     public IllegalResourceTransactionReplacementsException (
         boolean isInput,
         boolean isNonStorable,
-        boolean isExcluded,
-        int replacedCount,
-        int blanks) {
+        boolean isExcluded) {
         this.isInput = isInput;
         this.isNonStorable = isNonStorable;
         this.isExcluded = isExcluded;
-        this.replacedCount = replacedCount;
-        this.blanks = blanks;
     }
     /**
      * @return the isInput
      */
     public boolean isInput() {
         return isInput;
-    }
-    /**
-     * @return the blanks
-     */
-    public int getBlanks() {
-        return blanks;
-    }
-    /**
-     * @return the replacedCount
-     */
-    public int getReplacedCount() {
-        return replacedCount;
     }
     /**
      * @return the isExcluded

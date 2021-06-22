@@ -7,7 +7,6 @@ public class ErrResourceReplacement extends ViewEvent {
     private final boolean isInput;
     private final boolean isNonStorable;
     private final boolean isExcluded;
-    private final int replacedCount, blanks;
 
     /**
      * @param view
@@ -17,14 +16,11 @@ public class ErrResourceReplacement extends ViewEvent {
      * @param replacedCount
      * @param blanks
      */
-    public ErrResourceReplacement(View view, boolean isInput, boolean isNonStorable, boolean isExcluded,
-                                  int replacedCount, int blanks) {
+    public ErrResourceReplacement(View view, boolean isInput, boolean isNonStorable, boolean isExcluded) {
         super(view);
         this.isInput = isInput;
         this.isNonStorable = isNonStorable;
         this.isExcluded = isExcluded;
-        this.replacedCount = replacedCount;
-        this.blanks = blanks;
     }
 
     /**
@@ -32,18 +28,6 @@ public class ErrResourceReplacement extends ViewEvent {
      */
     public boolean isInput() {
         return isInput;
-    }
-    /**
-     * @return the blanks
-     */
-    public int getBlanks() {
-        return blanks;
-    }
-    /**
-     * @return the replacedCount
-     */
-    public int getReplacedCount() {
-        return replacedCount;
     }
     /**
      * @return the isExcluded
