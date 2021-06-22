@@ -8,7 +8,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -43,7 +42,6 @@ public abstract class PlaygroundController extends GuiController {
 
     protected final Warehouse warehouse = new Warehouse();
 
-    
     private List<Integer> toActivate = new ArrayList<>();
 
     private SButton activateProduction;

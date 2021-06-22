@@ -8,8 +8,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -32,8 +30,6 @@ import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 public class MarketController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
 
-    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
-
     @FXML
     private StackPane backStackPane;
     @FXML
@@ -51,7 +47,6 @@ public class MarketController extends GuiController {
     @FXML
     private Button back;
 
-    
     private boolean isRow;
     private int index;
     private Market market;

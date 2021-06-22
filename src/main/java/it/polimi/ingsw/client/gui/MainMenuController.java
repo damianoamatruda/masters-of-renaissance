@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Options;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -20,7 +19,6 @@ public class MainMenuController extends GuiController {
 
     @FXML private StackPane backStackPane;
     @FXML private BorderPane bpane;
-    
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

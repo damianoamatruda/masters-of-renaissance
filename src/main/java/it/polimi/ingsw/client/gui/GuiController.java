@@ -5,12 +5,14 @@ import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -210,7 +212,7 @@ public abstract class GuiController extends UiController implements Initializabl
         
         gui.reloadRoot(c ->
             getRootElement().getChildren().add(
-                new Alert("Nonexistent entity",
+                new Alert("Object not owned",
                     String.format("%s with ID %d isn't yours. Are you sure you typed that right?",
                         event.getObjectType(), event.getId()),
                     maxScale)));
@@ -223,13 +225,13 @@ public abstract class GuiController extends UiController implements Initializabl
         if (event.isIllegalDiscardedOut())
             gui.reloadRoot(c ->
                 getRootElement().getChildren().add(
-                    new Alert("Nonexistent entity",
+                    new Alert("Resource transaction error",
                         "Output of resource transfer cannot be discarded",
                         maxScale)));
         else
             gui.reloadRoot(c ->
                 getRootElement().getChildren().add(
-                    new Alert("Nonexistent entity",
+                    new Alert("Resource transaction error",
                         String.format(
                             "Irregular amount of %s specified in the container map: %d specified, %d required.",
                             event.getResType().isEmpty() ? "resources" : event.getResType(),
@@ -244,7 +246,7 @@ public abstract class GuiController extends UiController implements Initializabl
         
         gui.reloadRoot(c ->
             getRootElement().getChildren().add(
-                new Alert("Nonexistent entity",
+                new Alert("Resource replacement error",
                     String.format("Error validating transaction request %s: %s resource found.",
                         event.isInput() ? "input" : "output",
                         event.isNonStorable() ? "nonstorable" : "excluded"),
@@ -274,9 +276,10 @@ public abstract class GuiController extends UiController implements Initializabl
                 reason = "unsupported ErrResourceTransfer option";
                 break;
         }
+        
         gui.reloadRoot(c ->
             getRootElement().getChildren().add(
-                new Alert("Nonexistent entity",
+                new Alert("Resource transfer error",
                     String.format("Error %s resource %s from container: %s.",
                         event.isAdded() ? "adding" : "removing",
                         event.getResType(),

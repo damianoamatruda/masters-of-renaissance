@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.gui.components.Alert;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -20,7 +19,6 @@ public class PlayOnlineController extends GuiController {
     @FXML private BorderPane bpane;
     @FXML private TextField server;
 
-    
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),

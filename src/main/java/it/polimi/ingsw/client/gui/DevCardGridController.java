@@ -2,12 +2,12 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,14 +26,11 @@ import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
 /** Gui controller class of the development card purchase action. */
 public class DevCardGridController extends GuiController {
-    private static final Logger LOGGER = Logger.getLogger(DevCardGridController.class.getName());
-    
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     @FXML
@@ -56,7 +53,6 @@ public class DevCardGridController extends GuiController {
     @FXML
     private HBox leadersBox;
 
-    
     private DevCardGrid devCardGrid;
     private Warehouse warehouse;
     private Strongbox strongbox;
@@ -329,10 +325,10 @@ public class DevCardGridController extends GuiController {
     @Override
     public void on(UpdateAction event) {
         super.on(event);
-        if(event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
+        if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
             gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 
-        else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
+        else if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
             Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
 
