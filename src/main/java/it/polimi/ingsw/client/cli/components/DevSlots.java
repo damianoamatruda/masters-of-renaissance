@@ -32,13 +32,12 @@ public class DevSlots extends StringComponent {
             for (int j = 0; j < 4 && j < slots.size() - i; j++)
                 devCardComponents.add(cards.get(j) == null ? null : new DevelopmentCard(cards.get(j)));
 
-            int maxWidth = devCardComponents.stream().map(c -> c.getString(cli)).mapToInt(Cli::maxLineWidth).max().orElse(0);
-            int maxHeight = maxLinesHeight(devCardComponents.stream().map(c -> c.getString(cli)).toList());
+            int maxWidth = devCardComponents.stream().map(c -> c == null ? "" : c.getString(cli)).mapToInt(Cli::maxLineWidth).max().orElse(0);
+            int maxHeight = maxLinesHeight(devCardComponents.stream().map(c -> c == null ? "" : c.getString(cli)).toList());
             
             List<List<String>> rows = new ArrayList<>();
             for (DevelopmentCard devCardComponent : devCardComponents)
-                rows.add(devCardComponent == null ? new Box(null, -1, maxWidth, maxHeight).getString(cli).lines().toList() :
-                                new Box(devCardComponent, -1, maxWidth, maxHeight).getString(cli).lines().toList());
+                rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString(cli).lines().toList());
                 
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {
