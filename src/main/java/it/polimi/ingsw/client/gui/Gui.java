@@ -137,7 +137,12 @@ public class Gui extends Application {
     }
 
     void reloadRoot(Consumer<?> callback) {
-        setRoot(currentRoot, callback);
+        Platform.runLater(() -> {
+            setRoot(currentRoot);
+            
+            callback.accept(null);
+            // Platform.runLater(() -> callback.accept(null));
+        });
     }
 
     public Stage getStage() {
