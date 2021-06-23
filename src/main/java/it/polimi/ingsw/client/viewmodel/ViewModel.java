@@ -163,7 +163,10 @@ public class ViewModel {
      * @return all the development cards in the player's slots
      */
     public synchronized List<List<ReducedDevCard>> getPlayerDevelopmentCards(String nickname) {
-        List<List<ReducedDevCard>> cards = new ArrayList<>(slotsCount);
+        List<List<ReducedDevCard>> cards = new ArrayList<>();
+
+        while (cards.size() < slotsCount)
+            cards.add(new ArrayList<>());
         
         if (playerData.containsKey(nickname)) {
             List<List<Integer>> slots = playerData.get(nickname).getDevSlots();
@@ -173,7 +176,7 @@ public class ViewModel {
                 // get the IDs of all the cards in the slot
                 List<Integer> slotIDs = slots.size() > i ? slots.get(i) : new ArrayList<>();
                 
-                cards.add(slotIDs.stream().map(id -> getDevelopmentCard(id).orElse(null)).toList());
+                cards.set(i, slotIDs.stream().map(id -> getDevelopmentCard(id).orElse(null)).toList());
             }
         }
         
