@@ -185,11 +185,11 @@ public class Cli implements Runnable {
     }
 
     public static int maxLineWidth(String str) {
-        return str.lines().mapToInt(Cli::textLength).max().orElseThrow();
+        return str.lines().mapToInt(Cli::textLength).max().orElse(0);
     }
 
     public static int maxLinesHeight(List<String> str) {
-        return Math.toIntExact(str.stream().map(String::lines).mapToLong(Stream::count).max().orElseThrow());
+        return Math.toIntExact(str.stream().map(String::lines).mapToLong(Stream::count).max().orElse(0));
     }
 
     public static String slimLine(int width) {
