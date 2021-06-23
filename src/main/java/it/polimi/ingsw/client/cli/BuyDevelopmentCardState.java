@@ -148,13 +148,13 @@ public class BuyDevelopmentCardState extends CliController {
     @Override
     public void on(ErrBuyDevCard event) {
         if (event.isStackEmpty())
-        cli.reloadController(
-                String.format("Cannot buy development card with color %s and level %d: deck is empty.", color, level));
+        cli.reloadController(center(String.format(
+                "Cannot buy development card with color %s and level %d: deck is empty.", color, level)));
         else {
             ReducedDevCard c = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(slot);
-            cli.reloadController(
-                    String.format("Cannot place development card in slot %d: card level %d, slot level %d.",
-                            slot, level, c == null ? 0 : c.getLevel()));
+            cli.reloadController(center(String.format(
+                    "Cannot place development card in slot %d: card level %d, slot level %d.",
+                            slot, level, c == null ? 0 : c.getLevel())));
         }
     }
 
