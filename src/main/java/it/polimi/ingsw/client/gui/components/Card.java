@@ -82,6 +82,8 @@ public abstract class Card extends Pane {
         this.requirement = new CardRequirement();
         this.requirement.setRequirements(requirement);
         this.getChildren().addAll(this.requirement);
+        this.requirement.setLayoutX(15 + getWidth() * 0.12 / ((double) this.requirement.getChildren().size()) / 1.5);
+        this.requirement.setLayoutY(5);
     }
 
     /**

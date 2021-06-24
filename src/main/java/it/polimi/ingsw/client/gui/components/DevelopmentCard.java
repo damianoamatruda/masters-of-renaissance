@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.text.Text;
 
 /** Gui component that represents a development card. */
@@ -68,9 +69,8 @@ public class DevelopmentCard extends Card {
      */
     public void setRequirement(ReducedResourceRequirement requirement) {
         super.setRequirement(requirement);
-        this.requirement.setLayoutX(getWidth() * 0.12);
-//        this.requirement.setAlignment(Pos.CENTER);
-//        this.requirement.setLayoutY();
+        this.requirement.setLayoutX(15 + getWidth() * 0.36 / ((double) this.requirement.getChildren().size()) / 1.5);
+        this.requirement.setLayoutY(5);
     }
 
     /**

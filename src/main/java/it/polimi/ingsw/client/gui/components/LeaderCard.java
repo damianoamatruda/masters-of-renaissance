@@ -84,6 +84,8 @@ public class LeaderCard extends Card {
         this.requirement = new CardRequirement();
         this.requirement.setRequirements(requirement);
         resourcePane.getChildren().addAll(this.requirement);
+        resourcePane.setLayoutX(15 + getWidth() * 0.12 / ((double) this.requirement.getChildren().size()) / 1.5);
+        resourcePane.setLayoutY(5);
     }
 
     @Override
