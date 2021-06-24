@@ -265,6 +265,7 @@ public class DevCardGridController extends GuiController {
         strongbox.setPrefWidth(291);
 
         strongbox.setContent(vm.getPlayerStrongbox(vm.getLocalPlayerNickname()).orElseThrow());
+        strongbox.addSpinners();
 
         if (containersBox.getChildren().size() == 2)
             containersBox.getChildren().remove(1);
@@ -311,6 +312,7 @@ public class DevCardGridController extends GuiController {
      * @param actionEvent the event object
      */
     private void submitPressed(ActionEvent actionEvent) {
+        strongbox.fillContainersMap(shelvesMap);
         Gui.getInstance().getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
     }
 

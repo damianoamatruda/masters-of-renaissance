@@ -5,12 +5,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Spinner;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
@@ -22,6 +25,8 @@ public class Strongbox extends StackPane {
     private GridPane grid;
 
     private ReducedResourceContainer c;
+    private int containerID;
+    private boolean hasSpinner;
 
     /**
      * Class constructor.
@@ -56,6 +61,7 @@ public class Strongbox extends StackPane {
      * @param c the cached model strongbox
      */
     public void setContent(ReducedResourceContainer c) {
+        this.containerID = c.getId();
         this.c = c;
         grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(5));
@@ -76,7 +82,7 @@ public class Strongbox extends StackPane {
         double defTextHeight = 20, // got this by trying (it's how big Text appears with no scaling)
                cellHeight = height / sRows,
                cellWidth = width / sCols,
-               scaleRatio = 0.8 * (cellHeight / defTextHeight);
+               scaleRatio = 0.5 * (cellHeight / defTextHeight);
         
         Iterator<Entry<String, Integer>> i = c.getContent().entrySet().iterator();
 
@@ -108,6 +114,16 @@ public class Strongbox extends StackPane {
         }
     }
 
+    public void addSpinners() {
+        for(Node cell : grid.getChildren()) {
+            Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
+            ((Cell) cell).getChildren().add(0, spinner);
+            spinner.setMaxWidth(50);
+            spinner.editorProperty().get().setAlignment(Pos.CENTER);
+            hasSpinner = true;
+        }
+    }
+
     /**
      *
      */
@@ -119,7 +135,7 @@ public class Strongbox extends StackPane {
             this.resource = resource;
             this.count = count;
 
-            this.setSpacing(cellWidth * 0.2);
+            this.setSpacing(cellWidth * 0.1);
             this.setAlignment(Pos.CENTER);
 
             Resource r = new Resource(resource);
@@ -141,7 +157,8 @@ public class Strongbox extends StackPane {
         }
         public void setCount(int count) {
             this.count = count;
-            ((Text)this.getChildren().get(0)).setText(String.valueOf(count));
+            int textIndex = hasSpinner ? 1 : 0;
+            ((Text) this.getChildren().get(textIndex)).setText(String.valueOf(count));
         }
     }
 
@@ -153,5 +170,17 @@ public class Strongbox extends StackPane {
     public void refreshRemove(String resource) {
         Cell cell = grid.getChildren().stream().map(n -> (Cell)n).filter(c -> c.getResource().equals(resource)).findAny().orElseThrow();
         cell.setCount(cell.getCount() - 1);
+    }
+
+    public int getContainerID() {
+        return containerID;
+    }
+
+    public void fillContainersMap(Map<Integer, Map<String, Integer>> containers) {
+        grid.getChildren().forEach(hbox -> {
+            if(((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
+                containers.put(getContainerID(), Map.of(((Resource) ((HBox) hbox).getChildren().get(2)).getName(),
+                        ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue()));
+        });
     }
 }

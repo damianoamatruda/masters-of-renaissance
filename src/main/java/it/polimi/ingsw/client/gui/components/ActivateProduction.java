@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -99,43 +100,24 @@ public class ActivateProduction extends StackPane {
         // TODO: Maybe use ifPresent()
         ReducedResourceTransactionRecipe selectedProd = Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).orElseThrow();
 
+        // add spinners to choose amount
         gui.getViewModel().getResourceTypes().stream()
                 .filter(r -> (!r.isStorable() && r.isTakeableFromPlayer()) &&
                         !selectedProd.getInputBlanksExclusions().contains(r.getName()))
-                .forEach(r -> {
-                    HBox entry = new HBox();
-                    Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
-                    spinner.setMaxWidth(50);
-                    spinner.editorProperty().get().setAlignment(Pos.CENTER);
-                    entry.getChildren().add(spinner);
-                    Resource resource = new Resource(r.getName());
-                    resource.setScaleX(0.8);
-                    resource.setScaleY(0.8);
-                    entry.getChildren().add(resource);
-                    choosableInputResources.getChildren().add(entry);
-                });
+                .forEach(r -> addSpinner(choosableInputResources, r));
 
         gui.getViewModel().getResourceTypes().stream()
                 .filter(r -> (r.isStorable() || r.isGiveableToPlayer()) &&
                         !selectedProd.getOutputBlanksExclusions().contains(r.getName()))
-                .forEach(r -> {
-                    HBox entry = new HBox();
-                    Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
-                    spinner.setMaxWidth(50);
-                    spinner.editorProperty().get().setAlignment(Pos.CENTER);
-                    entry.getChildren().add(spinner);
-                    Resource resource = new Resource(r.getName());
-                    resource.setScaleX(0.8);
-                    resource.setScaleY(0.8);
-                    entry.getChildren().add(resource);
-                    choosableOutputResources.getChildren().add(entry);
-        });
+                .forEach(r -> addSpinner(choosableOutputResources, r));
 
+        // remove hbox containers if no extra choosable resource available
         if(choosableInputResources.getChildren().isEmpty())
             ((HBox) choosableInputResources.getParent()).getChildren().remove(0);
         if(choosableOutputResources.getChildren().isEmpty())
             ((HBox) choosableOutputResources.getParent()).getChildren().remove(0);
 
+        // set shelves with click handlers
         guiShelves.setWarehouseShelves(tempShelves, (a, b) -> {});
         guiShelves.addResourcesSelector(this.containers, newTempShelves);
 
@@ -148,7 +130,10 @@ public class ActivateProduction extends StackPane {
         Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
 
         //strongbox
-        gui.getViewModel().getPlayerStrongbox(gui.getViewModel().getCurrentPlayer()).ifPresent(sb -> strongbox.setContent(sb));
+        gui.getViewModel().getPlayerStrongbox(gui.getViewModel().getCurrentPlayer()).ifPresent(sb -> {
+            strongbox.setContent(sb);
+            strongbox.addSpinners();
+        });
 
         //leaders
         List<LeaderCard> leaders = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
@@ -217,6 +202,9 @@ public class ActivateProduction extends StackPane {
                         ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue());
         });
 
+        // get input from strongbox
+        strongbox.fillContainersMap(containers);
+
         // add production request
         requests.add(new ReducedProductionRequest(toActivate.get(index), containers, inputBlanks, outputBlanks));
     }
@@ -228,5 +216,18 @@ public class ActivateProduction extends StackPane {
         if(index > 0)
             requests.remove(index - 1);
         ((Pane) this.getParent()).getChildren().remove(this);
+    }
+
+    public void addSpinner(HBox container, ReducedResourceType r) {
+        HBox entry = new HBox();
+        Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
+        spinner.setMaxWidth(50);
+        spinner.editorProperty().get().setAlignment(Pos.CENTER);
+        entry.getChildren().add(spinner);
+        Resource resource = new Resource(r.getName());
+        resource.setScaleX(0.8);
+        resource.setScaleY(0.8);
+        entry.getChildren().add(resource);
+        container.getChildren().add(entry);
     }
 }
