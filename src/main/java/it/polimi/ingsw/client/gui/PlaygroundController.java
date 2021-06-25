@@ -310,7 +310,7 @@ public abstract class PlaygroundController extends GuiController {
         activateProduction.setDisable(true);
 
         canvas.getChildren().add(activateProduction);
-        AnchorPane.setLeftAnchor(activateProduction, 365d);
+        AnchorPane.setLeftAnchor(activateProduction, 318d);
         AnchorPane.setBottomAnchor(activateProduction, 15d);
 
         // add button to each production
