@@ -36,7 +36,6 @@ public class Shelf extends BorderPane {
     private final Circle swapIcon = new Circle(10, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
-    private boolean hasPlaceholder;
     private boolean isLeaderDepot;
 
     /**
@@ -308,7 +307,6 @@ public class Shelf extends BorderPane {
     }
 
     public void setPlaceholder(String resource) {
-        this.hasPlaceholder = true;
         ImageView img = new ImageView(new Image(getResourcePlaceholderPath(resource)));
 
         img.setFitHeight(30);
@@ -330,7 +328,6 @@ public class Shelf extends BorderPane {
         Optional<ReducedResourceContainer> container = Gui.getInstance().getViewModel().getContainer(shelfId);
         container.ifPresent(c -> {
             if(content.getChildren().size() == 1 && c.getContent().size() == 0) {
-                this.hasPlaceholder = false;
                 content.getChildren().clear();
             }
         });
