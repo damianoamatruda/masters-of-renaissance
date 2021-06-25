@@ -180,7 +180,7 @@ public class LeaderCard extends Card {
 
         Shelf shelf = new Shelf(container, 48, 100, true);
         shelf.setLayoutY(193);
-        shelf.setLayoutX(-15);
+        shelf.setLayoutX(15);
         this.getChildren().add(shelf);
 
         if(container.getContent().size() == 0)

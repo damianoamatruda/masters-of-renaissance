@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,11 +69,12 @@ public class Shelf extends BorderPane {
                 "-fx-background-size: 300 100;");
         BorderPane.setMargin(content, new Insets(0, 10, 0, 10));
 
-        sizeText = new Text(String.format("Size: %d", shelf.getSize()));
+        sizeText = new Text(String.format("Size: %n%d", shelf.getSize()));
+        sizeText.setTextAlignment(TextAlignment.CENTER);
 
         BorderPane sizePane = new BorderPane();
-        sizePane.setMinWidth(50);
-        sizePane.setMaxWidth(50);
+        sizePane.setMinWidth(25);
+        sizePane.setMaxWidth(25);
         sizePane.setMinHeight(maxHeight);
         sizePane.setMaxHeight(maxHeight);
         sizePane.setCenter(sizeText);
@@ -234,7 +236,7 @@ public class Shelf extends BorderPane {
     public void refresh(int size, int newId) {
         //adjust size
         this.size = size;
-        sizeText.setText("Size: " + size);
+        sizeText.setText("Size: %n" + size);
         this.shelfId = newId;
 
         //adjust clipboard content of resources
