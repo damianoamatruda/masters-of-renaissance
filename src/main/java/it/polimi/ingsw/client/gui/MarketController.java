@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -106,7 +107,7 @@ public class MarketController extends GuiController {
                 .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .filter(r -> r.isStorable() || r.getName().equals("Zero") && isZeroReplaceable)
+                .filter(r -> r.isStorable() || r.getName().equals("Zero") && isZeroReplaceable) // TODO: why is zero a string?
                 .map(ReducedResourceType::getName)
                 .toList();
 
@@ -297,19 +298,17 @@ public class MarketController extends GuiController {
 
         leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                 .filter(c -> c.isActive() &&
-                        (c.getLeaderType().equals("DepotLeader") || c.getLeaderType().equals("ZeroLeader")))
+                        (c.getLeaderType() == LeaderType.DEPOT && c.getLeaderType() == LeaderType.ZERO))
                 .map(reducedLeader -> {
                     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
                     leaderCard.setLeaderId(reducedLeader.getId());
-                    leaderCard.setLeaderType(reducedLeader.getLeaderType());
                     leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
-                    leaderCard.setResourceType(reducedLeader.getResourceType());
                     if (reducedLeader.getResourceRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
                     if (reducedLeader.getDevCardRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
 
-                    if (reducedLeader.getLeaderType().equals("ZeroLeader")) {
+                    if (reducedLeader.getLeaderType() == LeaderType.ZERO) {
                         isZeroReplaceable = true;
                         leaderCard.setZeroReplacement(reducedLeader.getResourceType());
                         // TODO handle substitution
@@ -372,7 +371,7 @@ public class MarketController extends GuiController {
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(0.5);
             vbox.getChildren().add(l);
-            if(l.getLeaderType().equals("ZeroLeader")) {
+            if(l.getLeaderType() == LeaderType.ZERO) {
                 SButton replace = new SButton("Replace a Zero");
                 replace.setOnAction((actionEvent -> {
                     if(replaceBlank(l.getResourceType()))

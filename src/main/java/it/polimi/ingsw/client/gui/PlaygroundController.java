@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrCardRequirements;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
@@ -114,21 +115,19 @@ public abstract class PlaygroundController extends GuiController {
         // Sets the leader gui cards
         List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
             .map(reducedLeader -> {
-                LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getLeaderType());
+                LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
                 leaderCard.setLeaderId(reducedLeader.getId());
-                leaderCard.setLeaderType(reducedLeader.getLeaderType());
                 leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
-                leaderCard.setResourceType(reducedLeader.getResourceType());
                 if (reducedLeader.getResourceRequirement().isPresent())
                     leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
                 if (reducedLeader.getDevCardRequirement().isPresent())
                     leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
 
-                if (reducedLeader.getLeaderType().equalsIgnoreCase("ZeroLeader"))
+                if (reducedLeader.getLeaderType() == LeaderType.ZERO)
                     leaderCard.setZeroReplacement(reducedLeader.getResourceType());
-                else if (reducedLeader.getLeaderType().equalsIgnoreCase("DiscountLeader"))
+                else if (reducedLeader.getLeaderType() == LeaderType.DISCOUNT)
                     leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
-                else if (reducedLeader.getLeaderType().equalsIgnoreCase("ProductionLeader"))
+                else if (reducedLeader.getLeaderType() == LeaderType.PRODUCTION)
                     leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
                 else
                     leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
@@ -330,7 +329,7 @@ public abstract class PlaygroundController extends GuiController {
         // add button to production leader cards
         for(int i = 0; i < leadersBox.getChildren().size() / 2; i++) {
             LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * i);
-            if(leader.getLeaderType().equalsIgnoreCase("ProductionLeader") && leader.isActivated()) {
+            if(leader.getLeaderType() == LeaderType.PRODUCTION && leader.isActivated()) {
                 SButton activate = new SButton();
                 activate.setText("Produce");
                 activate.setOnAction((event) -> {

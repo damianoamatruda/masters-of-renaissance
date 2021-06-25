@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.viewmodel;
 
 import it.polimi.ingsw.common.reducedmodel.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 
 import java.util.*;
 
@@ -143,7 +144,7 @@ public class ViewModel {
             return new HashMap<>();
 
         List<ReducedLeaderCard> discountLeaders = getPlayerLeaderCards(getLocalPlayerNickname()).stream()
-                .filter(c -> c.isActive() && c.getLeaderType().equals("DiscountLeader")).toList();
+                .filter(c -> c.isActive() && c.getLeaderType() == LeaderType.DISCOUNT).toList();
         if (discountLeaders.isEmpty())
             return cost.get().getRequirements();
 

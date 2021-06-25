@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -137,13 +138,11 @@ public class ActivateProduction extends StackPane {
         //leaders
         List<LeaderCard> leaders = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
                 .filter(c -> c.isActive() &&
-                        (c.getLeaderType().equals("DepotLeader")))
+                        (c.getLeaderType() == LeaderType.DEPOT))
                 .map(reducedLeader -> {
                     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
                     leaderCard.setLeaderId(reducedLeader.getId());
-                    leaderCard.setLeaderType(reducedLeader.getLeaderType());
                     leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
-                    leaderCard.setResourceType(reducedLeader.getResourceType());
                     if (reducedLeader.getResourceRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
                     if (reducedLeader.getDevCardRequirement().isPresent())

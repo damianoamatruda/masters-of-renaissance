@@ -55,6 +55,7 @@ public abstract class ResourceContainer extends EventDispatcher {
                 group = container2.getGroup().get();
                 groupClone = new ResourceContainerGeneralGroup(group);
             }
+            // TODO: potential null access
             groupClone.replaceResourceContainer(container2, clone2);
             clone2.setGroup(groupClone);
         }

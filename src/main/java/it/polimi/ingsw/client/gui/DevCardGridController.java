@@ -7,6 +7,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
@@ -134,19 +135,17 @@ public class DevCardGridController extends GuiController {
         leadersBox.getChildren().clear();
         List<LeaderCard> leaders = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
                 .filter(c -> c.isActive() &&
-                        (c.getLeaderType().equals("DepotLeader") || c.getLeaderType().equals("DiscountLeader")))
+                        (c.getLeaderType() == LeaderType.DEPOT|| c.getLeaderType() == LeaderType.DISCOUNT))
                 .map(reducedLeader -> {
                     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
                     leaderCard.setLeaderId(reducedLeader.getId());
-                    leaderCard.setLeaderType(reducedLeader.getLeaderType());
                     leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
-                    leaderCard.setResourceType(reducedLeader.getResourceType());
                     if (reducedLeader.getResourceRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
                     if (reducedLeader.getDevCardRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
 
-                    if(reducedLeader.getLeaderType().equals("DepotLeader")) {
+                    if(reducedLeader.getLeaderType() == LeaderType.DEPOT) {
                         leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
                                 reducedLeader.getResourceType(), true);
 

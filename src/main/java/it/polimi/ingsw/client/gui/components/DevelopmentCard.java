@@ -68,7 +68,7 @@ public class DevelopmentCard extends Card {
      */
     public void setRequirement(ReducedResourceRequirement requirement) {
         super.setRequirement(requirement);
-        this.requirement.setLayoutX(15 + getWidth() * 0.36 / ((double) this.requirement.getChildren().size()) / 1.5);
+        this.requirement.setLayoutX(15 + getWidth() * 0.36 / this.requirement.getChildren().size() / 1.5);
         this.requirement.setLayoutY(5);
     }
 

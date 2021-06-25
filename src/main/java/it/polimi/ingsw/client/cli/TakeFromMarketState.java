@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -111,7 +112,7 @@ public class TakeFromMarketState extends CliController {
         if (blanksCount > 0) {
             List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                     .filter(c -> c.isActive() &&
-                            c.getLeaderType().equals("ZeroLeader")).toList();
+                            c.getLeaderType() == LeaderType.ZERO).toList();
 
             // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {

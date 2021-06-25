@@ -4,13 +4,20 @@ import java.util.Optional;
 
 public class ReducedLeaderCard extends ReducedCard {
     private final String resourceType;
-    private final String leaderType;
+    private final LeaderType leaderType;
     private final ReducedDevCardRequirement devCardRequirement;
     private final ReducedResourceRequirement resourceRequirement;
     private final boolean isActive;
 
     private final int containerId;
     private final int discount;
+
+    public enum LeaderType {
+        DEPOT,
+        DISCOUNT,
+        PRODUCTION,
+        ZERO
+    }
 
     /**
      * @param id            the ID of the card
@@ -22,7 +29,7 @@ public class ReducedLeaderCard extends ReducedCard {
      * @param discount      the resource discount, if present
      * @param production    the included production recipe, if present
      */
-    public ReducedLeaderCard(int id, int victoryPoints, String resourceType, String leaderType, boolean isActive,
+    public ReducedLeaderCard(int id, int victoryPoints, String resourceType, LeaderType leaderType, boolean isActive,
                              ReducedDevCardRequirement devCardRequirement,
                              ReducedResourceRequirement resourceRequirement,
                              int containerId,
@@ -69,7 +76,7 @@ public class ReducedLeaderCard extends ReducedCard {
     /**
      * @return the leaderType of the card
      */
-    public String getLeaderType() {
+    public LeaderType getLeaderType() {
         return leaderType;
     }
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -12,7 +13,7 @@ import javafx.scene.text.Text;
 
 /** Gui component that represents a leader card. */
 public class LeaderCard extends Card {
-    private final String leaderType;
+    private final LeaderType leaderType;
     private final String resourceType;
     @FXML
     private Pane leaderCard;
@@ -34,8 +35,8 @@ public class LeaderCard extends Card {
      * @param leaderType    the type of leader card
      * @param resourceType  the target resource type of the leader card
      */
-    public LeaderCard(String leaderType, String resourceType) {
-        super(leaderType);
+    public LeaderCard(LeaderType leaderType, String resourceType) {
+        super(leaderType.toString().toLowerCase().concat("leader"));
         this.leaderType = leaderType;
         this.resourceType = resourceType;
     }
@@ -45,12 +46,8 @@ public class LeaderCard extends Card {
      *
      * @return the type of leader card
      */
-    public String getLeaderType() {
+    public LeaderType getLeaderType() {
         return leaderType;
-    }
-
-    public void setLeaderType(String value) {
-//        leaderTypeProperty().set(value);
     }
 
     public StringProperty leaderTypeProperty() {
@@ -65,12 +62,7 @@ public class LeaderCard extends Card {
     public String getResourceType() {
         return resourceType;
     }
-
-    public void setResourceType(String value) {
-//        resourceTypeProperty().set(value);
-//        resourceTypeText.setTextAlignment(TextAlignment.JUSTIFY);
-    }
-
+    
     public StringProperty resourceTypeProperty() {
         return resourceTypeText.textProperty();
     }
@@ -84,7 +76,7 @@ public class LeaderCard extends Card {
         this.requirement = new CardRequirement();
         this.requirement.setRequirements(requirement);
         resourcePane.getChildren().addAll(this.requirement);
-        resourcePane.setLayoutX(15 + getWidth() * 0.12 / ((double) this.requirement.getChildren().size()) / 1.5);
+        resourcePane.setLayoutX(15 + getWidth() * 0.12 / this.requirement.getChildren().size() / 1.5);
         resourcePane.setLayoutY(5);
     }
 
