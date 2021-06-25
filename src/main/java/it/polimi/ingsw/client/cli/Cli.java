@@ -377,13 +377,10 @@ public class Cli implements Runnable {
         AtomicInteger allocQuantity = new AtomicInteger();
         while (allocQuantity.get() < totalQuantity) {
             out.println();
-            out.printf("You can choose %d resources among these:%n", totalQuantity - allocQuantity.get());
+            out.print(center(String.format("You can choose %d resources among these:%n%n", totalQuantity - allocQuantity.get())));
 
             out.println();
-            allowedResources.forEach(r -> {
-                new Resource(r).render();
-                out.println();
-            });
+            out.println(center(printAllowedResources(allowedResources, 14)));
 
             out.println();
 
@@ -456,5 +453,23 @@ public class Cli implements Runnable {
             }
         }
         return Optional.of(shelfId);
+    }
+
+    private String printAllowedResources(Set<String> resources, int padding) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int i = 0;
+        for (String resType : resources) {
+            if (i % 2 == 0)
+                stringBuilder.append(String.format("  %s", left(String.format("%s", new Resource(resType).getString(this)), padding)));
+            else
+                stringBuilder.append(String.format("%s", new Resource(resType).getString(this))).append("\n");
+            i++;
+        }
+        if (resources.size() % 2 != 0)
+            stringBuilder.append("\n");
+
+        return stringBuilder.toString();
+
     }
 }

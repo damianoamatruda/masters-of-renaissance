@@ -31,4 +31,5 @@ public class ResourceMap extends StringComponent {
 
         return stringBuilder.toString();
     }
+
 }

@@ -106,7 +106,7 @@ public class BuyDevelopmentCardState extends CliController {
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
             valid.set(true);
-            cli.promptInt("Player board slot index to assign the card to").ifPresentOrElse(slot -> {
+            cli.promptInt("Slot (leftmost = 0)").ifPresentOrElse(slot -> {
                 isExitingState.set(false);
                 if (slot < 1 || slot > vm.getSlotsCount()) {
                     valid.set(false);

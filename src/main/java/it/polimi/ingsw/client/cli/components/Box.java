@@ -37,7 +37,7 @@ public class Box extends StringComponent {
     public String getString(Cli cli) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        String componentString = component == null ? "" : component.getString(cli);
+        String componentString = component == null ? " " : component.getString(cli);
 
         int width = (this.width < 0 ? maxLineWidth(componentString) : this.width) + padding * 2;
         int height = this.height < 0 ? Math.toIntExact(componentString.lines().count()) : this.height;
