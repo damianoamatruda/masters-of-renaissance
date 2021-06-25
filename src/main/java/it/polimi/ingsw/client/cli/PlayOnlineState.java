@@ -61,7 +61,7 @@ public class PlayOnlineState extends CliController {
             cli.getOut().printf("Don't know about host %s%n", host);
         } catch (IOException e) {
             cli.getOut().println();
-            cli.getOut().printf("Couldn't get I/O for the connection to %s when creating the socket.%n", host);
+            cli.getOut().println("Could not connect to the server.");
         }
 
         if (connected)

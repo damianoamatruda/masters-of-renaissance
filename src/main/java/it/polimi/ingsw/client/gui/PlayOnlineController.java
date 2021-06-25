@@ -63,9 +63,9 @@ public class PlayOnlineController extends GuiController {
                     new Alert("Play Online", String.format("Don't know about host %s.", host), maxScale)));
             return;
         } catch (IOException e) {
-            Platform.runLater(() -> 
-                backStackPane.getChildren().add(
-                    new Alert("Play Online", String.format("Couldn't get I/O for the connection to %s when creating the socket.", host), maxScale)));
+            Platform.runLater(() ->
+                    backStackPane.getChildren().add(
+                            new Alert("Play Online", "Could not connect to the server.", maxScale)));
             return;
         }
 
