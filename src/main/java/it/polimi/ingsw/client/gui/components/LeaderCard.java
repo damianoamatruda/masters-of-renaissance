@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -26,7 +26,7 @@ public class LeaderCard extends Card {
 
     private int leaderId;
 
-    private boolean isActivated;
+    private boolean isActive;
     private Shelf depot;
 
     /**
@@ -212,16 +212,16 @@ public class LeaderCard extends Card {
      *
      * @return true if leader is active
      */
-    public boolean isActivated() {
-        return isActivated;
+    public boolean isActive() {
+        return isActive;
     }
 
     /**
      * Changes activation status.
      *
-     * @param activated the updated activation status of the card.
+     * @param active the updated activation status of the card.
      */
-    public void setActivated(boolean activated) {
-        isActivated = activated;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
