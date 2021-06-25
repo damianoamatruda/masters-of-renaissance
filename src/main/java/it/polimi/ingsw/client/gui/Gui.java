@@ -138,12 +138,13 @@ public class Gui extends Application {
     }
 
     /**
-     * Reloads the current screen.
+     * Reloads the current screen, executing a callback when finished loading.
      * 
      * @param title   the title of the Alert to show before reloading the GUI's root
      * @param content the content message of the Alert to show before reloading the GUI's root
+     * @param callback the callback to execute when setting the new root element
      */
-    void reloadRoot(String title, String content) {
+    void reloadRoot(String title, String content, Consumer<?> callback) {
         /* Other ways of doing this were explored:
             - a reloadRoot() method set as the Alert's callback
                 Discarded, since every children.add would get very verbose
@@ -154,8 +155,18 @@ public class Gui extends Application {
                 the Alert would be visible for only a split second */
         Platform.runLater(() -> {
             getController().getRootElement().getChildren().add(
-                new Alert(title, content, getController().getMaxScale(), () -> setRoot(currentRoot)));
+                new Alert(title, content, getController().getMaxScale(), () -> setRoot(currentRoot, callback)));
         });
+    }
+
+    /**
+     * Reloads the current screen.
+     * 
+     * @param title   the title of the Alert to show before reloading the GUI's root
+     * @param content the content message of the Alert to show before reloading the GUI's root
+     */
+    void reloadRoot(String title, String content) {
+        reloadRoot(title, content, null);
     }
 
     public Stage getStage() {
