@@ -75,55 +75,36 @@ public abstract class GuiController extends UiController implements Initializabl
         String title = "Action error";
 
         switch (event.getReason()) {
-        case LATE_SETUP_ACTION:
-            setNextState(c ->
-                c.getRootElement().getChildren().add(
-                    new Alert(title,
-                        "Setup phase is concluded, advancing to game turns.",
-                        c.getMaxScale())));
-        break;
-        case EARLY_MANDATORY_ACTION:
-            setNextState(c ->
-                c.getRootElement().getChildren().add(
-                    new Alert(title,
-                        "A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase.",
-                        c.getMaxScale())));
-        break;
-        case LATE_MANDATORY_ACTION:
-            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
-                c.getRootElement().getChildren().add(
-                    new Alert(title,
-                        "A mandatory action has already been executed, advancing to optional actions.",
-                        c.getMaxScale())));
-        break;
-        case EARLY_TURN_END:
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), (PlaygroundBeforeActionController c) ->
-                c.getRootElement().getChildren().add(
-                    new Alert(title,
-                        "A mandatory action needs to be executed before ending the turn.",
-                        c.getMaxScale())));
-            break;
-        case GAME_ENDED:
-            gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"), (EndgameController c) ->
-                c.getRootElement().getChildren().add(
-                    new Alert(title,
-                        "The match is finished, advancing to ending screen.",
-                        c.getMaxScale())));
-        break;
-        case NOT_CURRENT_PLAYER:
-            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
-                c.getRootElement().getChildren().add(
-                    new Alert(title,
-                        "You are not the current player. Please wait for your turn.",
-                        c.getMaxScale())));
-        break;
-        default:
-            gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"), (MainMenuController c) ->
-                c.getRootElement().getChildren().add(
-                    new Alert(title,
-                        String.format("Unsupported ErrAction reason %s.", event.getReason().toString()),
-                        c.getMaxScale())));
-        break;
+            case LATE_SETUP_ACTION -> setNextState(c ->
+                    c.getRootElement().getChildren().add(
+                            new Alert(title,
+                                    "Setup phase is concluded, advancing to game turns.",
+                                    c.getMaxScale())));
+            case EARLY_MANDATORY_ACTION -> setNextState(c ->
+                    c.getRootElement().getChildren().add(
+                            new Alert(title,
+                                    "A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase.",
+                                    c.getMaxScale())));
+            case LATE_MANDATORY_ACTION -> gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
+                    c.getRootElement().getChildren().add(
+                            new Alert(title,
+                                    "A mandatory action has already been executed, advancing to optional actions.",
+                                    c.getMaxScale())));
+            case EARLY_TURN_END -> gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), (PlaygroundBeforeActionController c) ->
+                    c.getRootElement().getChildren().add(
+                            new Alert(title,
+                                    "A mandatory action needs to be executed before ending the turn.",
+                                    c.getMaxScale())));
+            case GAME_ENDED -> gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"), (EndgameController c) ->
+                    c.getRootElement().getChildren().add(
+                            new Alert(title,
+                                    "The match is finished, advancing to ending screen.",
+                                    c.getMaxScale())));
+            case NOT_CURRENT_PLAYER -> gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
+                    c.getRootElement().getChildren().add(
+                            new Alert(title,
+                                    "You are not the current player. Please wait for your turn.",
+                                    c.getMaxScale())));
         }
     }
 
@@ -176,30 +157,22 @@ public abstract class GuiController extends UiController implements Initializabl
 
         if (event.getReason() == ErrNicknameReason.NOT_IN_GAME) {
             gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
-                c.getRootElement().getChildren().add(
-                    new Alert("Nickname error",
-                        "Match not joined yet.",
-                        c.getMaxScale())));
+                    c.getRootElement().getChildren().add(
+                            new Alert("Nickname error",
+                                    "Match not joined yet.",
+                                    c.getMaxScale())));
             return;
         }
 
-        final String reason;
-        switch (event.getReason()) {
-            case ALREADY_SET:
-            case TAKEN:
-                reason = String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
-            break;
-            case NOT_SET:
-                reason = "nickname is blank.";
-            break;
-            default:
-                reason = "unsupported ErrNickname option";
-            break;
-        }
+        final String reason = switch (event.getReason()) {
+            case ALREADY_SET, TAKEN -> String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
+            case NOT_SET -> "nickname is blank.";
+            case NOT_IN_GAME -> null; // TODO: Handle this!
+        };
 
         gui.reloadRoot("Nickname error",
                 String.format("Error setting nickname: %s", reason), (InputNicknameController controller) ->
-                    controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
+                        controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
     }
 
     @Override
@@ -252,31 +225,18 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(ErrResourceTransfer event) {
         super.on(event);
 
-        final String reason;
+        final String reason = switch (event.getReason()) {
+            case BOUNDED_RESTYPE_DIFFER -> "shelf's binding resource type is different from transferring resource";
+            case NON_STORABLE -> "resource type is not storable";
+            case CAPACITY_REACHED -> "shelf's capacity boundaries reached";
+            case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
+        };
 
-        switch (event.getReason()) {
-            case BOUNDED_RESTYPE_DIFFER:
-                reason = "shelf's binding resource type is different from transferring resource";
-            break;
-            case NON_STORABLE:
-                reason = "resource type is not storable";
-            break;
-            case CAPACITY_REACHED:
-                reason = "shelf's capacity boundaries reached";
-            break;
-            case DUPLICATE_BOUNDED_RESOURCE:
-                reason = "resource type is already bound to another shelf";
-            break;
-            default:
-                reason = "unsupported ErrResourceTransfer option";
-                break;
-        }
-        
         gui.reloadRoot("Resource transfer error",
                 String.format("Error %s resource %s from container: %s.",
-                    event.isAdded() ? "adding" : "removing",
-                    event.getResType(),
-                    reason));
+                        event.isAdded() ? "adding" : "removing",
+                        event.getResType(),
+                        reason));
     }
     
     @Override

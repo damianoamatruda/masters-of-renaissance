@@ -243,13 +243,13 @@ public class Shelf extends BorderPane {
         for(Node r : content.getChildren()) {
             //TODO handle duplicated code
             r.setOnDragDetected((event) -> {
-                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(((Resource) r).getImage());
-                content.putString(Integer.toString(newId));
-                db.setContent(content);
-                    event.consume();
-                }
+                        Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putImage(((Resource) r).getImage());
+                        content.putString(Integer.toString(newId));
+                        db.setContent(content);
+                        event.consume();
+                    }
             );
         }
     }
@@ -344,9 +344,9 @@ public class Shelf extends BorderPane {
         r.setOnDragDetected((event) -> {
                     Dragboard db = r.startDragAndDrop(TransferMode.ANY);
                     ClipboardContent content = new ClipboardContent();
-            content.putImage(r.getImage());
-            content.putString(Integer.toString(this.getShelfId()));
-            db.setContent(content);
+                    content.putImage(r.getImage());
+                    content.putString(Integer.toString(this.getShelfId()));
+                    db.setContent(content);
                     event.consume();
                 }
         );

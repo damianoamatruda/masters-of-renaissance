@@ -85,13 +85,13 @@ public class Warehouse extends VBox {
         shelf.addResource(r);
 
         r.setOnDragDetected((event) -> {
-                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putImage(r.getImage());
-            content.putString(Integer.toString(shelf.getShelfId()));
-            db.setContent(content);
-                event.consume();
-            }
+                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(r.getImage());
+                    content.putString(Integer.toString(shelf.getShelfId()));
+                    db.setContent(content);
+                    event.consume();
+                }
         );
     }
 
