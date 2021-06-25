@@ -198,7 +198,8 @@ public abstract class GuiController extends UiController implements Initializabl
         }
 
         gui.reloadRoot("Nickname error",
-                String.format("Error setting nickname: %s", reason));
+                String.format("Error setting nickname: %s", reason), (InputNicknameController controller) ->
+                    controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
     }
 
     @Override
