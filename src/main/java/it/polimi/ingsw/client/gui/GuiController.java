@@ -64,6 +64,10 @@ public abstract class GuiController extends UiController implements Initializabl
 
     abstract StackPane getRootElement();
 
+    NumberBinding getMaxScale() {
+        return maxScale;
+    }
+
     @Override
     public void on(ErrAction event) {
         super.on(event);
