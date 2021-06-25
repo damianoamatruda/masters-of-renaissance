@@ -4,23 +4,23 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.util.Objects;
 
 /** Gui component representing a single Faith Track tile. */
 public class FaithTile extends StackPane {
-    private int tileId;
-    private ImageView bg;
+    private final int tileId;
+    private final ImageView bg;
 
     /**
      * Class constructor.
      *
-     * @param tileId        progressive number of tile
-     * @param isYellow      true if it is a milestone to higher bonus points
-     * @param isSection     true if included inside of a Vatican Section
-     * @param isSectionEnd  true if Vatican Report Tile
+     * @param tileId       progressive number of tile
+     * @param isYellow     true if it is a milestone to higher bonus points
+     * @param isSection    true if included inside of a Vatican Section
+     * @param isSectionEnd true if Vatican Report Tile
      */
     public FaithTile(int tileId, boolean isYellow, boolean isSection, boolean isSectionEnd) {
         this.tileId = tileId;
@@ -53,7 +53,7 @@ public class FaithTile extends StackPane {
             this.getChildren().add(bonusPts);
 
             ReducedYellowTile y = Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getYellowTiles().stream().filter(yt -> yt.getFaithPoints() == tileId).findAny().orElseThrow();
-            Text t = new Text(y.getVictoryPoints()+"");
+            Text t = new Text(Integer.toString(y.getVictoryPoints()));
             t.setScaleX(bg.getScaleY()*2);
             t.setScaleY(bg.getScaleY()*2);
             this.getChildren().add(t);

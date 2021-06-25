@@ -53,7 +53,7 @@ public class DevCardGrid extends HBox {
                 card.getCost().ifPresent(cost -> guicard.setRequirement(cost));
                 guicard.setProduction(r);
                 guicard.setLevel(card.getLevel());
-                guicard.setVictoryPoints(card.getVictoryPoints()+"");
+                guicard.setVictoryPoints(Integer.toString(card.getVictoryPoints()));
 
                 guicard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                     controllerListener.accept(card, guicard);

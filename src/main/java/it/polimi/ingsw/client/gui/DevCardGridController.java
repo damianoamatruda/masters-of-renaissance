@@ -13,16 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 
 import java.net.URL;
 import java.util.*;
@@ -147,7 +139,7 @@ public class DevCardGridController extends GuiController {
                     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
                     leaderCard.setLeaderId(reducedLeader.getId());
                     leaderCard.setLeaderType(reducedLeader.getLeaderType());
-                    leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
+                    leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
                     leaderCard.setResourceType(reducedLeader.getResourceType());
                     if (reducedLeader.getResourceRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());

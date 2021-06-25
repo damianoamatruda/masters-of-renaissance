@@ -177,18 +177,18 @@ public abstract class CliController extends UiController implements Renderable {
             return;
         }
 
-        String reason = "";
+        String reason;
         switch (event.getReason()) {
             case ALREADY_SET:
             case TAKEN:
-            reason = String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
-            break;
+                reason = String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
+                break;
             case NOT_SET:
                 reason = "nickname is blank.";
-            break;
+                break;
             default:
                 reason = "unsupported ErrNickname option";
-            break;
+                break;
         }
         cli.reloadController(String.format("Error setting nickname: %s", reason));
     }
@@ -238,25 +238,12 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrResourceTransfer event) {
         super.on(event);
 
-        String reason = "";
-
-        switch (event.getReason()) {
-            case BOUNDED_RESTYPE_DIFFER:
-                reason = "shelf's binding resource type is different from transferring resource";
-            break;
-            case NON_STORABLE:
-                reason = "resource type is not storable";
-            break;
-            case CAPACITY_REACHED:
-                reason = "shelf's capacity boundaries reached";
-            break;
-            case DUPLICATE_BOUNDED_RESOURCE:
-                reason = "resource type is already bound to another shelf";
-            break;
-            default:
-                reason = "unsupported ErrResourceTransfer option";
-                break;
-        }
+        String reason = switch (event.getReason()) {
+            case BOUNDED_RESTYPE_DIFFER -> "shelf's binding resource type is different from transferring resource";
+            case NON_STORABLE -> "resource type is not storable";
+            case CAPACITY_REACHED -> "shelf's capacity boundaries reached";
+            case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
+        };
 
         cli.reloadController(String.format("Error %s resource %s from container: %s.",
                 event.isAdded() ? "adding" : "removing",

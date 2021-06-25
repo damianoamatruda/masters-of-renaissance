@@ -9,7 +9,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.util.Comparator;
@@ -21,8 +23,8 @@ import java.util.stream.IntStream;
 /** Gui component representing the faith track. */
 public class FaithTrack extends HBox {
     Map<Integer, FaithTile> tiles = new HashMap<>();
-    private VBox tilesBox = new VBox();
-    private VBox popesFavors = new VBox();
+    private final VBox tilesBox = new VBox();
+    private final VBox popesFavors = new VBox();
 
     /**
      * Class constructor.
@@ -114,7 +116,7 @@ public class FaithTrack extends HBox {
             popesFavor.setFitHeight(110);
             popesFavor.setFitWidth(110);
             favorPane.getChildren().add(popesFavor);
-            Text pointsText = new Text(section.getVictoryPoints() + "");
+            Text pointsText = new Text(Integer.toString(section.getVictoryPoints()));
             pointsText.setScaleX(1.8);
             pointsText.setScaleY(1.8);
             if(gotBonus && isActivated) favorPane.getChildren().add(pointsText);

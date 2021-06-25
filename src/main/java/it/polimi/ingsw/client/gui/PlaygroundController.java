@@ -12,7 +12,10 @@ import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -42,7 +45,7 @@ public abstract class PlaygroundController extends GuiController {
 
     protected final Warehouse warehouse = new Warehouse();
 
-    private List<Integer> toActivate = new ArrayList<>();
+    private final List<Integer> toActivate = new ArrayList<>();
 
     private SButton activateProduction;
 
@@ -114,7 +117,7 @@ public abstract class PlaygroundController extends GuiController {
                 LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getLeaderType());
                 leaderCard.setLeaderId(reducedLeader.getId());
                 leaderCard.setLeaderType(reducedLeader.getLeaderType());
-                leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
+                leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
                 leaderCard.setResourceType(reducedLeader.getResourceType());
                 if (reducedLeader.getResourceRequirement().isPresent())
                     leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());

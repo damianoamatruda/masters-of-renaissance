@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.text.Text;
 
 /** Gui component that represents a development card. */
@@ -33,7 +32,7 @@ public class DevelopmentCard extends Card {
         super(card.getColor());
         card.getCost().ifPresent(this::setRequirement);
         setProduction(Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow());
-        setVictoryPoints(card.getVictoryPoints()+"");
+        setVictoryPoints(Integer.toString(card.getVictoryPoints()));
     }
 
     /**
@@ -41,9 +40,9 @@ public class DevelopmentCard extends Card {
      *
      * @param level the card level
      */
-    public void setLevel(int level){
-        levelLeft.setText(level+"");
-        levelRight.setText(level+"");
+    public void setLevel(int level) {
+        levelLeft.setText(Integer.toString(level));
+        levelRight.setText(Integer.toString(level));
     }
 
     /**

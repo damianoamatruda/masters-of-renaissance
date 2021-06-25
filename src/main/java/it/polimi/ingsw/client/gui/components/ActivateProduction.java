@@ -142,7 +142,7 @@ public class ActivateProduction extends StackPane {
                     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
                     leaderCard.setLeaderId(reducedLeader.getId());
                     leaderCard.setLeaderType(reducedLeader.getLeaderType());
-                    leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints() + "");
+                    leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
                     leaderCard.setResourceType(reducedLeader.getResourceType());
                     if (reducedLeader.getResourceRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());

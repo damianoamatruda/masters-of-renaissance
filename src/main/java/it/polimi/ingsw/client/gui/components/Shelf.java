@@ -246,8 +246,8 @@ public class Shelf extends BorderPane {
                     Dragboard db = r.startDragAndDrop(TransferMode.ANY);
                     ClipboardContent content = new ClipboardContent();
                     content.putImage(((Resource) r).getImage());
-                    content.putString(newId+"");
-                    db.setContent(content);
+                content.putString(Integer.toString(newId));
+                db.setContent(content);
                     event.consume();
                 }
             );
@@ -344,9 +344,9 @@ public class Shelf extends BorderPane {
         r.setOnDragDetected((event) -> {
                     Dragboard db = r.startDragAndDrop(TransferMode.ANY);
                     ClipboardContent content = new ClipboardContent();
-                    content.putImage(r.getImage());
-                    content.putString(this.getShelfId()+"");
-                    db.setContent(content);
+            content.putImage(r.getImage());
+            content.putString(Integer.toString(this.getShelfId()));
+            db.setContent(content);
                     event.consume();
                 }
         );
