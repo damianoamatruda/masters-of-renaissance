@@ -5,11 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -61,13 +61,23 @@ public class Production extends StackPane {
         input.setSpacing(2);
         output.setSpacing(2);
 
-        // input.setScaleX(elementScale);
-        // input.setScaleY(elementScale);
-        // output.setScaleX(elementScale);
-        // output.setScaleY(elementScale);
-        
         // TODO: exclusions, where png?
-        
+        if(!production.getOutputBlanksExclusions().isEmpty()) {
+            VBox exclusions = new VBox();
+            exclusions.setSpacing(2);
+            for(String resource : production.getOutputBlanksExclusions()) {
+                StackPane exclusion = new StackPane();
+                exclusion.getChildren().add(new Resource(resource));
+                exclusion.getChildren().add(new ImageView(new Image("/assets/gui/resourcetypes/blankexclusion.png")));
+
+                Group group = new Group(exclusion);
+                group.setScaleX(0.3);
+                group.setScaleY(0.3);
+                exclusions.getChildren().add(group);
+            }
+            ((VBox) recipe.getParent()).getChildren().add(exclusions);
+        }
+
         input.getChildren().addAll(buildResourceLines(production.getInput()));
 
         if (production.getInputBlanks() > 0) {
@@ -81,7 +91,7 @@ public class Production extends StackPane {
             Resource blank = new Resource("Zero"); // TODO: parameterize
             output.getChildren().add(row(production.getOutputBlanks(), blank));
         }
-        
+
         this.setPadding(new Insets(padding));
     }
 

@@ -6,11 +6,13 @@
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" fx:id="production" maxHeight="60.0" maxWidth="116.0" minHeight="60.0"
          minWidth="116.0" type="StackPane" xmlns="http://javafx.com/javafx/16" stylesheets="@../index.css">
-   <HBox alignment="CENTER" fx:id="recipe">
-      <VBox fx:id="input" alignment="CENTER" scaleShape="false"/>
-      <ImageView fx:id="curlyBrace" fitHeight="60.0" pickOnBounds="true" preserveRatio="true">
-         <Image url="@../resourcetypes/curlybrace.png"/>
-      </ImageView>
-      <VBox fx:id="output" alignment="CENTER"/>
-   </HBox>
+   <VBox spacing="-45">
+      <HBox alignment="CENTER" fx:id="recipe">
+         <VBox fx:id="input" alignment="CENTER" scaleShape="false"/>
+         <ImageView fx:id="curlyBrace" fitHeight="60.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../resourcetypes/curlybrace.png"/>
+         </ImageView>
+         <VBox fx:id="output" alignment="CENTER"/>
+      </HBox>
+   </VBox>
 </fx:root>
