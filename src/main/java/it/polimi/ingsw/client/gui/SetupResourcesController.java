@@ -15,7 +15,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -57,7 +56,7 @@ public class SetupResourcesController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
                 backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);

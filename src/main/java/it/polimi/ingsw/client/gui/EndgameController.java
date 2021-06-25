@@ -21,7 +21,7 @@ public class EndgameController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        NumberBinding maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
+        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
                 backStackPane.heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);

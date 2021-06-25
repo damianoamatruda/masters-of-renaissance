@@ -53,8 +53,6 @@ public abstract class PlaygroundController extends GuiController {
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
 
-        Gui gui = Gui.getInstance();
-
         Production prod = new Production();
         prod.setStyle("-fx-background-image: url('/assets/gui/playerboard/baseproduction.png');" +
                 "-fx-background-position: center center;" +

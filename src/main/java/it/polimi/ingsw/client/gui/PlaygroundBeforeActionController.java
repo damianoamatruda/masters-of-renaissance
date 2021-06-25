@@ -18,8 +18,6 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        Gui gui = Gui.getInstance();
-
         Button left = new SButton();
 //        left.setAlignment(Pos.BOTTOM_LEFT);
         left.setText("Market");
