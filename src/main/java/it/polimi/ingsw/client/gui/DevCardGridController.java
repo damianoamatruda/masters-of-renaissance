@@ -75,6 +75,8 @@ public class DevCardGridController extends GuiController {
         for (int i = 0; i < vm.getSlotsCount(); i++)
             devSlotChoicePicker.getItems().add(i);
 
+        devSlotChoicePicker.setValue(0);
+
         submitBtn.setDefaultButton(true);
         submitBtn.setOnAction(this::submitPressed);
 
