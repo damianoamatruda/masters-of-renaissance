@@ -9,12 +9,12 @@
     <ImageView fx:id="frontBG" fitHeight="720.0" fitWidth="1012.0" pickOnBounds="true" preserveRatio="true"/>
     <GridPane fx:id="board" alignment="CENTER" prefHeight="720" prefWidth="1012" StackPane.alignment="CENTER">
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.01"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.15"/>
         <ColumnConstraints hgrow="SOMETIMES"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="12.6"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="57.72"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="5.14"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="22.3"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="3.82"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="10.55"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="57.73"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="5"/>
       </columnConstraints>
       <rowConstraints>
         <RowConstraints percentHeight="35.1" valignment="BOTTOM" vgrow="SOMETIMES"/>

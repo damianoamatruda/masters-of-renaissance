@@ -17,7 +17,7 @@ import java.util.function.BiConsumer;
 
 /** Gui component representing a Warehouse. */
 public class Warehouse extends VBox {
-    private static final double minWidth = 360.0;
+    private static final double minWidth = 370.0;
     private static final double minHeight = 300.0;
     private double maxRowHeight;
     private final Map<Integer, Shelf> shelves = new HashMap<>();

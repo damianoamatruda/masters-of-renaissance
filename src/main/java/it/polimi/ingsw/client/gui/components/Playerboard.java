@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,9 +74,6 @@ public class Playerboard extends HBox {
         baseProdPaper.setFitHeight(110);
         baseProduction.setMaxHeight(110);
 
-//        baseProduction.setBorder(new Border(new BorderStroke(Color.RED,
-//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
         baseProduction.getChildren().add(baseProdPaper);
         baseProduction.getChildren().add(production);
 
@@ -85,7 +83,12 @@ public class Playerboard extends HBox {
         HBox devSlotsBox = new HBox();
         devSlotsBox.getChildren().addAll(slots);
         devSlotsBox.setAlignment(Pos.TOP_CENTER);
-        slots.forEach(s -> s.setMinWidth(200));
+        slots.forEach(s -> {
+            s.setMinWidth(194.74);
+            // s.setBorder(new Border(new BorderStroke(Color.RED,
+            //    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        });
+        // board.setGridLinesVisible(true);
 
         board.add(devSlotsBox, 4, 1);
 
@@ -110,7 +113,7 @@ public class Playerboard extends HBox {
     private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
         double boardHeight = 720,
                boardWidth = boardHeight * bgRatio,
-               storageColWidth = .2015 * boardWidth;
+               storageColWidth = .2235 * boardWidth;
 
         if (this.getHeight() > 0 && this.getWidth() > 0) {
             double newDimRatio = this.getWidth() / this.getHeight();
@@ -130,7 +133,6 @@ public class Playerboard extends HBox {
         frontBG.setFitWidth(boardWidth);
         frontBG.setFitHeight(boardHeight);
 
-        // scalePreservingRatio(w, storageColWidth, w.getPrefWidth() / w.getPrefHeight());
         double whWidth = w.getWidth() > 0 ? w.getWidth() : w.getPrefWidth();
         double whScaleFactor = storageColWidth / whWidth;
         w.setScaleX(whScaleFactor);
