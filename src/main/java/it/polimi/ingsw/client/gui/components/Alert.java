@@ -25,13 +25,16 @@ public class Alert extends BorderPane {
     @FXML private SButton okButton;
     @FXML private Text contentText;
 
+    public Alert(String title, String content, NumberBinding sizeBinding) {
+        this(title, content, sizeBinding, null);
+    }
     /**
      *
      * @param title
      * @param content
      * @param sizeBinding
      */
-    public Alert(String title, String content, NumberBinding sizeBinding) {
+    public Alert(String title, String content, NumberBinding sizeBinding, Runnable callback) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/alert.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -54,6 +57,9 @@ public class Alert extends BorderPane {
         okButton.setDefaultButton(true);
         okButton.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
             ((Pane) getParent()).getChildren().remove(this);
+
+            if (callback != null)
+                callback.run();
         });
 
         window.setBorder(new Border(new BorderStroke(Color.rgb(214, 150, 0),
