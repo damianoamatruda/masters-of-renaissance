@@ -35,7 +35,7 @@ public abstract class GuiController extends UiController implements Initializabl
      * The local player's UpdatePlayer tells the client what part of the player setup to switch to.
      * If the leaders hand still needs to be chosen the client will need to wait for UpdateLeadersHand.
      */
-    protected void setNextState(Consumer<?> callback) {
+    protected void setNextState(Consumer<GuiController> callback) {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
             if (isSetupDone) { // setup is done
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
@@ -77,50 +77,52 @@ public abstract class GuiController extends UiController implements Initializabl
         switch (event.getReason()) {
         case LATE_SETUP_ACTION:
             setNextState(c ->
-                getRootElement().getChildren().add(
-                    new Alert(title, "Setup phase is concluded, advancing to game turns.", maxScale)));
+                c.getRootElement().getChildren().add(
+                    new Alert(title,
+                        "Setup phase is concluded, advancing to game turns.",
+                        c.getMaxScale())));
         break;
         case EARLY_MANDATORY_ACTION:
             setNextState(c ->
-                getRootElement().getChildren().add(
+                c.getRootElement().getChildren().add(
                     new Alert(title,
                         "A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase.",
-                        maxScale)));
+                        c.getMaxScale())));
         break;
         case LATE_MANDATORY_ACTION:
-            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), c ->
-                getRootElement().getChildren().add(
+            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
+                c.getRootElement().getChildren().add(
                     new Alert(title,
                         "A mandatory action has already been executed, advancing to optional actions.",
-                        maxScale)));
+                        c.getMaxScale())));
         break;
         case EARLY_TURN_END:
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), c ->
-                getRootElement().getChildren().add(
+            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), (PlaygroundBeforeActionController c) ->
+                c.getRootElement().getChildren().add(
                     new Alert(title,
                         "A mandatory action needs to be executed before ending the turn.",
-                        maxScale)));
+                        c.getMaxScale())));
             break;
         case GAME_ENDED:
-            gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"), c ->
-                getRootElement().getChildren().add(
+            gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"), (EndgameController c) ->
+                c.getRootElement().getChildren().add(
                     new Alert(title,
                         "The match is finished, advancing to ending screen.",
-                        maxScale)));
+                        c.getMaxScale())));
         break;
         case NOT_CURRENT_PLAYER:
-            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), c ->
-                getRootElement().getChildren().add(
+            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
+                c.getRootElement().getChildren().add(
                     new Alert(title,
                         "You are not the current player. Please wait for your turn.",
-                        maxScale)));
+                        c.getMaxScale())));
         break;
         default:
-            gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"), c ->
-                getRootElement().getChildren().add(
+            gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"), (MainMenuController c) ->
+                c.getRootElement().getChildren().add(
                     new Alert(title,
                         String.format("Unsupported ErrAction reason %s.", event.getReason().toString()),
-                        maxScale)));
+                        c.getMaxScale())));
         break;
         }
     }
@@ -173,11 +175,11 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
 
         if (event.getReason() == ErrNicknameReason.NOT_IN_GAME) {
-            gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), c ->
-                getRootElement().getChildren().add(
+            gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
+                c.getRootElement().getChildren().add(
                     new Alert("Nickname error",
                         "Match not joined yet.",
-                        maxScale)));
+                        c.getMaxScale())));
             return;
         }
 

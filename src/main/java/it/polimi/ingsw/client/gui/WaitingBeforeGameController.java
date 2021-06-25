@@ -96,11 +96,11 @@ public class WaitingBeforeGameController extends GuiController {
             gui.reloadRoot("Error setting players number",
                     "Invalid number.");
         else
-            setNextState(c ->
-                getRootElement().getChildren().add(
+            setNextState(c -> 
+                c.getRootElement().getChildren().add(
                     new Alert("Error setting players number",
                         "You are not allowed to set the players' number for this match.",
-                        maxScale)));
+                        c.getMaxScale())));
     }
 
     @Override

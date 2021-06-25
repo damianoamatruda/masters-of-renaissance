@@ -218,9 +218,9 @@ public class SetupResourcesController extends GuiController {
            This different handler, which keeps track of the current player only,
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
-        Consumer<?> callback = c ->
-            getRootElement().getChildren().add(
-                new Alert("Action error", "Setup phase is concluded, advancing to game turns.", maxScale));
+        Consumer<?> callback = (GuiController c) ->
+            c.getRootElement().getChildren().add(
+                new Alert("Action error", "Setup phase is concluded, advancing to game turns.", c.getMaxScale()));
 
         if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
@@ -233,15 +233,15 @@ public class SetupResourcesController extends GuiController {
         if (event.isLeadersChoice()) // if the error is from the initial leaders choice
             if (event.getMissingLeadersCount() == 0) // no leaders missing -> already chosen
                 setNextState(c ->
-                    getRootElement().getChildren().add(
-                        new Alert("Error choosing leader cards", "Leader cards already chosen, advancing to next state.", maxScale)));
+                    c.getRootElement().getChildren().add(
+                        new Alert("Error choosing leader cards", "Leader cards already chosen, advancing to next state.", c.getMaxScale())));
             else
                 gui.reloadRoot("Error buying development card",
-                            String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
+                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
         else
             setNextState(c ->
-                getRootElement().getChildren().add(
-                    new Alert("Error choosing leader cards", "Initial resources already chosen, advancing to next state.", maxScale)));
+                c.getRootElement().getChildren().add(
+                    new Alert("Error choosing leader cards", "Initial resources already chosen, advancing to next state.", c.getMaxScale())));
     }
 
     @Override
