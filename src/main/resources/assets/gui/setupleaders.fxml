@@ -6,9 +6,10 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
 <StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="it.polimi.ingsw.client.gui.SetupLeadersController"
-  stylesheets="@index.css">
+           fx:controller="it.polimi.ingsw.client.gui.SetupLeadersController"
+           stylesheets="@index.css">
   <BorderPane fx:id="bpane"
     maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
     <center>
@@ -35,6 +36,7 @@
             <Insets top="20.0"/>
           </VBox.margin>
         </SButton>
+        <Text fx:id="waitingText" visible="false">Waiting for other players to finish their setup...</Text>
       </VBox>
     </center>
   </BorderPane>

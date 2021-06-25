@@ -25,6 +25,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -53,6 +55,8 @@ public class SetupResourcesController extends GuiController {
     private Button choiceButton;
     @FXML
     private Title titleComponent;
+    @FXML
+    private Text waitingText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -209,6 +213,10 @@ public class SetupResourcesController extends GuiController {
      */
     public void handleChoice() {
         Gui.getInstance().getUi().dispatch(new ReqChooseResources(selection));
+        waitingText.setVisible(true);
+        ((VBox) resourceTypesContainer.getParent()).getChildren().remove(resourceTypesContainer);
+        ((VBox) warehouse.getParent()).getChildren().remove(warehouse);
+        ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
     }
 
 
