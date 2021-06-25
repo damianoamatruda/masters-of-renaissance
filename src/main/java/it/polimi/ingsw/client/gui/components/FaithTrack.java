@@ -14,10 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /** Gui component representing the faith track. */
@@ -97,12 +94,27 @@ public class FaithTrack extends HBox {
 //        if(!vm.getLocalPlayerNickname().equals(vm.getCurrentPlayer()))
 //            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
 
-        // display pope's favors
-        int i = 1;
-        for(ReducedVaticanSection section : sections.values().stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getId)).toList()) {
-            HBox hbox = new HBox();
-            hbox.setAlignment(Pos.CENTER);
-            hbox.setSpacing(50);
+        setPopesFavors();
+
+        popesFavors.setSpacing(5);
+        this.getChildren().add(popesFavors);
+        tilesBox.setSpacing(-40);
+        this.getChildren().add(tilesBox);
+
+    }
+
+    private void setPopesFavors() {
+        popesFavors.getChildren().clear();
+        ViewModel vm = Gui.getInstance().getViewModel();
+        vm.getFaithTrack().ifPresent(track -> {
+            Map<Integer, ReducedVaticanSection> sections = track.getVaticanSections();
+
+            // display pope's favors
+            int i = 1;
+            for (ReducedVaticanSection section : sections.values().stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getId)).toList()) {
+                HBox hbox = new HBox();
+                hbox.setAlignment(Pos.CENTER);
+                hbox.setSpacing(50);
 
             Text sectionText = new Text(String.format("Section %d", i));
             sectionText.setScaleX(2);
@@ -121,16 +133,12 @@ public class FaithTrack extends HBox {
             pointsText.setScaleY(1.8);
             if(gotBonus && isActivated) favorPane.getChildren().add(pointsText);
 
-            hbox.getChildren().add(favorPane);
-            popesFavors.getChildren().add(hbox);
-            i++;
-        }
+                hbox.getChildren().add(favorPane);
+                popesFavors.getChildren().add(hbox);
+                i++;
+            }
 
-        popesFavors.setSpacing(5);
-        this.getChildren().add(popesFavors);
-        tilesBox.setSpacing(-40);
-        this.getChildren().add(tilesBox);
-
+        });
     }
 
     /**
@@ -142,6 +150,7 @@ public class FaithTrack extends HBox {
     public void updatePlayerMarker(int faithPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removePlayerMarker();
         tiles.get(Integer.min(faithPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addPlayerMarker();
+        setPopesFavors();
     }
 
     /**
@@ -153,6 +162,7 @@ public class FaithTrack extends HBox {
     public void updateBlackMarker(int blackPoints, int oldPts) {
         if(oldPts >= 0) tiles.get(oldPts).removeBlackMarker();
         tiles.get(Integer.min(blackPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addBlackMarker();
+        setPopesFavors();
     }
 
     public ImageView getPopesFavorImage(boolean isActivated, boolean gotBonus) {
