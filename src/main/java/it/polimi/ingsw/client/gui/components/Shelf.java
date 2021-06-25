@@ -69,12 +69,12 @@ public class Shelf extends BorderPane {
                 "-fx-background-size: 300 100;");
         BorderPane.setMargin(content, new Insets(0, 10, 0, 10));
 
-        sizeText = new Text(String.format("Max %d", shelf.getSize()));
+        sizeText = new Text(String.format("Max%n%d", shelf.getSize()));
         sizeText.setTextAlignment(TextAlignment.CENTER);
 
         BorderPane sizePane = new BorderPane();
-        sizePane.setMinWidth(40);
-        sizePane.setMaxWidth(40);
+        sizePane.setMinWidth(30);
+        sizePane.setMaxWidth(30);
         sizePane.setMinHeight(maxHeight);
         sizePane.setMaxHeight(maxHeight);
         sizePane.setCenter(sizeText);
