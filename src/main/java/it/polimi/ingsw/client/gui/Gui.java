@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Ui;
+import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.client.gui.components.PauseMenu;
 import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
@@ -136,12 +137,24 @@ public class Gui extends Application {
         setRoot(fxml, null);
     }
 
-    void reloadRoot(Consumer<?> callback) {
+    /**
+     * Reloads the current screen.
+     * 
+     * @param title   the title of the Alert to show before reloading the GUI's root
+     * @param content the content message of the Alert to show before reloading the GUI's root
+     */
+    void reloadRoot(String title, String content) {
+        /* Other ways of doing this were explored:
+            - a reloadRoot() method set as the Alert's callback
+                Discarded, since every children.add would get very verbose
+            - a reloadRoot(Alert) method
+                Discarded, since the Alert would need a callback anyways (see this implementation)
+            - a reloadRoot(Callback) that would call setRoot(currentRoot, callback)
+                Discarded, since the runLater methods wouldn't get executed in order and
+                the Alert would be visible for only a split second */
         Platform.runLater(() -> {
-            setRoot(currentRoot);
-            
-            callback.accept(null);
-            // Platform.runLater(() -> callback.accept(null));
+            getController().getRootElement().getChildren().add(
+                new Alert(title, content, getController().getMaxScale(), () -> setRoot(currentRoot)));
         });
     }
 

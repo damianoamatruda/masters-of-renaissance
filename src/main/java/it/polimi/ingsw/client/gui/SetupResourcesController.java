@@ -236,11 +236,8 @@ public class SetupResourcesController extends GuiController {
                     getRootElement().getChildren().add(
                         new Alert("Error choosing leader cards", "Leader cards already chosen, advancing to next state.", maxScale)));
             else
-                gui.reloadRoot(c ->
-                    getRootElement().getChildren().add(
-                        new Alert("Error buying development card",
-                            String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()),
-                            maxScale)));
+                gui.reloadRoot("Error buying development card",
+                            String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
         else
             setNextState(c ->
                 getRootElement().getChildren().add(

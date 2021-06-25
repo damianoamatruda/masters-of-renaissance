@@ -129,11 +129,8 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(ErrActiveLeaderDiscarded event) {
         super.on(event);
 
-        gui.reloadRoot(c ->
-            getRootElement().getChildren().add(
-                new Alert("Leader discard error",
-                    "Active leader cannot be discarded.",
-                    maxScale)));
+        gui.reloadRoot("Leader discard error",
+                "Active leader cannot be discarded.");
     }
 
     @Override
@@ -158,9 +155,7 @@ public abstract class GuiController extends UiController implements Initializabl
 
         String content = msg;
 
-        gui.reloadRoot(c ->
-            getRootElement().getChildren().add(
-                new Alert("Error buying development card", content, maxScale)));
+        gui.reloadRoot("Error buying development card", content);
     }
 
     @Override
@@ -200,37 +195,28 @@ public abstract class GuiController extends UiController implements Initializabl
             break;
         }
 
-        gui.reloadRoot(c ->
-            getRootElement().getChildren().add(
-                new Alert("Nickname error",
-                    String.format("Error setting nickname: %s", reason),
-                    maxScale)));
+        gui.reloadRoot("Nickname error",
+                String.format("Error setting nickname: %s", reason));
     }
 
     @Override
     public void on(ErrNoSuchEntity event) {
         super.on(event);
         
-        gui.reloadRoot(c ->
-            getRootElement().getChildren().add(
-                new Alert("Nonexistent entity",
-                    String.format("No such entity %s: %s%s.",
-                        event.getOriginalEntity().toString().toLowerCase().replace("_", " "),
-                        event.getId() < 0 ? "" : String.format("ID %d", event.getId()),
-                        event.getCode() == null ? "" : String.format("code %s", event.getCode())),
-                    maxScale)));
+        gui.reloadRoot("Nonexistent entity",
+                String.format("No such entity %s: %s%s.",
+                    event.getOriginalEntity().toString().toLowerCase().replace("_", " "),
+                    event.getId() < 0 ? "" : String.format("ID %d", event.getId()),
+                    event.getCode() == null ? "" : String.format("code %s", event.getCode())));
     }
 
     @Override
     public void on(ErrObjectNotOwned event) {
         super.on(event);
         
-        gui.reloadRoot(c ->
-            getRootElement().getChildren().add(
-                new Alert("Object not owned",
-                    String.format("%s with ID %d isn't yours. Are you sure you typed that right?",
-                        event.getObjectType(), event.getId()),
-                    maxScale)));
+        gui.reloadRoot("Object not owned",
+                String.format("%s with ID %d isn't yours. Are you sure you typed that right?",
+                    event.getObjectType(), event.getId()));
     }
 
     @Override
@@ -238,34 +224,25 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
         
         if (event.isIllegalDiscardedOut())
-            gui.reloadRoot(c ->
-                getRootElement().getChildren().add(
-                    new Alert("Resource transaction error",
-                        "Output of resource transfer cannot be discarded",
-                        maxScale)));
+            gui.reloadRoot("Resource transaction error",
+                    "Output of resource transfer cannot be discarded");
         else
-            gui.reloadRoot(c ->
-                getRootElement().getChildren().add(
-                    new Alert("Resource transaction error",
-                        String.format(
-                            "Irregular amount of %s specified in the container map: %d specified, %d required.",
-                            event.getResType().isEmpty() ? "resources" : event.getResType(),
-                            event.getReplacedCount(),
-                            event.getShelvesChoiceResCount()),
-                        maxScale)));
+            gui.reloadRoot("Resource transaction error",
+                    String.format(
+                        "Irregular amount of %s specified in the container map: %d specified, %d required.",
+                        event.getResType().isEmpty() ? "resources" : event.getResType(),
+                        event.getReplacedCount(),
+                        event.getShelvesChoiceResCount()));
     }
 
     @Override
     public void on(ErrResourceReplacement event) {
         super.on(event);
         
-        gui.reloadRoot(c ->
-            getRootElement().getChildren().add(
-                new Alert("Resource replacement error",
-                    String.format("Error validating transaction request %s: %s resource found.",
-                        event.isInput() ? "input" : "output",
-                        event.isNonStorable() ? "nonstorable" : "excluded"),
-                    maxScale)));
+        gui.reloadRoot("Resource replacement error",
+                String.format("Error validating transaction request %s: %s resource found.",
+                    event.isInput() ? "input" : "output",
+                    event.isNonStorable() ? "nonstorable" : "excluded"));
     }
 
     @Override
@@ -292,14 +269,11 @@ public abstract class GuiController extends UiController implements Initializabl
                 break;
         }
         
-        gui.reloadRoot(c ->
-            getRootElement().getChildren().add(
-                new Alert("Resource transfer error",
-                    String.format("Error %s resource %s from container: %s.",
-                        event.isAdded() ? "adding" : "removing",
-                        event.getResType(),
-                        reason),
-                    maxScale)));
+        gui.reloadRoot("Resource transfer error",
+                String.format("Error %s resource %s from container: %s.",
+                    event.isAdded() ? "adding" : "removing",
+                    event.getResType(),
+                    reason));
     }
     
     @Override
@@ -313,9 +287,9 @@ public abstract class GuiController extends UiController implements Initializabl
 
         gui.setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"),
                 (MainMenuController controller) ->
-                        getRootElement().getChildren()
+                        controller.getRootElement().getChildren()
                                 .add(new Alert("Connection error", "Server is down. Try again later.",
-                                        maxScale)));
+                                        controller.getMaxScale())));
 
     }
 

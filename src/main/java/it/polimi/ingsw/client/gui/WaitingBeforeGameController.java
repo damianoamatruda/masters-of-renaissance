@@ -93,11 +93,8 @@ public class WaitingBeforeGameController extends GuiController {
     @Override
     public void on(ErrNewGame event) {
         if (event.isInvalidPlayersCount())
-            gui.reloadRoot(c ->
-                getRootElement().getChildren().add(
-                    new Alert("Error setting players number",
-                        "Invalid number.",
-                        maxScale)));
+            gui.reloadRoot("Error setting players number",
+                    "Invalid number.");
         else
             setNextState(c ->
                 getRootElement().getChildren().add(
