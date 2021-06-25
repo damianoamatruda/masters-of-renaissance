@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -157,7 +156,7 @@ public class Production extends StackPane {
         activate.setOnAction((event) -> {
 //            top.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
 //            if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))
-            if(recipe.getOpacity() != 0.5) {
+            if(this.getOpacity() != 0.5) {
                 recipe.setOpacity(0.5);
                 toActivate.add(this.getProductionId());
                 activateProduction.setDisable(false);
