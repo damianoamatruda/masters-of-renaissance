@@ -61,7 +61,6 @@ public class Production extends StackPane {
         input.setSpacing(2);
         output.setSpacing(2);
 
-        // TODO: exclusions, where png?
         if(!production.getOutputBlanksExclusions().isEmpty()) {
             VBox exclusions = new VBox();
             exclusions.setSpacing(2);

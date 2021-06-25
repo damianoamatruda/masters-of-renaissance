@@ -13,6 +13,8 @@ import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -58,12 +60,12 @@ public abstract class PlaygroundController extends GuiController {
         canvas.scaleYProperty().bind(maxScale);
 
         Production prod = new Production();
-        prod.setStyle("-fx-background-image: url('/assets/gui/playerboard/baseproduction.png');" +
-                "-fx-background-position: center center;" +
-                "-fx-alignment: center;" +
-                "-fx-background-repeat: stretch;" +
-                "-fx-opacity: 1;" +
-                "-fx-background-size: 100 100;");
+//        prod.setStyle("-fx-background-image: url('/assets/gui/playerboard/baseproduction.png');" +
+//                "-fx-background-position: center center;" +
+//                "-fx-alignment: center;" +
+//                "-fx-background-repeat: stretch;" +
+//                "-fx-opacity: 1;" +
+//                "-fx-background-size: 100 100;");
         gui.getViewModel().getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(p -> prod.setProduction(p));
 
         warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });

@@ -9,9 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.List;
@@ -69,7 +68,20 @@ public class Playerboard extends HBox {
         storageColumn.add(wh, 0, 1);
         storageColumn.add(strongbox, 0, 3);
 
-        board.add(production, 3, 1);
+        StackPane baseProduction = new StackPane();
+        ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
+        baseProdPaper.setFitWidth(110);
+        baseProdPaper.setFitHeight(110);
+        baseProduction.setMaxHeight(110);
+
+//        baseProduction.setBorder(new Border(new BorderStroke(Color.RED,
+//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+        baseProduction.getChildren().add(baseProdPaper);
+        baseProduction.getChildren().add(production);
+
+        StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
+        board.add(baseProduction, 3, 1);
 
         HBox devSlotsBox = new HBox();
         devSlotsBox.getChildren().addAll(slots);
