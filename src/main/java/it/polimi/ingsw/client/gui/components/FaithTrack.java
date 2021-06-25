@@ -104,7 +104,7 @@ public class FaithTrack extends HBox {
             hbox.setAlignment(Pos.CENTER);
             hbox.setSpacing(50);
 
-            Text sectionText = new Text("Section:" + i);
+            Text sectionText = new Text(String.format("Section %d", i));
             sectionText.setScaleX(2);
             sectionText.setScaleY(2);
             hbox.getChildren().add(sectionText);

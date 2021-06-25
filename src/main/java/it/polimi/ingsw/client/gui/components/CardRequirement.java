@@ -10,14 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /** Gui component used to show card requirements. */
 public class CardRequirement extends HBox {
     private static final double maxRowHeight = 30; // TODO: Parameterize
-    private List<HBox> requirements;
 
     /**
      * Builds graphic components for the resource requirements.
@@ -25,7 +22,6 @@ public class CardRequirement extends HBox {
      * @param requirements the resource requirements of the card
      */
     public void setRequirements(ReducedResourceRequirement requirements) {
-        this.requirements = new ArrayList<>();
         for (String resource : requirements.getRequirements().keySet()) {
             HBox entry = new HBox();
 
@@ -55,25 +51,26 @@ public class CardRequirement extends HBox {
      * @param requirements the requirements on owned cards for this card
      */
     public void setRequirements(ReducedDevCardRequirement requirements) {
-        this.requirements = new ArrayList<>();
         for (ReducedDevCardRequirementEntry color : requirements.getEntries()) {
             HBox entry = new HBox();
 
-            ImageView i = new ImageView();
+            Text amountText = new Text(Integer.toString(color.getAmount()));
+
+            ImageView levelImage = new ImageView();
             String fileName = color.getColor().toLowerCase();
             if (color.getLevel() > 0) fileName += Integer.toString(color.getLevel());
-            i.setImage(new Image(Objects.requireNonNull(getClass().getResource(
+            levelImage.setImage(new Image(Objects.requireNonNull(getClass().getResource(
                     String.format("/assets/gui/cardrequirements/%s.png", fileName))).toExternalForm()));
 
-            Text l = new Text(Integer.toString(color.getAmount()));
-            entry.getChildren().add(l);
-            entry.getChildren().add(i);
+            HBox.setMargin(levelImage, new Insets(0, 5, 0, 3));
 
+            entry.getChildren().add(amountText);
+            entry.getChildren().add(levelImage);
             entry.setAlignment(Pos.CENTER);
 
-            i.setPreserveRatio(true);
-            i.setFitHeight(maxRowHeight);
-            l.maxHeight(maxRowHeight);
+            levelImage.setPreserveRatio(true);
+            levelImage.setFitHeight(maxRowHeight);
+            amountText.maxHeight(maxRowHeight);
 
             entry.maxHeight(maxRowHeight);
 
