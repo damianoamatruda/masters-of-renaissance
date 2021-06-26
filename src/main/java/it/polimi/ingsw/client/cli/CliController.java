@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
@@ -17,14 +16,14 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public abstract class CliController extends UiController implements Renderable {
     protected final Cli cli = Cli.getInstance();
-    
+
     public CliController() {
         super(Cli.getInstance().getUi());
     }
 
     /**
      * Sets the next state based on the following algorithm:
-     * 
+     *
      * UpdateGame tells the client whether the game's setup phase is still ongoing or not.
      * If the setup is done, the client needs to wait until UpdateCurrentPlayer to know which state to change to.
      * If the setup phase is not done:
@@ -49,7 +48,7 @@ public abstract class CliController extends UiController implements Renderable {
                 });
         });
     }
-    
+
     @Override
     public abstract void render();
 
@@ -126,7 +125,7 @@ public abstract class CliController extends UiController implements Renderable {
         String msg = "\nUnsatisfied card requirements:\n";
         if (event.getMissingDevCards().isPresent()) {
             msg = msg.concat("Missing development cards:\n");
-    
+
             for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
                 msg = msg.concat(String.format("Color: %s, level: %d, missing: %d\n", e.getColor(), e.getLevel(), e.getAmount()));
         } else {
@@ -152,46 +151,40 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(ErrNickname event) {
         super.on(event);
-
-        if (event.getReason() == ErrNicknameReason.NOT_IN_GAME) {
-            new Thread(() -> {
+        switch (event.getReason()) {
+            case ALREADY_SET -> cli.reloadController("Error setting nickname: nickname is already set.");
+            case TAKEN -> cli.reloadController("Error setting nickname: nickname is taken.");
+            case NOT_SET -> cli.reloadController("Error setting nickname: nickname is blank.");
+            case NOT_IN_GAME -> new Thread(() -> {
                 cli.getOut().println("Match not joined yet.");
                 cli.promptPause();
                 cli.setController(new InputNicknameState(""));
             }).start();
-            return;
         }
-
-        String reason = switch (event.getReason()) {
-            case ALREADY_SET, TAKEN -> String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
-            case NOT_SET -> "nickname is blank.";
-            case NOT_IN_GAME -> null; // TODO: Handle this!
-        };
-        cli.reloadController(String.format("Error setting nickname: %s", reason));
     }
 
     @Override
     public void on(ErrNoSuchEntity event) {
         super.on(event);
-        
+
         cli.reloadController(
-            String.format("No such entity %s: %s%s.",
-                event.getOriginalEntity().toString().toLowerCase().replace("_", " "),
-                event.getId() < 0 ? "" : String.format("ID %d", event.getId()),
-                event.getCode() == null ? "" : String.format("code %s", event.getCode())));
+                String.format("No such entity %s: %s%s.",
+                        event.getOriginalEntity().toString().toLowerCase().replace("_", " "),
+                        event.getId() < 0 ? "" : String.format("ID %d", event.getId()),
+                        event.getCode() == null ? "" : String.format("code %s", event.getCode())));
     }
 
     @Override
     public void on(ErrObjectNotOwned event) {
         super.on(event);
-        
+
         cli.reloadController(String.format("%s with ID %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
     }
 
     @Override
     public void on(ErrReplacedTransRecipe event) {
         super.on(event);
-        
+
         if (event.isIllegalDiscardedOut())
             cli.reloadController("Output of resource transfer cannot be discarded");
         else
@@ -205,7 +198,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(ErrResourceReplacement event) {
         super.on(event);
-        
+
         cli.reloadController(String.format("Error validating transaction request %s: %s resource found.",
                 event.isInput() ? "input" : "output",
                 event.isNonStorable() ? "nonstorable" : "excluded"));
@@ -240,21 +233,21 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(ResQuit event) {
         super.on(event);
-        
+
         cli.setController(new MainMenuState());
     }
 
     @Override
     public void on(UpdateAction event) {
         super.on(event);
-        
+
         // TODO: IMPLEMENT IN STATES
     }
 
     @Override
     public void on(UpdateActionToken event) {
         super.on(event);
-        
+
         // print only, no cache update
         vm.getActionToken(event.getActionToken())
                 .ifPresent(t -> {
@@ -272,7 +265,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
     }
@@ -280,7 +273,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateDevCardGrid event) {
         super.on(event);
-        
+
         cli.getOut().println();
         new DevCardGrid(vm.getDevCardGrid().orElseThrow()).render();
     }
@@ -288,7 +281,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateDevCardSlot event) {
         super.on(event);
-        
+
         new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
     }
 
@@ -309,7 +302,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateGameEnd event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println("Game ended!");
     }
@@ -319,7 +312,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
-            .collect(Collectors.toMap(nick -> nick, nick -> 0));
+                .collect(Collectors.toMap(nick -> nick, nick -> 0));
         cli.getOut().println();
         new FaithTrack(vm.getFaithTrack().orElseThrow(), points).render();
     }
@@ -332,7 +325,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateLastRound event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println("Last round!");
     }
@@ -340,7 +333,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateActivateLeader event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println(Cli.center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer(), event.getLeader())));
         cli.getOut().println();
@@ -350,7 +343,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println(center(String.format("%s's leader cards:", event.getPlayer())));
         cli.getOut().println();
@@ -360,7 +353,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateLeadersHandCount event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println(center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
         new Thread(cli::promptPause).start();
@@ -369,7 +362,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateMarket event) {
         super.on(event);
-        
+
         cli.getOut().println();
         new Market(event.getMarket()).render();
     }
@@ -377,7 +370,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdatePlayer event) {
         super.on(event);
-        
+
         cli.getOut().println();
         new ResourceContainers(
                 event.getPlayer(),
@@ -398,7 +391,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdatePlayerStatus event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().printf("Player %s became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
     }
@@ -406,7 +399,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateResourceContainer event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println(center(new Box(new ResourceContainer(event.getResContainer())).getString(cli)));
     }
@@ -414,7 +407,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateSetupDone event) {
         super.on(event);
-        
+
         if (vm.getPlayerNicknames().size() > 1) {
             cli.getOut().println();
             cli.getOut().println("All players have finished their setup! Game starting...");
@@ -424,7 +417,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateVaticanSection event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().printf("Activated vatican section %d%n", event.getVaticanSection()); // TODO: improve
     }
@@ -432,7 +425,7 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateVictoryPoints event) {
         super.on(event);
-        
+
         cli.getOut().println();
         cli.getOut().println(Cli.center(
                 String.format("Victory points for %s: %d.\n", event.getPlayer(), event.getVictoryPoints())));
