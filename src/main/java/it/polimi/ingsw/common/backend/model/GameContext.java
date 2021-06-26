@@ -111,7 +111,7 @@ public class GameContext extends AsynchronousEventDispatcher {
         }
 
 
-        List<LeaderCard> leaders = leaderIds.stream().map(player::getLeaderById).filter(Optional::isPresent).map(Optional::get).toList();
+        List<LeaderCard> leaders = leaderIds.stream().map(player::getLeaderById).flatMap(Optional::stream).toList();
 
         try {
             player.getSetup().chooseLeaders(view, game, player, leaders);

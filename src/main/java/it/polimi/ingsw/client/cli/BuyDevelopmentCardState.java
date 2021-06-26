@@ -7,8 +7,11 @@ import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
-import it.polimi.ingsw.common.reducedmodel.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -82,10 +85,10 @@ public class BuyDevelopmentCardState extends CliController {
 
     private void chooseLevel(Cli cli) {
         Set<Integer> levels = grid.getTopCards().values().stream()
-            .flatMap(Collection::stream)
-            .filter(Optional::isPresent)
-            .map(id -> vm.getDevelopmentCard(id.get()))
-            .map(card -> card.isPresent() ? card.get().getLevel() : -1)
+                .flatMap(Collection::stream)
+                .flatMap(Optional::stream)
+                .map(vm::getDevelopmentCard)
+                .map(card -> card.map(ReducedDevCard::getLevel).orElse(-1))
             .filter(level -> level >= 0).collect(Collectors.toUnmodifiableSet());
 
         AtomicBoolean valid = new AtomicBoolean(false);

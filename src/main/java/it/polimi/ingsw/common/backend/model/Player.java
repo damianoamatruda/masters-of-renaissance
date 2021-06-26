@@ -339,7 +339,7 @@ public class Player extends EventDispatcher {
     public Set<Shelf> getShelves() {
         Set<Shelf> shelves = new HashSet<>();
         shelves.addAll(warehouse.getShelves());
-        shelves.addAll(leaders.stream().map(l -> l.getDepot(false)).filter(Optional::isPresent).map(Optional::get).toList());
+        shelves.addAll(leaders.stream().map(l -> l.getDepot(false)).flatMap(Optional::stream).toList());
         return shelves;
     }
 
@@ -362,7 +362,7 @@ public class Player extends EventDispatcher {
     public Optional<ResourceTransactionRecipe> getProductionById(int id) {
         Optional<ResourceTransactionRecipe> production = baseProduction.getId() == id ? Optional.of(baseProduction) : Optional.empty();
         if (production.isEmpty())
-            production = leaders.stream().map(l -> l.getProduction(false)).filter(Optional::isPresent).map(Optional::get).filter(p -> p.getId() == id).findAny();
+            production = leaders.stream().map(l -> l.getProduction(false)).flatMap(Optional::stream).filter(p -> p.getId() == id).findAny();
         if (production.isEmpty())
             production = devSlots.stream().flatMap(Collection::stream).map(DevelopmentCard::getProduction).filter(p -> p.getId() == id).findAny();
         return production;

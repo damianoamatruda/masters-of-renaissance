@@ -6,9 +6,9 @@ import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -92,8 +92,7 @@ public class TakeFromMarketState extends CliController {
         }
         this.resources = this.resources.stream()
                 .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .filter(r -> r.isStorable() || vm.getMarket().get().getReplaceableResType().equals(r.getName()))
                 .map(ReducedResourceType::getName)
                 .toList();

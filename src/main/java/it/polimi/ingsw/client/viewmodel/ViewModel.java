@@ -310,8 +310,7 @@ public class ViewModel {
 
         return playerData.get(nickname).getWarehouseShelves().stream()
                 .map(this::getContainer)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .toList();
     }
 
@@ -329,8 +328,7 @@ public class ViewModel {
                 .filter(ReducedLeaderCard::isActive)
                 .map(ReducedLeaderCard::getContainerId)
                 .map(this::getContainer)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .toList();
     }
 
@@ -513,16 +511,9 @@ public class ViewModel {
      * @return the card of the specified color and level
      */
     public synchronized Optional<ReducedDevCard> getDevCardFromGrid(String color, int level) {
-        if (devCardGrid == null ||
-            !devCardGrid.getTopCards().keySet().contains(color) ||
-            !devCardGrid.getTopCards().get(color).stream()
-                .map(id -> getDevelopmentCard(id.orElse(-1)))
-                .filter(Optional::isPresent).map(Optional::get)
-                .map(ReducedDevCard::getLevel).toList().contains(level))
-            
+        if (devCardGrid == null || !devCardGrid.getTopCards().containsKey(color) || level >= devCardGrid.getTopCards().get(color).size())
             return Optional.empty();
-
-        return getDevelopmentCard(devCardGrid.getTopCards().get(color).get(level).orElse(-1));
+        return devCardGrid.getTopCards().get(color).get(level).flatMap(this::getDevelopmentCard);
     }
 
     /**
@@ -612,8 +603,8 @@ public class ViewModel {
     public synchronized void activateLeaderCard(int id) {
         leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
 
-        if (playerData.keySet().contains(getCurrentPlayer()) &&
-            playerData.get(getCurrentPlayer()) != null) {
+        if (playerData.containsKey(getCurrentPlayer()) &&
+                playerData.get(getCurrentPlayer()) != null) {
             Set<Integer> lc = playerData.get(getCurrentPlayer()).getLeadersHand();
             lc.add(id);
             playerData.get(getCurrentPlayer()).setLeadersHand(lc);

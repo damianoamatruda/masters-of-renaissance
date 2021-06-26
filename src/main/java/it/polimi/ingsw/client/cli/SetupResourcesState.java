@@ -26,8 +26,7 @@ public class SetupResourcesState extends SetupState {
                 .map(ReducedResourceType::getName)
                 .filter(r -> !vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialExcludedResources().orElse(new ArrayList<>()).contains(r))
                 .map(r -> vm.getResourceTypes().stream().filter(res -> res.getName().equals(r)).findAny())
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .filter(ReducedResourceType::isStorable)
                 .map(ReducedResourceType::getName)
                 .collect(Collectors.toUnmodifiableSet());

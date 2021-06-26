@@ -105,8 +105,7 @@ public class MarketController extends GuiController {
         }
         chosenResources = chosenResources.stream()
                 .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .filter(r -> r.isStorable() || r.getName().equals("Zero") && isZeroReplaceable) // TODO: why is zero a string?
                 .map(ReducedResourceType::getName)
                 .toList();

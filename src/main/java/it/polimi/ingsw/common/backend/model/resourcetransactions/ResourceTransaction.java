@@ -95,8 +95,7 @@ public class ResourceTransaction {
         /* Make map of clones of all resource container groups */
         Map<ResourceContainerGroup, ResourceContainerGeneralGroup> clonedContainerGroups = allContainers.stream()
                 .map(ResourceContainer::getGroup)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toMap(Function.identity(), ResourceContainerGeneralGroup::new, (g1, g2) -> g1));
 
         // TODO: Add tests of this with WarehouseShelf
