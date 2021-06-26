@@ -20,6 +20,7 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         super.initialize(url, resourceBundle);
 
         Button endTurn = new SButton("End turn");
+        endTurn.setDefaultButton(true);
         endTurn.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.getUi().dispatch(new ReqEndTurn()));
         canvas.getChildren().add(endTurn);
