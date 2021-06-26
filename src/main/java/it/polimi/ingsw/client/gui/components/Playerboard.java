@@ -70,12 +70,17 @@ public class Playerboard extends HBox {
 
         StackPane baseProduction = new StackPane();
         ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
-        baseProdPaper.setFitWidth(110);
-        baseProdPaper.setFitHeight(110);
-        baseProduction.setMaxHeight(110);
+        baseProdPaper.setFitWidth(107);
+        baseProdPaper.setFitHeight(107);
+        baseProduction.setMaxHeight(107);
 
         baseProduction.getChildren().add(baseProdPaper);
         baseProduction.getChildren().add(production);
+
+        production.setScaleX(0.85);
+        production.setScaleY(0.85);
+        baseProduction.setScaleX(0.95);
+        baseProduction.setScaleY(0.95);
 
         StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
         board.add(baseProduction, 3, 1);
@@ -84,11 +89,8 @@ public class Playerboard extends HBox {
         devSlotsBox.getChildren().addAll(slots);
         devSlotsBox.setAlignment(Pos.TOP_CENTER);
         slots.forEach(s -> {
-            s.setMinWidth(194.74);
-            // s.setBorder(new Border(new BorderStroke(Color.RED,
-            //    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            s.setMinWidth(197);
         });
-        // board.setGridLinesVisible(true);
 
         board.add(devSlotsBox, 4, 1);
 
@@ -139,10 +141,6 @@ public class Playerboard extends HBox {
         w.setScaleY(whScaleFactor);
         
         scalePreservingRatio(s, storageColWidth, s.getPrefWidth() / s.getPrefHeight());
-
-        scalePreservingRatio(p,
-            board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100,
-            p.getMaxWidth() / p.getMaxHeight());
 
         for (DevSlot sl : slots) {
             scalePreservingRatio(sl,

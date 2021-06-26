@@ -13,11 +13,11 @@
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="22.3"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="3.82"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="10.55"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="57.73"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="5"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="58.43"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="4.5"/>
       </columnConstraints>
       <rowConstraints>
-        <RowConstraints percentHeight="35.1" valignment="BOTTOM" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="31.4" valignment="CENTER" vgrow="SOMETIMES"/>
         <RowConstraints vgrow="SOMETIMES"/>
       </rowConstraints>
       <GridPane fx:id="storageColumn" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">

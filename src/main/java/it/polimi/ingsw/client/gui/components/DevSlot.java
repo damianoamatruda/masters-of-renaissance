@@ -17,6 +17,7 @@ public class DevSlot extends StackPane {
      * Class constructor.
      */
     public DevSlot() {
+        this.setMaxHeight(459);
         Image bgimg = new Image(
                 Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/devslot.PNG")).toExternalForm());
 
