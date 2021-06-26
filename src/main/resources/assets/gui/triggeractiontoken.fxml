@@ -14,7 +14,7 @@
     <VBox alignment="CENTER" spacing="30">
       <Text fx:id="message" text="This token has been triggered." textAlignment="CENTER"/>
       <ImageView fx:id="token" layoutY="200" layoutX="300"/>
-      <SButton fx:id="next" text="Continue" alignment="BOTTOM_CENTER"/>
+      <SButton fx:id="next" text="Continue" alignment="BOTTOM_CENTER" defaultButton="true"/>
       <padding>
         <Insets bottom="80.0"/>
       </padding>
