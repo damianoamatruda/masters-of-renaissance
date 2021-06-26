@@ -1,16 +1,12 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.components.Alert;
-import it.polimi.ingsw.client.gui.components.Resource;
-import it.polimi.ingsw.client.gui.components.Shelf;
-import it.polimi.ingsw.client.gui.components.Title;
-import it.polimi.ingsw.client.gui.components.Warehouse;
+import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
+import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
@@ -226,9 +222,9 @@ public class SetupResourcesController extends GuiController {
            This different handler, which keeps track of the current player only,
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
-        Consumer<?> callback = (GuiController c) ->
-            c.getRootElement().getChildren().add(
-                new Alert("Action error", "Setup phase is concluded, advancing to game turns.", c.getMaxScale()));
+        Consumer<? extends GuiController> callback = controller ->
+                controller.getRootElement().getChildren().add(
+                        new Alert("Action error", "Setup phase is concluded, advancing to game turns.", controller.getMaxScale()));
 
         if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);

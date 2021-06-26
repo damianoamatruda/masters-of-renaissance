@@ -119,7 +119,7 @@ public class Gui extends Application {
         return ui;
     }
 
-    void setRoot(URL fxml, Consumer<?> callback) {
+    void setRoot(URL fxml, Consumer<? extends GuiController> callback) {
         this.currentRoot = fxml;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(fxml);
@@ -139,12 +139,12 @@ public class Gui extends Application {
 
     /**
      * Reloads the current screen, executing a callback when finished loading.
-     * 
-     * @param title   the title of the Alert to show before reloading the GUI's root
-     * @param content the content message of the Alert to show before reloading the GUI's root
+     *
+     * @param title    the title of the Alert to show before reloading the GUI's root
+     * @param content  the content message of the Alert to show before reloading the GUI's root
      * @param callback the callback to execute when setting the new root element
      */
-    void reloadRoot(String title, String content, Consumer<?> callback) {
+    void reloadRoot(String title, String content, Consumer<? extends GuiController> callback) {
         /* Other ways of doing this were explored:
             - a reloadRoot() method set as the Alert's callback
                 Discarded, since every children.add would get very verbose
