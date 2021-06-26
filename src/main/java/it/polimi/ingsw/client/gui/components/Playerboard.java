@@ -183,12 +183,17 @@ public class Playerboard extends HBox {
 
         StackPane baseProduction = new StackPane();
         ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
-        baseProdPaper.setFitWidth(110);
-        baseProdPaper.setFitHeight(110);
-        baseProduction.setMaxHeight(110);
+        baseProdPaper.setFitWidth(107);
+        baseProdPaper.setFitHeight(107);
+        baseProduction.setMaxHeight(107);
 
         baseProduction.getChildren().add(baseProdPaper);
         baseProduction.getChildren().add(production);
+
+        production.setScaleX(0.85);
+        production.setScaleY(0.85);
+        baseProduction.setScaleX(0.95);
+        baseProduction.setScaleY(0.95);
 
         StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
         board.add(baseProduction, 3, 1);
