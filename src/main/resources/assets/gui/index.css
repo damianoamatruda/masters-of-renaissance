@@ -28,10 +28,8 @@
 .main-small {
     -fx-background-color: #cdcdb6;
     -fx-background-radius: 10px;
-    -fx-border-color: rgb(214, 150, 0);
     -fx-border-radius: 10px;
     -fx-background-insets: 1px;
-    -fx-border-width: 3px;
 }
 
 .dark Text {
