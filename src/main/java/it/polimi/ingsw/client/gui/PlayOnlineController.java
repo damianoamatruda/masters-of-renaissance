@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Alert;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -21,10 +20,7 @@ public class PlayOnlineController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
-                gui.getRoot().heightProperty().divide(Gui.realHeight));
-        canvas.scaleXProperty().bind(maxScale);
-        canvas.scaleYProperty().bind(maxScale);
+        gui.setSceneScaling(canvas);
     }
 
     /**
@@ -44,12 +40,12 @@ public class PlayOnlineController extends GuiController {
         } catch (ArrayIndexOutOfBoundsException e) {
             Platform.runLater(() ->
                     gui.getRoot().getChildren().add(
-                            new Alert("Play Online", String.format("%s is not a valid pair IP:port.", server.getText()), maxScale)));
+                            new Alert("Play Online", String.format("%s is not a valid pair IP:port.", server.getText()))));
             return;
         } catch (NumberFormatException e) {
             Platform.runLater(() ->
                     gui.getRoot().getChildren().add(
-                            new Alert("Play Online", String.format("Port %s is not a valid port.", args[1]), maxScale)));
+                            new Alert("Play Online", String.format("Port %s is not a valid port.", args[1]))));
             return;
         }
 
@@ -60,12 +56,12 @@ public class PlayOnlineController extends GuiController {
         } catch (UnknownHostException e) {
             Platform.runLater(() ->
                     gui.getRoot().getChildren().add(
-                            new Alert("Play Online", String.format("Don't know about host %s.", host), maxScale)));
+                            new Alert("Play Online", String.format("Don't know about host %s.", host))));
             return;
         } catch (IOException e) {
             Platform.runLater(() ->
                     gui.getRoot().getChildren().add(
-                            new Alert("Play Online", "Could not connect to the server.", maxScale)));
+                            new Alert("Play Online", "Could not connect to the server.")));
             return;
         }
 

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -20,10 +19,7 @@ public class EndgameController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
-                gui.getRoot().heightProperty().divide(Gui.realHeight));
-        canvas.scaleXProperty().bind(maxScale);
-        canvas.scaleYProperty().bind(maxScale);
+        gui.setSceneScaling(canvas);
 
         if (vm.getWinner() != null && vm.getWinner().equals(vm.getLocalPlayerNickname()))
             outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points! CONGRATULATIONS!");

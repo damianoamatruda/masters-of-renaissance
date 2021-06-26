@@ -9,7 +9,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,10 +54,7 @@ public class DevCardGridController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
-                gui.getRoot().heightProperty().divide(Gui.realHeight));
-        canvas.scaleXProperty().bind(maxScale);
-        canvas.scaleYProperty().bind(maxScale);
+        gui.setSceneScaling(canvas);
 
         devCardGrid = new DevCardGrid();
         devCardGrid.setGrid(vm.getDevCardGrid().orElseThrow());
@@ -84,7 +80,7 @@ public class DevCardGridController extends GuiController {
         resetSlots();
         resetLeaders();
 
-        gui.setPauseHandlers(canvas, maxScale);
+        gui.setPauseHandlers(canvas);
 
         canvas.setBorder(new Border(new BorderStroke(Color.RED,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));

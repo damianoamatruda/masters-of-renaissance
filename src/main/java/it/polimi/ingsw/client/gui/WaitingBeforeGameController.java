@@ -5,7 +5,6 @@ import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -35,10 +34,7 @@ public class WaitingBeforeGameController extends GuiController {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
-                gui.getRoot().heightProperty().divide(Gui.realHeight));
-        canvas.scaleXProperty().bind(maxScale);
-        canvas.scaleYProperty().bind(maxScale);
+        gui.setSceneScaling(canvas);
     }
 
     /**
@@ -73,7 +69,7 @@ public class WaitingBeforeGameController extends GuiController {
             int count = Integer.parseInt(inputRadio.getText());
             gui.getUi().dispatch(new ReqNewGame(count));
         } catch (NumberFormatException e) {
-            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert("Play Online", "Not a number", maxScale)));
+            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert("Play Online", "Not a number")));
         }
     }
 
@@ -86,8 +82,7 @@ public class WaitingBeforeGameController extends GuiController {
             setNextState(controller ->
                     gui.getRoot().getChildren().add(
                             new Alert("Error setting players number",
-                                    "You are not allowed to set the players' number for this match.",
-                                    controller.getMaxScale())));
+                                    "You are not allowed to set the players' number for this match.")));
     }
 
     @Override

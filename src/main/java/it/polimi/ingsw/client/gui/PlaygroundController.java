@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -49,13 +48,10 @@ public abstract class PlaygroundController extends GuiController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         /* Scaling */
-        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
-                gui.getRoot().heightProperty().divide(Gui.realHeight));
-        canvas.scaleXProperty().bind(maxScale);
-        canvas.scaleYProperty().bind(maxScale);
+        gui.setSceneScaling(canvas);
 
         /* Pause Menu */
-        gui.setPauseHandlers(canvas, maxScale);
+        gui.setPauseHandlers(canvas);
 
         /* Warehouse Shelves */
         warehouse = new Warehouse();
@@ -237,7 +233,7 @@ public abstract class PlaygroundController extends GuiController {
         activateProdButton.setOnAction((event) ->
                 gui.getRoot().getChildren().add(new ActivateProduction(toActivate, 0,
                         new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())),
-                        new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayerNickname())), maxScale)));
+                        new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayerNickname())))));
         activateProdButton.setDisable(true);
 
         canvas.getChildren().add(activateProdButton);

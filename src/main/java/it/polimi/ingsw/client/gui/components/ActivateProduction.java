@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
-import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,8 +21,6 @@ import java.util.Map;
 
 /** Pane component used to choose input source for a selected production. */
 public class ActivateProduction extends BorderPane {
-    private final NumberBinding maxScale;
-
     @FXML
     private SButton back;
     @FXML
@@ -63,11 +60,10 @@ public class ActivateProduction extends BorderPane {
      * @param requests      the already completed production requests
      * @param tempShelves   the temporary shelves, containing the remaining payable resources for the remaining productions
      * @param tempDepots
-     * @param sizeBinding
      */
     public ActivateProduction(List<Integer> toActivate, int index,
                               List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
-                              List<ReducedResourceContainer> tempDepots, NumberBinding sizeBinding) {
+                              List<ReducedResourceContainer> tempDepots) {
         Gui gui = Gui.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/activateproduction.fxml"));
         fxmlLoader.setRoot(this);
@@ -85,11 +81,9 @@ public class ActivateProduction extends BorderPane {
         this.newTempShelves = new ArrayList<>(tempShelves); // this does need to be a deep copy
         this.newTempDepots = new ArrayList<>(tempDepots); // this as well
         this.requests = requests;
-        this.maxScale = sizeBinding;
 
         if (index == 0) {
-            this.scaleXProperty().bind(maxScale);
-            this.scaleYProperty().bind(maxScale);
+            gui.setSceneScaling(this);
         }
 
         text.setText(String.format("Production: %s", toActivate.get(index)));
@@ -171,7 +165,7 @@ public class ActivateProduction extends BorderPane {
 
         // go to next production
         Gui.getInstance().getRoot().getChildren().add(new ActivateProduction(toActivate, index + 1,
-                requests, newTempShelves, newTempDepots, maxScale));
+                requests, newTempShelves, newTempDepots));
     }
 
     /**

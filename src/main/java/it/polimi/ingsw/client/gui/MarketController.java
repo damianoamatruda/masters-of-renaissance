@@ -9,7 +9,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -59,10 +58,7 @@ public class MarketController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
-                gui.getRoot().heightProperty().divide(Gui.realHeight));
-        canvas.scaleXProperty().bind(maxScale);
-        canvas.scaleYProperty().bind(maxScale);
+        gui.setSceneScaling(canvas);
 
         market = new Market();
         market.setContent(vm.getMarket().orElseThrow());
@@ -77,7 +73,7 @@ public class MarketController extends GuiController {
 
         back.setOnAction(this::back);
 
-        gui.setPauseHandlers(canvas, maxScale);
+        gui.setPauseHandlers(canvas);
     }
 
     /**

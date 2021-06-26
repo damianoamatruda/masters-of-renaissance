@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Options;
-import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -21,12 +20,7 @@ public class MainMenuController extends GuiController {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
-                gui.getRoot().heightProperty().divide(Gui.realHeight));
-        canvas.scaleXProperty().bind(maxScale);
-        canvas.scaleYProperty().bind(maxScale);
-
-        Gui gui = Gui.getInstance();
+        gui.setSceneScaling(canvas);
 
         if (gui.getMusicPlayer().isEmpty()) {
             new Thread(new Task<>() {
@@ -67,7 +61,7 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handleOptions() {
-        Options options = new Options(maxScale);
+        Options options = new Options();
         options.setConfigContainer(true);
         gui.getRoot().getChildren().add(options);
     }

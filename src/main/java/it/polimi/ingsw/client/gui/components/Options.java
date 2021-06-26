@@ -2,18 +2,10 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import javafx.application.Platform;
-import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -45,8 +37,6 @@ public class Options extends BorderPane {
     private SButton backButton;
     private double oldMusicVolume;
 
-    private NumberBinding maxScale;
-
     /**
      *
      * @param value
@@ -57,10 +47,9 @@ public class Options extends BorderPane {
     }
 
     /**
-     *
-     * @param sizeBinding
+     * TODO
      */
-    public Options(NumberBinding sizeBinding) {
+    public Options() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/options.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -71,10 +60,7 @@ public class Options extends BorderPane {
             throw new RuntimeException(exception);
         }
 
-        this.maxScale = sizeBinding;
-
-        this.scaleXProperty().bind(maxScale);
-        this.scaleYProperty().bind(maxScale);
+        Gui.getInstance().setSceneScaling(this);
 
         setHandlers();
 
@@ -171,8 +157,8 @@ public class Options extends BorderPane {
                 resetConfigButton.setDisable(false);
             } catch (FileNotFoundException e) {
                 Platform.runLater(() ->
-                    ((Pane) this.getParent()).getChildren().add(
-                        new Alert(title, String.format("Couldn't gain access to file %s.%n", gameConfigFile.getPath()), maxScale)));
+                        ((Pane) this.getParent()).getChildren().add(
+                                new Alert(title, String.format("Couldn't gain access to file %s.%n", gameConfigFile.getPath()))));
             }
         }
     }

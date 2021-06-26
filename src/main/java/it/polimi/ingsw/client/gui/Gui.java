@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -87,7 +88,9 @@ public class Gui extends Application {
     public void start(Stage primaryStage) throws IOException {
         root = new StackPane();
         root.getStylesheets().add(mainStylesheetCss);
-        root.getChildren().add(FXMLLoader.load(Objects.requireNonNull(getClass().getResource(initialSceneFxml))));
+        Parent scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(initialSceneFxml)));
+        root.getChildren().add(scene);
+        setSceneScaling(scene);
         stage = primaryStage;
         stage.setScene(new Scene(root, startWidth, startHeight, false, SceneAntialiasing.BALANCED));
         stage.setMinWidth(minWidth);
@@ -126,6 +129,7 @@ public class Gui extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(fxml);
             Parent scene = fxmlLoader.load();
+            setSceneScaling(scene);
             if (callback != null)
                 callback.accept(fxmlLoader.getController());
             Platform.runLater(() -> {
@@ -160,7 +164,7 @@ public class Gui extends Application {
                 the Alert would be visible for only a split second */
         Platform.runLater(() -> {
             root.getChildren().add(
-                    new Alert(title, content, getController().getMaxScale(), () -> setScene(currentScene, callback)));
+                    new Alert(title, content, () -> setScene(currentScene, callback)));
         });
     }
 
@@ -172,6 +176,14 @@ public class Gui extends Application {
      */
     void reloadScene(String title, String content) {
         reloadScene(title, content, null);
+    }
+
+    public void setSceneScaling(Parent scene) {
+        NumberBinding maxScale = Bindings.min(
+                root.widthProperty().divide(realWidth),
+                root.heightProperty().divide(realHeight));
+        scene.scaleXProperty().bind(maxScale);
+        scene.scaleYProperty().bind(maxScale);
     }
 
     public Stage getStage() {
@@ -186,11 +198,11 @@ public class Gui extends Application {
         return Optional.ofNullable(musicPlayer);
     }
 
-    public void setPauseHandlers(AnchorPane canvas, NumberBinding maxScale) {
+    public void setPauseHandlers(AnchorPane canvas) {
         canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 if (root.getChildren().size() == 1)
-                    root.getChildren().add(new PauseMenu(maxScale));
+                    root.getChildren().add(new PauseMenu());
                 else
                     root.getChildren().remove(root.getChildren().size() - 1);
             }
@@ -199,7 +211,7 @@ public class Gui extends Application {
         Button pause = new SButton();
         pause.setText("Pause");
         pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            root.getChildren().add(new PauseMenu(maxScale));
+            root.getChildren().add(new PauseMenu());
         });
         canvas.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 10.0);

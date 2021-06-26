@@ -6,7 +6,6 @@ import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
-import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -17,7 +16,6 @@ import java.util.function.Consumer;
 
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
-    protected NumberBinding maxScale;
     
     public GuiController() {
         super(Gui.getInstance().getUi());
@@ -61,10 +59,6 @@ public abstract class GuiController extends UiController implements Initializabl
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
-    NumberBinding getMaxScale() {
-        return maxScale;
-    }
-
     @Override
     public void on(ErrAction event) {
         super.on(event);
@@ -75,33 +69,27 @@ public abstract class GuiController extends UiController implements Initializabl
             case LATE_SETUP_ACTION -> setNextState(controller ->
                     gui.getRoot().getChildren().add(
                             new Alert(title,
-                                    "Setup phase is concluded, advancing to game turns.",
-                                    controller.getMaxScale())));
+                                    "Setup phase is concluded, advancing to game turns.")));
             case EARLY_MANDATORY_ACTION -> setNextState(controller ->
                     gui.getRoot().getChildren().add(
                             new Alert(title,
-                                    "A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase.",
-                                    controller.getMaxScale())));
+                                    "A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase.")));
             case LATE_MANDATORY_ACTION -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
                     gui.getRoot().getChildren().add(
                             new Alert(title,
-                                    "A mandatory action has already been executed, advancing to optional actions.",
-                                    c.getMaxScale())));
+                                    "A mandatory action has already been executed, advancing to optional actions.")));
             case EARLY_TURN_END -> gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), (PlaygroundBeforeActionController c) ->
                     gui.getRoot().getChildren().add(
                             new Alert(title,
-                                    "A mandatory action needs to be executed before ending the turn.",
-                                    c.getMaxScale())));
+                                    "A mandatory action needs to be executed before ending the turn.")));
             case GAME_ENDED -> gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"), (EndgameController c) ->
                     gui.getRoot().getChildren().add(
                             new Alert(title,
-                                    "The match is finished, advancing to ending screen.",
-                                    c.getMaxScale())));
+                                    "The match is finished, advancing to ending screen.")));
             case NOT_CURRENT_PLAYER -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
                     gui.getRoot().getChildren().add(
                             new Alert(title,
-                                    "You are not the current player. Please wait for your turn.",
-                                    c.getMaxScale())));
+                                    "You are not the current player. Please wait for your turn.")));
         }
     }
 
@@ -156,8 +144,7 @@ public abstract class GuiController extends UiController implements Initializabl
             gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
                     gui.getRoot().getChildren().add(
                             new Alert("Nickname error",
-                                    "Match not joined yet.",
-                                    c.getMaxScale())));
+                                    "Match not joined yet.")));
             return;
         }
 
@@ -248,8 +235,7 @@ public abstract class GuiController extends UiController implements Initializabl
         gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"),
                 (MainMenuController controller) ->
                         gui.getRoot().getChildren()
-                                .add(new Alert("Connection error", "Server is down. Try again later.",
-                                        controller.getMaxScale())));
+                                .add(new Alert("Connection error", "Server is down. Try again later.")));
 
     }
 

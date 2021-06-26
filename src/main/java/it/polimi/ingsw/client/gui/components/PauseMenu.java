@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
-import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
@@ -19,12 +18,7 @@ public class PauseMenu extends BorderPane {
     @FXML
     private SButton quit;
 
-    private final NumberBinding maxScale;
-
-    /**
-     * @param sizeBinding
-     */
-    public PauseMenu(NumberBinding sizeBinding) {
+    public PauseMenu() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/pausemenu.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -37,9 +31,7 @@ public class PauseMenu extends BorderPane {
 
         setHandlers();
 
-        maxScale = sizeBinding;
-        this.scaleXProperty().bind(maxScale);
-        this.scaleYProperty().bind(maxScale);
+        Gui.getInstance().setSceneScaling(this);
     }
 
     /**
@@ -55,7 +47,7 @@ public class PauseMenu extends BorderPane {
      */
     @FXML
     private void handleOptions() {
-        Options options = new Options(maxScale);
+        Options options = new Options();
         options.setConfigContainer(false);
         Gui.getInstance().getRoot().getChildren().add(options);
     }

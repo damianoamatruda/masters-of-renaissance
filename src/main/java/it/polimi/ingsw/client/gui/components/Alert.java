@@ -1,40 +1,36 @@
 package it.polimi.ingsw.client.gui.components;
 
-import java.io.IOException;
-
-import javafx.beans.binding.NumberBinding;
+import it.polimi.ingsw.client.gui.Gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-public class Alert extends BorderPane {
-    @FXML private VBox window;
-    @FXML private Title titleText;
-    @FXML private SButton okButton;
-    @FXML private Text contentText;
+import java.io.IOException;
 
-    public Alert(String title, String content, NumberBinding sizeBinding) {
-        this(title, content, sizeBinding, null);
+public class Alert extends BorderPane {
+    @FXML
+    private VBox window;
+    @FXML
+    private Title titleText;
+    @FXML
+    private SButton okButton;
+    @FXML
+    private Text contentText;
+
+    public Alert(String title, String content) {
+        this(title, content, null);
     }
+
     /**
-     *
      * @param title
      * @param content
-     * @param sizeBinding
      */
-    public Alert(String title, String content, NumberBinding sizeBinding, Runnable callback) {
+    public Alert(String title, String content, Runnable callback) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/alert.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -45,8 +41,7 @@ public class Alert extends BorderPane {
             throw new RuntimeException(exception);
         }
 
-        this.scaleXProperty().bind(sizeBinding);
-        this.scaleYProperty().bind(sizeBinding);
+        Gui.getInstance().setSceneScaling(this);
 
         titleText.setText(title);
 
