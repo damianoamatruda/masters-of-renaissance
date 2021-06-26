@@ -4,6 +4,6 @@ Text {
     -fx-fill: linear-gradient(#191d22 10%, #0d0d0d);
 }
 
-.white-title Text {
+.dark Text {
     -fx-fill: linear-gradient(#e6e2dd 10%, #f2f2f2);
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.components.Options;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
@@ -60,9 +59,7 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handleOptions() {
-        Options options = new Options();
-        options.setConfigContainer(true);
-        gui.getRoot().getChildren().add(options);
+        gui.setScene(getClass().getResource("/assets/gui/mainoptions.fxml"));
     }
 
     /**

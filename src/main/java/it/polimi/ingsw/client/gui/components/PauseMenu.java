@@ -50,9 +50,10 @@ public class PauseMenu extends StackPane {
      */
     @FXML
     private void handleOptions() {
-        Options options = new Options();
-        options.setConfigContainer(false);
-        Gui.getInstance().getRoot().getChildren().add(options);
+        Gui gui = Gui.getInstance();
+        PauseOptions pauseOptions = new PauseOptions();
+        gui.getRoot().getChildren().remove(this);
+        gui.getRoot().getChildren().add(pauseOptions);
     }
 
     /**

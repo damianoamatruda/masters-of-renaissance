@@ -10,7 +10,7 @@
          xmlns="http://javafx.com/javafx"
          type="StackPane">
   <Pane styleClass="overlay"/>
-  <BorderPane>
+  <BorderPane styleClass="dark">
     <center>
       <VBox maxWidth="-Infinity" maxHeight="-Infinity"
             alignment="CENTER"
@@ -24,7 +24,7 @@
             <Image url="@../logo.png"/>
           </ImageView>
         </VBox>
-        <Title maxWidth="-Infinity" text="Game Menu" styleClass="white-title">
+        <Title maxWidth="-Infinity" text="Game Menu">
           <VBox.margin>
             <Insets bottom="30.0"/>
           </VBox.margin>

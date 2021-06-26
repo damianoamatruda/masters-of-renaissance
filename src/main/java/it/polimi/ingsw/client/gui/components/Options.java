@@ -2,11 +2,14 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -35,6 +38,7 @@ public class Options extends BorderPane {
     private SButton customConfigButton;
     @FXML
     private SButton backButton;
+    private EventHandler<ActionEvent> onBack = this::handleBack;
     private double oldMusicVolume;
 
     /**
@@ -61,8 +65,6 @@ public class Options extends BorderPane {
         }
 
         Gui gui = Gui.getInstance();
-
-        gui.setSceneScaling(this);
 
         setHandlers();
 
@@ -99,14 +101,14 @@ public class Options extends BorderPane {
         soundFxText.setOnMouseClicked(e -> handleSoundFxClick());
         customConfigButton.setOnAction(e -> handleConfig());
         resetConfigButton.setOnAction(e -> handleResetConfig());
-        backButton.setOnAction(e -> handleBack());
+        backButton.setOnAction(e -> onBack.handle(e));
     }
 
     /**
      *
      */
     @FXML
-    private void handleBack() {
+    private void handleBack(ActionEvent actionEvent) {
         ((Pane) this.getParent()).getChildren().remove(this);
     }
 
@@ -170,12 +172,25 @@ public class Options extends BorderPane {
     }
 
     /**
-     *
+     * TODO
+     */
+    public boolean getConfigContainer() {
+        return window.getChildren().contains(configContainer);
+    }
+
+    /**
      * @param isPresent
      */
     public void setConfigContainer(boolean isPresent) {
-        if (!isPresent) {
-            ((VBox) configContainer.getParent()).getChildren().remove(configContainer);
-        }
+        if (!isPresent)
+            window.getChildren().remove(configContainer);
+    }
+
+    public EventHandler<ActionEvent> getOnBack() {
+        return onBack;
+    }
+
+    public void setOnBack(EventHandler<ActionEvent> eventHandler) {
+        onBack = eventHandler;
     }
 }

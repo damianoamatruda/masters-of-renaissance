@@ -34,6 +34,10 @@
     -fx-border-width: 3px;
 }
 
+.dark Text {
+    -fx-fill: white;
+}
+
 .overlay {
     -fx-background-color: rgba(0, 0, 0, 0.6);
 }
@@ -88,6 +92,10 @@
     -fx-font-size: 21px;
     -fx-text-fill: linear-gradient(rgb(26, 57, 109), rgb(26, 100, 179));
     -fx-padding: 0px 6px 0px 6px;
+}
+
+.dark .label {
+    -fx-text-fill: linear-gradient(rgb(26, 100, 179), rgb(23, 176, 230));
 }
 
 .card {
