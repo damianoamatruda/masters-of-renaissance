@@ -6,6 +6,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.beans.binding.Bindings;
@@ -136,27 +137,23 @@ public class DevCardGridController extends GuiController {
     private void resetLeaders() {
         leadersBox.getChildren().clear();
         List<LeaderCard> leaders = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
-                .filter(c -> c.isActive() &&
-                        (c.getLeaderType() == LeaderType.DEPOT|| c.getLeaderType() == LeaderType.DISCOUNT))
+                .filter(ReducedLeaderCard::isActive)
+                .filter(c -> c.getLeaderType() == LeaderType.DEPOT || c.getLeaderType() == LeaderType.DISCOUNT)
                 .map(reducedLeader -> {
-                    LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
-                    leaderCard.setLeaderId(reducedLeader.getId());
-                    leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints());
-                    if (reducedLeader.getResourceRequirement().isPresent())
-                        leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
-                    if (reducedLeader.getDevCardRequirement().isPresent())
-                        leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
+                    LeaderCard leaderCard = new LeaderCard(reducedLeader);
 
-                    if(reducedLeader.getLeaderType() == LeaderType.DEPOT) {
-                        leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                                reducedLeader.getResourceType(), true);
+                    switch (reducedLeader.getLeaderType()) {
+                        case DEPOT -> {
+                            leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
+                                    reducedLeader.getResourceType(), true);
 
-                        leaderCard.getGuiDepot().addResourcesSelector(shelvesMap,
-                                vm.getContainer(reducedLeader.getContainerId())
-                                        .stream().filter(d -> d.getId() == reducedLeader.getContainerId())
-                                        .findAny().orElseThrow());
-                    } else
-                        leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
+                            leaderCard.getGuiDepot().addResourcesSelector(shelvesMap,
+                                    vm.getContainer(reducedLeader.getContainerId())
+                                            .stream().filter(d -> d.getId() == reducedLeader.getContainerId())
+                                            .findAny().orElseThrow());
+                        }
+                        case DISCOUNT -> leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
+                    }
 
                     leaderCard.setScaleX(0.8);
                     leaderCard.setScaleY(0.8);

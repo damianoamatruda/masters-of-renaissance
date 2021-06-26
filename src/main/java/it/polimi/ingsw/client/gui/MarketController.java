@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
@@ -296,70 +297,66 @@ public class MarketController extends GuiController {
         Gui gui = Gui.getInstance();
 
         leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
-                .filter(c -> c.isActive() &&
-                        (c.getLeaderType() == LeaderType.DEPOT && c.getLeaderType() == LeaderType.ZERO))
+                .filter(ReducedLeaderCard::isActive)
+                .filter(c -> c.getLeaderType() == LeaderType.ZERO || c.getLeaderType() == LeaderType.DEPOT)
                 .map(reducedLeader -> {
-                    LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
-                    leaderCard.setLeaderId(reducedLeader.getId());
-                    leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints());
-                    if (reducedLeader.getResourceRequirement().isPresent())
-                        leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
-                    if (reducedLeader.getDevCardRequirement().isPresent())
-                        leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
+                    LeaderCard leaderCard = new LeaderCard(reducedLeader);
 
-                    if (reducedLeader.getLeaderType() == LeaderType.ZERO) {
-                        isZeroReplaceable = true;
-                        leaderCard.setZeroReplacement(reducedLeader.getResourceType());
-                        // TODO handle substitution
-                    } else {
-                        leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                                reducedLeader.getResourceType(), true);
+                    switch (leaderCard.getLeaderType()) {
+                        case ZERO -> {
+                            isZeroReplaceable = true;
+                            leaderCard.setZeroReplacement(reducedLeader.getResourceType());
+                        }
+                        case DEPOT -> {
+                            leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
+                                    reducedLeader.getResourceType(), true);
 
-                        leaderCard.setOnDragOver((event) -> {
-                            Dragboard db = event.getDragboard();
-                            if (db.hasImage()) {
-                                event.acceptTransferModes(TransferMode.MOVE);
-                            }
-                            event.consume();
-                        });
-
-                        leaderCard.getGuiDepot().setOnDragDropped((event) -> {
-                            Shelf s = leaderCard.getGuiDepot();
-                            Dragboard db = event.getDragboard();
-                            boolean success = false;
-                            try {
-                                int shelfID = (leaderCard.getGuiDepot()).getShelfId();
-                                String resource = ((Resource) event.getGestureSource()).getName();
-
-                                if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource))) {
-                                    success = putChoice(resource, shelfID);
-                                    if (success) {
-                                        s.addResourceDraggable(resource);
-                                        if(!db.hasString())
-                                            removeResourceFromBox(resource);
-                                        replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);
-                                    }
+                            leaderCard.setOnDragOver((event) -> {
+                                Dragboard db = event.getDragboard();
+                                if (db.hasImage()) {
+                                    event.acceptTransferModes(TransferMode.MOVE);
                                 }
+                                event.consume();
+                            });
 
-                            } catch (Exception e) { // TODO remove this catch once debugged
-                                LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
-                            }
-                            if(db.hasString() && success) {
-                                int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                                String resource = ((Resource) event.getGestureSource()).getName();
+                            leaderCard.getGuiDepot().setOnDragDropped((event) -> {
+                                Shelf s = leaderCard.getGuiDepot();
+                                Dragboard db = event.getDragboard();
+                                boolean success = false;
+                                try {
+                                    int shelfID = (leaderCard.getGuiDepot()).getShelfId();
+                                    String resource = ((Resource) event.getGestureSource()).getName();
 
-                                int amount = selection.get(id).get(resource) - 1;
-                                if(amount > 0)
-                                    selection.get(id).put(resource, amount);
-                                else
-                                    selection.get(id).remove(resource);
+                                    if (s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource))) {
+                                        success = putChoice(resource, shelfID);
+                                        if (success) {
+                                            s.addResourceDraggable(resource);
+                                            if (!db.hasString())
+                                                removeResourceFromBox(resource);
+                                            replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);
+                                        }
+                                    }
 
-                                s.removeResource();
-                            }
-                            event.setDropCompleted(success);
-                            event.consume();
+                                } catch (Exception e) { // TODO remove this catch once debugged
+                                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
+                                }
+                                if (db.hasString() && success) {
+                                    int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
+                                    String resource = ((Resource) event.getGestureSource()).getName();
 
-                        });
+                                    int amount = selection.get(id).get(resource) - 1;
+                                    if (amount > 0)
+                                        selection.get(id).put(resource, amount);
+                                    else
+                                        selection.get(id).remove(resource);
+
+                                    s.removeResource();
+                                }
+                                event.setDropCompleted(success);
+                                event.consume();
+
+                            });
+                        }
                     }
 
                     return leaderCard;
@@ -370,10 +367,10 @@ public class MarketController extends GuiController {
             vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(0.5);
             vbox.getChildren().add(l);
-            if(l.getLeaderType() == LeaderType.ZERO) {
+            if (l.getLeaderType() == LeaderType.ZERO) {
                 SButton replace = new SButton("Replace a Zero");
                 replace.setOnAction((actionEvent -> {
-                    if(replaceBlank(l.getResourceType()))
+                    if (replaceBlank(l.getResourceType()))
                         replace.setDisable(true);
                 }));
                 vbox.getChildren().add(replace);

@@ -26,13 +26,13 @@ public class DevelopmentCard extends Card {
     /**
      * Another class constructor.
      *
-     * @param card the reduced model card
+     * @param reducedDevCard the reduced model card
      */
-    public DevelopmentCard(ReducedDevCard card) {
-        super(card.getColor());
-        card.getCost().ifPresent(this::setRequirement);
-        setProduction(Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow());
-        setVictoryPoints(card.getVictoryPoints());
+    public DevelopmentCard(ReducedDevCard reducedDevCard) {
+        super(reducedDevCard.getColor());
+        reducedDevCard.getCost().ifPresent(this::setRequirement);
+        setProduction(Gui.getInstance().getViewModel().getProduction(reducedDevCard.getProduction()).orElseThrow());
+        setVictoryPoints(reducedDevCard.getVictoryPoints());
     }
 
     /**

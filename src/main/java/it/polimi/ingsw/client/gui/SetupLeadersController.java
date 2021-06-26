@@ -9,7 +9,6 @@ import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -58,24 +57,14 @@ public class SetupLeadersController extends GuiController {
         leadersContainer.setAlignment(Pos.CENTER);
 
         List<LeaderCard> leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeader -> {
-            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
-            leaderCard.setLeaderId(reducedLeader.getId());
-            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints());
-            if (reducedLeader.getResourceRequirement().isPresent())
-                leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
-            if (reducedLeader.getDevCardRequirement().isPresent())
-                leaderCard.setRequirement(reducedLeader.getDevCardRequirement().get());
-
-            if (reducedLeader.getLeaderType() == LeaderType.ZERO)
-                leaderCard.setZeroReplacement(reducedLeader.getResourceType());
-            else if (reducedLeader.getLeaderType() == LeaderType.DISCOUNT)
-                leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
-            else if (reducedLeader.getLeaderType() == LeaderType.PRODUCTION)
-                leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
-            else
-                leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
+            LeaderCard leaderCard = new LeaderCard(reducedLeader);
+            switch (reducedLeader.getLeaderType()) {
+                case ZERO -> leaderCard.setZeroReplacement(reducedLeader.getResourceType());
+                case DEPOT -> leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
                         reducedLeader.getResourceType(), false);
-
+                case DISCOUNT -> leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
+                case PRODUCTION -> leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
+            }
             leaderCard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                 if (selection.contains(leaderCard)) {
                     selection.remove(leaderCard);

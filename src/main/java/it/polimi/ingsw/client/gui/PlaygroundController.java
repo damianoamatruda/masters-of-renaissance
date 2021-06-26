@@ -111,12 +111,7 @@ public abstract class PlaygroundController extends GuiController {
         leadersBox.setSpacing(20);
 
         vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).forEach(reducedLeader -> {
-            LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
-            leaderCard.setLeaderId(reducedLeader.getId());
-            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints());
-            leaderCard.setActive(reducedLeader.isActive());
-            reducedLeader.getResourceRequirement().ifPresent(leaderCard::setRequirement);
-            reducedLeader.getDevCardRequirement().ifPresent(leaderCard::setRequirement);
+            LeaderCard leaderCard = new LeaderCard(reducedLeader);
             switch (reducedLeader.getLeaderType()) {
                 case ZERO -> leaderCard.setZeroReplacement(reducedLeader.getResourceType());
                 case DEPOT -> leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),

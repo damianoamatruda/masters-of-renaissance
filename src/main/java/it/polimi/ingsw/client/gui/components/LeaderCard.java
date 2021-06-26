@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
+import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
@@ -41,6 +41,15 @@ public class LeaderCard extends Card {
         this.resourceType = resourceType;
     }
 
+    public LeaderCard(ReducedLeaderCard reducedLeaderCard) {
+        this(reducedLeaderCard.getLeaderType(), reducedLeaderCard.getResourceType());
+        setLeaderId(reducedLeaderCard.getId());
+        setVictoryPoints(reducedLeaderCard.getVictoryPoints());
+        setActive(reducedLeaderCard.isActive());
+        reducedLeaderCard.getResourceRequirement().ifPresent(this::setRequirement);
+        reducedLeaderCard.getDevCardRequirement().ifPresent(this::setRequirement);
+    }
+
     /**
      * Getter of the leader type.
      *
@@ -50,10 +59,6 @@ public class LeaderCard extends Card {
         return leaderType;
     }
 
-    public StringProperty leaderTypeProperty() {
-        return leaderTypeText.textProperty();
-    }
-
     /**
      * Getter of the leader's target resource type.
      *
@@ -61,10 +66,6 @@ public class LeaderCard extends Card {
      */
     public String getResourceType() {
         return resourceType;
-    }
-    
-    public StringProperty resourceTypeProperty() {
-        return resourceTypeText.textProperty();
     }
 
     /**
