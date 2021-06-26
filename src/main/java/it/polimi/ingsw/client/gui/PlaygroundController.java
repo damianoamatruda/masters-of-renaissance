@@ -50,10 +50,6 @@ public abstract class PlaygroundController extends GuiController {
         /* Scaling */
         gui.setSceneScaling(canvas);
 
-        /* Pause Menu */
-        gui.setPauseHandler(canvas);
-        gui.addPauseButton(canvas);
-
         /* Warehouse Shelves */
         warehouse = new Warehouse();
         warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> {
@@ -88,6 +84,10 @@ public abstract class PlaygroundController extends GuiController {
         AnchorPane.setTopAnchor(playerBoard, 0d);
         AnchorPane.setLeftAnchor(playerBoard, 0d);
         AnchorPane.setRightAnchor(playerBoard, 90d);
+
+        /* Pause Menu */
+        gui.setPauseHandler(canvas);
+        gui.addPauseButton(canvas);
     }
     
     /**
@@ -101,11 +101,11 @@ public abstract class PlaygroundController extends GuiController {
         vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).forEach(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader);
             switch (reducedLeader.getLeaderType()) {
-                case ZERO -> leaderCard.setZeroReplacement(reducedLeader.getResourceType());
                 case DEPOT -> leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
                         reducedLeader.getResourceType(), false);
                 case DISCOUNT -> leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
                 case PRODUCTION -> leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
+                case ZERO -> leaderCard.setZeroReplacement(reducedLeader.getResourceType());
             }
             leadersBox.getChildren().add(leaderCard);
 
