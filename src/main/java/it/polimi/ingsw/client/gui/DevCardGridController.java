@@ -325,10 +325,10 @@ public class DevCardGridController extends GuiController {
                     String.format("Cannot buy development card with color %s and level %d: deck is empty.",
                         selectedColor, selectedLevel));
         else {
-            Optional<ReducedDevCard> card = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue());
+            int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue()).map(ReducedDevCard::getLevel).orElse(0);
             gui.reloadRoot("Error buying development card",
-                    String.format("Cannot place development card in slot %d: card level %d, slot level %d.",
-                            devSlotChoicePicker.getValue(), selectedLevel, card.map(ReducedDevCard::getLevel).orElse(0)));
+                    String.format("Cannot place development card in slot %d: card level %d, slot level %d is insufficient (has to be %d).",
+                    devSlotChoicePicker.getValue(), selectedLevel, slotLevel, slotLevel + 1));
         }
     }
 
