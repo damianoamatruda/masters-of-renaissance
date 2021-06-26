@@ -199,7 +199,7 @@ public class Gui extends Application {
         return Optional.ofNullable(musicPlayer);
     }
 
-    public void setPauseHandlers(Pane scene) {
+    public void setPauseHandler(Pane scene) {
         Node pauseMenu = new PauseMenu();
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {

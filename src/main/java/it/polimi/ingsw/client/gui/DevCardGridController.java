@@ -80,7 +80,7 @@ public class DevCardGridController extends GuiController {
         resetSlots();
         resetLeaders();
 
-        gui.setPauseHandlers(canvas);
+        gui.setPauseHandler(canvas);
         gui.addPauseButton(canvas);
 
         canvas.setBorder(new Border(new BorderStroke(Color.RED,

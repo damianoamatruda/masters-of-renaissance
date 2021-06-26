@@ -74,7 +74,7 @@ public class SetupLeadersController extends GuiController {
 
         updateChoiceButton();
 
-        gui.setPauseHandlers(canvas); // TODO: Add pause button
+        gui.setPauseHandler(canvas); // TODO: Add pause button
     }
 
     /**
