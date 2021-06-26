@@ -26,7 +26,7 @@ public class PlayOnlineController extends GuiController {
      */
     @FXML
     private void handleServerInput() {
-        String[] args = server.getText().split(":");
+        String[] args = server.getText().split(":", 2);
         String host;
         int port;
 

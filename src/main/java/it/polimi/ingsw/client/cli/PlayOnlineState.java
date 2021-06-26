@@ -41,7 +41,11 @@ public class PlayOnlineState extends CliController {
                         try {
                             inputPort = Integer.parseInt(addressTokens[1]);
                             connect(inputHost, inputPort);
-                        } catch (NumberFormatException ignored) {
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            cli.getOut().println(String.format("%s is not a valid pair IP:port.", address));
+                            valid.set(false);
+                        } catch (NumberFormatException e) {
+                            cli.getOut().println(String.format("Port %d is not a valid port.", addressTokens[1]));
                             valid.set(false);
                         }
                     }
