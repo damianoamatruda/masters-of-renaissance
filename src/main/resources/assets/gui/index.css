@@ -30,6 +30,7 @@
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
     -fx-background-insets: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 80, 0, 0, 0);
 }
 
 .dark Text {
@@ -52,7 +53,7 @@
     -fx-background-radius: 5px;
     -fx-border: 0;
     -fx-background-insets: 0, 1, 2, 0;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 4, 0.0, 0, 1);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 4, 0, 0, 1);
     -fx-text-fill: linear-gradient(white, #d0d0d0);
     -fx-padding: 6px;
     -fx-pref-height: 40px;
@@ -99,7 +100,7 @@
 .card {
     -fx-background-repeat: stretch;
     -fx-background-size: cover;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 0);
     -fx-font-size: 19px;
 }
 
@@ -123,7 +124,7 @@
 }
 
 .resource {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0.0, 0.0);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 0);
 }
 
 .blue {
