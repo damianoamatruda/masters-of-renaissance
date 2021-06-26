@@ -94,7 +94,7 @@
 }
 
 .card:selected {
-    -fx-border-color: linear-gradient(rgb(214, 150, 0) 70%, white);
+    -fx-border-color: linear-gradient(rgb(250, 236, 72) 70%, white);
     -fx-border-width: 3px;
 }
 
