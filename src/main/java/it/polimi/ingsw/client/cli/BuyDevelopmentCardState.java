@@ -54,7 +54,8 @@ public class BuyDevelopmentCardState extends CliController {
         new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
 
         List<ReducedLeaderCard> discountLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
-                .filter(c -> c.isActive() && c.getLeaderType() == LeaderType.DISCOUNT).toList();
+                .filter(ReducedLeaderCard::isActive)
+                .filter(c -> c.getLeaderType() == LeaderType.DISCOUNT).toList();
         new LeadersHand(discountLeaders).render();
 
         chooseColor(cli);

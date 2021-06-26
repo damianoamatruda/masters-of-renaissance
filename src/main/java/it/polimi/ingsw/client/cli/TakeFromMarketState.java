@@ -110,8 +110,9 @@ public class TakeFromMarketState extends CliController {
 
         if (blanksCount > 0) {
             List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
-                    .filter(c -> c.isActive() &&
-                            c.getLeaderType() == LeaderType.ZERO).toList();
+                    .filter(ReducedLeaderCard::isActive)
+                    .filter(c -> c.getLeaderType() == LeaderType.ZERO)
+                    .toList();
 
             // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {
