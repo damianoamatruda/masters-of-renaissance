@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 
@@ -111,7 +110,6 @@ public abstract class PlaygroundController extends GuiController {
         leadersBox.setPrefWidth(166);
         leadersBox.setSpacing(20);
 
-        AtomicInteger i = new AtomicInteger();
         vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).forEach(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
             leaderCard.setLeaderId(reducedLeader.getId());
@@ -134,16 +132,14 @@ public abstract class PlaygroundController extends GuiController {
             buttonsContainer.setSpacing(20);
             if (!reducedLeader.isActive()) {
                 Button activate = new SButton("Activate");
-                activate.setOnMouseClicked(event -> handleActivate(i.get()));
+                activate.setOnMouseClicked(event -> handleActivate(leaderCard));
 
                 Button discard = new SButton("Discard");
-                discard.setOnMouseClicked(event -> handleDiscard(i.get()));
+                discard.setOnMouseClicked(event -> handleDiscard(leaderCard));
 
                 buttonsContainer.getChildren().addAll(List.of(activate, discard));
             }
             leadersBox.getChildren().add(buttonsContainer);
-
-            i.getAndIncrement();
         });
 
         canvas.getChildren().add(leadersBox);
@@ -175,20 +171,19 @@ public abstract class PlaygroundController extends GuiController {
     /**
      * Sends a request of activation of a leader card to the backend
      *
-     * @param leaderIndex the leader card to be activated
+     * @param leader the leader card to be activated
      */
-    private void handleActivate(int leaderIndex) {
-        int leaderId = ((LeaderCard) leadersBox.getChildren().get(2 * leaderIndex)).getLeaderId();
+    private void handleActivate(LeaderCard leader) {
+        int leaderId = leader.getLeaderId();
         gui.getUi().dispatch(new ReqLeaderAction(leaderId, true));
     }
 
     /**
      * Sends a request of discard of a leader card to the backend
      *
-     * @param leaderIndex the leader card to be discarded
+     * @param leader the leader card to be discarded
      */
-    private void handleDiscard(int leaderIndex) {
-        LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * leaderIndex);
+    private void handleDiscard(LeaderCard leader) {
         if (toDiscard == null) {
             toDiscard = leader;
             gui.getUi().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
