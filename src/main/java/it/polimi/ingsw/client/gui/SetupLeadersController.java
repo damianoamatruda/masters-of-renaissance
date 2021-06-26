@@ -43,16 +43,13 @@ public class SetupLeadersController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
 
-        if (vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()) == null)
-            throw new RuntimeException();
-
         titleComponent.setText(String.format("Choose %d leader cards",
                 vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()));
 
         leadersContainer.setSpacing(10);
         leadersContainer.setAlignment(Pos.CENTER);
 
-        List<LeaderCard> leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeader -> {
+        leadersContainer.getChildren().addAll(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader);
             switch (reducedLeader.getLeaderType()) {
                 case ZERO -> leaderCard.setZeroReplacement(reducedLeader.getResourceType());
@@ -72,13 +69,12 @@ public class SetupLeadersController extends GuiController {
                     updateChoiceButton();
                 }
             });
-
             return leaderCard;
-        }).toList();
-
-        leadersContainer.getChildren().addAll(leaderCards);
+        }).toList());
 
         updateChoiceButton();
+
+        gui.setPauseHandlers(canvas); // TODO: Add pause button
     }
 
     /**

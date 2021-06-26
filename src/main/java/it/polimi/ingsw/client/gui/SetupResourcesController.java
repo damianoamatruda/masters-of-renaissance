@@ -172,16 +172,18 @@ public class SetupResourcesController extends GuiController {
                     success = true;
                 } catch (NumberFormatException e) {
                     // It is normal if it gets here:
-                    // it means that the resource hasn't been dropped inside of any shelf, but outside instead
-                    // Drop is simply ignored
-                }
-
-                event.setDropCompleted(success);
-                event.consume();
+                // it means that the resource hasn't been dropped inside of any shelf, but outside instead
+                // Drop is simply ignored
             }
+
+                    event.setDropCompleted(success);
+                    event.consume();
+                }
         );
 
         updateChoiceButton();
+
+        gui.setPauseHandlers(canvas); // TODO: Add pause button
     }
 
     /**
