@@ -3,8 +3,8 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -20,9 +20,8 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         super.initialize(url, resourceBundle);
 
         Button endTurn = new SButton("End turn");
-        endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            gui.getUi().dispatch(new ReqEndTurn());
-        });
+        endTurn.addEventHandler(ActionEvent.ACTION, actionEvent ->
+                gui.getUi().dispatch(new ReqEndTurn()));
         canvas.getChildren().add(endTurn);
         AnchorPane.setBottomAnchor(endTurn, 0.0);
         AnchorPane.setRightAnchor(endTurn, 0.0);

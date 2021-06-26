@@ -9,13 +9,13 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -215,7 +215,7 @@ public class Gui extends Application {
 
     public void addPauseButton(Pane scene) {
         Button pause = new SButton("Pause");
-        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) ->
+        pause.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 root.getChildren().add(new PauseMenu()));
         scene.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 10.0);

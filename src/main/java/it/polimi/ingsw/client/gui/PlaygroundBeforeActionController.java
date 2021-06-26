@@ -2,8 +2,8 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.SButton;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -20,13 +20,13 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
 
         Button left = new SButton("Market");
 //        left.setAlignment(Pos.BOTTOM_LEFT);
-        left.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
+        left.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/market.fxml")));
         canvas.getChildren().add(left);
 
         Button right = new SButton("Grid");
 //        right.setAlignment(Pos.CENTER_RIGHT);
-        right.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
+        right.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/devcardgrid.fxml")));
         canvas.getChildren().add(right);
 
