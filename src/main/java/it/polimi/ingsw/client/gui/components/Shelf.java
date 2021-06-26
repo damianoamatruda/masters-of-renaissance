@@ -237,7 +237,7 @@ public class Shelf extends BorderPane {
     public void refresh(int size, int newId) {
         //adjust size
         this.size = size;
-        sizeText.setText(String.format("Max %d", size));
+        sizeText.setText(String.format("Max%n%d", size));
         this.shelfId = newId;
 
         //adjust clipboard content of resources
