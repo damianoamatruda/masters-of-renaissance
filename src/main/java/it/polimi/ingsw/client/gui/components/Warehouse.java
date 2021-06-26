@@ -27,6 +27,9 @@ public class Warehouse extends VBox {
     public Warehouse() {
         this.setPrefWidth(minWidth);
         this.setPrefHeight(minHeight);
+
+        this.setMaxWidth(minWidth);
+        this.setMaxHeight(minHeight);
     }
 
     /**
