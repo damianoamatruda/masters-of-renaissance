@@ -18,7 +18,7 @@
           </VBox.margin>
         </Title>
         <Text fx:id="contentText"/>
-        <SButton alignment="CENTER" fx:id="okButton" prefWidth="150.0" text="OK">
+        <SButton alignment="CENTER" fx:id="okButton" prefWidth="150.0" text="OK" defaultButton="true">
           <VBox.margin>
             <Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/>
           </VBox.margin>

@@ -58,7 +58,7 @@ public class PlayOnlineState extends CliController {
             connected = true;
         } catch (UnknownHostException e) {
             cli.getOut().println();
-            cli.getOut().printf("Don't know about host %s%n", host);
+            cli.getOut().printf("Do not know about host %s%n", host);
         } catch (IOException e) {
             cli.getOut().println();
             cli.getOut().println("Could not connect to the server.");

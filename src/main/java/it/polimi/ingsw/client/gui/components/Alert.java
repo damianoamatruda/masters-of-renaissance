@@ -49,7 +49,6 @@ public class Alert extends StackPane {
         contentText.setWrappingWidth(300);
         contentText.setTextAlignment(TextAlignment.CENTER);
 
-        okButton.setDefaultButton(true);
         okButton.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
             ((Pane) getParent()).getChildren().remove(this);
 

@@ -30,7 +30,6 @@
         <Label text="Nickname"/>
         <TextField fx:id="nickname" prefWidth="400.0" maxWidth="400.0"/>
       </VBox>
-      <Pane fx:id="advancedButtonContainer" maxWidth="-Infinity" prefHeight="0.0"/>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
           <SButton alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>

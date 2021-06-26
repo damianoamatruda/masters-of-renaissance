@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
-import it.polimi.ingsw.common.events.mvevents.errors.ErrNickname.ErrNicknameReason;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -139,23 +138,19 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(ErrNickname event) {
         super.on(event);
 
-        if (event.getReason() == ErrNicknameReason.NOT_IN_GAME) {
-            gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
-                    gui.getRoot().getChildren().add(
-                            new Alert("Nickname error",
-                                    "Match not joined yet.")));
-            return;
+        switch (event.getReason()) {
+            case ALREADY_SET -> gui.reloadScene(
+                    "Nickname error", "Nickname is already set.", (InputNicknameController controller) ->
+                            controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
+            case TAKEN -> gui.reloadScene(
+                    "Nickname error", "Nickname is taken.", (InputNicknameController controller) ->
+                            controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
+            case NOT_SET -> gui.reloadScene(
+                    "Nickname error", "Nickname is blank.", (InputNicknameController controller) ->
+                            controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
+            case NOT_IN_GAME -> gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
+                    gui.getRoot().getChildren().add(new Alert("Nickname error", "Match not joined yet.")));
         }
-
-        final String reason = switch (event.getReason()) {
-            case ALREADY_SET, TAKEN -> String.format("nickname is %s.", event.getReason().toString().toLowerCase().replace('_', ' '));
-            case NOT_SET -> "nickname is blank.";
-            case NOT_IN_GAME -> null; // TODO: Handle this!
-        };
-
-        gui.reloadScene("Nickname error",
-                String.format("Error setting nickname: %s", reason), (InputNicknameController controller) ->
-                        controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
     }
 
     @Override

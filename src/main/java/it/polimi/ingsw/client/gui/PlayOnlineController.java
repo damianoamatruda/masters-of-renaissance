@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.components.Alert;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -36,14 +34,10 @@ public class PlayOnlineController extends GuiController {
             host = args[0];
             port = Integer.parseInt(args[1]);
         } catch (ArrayIndexOutOfBoundsException e) {
-            Platform.runLater(() ->
-                    gui.getRoot().getChildren().add(
-                            new Alert("Play Online", String.format("%s is not a valid pair IP:port.", server.getText()))));
+            gui.reloadScene("Connection error", String.format("%s is not a valid pair IP:port.", server.getText()));
             return;
         } catch (NumberFormatException e) {
-            Platform.runLater(() ->
-                    gui.getRoot().getChildren().add(
-                            new Alert("Play Online", String.format("Port %s is not a valid port.", args[1]))));
+            gui.reloadScene("Connection error", String.format("Port %s is not a valid port.", args[1]));
             return;
         }
 
@@ -52,14 +46,10 @@ public class PlayOnlineController extends GuiController {
         try {
             gui.getUi().openOnlineClient(host, port);
         } catch (UnknownHostException e) {
-            Platform.runLater(() ->
-                    gui.getRoot().getChildren().add(
-                            new Alert("Play Online", String.format("Don't know about host %s.", host))));
+            gui.reloadScene("Connection error", String.format("Do not know about host %s.", host));
             return;
         } catch (IOException e) {
-            Platform.runLater(() ->
-                    gui.getRoot().getChildren().add(
-                            new Alert("Play Online", "Could not connect to the server.")));
+            gui.reloadScene("Connection error", "Could not connect to the server.");
             return;
         }
 
