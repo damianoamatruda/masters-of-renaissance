@@ -201,10 +201,12 @@ public class SetupResourcesController extends GuiController {
      */
     public void handleChoice() {
         gui.getUi().dispatch(new ReqChooseResources(selection));
-        waitingText.setVisible(true);
-        ((VBox) resourceTypesContainer.getParent()).getChildren().remove(resourceTypesContainer);
-        ((VBox) warehouse.getParent()).getChildren().remove(warehouse);
-        ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
+        if(!gui.getUi().isOffline()) {
+            waitingText.setVisible(true);
+            ((VBox) resourceTypesContainer.getParent()).getChildren().remove(resourceTypesContainer);
+            ((VBox) warehouse.getParent()).getChildren().remove(warehouse);
+            ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
+        }
     }
 
 

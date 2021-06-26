@@ -92,9 +92,11 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private void handleChoice() {
         gui.getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
-        waitingText.setVisible(true);
-        ((VBox) leadersContainer.getParent()).getChildren().remove(leadersContainer);
-        ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
+        if(!gui.getUi().isOffline()) {
+            waitingText.setVisible(true);
+            ((VBox) leadersContainer.getParent()).getChildren().remove(leadersContainer);
+            ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
+        }
     }
 
     @Override
