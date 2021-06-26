@@ -46,7 +46,7 @@ public class Alert extends StackPane {
         titleText.setText(title);
 
         contentText.setText(content);
-        contentText.setWrappingWidth(300);
+        contentText.setWrappingWidth(600);
         contentText.setTextAlignment(TextAlignment.CENTER);
 
         okButton.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {

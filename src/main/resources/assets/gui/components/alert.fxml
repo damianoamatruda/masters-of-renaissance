@@ -2,8 +2,12 @@
 
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import it.polimi.ingsw.client.gui.components.Title?>
+
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <fx:root xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
          type="StackPane"
@@ -11,18 +15,19 @@
   <Pane styleClass="overlay"/>
   <BorderPane>
     <center>
-      <VBox fx:id="window" maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER" styleClass="main-small">
-        <Title maxWidth="-Infinity" fx:id="titleText">
-          <VBox.margin>
-            <Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/>
-          </VBox.margin>
+      <VBox fx:id="window" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="main-small"
+      spacing="50">
+        <Title fx:id="titleText" maxWidth="-Infinity">
         </Title>
-        <Text fx:id="contentText"/>
-        <SButton alignment="CENTER" fx:id="okButton" prefWidth="150.0" text="OK" defaultButton="true">
-          <VBox.margin>
-            <Insets top="30.0" right="30.0" bottom="30.0" left="30.0"/>
-          </VBox.margin>
+        <Text fx:id="contentText" />
+        <SButton fx:id="okButton" alignment="CENTER" defaultButton="true" prefWidth="150.0" text="OK">
+          <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+          </padding>
         </SButton>
+        <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+        </padding>
       </VBox>
     </center>
   </BorderPane>
