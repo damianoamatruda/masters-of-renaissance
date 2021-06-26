@@ -26,12 +26,16 @@
 }
 
 .main-small {
-    -fx-background-color: rgba(205, 205, 182, 0.925);
+    -fx-background-color: #cdcdb6;
     -fx-background-radius: 10px;
     -fx-border-color: rgb(214, 150, 0);
     -fx-border-radius: 10px;
     -fx-background-insets: 1px;
     -fx-border-width: 3px;
+}
+
+.overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
 }
 
 .text {

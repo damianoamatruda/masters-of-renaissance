@@ -4,15 +4,15 @@ import it.polimi.ingsw.client.gui.Gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 
-public class Alert extends BorderPane {
+public class Alert extends StackPane {
     @FXML
     private VBox window;
     @FXML
@@ -41,7 +41,7 @@ public class Alert extends BorderPane {
             throw new RuntimeException(exception);
         }
 
-        Gui.getInstance().setSceneScaling(this);
+        Gui.getInstance().setSceneScaling(window);
 
         titleText.setText(title);
 
@@ -56,11 +56,5 @@ public class Alert extends BorderPane {
             if (callback != null)
                 callback.run();
         });
-    }
-
-    public Alert(Node center, Node top, Node right, Node left) {
-        super(center, top, right, null, left);
-
-        this.getStyleClass().add("main");
     }
 }
