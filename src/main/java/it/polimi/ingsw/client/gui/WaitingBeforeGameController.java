@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /** Gui controller used when waiting for a game after joining a lobby, or to create a new game. */
 public class WaitingBeforeGameController extends GuiController {
     @FXML
-    private BorderPane bpane;
+    private BorderPane canvas;
     @FXML
     private Text bookedSeats;
     @FXML
@@ -37,8 +37,8 @@ public class WaitingBeforeGameController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
                 gui.getRoot().heightProperty().divide(Gui.realHeight));
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
     }
 
     /**

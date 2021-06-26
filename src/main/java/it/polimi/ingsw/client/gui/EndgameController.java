@@ -11,8 +11,10 @@ import java.util.ResourceBundle;
 
 /** Gui controller used on game end, which shows who won, and the leaderboars. */
 public class EndgameController extends GuiController {
-    @FXML private BorderPane bpane;
-    @FXML private Text outcome;
+    @FXML
+    private BorderPane canvas;
+    @FXML
+    private Text outcome;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -20,8 +22,8 @@ public class EndgameController extends GuiController {
 
         maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
                 gui.getRoot().heightProperty().divide(Gui.realHeight));
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
 
         if (vm.getWinner() != null && vm.getWinner().equals(vm.getLocalPlayerNickname()))
             outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points! CONGRATULATIONS!");

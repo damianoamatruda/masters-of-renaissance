@@ -16,14 +16,15 @@ import java.util.ResourceBundle;
 public class MainMenuController extends GuiController {
     private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
 
-    @FXML private BorderPane bpane;
+    @FXML
+    private BorderPane canvas;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
                 gui.getRoot().heightProperty().divide(Gui.realHeight));
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
 
         Gui gui = Gui.getInstance();
 

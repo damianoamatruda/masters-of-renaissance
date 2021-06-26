@@ -14,15 +14,17 @@ import java.util.ResourceBundle;
 
 /** Gui controller used to prompt a destination server, and open a connection with it. */
 public class PlayOnlineController extends GuiController {
-    @FXML private BorderPane bpane;
-    @FXML private TextField server;
+    @FXML
+    private BorderPane canvas;
+    @FXML
+    private TextField server;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
                 gui.getRoot().heightProperty().divide(Gui.realHeight));
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /** Gui controller that manages the input of a nickname. */
 public class InputNicknameController extends GuiController {
     @FXML
-    private BorderPane bpane;
+    private BorderPane canvas;
     @FXML
     private Title titleComponent;
     @FXML
@@ -27,8 +27,8 @@ public class InputNicknameController extends GuiController {
         maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
                 gui.getRoot().heightProperty().divide(Gui.realHeight));
 
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
     }
 
     /**

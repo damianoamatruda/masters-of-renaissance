@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="bpane"
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:id="canvas"
             xmlns="http://javafx.com/javafx"
             fx:controller="it.polimi.ingsw.client.gui.EndgameController"
             maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">

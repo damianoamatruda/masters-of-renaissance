@@ -39,7 +39,7 @@ public class SetupResourcesController extends GuiController {
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private List<ReducedResourceType> choosableResources;
     @FXML
-    private BorderPane bpane;
+    private BorderPane canvas;
     @FXML
     private HBox resourceTypesContainer;
     @FXML
@@ -55,8 +55,8 @@ public class SetupResourcesController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
                 gui.getRoot().heightProperty().divide(Gui.realHeight));
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
 
         titleComponent.setText(String.format("Choose %d resources.",
                 vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources()));
@@ -146,25 +146,25 @@ public class SetupResourcesController extends GuiController {
         ));
 
         // On drag over + dropped outside of warehouse
-        this.bpane.setOnDragOver((event) -> {
-                Dragboard db = event.getDragboard();
-                if (db.hasImage()) {
-                    event.acceptTransferModes(TransferMode.ANY);
+        this.canvas.setOnDragOver((event) -> {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasImage()) {
+                        event.acceptTransferModes(TransferMode.ANY);
+                    }
+                    event.consume();
                 }
-                event.consume();
-            }
         );
-        this.bpane.setOnDragDropped((event) -> {
-                Dragboard db = event.getDragboard();
-                boolean success = false;
-                try {
-                    int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                    String resource = ((Resource) event.getGestureSource()).getName();
+        this.canvas.setOnDragDropped((event) -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            try {
+                int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
+                String resource = ((Resource) event.getGestureSource()).getName();
 
-                    int amount = selection.get(id).get(resource) - 1;
-                    if (amount > 0)
-                        selection.get(id).put(resource, amount);
-                    else
+                int amount = selection.get(id).get(resource) - 1;
+                if (amount > 0)
+                    selection.get(id).put(resource, amount);
+                else
                         selection.get(id).remove(resource);
 
                     warehouse.refreshShelfRemove(id);

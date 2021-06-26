@@ -32,8 +32,10 @@ public class SetupLeadersController extends GuiController {
     
     private final List<LeaderCard> selection = new ArrayList<>();
     
-    @FXML private BorderPane bpane;
-    @FXML private HBox leadersContainer;
+    @FXML
+    private BorderPane canvas;
+    @FXML
+    private HBox leadersContainer;
     @FXML private Button choiceButton;
     @FXML private Title titleComponent;
     @FXML private Text waitingText;
@@ -42,8 +44,8 @@ public class SetupLeadersController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
                 gui.getRoot().heightProperty().divide(Gui.realHeight));
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        canvas.scaleXProperty().bind(maxScale);
+        canvas.scaleYProperty().bind(maxScale);
 
         if (vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()) == null)
             throw new RuntimeException();
