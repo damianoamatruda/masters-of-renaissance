@@ -5,14 +5,15 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
 public class DevSlots extends StringComponent {
-    private final List<ReducedDevCard> slots;
+    private final List<Optional<ReducedDevCard>> slots;
 
-    public DevSlots(List<ReducedDevCard> slots) {
+    public DevSlots(List<Optional<ReducedDevCard>> slots) {
         this.slots = new ArrayList<>(slots);
     }
 
@@ -21,24 +22,22 @@ public class DevSlots extends StringComponent {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < slots.size(); i += 4) {
-            // List<List<String>> rows = new ArrayList<>();
-
-            List<ReducedDevCard> cards = new ArrayList<>();
+            List<Optional<ReducedDevCard>> cards = new ArrayList<>();
             for (int j = 0; j < 4 && j < slots.size() - i; j++) {
                 cards.add(slots.get(i + j));
             }
 
-            List<DevelopmentCard> devCardComponents = new ArrayList<>();
+            List<Optional<DevelopmentCard>> devCardComponents = new ArrayList<>();
             for (int j = 0; j < 4 && j < slots.size() - i; j++)
-                devCardComponents.add(cards.get(j) == null ? null : new DevelopmentCard(cards.get(j)));
+                devCardComponents.add(cards.get(j).map(DevelopmentCard::new));
 
-            int maxWidth = devCardComponents.stream().map(c -> c == null ? "" : c.getString(cli)).mapToInt(Cli::maxLineWidth).max().orElse(0);
-            int maxHeight = maxLinesHeight(devCardComponents.stream().map(c -> c == null ? "" : c.getString(cli)).toList());
-            
+            int maxWidth = devCardComponents.stream().map(oc -> oc.map(c -> c.getString(cli)).orElse("")).mapToInt(Cli::maxLineWidth).max().orElse(0);
+            int maxHeight = maxLinesHeight(devCardComponents.stream().map(oc -> oc.map(c -> c.getString(cli)).orElse("")).toList());
+
             List<List<String>> rows = new ArrayList<>();
-            for (DevelopmentCard devCardComponent : devCardComponents)
-                rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString(cli).lines().toList());
-                
+            for (Optional<DevelopmentCard> optionalDevCardComponent : devCardComponents)
+                optionalDevCardComponent.ifPresent(devCardComponent -> rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString(cli).lines().toList()));
+
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {
                 for (List<String> row : rows) {

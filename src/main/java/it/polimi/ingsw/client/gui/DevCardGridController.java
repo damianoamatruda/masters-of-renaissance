@@ -273,14 +273,14 @@ public class DevCardGridController extends GuiController {
      */
     private void resetSlots() {
         List<DevSlot> devSlots = new ArrayList<>();
-        List<List<ReducedDevCard>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
-        
+        List<List<Optional<ReducedDevCard>>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
+
         modelSlots.forEach(modelSlot -> {
             DevSlot slot = new DevSlot();
 
             List<DevelopmentCard> cards = modelSlot.stream()
-                    .filter(Objects::nonNull)
-                    .map(c -> new DevelopmentCard(c)).toList();
+                    .flatMap(Optional::stream)
+                    .map(DevelopmentCard::new).toList();
             slot.setDevCards(cards);
 
             devSlots.add(slot);
@@ -325,11 +325,10 @@ public class DevCardGridController extends GuiController {
                     String.format("Cannot buy development card with color %s and level %d: deck is empty.",
                         selectedColor, selectedLevel));
         else {
-            ReducedDevCard card = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue());
-
+            Optional<ReducedDevCard> card = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue());
             gui.reloadRoot("Error buying development card",
                     String.format("Cannot place development card in slot %d: card level %d, slot level %d.",
-                        devSlotChoicePicker.getValue(), selectedLevel, card == null ? 0 : card.getLevel()));
+                            devSlotChoicePicker.getValue(), selectedLevel, card.map(ReducedDevCard::getLevel).orElse(0)));
         }
     }
 

@@ -20,7 +20,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -81,7 +81,7 @@ public abstract class PlaygroundController extends GuiController {
         List<DevSlot> devSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer()).stream().map(modelSlot -> {
             DevSlot slot = new DevSlot();
             slot.setDevCards(modelSlot.stream()
-                    .filter(Objects::nonNull)
+                    .flatMap(Optional::stream)
                     .map(DevelopmentCard::new).toList());
             return slot;
         }).toList();
