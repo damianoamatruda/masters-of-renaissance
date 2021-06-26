@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -227,11 +228,9 @@ public abstract class GuiController extends UiController implements Initializabl
 
         gui.getUi().closeClient();
 
-        gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"),
-                (MainMenuController controller) ->
-                        gui.getRoot().getChildren()
-                                .add(new Alert("Connection error", "Server is down. Try again later.")));
-
+        Platform.runLater(() -> gui.getRoot().getChildren().add(
+                new Alert("Connection error", "Server is down. Try again later.", () ->
+                        gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml")))));
     }
 
     @Override
