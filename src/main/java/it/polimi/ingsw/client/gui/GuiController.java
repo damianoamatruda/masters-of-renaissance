@@ -32,20 +32,21 @@ public abstract class GuiController extends UiController implements Initializabl
      */
     protected void setNextState(Consumer<GuiController> callback) {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            if (isSetupDone) { // setup is done
-                if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                    gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
-                else
-                    gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
-            } else // setup not done
-                vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
+            vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
+                if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
+                    !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty()) { // setup is done
+                    if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+                        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
+                    else
+                        gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
+                } else // setup not done
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
                             gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"), callback);
                         else if (isResourceSetupAvailable())
                             gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"), callback);
                     });
-                });
+            });
         });
     }
 

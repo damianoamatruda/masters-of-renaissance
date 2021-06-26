@@ -214,18 +214,6 @@ public abstract class PlaygroundController extends GuiController {
             }));
     }
 
-    @Override
-    public void on(UpdatePlayer event) {
-        super.on(event);
-
-        if(event.getPlayer().equals(gui.getViewModel().getCurrentPlayer())) {
-            Platform.runLater(() -> {
-                playerBoard.setContainers(getWarehouse(), getStrongBox());
-                playerBoard.setBaseProduction(getBaseProduction());
-            });
-        }
-    }
-
     protected Warehouse getWarehouse(){
         /* Warehouse Shelves */
         Warehouse warehouse = new Warehouse();

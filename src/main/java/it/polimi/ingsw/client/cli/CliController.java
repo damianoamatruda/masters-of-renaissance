@@ -32,20 +32,21 @@ public abstract class CliController extends UiController implements Renderable {
      */
     protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            if (isSetupDone) { // setup is done
+            vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
+            if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
+                !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty()) { // setup is done
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
                     cli.setController(new TurnBeforeActionState(), false);
                 else
                     cli.setController(new WaitingAfterTurnState(), false);
             } else // setup not done
-                vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
                             cli.setController(new SetupLeadersState(), false);
                         else if (isResourceSetupAvailable())
                             cli.setController(new SetupResourcesState(), false);
                     });
-                });
+            });
         });
     }
 
