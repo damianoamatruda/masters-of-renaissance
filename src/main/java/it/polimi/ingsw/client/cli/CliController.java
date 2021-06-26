@@ -34,16 +34,16 @@ public abstract class CliController extends UiController implements Renderable {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
             if (isSetupDone) { // setup is done
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                    cli.setController(new TurnBeforeActionState());
+                    cli.setController(new TurnBeforeActionState(), false);
                 else
-                    cli.setController(new WaitingAfterTurnState());
+                    cli.setController(new WaitingAfterTurnState(), false);
             } else // setup not done
                 vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
-                            cli.setController(new SetupLeadersState());
+                            cli.setController(new SetupLeadersState(), false);
                         else if (isResourceSetupAvailable())
-                            cli.setController(new SetupResourcesState());
+                            cli.setController(new SetupResourcesState(), false);
                     });
                 });
         });
@@ -57,56 +57,50 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         switch (event.getReason()) {
-            case LATE_SETUP_ACTION -> new Thread(() -> {
+            case LATE_SETUP_ACTION -> {
                 cli.getOut().println(
                         center("Setup phase is concluded, advancing to game turns."));
-                cli.promptPause();
 
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                    cli.setController(new TurnBeforeActionState());
+                    cli.setController(new TurnBeforeActionState(), true);
                 else
-                    cli.setController(new WaitingAfterTurnState());
-            }).start();
-            case EARLY_MANDATORY_ACTION -> new Thread(() -> {
+                    cli.setController(new WaitingAfterTurnState(), true);
+            }
+            case EARLY_MANDATORY_ACTION -> {
                 cli.getOut().println(
                         center("A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase."));
-                cli.promptPause();
 
                 if (!isLocalLeaderSetupDone())
-                    cli.setController(new SetupLeadersState());
+                    cli.setController(new SetupLeadersState(), true);
                 else if (!isLocalResourceSetupDone())
-                    cli.setController(new SetupResourcesState());
+                    cli.setController(new SetupResourcesState(), true);
                 else
                     setNextState();
-            }).start();
-            case LATE_MANDATORY_ACTION -> new Thread(() -> {
+            }
+            case LATE_MANDATORY_ACTION -> {
                 cli.getOut().println(
                         center("A mandatory action has already been executed, advancing to optional actions."));
-                cli.promptPause();
 
-                cli.setController(new TurnAfterActionState());
-            }).start();
-            case EARLY_TURN_END -> new Thread(() -> {
+                cli.setController(new TurnAfterActionState(), true);
+            }
+            case EARLY_TURN_END -> {
                 cli.getOut().println(
                         center("A mandatory action needs to be executed before ending the turn."));
-                cli.promptPause();
 
-                cli.setController(new TurnBeforeActionState());
-            }).start();
-            case GAME_ENDED -> new Thread(() -> {
+                cli.setController(new TurnBeforeActionState(), true);
+            }
+            case GAME_ENDED -> {
                 cli.getOut().println(
                         center("The match is finished, advancing to ending screen."));
-                cli.promptPause();
 
-                cli.setController(new GameEndState());
-            }).start();
-            case NOT_CURRENT_PLAYER -> new Thread(() -> {
+                cli.setController(new GameEndState(), true);
+            }
+            case NOT_CURRENT_PLAYER -> {
                 cli.getOut().println(
                         center("You are not the current player. Please wait for your turn."));
-                cli.promptPause();
 
-                cli.setController(new WaitingAfterTurnState());
-            }).start();
+                cli.setController(new WaitingAfterTurnState(), true);
+            }
         }
     }
 
@@ -155,11 +149,11 @@ public abstract class CliController extends UiController implements Renderable {
             case ALREADY_SET -> cli.reloadController("Error setting nickname: nickname is already set.");
             case TAKEN -> cli.reloadController("Error setting nickname: nickname is taken.");
             case NOT_SET -> cli.reloadController("Error setting nickname: nickname is blank.");
-            case NOT_IN_GAME -> new Thread(() -> {
+            case NOT_IN_GAME -> {
                 cli.getOut().println("Match not joined yet.");
-                cli.promptPause();
-                cli.setController(new InputNicknameState(cli.getUi().isOffline() ? "Play Offline" : "Play Online"));
-            }).start();
+
+                cli.setController(new InputNicknameState(cli.getUi().isOffline() ? "Play Offline" : "Play Online"), true);
+            }
         }
     }
 
@@ -223,18 +217,16 @@ public abstract class CliController extends UiController implements Renderable {
 
     @Override
     public void on(ErrServerUnavailable event) {
-        new Thread(() -> {
-            cli.getOut().println("Server disconnected, returning to main menu");
-            cli.promptPause();
-            cli.setController(new MainMenuState());
-        }).start();
+        cli.getOut().println("Server disconnected, returning to main menu");
+
+        cli.setController(new MainMenuState(), true);
     }
 
     @Override
     public void on(ResQuit event) {
         super.on(event);
 
-        cli.setController(new MainMenuState());
+        cli.setController(new MainMenuState(), false);
     }
 
     @Override

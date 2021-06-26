@@ -29,7 +29,7 @@ public class LeaderActionsState extends CliController {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(true)));
         entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(false)));
-        new Menu(entries, cli1 -> cli1.setController(sourceState)).render();
+        new Menu(entries, cli1 -> cli1.setController(sourceState, false)).render();
     }
 
     private void executeLeaderAction(boolean isActivate) {
@@ -39,7 +39,7 @@ public class LeaderActionsState extends CliController {
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {
             this.leaderId = leaderId;
             cli.getUi().dispatch(new ReqLeaderAction(leaderId, isActivate));
-        }, () -> cli.setController(this));
+        }, () -> cli.setController(this, false));
     }
 
     @Override
@@ -67,9 +67,6 @@ public class LeaderActionsState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        new Thread(() -> {
-            cli.promptPause();
-            cli.setController(sourceState);
-        }).start();
+        cli.setController(sourceState, true);
     }
 }

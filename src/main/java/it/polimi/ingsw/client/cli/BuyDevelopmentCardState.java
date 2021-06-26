@@ -79,7 +79,7 @@ public class BuyDevelopmentCardState extends CliController {
                 }
             }, () -> {
                 isExitingState.set(true);
-                cli.setController(this.sourceState);
+                cli.setController(this.sourceState, false);
             });
         }
     }
@@ -153,8 +153,8 @@ public class BuyDevelopmentCardState extends CliController {
     @Override
     public void on(ErrBuyDevCard event) {
         if (event.isStackEmpty())
-        cli.reloadController(center(String.format(
-                "Cannot buy development card with color %s and level %d: deck is empty.", color, level)));
+            cli.reloadController(center(String.format(
+                    "Cannot buy development card with color %s and level %d: deck is empty.", color, level)));
         else {
             int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(slot).map(ReducedDevCard::getLevel).orElse(0);
             cli.reloadController(center(String.format(
@@ -165,9 +165,6 @@ public class BuyDevelopmentCardState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        new Thread(() -> {
-            cli.promptPause();
-            cli.setController(new TurnAfterActionState());
-        }).start();
+        cli.setController(new TurnAfterActionState(), true);
     }
 }

@@ -23,25 +23,24 @@ public class OptionsState extends CliController {
     }
 
     private void goBack(Cli cli) {
-        cli.setController(new MainMenuState());
+        cli.setController(new MainMenuState(), false);
     }
 
     private void defaultConfig(Cli cli) {
         cli.getUi().setGameConfigStream(null);
-        cli.setController(new MainMenuState());
+        cli.setController(new MainMenuState(), false);
     }
 
     private void customConfig(Cli cli) {
         cli.promptFile("Path of custom config.json").ifPresentOrElse(gameConfigFile -> {
             try {
                 cli.getUi().setGameConfigStream(new FileInputStream(gameConfigFile));
-                cli.setController(new MainMenuState());
+                cli.setController(new MainMenuState(), false);
             } catch (FileNotFoundException e) {
                 cli.getOut().println();
                 cli.getOut().printf("Couldn't gain access to file %s.%n", gameConfigFile.getPath());
-                cli.promptPause();
-                cli.setController(this);
+                cli.setController(this, true);
             }
-        }, () -> cli.setController(this));
+        }, () -> cli.setController(this, false));
     }
 }

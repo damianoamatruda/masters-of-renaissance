@@ -17,10 +17,7 @@ public class WaitingAfterTurnState extends CliController {
         if (event.getPlayer().equals(vm.getLocalPlayerNickname())) {
             cli.getOut().println();
             cli.getOut().println("It's your turn.");
-            new Thread(() -> {
-                cli.promptPause();
-                cli.setController(new TurnBeforeActionState());
-            }).start();
+            cli.setController(new TurnBeforeActionState(), true);
         }
     }
 }

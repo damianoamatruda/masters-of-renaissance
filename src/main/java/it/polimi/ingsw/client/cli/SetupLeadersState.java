@@ -30,8 +30,8 @@ public class SetupLeadersState extends SetupState {
         List<ReducedLeaderCard> lCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname());
         if (lCards.isEmpty()) {
             cli.getOut().println("No leader cards to choose from. Setup cannot continue.");
-            cli.promptPause();
-            cli.setController(new MainMenuState());
+            cli.setController(new MainMenuState(), true);
+            return;
         }
 
         cli.getOut().println();

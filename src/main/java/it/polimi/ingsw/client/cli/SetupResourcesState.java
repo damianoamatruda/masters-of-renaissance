@@ -43,8 +43,8 @@ public class SetupResourcesState extends SetupState {
             if (input.equalsIgnoreCase("y"))
                 cli.getUi().dispatch(new ReqQuit());
             else
-                cli.setController(this);
-        }, () -> cli.setController(this)));
+                cli.setController(this, false);
+        }, () -> cli.setController(this, false)));
     }
 
     @Override

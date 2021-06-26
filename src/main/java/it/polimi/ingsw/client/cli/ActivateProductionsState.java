@@ -65,7 +65,7 @@ public class ActivateProductionsState extends CliController {
         if (!this.requests.isEmpty())
             cli.getUi().dispatch(new ReqActivateProduction(this.requests));
         else
-            cli.setController(this.sourceState);
+            cli.setController(this.sourceState, false);
     }
 
     private void chooseInputReplacements(Cli cli) {
@@ -127,9 +127,6 @@ public class ActivateProductionsState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        new Thread(() -> {
-            cli.promptPause();
-            cli.setController(new TurnAfterActionState());
-        }).start();
+        cli.setController(new TurnAfterActionState(), true);
     }
 }

@@ -68,7 +68,7 @@ public class Cli implements Runnable {
 
     public void start() {
         runThread.start();
-        setController(new SplashState());
+        setController(new SplashState(), false);
     }
 
     /**
@@ -76,17 +76,23 @@ public class Cli implements Runnable {
      *
      * @param controller the controller
      */
-    synchronized void setController(CliController controller) {
-        ui.setController(controller);
-        this.controller = controller;
-        this.ready = true;
-        notifyAll();
+    void setController(CliController controller, boolean pauseBeforeChange) {
+        new Thread(() -> {
+            synchronized (this) {
+                if (pauseBeforeChange)
+                    promptPause();
+
+                ui.setController(controller);
+                this.controller = controller;
+                this.ready = true;
+                notifyAll();
+            }
+        }).start();
     }
 
     synchronized void reloadController(String str) {
         out.println(str);
-        promptPause();
-        setController(controller);
+        setController(controller, true);
     }
 
     void quit() {
