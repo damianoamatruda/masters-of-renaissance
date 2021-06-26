@@ -134,8 +134,7 @@ public class LeaderCard extends Card {
         HBox bonus = new HBox(-3);
         bonus.setAlignment(Pos.CENTER);
 
-        Text amount = new Text();
-        amount.setText(String.valueOf(-1 * discount));
+        Text amount = new Text(String.valueOf(-1 * discount));
 
         Resource res = new Resource(type);
 

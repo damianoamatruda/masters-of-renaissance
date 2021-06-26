@@ -8,7 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -151,8 +154,7 @@ public class Production extends StackPane {
     public void addProduceButton(List<Integer> toActivate, SButton activateProduction) {
         // TODO duplicated code
         AnchorPane pane = new AnchorPane();
-        SButton activate = new SButton();
-        activate.setText("Produce");
+        SButton activate = new SButton("Produce");
         activate.setOnAction((event) -> {
 //            top.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
 //            if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))

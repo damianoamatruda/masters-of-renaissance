@@ -19,8 +19,7 @@ public class PlaygroundAfterActionController extends PlaygroundController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        Button endTurn = new SButton();
-        endTurn.setText("End turn");
+        Button endTurn = new SButton("End turn");
         endTurn.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
             gui.getUi().dispatch(new ReqEndTurn());
         });

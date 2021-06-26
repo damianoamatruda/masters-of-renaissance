@@ -70,8 +70,7 @@ public class DevSlot extends StackPane {
         if(cards != null && cards.size() > 0) {
             DevelopmentCard top = cards.get(cards.size() - 1);
             AnchorPane p = new AnchorPane();
-            SButton activate = new SButton();
-            activate.setText("Produce");
+            SButton activate = new SButton("Produce");
             activate.setOnAction((event) -> {
                 top.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
                 if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {

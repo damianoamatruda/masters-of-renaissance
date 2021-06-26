@@ -214,8 +214,7 @@ public class Gui extends Application {
     }
 
     public void addPauseButton(Pane scene) {
-        Button pause = new SButton();
-        pause.setText("Pause");
+        Button pause = new SButton("Pause");
         pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) ->
                 root.getChildren().add(new PauseMenu()));
         scene.getChildren().add(pause);

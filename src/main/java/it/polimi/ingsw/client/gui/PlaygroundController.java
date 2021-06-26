@@ -242,8 +242,7 @@ public abstract class PlaygroundController extends GuiController {
      * Adds buttons for production activation on all the components that have a production
      */
     protected void addProduceButtons() {
-        activateProdButton = new SButton();
-        activateProdButton.setText("Activate production");
+        activateProdButton = new SButton("Activate production");
         activateProdButton.setOnAction((event) ->
                 gui.getRoot().getChildren().add(new ActivateProduction(toActivate, 0,
                         new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())),
@@ -268,8 +267,7 @@ public abstract class PlaygroundController extends GuiController {
         for (int i = 0; i < leadersBox.getChildren().size() / 2; i++) {
             LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * i);
             if (leader.getLeaderType() == LeaderType.PRODUCTION && leader.isActive()) {
-                SButton activate = new SButton();
-                activate.setText("Produce");
+                SButton activate = new SButton("Produce");
                 activate.setOnAction(event -> {
                     leader.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !leader.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
                     if (leader.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {

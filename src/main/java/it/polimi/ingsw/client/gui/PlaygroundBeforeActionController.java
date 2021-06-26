@@ -18,16 +18,14 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        Button left = new SButton();
+        Button left = new SButton("Market");
 //        left.setAlignment(Pos.BOTTOM_LEFT);
-        left.setText("Market");
         left.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/market.fxml")));
         canvas.getChildren().add(left);
 
-        Button right = new SButton();
+        Button right = new SButton("Grid");
 //        right.setAlignment(Pos.CENTER_RIGHT);
-        right.setText("Grid");
         right.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/devcardgrid.fxml")));
         canvas.getChildren().add(right);
