@@ -154,7 +154,10 @@ public class MarketController extends GuiController {
 
         List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname());
 
-        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
+            warehouse.setWaitingForSwap(s1, s2);
+            gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
+        });
 
         warehouse.getChildren().forEach(shelf -> ((Shelf) shelf).getChildren().get(1).setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
@@ -284,8 +287,6 @@ public class MarketController extends GuiController {
      * Resets the leaders box view component.
      */
     private void resetLeaders() {
-        Gui gui = Gui.getInstance();
-
         leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.ZERO || c.getLeaderType() == LeaderType.DEPOT)
@@ -403,7 +404,7 @@ public class MarketController extends GuiController {
      * @param actionEvent the event object
      */
     private void submitPressed(ActionEvent actionEvent) {
-        Gui.getInstance().getUi().dispatch(new ReqTakeFromMarket(isRow, index, replacements, selection));
+        gui.getUi().dispatch(new ReqTakeFromMarket(isRow, index, replacements, selection));
     }
 
     /**
@@ -412,7 +413,7 @@ public class MarketController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        Gui.getInstance().setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     @Override

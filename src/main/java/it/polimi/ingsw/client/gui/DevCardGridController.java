@@ -222,8 +222,9 @@ public class DevCardGridController extends GuiController {
         List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname());
 
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
-                warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2));
-            }, false);
+            warehouse.setWaitingForSwap(s1, s2);
+            gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
+        }, false);
 
         warehouse.addResourcesSelector(this::putChoice, this::removeChoice);
 
@@ -290,7 +291,7 @@ public class DevCardGridController extends GuiController {
      */
     private void submitPressed(ActionEvent actionEvent) {
         strongbox.fillContainersMap(shelvesMap);
-        Gui.getInstance().getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
+        gui.getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
     }
 
     /**
@@ -299,7 +300,7 @@ public class DevCardGridController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        Gui.getInstance().setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     @Override

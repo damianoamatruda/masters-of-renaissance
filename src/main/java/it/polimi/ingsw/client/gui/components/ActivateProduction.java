@@ -64,7 +64,6 @@ public class ActivateProduction extends BorderPane {
     public ActivateProduction(List<Integer> toActivate, int index,
                               List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
                               List<ReducedResourceContainer> tempDepots) {
-        Gui gui = Gui.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/activateproduction.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -74,6 +73,8 @@ public class ActivateProduction extends BorderPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        Gui gui = Gui.getInstance();
 
         this.toActivate = toActivate;
         this.index = index;
@@ -89,7 +90,7 @@ public class ActivateProduction extends BorderPane {
         text.setText(String.format("Production: %s", toActivate.get(index)));
 
         // TODO: Maybe use ifPresent()
-        ReducedResourceTransactionRecipe selectedProd = Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).orElseThrow();
+        ReducedResourceTransactionRecipe selectedProd = gui.getViewModel().getProduction(toActivate.get(index)).orElseThrow();
 
         /* Add spinners to choose amount */
         gui.getViewModel().getResourceTypes().stream()
@@ -119,7 +120,7 @@ public class ActivateProduction extends BorderPane {
         if(index < toActivate.size() - 1) submit.setDisable(true);
         else submit.setOnAction(e -> handleSubmit());
 
-        Gui.getInstance().getViewModel().getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
+        gui.getViewModel().getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
 
         /* Strongbox */
         gui.getViewModel().getPlayerStrongbox(gui.getViewModel().getCurrentPlayer()).ifPresent(sb -> {

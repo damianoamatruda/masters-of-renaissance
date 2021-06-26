@@ -28,8 +28,6 @@ public class PlayOnlineController extends GuiController {
      */
     @FXML
     private void handleServerInput() {
-        Gui gui = Gui.getInstance();
-
         String[] args = server.getText().split(":");
         String host;
         int port;
@@ -74,6 +72,6 @@ public class PlayOnlineController extends GuiController {
      */
     @FXML
     private void handleBack() {
-        Gui.getInstance().setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }

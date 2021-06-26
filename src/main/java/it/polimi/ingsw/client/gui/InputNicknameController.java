@@ -33,7 +33,7 @@ public class InputNicknameController extends GuiController {
     private void handleNicknameInput() {
         nicknameValue = nickname.getText();
         gui.getViewModel().setLocalPlayerNickname(nicknameValue);
-        Gui.getInstance().getUi().dispatch(new ReqJoin(nicknameValue));
+        gui.getUi().dispatch(new ReqJoin(nicknameValue));
     }
 
     /**
@@ -41,7 +41,6 @@ public class InputNicknameController extends GuiController {
      */
     @FXML
     private void handleBack() {
-        Gui gui = Gui.getInstance();
         gui.setScene(getClass().getResource(gui.getUi().isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
     }
 

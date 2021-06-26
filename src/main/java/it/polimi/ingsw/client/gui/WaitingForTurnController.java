@@ -14,7 +14,7 @@ public class WaitingForTurnController extends PlaygroundController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        topText.setText(String.format("Watching playerboard of: %s", Gui.getInstance().getViewModel().getCurrentPlayer()));
+        topText.setText(String.format("Watching playerboard of: %s", gui.getViewModel().getCurrentPlayer()));
 
         AnchorPane.setLeftAnchor(topText, 10.0);
         AnchorPane.setTopAnchor(topText, 5.0);

@@ -173,9 +173,11 @@ public class Shelf extends BorderPane {
      * @return the shelf's bound resource type
      */
     public String getBoundResource() {
-        if (content.getChildren().size() <= 0 && !isLeaderDepot) return null;
-        if(isLeaderDepot) return Gui.getInstance().getViewModel().getContainer(shelfId).flatMap(ReducedResourceContainer::getBoundedResType).orElse(null);
-        return ((Resource)content.getChildren().get(0)).getName();
+        if (content.getChildren().size() <= 0 && !isLeaderDepot)
+            return null;
+        if (isLeaderDepot)
+            return Gui.getInstance().getViewModel().getContainer(shelfId).flatMap(ReducedResourceContainer::getBoundedResType).orElse(null);
+        return ((Resource) content.getChildren().get(0)).getName();
     }
 
     /**

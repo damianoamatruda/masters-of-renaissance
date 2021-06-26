@@ -60,11 +60,11 @@ public class Options extends BorderPane {
             throw new RuntimeException(exception);
         }
 
-        Gui.getInstance().setSceneScaling(this);
+        Gui gui = Gui.getInstance();
+
+        gui.setSceneScaling(this);
 
         setHandlers();
-
-        Gui gui = Gui.getInstance();
 
         musicSlider.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             double value = newValue.doubleValue();
@@ -87,7 +87,7 @@ public class Options extends BorderPane {
         soundFxSlider.setValue(gui.getSoundFxVolume());
         soundFxText.setText(getPercentage(gui.getSoundFxVolume()));
 
-        if (Gui.getInstance().getUi().getGameConfigStream().isEmpty())
+        if (gui.getUi().getGameConfigStream().isEmpty())
             resetConfigButton.setDisable(true);
 
         window.setBorder(new Border(new BorderStroke(Color.rgb(214, 150, 0),

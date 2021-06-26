@@ -52,7 +52,7 @@ public class WaitingBeforeGameController extends GuiController {
      * @param canPrepareNewGame true if the player can create a new game
      */
     public void setCanPrepareNewGame(String canPrepareNewGame) {
-        if (Gui.getInstance().getViewModel().getLocalPlayerNickname().equals(canPrepareNewGame)) {
+        if (gui.getViewModel().getLocalPlayerNickname().equals(canPrepareNewGame)) {
             youCanPrepare = true;
             canPrepare.setVisible(true);
         }
@@ -63,7 +63,6 @@ public class WaitingBeforeGameController extends GuiController {
      */
     @FXML
     private void handleNewGame() {
-        Gui gui = Gui.getInstance();
         RadioButton inputRadio = (RadioButton) group.getSelectedToggle();
         try {
             int count = Integer.parseInt(inputRadio.getText());

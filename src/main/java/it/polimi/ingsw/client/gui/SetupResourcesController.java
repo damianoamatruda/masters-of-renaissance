@@ -68,17 +68,20 @@ public class SetupResourcesController extends GuiController {
 
             r.setOnDragDetected((event) -> {
                     Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(r.getImage());
-                    db.setContent(content);
-                    event.consume();
-                }
+                        ClipboardContent content = new ClipboardContent();
+                        content.putImage(r.getImage());
+                        db.setContent(content);
+                        event.consume();
+                    }
             );
 
             resourceTypesContainer.getChildren().add(r);
         });
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> { warehouse.setWaitingForSwap(s1, s2); Gui.getInstance().getUi().dispatch(new ReqSwapShelves(s1, s2)); });
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> {
+            warehouse.setWaitingForSwap(s1, s2);
+            gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
+        });
 
         // On drag over + dropped for the warehouse shelves
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
@@ -187,7 +190,7 @@ public class SetupResourcesController extends GuiController {
     private void updateChoiceButton() {
         int count = selection.keySet().stream()
                 .mapToInt(k -> selection.get(k).keySet().stream().mapToInt(h -> selection.get(k).get(h)).sum()).sum();
-        choiceButton.setDisable(count != Gui.getInstance().getViewModel()
+        choiceButton.setDisable(count != gui.getViewModel()
                 .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources());
     }
 
@@ -195,7 +198,7 @@ public class SetupResourcesController extends GuiController {
      * Dispatches a request of resources choice to the backend.
      */
     public void handleChoice() {
-        Gui.getInstance().getUi().dispatch(new ReqChooseResources(selection));
+        gui.getUi().dispatch(new ReqChooseResources(selection));
         waitingText.setVisible(true);
         ((VBox) resourceTypesContainer.getParent()).getChildren().remove(resourceTypesContainer);
         ((VBox) warehouse.getParent()).getChildren().remove(warehouse);

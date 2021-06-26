@@ -86,7 +86,7 @@ public class SetupLeadersController extends GuiController {
      */
     private void updateChoiceButton() {
         choiceButton.setDisable(
-                selection.size() != Gui.getInstance().getViewModel()
+                selection.size() != gui.getViewModel()
                         .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
     }
 
@@ -95,7 +95,7 @@ public class SetupLeadersController extends GuiController {
      */
     @FXML
     private void handleChoice() {
-        Gui.getInstance().getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
+        gui.getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
         waitingText.setVisible(true);
         ((VBox) leadersContainer.getParent()).getChildren().remove(leadersContainer);
         ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);

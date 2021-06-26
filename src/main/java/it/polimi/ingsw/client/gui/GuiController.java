@@ -19,7 +19,6 @@ public abstract class GuiController extends UiController implements Initializabl
     
     public GuiController() {
         super(Gui.getInstance().getUi());
-        
         Gui.getInstance().setController(this);
     }
 

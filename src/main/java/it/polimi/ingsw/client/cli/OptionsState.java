@@ -12,8 +12,6 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class OptionsState extends CliController {
     @Override
     public void render() {
-        Cli cli = Cli.getInstance();
-        
         cli.getOut().println();
         cli.getOut().println(center("~ Offline Play Config ~"));
 

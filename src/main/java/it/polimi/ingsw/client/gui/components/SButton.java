@@ -16,10 +16,12 @@ public class SButton extends Button {
      * Class constructor.
      */
     public SButton() {
+        Gui gui = Gui.getInstance();
+
         clip = new AudioClip(Objects.requireNonNull(getClass().getResource(soundPath)).toExternalForm());
         this.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
-            double volume = Gui.getInstance().getSoundFxVolume();
-            clip.setVolume(Gui.getInstance().getSoundFxVolume());
+            double volume = gui.getSoundFxVolume();
+            clip.setVolume(gui.getSoundFxVolume());
             if (volume > 0)
                 clip.play();
         });

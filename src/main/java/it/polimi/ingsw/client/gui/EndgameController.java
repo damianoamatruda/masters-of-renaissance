@@ -36,8 +36,8 @@ public class EndgameController extends GuiController {
      */
     @FXML
     private void handleQuit() {
-        Gui.getInstance().getUi().dispatch(new ReqQuit());
-        Gui.getInstance().setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        gui.getUi().dispatch(new ReqQuit());
+        gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 
 }

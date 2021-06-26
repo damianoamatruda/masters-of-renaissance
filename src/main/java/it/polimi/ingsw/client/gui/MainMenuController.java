@@ -42,7 +42,6 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handlePlayOffline() {
-        Gui gui = Gui.getInstance();
         gui.getUi().openOfflineClient();
         gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
                 controller.setTitle("Play Offline"));
@@ -53,7 +52,7 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handlePlayOnline() {
-        Gui.getInstance().setScene(getClass().getResource("/assets/gui/playonline.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/playonline.fxml"));
     }
 
     /**
@@ -71,6 +70,6 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handleQuit() {
-        Gui.getInstance().quit();
+        gui.quit();
     }
 }
