@@ -9,11 +9,12 @@
          xmlns="http://javafx.com/javafx"
          type="BorderPane"
          maxHeight="720" minHeight="720"
-         maxWidth="1280" minWidth="1280"
-         stylesheets="@../index.css"
-         styleClass="main">
+         maxWidth="1280" minWidth="1280">
   <center>
-    <VBox alignment="CENTER">
+    <VBox maxWidth="-Infinity" maxHeight="-Infinity"
+      alignment="CENTER"
+      stylesheets="@../index.css" styleClass="main-small"
+      fx:id="window">
       <VBox alignment="CENTER">
         <VBox.margin>
           <Insets bottom="40.0"/>

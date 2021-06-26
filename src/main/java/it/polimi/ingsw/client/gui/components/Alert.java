@@ -56,9 +56,6 @@ public class Alert extends BorderPane {
             if (callback != null)
                 callback.run();
         });
-
-        window.setBorder(new Border(new BorderStroke(Color.rgb(214, 150, 0),
-            BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
     }
 
     public Alert(Node center, Node top, Node right, Node left) {

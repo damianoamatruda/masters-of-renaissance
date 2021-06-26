@@ -4,13 +4,15 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
 /** Gui component representing the pause menu. */
 public class PauseMenu extends BorderPane {
+    @FXML
+    private VBox window;
     @FXML
     private SButton back;
     @FXML

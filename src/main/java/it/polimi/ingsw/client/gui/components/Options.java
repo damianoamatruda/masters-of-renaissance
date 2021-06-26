@@ -89,9 +89,6 @@ public class Options extends BorderPane {
 
         if (gui.getUi().getGameConfigStream().isEmpty())
             resetConfigButton.setDisable(true);
-
-        window.setBorder(new Border(new BorderStroke(Color.rgb(214, 150, 0),
-            BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(3))));
     }
 
     /**
