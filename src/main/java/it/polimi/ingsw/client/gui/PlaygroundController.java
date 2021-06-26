@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,7 +34,8 @@ public abstract class PlaygroundController extends GuiController {
 
     private final VBox leadersBox = new VBox();
 
-    @FXML protected Text topText = new Text();
+    @FXML
+    protected Title topText = new Title();
 
     private LeaderCard toDiscard = null;
 
