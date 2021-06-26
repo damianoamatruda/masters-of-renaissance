@@ -83,9 +83,8 @@ public class ActivateProduction extends BorderPane {
         this.newTempDepots = new ArrayList<>(tempDepots); // this as well
         this.requests = requests;
 
-        if (index == 0) {
+        if (index == 0)
             gui.setSceneScaling(this);
-        }
 
         text.setText(String.format("Production: %s", toActivate.get(index)));
 

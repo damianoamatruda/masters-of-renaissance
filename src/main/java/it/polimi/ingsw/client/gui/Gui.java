@@ -10,7 +10,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
@@ -58,6 +57,7 @@ public class Gui extends Application {
     private Stage stage;
     private Pane root;
     private URL currentScene;
+    private Pane pauseMenu;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
 
@@ -65,6 +65,7 @@ public class Gui extends Application {
         Gui.instance = this;
         this.ui = new Ui();
         this.currentScene = null;
+        this.pauseMenu = null;
         this.musicPlayer = null;
         this.soundFxVolume = 1;
     }
@@ -200,10 +201,11 @@ public class Gui extends Application {
     }
 
     public void setPauseHandler(Pane scene) {
-        Node pauseMenu = new PauseMenu();
+        if (pauseMenu == null)
+            pauseMenu = new PauseMenu();
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                if (root.getChildren().size() == 1)
+                if (!root.getChildren().contains(pauseMenu))
                     root.getChildren().add(pauseMenu);
                 else
                     root.getChildren().remove(pauseMenu);
