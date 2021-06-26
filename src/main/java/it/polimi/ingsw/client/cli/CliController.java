@@ -158,7 +158,7 @@ public abstract class CliController extends UiController implements Renderable {
             case NOT_IN_GAME -> new Thread(() -> {
                 cli.getOut().println("Match not joined yet.");
                 cli.promptPause();
-                cli.setController(new InputNicknameState(""));
+                cli.setController(new InputNicknameState(cli.getUi().isOffline() ? "Play Offline" : "Play Online"));
             }).start();
         }
     }
