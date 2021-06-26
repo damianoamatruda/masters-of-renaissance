@@ -22,14 +22,14 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
 //        left.setAlignment(Pos.BOTTOM_LEFT);
         left.setText("Market");
         left.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
-                gui.setRoot(getClass().getResource("/assets/gui/market.fxml")));
+                gui.setScene(getClass().getResource("/assets/gui/market.fxml")));
         canvas.getChildren().add(left);
 
         Button right = new SButton();
 //        right.setAlignment(Pos.CENTER_RIGHT);
         right.setText("Grid");
         right.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent ->
-                gui.setRoot(getClass().getResource("/assets/gui/devcardgrid.fxml")));
+                gui.setScene(getClass().getResource("/assets/gui/devcardgrid.fxml")));
         canvas.getChildren().add(right);
 
         AnchorPane.setLeftAnchor(left, 0d);
@@ -58,6 +58,6 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
         if(event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD ||
                 event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES ||
                 event.getAction() == UpdateAction.ActionType.ACTIVATE_PRODUCTION)
-        gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
     }
 }

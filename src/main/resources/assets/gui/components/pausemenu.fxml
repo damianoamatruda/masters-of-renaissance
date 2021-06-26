@@ -7,36 +7,35 @@
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          xmlns="http://javafx.com/javafx"
-         stylesheets="@../index.css"
-         fx:id="backStackPane" type="StackPane" styleClass="main"
+         type="BorderPane"
          maxHeight="720" minHeight="720"
-         maxWidth="1280" minWidth="1280">
-  <BorderPane fx:id="bpane">
-    <center>
+         maxWidth="1280" minWidth="1280"
+         stylesheets="@../index.css"
+         styleClass="main">
+  <center>
+    <VBox alignment="CENTER">
       <VBox alignment="CENTER">
-        <VBox alignment="CENTER">
-          <VBox.margin>
-            <Insets bottom="40.0"/>
-          </VBox.margin>
-          <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../logo.png"/>
-          </ImageView>
-        </VBox>
-        <SButton fx:id="back" alignment="CENTER" prefWidth="400.0" text="Back"/>
-        <SButton fx:id="opt" alignment="CENTER" prefWidth="400.0" text="Options...">
-          <VBox.margin>
-            <Insets top="8.0"/>
-          </VBox.margin>
-        </SButton>
-        <SButton fx:id="quit" alignment="CENTER" prefWidth="400.0" text="Quit to Title">
-          <VBox.margin>
-            <Insets top="8.0"/>
-          </VBox.margin>
-        </SButton>
-        <padding>
-          <Insets bottom="80.0"/>
-        </padding>
+        <VBox.margin>
+          <Insets bottom="40.0"/>
+        </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@../logo.png"/>
+        </ImageView>
       </VBox>
-    </center>
-  </BorderPane>
+      <SButton fx:id="back" alignment="CENTER" prefWidth="400.0" text="Back"/>
+      <SButton fx:id="opt" alignment="CENTER" prefWidth="400.0" text="Options...">
+        <VBox.margin>
+          <Insets top="8.0"/>
+        </VBox.margin>
+      </SButton>
+      <SButton fx:id="quit" alignment="CENTER" prefWidth="400.0" text="Quit to Title">
+        <VBox.margin>
+          <Insets top="8.0"/>
+        </VBox.margin>
+      </SButton>
+      <padding>
+        <Insets bottom="80.0"/>
+      </padding>
+    </VBox>
+  </center>
 </fx:root>

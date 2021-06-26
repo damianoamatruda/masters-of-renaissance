@@ -43,6 +43,6 @@ public class PlaygroundAfterActionController extends PlaygroundController {
     @Override
     public void on(UpdateActionToken event) {
         super.on(event);
-        gui.setRoot(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
     }
 }

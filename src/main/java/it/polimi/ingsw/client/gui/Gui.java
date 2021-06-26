@@ -16,12 +16,14 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -47,23 +49,22 @@ public class Gui extends Application {
     static final double realHeight = 720;
 
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
+    private static final String mainStylesheetCss = "/assets/gui/index.css";
     private static final String title = "Masters of Renaissance";
     private static Gui instance = null;
     private final Ui ui;
-    private Scene scene;
     private Stage stage;
+    private Pane root;
+    private URL currentScene;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
-
-    private URL currentRoot;
 
     public Gui() {
         Gui.instance = this;
         this.ui = new Ui();
+        this.currentScene = null;
         this.musicPlayer = null;
         this.soundFxVolume = 1;
-
-        this.currentRoot = null;
     }
 
     public static void main(String[] args) {
@@ -84,14 +85,15 @@ public class Gui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = new FXMLLoader(getClass().getResource(initialSceneFxml)).load();
-        scene = new Scene(root, startWidth, startHeight, false, SceneAntialiasing.BALANCED);
-        primaryStage.setScene(scene);
-        primaryStage.setMinWidth(minWidth);
-        primaryStage.setMinHeight(minHeight);
-        primaryStage.setTitle(title);
-        primaryStage.show();
-        this.stage = primaryStage;
+        root = new StackPane();
+        root.getStylesheets().add(mainStylesheetCss);
+        root.getChildren().add(FXMLLoader.load(Objects.requireNonNull(getClass().getResource(initialSceneFxml))));
+        stage = primaryStage;
+        stage.setScene(new Scene(root, startWidth, startHeight, false, SceneAntialiasing.BALANCED));
+        stage.setMinWidth(minWidth);
+        stage.setMinHeight(minHeight);
+        stage.setTitle(title);
+        stage.show();
     }
 
     public void stop() {
@@ -119,22 +121,25 @@ public class Gui extends Application {
         return ui;
     }
 
-    void setRoot(URL fxml, Consumer<? extends GuiController> callback) {
-        this.currentRoot = fxml;
+    void setScene(URL fxml, Consumer<? extends GuiController> callback) {
+        this.currentScene = fxml;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(fxml);
-            Parent root = fxmlLoader.load();
+            Parent scene = fxmlLoader.load();
             if (callback != null)
                 callback.accept(fxmlLoader.getController());
-            Platform.runLater(() -> scene.setRoot(root));
+            Platform.runLater(() -> {
+                root.getChildren().clear();
+                root.getChildren().add(scene);
+            });
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "IOException when setting root", e);
             throw new RuntimeException(e);
         }
     }
 
-    void setRoot(URL fxml) {
-        setRoot(fxml, null);
+    void setScene(URL fxml) {
+        setScene(fxml, null);
     }
 
     /**
@@ -144,7 +149,7 @@ public class Gui extends Application {
      * @param content  the content message of the Alert to show before reloading the GUI's root
      * @param callback the callback to execute when setting the new root element
      */
-    void reloadRoot(String title, String content, Consumer<? extends GuiController> callback) {
+    void reloadScene(String title, String content, Consumer<? extends GuiController> callback) {
         /* Other ways of doing this were explored:
             - a reloadRoot() method set as the Alert's callback
                 Discarded, since every children.add would get very verbose
@@ -154,42 +159,47 @@ public class Gui extends Application {
                 Discarded, since the runLater methods wouldn't get executed in order and
                 the Alert would be visible for only a split second */
         Platform.runLater(() -> {
-            getController().getRootElement().getChildren().add(
-                new Alert(title, content, getController().getMaxScale(), () -> setRoot(currentRoot, callback)));
+            root.getChildren().add(
+                    new Alert(title, content, getController().getMaxScale(), () -> setScene(currentScene, callback)));
         });
     }
 
     /**
      * Reloads the current screen.
-     * 
+     *
      * @param title   the title of the Alert to show before reloading the GUI's root
      * @param content the content message of the Alert to show before reloading the GUI's root
      */
-    void reloadRoot(String title, String content) {
-        reloadRoot(title, content, null);
+    void reloadScene(String title, String content) {
+        reloadScene(title, content, null);
     }
 
     public Stage getStage() {
         return stage;
     }
 
+    public Pane getRoot() {
+        return root;
+    }
+
     public Optional<MediaPlayer> getMusicPlayer() {
         return Optional.ofNullable(musicPlayer);
     }
 
-    public static void setPauseHandlers(StackPane backStackPane, AnchorPane canvas, NumberBinding maxScale) {
+    public void setPauseHandlers(AnchorPane canvas, NumberBinding maxScale) {
         canvas.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                if (backStackPane.getChildren().size() == 1)
-                    backStackPane.getChildren().add(new PauseMenu(maxScale));
-                else backStackPane.getChildren().remove(backStackPane.getChildren().size() - 1);
+                if (root.getChildren().size() == 1)
+                    root.getChildren().add(new PauseMenu(maxScale));
+                else
+                    root.getChildren().remove(root.getChildren().size() - 1);
             }
         });
 
         Button pause = new SButton();
         pause.setText("Pause");
         pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            backStackPane.getChildren().add(new PauseMenu(maxScale));
+            root.getChildren().add(new PauseMenu(maxScale));
         });
         canvas.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 10.0);

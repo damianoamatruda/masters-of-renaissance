@@ -6,7 +6,6 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -15,14 +14,13 @@ import java.util.ResourceBundle;
 
 /** Gui controller used to prompt a destination server, and open a connection with it. */
 public class PlayOnlineController extends GuiController {
-    @FXML private StackPane backStackPane;
     @FXML private BorderPane bpane;
     @FXML private TextField server;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
     }
@@ -43,39 +41,34 @@ public class PlayOnlineController extends GuiController {
             port = Integer.parseInt(args[1]);
         } catch (ArrayIndexOutOfBoundsException e) {
             Platform.runLater(() ->
-                backStackPane.getChildren().add(
-                    new Alert("Play Online", String.format("%s is not a valid pair IP:port.", server.getText()), maxScale)));
+                    gui.getRoot().getChildren().add(
+                            new Alert("Play Online", String.format("%s is not a valid pair IP:port.", server.getText()), maxScale)));
             return;
         } catch (NumberFormatException e) {
             Platform.runLater(() ->
-                backStackPane.getChildren().add(
-                    new Alert("Play Online", String.format("Port %s is not a valid port.", args[1]), maxScale)));
+                    gui.getRoot().getChildren().add(
+                            new Alert("Play Online", String.format("Port %s is not a valid port.", args[1]), maxScale)));
             return;
         }
 
-        // Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", String.format("Connecting to %s...", server.getText()))));
+        // Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert("Play Online", String.format("Connecting to %s...", server.getText()))));
 
         try {
             gui.getUi().openOnlineClient(host, port);
         } catch (UnknownHostException e) {
-            Platform.runLater(() -> 
-                backStackPane.getChildren().add(
-                    new Alert("Play Online", String.format("Don't know about host %s.", host), maxScale)));
+            Platform.runLater(() ->
+                    gui.getRoot().getChildren().add(
+                            new Alert("Play Online", String.format("Don't know about host %s.", host), maxScale)));
             return;
         } catch (IOException e) {
             Platform.runLater(() ->
-                    backStackPane.getChildren().add(
+                    gui.getRoot().getChildren().add(
                             new Alert("Play Online", "Could not connect to the server.", maxScale)));
             return;
         }
 
-        gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
+        gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
                 controller.setTitle("Play Online"));
-    }
-
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
     }
 
     /**
@@ -83,6 +76,6 @@ public class PlayOnlineController extends GuiController {
      */
     @FXML
     private void handleBack() {
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        Gui.getInstance().setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
     }
 }

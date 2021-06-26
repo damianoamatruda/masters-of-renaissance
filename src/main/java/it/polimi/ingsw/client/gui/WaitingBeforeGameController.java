@@ -1,12 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Alert;
-import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateGame;
-import it.polimi.ingsw.common.events.mvevents.UpdateJoinGame;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
-import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
+import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrNewGame;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.application.Platform;
@@ -15,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -24,8 +18,6 @@ import java.util.ResourceBundle;
 
 /** Gui controller used when waiting for a game after joining a lobby, or to create a new game. */
 public class WaitingBeforeGameController extends GuiController {
-    @FXML
-    private StackPane backStackPane;
     @FXML
     private BorderPane bpane;
     @FXML
@@ -43,15 +35,10 @@ public class WaitingBeforeGameController extends GuiController {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
-    }
-
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
     }
 
     /**
@@ -86,21 +73,21 @@ public class WaitingBeforeGameController extends GuiController {
             int count = Integer.parseInt(inputRadio.getText());
             gui.getUi().dispatch(new ReqNewGame(count));
         } catch (NumberFormatException e) {
-            Platform.runLater(() -> backStackPane.getChildren().add(new Alert("Play Online", "Not a number", maxScale)));
+            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert("Play Online", "Not a number", maxScale)));
         }
     }
 
     @Override
     public void on(ErrNewGame event) {
         if (event.isInvalidPlayersCount())
-            gui.reloadRoot("Error setting players number",
+            gui.reloadScene("Error setting players number",
                     "Invalid number.");
         else
-            setNextState(c -> 
-                c.getRootElement().getChildren().add(
-                    new Alert("Error setting players number",
-                        "You are not allowed to set the players' number for this match.",
-                        c.getMaxScale())));
+            setNextState(controller ->
+                    gui.getRoot().getChildren().add(
+                            new Alert("Error setting players number",
+                                    "You are not allowed to set the players' number for this match.",
+                                    controller.getMaxScale())));
     }
 
     @Override

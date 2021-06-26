@@ -8,38 +8,35 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="it.polimi.ingsw.client.gui.SetupResourcesController"
-           stylesheets="@index.css">
-  <BorderPane fx:id="bpane"
-    maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
-    <center>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="bpane" xmlns="http://javafx.com/javafx/16"
+            fx:controller="it.polimi.ingsw.client.gui.SetupResourcesController"
+            maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
+  <center>
+    <VBox alignment="CENTER">
       <VBox alignment="CENTER">
-        <VBox alignment="CENTER">
-          <VBox.margin>
-            <Insets bottom="20.0"/>
-          </VBox.margin>
-          <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@logo.png"/>
-          </ImageView>
-        </VBox>
-        <Title fx:id="titleComponent" maxWidth="-Infinity">
-          <VBox.margin>
-            <Insets bottom="15.0"/>
-          </VBox.margin>
-        </Title>
-        <HBox fx:id="resourceTypesContainer"/>
-        <Warehouse fx:id="warehouse" alignment="CENTER"/>
-        <padding>
+        <VBox.margin>
           <Insets bottom="20.0"/>
-        </padding>
-        <SButton fx:id="choiceButton" onAction="#handleChoice" prefWidth="250.0" text="Choose">
-          <VBox.margin>
-            <Insets top="10.0"/>
-          </VBox.margin>
-        </SButton>
-        <Text fx:id="waitingText" visible="false">Waiting for other players to finish their setup...</Text>
+        </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@logo.png"/>
+        </ImageView>
       </VBox>
-    </center>
-  </BorderPane>
-</StackPane>
+      <Title fx:id="titleComponent" maxWidth="-Infinity">
+        <VBox.margin>
+          <Insets bottom="15.0"/>
+        </VBox.margin>
+      </Title>
+      <HBox fx:id="resourceTypesContainer"/>
+      <Warehouse fx:id="warehouse" alignment="CENTER"/>
+      <padding>
+        <Insets bottom="20.0"/>
+      </padding>
+      <SButton fx:id="choiceButton" onAction="#handleChoice" prefWidth="250.0" text="Choose">
+        <VBox.margin>
+          <Insets top="10.0"/>
+        </VBox.margin>
+      </SButton>
+      <Text fx:id="waitingText" visible="false">Waiting for other players to finish their setup...</Text>
+    </VBox>
+  </center>
+</BorderPane>

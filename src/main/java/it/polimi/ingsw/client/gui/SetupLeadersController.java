@@ -17,7 +17,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -33,7 +32,6 @@ public class SetupLeadersController extends GuiController {
     
     private final List<LeaderCard> selection = new ArrayList<>();
     
-    @FXML private StackPane backStackPane;
     @FXML private BorderPane bpane;
     @FXML private HBox leadersContainer;
     @FXML private Button choiceButton;
@@ -42,8 +40,8 @@ public class SetupLeadersController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
 
@@ -85,11 +83,6 @@ public class SetupLeadersController extends GuiController {
         updateChoiceButton();
     }
 
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
-    }
-
     /**
      * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
      */
@@ -117,29 +110,29 @@ public class SetupLeadersController extends GuiController {
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
         Consumer<? extends GuiController> callback = controller ->
-                controller.getRootElement().getChildren().add(
+                gui.getRoot().getChildren().add(
                         new Alert("Action error", "Setup phase is concluded, advancing to game turns.", controller.getMaxScale()));
 
         if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
+            gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
         else
-            gui.setRoot(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
+            gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
     }
 
     @Override
     public void on(ErrInitialChoice event) {
         if (event.isLeadersChoice()) // if the error is from the initial leaders choice
             if (event.getMissingLeadersCount() == 0) // no leaders missing -> already chosen
-                setNextState(c ->
-                    c.getRootElement().getChildren().add(
-                        new Alert("Error choosing leader cards", "Leader cards already chosen, advancing to next state.", c.getMaxScale())));
+                setNextState(controller ->
+                        gui.getRoot().getChildren().add(
+                                new Alert("Error choosing leader cards", "Leader cards already chosen, advancing to next state.", controller.getMaxScale())));
             else
-                gui.reloadRoot("Error buying development card",
+                gui.reloadScene("Error buying development card",
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
         else
-            setNextState(c ->
-                c.getRootElement().getChildren().add(
-                    new Alert("Error choosing leader cards", "Initial resources already chosen, advancing to next state.", c.getMaxScale())));
+            setNextState(controller ->
+                    gui.getRoot().getChildren().add(
+                            new Alert("Error choosing leader cards", "Initial resources already chosen, advancing to next state.", controller.getMaxScale())));
     }
 
     @Override

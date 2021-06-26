@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -16,7 +15,6 @@ import java.util.ResourceBundle;
 
 /** Gui controller used on Solo game turn switch, which displays the activated action token. */
 public class TriggerActionToken extends GuiController {
-    @FXML private StackPane backStackPane;
     @FXML private BorderPane canvas;
     @FXML private ImageView token;
     @FXML private Text message;
@@ -24,15 +22,15 @@ public class TriggerActionToken extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
 
         next.setOnAction(actionEvent -> {
             if (!vm.isGameEnded())
-                gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-            else gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
+                gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+            else gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
         });
 
         AnchorPane.setTopAnchor(message, 20.0);
@@ -41,12 +39,6 @@ public class TriggerActionToken extends GuiController {
         this.token.setImage(new Image(getTokenImage(Gui.getInstance().getViewModel().getLatestToken().orElseThrow())));
 
         AnchorPane.setTopAnchor(this.token, 200.0);
-
-    }
-
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
     }
 
     /**

@@ -19,21 +19,20 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
-
 /** Gui controller class of the take Market resources action. */
 public class MarketController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
 
-    @FXML
-    private StackPane backStackPane;
     @FXML
     private AnchorPane canvas;
     @FXML
@@ -60,8 +59,8 @@ public class MarketController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
 
@@ -78,12 +77,7 @@ public class MarketController extends GuiController {
 
         back.setOnAction(this::back);
 
-        setPauseHandlers(backStackPane, canvas, maxScale);
-    }
-
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
+        gui.setPauseHandlers(canvas, maxScale);
     }
 
     /**
@@ -422,14 +416,14 @@ public class MarketController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        Gui.getInstance().setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     @Override
     public void on(UpdateAction event) {
         super.on(event);
         if(event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 
         else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();

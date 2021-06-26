@@ -21,14 +21,10 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.*;
 
-import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
-
 /** Gui controller class of the development card purchase action. */
 public class DevCardGridController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
-    @FXML
-    private StackPane backStackPane;
     @FXML
     private AnchorPane canvas;
     @FXML
@@ -59,8 +55,8 @@ public class DevCardGridController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
 
@@ -88,7 +84,7 @@ public class DevCardGridController extends GuiController {
         resetSlots();
         resetLeaders();
 
-        setPauseHandlers(backStackPane, canvas, maxScale);
+        gui.setPauseHandlers(canvas, maxScale);
 
         canvas.setBorder(new Border(new BorderStroke(Color.RED,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -103,11 +99,6 @@ public class DevCardGridController extends GuiController {
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         rightVBox.setBorder(new Border(new BorderStroke(Color.PINK,
             BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-    }
-
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
     }
 
     /**
@@ -312,20 +303,20 @@ public class DevCardGridController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        Gui.getInstance().setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     @Override
     public void on(ErrBuyDevCard event) {
         if (event.isStackEmpty())
-            gui.reloadRoot("Error buying development card",
+            gui.reloadScene("Error buying development card",
                     String.format("Cannot buy development card with color %s and level %d: deck is empty.",
-                        selectedColor, selectedLevel));
+                            selectedColor, selectedLevel));
         else {
             int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue()).map(ReducedDevCard::getLevel).orElse(0);
-            gui.reloadRoot("Error buying development card",
+            gui.reloadScene("Error buying development card",
                     String.format("Cannot place development card in slot %d: card level %d, slot level %d is insufficient (has to be %d).",
-                    devSlotChoicePicker.getValue(), selectedLevel, slotLevel, slotLevel + 1));
+                            devSlotChoicePicker.getValue(), selectedLevel, slotLevel, slotLevel + 1));
         }
     }
 
@@ -333,7 +324,7 @@ public class DevCardGridController extends GuiController {
     public void on(UpdateAction event) {
         super.on(event);
         if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
 
         else if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();

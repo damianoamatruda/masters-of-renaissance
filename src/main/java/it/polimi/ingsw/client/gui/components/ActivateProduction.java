@@ -9,9 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Spinner;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -21,11 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 /** Pane component used to choose input source for a selected production. */
-public class ActivateProduction extends StackPane {
+public class ActivateProduction extends BorderPane {
     private final NumberBinding maxScale;
 
-    @FXML
-    private StackPane backStackPane;
     @FXML
     private SButton back;
     @FXML
@@ -172,8 +170,8 @@ public class ActivateProduction extends StackPane {
         buildRequest();
 
         // go to next production
-        backStackPane.getChildren().add(new ActivateProduction(toActivate, index + 1,
-                     requests, newTempShelves, newTempDepots, maxScale));
+        Gui.getInstance().getRoot().getChildren().add(new ActivateProduction(toActivate, index + 1,
+                requests, newTempShelves, newTempDepots, maxScale));
     }
 
     /**

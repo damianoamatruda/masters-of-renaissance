@@ -1,26 +1,19 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.Title;
-import it.polimi.ingsw.common.events.mvevents.UpdateBookedSeats;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateGame;
-import it.polimi.ingsw.common.events.mvevents.UpdateLeadersHand;
-import it.polimi.ingsw.common.events.mvevents.UpdatePlayer;
+import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
 import it.polimi.ingsw.common.events.vcevents.ReqNewGame;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /** Gui controller that manages the input of a nickname. */
 public class InputNicknameController extends GuiController {
-    @FXML
-    private StackPane backStackPane;
     @FXML
     private BorderPane bpane;
     @FXML
@@ -31,16 +24,11 @@ public class InputNicknameController extends GuiController {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
 
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
-    }
-
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
     }
 
     /**
@@ -59,7 +47,7 @@ public class InputNicknameController extends GuiController {
     @FXML
     private void handleBack() {
         Gui gui = Gui.getInstance();
-        gui.setRoot(getClass().getResource(gui.getUi().isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
+        gui.setScene(getClass().getResource(gui.getUi().isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
     }
 
     /**
@@ -76,7 +64,7 @@ public class InputNicknameController extends GuiController {
         if (gui.getUi().isOffline())
             gui.getUi().dispatch(new ReqNewGame(1));
         else
-            gui.setRoot(getClass().getResource("/assets/gui/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
+            gui.setScene(getClass().getResource("/assets/gui/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
                 controller.setBookedSeats(event.getBookedSeats());
                 controller.setCanPrepareNewGame(event.canPrepareNewGame());
             });

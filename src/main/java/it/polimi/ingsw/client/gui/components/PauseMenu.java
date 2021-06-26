@@ -7,23 +7,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
 /** Gui component representing the pause menu. */
-public class PauseMenu extends StackPane {
-    public BorderPane options;
-    @FXML private StackPane backStackPane;
-    @FXML private BorderPane bpane;
-    @FXML private SButton back;
-    @FXML private SButton opt;
-    @FXML private SButton quit;
+public class PauseMenu extends BorderPane {
+    @FXML
+    private SButton back;
+    @FXML
+    private SButton opt;
+    @FXML
+    private SButton quit;
 
-    private NumberBinding maxScale;
+    private final NumberBinding maxScale;
 
     /**
-     *
      * @param sizeBinding
      */
     public PauseMenu(NumberBinding sizeBinding) {
@@ -40,8 +38,8 @@ public class PauseMenu extends StackPane {
         setHandlers();
 
         maxScale = sizeBinding;
-        bpane.scaleXProperty().bind(maxScale);
-        bpane.scaleYProperty().bind(maxScale);
+        this.scaleXProperty().bind(maxScale);
+        this.scaleYProperty().bind(maxScale);
     }
 
     /**
@@ -59,7 +57,7 @@ public class PauseMenu extends StackPane {
     private void handleOptions() {
         Options options = new Options(maxScale);
         options.setConfigContainer(false);
-        backStackPane.getChildren().add(options);
+        Gui.getInstance().getRoot().getChildren().add(options);
     }
 
     /**

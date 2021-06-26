@@ -13,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -23,8 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
-
 /**
  * Gui abstract controller for the main turn scenes,
  * which will show the playerboard of the current player and the available actions, depending on the turn phase.
@@ -32,7 +29,6 @@ import static it.polimi.ingsw.client.gui.Gui.setPauseHandlers;
 public abstract class PlaygroundController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
-    @FXML private StackPane backStackPane;
     @FXML
     protected AnchorPane canvas;
     @FXML
@@ -53,13 +49,13 @@ public abstract class PlaygroundController extends GuiController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         /* Scaling */
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         canvas.scaleXProperty().bind(maxScale);
         canvas.scaleYProperty().bind(maxScale);
 
         /* Pause Menu */
-        setPauseHandlers(backStackPane, canvas, maxScale);
+        gui.setPauseHandlers(canvas, maxScale);
 
         /* Warehouse Shelves */
         warehouse = new Warehouse();
@@ -95,11 +91,6 @@ public abstract class PlaygroundController extends GuiController {
         AnchorPane.setTopAnchor(playerBoard, 0d);
         AnchorPane.setLeftAnchor(playerBoard, 0d);
         AnchorPane.setRightAnchor(playerBoard, 90d);
-    }
-
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
     }
     
     /**
@@ -156,11 +147,11 @@ public abstract class PlaygroundController extends GuiController {
         String prevPlayer = vm.getCurrentPlayer();
         super.on(event);
         if (vm.getPlayerNicknames().size() > 1)
-            gui.setRoot(event.getPlayer().equals(vm.getLocalPlayerNickname())
+            gui.setScene(event.getPlayer().equals(vm.getLocalPlayerNickname())
                     ? getClass().getResource("/assets/gui/playgroundbeforeaction.fxml")
                     : getClass().getResource("/assets/gui/waitingforturn.fxml"));
         else if (prevPlayer.equals(event.getPlayer()))
-            gui.setRoot(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
     /**
@@ -226,7 +217,7 @@ public abstract class PlaygroundController extends GuiController {
     @Override
     public void on(UpdateGameEnd event) {
         super.on(event);
-        gui.setRoot(getClass().getResource("/assets/gui/endgame.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
     }
 
     @Override
@@ -244,7 +235,7 @@ public abstract class PlaygroundController extends GuiController {
         activateProdButton = new SButton();
         activateProdButton.setText("Activate production");
         activateProdButton.setOnAction((event) ->
-                backStackPane.getChildren().add(new ActivateProduction(toActivate, 0,
+                gui.getRoot().getChildren().add(new ActivateProduction(toActivate, 0,
                         new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())),
                         new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayerNickname())), maxScale)));
         activateProdButton.setDisable(true);

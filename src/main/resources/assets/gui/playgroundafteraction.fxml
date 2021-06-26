@@ -2,11 +2,6 @@
 
 
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-
-<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="it.polimi.ingsw.client.gui.PlaygroundAfterActionController"
-  stylesheets="@index.css">
-  <AnchorPane fx:id="canvas"
-    maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280"/>
-</StackPane>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="canvas" xmlns="http://javafx.com/javafx/16"
+            fx:controller="it.polimi.ingsw.client.gui.PlaygroundAfterActionController"
+            maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280"/>

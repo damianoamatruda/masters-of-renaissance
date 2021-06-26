@@ -8,45 +8,44 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<StackPane fx:id="backStackPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.InputNicknameController" stylesheets="@index.css">
-  <BorderPane fx:id="bpane"
-    maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
-    <center>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="bpane" xmlns="http://javafx.com/javafx/16"
+            fx:controller="it.polimi.ingsw.client.gui.InputNicknameController"
+            maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
+  <center>
+    <VBox alignment="CENTER">
       <VBox alignment="CENTER">
-        <VBox alignment="CENTER">
-          <VBox.margin>
-            <Insets bottom="40.0"/>
-          </VBox.margin>
-          <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@logo.png"/>
-          </ImageView>
-        </VBox>
-        <Title fx:id="titleComponent" maxWidth="-Infinity">
-          <VBox.margin>
-            <Insets bottom="30.0"/>
-          </VBox.margin>
-        </Title>
-        <VBox maxWidth="-Infinity" prefHeight="0.0">
-          <Label text="Nickname"/>
-          <TextField fx:id="nickname" prefWidth="400.0" maxWidth="400.0"/>
-        </VBox>
-        <Pane fx:id="advancedButtonContainer" maxWidth="-Infinity" prefHeight="0.0"/>
-        <BorderPane maxWidth="-Infinity" prefWidth="400.0">
-          <left>
-            <SButton alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
-          </left>
-          <right>
-            <SButton alignment="CENTER" onAction="#handleNicknameInput" prefWidth="190.0" text="Choose"
-                    defaultButton="true"/>
-          </right>
-          <VBox.margin>
-            <Insets top="30.0"/>
-          </VBox.margin>
-        </BorderPane>
-        <padding>
-          <Insets bottom="80.0"/>
-        </padding>
+        <VBox.margin>
+          <Insets bottom="40.0"/>
+        </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@logo.png"/>
+        </ImageView>
       </VBox>
-    </center>
-  </BorderPane>
-</StackPane>
+      <Title fx:id="titleComponent" maxWidth="-Infinity">
+        <VBox.margin>
+          <Insets bottom="30.0"/>
+        </VBox.margin>
+      </Title>
+      <VBox maxWidth="-Infinity" prefHeight="0.0">
+        <Label text="Nickname"/>
+        <TextField fx:id="nickname" prefWidth="400.0" maxWidth="400.0"/>
+      </VBox>
+      <Pane fx:id="advancedButtonContainer" maxWidth="-Infinity" prefHeight="0.0"/>
+      <BorderPane maxWidth="-Infinity" prefWidth="400.0">
+        <left>
+          <SButton alignment="CENTER" onAction="#handleBack" prefWidth="190.0" text="Back"/>
+        </left>
+        <right>
+          <SButton alignment="CENTER" onAction="#handleNicknameInput" prefWidth="190.0" text="Choose"
+                   defaultButton="true"/>
+        </right>
+        <VBox.margin>
+          <Insets top="30.0"/>
+        </VBox.margin>
+      </BorderPane>
+      <padding>
+        <Insets bottom="80.0"/>
+      </padding>
+    </VBox>
+  </center>
+</BorderPane>

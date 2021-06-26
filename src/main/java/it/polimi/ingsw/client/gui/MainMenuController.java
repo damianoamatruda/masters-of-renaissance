@@ -5,7 +5,6 @@ import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -17,13 +16,12 @@ import java.util.ResourceBundle;
 public class MainMenuController extends GuiController {
     private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
 
-    @FXML private StackPane backStackPane;
     @FXML private BorderPane bpane;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        maxScale = Bindings.min(backStackPane.widthProperty().divide(Gui.realWidth),
-                backStackPane.heightProperty().divide(Gui.realHeight));
+        maxScale = Bindings.min(gui.getRoot().widthProperty().divide(Gui.realWidth),
+                gui.getRoot().heightProperty().divide(Gui.realHeight));
         bpane.scaleXProperty().bind(maxScale);
         bpane.scaleYProperty().bind(maxScale);
 
@@ -44,11 +42,6 @@ public class MainMenuController extends GuiController {
         }
     }
 
-    @Override
-    StackPane getRootElement() {
-        return backStackPane;
-    }
-
     /**
      * Handles choice of playing offline Solo.
      */
@@ -56,7 +49,7 @@ public class MainMenuController extends GuiController {
     private void handlePlayOffline() {
         Gui gui = Gui.getInstance();
         gui.getUi().openOfflineClient();
-        gui.setRoot(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
+        gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
                 controller.setTitle("Play Offline"));
     }
 
@@ -65,7 +58,7 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handlePlayOnline() {
-        Gui.getInstance().setRoot(getClass().getResource("/assets/gui/playonline.fxml"));
+        Gui.getInstance().setScene(getClass().getResource("/assets/gui/playonline.fxml"));
     }
 
     /**
@@ -75,7 +68,7 @@ public class MainMenuController extends GuiController {
     private void handleOptions() {
         Options options = new Options(maxScale);
         options.setConfigContainer(true);
-        backStackPane.getChildren().add(options);
+        gui.getRoot().getChildren().add(options);
     }
 
     /**
@@ -84,9 +77,5 @@ public class MainMenuController extends GuiController {
     @FXML
     private void handleQuit() {
         Gui.getInstance().quit();
-    }
-
-    public StackPane getBackStackPane() {
-        return backStackPane;
     }
 }
