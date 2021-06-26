@@ -74,6 +74,7 @@ public class MarketController extends GuiController {
         back.setOnAction(this::back);
 
         gui.setPauseHandlers(canvas);
+        gui.addPauseButton(canvas);
     }
 
     /**

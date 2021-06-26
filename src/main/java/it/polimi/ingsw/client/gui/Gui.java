@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
@@ -198,22 +199,24 @@ public class Gui extends Application {
         return Optional.ofNullable(musicPlayer);
     }
 
-    public void setPauseHandlers(AnchorPane canvas) {
-        canvas.setOnKeyPressed(e -> {
+    public void setPauseHandlers(Pane scene) {
+        Node pauseMenu = new PauseMenu();
+        scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 if (root.getChildren().size() == 1)
-                    root.getChildren().add(new PauseMenu());
+                    root.getChildren().add(pauseMenu);
                 else
-                    root.getChildren().remove(root.getChildren().size() - 1);
+                    root.getChildren().remove(pauseMenu);
             }
         });
+    }
 
+    public void addPauseButton(Pane scene) {
         Button pause = new SButton();
         pause.setText("Pause");
-        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-            root.getChildren().add(new PauseMenu());
-        });
-        canvas.getChildren().add(pause);
+        pause.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) ->
+                root.getChildren().add(new PauseMenu()));
+        scene.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 10.0);
         AnchorPane.setLeftAnchor(pause, 10.0);
     }

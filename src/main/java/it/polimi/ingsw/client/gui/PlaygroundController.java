@@ -52,6 +52,7 @@ public abstract class PlaygroundController extends GuiController {
 
         /* Pause Menu */
         gui.setPauseHandlers(canvas);
+        gui.addPauseButton(canvas);
 
         /* Warehouse Shelves */
         warehouse = new Warehouse();
