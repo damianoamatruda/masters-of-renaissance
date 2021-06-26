@@ -37,29 +37,29 @@ public class DevCardGrid extends HBox {
         for (String color : grid.getTopCards().keySet()) {
             VBox column = new VBox(5);
             for (int i = grid.getLevelsCount(); i >= 1; i--) {
-                ReducedDevCard card;
+                ReducedDevCard reducedDevCard;
 
                 Optional<Integer> cardId = grid.getTopCards().get(color).get(i);
                 if (cardId.isPresent())
-                    card = Gui.getInstance().getViewModel().getDevelopmentCard(cardId.get()).orElseThrow(NullPointerException::new);
+                    reducedDevCard = Gui.getInstance().getViewModel().getDevelopmentCard(cardId.get()).orElseThrow(NullPointerException::new);
                 else {
                     column.getChildren().add(new Label());
                     continue;
                 }
 
-                DevelopmentCard guicard = new DevelopmentCard(card.getColor());
+                DevelopmentCard devCard = new DevelopmentCard(reducedDevCard.getColor());
 
-                ReducedResourceTransactionRecipe r = Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow();
-                card.getCost().ifPresent(cost -> guicard.setRequirement(cost));
-                guicard.setProduction(r);
-                guicard.setLevel(card.getLevel());
-                guicard.setVictoryPoints(Integer.toString(card.getVictoryPoints()));
+                ReducedResourceTransactionRecipe r = Gui.getInstance().getViewModel().getProduction(reducedDevCard.getProduction()).orElseThrow();
+                reducedDevCard.getCost().ifPresent(devCard::setRequirement);
+                devCard.setProduction(r);
+                devCard.setLevel(reducedDevCard.getLevel());
+                devCard.setVictoryPoints(reducedDevCard.getVictoryPoints());
 
-                guicard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                    controllerListener.accept(card, guicard);
+                devCard.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                    controllerListener.accept(reducedDevCard, devCard);
                     mouseEvent.consume();
                 });
-                column.getChildren().add(guicard);
+                column.getChildren().add(devCard);
             }
             this.getChildren().add(column);
         }

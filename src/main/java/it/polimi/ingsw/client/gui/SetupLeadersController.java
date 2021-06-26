@@ -60,7 +60,7 @@ public class SetupLeadersController extends GuiController {
         List<LeaderCard> leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
             leaderCard.setLeaderId(reducedLeader.getId());
-            leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
+            leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints());
             if (reducedLeader.getResourceRequirement().isPresent())
                 leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
             if (reducedLeader.getDevCardRequirement().isPresent())

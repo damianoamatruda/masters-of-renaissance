@@ -32,7 +32,7 @@ public class DevelopmentCard extends Card {
         super(card.getColor());
         card.getCost().ifPresent(this::setRequirement);
         setProduction(Gui.getInstance().getViewModel().getProduction(card.getProduction()).orElseThrow());
-        setVictoryPoints(Integer.toString(card.getVictoryPoints()));
+        setVictoryPoints(card.getVictoryPoints());
     }
 
     /**
@@ -48,10 +48,10 @@ public class DevelopmentCard extends Card {
     /**
      * Sets and displays the card bonus victory points.
      *
-     * @param pts the victory points given to the player by this card
+     * @param points the victory points given to the player by this card
      */
-    public void setVictoryPoints(String pts) {
-        super.setVictoryPoints(pts);
+    public void setVictoryPoints(int points) {
+        super.setVictoryPoints(points);
         victoryPoints.setLayoutX(getWidth() * 0.47);
         victoryPoints.setLayoutY(getHeight() * 0.91);
     }

@@ -87,21 +87,21 @@ public abstract class Card extends Pane {
     }
 
     /**
-     * Sets and displays the card bonus victory points.
-     *
-     * @param pts the victory points given to the player by this card
-     */
-    public void setVictoryPoints(String pts) {
-        victoryPoints.setText(pts);
-    }
-
-    /**
      * Getter of the card's victory points.
      *
      * @return the victory points
      */
-    public String getVictoryPoints() {
-        return victoryPoints.getText();
+    public int getVictoryPoints() {
+        return Integer.parseInt(victoryPoints.getText());
+    }
+
+    /**
+     * Sets and displays the card bonus victory points.
+     *
+     * @param points the victory points given to the player by this card
+     */
+    public void setVictoryPoints(int points) {
+        victoryPoints.setText(Integer.toString(points));
     }
 
     /**

@@ -6,8 +6,8 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
@@ -141,7 +141,7 @@ public class DevCardGridController extends GuiController {
                 .map(reducedLeader -> {
                     LeaderCard leaderCard = new LeaderCard(reducedLeader.getLeaderType(), reducedLeader.getResourceType());
                     leaderCard.setLeaderId(reducedLeader.getId());
-                    leaderCard.setVictoryPoints(Integer.toString(reducedLeader.getVictoryPoints()));
+                    leaderCard.setVictoryPoints(reducedLeader.getVictoryPoints());
                     if (reducedLeader.getResourceRequirement().isPresent())
                         leaderCard.setRequirement(reducedLeader.getResourceRequirement().get());
                     if (reducedLeader.getDevCardRequirement().isPresent())

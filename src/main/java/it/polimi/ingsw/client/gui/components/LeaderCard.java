@@ -88,10 +88,10 @@ public class LeaderCard extends Card {
     /**
      * Sets and displays the card bonus victory points.
      *
-     * @param pts the victory points given to the player by this card
+     * @param points the victory points given to the player by this card
      */
-    public void setVictoryPoints(String pts) {
-        super.setVictoryPoints(pts);
+    public void setVictoryPoints(int points) {
+        super.setVictoryPoints(points);
         this.victoryPoints.setLayoutX(getWidth() * 0.47);
         this.victoryPoints.setLayoutY(getHeight() * 0.62);
     }
