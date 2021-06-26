@@ -261,8 +261,8 @@ public class ViewModel {
      * @return the reduced recipes owned by the player, including:
      *          <ul>
      *              <li>the base production
-     *              <li>the development cards productions
-     *              <li>the leader cards productions
+     *              <li>the visible development cards' productions
+     *              <li>the active leader cards' productions
      *          </ul>
      */
     public synchronized List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
