@@ -50,20 +50,9 @@ public abstract class PlaygroundController extends GuiController {
         /* Scaling */
         gui.setSceneScaling(canvas);
 
-        /* Warehouse Shelves */
-        warehouse = new Warehouse();
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> {
-            warehouse.setWaitingForSwap(s1, s2);
-            gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
-        });
-
-        /* Strongbox */
-        Strongbox strongbox = new Strongbox();
-        vm.getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(strongbox::setContent);
-
-        /* Base Production */
-        Production baseProduction = new Production();
-        vm.getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(baseProduction::setProduction);
+        warehouse = getWarehouse();
+        Strongbox strongbox = getStrongBox();
+        Production baseProduction = getBaseProduction();
 
         /* Development Card Slots */
         List<DevSlot> devSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer()).stream().map(modelSlot -> {
@@ -223,6 +212,42 @@ public abstract class PlaygroundController extends GuiController {
         if (!vm.isCurrentPlayer())
             Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> {
             }));
+    }
+
+    @Override
+    public void on(UpdatePlayer event) {
+        super.on(event);
+
+        if(event.getPlayer().equals(gui.getViewModel().getCurrentPlayer())) {
+            Platform.runLater(() -> {
+                playerBoard.setContainers(getWarehouse(), getStrongBox());
+                playerBoard.setBaseProduction(getBaseProduction());
+            });
+        }
+    }
+
+    protected Warehouse getWarehouse(){
+        /* Warehouse Shelves */
+        Warehouse warehouse = new Warehouse();
+        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> {
+            warehouse.setWaitingForSwap(s1, s2);
+            gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
+        });
+        return warehouse;
+    }
+
+    protected Strongbox getStrongBox(){
+        /* Strongbox */
+        Strongbox strongbox = new Strongbox();
+        vm.getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(strongbox::setContent);
+        return strongbox;
+    }
+
+    protected Production getBaseProduction(){
+        /* Base Production */
+        Production baseProduction = new Production();
+        vm.getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(baseProduction::setProduction);
+        return baseProduction;
     }
 
     /**

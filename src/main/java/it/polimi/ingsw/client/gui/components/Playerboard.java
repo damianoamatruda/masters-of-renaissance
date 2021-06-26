@@ -25,9 +25,9 @@ public class Playerboard extends HBox {
     @FXML private GridPane board;
     @FXML private GridPane storageColumn;
 
-    private final Warehouse w;
-    private final Strongbox s;
-    private final Production p;
+    private Warehouse w;
+    private Strongbox s;
+    private Production p;
     private final List<DevSlot> slots;
     private final FaithTrack faithTrack;
 
@@ -45,9 +45,6 @@ public class Playerboard extends HBox {
      * @param faithTrack    the faith track
      */
     public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> slots, FaithTrack faithTrack) {
-        this.w = warehouse;
-        this.s = strongbox;
-        this.p = production;
         this.slots = slots;
         this.faithTrack = faithTrack;
 
@@ -63,27 +60,8 @@ public class Playerboard extends HBox {
 
         setBackground();
 
-        Group wh = new Group(warehouse);
-
-        storageColumn.add(wh, 0, 1);
-        storageColumn.add(strongbox, 0, 3);
-
-        StackPane baseProduction = new StackPane();
-        ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
-        baseProdPaper.setFitWidth(107);
-        baseProdPaper.setFitHeight(107);
-        baseProduction.setMaxHeight(107);
-
-        baseProduction.getChildren().add(baseProdPaper);
-        baseProduction.getChildren().add(production);
-
-        production.setScaleX(0.85);
-        production.setScaleY(0.85);
-        baseProduction.setScaleX(0.95);
-        baseProduction.setScaleY(0.95);
-
-        StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
-        board.add(baseProduction, 3, 1);
+        setContainers(warehouse, strongbox);
+        setBaseProduction(production);
 
         HBox devSlotsBox = new HBox();
         devSlotsBox.getChildren().addAll(slots);
@@ -198,5 +176,35 @@ public class Playerboard extends HBox {
         slots.forEach(slot -> slot.addProduceButton(toActivate, activateProduction));
 
         p.addProduceButton(toActivate, activateProduction);
+    }
+
+    public void setBaseProduction(Production production) {
+        this.p = production;
+
+        StackPane baseProduction = new StackPane();
+        ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
+        baseProdPaper.setFitWidth(110);
+        baseProdPaper.setFitHeight(110);
+        baseProduction.setMaxHeight(110);
+
+        baseProduction.getChildren().add(baseProdPaper);
+        baseProduction.getChildren().add(production);
+
+        StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
+        board.add(baseProduction, 3, 1);
+    }
+
+    public void setContainers(Warehouse warehouse, Strongbox strongbox) {
+        storageColumn.getChildren().remove(w);
+        storageColumn.getChildren().remove(s);
+
+        this.w = warehouse;
+        this.s = strongbox;
+
+        Group wh = new Group(warehouse);
+
+        storageColumn.add(wh, 0, 1);
+        storageColumn.add(strongbox, 0, 3);
+
     }
 }
