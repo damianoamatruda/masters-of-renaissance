@@ -19,8 +19,8 @@ public class ErrCardRequirements extends ViewEvent {
      */
     public ErrCardRequirements(View view, List<ReducedDevCardRequirementEntry> missingDevCards, Map<String, Integer> missingResources) {
         super(view);
-        this.missingDevCards = missingDevCards;
-        this.missingResources = missingResources;
+        this.missingDevCards = missingDevCards.isEmpty() ? null : missingDevCards;
+        this.missingResources = missingResources.isEmpty() ? null : missingResources;
     }
 
     /**
