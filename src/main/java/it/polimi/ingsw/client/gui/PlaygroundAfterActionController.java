@@ -30,8 +30,8 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         setLeadersBox(20, 50);
 
         title.setText("End your turn or do an extra action");
-        AnchorPane.setLeftAnchor(title, 10.0);
-        AnchorPane.setTopAnchor(title, 5.0);
+        AnchorPane.setLeftAnchor(title, 390d);
+        AnchorPane.setTopAnchor(title, 10.0);
         canvas.getChildren().add(title);
 
         warehouse.enableSwapper();

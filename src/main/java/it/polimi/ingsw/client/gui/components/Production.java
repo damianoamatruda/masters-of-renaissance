@@ -120,7 +120,6 @@ public class Production extends StackPane {
             group.setScaleY(0.3);
             exclusions.getChildren().add(group);
         }
-
     }
 
     /**
