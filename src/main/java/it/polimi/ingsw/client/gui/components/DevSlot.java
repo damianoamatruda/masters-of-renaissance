@@ -50,7 +50,7 @@ public class DevSlot extends StackPane {
             p.getChildren().add(c);
 
             AnchorPane.setLeftAnchor(c, 25d);
-            AnchorPane.setBottomAnchor(c, 90d + 50 * i);
+            AnchorPane.setBottomAnchor(c, 65d + 50 * i);
 
             this.getChildren().add(p);
         }
@@ -82,8 +82,8 @@ public class DevSlot extends StackPane {
                 }
             });
             p.getChildren().add(activate);
-            AnchorPane.setLeftAnchor(activate, 70d);
-            AnchorPane.setBottomAnchor(activate, 50d);
+            AnchorPane.setLeftAnchor(activate, 75d);
+            AnchorPane.setBottomAnchor(activate, 22d);
 
             this.getChildren().add(p);
         }
