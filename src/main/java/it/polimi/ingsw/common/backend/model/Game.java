@@ -237,7 +237,7 @@ public class Game extends EventDispatcher {
      * Check if the last necessary setup move has been made.
      */
     public void onPlayerSetupDone() {
-        if (players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone))
+        if (players.stream().filter(Player::isActive).map(Player::getSetup).allMatch(PlayerSetup::isDone))
             dispatch(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
     }
 

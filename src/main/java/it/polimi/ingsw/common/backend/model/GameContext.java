@@ -527,8 +527,12 @@ public class GameContext extends AsynchronousEventDispatcher {
 
     public void setActive(String nickname, boolean active) {
         Player player = getPlayerByNickname(nickname);
+        boolean needsSetupDoneCheck = !active &&
+                !game.getPlayers().stream().filter(Player::isActive).map(Player::getSetup).allMatch(PlayerSetup::isDone);
         player.setActive(active);
-        if (!active && player.equals(game.getCurrentPlayer()))
+        if (needsSetupDoneCheck)
+            game.onPlayerSetupDone();
+        else if (!active && player.equals(game.getCurrentPlayer()))
             game.onTurnEnd();
     }
 
