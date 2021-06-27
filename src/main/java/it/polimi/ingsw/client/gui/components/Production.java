@@ -158,13 +158,13 @@ public class Production extends StackPane {
         activate.setOnAction((event) -> {
 //            top.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
 //            if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))
-            if(this.getOpacity() != 0.5) {
-                recipe.setOpacity(0.5);
+            if(recipe.getParent().getOpacity() != 0.5) {
+                recipe.getParent().setOpacity(0.5);
                 toActivate.add(this.getProductionId());
                 activateProduction.setDisable(false);
             }
             else {
-                recipe.setOpacity(1);
+                recipe.getParent().setOpacity(1);
                 toActivate.remove(Integer.valueOf(this.getProductionId()));
                 if(toActivate.size() == 0) activateProduction.setDisable(true);
             }
