@@ -7,6 +7,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -91,9 +92,9 @@ public class ActivateProductions extends BorderPane {
 
         /* Remove HBox containers if no extra choosable resource available */
         if (choosableInputResources.getChildren().isEmpty())
-            ((Pane) choosableInputResources.getParent()).getChildren().remove(choosableInputResources);
+            ((HBox) choosableInputResources.getParent()).getChildren().remove(0);
         if (choosableOutputResources.getChildren().isEmpty())
-            ((Pane) choosableOutputResources.getParent()).getChildren().remove(choosableOutputResources);
+            ((HBox) choosableOutputResources.getParent()).getChildren().remove(0);
 
         /* Set shelves with click handlers */
         guiShelves.setWarehouseShelves(tempShelves, (a, b) -> {
