@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /** Pane component used to choose input source for a selected production. */
-public class ActivateProduction extends BorderPane {
+public class ActivateProductions extends BorderPane {
     @FXML
     private SButton back;
     @FXML
@@ -55,15 +55,16 @@ public class ActivateProduction extends BorderPane {
     /**
      * Class constructor.
      *
-     * @param toActivate    the production involved
-     * @param index         an index used to move between the selected productions in the list
-     * @param requests      the already completed production requests
-     * @param tempShelves   the temporary shelves, containing the remaining payable resources for the remaining productions
+     * @param toActivate  the production involved
+     * @param index       an index used to move between the selected productions in the list
+     * @param requests    the already completed production requests
+     * @param tempShelves the temporary shelves, containing the remaining payable resources for the remaining
+     *                    productions
      * @param tempDepots
      */
-    public ActivateProduction(List<Integer> toActivate, int index,
-                              List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
-                              List<ReducedResourceContainer> tempDepots) {
+    public ActivateProductions(List<Integer> toActivate, int index,
+                               List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
+                               List<ReducedResourceContainer> tempDepots) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/activateproduction.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -160,7 +161,7 @@ public class ActivateProduction extends BorderPane {
         buildRequest();
 
         // go to next production
-        Gui.getInstance().getRoot().getChildren().add(new ActivateProduction(toActivate, index + 1,
+        Gui.getInstance().getRoot().getChildren().add(new ActivateProductions(toActivate, index + 1,
                 requests, newTempShelves, newTempDepots));
     }
 

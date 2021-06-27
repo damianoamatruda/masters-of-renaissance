@@ -224,7 +224,7 @@ public abstract class PlaygroundController extends GuiController {
     protected void addProduceButtons() {
         activateProdButton = new SButton("Activate production");
         activateProdButton.setOnAction(event ->
-                gui.getRoot().getChildren().add(new ActivateProduction(toActivate, 0,
+                gui.getRoot().getChildren().add(new ActivateProductions(toActivate, 0,
                         new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())),
                         new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayerNickname())))));
         activateProdButton.setDisable(true);
