@@ -28,7 +28,7 @@ public class Resource extends ImageView {
             Image bg = new Image(Objects.requireNonNull(getClass().getResource(String.format("/assets/gui/resourcetypes/%s.png", resourceName.toLowerCase()))).toExternalForm());
             this.setImage(bg);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(String.format("No image file for resource '%s'.", resourceName));
+            throw new IllegalArgumentException(String.format("No image file for resource '%s'.", resourceName), e);
         }
     }
 
