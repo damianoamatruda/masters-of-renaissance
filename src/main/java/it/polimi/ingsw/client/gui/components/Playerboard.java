@@ -144,7 +144,7 @@ public class Playerboard extends HBox {
      * @param activateProduction the button to be disabled, if no production is selected
      */
     public void addProduceButtons(List<Integer> toActivate, SButton activateProduction) {
-        devSlots.forEach(slot -> slot.addProduceButton(toActivate, activateProduction));
+        devSlots.forEach(DevSlot::addProduceButton);
         production.addProduceButton(toActivate, activateProduction);
     }
 

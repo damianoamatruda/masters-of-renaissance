@@ -262,7 +262,7 @@ public class DevCardGridController extends GuiController {
         List<List<Optional<ReducedDevCard>>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
 
         modelSlots.forEach(modelSlot -> {
-            DevSlot slot = new DevSlot();
+            DevSlot slot = new DevSlot(null);
 
             List<DevelopmentCard> cards = modelSlot.stream()
                     .flatMap(Optional::stream)
@@ -273,11 +273,10 @@ public class DevCardGridController extends GuiController {
 
             for(int i = 0; i < cards.size(); i++)
                 AnchorPane.setBottomAnchor(cards.get(i), 40 + 50d * i);
-
         });
         
         for(int i = 0; i < vm.getSlotsCount() - modelSlots.size(); i++)
-            devSlots.add(new DevSlot());
+            devSlots.add(new DevSlot(null));
 
         devSlotsBox.getChildren().clear();
         devSlotsBox.getChildren().addAll(devSlots);

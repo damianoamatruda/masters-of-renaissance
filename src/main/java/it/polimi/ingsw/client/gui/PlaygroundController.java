@@ -99,13 +99,13 @@ public abstract class PlaygroundController extends GuiController {
         gui.getUi().dispatch(new ReqLeaderAction(leaderCard.getLeaderId(), false));
     }
 
-    private void handleProduce(LeaderCard leaderCard) {
-        leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !leaderCard.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
-        if (leaderCard.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
-            toActivate.add(leaderCard.getProduction().getProductionId());
+    private void handleProduce(Card card) {
+        card.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !card.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
+        if (card.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
+            toActivate.add(card.getProduction().getProductionId());
             activateProdButton.setDisable(false);
         } else {
-            toActivate.remove(Integer.valueOf(leaderCard.getProduction().getProductionId())); // TODO: Use Production instead of ID
+            toActivate.remove(Integer.valueOf(card.getProduction().getProductionId())); // TODO: Use Production instead of ID
             if (toActivate.size() == 0)
                 activateProdButton.setDisable(true);
         }
@@ -204,7 +204,7 @@ public abstract class PlaygroundController extends GuiController {
 
     protected List<DevSlot> getDevSlots() {
         return vm.getPlayerDevelopmentCards(vm.getCurrentPlayer()).stream().map(modelSlot -> {
-            DevSlot slot = new DevSlot();
+            DevSlot slot = new DevSlot(this::handleProduce);
             slot.setDevCards(modelSlot.stream()
                     .flatMap(Optional::stream)
                     .map(DevelopmentCard::new).toList());
