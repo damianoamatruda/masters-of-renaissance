@@ -5,17 +5,17 @@ import javafx.scene.layout.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /** Gui component that represents a runtime development slot. */
 public class DevSlot extends StackPane {
-    private final Consumer<DevelopmentCard> onProduce;
+    private final BiConsumer<DevelopmentCard, Production> onProduce;
     private List<DevelopmentCard> devCards;
 
     /**
      * Class constructor.
      */
-    public DevSlot(Consumer<DevelopmentCard> onProduce) {
+    public DevSlot(BiConsumer<DevelopmentCard, Production> onProduce) {
         this.onProduce = onProduce;
         this.setMaxHeight(459);
         Image bgImg = new Image(
@@ -23,6 +23,10 @@ public class DevSlot extends StackPane {
         this.setBackground(new Background(new BackgroundImage(bgImg,
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(1.0, 1.0, true, true, true, false))));
+    }
+
+    public DevSlot() {
+        this(null);
     }
 
     /**
@@ -59,7 +63,7 @@ public class DevSlot extends StackPane {
         AnchorPane activateContainer = new AnchorPane();
 
         SButton activate = new SButton("Produce");
-        activate.setOnAction(event -> onProduce.accept(topDevCard));
+        activate.setOnAction(event -> onProduce.accept(topDevCard, topDevCard.getProduction()));
         AnchorPane.setLeftAnchor(activate, 75d);
         AnchorPane.setBottomAnchor(activate, 22d);
         activateContainer.getChildren().add(activate);

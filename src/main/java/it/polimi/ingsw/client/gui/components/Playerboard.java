@@ -139,13 +139,10 @@ public class Playerboard extends HBox {
 
     /**
      * Adds the buttons to select the productions to be activated.
-     *
-     * @param toActivate         the list of productions to be activated
-     * @param activateProduction the button to be disabled, if no production is selected
      */
-    public void addProduceButtons(List<Integer> toActivate, SButton activateProduction) {
+    public void addProduceButtons() {
         devSlots.forEach(DevSlot::addProduceButton);
-        production.addProduceButton(toActivate, activateProduction);
+        production.addProduceButton();
     }
 
     public void setContainers(Warehouse warehouse, Strongbox strongbox) {

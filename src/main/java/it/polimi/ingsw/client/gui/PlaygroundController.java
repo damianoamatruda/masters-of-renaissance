@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -104,13 +105,13 @@ public abstract class PlaygroundController extends GuiController {
         gui.getUi().dispatch(new ReqLeaderAction(leaderCard.getLeaderId(), false));
     }
 
-    private void handleProduce(Card card) {
-        card.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !card.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
-        if (card.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
-            toActivate.add(card.getProduction().getProductionId());
+    private <T extends Node> void handleProduce(T node, Production production) {
+        node.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !node.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
+        if (node.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
+            toActivate.add(production.getProductionId());
             activateProdButton.setDisable(false);
         } else {
-            toActivate.remove(Integer.valueOf(card.getProduction().getProductionId())); // TODO: Use Production instead of ID
+            toActivate.remove(Integer.valueOf(production.getProductionId())); // TODO: Use Production instead of ID
             if (toActivate.size() == 0)
                 activateProdButton.setDisable(true);
         }
@@ -203,7 +204,7 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     protected Production getBaseProduction() {
-        Production baseProduction = new Production();
+        Production baseProduction = new Production(this::handleProduce);
         vm.getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(baseProduction::setProduction);
         return baseProduction;
     }
@@ -232,7 +233,7 @@ public abstract class PlaygroundController extends GuiController {
         canvas.getChildren().add(activateProdButton);
 
         /* Add production button to each topmost development card in dev slots */
-        playerBoard.addProduceButtons(toActivate, activateProdButton);
+        playerBoard.addProduceButtons();
 
         // refreshLeaderBoxes();
     }

@@ -17,10 +17,12 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /** Gui component that represents a production recipe. */
 public class Production extends StackPane {
-    private final double padding = 2;
+    private static final double padding = 2;
+    private final BiConsumer<Production, Production> onProduce;
     @FXML
     private VBox input, output;
     @FXML
@@ -34,7 +36,9 @@ public class Production extends StackPane {
     /**
      * Class constructor.
      */
-    public Production() {
+    public Production(BiConsumer<Production, Production> onProduce) {
+        this.onProduce = onProduce;
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/production.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -46,10 +50,14 @@ public class Production extends StackPane {
         }
     }
 
+    public Production() {
+        this(null);
+    }
+
     /**
      * Sets and displays the production recipe.
      *
-     * @param production    the cached production
+     * @param production the cached production
      */
     public void setProduction(ReducedResourceTransactionRecipe production) {
         this.productionId = production.getId();
@@ -147,28 +155,12 @@ public class Production extends StackPane {
 
     /**
      * Adds the buttons to select the productions to be activated.
-     *
-     * @param toActivate         the list of productions to be activated
-     * @param activateProduction the button to be disabled, if no production is selected
      */
-    public void addProduceButton(List<Integer> toActivate, SButton activateProduction) {
+    public void addProduceButton() {
         // TODO duplicated code
         AnchorPane pane = new AnchorPane();
         SButton activate = new SButton("Produce");
-        activate.setOnAction((event) -> {
-//            top.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
-//            if(top.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS))
-            if(recipe.getParent().getOpacity() != 0.5) {
-                recipe.getParent().setOpacity(0.5);
-                toActivate.add(this.getProductionId());
-                activateProduction.setDisable(false);
-            }
-            else {
-                recipe.getParent().setOpacity(1);
-                toActivate.remove(Integer.valueOf(this.getProductionId()));
-                if(toActivate.size() == 0) activateProduction.setDisable(true);
-            }
-        });
+        activate.setOnAction(event -> onProduce.accept(this, this));
         pane.getChildren().add(activate);
         AnchorPane.setLeftAnchor(activate, 25d);
         AnchorPane.setBottomAnchor(activate, -50d);

@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class LeaderBox extends VBox {
@@ -16,10 +17,10 @@ public class LeaderBox extends VBox {
     private final HBox buttonsContainer;
     private final Consumer<LeaderCard> onActivate;
     private final Consumer<LeaderCard> onDiscard;
-    private final Consumer<LeaderCard> onProduce;
+    private final BiConsumer<LeaderCard, Production> onProduce;
 
     public LeaderBox(ReducedLeaderCard reducedLeaderCard, Consumer<LeaderCard> onActivate,
-                     Consumer<LeaderCard> onDiscard, Consumer<LeaderCard> onProduce, boolean allowProductions) {
+                     Consumer<LeaderCard> onDiscard, BiConsumer<LeaderCard, Production> onProduce, boolean allowProductions) {
         this.onActivate = onActivate;
         this.onDiscard = onDiscard;
         this.onProduce = onProduce;
@@ -61,7 +62,7 @@ public class LeaderBox extends VBox {
                 case PRODUCTION -> {
                     if (allowProductions) {
                         SButton activate = new SButton("Produce");
-                        activate.setOnAction(event -> onProduce.accept(leaderCard));
+                        activate.setOnAction(event -> onProduce.accept(leaderCard, leaderCard.getProduction()));
                         buttonsContainer.getChildren().add(activate);
                     }
                 }
