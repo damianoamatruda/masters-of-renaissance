@@ -33,7 +33,7 @@ public class Shelf extends BorderPane {
     private int shelfId;
     private int size;
     private HBox content;
-    private final Circle swapIcon = new Circle(10, Color.WHITE);
+    private final Circle swapIcon = new Circle(15, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
     private boolean isLeaderDepot;
