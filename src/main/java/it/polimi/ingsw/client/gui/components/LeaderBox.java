@@ -42,6 +42,8 @@ public class LeaderBox extends VBox {
         buttonsContainer.setSpacing(20);
         setButtons(allowProductions);
         getChildren().add(buttonsContainer);
+
+        this.setSpacing(7);
     }
 
     public LeaderCard getLeaderCard() {
