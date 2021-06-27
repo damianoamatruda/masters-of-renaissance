@@ -2,15 +2,16 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,16 +20,15 @@ import java.util.Objects;
 /** Gui component representing a player's playerboard. */
 public class Playerboard extends HBox {
     @FXML
-    private final HBox canvas;
-    @FXML
     private ImageView frontBG;
-    @FXML private GridPane board;
-    @FXML private GridPane storageColumn;
-
-    private Warehouse w;
-    private Strongbox s;
-    private Production p;
-    private final List<DevSlot> slots;
+    private final List<DevSlot> devSlots;
+    @FXML
+    private GridPane board;
+    @FXML
+    private GridPane storageColumn;
+    private Warehouse warehouse;
+    private Strongbox strongbox;
+    private Production production;
     private final FaithTrack faithTrack;
 
     private final double bgPixelWidth = 908;
@@ -38,14 +38,14 @@ public class Playerboard extends HBox {
     /**
      * Class constructor.
      *
-     * @param warehouse     the player's warehouse
-     * @param strongbox     the player's strongbox
-     * @param production    the base production
-     * @param slots         the player's development slots
-     * @param faithTrack    the faith track
+     * @param warehouse  the player's warehouse
+     * @param strongbox  the player's strongbox
+     * @param production the base production
+     * @param devSlots   the player's development slots
+     * @param faithTrack the faith track
      */
-    public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> slots, FaithTrack faithTrack) {
-        this.slots = slots;
+    public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> devSlots, FaithTrack faithTrack) {
+        this.devSlots = devSlots;
         this.faithTrack = faithTrack;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
@@ -59,51 +59,32 @@ public class Playerboard extends HBox {
         }
 
         setBackground();
-
         setContainers(warehouse, strongbox);
         setBaseProduction(production);
+        setDevSlotsBox();
 
-        HBox devSlotsBox = new HBox();
-        devSlotsBox.getChildren().addAll(slots);
-        devSlotsBox.setAlignment(Pos.TOP_CENTER);
-        slots.forEach(s -> {
-            s.setMinWidth(197);
-        });
+        Group faithTrackGroup = new Group(faithTrack);
+        board.add(faithTrackGroup, 1, 0);
 
-        board.add(devSlotsBox, 4, 1);
-
-        Group g = new Group(faithTrack);
-        board.add(g, 1, 0);
-
-        changedSize(null, 0, 0);
-
-        canvas = this;
-        this.widthProperty().addListener(this::changedSize);
-        this.heightProperty().addListener(this::changedSize);
+        this.widthProperty().addListener((observable, oldValue, newValue) -> setSizes());
+        this.heightProperty().addListener((observable, oldValue, newValue) -> setSizes());
     }
 
-    /**
-     *
-     *
-     * @param observable
-     * @param oldValue
-     * @param newValue
-     * @param <T>
-     */
-    private <T> void changedSize(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-        double boardHeight = 720,
-               boardWidth = boardHeight * bgRatio,
-               storageColWidth = .2235 * boardWidth;
+    private void setSizes() {
+        double boardHeight = 720;
+        double boardWidth = boardHeight * bgRatio;
+        double storageColWidth = .2235 * boardWidth;
 
-        if (this.getHeight() > 0 && this.getWidth() > 0) {
-            double newDimRatio = this.getWidth() / this.getHeight();
-            double newBoardHeight = newDimRatio > bgRatio ? this.getHeight() : this.getWidth() / bgRatio;
-            double newBoardWidth = newDimRatio > bgRatio ? this.getHeight() * bgRatio : this.getWidth();
+        if (getHeight() > 0 && getWidth() > 0) {
+            double newDimRatio = getWidth() / getHeight();
+            double newBoardHeight = newDimRatio > bgRatio ? getHeight() : getWidth() / bgRatio;
+            double newBoardWidth = newDimRatio > bgRatio ? getHeight() * bgRatio : getWidth();
             board.setMinHeight(newBoardHeight);
             board.setMinWidth(newBoardWidth);
             board.setMaxHeight(newBoardHeight);
             board.setMaxWidth(newBoardWidth);
         }
+
         if (board.getHeight() > 0 && board.getWidth() > 0) {
             boardWidth = board.getWidth();
             boardHeight = board.getHeight();
@@ -113,31 +94,24 @@ public class Playerboard extends HBox {
         frontBG.setFitWidth(boardWidth);
         frontBG.setFitHeight(boardHeight);
 
-        double whWidth = w.getWidth() > 0 ? w.getWidth() : w.getPrefWidth();
+        double whWidth = warehouse.getWidth() > 0 ? warehouse.getWidth() : warehouse.getPrefWidth();
         double whScaleFactor = storageColWidth / whWidth;
-        w.setScaleX(whScaleFactor);
-        w.setScaleY(whScaleFactor);
-        
-        scalePreservingRatio(s, storageColWidth, s.getPrefWidth() / s.getPrefHeight());
+        warehouse.setScaleX(whScaleFactor);
+        warehouse.setScaleY(whScaleFactor);
 
-        for (DevSlot sl : slots) {
-            scalePreservingRatio(sl,
-                board.getColumnConstraints().get(5).getPercentWidth() * boardWidth / 100,
-                sl.getPrefWidth() / sl.getPrefHeight());  
-        }
-        
-        double ftWidth = faithTrack.getWidth() > 0 ? (faithTrack.getWidth()) : 1768;
+        scalePreservingRatio(strongbox, storageColWidth, strongbox.getPrefWidth() / strongbox.getPrefHeight());
+
+        for (DevSlot devSlot : devSlots)
+            scalePreservingRatio(devSlot,
+                    board.getColumnConstraints().get(5).getPercentWidth() * boardWidth / 100,
+                    devSlot.getPrefWidth() / devSlot.getPrefHeight());
+
+        double ftWidth = faithTrack.getWidth() > 0 ? faithTrack.getWidth() : 1768;
         double ftScaleFactor = boardWidth / ftWidth;
         faithTrack.setScaleX(ftScaleFactor);
         faithTrack.setScaleY(ftScaleFactor);
     }
 
-    /**
-     *
-     * @param child
-     * @param parentSizeLimitWidth
-     * @param componentRatio
-     */
     private static void scalePreservingRatio(Pane child, double parentSizeLimitWidth, double componentRatio) {
         child.setPrefWidth(parentSizeLimitWidth);
         child.setPrefHeight(parentSizeLimitWidth / componentRatio);
@@ -147,23 +121,20 @@ public class Playerboard extends HBox {
      * Sets and displays a background for the playerboard.
      */
     private void setBackground() {
-        Image frontBGImage = new Image(
-                Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background.png")).toExternalForm());
-
-        frontBG.setImage(frontBGImage);
+        frontBG.setImage(new Image(Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background.png")).toExternalForm()));
     }
 
     /**
      * Updates a marker in the faith track.
      *
      * @param event     the event object containing the info
-     * @param oldPts    the faith points before update
+     * @param oldPoints    the faith points before update
      */
-    public void updateFaithPoints(UpdateFaithPoints event, int oldPts) {
+    public void updateFaithPoints(UpdateFaithPoints event, int oldPoints) {
         if (event.isBlackCross())
-            faithTrack.updateBlackMarker(event.getFaithPoints(), oldPts);
+            faithTrack.updateBlackMarker(event.getFaithPoints(), oldPoints);
         else if (Gui.getInstance().getViewModel().getCurrentPlayer().equals(event.getPlayer()))
-            faithTrack.updatePlayerMarker(event.getFaithPoints(), oldPts);
+            faithTrack.updatePlayerMarker(event.getFaithPoints(), oldPoints);
     }
 
     /**
@@ -173,43 +144,44 @@ public class Playerboard extends HBox {
      * @param activateProduction the button to be disabled, if no production is selected
      */
     public void addProduceButtons(List<Integer> toActivate, SButton activateProduction) {
-        slots.forEach(slot -> slot.addProduceButton(toActivate, activateProduction));
-
-        p.addProduceButton(toActivate, activateProduction);
-    }
-
-    public void setBaseProduction(Production production) {
-        this.p = production;
-
-        StackPane baseProduction = new StackPane();
-        ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
-        baseProdPaper.setFitWidth(107);
-        baseProdPaper.setFitHeight(107);
-        baseProduction.setMaxHeight(107);
-
-        baseProduction.getChildren().add(baseProdPaper);
-        baseProduction.getChildren().add(production);
-
-        production.setScaleX(0.85);
-        production.setScaleY(0.85);
-        baseProduction.setScaleX(0.95);
-        baseProduction.setScaleY(0.95);
-
-        StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
-        board.add(baseProduction, 3, 1);
+        devSlots.forEach(slot -> slot.addProduceButton(toActivate, activateProduction));
+        production.addProduceButton(toActivate, activateProduction);
     }
 
     public void setContainers(Warehouse warehouse, Strongbox strongbox) {
-        storageColumn.getChildren().remove(w);
-        storageColumn.getChildren().remove(s);
-
-        this.w = warehouse;
-        this.s = strongbox;
-
-        Group wh = new Group(warehouse);
-
-        storageColumn.add(wh, 0, 1);
+        this.warehouse = warehouse;
+        this.strongbox = strongbox;
+        storageColumn.getChildren().clear();
+        storageColumn.add(new Group(warehouse), 0, 1);
         storageColumn.add(strongbox, 0, 3);
+    }
 
+    public void setBaseProduction(Production production) {
+        this.production = production;
+
+        StackPane baseProduction = new StackPane();
+        baseProduction.setMaxHeight(107);
+        baseProduction.setScaleX(0.95);
+        baseProduction.setScaleY(0.95);
+
+        ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
+        baseProdPaper.setFitWidth(107);
+        baseProdPaper.setFitHeight(107);
+        baseProduction.getChildren().add(baseProdPaper);
+
+        production.setScaleX(0.85);
+        production.setScaleY(0.85);
+        StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
+        baseProduction.getChildren().add(production);
+
+        board.add(baseProduction, 3, 1);
+    }
+
+    public void setDevSlotsBox() {
+        HBox devSlotsBox = new HBox();
+        devSlotsBox.setAlignment(Pos.TOP_CENTER);
+        devSlots.forEach(devSlot -> devSlot.setMinWidth(197));
+        devSlotsBox.getChildren().addAll(devSlots);
+        board.add(devSlotsBox, 4, 1);
     }
 }

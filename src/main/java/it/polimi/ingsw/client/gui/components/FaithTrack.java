@@ -14,7 +14,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 /** Gui component representing the faith track. */
@@ -142,11 +145,11 @@ public class FaithTrack extends HBox {
     /**
      * Updates the position of the player's faith marker.
      *
-     * @param faithPoints   the updated player's faith points
-     * @param oldPts        the player's faith points before moving (used to remove marker from old tile)
+     * @param faithPoints the updated player's faith points
+     * @param oldPoints   the player's faith points before moving (used to remove marker from old tile)
      */
-    public void updatePlayerMarker(int faithPoints, int oldPts) {
-        if(oldPts >= 0) tiles.get(oldPts).removePlayerMarker();
+    public void updatePlayerMarker(int faithPoints, int oldPoints) {
+        if (oldPoints >= 0) tiles.get(oldPoints).removePlayerMarker();
         tiles.get(Integer.min(faithPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addPlayerMarker();
         setPopesFavors();
     }
@@ -155,10 +158,10 @@ public class FaithTrack extends HBox {
      * Updates the position of Lorenzo's faith marker.
      *
      * @param blackPoints   the updated Lorenzo's faith points
-     * @param oldPts        Lorenzo's faith points before moving (used to remove marker from old tile)
+     * @param oldPoints        Lorenzo's faith points before moving (used to remove marker from old tile)
      */
-    public void updateBlackMarker(int blackPoints, int oldPts) {
-        if(oldPts >= 0) tiles.get(oldPts).removeBlackMarker();
+    public void updateBlackMarker(int blackPoints, int oldPoints) {
+        if (oldPoints >= 0) tiles.get(oldPoints).removeBlackMarker();
         tiles.get(Integer.min(blackPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addBlackMarker();
         setPopesFavors();
     }

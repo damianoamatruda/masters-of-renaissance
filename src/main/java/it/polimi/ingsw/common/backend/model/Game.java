@@ -169,9 +169,9 @@ public class Game extends EventDispatcher {
         Optional<FaithTrack.YellowTile> reached = faithTrack.getLastReachedYellowTile(player.getFaithPoints());
         Optional<FaithTrack.YellowTile> last = faithTrack.getLastReachedYellowTile(player.getFaithPoints() - advancement);
         if(!reached.equals(last)) {
-            int newPts = reached.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
-            int oldPts = last.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
-            player.incrementVictoryPoints(newPts - oldPts);
+            int newPoints = reached.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
+            int oldPoints = last.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
+            player.incrementVictoryPoints(newPoints - oldPoints);
         }
     }
 
