@@ -14,12 +14,12 @@ public class WaitingForTurnController extends PlaygroundController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        topText.setText(String.format("Watching playerboard of: %s", gui.getViewModel().getCurrentPlayer()));
+        title.setText(String.format("Watching playerboard of: %s", gui.getViewModel().getCurrentPlayer()));
 
-        AnchorPane.setLeftAnchor(topText, 450d);
-        AnchorPane.setTopAnchor(topText, 10.0);
+        AnchorPane.setLeftAnchor(title, 450d);
+        AnchorPane.setTopAnchor(title, 10.0);
 
-        canvas.getChildren().add(topText);
+        canvas.getChildren().add(title);
         AnchorPane.setRightAnchor(playerBoard, 0d);
 
     }

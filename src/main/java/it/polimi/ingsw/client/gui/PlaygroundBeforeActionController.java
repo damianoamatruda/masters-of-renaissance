@@ -16,44 +16,40 @@ import java.util.ResourceBundle;
 public class PlaygroundBeforeActionController extends PlaygroundController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        allowProductions = true;
+
         super.initialize(url, resourceBundle);
 
-        Button left = new SButton("Market");
-//        left.setAlignment(Pos.BOTTOM_LEFT);
-        left.addEventHandler(ActionEvent.ACTION, actionEvent ->
+        Button marketButton = new SButton("Market");
+        marketButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/market.fxml")));
-        canvas.getChildren().add(left);
+        AnchorPane.setLeftAnchor(marketButton, 0d);
+        AnchorPane.setTopAnchor(marketButton, 0d);
+        canvas.getChildren().add(marketButton);
 
-        Button right = new SButton("Grid");
-//        right.setAlignment(Pos.CENTER_RIGHT);
-        right.addEventHandler(ActionEvent.ACTION, actionEvent ->
+        Button gridButton = new SButton("Grid");
+        gridButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/devcardgrid.fxml")));
-        canvas.getChildren().add(right);
-
-        AnchorPane.setLeftAnchor(left, 0d);
-        AnchorPane.setTopAnchor(left, 0d);
-        AnchorPane.setRightAnchor(right, 0d);
-        AnchorPane.setTopAnchor(right, 0d);
+        AnchorPane.setRightAnchor(gridButton, 0d);
+        AnchorPane.setTopAnchor(gridButton, 0d);
+        canvas.getChildren().add(gridButton);
 
         setLeadersBox(54.0, 30.0);
 
-        topText.setText("Your turn");
-
-        AnchorPane.setLeftAnchor(topText, 500d);
-        AnchorPane.setTopAnchor(topText, 10.0);
-
-        canvas.getChildren().add(topText);
+        title.setText("Your turn");
+        AnchorPane.setLeftAnchor(title, 500d);
+        AnchorPane.setTopAnchor(title, 10.0);
+        canvas.getChildren().add(title);
 
         warehouse.enableSwapper();
 
         addProduceButtons();
-
     }
 
     @Override
     public void on(UpdateAction event) {
         super.on(event);
-        if(event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD ||
+        if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD ||
                 event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES ||
                 event.getAction() == UpdateAction.ActionType.ACTIVATE_PRODUCTION)
             gui.setScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));

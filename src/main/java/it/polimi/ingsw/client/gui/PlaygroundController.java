@@ -4,14 +4,11 @@ import it.polimi.ingsw.client.gui.components.*;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
-import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -26,59 +23,38 @@ import java.util.ResourceBundle;
  */
 public abstract class PlaygroundController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
-
     @FXML
     protected AnchorPane canvas;
     @FXML
     protected Playerboard playerBoard;
-
     private final VBox leadersBox = new VBox();
-
     @FXML
-    protected Title topText = new Title();
-
-    private LeaderCard toDiscard = null;
-
+    protected Title title = new Title();
     protected Warehouse warehouse;
-
     private final List<Integer> toActivate = new ArrayList<>();
-
     private SButton activateProdButton;
+    protected boolean allowProductions;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /* Scaling */
         gui.setSceneScaling(canvas);
+        gui.setPauseHandler(canvas);
+        gui.addPauseButton(canvas);
 
         warehouse = getWarehouse();
         Strongbox strongbox = getStrongBox();
         Production baseProduction = getBaseProduction();
-
-        /* Development Card Slots */
-        List<DevSlot> devSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer()).stream().map(modelSlot -> {
-            DevSlot slot = new DevSlot();
-            slot.setDevCards(modelSlot.stream()
-                    .flatMap(Optional::stream)
-                    .map(DevelopmentCard::new).toList());
-            return slot;
-        }).toList();
-
-        /* Faith Track */
+        List<DevSlot> devSlots = getDevSlots();
         FaithTrack faithTrack = new FaithTrack(vm.getFaithTrack().orElseThrow());
 
-        /* Player Board */
         playerBoard = new Playerboard(warehouse, strongbox, baseProduction, devSlots, faithTrack);
-        canvas.getChildren().add(playerBoard);
         AnchorPane.setBottomAnchor(playerBoard, 0d);
         AnchorPane.setTopAnchor(playerBoard, 0d);
         AnchorPane.setLeftAnchor(playerBoard, 0d);
         AnchorPane.setRightAnchor(playerBoard, 90d);
-
-        /* Pause Menu */
-        gui.setPauseHandler(canvas);
-        gui.addPauseButton(canvas);
+        canvas.getChildren().add(playerBoard);
     }
-    
+
     /**
      * Sets the leaders hand view component, that also includes the activation/discard buttons under which card
      */
@@ -86,37 +62,53 @@ public abstract class PlaygroundController extends GuiController {
         leadersBox.setAlignment(Pos.CENTER);
         leadersBox.setPrefWidth(166);
         leadersBox.setSpacing(20);
-
-        vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).forEach(reducedLeader -> {
-            LeaderCard leaderCard = new LeaderCard(reducedLeader);
-            switch (reducedLeader.getLeaderType()) {
-                case DEPOT -> leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                        reducedLeader.getResourceType(), false);
-                case DISCOUNT -> leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
-                case PRODUCTION -> leaderCard.setProduction(vm.getProduction(reducedLeader.getProduction()).orElseThrow());
-                case ZERO -> leaderCard.setZeroReplacement(reducedLeader.getResourceType());
-            }
-            leadersBox.getChildren().add(leaderCard);
-
-            /* Add activate/discard buttons */
-            HBox buttonsContainer = new HBox();
-            buttonsContainer.setAlignment(Pos.CENTER);
-            buttonsContainer.setSpacing(20);
-            if (!reducedLeader.isActive()) {
-                Button activate = new SButton("Activate");
-                activate.setOnMouseClicked(event -> handleActivate(leaderCard));
-
-                Button discard = new SButton("Discard");
-                discard.setOnMouseClicked(event -> handleDiscard(leaderCard));
-
-                buttonsContainer.getChildren().addAll(List.of(activate, discard));
-            }
-            leadersBox.getChildren().add(buttonsContainer);
-        });
-
-        canvas.getChildren().add(leadersBox);
+        setLeaderBoxes();
         AnchorPane.setRightAnchor(leadersBox, rightAnchor);
         AnchorPane.setBottomAnchor(leadersBox, bottomAnchor);
+        canvas.getChildren().add(leadersBox);
+    }
+
+    private void setLeaderBoxes() {
+        leadersBox.getChildren().addAll(
+                vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeaderCard ->
+                        new LeaderBox(reducedLeaderCard, this::handleActivate, this::handleDiscard, this::handleProduce, allowProductions)).toList());
+    }
+
+    private void refreshLeaderBoxes() {
+        Platform.runLater(() -> {
+            leadersBox.getChildren().clear();
+            setLeaderBoxes();
+        });
+    }
+
+    /**
+     * Sends a request of activation of a leader card to the backend
+     *
+     * @param leaderCard the leader card to be activated
+     */
+    private void handleActivate(LeaderCard leaderCard) {
+        gui.getUi().dispatch(new ReqLeaderAction(leaderCard.getLeaderId(), true));
+    }
+
+    /**
+     * Sends a request of discard of a leader card to the backend
+     *
+     * @param leaderCard the leader card to be discarded
+     */
+    private void handleDiscard(LeaderCard leaderCard) {
+        gui.getUi().dispatch(new ReqLeaderAction(leaderCard.getLeaderId(), false));
+    }
+
+    private void handleProduce(LeaderCard leaderCard) {
+        leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !leaderCard.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
+        if (leaderCard.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
+            toActivate.add(leaderCard.getProduction().getProductionId());
+            activateProdButton.setDisable(false);
+        } else {
+            toActivate.remove(Integer.valueOf(leaderCard.getProduction().getProductionId())); // TODO: Use Production instead of ID
+            if (toActivate.size() == 0)
+                activateProdButton.setDisable(true);
+        }
     }
 
     @Override
@@ -126,7 +118,6 @@ public abstract class PlaygroundController extends GuiController {
         if (event.getPlayer().equals(vm.getCurrentPlayer()) && oldPoints < vm.getFaithTrack().orElseThrow().getMaxFaith())
             Platform.runLater(() -> playerBoard.updateFaithPoints(event, oldPoints));
     }
-
 
     @Override
     public void on(UpdateCurrentPlayer event) {
@@ -140,54 +131,30 @@ public abstract class PlaygroundController extends GuiController {
             gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
     }
 
-    /**
-     * Sends a request of activation of a leader card to the backend
-     *
-     * @param leader the leader card to be activated
-     */
-    private void handleActivate(LeaderCard leader) {
-        int leaderId = leader.getLeaderId();
-        gui.getUi().dispatch(new ReqLeaderAction(leaderId, true));
-    }
-
-    /**
-     * Sends a request of discard of a leader card to the backend
-     *
-     * @param leader the leader card to be discarded
-     */
-    private void handleDiscard(LeaderCard leader) {
-        if (toDiscard == null) {
-            toDiscard = leader;
-            gui.getUi().dispatch(new ReqLeaderAction(leader.getLeaderId(), false));
-        }
-    }
-
     @Override
     public void on(UpdateActivateLeader event) {
         super.on(event);
-        if (vm.isCurrentPlayer()) {
-            LeaderCard leader = (LeaderCard) leadersBox.getChildren().stream().filter(l -> leadersBox.getChildren().indexOf(l) % 2 == 0 && ((LeaderCard) l).getLeaderId() == event.getLeader()).findAny().orElseThrow();
-            int leaderIndex = leadersBox.getChildren().stream().filter(node -> leadersBox.getChildren().indexOf(node) % 2 == 0).toList().indexOf(leader);
-            leader.setActive(true);
+        if (vm.isCurrentPlayer())
+            leadersBox.getChildren().stream()
+                    .map(LeaderBox.class::cast)
+                    .filter(leaderBox -> leaderBox.getLeaderCard().getLeaderId() == event.getLeader())
+                    .findAny()
+                    .ifPresent(leaderBox -> {
+                        leaderBox.getLeaderCard().setActive(true);
+                        leaderBox.refreshButtons(allowProductions);
+                    });
+    }
 
-            HBox buttons = (HBox) leadersBox.getChildren().get(2 * leaderIndex + 1);
-            Platform.runLater(() -> {
-                buttons.getChildren().clear();
-                refreshLeadersProduceButton();
-            });
-        }
+    @Override
+    public void on(UpdateLeadersHand event) {
+        super.on(event);
+        refreshLeaderBoxes();
     }
 
     @Override
     public void on(UpdateLeadersHandCount event) {
         super.on(event);
-        if (vm.isCurrentPlayer()) {
-            int leaderIndex = leadersBox.getChildren().stream().filter(node -> leadersBox.getChildren().indexOf(node) % 2 == 0).toList().indexOf(toDiscard);
-            leadersBox.getChildren().get(2 * leaderIndex).setVisible(false);
-            leadersBox.getChildren().get(2 * leaderIndex + 1).setDisable(true);
-            leadersBox.getChildren().get(2 * leaderIndex + 1).setVisible(false);
-            toDiscard = null;
-        }
+        // TODO: Update unknown cards of other players
     }
 
     @Override
@@ -214,8 +181,7 @@ public abstract class PlaygroundController extends GuiController {
             }));
     }
 
-    protected Warehouse getWarehouse(){
-        /* Warehouse Shelves */
+    protected Warehouse getWarehouse() {
         Warehouse warehouse = new Warehouse();
         warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> {
             warehouse.setWaitingForSwap(s1, s2);
@@ -224,18 +190,26 @@ public abstract class PlaygroundController extends GuiController {
         return warehouse;
     }
 
-    protected Strongbox getStrongBox(){
-        /* Strongbox */
+    protected Strongbox getStrongBox() {
         Strongbox strongbox = new Strongbox();
         vm.getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(strongbox::setContent);
         return strongbox;
     }
 
-    protected Production getBaseProduction(){
-        /* Base Production */
+    protected Production getBaseProduction() {
         Production baseProduction = new Production();
         vm.getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(baseProduction::setProduction);
         return baseProduction;
+    }
+
+    protected List<DevSlot> getDevSlots() {
+        return vm.getPlayerDevelopmentCards(vm.getCurrentPlayer()).stream().map(modelSlot -> {
+            DevSlot slot = new DevSlot();
+            slot.setDevCards(modelSlot.stream()
+                    .flatMap(Optional::stream)
+                    .map(DevelopmentCard::new).toList());
+            return slot;
+        }).toList();
     }
 
     /**
@@ -243,43 +217,18 @@ public abstract class PlaygroundController extends GuiController {
      */
     protected void addProduceButtons() {
         activateProdButton = new SButton("Activate production");
-        activateProdButton.setOnAction((event) ->
+        activateProdButton.setOnAction(event ->
                 gui.getRoot().getChildren().add(new ActivateProduction(toActivate, 0,
                         new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())),
                         new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayerNickname())))));
         activateProdButton.setDisable(true);
-
-        canvas.getChildren().add(activateProdButton);
         AnchorPane.setLeftAnchor(activateProdButton, 318d);
         AnchorPane.setBottomAnchor(activateProdButton, 15d);
+        canvas.getChildren().add(activateProdButton);
 
-        /* Add button to each production */
+        /* Add production button to each topmost development card in dev slots */
         playerBoard.addProduceButtons(toActivate, activateProdButton);
 
-        refreshLeadersProduceButton();
-    }
-
-    /**
-     * Refreshes buttons for production activation on the leader cards
-     */
-    private void refreshLeadersProduceButton() {
-        // add button to production leader cards
-        for (int i = 0; i < leadersBox.getChildren().size() / 2; i++) {
-            LeaderCard leader = (LeaderCard) leadersBox.getChildren().get(2 * i);
-            if (leader.getLeaderType() == LeaderType.PRODUCTION && leader.isActive()) {
-                SButton activate = new SButton("Produce");
-                activate.setOnAction(event -> {
-                    leader.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !leader.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
-                    if (leader.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS)) {
-                        toActivate.add(leader.getProduction().getProductionId());
-                        activateProdButton.setDisable(false);
-                    } else {
-                        toActivate.remove(Integer.valueOf(leader.getProduction().getProductionId()));
-                        if (toActivate.size() == 0) activateProdButton.setDisable(true);
-                    }
-                });
-                ((HBox) leadersBox.getChildren().get(2 * i + 1)).getChildren().add(activate);
-            }
-        }
+        // refreshLeaderBoxes();
     }
 }

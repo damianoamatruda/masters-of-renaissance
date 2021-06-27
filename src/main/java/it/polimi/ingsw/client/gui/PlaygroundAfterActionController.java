@@ -23,18 +23,16 @@ public class PlaygroundAfterActionController extends PlaygroundController {
         endTurn.setDefaultButton(true);
         endTurn.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.getUi().dispatch(new ReqEndTurn()));
-        canvas.getChildren().add(endTurn);
         AnchorPane.setBottomAnchor(endTurn, 0.0);
         AnchorPane.setRightAnchor(endTurn, 0.0);
+        canvas.getChildren().add(endTurn);
 
         setLeadersBox(20, 50);
 
-        topText.setText("End your turn or do an extra action");
-
-        AnchorPane.setLeftAnchor(topText, 10.0);
-        AnchorPane.setTopAnchor(topText, 5.0);
-
-        canvas.getChildren().add(topText);
+        title.setText("End your turn or do an extra action");
+        AnchorPane.setLeftAnchor(title, 10.0);
+        AnchorPane.setTopAnchor(title, 5.0);
+        canvas.getChildren().add(title);
 
         warehouse.enableSwapper();
     }
