@@ -9,10 +9,6 @@
          maxHeight="720" minHeight="720"
          maxWidth="1280" minWidth="1280"
          styleClass="main">
-  <top>
-    <Text fx:id="text"/>
-  </top>
-
   <center>
     <VBox alignment="CENTER" spacing="50">
       <HBox alignment="CENTER" spacing="90">
@@ -34,7 +30,7 @@
           <Warehouse fx:id="guiShelves"/>
         </VBox>
         <Strongbox fx:id="strongbox" scaleX="0.8" scaleY="0.8"/>
-        <HBox fx:id="leadersBox"/>
+        <HBox fx:id="leadersBox" maxHeight="251"/>
       </HBox>
     </VBox>
   </center>
@@ -42,8 +38,8 @@
   <bottom>
     <HBox alignment="CENTER" spacing="40">
       <SButton fx:id="back" text="Back"/>
-      <SButton fx:id="next" text="Next"/>
-      <SButton fx:id="submit" text="Submit"/>
+      <SButton fx:id="next" text="Next" defaultButton="true"/>
+      <SButton fx:id="submit" text="Submit" defaultButton="true"/>
     </HBox>
   </bottom>
 </fx:root>
