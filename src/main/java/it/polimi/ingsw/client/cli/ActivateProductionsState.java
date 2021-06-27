@@ -73,10 +73,7 @@ public class ActivateProductionsState extends CliController {
         cli.getOut().println(center("-- Input replacements --"));
         cli.getOut().println();
         cli.promptResources(
-                vm.getResourceTypes().stream()
-                        .filter(r -> (r.isStorable() || r.isTakeableFromPlayer()) &&
-                                     !this.selectedProd.getInputBlanksExclusions().contains(r.getName()))
-                        .map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
+                vm.getProductionInputResTypes(selectedProd).stream().map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
                 this.selectedProd.getInputBlanks()
         ).ifPresentOrElse(inputReplacement -> {
             this.inputReplacement = inputReplacement;
@@ -89,10 +86,7 @@ public class ActivateProductionsState extends CliController {
         cli.getOut().println(center("-- Output replacements --"));
         cli.getOut().println();
         cli.promptResources(
-                vm.getResourceTypes().stream()
-                        .filter(r -> (r.isStorable() || r.isGiveableToPlayer()) &&
-                                     !this.selectedProd.getOutputBlanksExclusions().contains(r.getName()))
-                        .map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
+                vm.getProductionOutputResTypes(selectedProd).stream().map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
                 this.selectedProd.getOutputBlanks()
         ).ifPresentOrElse(outputReplacement -> {
             this.outputReplacement = outputReplacement;

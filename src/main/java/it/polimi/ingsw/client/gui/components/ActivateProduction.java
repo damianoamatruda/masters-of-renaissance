@@ -92,15 +92,11 @@ public class ActivateProduction extends BorderPane {
         ReducedResourceTransactionRecipe selectedProd = gui.getViewModel().getProduction(toActivate.get(index)).orElseThrow();
 
         /* Add spinners to choose amount */
-        gui.getViewModel().getResourceTypes().stream()
-                .filter(r -> (!r.isStorable() && r.isTakeableFromPlayer()) &&
-                        !selectedProd.getInputBlanksExclusions().contains(r.getName()))
-                .forEach(r -> addSpinner(choosableInputResources, r, selectedProd.getInputBlanks()));
+        gui.getViewModel().getProductionInputResTypes(selectedProd).forEach(r ->
+                addSpinner(choosableInputResources, r, selectedProd.getInputBlanks()));
 
-        gui.getViewModel().getResourceTypes().stream()
-                .filter(r -> (r.isStorable() || r.isGiveableToPlayer()) &&
-                        !selectedProd.getOutputBlanksExclusions().contains(r.getName()))
-                .forEach(r -> addSpinner(choosableOutputResources, r, selectedProd.getOutputBlanks()));
+        gui.getViewModel().getProductionOutputResTypes(selectedProd).forEach(r ->
+                addSpinner(choosableOutputResources, r, selectedProd.getOutputBlanks()));
 
         /* Remove HBox containers if no extra choosable resource available */
         if (choosableInputResources.getChildren().isEmpty())

@@ -764,6 +764,22 @@ public class ViewModel {
         });
     }
 
+    // TODO: Add Javadoc
+    public synchronized List<ReducedResourceType> getProductionInputResTypes(ReducedResourceTransactionRecipe production) {
+        return resourceTypes.stream()
+                .filter(r -> !r.isStorable() && r.isTakeableFromPlayer())
+                .filter(r -> !production.getInputBlanksExclusions().contains(r.getName()))
+                .toList();
+    }
+
+    // TODO: Add Javadoc
+    public synchronized List<ReducedResourceType> getProductionOutputResTypes(ReducedResourceTransactionRecipe production) {
+        return resourceTypes.stream()
+                .filter(r -> r.isStorable() || r.isGiveableToPlayer())
+                .filter(r -> !production.getOutputBlanksExclusions().contains(r.getName()))
+                .toList();
+    }
+
     /**
      * Retrieves the winner of the game.
      *
