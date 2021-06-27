@@ -57,8 +57,12 @@ public abstract class PlaygroundController extends GuiController {
 
     /**
      * Sets the leaders hand view component, that also includes the activation/discard buttons under which card
+     *
+     * @param rightAnchor the right anchor
+     * @param bottomAnchor the bottom anchor
      */
     protected void setLeadersBox(double rightAnchor, double bottomAnchor) {
+        canvas.getChildren().remove(leadersBox);
         leadersBox.setAlignment(Pos.CENTER);
         leadersBox.setPrefWidth(166);
         leadersBox.setSpacing(20);
@@ -69,8 +73,9 @@ public abstract class PlaygroundController extends GuiController {
     }
 
     private void setLeaderBoxes() {
+        leadersBox.getChildren().clear();
         leadersBox.getChildren().addAll(
-                vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeaderCard ->
+                vm.getPlayerLeaderCards(vm.getCurrentPlayer()).stream().map(reducedLeaderCard ->
                         new LeaderBox(reducedLeaderCard, this::handleActivate, this::handleDiscard, this::handleProduce, allowProductions)).toList());
     }
 
@@ -143,6 +148,7 @@ public abstract class PlaygroundController extends GuiController {
                         leaderBox.getLeaderCard().setActive(true);
                         leaderBox.refreshButtons(allowProductions);
                     });
+        else Platform.runLater(() -> setLeadersBox(54d, 30d));
     }
 
     @Override

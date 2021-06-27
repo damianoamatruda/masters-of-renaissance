@@ -250,7 +250,23 @@ public class ViewModel {
                 .flatMap(Optional::stream)
                 .toList();
     }
-    
+
+    /**
+     * Retrieves only the active leader cards hand of a player.
+     *
+     * @param nickname the nickname of the player whose active leader cards hand needs to be retrieved
+     * @return the reduced (active) leader cards owned by the player
+     */
+    public synchronized List<ReducedLeaderCard> getPlayerActiveLeaderCards(String nickname) {
+        if (!playerData.containsKey(nickname))
+            return new ArrayList<>();
+        return playerData.get(nickname).getLeadersHand().stream()
+                .map(this::getLeaderCard)
+                .flatMap(Optional::stream)
+                .filter(ReducedLeaderCard::isActive)
+                .toList();
+    }
+
     /**
      * Retrieves the count of leader cards of a player.
      *
