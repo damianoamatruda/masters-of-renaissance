@@ -116,7 +116,8 @@ public class Strongbox extends StackPane {
 
     public void addSpinners() {
         for(Node cell : grid.getChildren()) {
-            Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
+            int maxValue = ((Cell) cell).getCount();
+            Spinner<Integer> spinner = new Spinner<>(0, maxValue, 0);
             ((Cell) cell).getChildren().add(0, spinner);
             spinner.setMaxWidth(50);
             spinner.editorProperty().get().setAlignment(Pos.CENTER);

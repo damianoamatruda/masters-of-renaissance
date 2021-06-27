@@ -95,12 +95,12 @@ public class ActivateProduction extends BorderPane {
         gui.getViewModel().getResourceTypes().stream()
                 .filter(r -> (!r.isStorable() && r.isTakeableFromPlayer()) &&
                         !selectedProd.getInputBlanksExclusions().contains(r.getName()))
-                .forEach(r -> addSpinner(choosableInputResources, r));
+                .forEach(r -> addSpinner(choosableInputResources, r, selectedProd.getInputBlanks()));
 
         gui.getViewModel().getResourceTypes().stream()
                 .filter(r -> (r.isStorable() || r.isGiveableToPlayer()) &&
                         !selectedProd.getOutputBlanksExclusions().contains(r.getName()))
-                .forEach(r -> addSpinner(choosableOutputResources, r));
+                .forEach(r -> addSpinner(choosableOutputResources, r, selectedProd.getOutputBlanks()));
 
         /* Remove HBox containers if no extra choosable resource available */
         if (choosableInputResources.getChildren().isEmpty())
@@ -201,9 +201,9 @@ public class ActivateProduction extends BorderPane {
         ((Pane) this.getParent()).getChildren().remove(this);
     }
 
-    public void addSpinner(HBox container, ReducedResourceType r) {
+    public void addSpinner(HBox container, ReducedResourceType r, int maxValue) {
         HBox entry = new HBox();
-        Spinner<Integer> spinner = new Spinner<>(0, 1000, 0);
+        Spinner<Integer> spinner = new Spinner<>(0, maxValue, 0);
         spinner.setMaxWidth(50);
         spinner.editorProperty().get().setAlignment(Pos.CENTER);
         entry.getChildren().add(spinner);
