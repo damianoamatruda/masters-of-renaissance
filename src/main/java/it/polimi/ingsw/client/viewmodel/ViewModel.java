@@ -75,11 +75,17 @@ public class ViewModel {
     /** The nickname of the winner. */
     private String winner = "";
 
-    /** The list of the available user interface colors. */
-    private final List<String> clientColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
+    /** The list of the available user interface colors (CLI only). */
+    private final List<String> clientCliColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
 
-    /** The map of unique player string encoded colors. */
-    private final Map<String, String> mappedColors;
+    /** The map of unique player string encoded colors (CLI only). */
+    private final Map<String, String> mappedCliColors;
+
+    /** The list of the available user interface colors (GUI only). */
+    private final List<String> clientGuiColors = List.of("#5D99FD", "#961126", "#14A76C", "#ffe933");
+
+    /** The map of unique player string encoded colors (GUI only). */
+    private final Map<String, String> mappedGuiColors;
 
     /**
      * Class constructor.
@@ -96,7 +102,8 @@ public class ViewModel {
         productions = new ArrayList<>();
         resourceTypes = new ArrayList<>();
         isLastRound = false;
-        mappedColors = new HashMap<>();
+        mappedCliColors = new HashMap<>();
+        mappedGuiColors = new HashMap<>();
         currentPlayer = "";
     }
 
@@ -652,8 +659,10 @@ public class ViewModel {
         if (this.playerNicknames != null)
             this.playerNicknames = new ArrayList<>(playerNicknames);
             
-        for(int i = 0; i < playerNicknames.size(); i++)
-            mappedColors.put(playerNicknames.get(i), clientColors.get(i % clientColors.size()));
+        for(int i = 0; i < playerNicknames.size(); i++) {
+            mappedGuiColors.put(playerNicknames.get(i), clientGuiColors.get(i % clientGuiColors.size()));
+            mappedCliColors.put(playerNicknames.get(i), clientCliColors.get(i % clientCliColors.size()));
+        }
     }
 
     /**
@@ -799,12 +808,21 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves the uniquely associated color of a player.
+     * Retrieves the uniquely associated color of a player (CLI only).
      *
      * @return the string that encodes the color uniquely associated to a player
      */
-    public synchronized Optional<String> getClientColor(String nick) {
-        return Optional.ofNullable(mappedColors.get(nick));
+    public synchronized Optional<String> getClientCliColor(String nick) {
+        return Optional.ofNullable(mappedCliColors.get(nick));
+    }
+
+    /**
+     * Retrieves the uniquely associated color of a player (GUI only).
+     *
+     * @return the string that encodes the color uniquely associated to a player
+     */
+    public synchronized Optional<String> getClientGuiColor(String nick) {
+        return Optional.ofNullable(mappedGuiColors.get(nick));
     }
 
     /**

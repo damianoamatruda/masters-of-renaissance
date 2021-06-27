@@ -1,10 +1,15 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
+import javafx.beans.binding.Bindings;
+import javafx.scene.CacheHint;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.Objects;
@@ -78,9 +83,45 @@ public class FaithTile extends StackPane {
      */
     public void addPlayerMarker() {
         ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/faithmarker.png"));
+
+        setMarkerColor(marker);
+
         marker.setScaleX(bg.getScaleX() / 1.5);
         marker.setScaleY(bg.getScaleY() / 1.5);
         this.getChildren().add(marker);
+    }
+
+    /**
+     * Sets a custom color to the player's faith marker.
+     *
+     * @param marker the player's faith marker
+     */
+    private void setMarkerColor(ImageView marker) {
+        ViewModel vm = Gui.getInstance().getViewModel();
+        vm.getClientGuiColor(vm.getCurrentPlayer()).ifPresent(hex -> {
+
+            marker.setClip(new ImageView(marker.getImage()));
+
+            ColorAdjust monochrome = new ColorAdjust();
+            monochrome.setSaturation(-1.0);
+
+            Blend colorChange = new Blend(
+                    BlendMode.MULTIPLY,
+                    monochrome,
+                    new ColorInput(
+                            0,
+                            0,
+                            marker.getImage().getWidth(),
+                            marker.getImage().getHeight(),
+                            Color.web(hex)
+                    )
+            );
+
+            marker.setEffect(colorChange);
+
+            marker.setCache(true);
+            marker.setCacheHint(CacheHint.SPEED);
+        });
     }
 
     /**
