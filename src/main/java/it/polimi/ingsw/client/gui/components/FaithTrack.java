@@ -111,33 +111,31 @@ public class FaithTrack extends HBox {
 
             // display pope's favors
             int i = 1;
-            for (ReducedVaticanSection section : sections.values().stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getId)).toList()) {
+            for (ReducedVaticanSection section : sections.values().stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getFaithPointsEnd)).toList()) {
                 HBox hbox = new HBox();
                 hbox.setAlignment(Pos.CENTER);
                 hbox.setSpacing(50);
 
-            Text sectionText = new Text(String.format("Section %d", i));
-            sectionText.setScaleX(2);
-            sectionText.setScaleY(2);
-            hbox.getChildren().add(sectionText);
+                Text sectionText = new Text(String.format("Section %d", i));
+                sectionText.setScaleX(2);
+                sectionText.setScaleY(2);
+                hbox.getChildren().add(sectionText);
 
-            boolean gotBonus = section.getBonusGivenPlayers().contains(vm.getCurrentPlayer());
-            boolean isActivated = section.isActivated();
-            StackPane favorPane = new StackPane();
-            ImageView popesFavor = getPopesFavorImage(isActivated, gotBonus);
-            popesFavor.setFitHeight(110);
-            popesFavor.setFitWidth(110);
-            favorPane.getChildren().add(popesFavor);
-            Text pointsText = new Text(Integer.toString(section.getVictoryPoints()));
-            pointsText.setScaleX(1.8);
-            pointsText.setScaleY(1.8);
-            if(gotBonus && isActivated) favorPane.getChildren().add(pointsText);
-
-                hbox.getChildren().add(favorPane);
-                popesFavors.getChildren().add(hbox);
-                i++;
-            }
-
+                boolean gotBonus = section.getBonusGivenPlayers().contains(vm.getCurrentPlayer());
+                boolean isActivated = section.isActivated();
+                StackPane favorPane = new StackPane();
+                ImageView popesFavor = getPopesFavorImage(isActivated, gotBonus);
+                popesFavor.setFitHeight(110);
+                popesFavor.setFitWidth(110);
+                favorPane.getChildren().add(popesFavor);
+                Text pointsText = new Text(Integer.toString(section.getVictoryPoints()));
+                pointsText.setScaleX(1.8);
+                pointsText.setScaleY(1.8);
+                if(gotBonus && isActivated) favorPane.getChildren().add(pointsText);
+                    hbox.getChildren().add(favorPane);
+                    popesFavors.getChildren().add(hbox);
+                    i++;
+                }
         });
     }
 
