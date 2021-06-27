@@ -18,7 +18,10 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
@@ -185,7 +188,7 @@ public class MarketController extends GuiController {
                     if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource)) && !alreadyHasBoundShelf) {
                         success = putChoice(resource, shelfID);
                         if (success) {
-                            warehouse.addResourceDraggable(shelfID, resource);
+                            warehouse.getShelf(shelfID).addResourceDraggable(resource);
                             if(!db.hasString())
                                 removeResourceFromBox(resource);
                             replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);

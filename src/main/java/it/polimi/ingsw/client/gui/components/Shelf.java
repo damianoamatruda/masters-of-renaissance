@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -22,14 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.logging.Logger;
 
 /** Gui component representing a warehouse shelf. */
 public class Shelf extends BorderPane {
-    private static final Logger LOGGER = Logger.getLogger(Shelf.class.getName());
-
-    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
-
     private int shelfId;
     private int size;
     private HBox content;
@@ -50,11 +44,8 @@ public class Shelf extends BorderPane {
         this.callback = callback;
         this.shelfId = shelf.getId();
         this.size = shelf.getSize();
-        // this.setSpacing(10);
-        // this.setMinWidth(contentWidth);
-        this.setMinHeight(maxHeight);
-        this.setMaxHeight(maxHeight);
-        // this.setAlignment(Pos.CENTER_LEFT);
+        setMinHeight(maxHeight);
+        setMaxHeight(maxHeight);
 
         content = new HBox();
         content.setMinHeight(maxHeight);
@@ -78,11 +69,11 @@ public class Shelf extends BorderPane {
         sizePane.setMaxHeight(maxHeight);
         sizePane.setCenter(sizeText);
 
-        this.setLeft(sizePane);
-        this.setCenter(content);
-        this.setMaxWidth(400);
+        setLeft(sizePane);
+        setCenter(content);
+        setMaxWidth(400);
 
-        this.setPickOnBounds(false);
+        setPickOnBounds(false);
     }
 
     /**
@@ -113,7 +104,8 @@ public class Shelf extends BorderPane {
      * @param r the resource as Gui component
      */
     public void addResource(Resource r) {
-        if(isLeaderDepot) removePlaceholder();
+        if (isLeaderDepot)
+            removePlaceholder();
         r.setPreserveRatio(true);
         r.setFitHeight(this.getMinHeight());
         content.getChildren().add(r);
@@ -125,9 +117,9 @@ public class Shelf extends BorderPane {
      * @param resource the resource type
      */
     public void addResource(String resource) {
-        if(isLeaderDepot) removePlaceholder();
+        if (isLeaderDepot)
+            removePlaceholder();
         Resource r = new Resource(resource);
-
         addResource(r);
     }
 
@@ -154,7 +146,7 @@ public class Shelf extends BorderPane {
      */
     public void removeResource() {
         content.getChildren().remove(content.getChildren().size() - 1);
-        if(isLeaderDepot)
+        if (isLeaderDepot)
             setPlaceholder(getBoundResource());
     }
 
@@ -186,7 +178,6 @@ public class Shelf extends BorderPane {
     public void addSwapper() {
         setSwapDnD();
         this.setRight(swapIcon);
-
         BorderPane.setAlignment(swapIcon, Pos.CENTER_RIGHT);
     }
 
@@ -197,32 +188,29 @@ public class Shelf extends BorderPane {
         swapIcon.setOnDragDetected((event -> {
             Dragboard db = this.startDragAndDrop(TransferMode.ANY);
             ClipboardContent content = new ClipboardContent();
-            content.putString("[swap]" + this.getShelfId() + " size:" + this.getContentSize());
+            content.putString(String.format("[swap]%d size:%d", this.getShelfId(), this.getContentSize()));
             db.setContent(content);
             event.consume();
         }));
 
-        this.setOnDragOver((event) -> {
+        this.setOnDragOver(event -> {
             Dragboard db = event.getDragboard();
-                if (db.hasString() && db.getString().startsWith("[swap]")
-                        && Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" "))) != this.getShelfId()
-                        && Integer.parseInt(db.getString().substring(db.getString().indexOf(":") + 1)) <= size) {
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
+            if (db.hasString() && db.getString().startsWith("[swap]")
+                    && Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" "))) != this.getShelfId()
+                    && Integer.parseInt(db.getString().substring(db.getString().indexOf(":") + 1)) <= size) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
             event.consume();
         });
 
-        this.setOnDragDropped((event) -> {
+        this.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString() && db.getString().startsWith("[swap]")) {
-                    int sourceShelfID = Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" ")));
-
-                    callback.accept(sourceShelfID, this.shelfId);
-
-                    // TODO disable temporarily dnd until response is received (?)
-                }
-
+                int sourceShelfID = Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" ")));
+                callback.accept(sourceShelfID, this.shelfId);
+                // TODO disable temporarily dnd until response is received (?)
+            }
             event.setDropCompleted(success);
             event.consume();
         });
@@ -235,23 +223,22 @@ public class Shelf extends BorderPane {
      * @param newId the ID of the shelf
      */
     public void refresh(int size, int newId) {
-        //adjust size
+        /* Adjust size */
         this.size = size;
         sizeText.setText(String.format("Max%n%d", size));
         this.shelfId = newId;
 
-        //adjust clipboard content of resources
-        for(Node r : content.getChildren()) {
-            //TODO handle duplicated code
-            r.setOnDragDetected((event) -> {
-                        Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                        ClipboardContent content = new ClipboardContent();
-                        content.putImage(((Resource) r).getImage());
-                        content.putString(Integer.toString(newId));
-                        db.setContent(content);
-                        event.consume();
-                    }
-            );
+        /* Adjust clipboard content of resources */
+        for (Node r : content.getChildren()) {
+            // TODO handle duplicated code
+            r.setOnDragDetected(event -> {
+                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(((Resource) r).getImage());
+                content.putString(Integer.toString(newId));
+                db.setContent(content);
+                event.consume();
+            });
         }
     }
 
@@ -262,13 +249,13 @@ public class Shelf extends BorderPane {
      * @param reducedShelf  the cached shelf which content to edit on resource click
      */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, ReducedResourceContainer reducedShelf) {
-        if(Gui.getInstance().getViewModel().getContainer(shelfId).orElseThrow().getContent().size() > 0)
+        if (Gui.getInstance().getViewModel().getContainer(shelfId).orElseThrow().getContent().size() > 0)
             for (Node r : content.getChildren()) {
                 r.setOnMouseClicked(e -> {
                     String name = ((Resource) r).getName();
                     // doesn't work? => r.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !r.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
 
-                    if(r.getOpacity() != 0.5) {
+                    if (r.getOpacity() != 0.5) {
                         r.setOpacity(0.5);
                         reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) - 1);
                         if (containers.get(shelfId) == null) {
@@ -295,7 +282,7 @@ public class Shelf extends BorderPane {
 
     public void addResourcesSelector(BiConsumer<String, Integer> insert, BiConsumer<String, Integer> remove) {
         for (Node r : content.getChildren()) {
-            r.setOnMouseClicked(e -> {
+            r.setOnMouseClicked(event -> {
                 String name = ((Resource) r).getName();
                 if (r.getOpacity() != 0.5) {
                     r.setOpacity(0.5);
@@ -310,7 +297,6 @@ public class Shelf extends BorderPane {
 
     public void setPlaceholder(String resource) {
         ImageView img = new ImageView(new Image(getResourcePlaceholderPath(resource)));
-
         img.setFitHeight(30);
         img.setFitWidth(30);
         content.getChildren().add(img);
@@ -329,29 +315,26 @@ public class Shelf extends BorderPane {
     private void removePlaceholder() {
         Optional<ReducedResourceContainer> container = Gui.getInstance().getViewModel().getContainer(shelfId);
         container.ifPresent(c -> {
-            if(content.getChildren().size() == 1 && c.getContent().size() == 0) {
+            if (content.getChildren().size() == 1 && c.getContent().size() == 0)
                 content.getChildren().clear();
-            }
         });
     }
 
+    /**
+     * Adds a resource to the shelf, also enabling its drag and drop.
+     *
+     * @param resource the resource type
+     */
     public void addResourceDraggable(String resource) {
-        //TODO duplicated in Warehouse
         Resource r = new Resource(resource);
-        this.addResource(r);
-
-        r.setOnDragDetected((event) -> {
-                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(r.getImage());
-                    content.putString(Integer.toString(this.getShelfId()));
-                    db.setContent(content);
-                    event.consume();
-                }
-        );
+        addResource(r);
+        r.setOnDragDetected(event -> {
+            Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(r.getImage());
+            content.putString(Integer.toString(shelfId));
+            db.setContent(content);
+            event.consume();
+        });
     }
-
-//    private void disableSwapDnD() {
-//        swapIcon.removeEventHandler(EventType.ROOT);
-//    }
 }

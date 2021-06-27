@@ -110,7 +110,7 @@ public class SetupResourcesController extends GuiController {
                                     selection.get(id).put(resource, amount);
                                     success = true;
                                 } catch (NullPointerException e) {
-                                    if(selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
+                                    if (selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
                                         Map<String, Integer> entry = new HashMap<>();
                                         entry.put(resource, 1);
                                         selection.put(id, entry);
@@ -118,7 +118,7 @@ public class SetupResourcesController extends GuiController {
                                     }
 
                                 }
-                            if(success) warehouse.addResourceDraggable(id, resource);
+                            if (success) warehouse.getShelf(id).addResourceDraggable(resource);
                             updateChoiceButton();
 
                         } catch (Exception e) { // TODO remove this catch once debugged
