@@ -29,9 +29,12 @@ public class Production extends StackPane {
     private ImageView curlyBrace;
     @FXML
     private HBox recipe;
+    @FXML
+    private HBox exclusions;
     private double maxRowHeight;
     private double elementScale;
     private int productionId;
+
 
     /**
      * Class constructor.
@@ -71,20 +74,20 @@ public class Production extends StackPane {
         input.setSpacing(2);
         output.setSpacing(2);
 
-        if(!production.getOutputBlanksExclusions().isEmpty()) {
-            VBox exclusions = new VBox();
-            exclusions.setSpacing(2);
-            for(String resource : production.getOutputBlanksExclusions()) {
-                StackPane exclusion = new StackPane();
-                exclusion.getChildren().add(new Resource(resource));
-                exclusion.getChildren().add(new ImageView(new Image("/assets/gui/resourcetypes/blankexclusion.png")));
+        // fill input exclusions
+        if(!production.getInputBlanksExclusions().isEmpty() || !production.getOutputBlanksExclusions().isEmpty()) {
+            VBox inputExclusions = new VBox();
+            inputExclusions.setMinWidth(60);
+            if (!production.getInputBlanksExclusions().isEmpty())
+                fillExclusions(inputExclusions, production.getInputBlanksExclusions());
+            exclusions.getChildren().add(inputExclusions);
+        }
 
-                Group group = new Group(exclusion);
-                group.setScaleX(0.3);
-                group.setScaleY(0.3);
-                exclusions.getChildren().add(group);
-            }
-            ((VBox) recipe.getParent()).getChildren().add(exclusions);
+        // fill output exclusions
+        if(!production.getOutputBlanksExclusions().isEmpty()) {
+            VBox outputExclusions = new VBox();
+            fillExclusions(outputExclusions, production.getOutputBlanksExclusions());
+            exclusions.getChildren().add(outputExclusions);
         }
 
         input.getChildren().addAll(buildResourceLines(production.getInput()));
@@ -102,6 +105,22 @@ public class Production extends StackPane {
         }
 
         this.setPadding(new Insets(padding));
+    }
+
+    // TODO Javadoc
+    private void fillExclusions(VBox exclusions, List<String> blanksExclusions) {
+        exclusions.setSpacing(2);
+        for(String resource : blanksExclusions) {
+            StackPane exclusion = new StackPane();
+            exclusion.getChildren().add(new Resource(resource));
+            exclusion.getChildren().add(new ImageView(new Image("/assets/gui/resourcetypes/blankexclusion.png")));
+
+            Group group = new Group(exclusion);
+            group.setScaleX(0.3);
+            group.setScaleY(0.3);
+            exclusions.getChildren().add(group);
+        }
+
     }
 
     /**
