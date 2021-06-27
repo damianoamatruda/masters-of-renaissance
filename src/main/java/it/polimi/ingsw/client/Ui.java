@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Optional;
 
 public class Ui extends View {
-    private final ViewModel viewModel;
+    private ViewModel viewModel;
     private Network client;
     private UiController controller;
     private InputStream gameConfigStream;
@@ -51,6 +51,7 @@ public class Ui extends View {
         client = new OfflineClient(this, gameConfigStream);
         client.open();
         offline = true;
+        viewModel = new ViewModel();
     }
 
     public void openOnlineClient(String host, int port) throws IOException {
@@ -58,6 +59,7 @@ public class Ui extends View {
         client = new OnlineClient(this, host, port);
         client.open();
         offline = false;
+        viewModel = new ViewModel();
     }
 
     public void closeClient() {
