@@ -23,15 +23,15 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
         Button marketButton = new SButton("Market");
         marketButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/market.fxml")));
-        AnchorPane.setLeftAnchor(marketButton, 0d);
-        AnchorPane.setTopAnchor(marketButton, 0d);
+        AnchorPane.setLeftAnchor(marketButton, 10d);
+        AnchorPane.setTopAnchor(marketButton, 10d);
         canvas.getChildren().add(marketButton);
 
         Button gridButton = new SButton("Grid");
         gridButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
                 gui.setScene(getClass().getResource("/assets/gui/devcardgrid.fxml")));
-        AnchorPane.setRightAnchor(gridButton, 0d);
-        AnchorPane.setTopAnchor(gridButton, 0d);
+        AnchorPane.setRightAnchor(gridButton, 10d);
+        AnchorPane.setTopAnchor(gridButton, 10d);
         canvas.getChildren().add(gridButton);
 
         setLeadersBox(54.0, 30.0);
