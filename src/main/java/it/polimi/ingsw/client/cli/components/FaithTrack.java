@@ -5,10 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
@@ -124,6 +121,17 @@ public class FaithTrack extends StringComponent {
                 stringBuilder.append(center("\u001B[31m+ " + reducedFaithTrack.getVaticanSections().get(i).getVictoryPoints() + " pts" + "\u001B[0m", 7));
             else
                 stringBuilder.append("      ");
+        }
+
+        stringBuilder.append("\n");
+
+        int i = 1;
+        // Print activation of vatican sections
+        for(ReducedVaticanSection s : sections.stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getFaithPointsEnd)).toList()) {
+            stringBuilder.append(String.format("Section %d: %s%n", i,
+                    s.isActivated() ? (s.getBonusGivenPlayers().contains(cli.getViewModel().getLocalPlayerNickname())
+                            ? "earned" : "missed") : "inactive"));
+            i++;
         }
 
         return center(stringBuilder.toString());
