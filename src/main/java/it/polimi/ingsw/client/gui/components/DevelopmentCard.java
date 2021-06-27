@@ -33,6 +33,7 @@ public class DevelopmentCard extends Card {
         reducedDevCard.getCost().ifPresent(this::setRequirement);
         setProduction(Gui.getInstance().getViewModel().getProduction(reducedDevCard.getProduction()).orElseThrow());
         setVictoryPoints(reducedDevCard.getVictoryPoints());
+        setLevel(reducedDevCard.getLevel());
     }
 
     /**
