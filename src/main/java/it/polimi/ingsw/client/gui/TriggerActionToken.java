@@ -22,6 +22,7 @@ public class TriggerActionToken extends GuiController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
+        gui.setPauseHandler(canvas);
 
         next.setOnAction(actionEvent -> {
             if (!vm.isGameEnded())
