@@ -36,7 +36,7 @@ public class OptionsState extends CliController {
             try {
                 cli.getUi().setGameConfigStream(new FileInputStream(gameConfigFile));
                 cli.setController(new MainMenuState(), false);
-                cli.getOut().println("Config loaded.");
+                cli.getOut().println(center("Config loaded."));
                 cli.promptPause();
             } catch (FileNotFoundException e) {
                 cli.getOut().println();
