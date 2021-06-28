@@ -9,7 +9,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -21,8 +20,12 @@ import java.util.Optional;
 
 /** Gui component used to show the leaderboards of the game. */
 public class LeaderBoard extends StackPane {
-    @FXML private TableView<LeaderBoardEntry> content;
-    @FXML private SButton back;
+    @FXML
+    private VBox window;
+    @FXML
+    private TableView<LeaderBoardEntry> content;
+    @FXML
+    private SButton back;
 
     /**
      * Class constructor.
@@ -37,6 +40,8 @@ public class LeaderBoard extends StackPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        Gui.getInstance().setSceneScaling(window);
 
         createLeaderboardTable(content);
 

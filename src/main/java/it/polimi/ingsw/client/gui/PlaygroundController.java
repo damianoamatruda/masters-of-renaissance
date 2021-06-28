@@ -259,9 +259,8 @@ public abstract class PlaygroundController extends GuiController {
 
     private void addLeaderboardsButton() {
         Button leaderboardsBtn = new SButton("Leaderboards");
-        leaderboardsBtn.addEventHandler(ActionEvent.ACTION, actionEvent -> {
-            canvas.getChildren().add(new LeaderBoard());
-        });
+        leaderboardsBtn.addEventHandler(ActionEvent.ACTION, actionEvent ->
+                gui.getRoot().getChildren().add(new LeaderBoard()));
         canvas.getChildren().add(leaderboardsBtn);
         AnchorPane.setTopAnchor(leaderboardsBtn, 10.0);
         AnchorPane.setLeftAnchor(leaderboardsBtn, 850.0);

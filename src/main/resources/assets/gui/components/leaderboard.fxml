@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import it.polimi.ingsw.client.gui.components.Title?>
-<?import javafx.scene.layout.VBox?>
 <?import it.polimi.ingsw.client.gui.components.SButton?>
-<?import javafx.scene.layout.Pane?>
+<?import it.polimi.ingsw.client.gui.components.Title?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.*?>
 <fx:root xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
-         type="StackPane" prefWidth="1280" prefHeight="720" stylesheets="@../index.css">
-
+         type="StackPane" stylesheets="@../index.css">
   <Pane styleClass="overlay"/>
   <BorderPane>
     <center>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="600"
-            spacing="50" styleClass="main-small">
+      <VBox fx:id="window" alignment="CENTER" maxHeight="-Infinity" maxWidth="600" spacing="50" styleClass="main-small">
         <Title text="Leaderboard" maxWidth="-Infinity"/>
-        <TableView fx:id="content" />
+        <TableView fx:id="content"/>
         <SButton fx:id="back" text="Back"/>
         <padding>
-          <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+          <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
         </padding>
       </VBox>
     </center>
