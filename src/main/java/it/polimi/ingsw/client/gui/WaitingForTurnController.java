@@ -20,8 +20,7 @@ public class WaitingForTurnController extends PlaygroundController {
         AnchorPane.setTopAnchor(title, 10.0);
 
         canvas.getChildren().add(title);
-        AnchorPane.setRightAnchor(playerBoard, 0d);
 
-        setLeadersBox(54d, 30d);
+        setLeadersBox(20d, 30d);
     }
 }
