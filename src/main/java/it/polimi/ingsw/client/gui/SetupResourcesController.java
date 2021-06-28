@@ -246,6 +246,9 @@ public class SetupResourcesController extends GuiController {
     public void on(UpdateAction event) {
         if (event.getAction() != ActionType.CHOOSE_RESOURCES && event.getPlayer().equals(vm.getLocalPlayerNickname()))
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
+
+        if (event.getPlayer().equals(vm.getLocalPlayerNickname()))
+            titleComponent.setText("Resource setup done.");
     }
 
     @Override
