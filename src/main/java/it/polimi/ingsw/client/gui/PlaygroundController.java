@@ -6,10 +6,13 @@ import it.polimi.ingsw.common.events.vcevents.ReqLeaderAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 import javafx.application.Platform;
 import javafx.css.PseudoClass;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -58,6 +61,8 @@ public abstract class PlaygroundController extends GuiController {
         
         // has to be here so it's in front of every element
         gui.addPauseButton(canvas);
+
+        addLeaderboardsButton();
     }
 
     /**
@@ -249,5 +254,15 @@ public abstract class PlaygroundController extends GuiController {
         playerBoard.addProduceButtons();
 
         // refreshLeaderBoxes();
+    }
+
+    private void addLeaderboardsButton() {
+        Button leaderboardsBtn = new SButton("Leaderboards");
+        leaderboardsBtn.addEventHandler(ActionEvent.ACTION, actionEvent -> {
+            canvas.getChildren().add(new LeaderBoard());
+        });
+        canvas.getChildren().add(leaderboardsBtn);
+        AnchorPane.setTopAnchor(leaderboardsBtn, 10.0);
+        AnchorPane.setLeftAnchor(leaderboardsBtn, 850.0);
     }
 }
