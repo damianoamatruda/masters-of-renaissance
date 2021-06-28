@@ -42,8 +42,7 @@ public abstract class PlaygroundController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
         gui.setPauseHandler(canvas);
-        gui.addPauseButton(canvas);
-
+        
         warehouse = getWarehouse();
         Strongbox strongbox = getStrongBox();
         Production baseProduction = getBaseProduction();
@@ -56,6 +55,9 @@ public abstract class PlaygroundController extends GuiController {
         AnchorPane.setLeftAnchor(playerBoard, 0d);
         AnchorPane.setRightAnchor(playerBoard, 90d);
         canvas.getChildren().add(playerBoard);
+        
+        // has to be here so it's in front of every element
+        gui.addPauseButton(canvas);
     }
 
     /**
