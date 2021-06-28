@@ -35,18 +35,18 @@ public class ResourceContainers extends StringComponent {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (warehouseShelves.size() > 0) {
-            stringBuilder.append(String.format("%s's warehouse shelves:", player)).append("\n");
+            stringBuilder.append(center(String.format("%s's warehouse shelves:", player))).append("\n");
             warehouseShelves.forEach(c ->
-                    stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(cli)));
+                    stringBuilder.append("\n").append(center(new Box(new ResourceContainer(c)).getString(cli))));
         }
         if (depots.size() > 0) {
             stringBuilder.append("\n");
-            stringBuilder.append(String.format("%s's available leader depots:%n", player));
+            stringBuilder.append(center(String.format("%s's available leader depots:%n", player)));
             depots.forEach(c ->
-                    stringBuilder.append("\n").append(new Box(new ResourceContainer(c)).getString(cli)));
+                    stringBuilder.append("\n").append(center(new Box(new ResourceContainer(c)).getString(cli))));
         }
 
-        return center(stringBuilder.toString());
+        return stringBuilder.toString();
     }
 
     private String showStrongbox(Cli cli) {
@@ -55,9 +55,9 @@ public class ResourceContainers extends StringComponent {
         
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(String.format("%n%s's strongbox:", player)).append("\n");
-        stringBuilder.append("\n").append(new Box(new ResourceContainer(strongbox)).getString(cli));
+        stringBuilder.append(center(String.format("%n%s's strongbox:", player))).append("\n");
+        stringBuilder.append("\n").append(center(new Box(new ResourceContainer(strongbox)).getString(cli)));
 
-        return center(stringBuilder.toString());
+        return stringBuilder.toString();
     }
 }
