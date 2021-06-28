@@ -35,6 +35,8 @@ public class SetupResourcesController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
 
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
+    private final int choosableCount = gui.getViewModel()
+            .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
     private List<ReducedResourceType> choosableResources;
     @FXML
     private BorderPane canvas;
@@ -66,12 +68,16 @@ public class SetupResourcesController extends GuiController {
             Resource r = new Resource(res.getName());
 
             r.setOnDragDetected((event) -> {
-                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                        ClipboardContent content = new ClipboardContent();
-                        content.putImage(r.getImage());
-                        db.setContent(content);
-                        event.consume();
-                    }
+                if (selection.values().stream().flatMap(m -> m.values().stream()).reduce(0, Integer::sum) >= choosableCount) {
+                    event.consume();
+                    return;
+                }
+                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(r.getImage());
+                    db.setContent(content);
+                    event.consume();
+                }
             );
 
             resourceTypesContainer.getChildren().add(r);
@@ -189,10 +195,8 @@ public class SetupResourcesController extends GuiController {
      * Refresh of the Choose button, disabling it if the count of chosen resources does not match.
      */
     private void updateChoiceButton() {
-        int count = selection.keySet().stream()
-                .mapToInt(k -> selection.get(k).keySet().stream().mapToInt(h -> selection.get(k).get(h)).sum()).sum();
-        choiceButton.setDisable(count != gui.getViewModel()
-                .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources());
+        int count = selection.values().stream().flatMap(m -> m.values().stream()).reduce(0, Integer::sum);
+        choiceButton.setDisable(count != choosableCount);
     }
 
     /**
