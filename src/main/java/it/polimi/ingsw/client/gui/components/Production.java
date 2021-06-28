@@ -179,6 +179,8 @@ public class Production extends StackPane {
         AnchorPane pane = new AnchorPane();
         SButton activate = new SButton("Produce");
         activate.setOnAction(event -> onProduce.accept(this, this));
+        activate.setScaleX(1.2);
+        activate.setScaleY(1.2);
         pane.getChildren().add(activate);
         AnchorPane.setLeftAnchor(activate, 25d);
         AnchorPane.setBottomAnchor(activate, -50d);

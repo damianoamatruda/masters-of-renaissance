@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -60,6 +61,7 @@ public class Playerboard extends HBox {
         VBox middleBox = new VBox();
         middleBox.setAlignment(Pos.CENTER);
         middleBox.setSpacing(30);
+        middleBox.setPadding(new Insets(0, 0, 0, 20));
         board.add(middleBox, 2, 1);
 
         // inkwell
@@ -67,7 +69,7 @@ public class Playerboard extends HBox {
             ImageView inkwell = new ImageView(new Image("/assets/gui/playerboard/inkwell.png"));
 //            inkwell.setScaleX(0.3);
 //            inkwell.setScaleY(0.3);
-            inkwell.setFitHeight(100);
+            inkwell.setFitHeight(120);
             inkwell.setFitWidth(100);
             middleBox.getChildren().add(inkwell);
         }
