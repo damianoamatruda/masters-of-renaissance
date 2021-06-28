@@ -83,7 +83,7 @@ public class SetupResourcesController extends GuiController {
             resourceTypesContainer.getChildren().add(r);
         });
 
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getLocalPlayerNickname()), (s1, s2) -> {
+        warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()), (s1, s2) -> {
             warehouse.setWaitingForSwap(s1, s2);
             gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
         });

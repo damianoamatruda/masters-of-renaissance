@@ -202,13 +202,13 @@ public abstract class PlaygroundController extends GuiController {
     public void on(UpdateResourceContainer event) {
         super.on(event);
         if (!vm.isCurrentPlayer())
-            Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> {
+            Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
             }));
     }
 
     protected Warehouse getWarehouse() {
         Warehouse warehouse = new Warehouse();
-        warehouse.setWarehouseShelves(vm.getPlayerShelves(vm.getCurrentPlayer()), (s1, s2) -> {
+        warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
             warehouse.setWaitingForSwap(s1, s2);
             gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
         });
