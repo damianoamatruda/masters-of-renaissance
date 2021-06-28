@@ -39,7 +39,7 @@
     <HBox alignment="CENTER" spacing="40">
       <SButton fx:id="back" text="Back"/>
       <SButton fx:id="next" text="Next" defaultButton="true"/>
-      <SButton fx:id="submit" text="Submit" defaultButton="true"/>
+      <SButton fx:id="submit" text="Activate" defaultButton="true"/>
     </HBox>
   </bottom>
 </fx:root>

@@ -14,7 +14,7 @@
     <HBox fx:id="resourcesBox" layoutX="104.0" layoutY="585.0" prefHeight="100.0" prefWidth="880.0"
           AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="20.0"/>
     <SButton fx:id="submitBtn" AnchorPane.leftAnchor="70.0" AnchorPane.bottomAnchor="10.0" layoutX="824.0"
-             layoutY="697.0" mnemonicParsing="false" text="Submit"/>
+             layoutY="697.0" mnemonicParsing="false" text="Buy"/>
     <SButton fx:id="back" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" text="Back" layoutX="1100.0"
              layoutY="697.0"/>
 </AnchorPane>
