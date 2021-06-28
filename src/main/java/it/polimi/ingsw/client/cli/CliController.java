@@ -387,7 +387,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().printf("Player %s became %s.%n", event.getPlayer(), event.isActive() ? "active" : "inactive");
+        cli.getOut().printf("Player %s %s.%n", event.getPlayer(), event.isActive() ? "reconnected" : "disconnected");
     }
 
     @Override
