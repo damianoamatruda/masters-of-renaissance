@@ -215,8 +215,12 @@ public class Gui extends Application {
 
     public void addPauseButton(Pane scene) {
         Button pause = new SButton("Pause");
-        pause.addEventHandler(ActionEvent.ACTION, actionEvent ->
-                root.getChildren().add(new PauseMenu()));
+        if (pauseMenu == null)
+            pauseMenu = new PauseMenu();
+        pause.addEventHandler(ActionEvent.ACTION, actionEvent -> {
+            if (!root.getChildren().contains(pauseMenu))
+                root.getChildren().add(pauseMenu);
+        });
         scene.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 10.0);
         AnchorPane.setLeftAnchor(pause, 10.0);
