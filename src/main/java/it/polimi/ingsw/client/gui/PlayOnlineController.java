@@ -34,7 +34,10 @@ public class PlayOnlineController extends GuiController {
             host = args[0];
             port = Integer.parseInt(args[1]);
         } catch (ArrayIndexOutOfBoundsException e) {
-            gui.reloadScene("Connection error", String.format("%s is not a valid pair IP:port.", server.getText()));
+            if (server.getText().isBlank())
+                gui.reloadScene("Connection error", "Server address is blank.");
+            else
+                gui.reloadScene("Connection error", String.format("%s is not a valid pair IP:port.", server.getText()));
             return;
         } catch (NumberFormatException e) {
             gui.reloadScene("Connection error", String.format("Port %s is not a valid port.", args[1]));
