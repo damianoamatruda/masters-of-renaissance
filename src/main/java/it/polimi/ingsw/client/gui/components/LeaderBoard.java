@@ -38,6 +38,21 @@ public class LeaderBoard extends StackPane {
             throw new RuntimeException(exception);
         }
 
+        createLeaderboardTable(content);
+
+        addBackHandler();
+    }
+
+    /**
+     * Sets handler to back button.
+     */
+    private void addBackHandler() {
+        back.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
+            ((Pane) getParent()).getChildren().remove(this);
+        });
+    }
+
+    public void createLeaderboardTable(TableView<LeaderBoardEntry> content) {
         ViewModel viewModel = Gui.getInstance().getViewModel();
 
         TableColumn playerColumn = new TableColumn("Player");
@@ -71,8 +86,6 @@ public class LeaderBoard extends StackPane {
         content.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         content.setMaxHeight(42 * (content.getItems().size() + 1.01));
-
-        addBackHandler();
     }
 
     /**
@@ -94,12 +107,5 @@ public class LeaderBoard extends StackPane {
         public int getPoints() {
             return points;
         }
-    }
-
-    private void addBackHandler() {
-        back.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
-            ((Pane) getParent()).getChildren().remove(this);
-        });
-
     }
 }

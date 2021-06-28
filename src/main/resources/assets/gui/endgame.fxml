@@ -10,19 +10,20 @@
             fx:controller="it.polimi.ingsw.client.gui.EndgameController"
             maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
   <center>
-    <VBox alignment="CENTER">
+    <VBox alignment="CENTER" maxWidth="-Infinity">
       <VBox.margin>
         <Insets bottom="40.0"/>
       </VBox.margin>
-      <Text fx:id="outcome" textAlignment="CENTER"/>
-      <VBox.margin>
-        <Insets top="20.0"/>
-      </VBox.margin>
-      <Text/>
-      <LeaderBoard fx:id="leaderboard"/>
-      <VBox.margin>
-        <Insets top="8.0"/>
-      </VBox.margin>
+        <Text fx:id="outcome" textAlignment="CENTER"/>
+        <VBox.margin>
+          <Insets top="20.0"/>
+        </VBox.margin>
+        <Text/>
+        <VBox fx:id="leaderboard" alignment="CENTER" spacing="10">
+          <VBox.margin>
+            <Insets bottom="20.0"/>
+          </VBox.margin>
+        </VBox>
       <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit to title"/>
       <padding>
         <Insets bottom="80.0"/>
