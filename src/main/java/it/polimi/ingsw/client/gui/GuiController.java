@@ -117,7 +117,10 @@ public abstract class GuiController extends UiController implements Initializabl
             msg = msg.concat("Missing development cards:\n");
     
             for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
-                msg = msg.concat(String.format("Color: %s, level: %d, missing: %d\n", e.getColor(), e.getLevel(), e.getAmount()));
+                msg = msg.concat(String.format("Color: %s, level: %s, missing: %d\n",
+                        e.getColor(),
+                        e.getLevel() == 0 ? "any level": String.valueOf(e.getLevel()),
+                        e.getAmount()));
         } else {
             msg = msg.concat("Missing resources:\n");
 
