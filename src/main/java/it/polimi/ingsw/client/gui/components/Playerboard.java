@@ -62,8 +62,10 @@ public class Playerboard extends HBox {
         VBox middleBox = new VBox();
         middleBox.setAlignment(Pos.CENTER);
         middleBox.setSpacing(30);
-//        middleBox.setPadding(new Insets(0, 0, 0, 20));
-        board.add(middleBox, 2, 1);
+        board.add(middleBox, 3, 1);
+
+//        middleBox.setBorder(new Border(new BorderStroke(Color.RED,
+//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
         // inkwell
         if(hasInkwell) {
