@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
@@ -13,6 +15,7 @@ public class Ui extends View {
     private Network client;
     private UiController controller;
     private InputStream gameConfigStream;
+    private byte[] config;
     private boolean offline;
 
     public Ui() {
@@ -40,6 +43,19 @@ public class Ui extends View {
 
     public void setGameConfigStream(InputStream gameConfigStream) {
         this.gameConfigStream = gameConfigStream;
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[16777216];
+
+        int byteCount;
+        try {
+            while ((byteCount = gameConfigStream.read(buffer)) != -1)
+                baos.write(buffer, 0, byteCount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.config = baos.toByteArray();
     }
 
     public boolean isOffline() {
@@ -48,7 +64,7 @@ public class Ui extends View {
 
     public void openOfflineClient() {
         closeClient();
-        client = new OfflineClient(this, gameConfigStream);
+        client = new OfflineClient(this, config == null ? null : new ByteArrayInputStream(config));
         client.open();
         offline = true;
         viewModel = new ViewModel();
