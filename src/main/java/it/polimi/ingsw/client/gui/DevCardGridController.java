@@ -311,9 +311,15 @@ public class DevCardGridController extends GuiController {
                             selectedColor, selectedLevel));
         else {
             int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue()).map(ReducedDevCard::getLevel).orElse(0);
-            gui.reloadScene("Error buying development card",
-                    String.format("Cannot place development card in slot %d: card level %d, slot level %d is insufficient (has to be %d).",
-                            devSlotChoicePicker.getValue(), selectedLevel, slotLevel, slotLevel + 1));
+            int maxLevel = slotLevel > selectedLevel ? slotLevel : selectedLevel;
+
+            String insMsg = String.format("is insufficient (has to be %d).", maxLevel + 1);
+            String errMsg = String.format("Cannot place development card in slot %d: card level %d%s, slot level %d%s.",
+                    devSlotChoicePicker.getValue(),
+                    selectedLevel, slotLevel >= selectedLevel ? insMsg : "",
+                    slotLevel, slotLevel < selectedLevel ? insMsg : "");
+
+            gui.reloadScene("Error buying development card", errMsg);
         }
     }
 

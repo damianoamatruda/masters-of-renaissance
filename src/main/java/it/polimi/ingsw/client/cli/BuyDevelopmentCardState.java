@@ -157,9 +157,15 @@ public class BuyDevelopmentCardState extends CliController {
                     "Cannot buy development card with color %s and level %d: deck is empty.", color, level)));
         else {
             int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(slot).map(ReducedDevCard::getLevel).orElse(0);
-            cli.reloadController(center(String.format(
-                    "Cannot place development card in slot %d: card level %d, slot level %d is insufficient (has to be %d).",
-                    slot, level, slotLevel, slotLevel + 1)));
+            int maxLevel = slotLevel > level ? slotLevel : level;
+
+            String insMsg = String.format("is insufficient (has to be %d).", maxLevel + 1);
+            String errMsg = String.format("Cannot place development card in slot %d: card level %d%s, slot level %d%s.",
+                    slot,
+                    level, slotLevel >= level ? insMsg : "",
+                    slotLevel, slotLevel < level ? insMsg : "");
+            
+            cli.reloadController(center(errMsg));
         }
     }
 
