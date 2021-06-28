@@ -9,9 +9,9 @@
           AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
     <BorderPane fx:id="warehousePane" layoutX="640.0" layoutY="20.0" prefHeight="400.0" prefWidth="620.0"
           AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0"/>
-    <HBox fx:id="leaderCardsBox" alignment="CENTER" prefHeight="300.0" prefWidth="384.0" AnchorPane.bottomAnchor="20.0"
+    <HBox fx:id="leaderCardsBox" alignment="CENTER" spacing="10" prefHeight="300.0" prefWidth="384.0" AnchorPane.bottomAnchor="20.0"
           AnchorPane.rightAnchor="20.0"/>
-    <HBox fx:id="resourcesBox" layoutX="104.0" layoutY="585.0" prefHeight="100.0" prefWidth="880.0"
+    <HBox fx:id="resourcesBox" alignment="CENTER" layoutX="104.0" layoutY="585.0" prefHeight="100.0" prefWidth="880.0"
           AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="20.0"/>
     <SButton fx:id="submitBtn" AnchorPane.leftAnchor="70.0" AnchorPane.bottomAnchor="10.0" layoutX="824.0"
              layoutY="697.0" mnemonicParsing="false" text="Buy"/>

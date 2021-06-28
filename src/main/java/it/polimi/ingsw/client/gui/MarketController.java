@@ -364,9 +364,8 @@ public class MarketController extends GuiController {
                 }).toList();
 
         List<VBox> content = leaderCards.stream().map(l -> {
-            VBox vbox = new VBox();
+            VBox vbox = new VBox(10);
             vbox.setAlignment(Pos.CENTER);
-            vbox.setSpacing(0.5);
             vbox.getChildren().add(l);
             if (l.getLeaderType() == LeaderType.ZERO) {
                 SButton replace = new SButton("Replace a Zero");
@@ -384,9 +383,7 @@ public class MarketController extends GuiController {
     }
 
     private boolean replaceBlank(String resourceType) {
-        Optional<Node> blank = resourcesBox.getChildren().stream().filter(r -> ((Resource) r).isBlank()).findFirst();
-
-        blank.ifPresent(node -> {
+        resourcesBox.getChildren().stream().filter(r -> ((Resource) r).isBlank()).findFirst().ifPresent(node -> {
             Platform.runLater(() -> {
                 Resource replacement = new Resource(resourceType);
                 setDragAndDropSource(replacement);

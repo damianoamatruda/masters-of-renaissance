@@ -7,7 +7,7 @@
          minWidth="-Infinity"
          prefHeight="200.0" prefWidth="300.0" type="StackPane" xmlns="http://javafx.com/javafx/16">
   <ImageView fx:id="background" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"/>
-  <GridPane fx:id="grid">
+  <GridPane fx:id="grid" hgap="3" vgap="3">
     <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
     </columnConstraints>
