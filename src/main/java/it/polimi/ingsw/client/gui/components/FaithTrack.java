@@ -25,6 +25,7 @@ public class FaithTrack extends HBox {
     Map<Integer, FaithTile> tiles = new HashMap<>();
     private final VBox tilesBox = new VBox();
     private final VBox popesFavors = new VBox();
+    private HashMap<String, ImageView> markers = new HashMap<>();
 
     /**
      * Class constructor.
@@ -93,7 +94,7 @@ public class FaithTrack extends HBox {
         if(vm.getPlayerNicknames().size() == 1)
             updateBlackMarker(vm.getBlackCrossFP(), -1);
 
-        updatePlayerMarker(vm.getPlayerFaithPoints(vm.getCurrentPlayer()), -1);
+        vm.getPlayerNicknames().forEach(nick -> updatePlayerMarker(nick, vm.getPlayerFaithPoints(nick), -1));
 //        if(!vm.getLocalPlayerNickname().equals(vm.getCurrentPlayer()))
 //            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
 
@@ -145,12 +146,13 @@ public class FaithTrack extends HBox {
     /**
      * Updates the position of the player's faith marker.
      *
+     * @param player
      * @param faithPoints the updated player's faith points
      * @param oldPoints   the player's faith points before moving (used to remove marker from old tile)
      */
-    public void updatePlayerMarker(int faithPoints, int oldPoints) {
-        if (oldPoints >= 0) tiles.get(oldPoints).removePlayerMarker();
-        tiles.get(Integer.min(faithPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addPlayerMarker();
+    public void updatePlayerMarker(String player, int faithPoints, int oldPoints) {
+        if (oldPoints >= 0) tiles.get(oldPoints).removePlayerMarker(player, markers);
+        tiles.get(Integer.min(faithPoints, Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getMaxFaith())).addPlayerMarker(player, markers);
         setPopesFavors();
     }
 

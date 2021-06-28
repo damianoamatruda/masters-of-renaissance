@@ -134,7 +134,7 @@ public abstract class PlaygroundController extends GuiController {
     public void on(UpdateFaithPoints event) {
         int oldPoints = !event.isBlackCross() ? vm.getPlayerFaithPoints(event.getPlayer()) : vm.getBlackCrossFP();
         super.on(event);
-        if (event.getPlayer().equals(vm.getCurrentPlayer()) && oldPoints < vm.getFaithTrack().orElseThrow().getMaxFaith())
+        if (oldPoints < vm.getFaithTrack().orElseThrow().getMaxFaith())
             Platform.runLater(() -> playerBoard.updateFaithPoints(event, oldPoints));
     }
 

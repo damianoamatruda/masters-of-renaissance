@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 /** Gui component representing a single Faith Track tile. */
@@ -80,25 +81,31 @@ public class FaithTile extends StackPane {
 
     /**
      * Sets and displays the player's faith marker.
+     *
+     * @param player the player represented by the marker
+     * @param markers
      */
-    public void addPlayerMarker() {
+    public void addPlayerMarker(String player, HashMap<String, ImageView> markers) {
         ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/faithmarker.png"));
 
-        setMarkerColor(marker);
+        setMarkerColor(marker, player);
 
         marker.setScaleX(bg.getScaleX() / 1.5);
         marker.setScaleY(bg.getScaleY() / 1.5);
         this.getChildren().add(marker);
+
+        markers.put(player, marker);
     }
 
     /**
      * Sets a custom color to the player's faith marker.
      *
      * @param marker the player's faith marker
+     * @param player the player from which color will be determined
      */
-    private void setMarkerColor(ImageView marker) {
+    private void setMarkerColor(ImageView marker, String player) {
         ViewModel vm = Gui.getInstance().getViewModel();
-        vm.getClientGuiColor(vm.getCurrentPlayer()).ifPresent(hex -> {
+        vm.getClientGuiColor(player).ifPresent(hex -> {
 
             marker.setClip(new ImageView(marker.getImage()));
 
@@ -136,9 +143,13 @@ public class FaithTile extends StackPane {
 
     /**
      * Removes the player's faith marker (used when it has to be updated to a new position).
+     *
+     * @param player
+     * @param markers
      */
-    public void removePlayerMarker() {
-        this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("faithmarker"));
+    public void removePlayerMarker(String player, HashMap<String, ImageView> markers) {
+        this.getChildren().remove(markers.get(player));
+        markers.remove(player);
     }
 
     /**
