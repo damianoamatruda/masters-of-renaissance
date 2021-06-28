@@ -306,20 +306,20 @@ public class DevCardGridController extends GuiController {
     @Override
     public void on(ErrBuyDevCard event) {
         if (event.isStackEmpty())
-            gui.reloadScene("Error buying development card",
-                    String.format("Cannot buy development card with color %s and level %d: deck is empty.",
+            gui.reloadScene("You cannot buy the development card",
+                    String.format("You cannot buy the development card with color %s and level %d: deck is empty.",
                             selectedColor, selectedLevel));
         else {
             int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(devSlotChoicePicker.getValue()).map(ReducedDevCard::getLevel).orElse(0);
-            int maxLevel = slotLevel > selectedLevel ? slotLevel : selectedLevel;
+            int maxLevel = Math.max(slotLevel, selectedLevel);
 
-            String insMsg = String.format("is insufficient (has to be %d).", maxLevel + 1);
-            String errMsg = String.format("Cannot place development card in slot %d: card level %d%s, slot level %d%s.",
+            String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel + 1);
+            String errMsg = String.format("You cannot place the development card into slot %d: card level %d%s, slot level %d%s.",
                     devSlotChoicePicker.getValue(),
                     selectedLevel, slotLevel >= selectedLevel ? insMsg : "",
                     slotLevel, slotLevel < selectedLevel ? insMsg : "");
 
-            gui.reloadScene("Error buying development card", errMsg);
+            gui.reloadScene("You cannot buy the development card", errMsg);
         }
     }
 

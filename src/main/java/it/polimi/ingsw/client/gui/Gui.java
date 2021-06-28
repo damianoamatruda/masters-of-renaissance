@@ -164,10 +164,7 @@ public class Gui extends Application {
             - a reloadRoot(Callback) that would call setRoot(currentRoot, callback)
                 Discarded, since the runLater methods wouldn't get executed in order and
                 the Alert would be visible for only a split second */
-        Platform.runLater(() -> {
-            root.getChildren().add(
-                    new Alert(title, content, () -> setScene(currentScene, callback)));
-        });
+        Platform.runLater(() -> root.getChildren().add(new Alert(title, content, () -> setScene(currentScene, callback))));
     }
 
     /**

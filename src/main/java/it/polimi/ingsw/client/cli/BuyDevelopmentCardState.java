@@ -111,7 +111,7 @@ public class BuyDevelopmentCardState extends CliController {
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
             valid.set(true);
-            cli.promptInt("Slot (leftmost = 0)").ifPresentOrElse(slot -> {
+            cli.promptInt("Slot").ifPresentOrElse(slot -> {
                 isExitingState.set(false);
                 if (slot < 1 || slot > vm.getSlotsCount()) {
                     valid.set(false);
@@ -134,7 +134,7 @@ public class BuyDevelopmentCardState extends CliController {
                 }
 
                 if (!isExitingState.get())
-                    cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot, this.shelves));
+                    cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot - 1, this.shelves));
             }, () -> chooseLevel(cli));
         }
     }
@@ -154,17 +154,17 @@ public class BuyDevelopmentCardState extends CliController {
     public void on(ErrBuyDevCard event) {
         if (event.isStackEmpty())
             cli.reloadController(center(String.format(
-                    "Cannot buy development card with color %s and level %d: deck is empty.", color, level)));
+                    "You cannot buy the development card with color %s and level %d: deck is empty.", color, level)));
         else {
             int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname()).get(slot).map(ReducedDevCard::getLevel).orElse(0);
-            int maxLevel = slotLevel > level ? slotLevel : level;
+            int maxLevel = Math.max(slotLevel, level);
 
-            String insMsg = String.format("is insufficient (has to be %d).", maxLevel + 1);
-            String errMsg = String.format("Cannot place development card in slot %d: card level %d%s, slot level %d%s.",
+            String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel + 1);
+            String errMsg = String.format("Cannot place the development card into slot %d: card level %d%s, slot level %d%s.",
                     slot,
                     level, slotLevel >= level ? insMsg : "",
                     slotLevel, slotLevel < level ? insMsg : "");
-            
+
             cli.reloadController(center(errMsg));
         }
     }

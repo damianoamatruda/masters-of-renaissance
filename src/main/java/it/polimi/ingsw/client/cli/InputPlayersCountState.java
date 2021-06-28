@@ -45,7 +45,7 @@ public class InputPlayersCountState extends CliController {
         if (event.isInvalidPlayersCount())
             cli.reloadController("Invalid players count.");
         else {
-            cli.getOut().println("You cannot choose the players' number for this match.");
+            cli.getOut().println("You cannot choose the players' count for this match.");
             setNextState();
         }
     }

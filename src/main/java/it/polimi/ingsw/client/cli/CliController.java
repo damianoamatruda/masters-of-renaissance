@@ -59,18 +59,14 @@ public abstract class CliController extends UiController implements Renderable {
 
         switch (event.getReason()) {
             case LATE_SETUP_ACTION -> {
-                cli.getOut().println(
-                        center("Setup phase is concluded, advancing to game turns."));
-
+                cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
                     cli.setController(new TurnBeforeActionState(), true);
                 else
                     cli.setController(new WaitingAfterTurnState(), true);
             }
             case EARLY_MANDATORY_ACTION -> {
-                cli.getOut().println(
-                        center("A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase."));
-
+                cli.getOut().println(center("Setup phase is not concluded yet. Returning to setup phase."));
                 if (!isLocalLeaderSetupDone())
                     cli.setController(new SetupLeadersState(), true);
                 else if (!isLocalResourceSetupDone())
@@ -79,27 +75,19 @@ public abstract class CliController extends UiController implements Renderable {
                     setNextState();
             }
             case LATE_MANDATORY_ACTION -> {
-                cli.getOut().println(
-                        center("A mandatory action has already been executed, advancing to optional actions."));
-
+                cli.getOut().println(center("You have already done a mandatory action. Advancing to optional actions."));
                 cli.setController(new TurnAfterActionState(), true);
             }
             case EARLY_TURN_END -> {
-                cli.getOut().println(
-                        center("A mandatory action needs to be executed before ending the turn."));
-
+                cli.getOut().println(center("You cannot end the turn yet. A mandatory action needs to be done before ending the turn."));
                 cli.setController(new TurnBeforeActionState(), true);
             }
             case GAME_ENDED -> {
-                cli.getOut().println(
-                        center("The match is finished, advancing to ending screen."));
-
+                cli.getOut().println(center("The game has ended. Advancing to ending screen."));
                 cli.setController(new GameEndState(), true);
             }
             case NOT_CURRENT_PLAYER -> {
-                cli.getOut().println(
-                        center("You are not the current player. Please wait for your turn."));
-
+                cli.getOut().println(center("You are not the current player. Please wait for your turn."));
                 cli.setController(new WaitingAfterTurnState(), true);
             }
         }
@@ -117,23 +105,25 @@ public abstract class CliController extends UiController implements Renderable {
 
     @Override
     public void on(ErrCardRequirements event) {
-        String msg = "\nError activating leader card. Unsatisfied requirements:\n";
-        if (event.getMissingDevCards().isPresent()) {
-            msg = msg.concat("Missing development cards:\n");
+        cli.reloadController("You cannot activate the leader card. " +
+                event.getMissingDevCards().map(missingDevCards -> {
+                    StringBuilder msg = new StringBuilder("Missing development cards:\n\n");
 
-            for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
-                msg = msg.concat(String.format("Color: %s, level: %s, missing: %d\n",
-                        e.getColor(),
-                        e.getLevel() == 0 ? "any level": String.valueOf(e.getLevel()),
-                        e.getAmount()));
-        } else {
-            msg = msg.concat("Missing resources:\n");
+                    for (ReducedDevCardRequirementEntry e : missingDevCards)
+                        msg.append(String.format("%s %s × %d\n",
+                                e.getColor(),
+                                e.getLevel() == 0 ? "any level" : String.format("level %d", e.getLevel()),
+                                e.getAmount()));
 
-            for (Map.Entry<String, Integer> e : event.getMissingResources().get().entrySet())
-                msg = msg.concat(String.format("Resource type: %s, missing %d\n", e.getKey(), e.getValue()));
-        }
+                    return msg.toString();
+                }).orElse(event.getMissingResources().map(missingResources -> {
+                    StringBuilder msg = new StringBuilder("Missing resources:\n\n");
 
-        cli.reloadController(msg);
+                    for (Map.Entry<String, Integer> e : missingResources.entrySet())
+                        msg.append(String.format("%s × %d\n", e.getKey(), e.getValue()));
+
+                    return msg.toString();
+                }).orElse("")));
     }
 
     @Override
@@ -198,9 +188,9 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrResourceReplacement event) {
         super.on(event);
 
-        cli.reloadController(String.format("Error validating transaction request %s: %s resource found.",
+        cli.reloadController(String.format("Invalid transaction %s: %s resource given.",
                 event.isInput() ? "input" : "output",
-                event.isNonStorable() ? "nonstorable" : "excluded"));
+                event.isNonStorable() ? "non-storable" : "excluded"));
     }
 
     @Override
@@ -211,15 +201,13 @@ public abstract class CliController extends UiController implements Renderable {
             case BOUNDED_RESTYPE_DIFFER -> event.getResType() != null ?
                     "shelf's binding resource type is different from transferring resource" :
                     "multiple resource types cannot be bound to the same shelf";
-            case NON_STORABLE -> "resource type is not storable";
+            case NON_STORABLE -> "resource is not storable";
             case CAPACITY_REACHED -> "shelf's capacity boundaries reached";
             case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
         };
 
-        cli.reloadController(String.format("Error %s resource %s%s container: %s.",
-                event.isAdded() ? "adding" : "removing",
-                event.getResType() == null ? "" : event.getResType(),
-                event.isAdded() ? " to" : " from",
+        cli.reloadController(String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container:",
+                event.getResType() == null ? "" : String.format(" %s", event.getResType()), // TODO: Create error for this
                 reason));
     }
 

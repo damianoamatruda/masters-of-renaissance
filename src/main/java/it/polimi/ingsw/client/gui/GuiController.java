@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
@@ -28,35 +27,30 @@ public abstract class GuiController extends UiController implements Initializabl
 
     /**
      * Sets the next state based on the following algorithm:
-     * 
-     * UpdateGame tells the client whether the game's setup phase is still ongoing or not.
-     * If the setup is done, the client needs to wait until UpdateCurrentPlayer to know which state to change to.
-     * If the setup phase is not done:
-     * The local player's UpdatePlayer tells the client what part of the player setup to switch to.
-     * If the leaders hand still needs to be chosen the client will need to wait for UpdateLeadersHand.
+     * <p>
+     * UpdateGame tells the client whether the game's setup phase is still ongoing or not. If the setup is done, the
+     * client needs to wait until UpdateCurrentPlayer to know which state to change to. If the setup phase is not done:
+     * The local player's UpdatePlayer tells the client what part of the player setup to switch to. If the leaders hand
+     * still needs to be chosen the client will need to wait for UpdateLeadersHand.
      */
-    protected void setNextState(Consumer<GuiController> callback) {
+    protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
             vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
                 if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
-                    !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty()) { // setup is done
+                        !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty()) { // setup is done
                     if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
+                        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
                     else
-                        gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
+                        gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
                 } else // setup not done
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
-                            gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"), callback);
+                            gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
                         else if (isResourceSetupAvailable())
-                            gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"), callback);
+                            gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"));
                     });
             });
         });
-    }
-
-    protected void setNextState() {
-        setNextState(null);
     }
 
     @FXML
@@ -67,33 +61,31 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(ErrAction event) {
         super.on(event);
 
-        String title = "Action error";
-
         switch (event.getReason()) {
-            case LATE_SETUP_ACTION -> setNextState(controller ->
-                    gui.getRoot().getChildren().add(
-                            new Alert(title,
-                                    "Setup phase is concluded, advancing to game turns.")));
-            case EARLY_MANDATORY_ACTION -> setNextState(controller ->
-                    gui.getRoot().getChildren().add(
-                            new Alert(title,
-                                    "A mandatory action is trying to be executed before the setup phase is concluded, returning to setup phase.")));
-            case LATE_MANDATORY_ACTION -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
-                    gui.getRoot().getChildren().add(
-                            new Alert(title,
-                                    "A mandatory action has already been executed, advancing to optional actions.")));
-            case EARLY_TURN_END -> gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), (PlaygroundBeforeActionController c) ->
-                    gui.getRoot().getChildren().add(
-                            new Alert(title,
-                                    "A mandatory action needs to be executed before ending the turn.")));
-            case GAME_ENDED -> gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"), (EndgameController c) ->
-                    gui.getRoot().getChildren().add(
-                            new Alert(title,
-                                    "The match is finished, advancing to ending screen.")));
-            case NOT_CURRENT_PLAYER -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), (WaitingForTurnController c) ->
-                    gui.getRoot().getChildren().add(
-                            new Alert(title,
-                                    "You are not the current player. Please wait for your turn.")));
+            case LATE_SETUP_ACTION -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "Setup phase is concluded",
+                    "Advancing to game turns.",
+                    this::setNextState)));
+            case EARLY_MANDATORY_ACTION -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "Setup phase is not concluded yet",
+                    "Returning to setup phase.",
+                    this::setNextState)));
+            case LATE_MANDATORY_ACTION -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "You have already done a mandatory action",
+                    "Advancing to optional actions.",
+                    () -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml")))));
+            case EARLY_TURN_END -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "You cannot end the turn yet",
+                    "A mandatory action needs to be done before ending the turn.",
+                    () -> gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml")))));
+            case GAME_ENDED -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "The game has ended",
+                    "Advancing to ending screen.",
+                    () -> gui.setScene(getClass().getResource("/assets/gui/endgame.fxml")))));
+            case NOT_CURRENT_PLAYER -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "You are not the current player",
+                    "Please wait for your turn.",
+                    () -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml")))));
         }
     }
 
@@ -112,25 +104,25 @@ public abstract class GuiController extends UiController implements Initializabl
 
     @Override
     public void on(ErrCardRequirements event) {
-        String msg = "\nUnsatisfied requirements:\n";
-        if (event.getMissingDevCards().isPresent()) {
-            msg = msg.concat("Missing development cards:\n");
-    
-            for (ReducedDevCardRequirementEntry e : event.getMissingDevCards().get())
-                msg = msg.concat(String.format("Color: %s, level: %s, missing: %d\n",
-                        e.getColor(),
-                        e.getLevel() == 0 ? "any level": String.valueOf(e.getLevel()),
-                        e.getAmount()));
-        } else {
-            msg = msg.concat("Missing resources:\n");
+        gui.reloadScene("You cannot activate the leader card",
+                event.getMissingDevCards().map(missingDevCards -> {
+                    StringBuilder msg = new StringBuilder("Missing development cards:\n\n");
 
-            for (Map.Entry<String, Integer> e : event.getMissingResources().get().entrySet())
-                msg = msg.concat(String.format("Resource type: %s, missing %d\n", e.getKey(), e.getValue()));
-        }
+                    for (ReducedDevCardRequirementEntry e : missingDevCards)
+                        msg.append(String.format("%s %s × %d\n",
+                                e.getColor(),
+                                e.getLevel() == 0 ? "any level" : String.format("level %d", e.getLevel()),
+                                e.getAmount()));
 
-        String content = msg;
+                    return msg.toString();
+                }).orElse(event.getMissingResources().map(missingResources -> {
+                    StringBuilder msg = new StringBuilder("Missing resources:\n\n");
 
-        gui.reloadScene("Error activating leader card", content);
+                    for (Map.Entry<String, Integer> e : missingResources.entrySet())
+                        msg.append(String.format("%s × %d\n", e.getKey(), e.getValue()));
+
+                    return msg.toString();
+                }).orElse("")));
     }
 
     @Override
@@ -203,7 +195,7 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
 
         gui.reloadScene("Resource replacement error",
-                String.format("Error validating transaction request %s: %s resource found.",
+                String.format("Invalid transaction %s: %s resource found.",
                         event.isInput() ? "input" : "output",
                         event.isNonStorable() ? "nonstorable" : "excluded"));
     }
@@ -221,14 +213,12 @@ public abstract class GuiController extends UiController implements Initializabl
             case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
         };
 
-        gui.reloadScene("Resource transfer error",
-                String.format("Error %s resource %s container: %s.",
-                        event.isAdded() ? "adding" : "removing",
-                        event.getResType() == null ? "" : event.getResType(),
-                        event.isAdded() ? " to" : " from",
+        gui.reloadScene("You cannot move the resources",
+                String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container:",
+                        event.getResType() == null ? "" : String.format(" %s", event.getResType()), // TODO: Create error for this
                         reason));
     }
-    
+
     @Override
     public void on(ErrServerUnavailable event) {
         super.on(event);
@@ -270,10 +260,12 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        while (alertLock.get() == false)
+        while (!alertLock.get()) {
             try {
                 alertLock.wait();
-            } catch (InterruptedException ignored) { }
+            } catch (InterruptedException ignored) {
+            }
+        }
 
         setNextState();
     }

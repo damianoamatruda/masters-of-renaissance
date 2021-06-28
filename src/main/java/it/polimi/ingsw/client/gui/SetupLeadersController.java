@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseLeaders;
+import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -106,7 +107,7 @@ public class SetupLeadersController extends GuiController {
            accepting it as a universal source of truth. */
         Consumer<? extends GuiController> callback = controller ->
                 gui.getRoot().getChildren().add(
-                        new Alert("Action error", "Setup phase is concluded, advancing to game turns."));
+                        new Alert("Setup phase is concluded", "Advancing to game turns."));
 
         if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
@@ -118,16 +119,18 @@ public class SetupLeadersController extends GuiController {
     public void on(ErrInitialChoice event) {
         if (event.isLeadersChoice()) // if the error is from the initial leaders choice
             if (event.getMissingLeadersCount() == 0) // no leaders missing -> already chosen
-                setNextState(controller ->
-                        gui.getRoot().getChildren().add(
-                                new Alert("Error choosing leader cards", "Leader cards already chosen, advancing to next state.")));
+                Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                        "You cannot choose the leader cards",
+                        "You have already chosen the leader cards.",
+                        this::setNextState)));
             else
-                gui.reloadScene("Error buying development card",
-                        String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
+                gui.reloadScene("You cannot buy the development card",
+                        String.format("You have not chosen enough leaders: %d missing.", event.getMissingLeadersCount()));
         else
-            setNextState(controller ->
-                    gui.getRoot().getChildren().add(
-                            new Alert("Error choosing leader cards", "Initial resources already chosen, advancing to next state.")));
+            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "You cannot choose the leader cards",
+                    "You have already chosen the initial resources.",
+                    this::setNextState)));
     }
 
     @Override

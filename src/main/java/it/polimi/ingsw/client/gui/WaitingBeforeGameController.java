@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/** Gui controller used when waiting for a game after joining a lobby, or to create a new game. */
+/** Gui controller used when waiting for a game after joining a lobby, or to prepare a new game. */
 public class WaitingBeforeGameController extends GuiController {
     @FXML
     private BorderPane canvas;
@@ -50,7 +50,7 @@ public class WaitingBeforeGameController extends GuiController {
     /**
      * Displays the input field for game creation only to the player that has the right to it.
      *
-     * @param canPrepareNewGame true if the player can create a new game
+     * @param canPrepareNewGame true if the player can prepare a new game
      */
     public void setCanPrepareNewGame(String canPrepareNewGame) {
         if (gui.getViewModel().getLocalPlayerNickname().equals(canPrepareNewGame)) {
@@ -76,13 +76,14 @@ public class WaitingBeforeGameController extends GuiController {
     @Override
     public void on(ErrNewGame event) {
         if (event.isInvalidPlayersCount())
-            gui.reloadScene("Error setting players number",
-                    "Invalid number.");
+            gui.reloadScene("You cannot prepare a new game",
+                    "You have given an invalid players' count.");
         else
-            setNextState(controller ->
-                    gui.getRoot().getChildren().add(
-                            new Alert("Error setting players number",
-                                    "You are not allowed to set the players' number for this match.")));
+            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                    "You cannot prepare a new game",
+                    "You are not allowed to prepare a new game.",
+                    this::setNextState
+            )));
     }
 
     @Override
