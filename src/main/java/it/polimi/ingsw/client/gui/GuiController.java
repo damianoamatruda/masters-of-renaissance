@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
+import it.polimi.ingsw.common.events.mvevents.UpdatePlayerStatus;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import javafx.application.Platform;
@@ -12,10 +14,12 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
+    protected final AtomicBoolean alertLock = new AtomicBoolean(true);
     
     public GuiController() {
         super(Gui.getInstance().getUi());
@@ -238,5 +242,33 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
 
         gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
+    }
+
+    @Override
+    public void on(UpdatePlayerStatus event) {
+        super.on(event);
+
+        alertLock.set(false);
+        Platform.runLater(() -> gui.getRoot().getChildren().add(
+                new Alert("Player status change",
+                        String.format("Player %s %s", event.getPlayer(), event.isActive() ? "reconnected" : "disconnected"),
+                        () -> {
+                            alertLock.set(true);
+                            synchronized(alertLock) {
+                                alertLock.notifyAll();
+                            }
+                        })));
+    }
+
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        while (alertLock.get() == false)
+            try {
+                alertLock.wait();
+            } catch (InterruptedException ignored) { }
+
+        setNextState();
     }
 }

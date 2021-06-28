@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.client.gui.components.LeaderCard;
 import it.polimi.ingsw.client.gui.components.Title;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
@@ -135,13 +134,6 @@ public class SetupLeadersController extends GuiController {
     public void on(UpdateAction event) {
         if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
-
-        setNextState();
-    }
-
-    @Override
-    public void on(UpdateCurrentPlayer event) {
-        super.on(event);
 
         setNextState();
     }

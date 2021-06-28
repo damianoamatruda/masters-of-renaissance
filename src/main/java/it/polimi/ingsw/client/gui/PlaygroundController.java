@@ -127,8 +127,13 @@ public abstract class PlaygroundController extends GuiController {
 
     @Override
     public void on(UpdateCurrentPlayer event) {
+        while (alertLock.get() == false)
+            try {
+                alertLock.wait();
+            } catch (InterruptedException ignored) { }
+
         String prevPlayer = vm.getCurrentPlayer();
-        super.on(event);
+        gui.getUi().getController().on(event);
         if (vm.getPlayerNicknames().size() > 1)
             gui.setScene(event.getPlayer().equals(vm.getLocalPlayerNickname())
                     ? getClass().getResource("/assets/gui/playgroundbeforeaction.fxml")
