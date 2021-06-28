@@ -201,7 +201,7 @@ public class SetupResourcesController extends GuiController {
      */
     public void handleChoice() {
         gui.getUi().dispatch(new ReqChooseResources(selection));
-        if(!gui.getUi().isOffline()) {
+        if(!gui.getUi().isOffline() && vm.getPlayerNicknames().size() > 1) {
             waitingText.setVisible(true);
             ((VBox) resourceTypesContainer.getParent()).getChildren().remove(resourceTypesContainer);
             ((VBox) warehouse.getParent()).getChildren().remove(warehouse);

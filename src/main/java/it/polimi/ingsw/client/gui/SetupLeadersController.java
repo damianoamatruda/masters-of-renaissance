@@ -92,7 +92,7 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private void handleChoice() {
         gui.getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
-        if(!gui.getUi().isOffline()) {
+        if(!gui.getUi().isOffline() && vm.getPlayerNicknames().size() > 1){
             waitingText.setVisible(true);
             ((VBox) leadersContainer.getParent()).getChildren().remove(leadersContainer);
             ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
