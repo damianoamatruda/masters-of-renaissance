@@ -73,6 +73,7 @@ public class MarketController extends GuiController {
 
         submitBtn.setDefaultButton(true);
         submitBtn.setOnAction(this::submitPressed);
+        submitBtn.setDisable(true);
 
         back.setOnAction(this::back);
 
@@ -114,6 +115,8 @@ public class MarketController extends GuiController {
 
         resetChoice();
         resetLeaders();
+
+        submitBtn.setDisable(false);
     }
 
     /**
