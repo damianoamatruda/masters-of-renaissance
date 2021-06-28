@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  ingsw-server:
+    image: ingsw-server
+    restart: always
+    ports:
+      - '51015:1234'
