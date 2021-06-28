@@ -117,7 +117,7 @@ public abstract class CliController extends UiController implements Renderable {
 
     @Override
     public void on(ErrCardRequirements event) {
-        String msg = "\nUnsatisfied card requirements:\n";
+        String msg = "\nError activating leader card. Unsatisfied requirements:\n";
         if (event.getMissingDevCards().isPresent()) {
             msg = msg.concat("Missing development cards:\n");
 

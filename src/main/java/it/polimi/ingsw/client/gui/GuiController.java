@@ -112,7 +112,7 @@ public abstract class GuiController extends UiController implements Initializabl
 
     @Override
     public void on(ErrCardRequirements event) {
-        String msg = "\nUnsatisfied card requirements:\n";
+        String msg = "\nUnsatisfied requirements:\n";
         if (event.getMissingDevCards().isPresent()) {
             msg = msg.concat("Missing development cards:\n");
     
@@ -127,7 +127,7 @@ public abstract class GuiController extends UiController implements Initializabl
 
         String content = msg;
 
-        gui.reloadScene("Error buying development card", content);
+        gui.reloadScene("Error activating leader card", content);
     }
 
     @Override

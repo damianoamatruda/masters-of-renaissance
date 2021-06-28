@@ -391,12 +391,6 @@ public class GameContext extends AsynchronousEventDispatcher {
         } catch (EmptyStackException e) {
             dispatch(new ErrBuyDevCard(view, true));
             return;
-        } catch (CardRequirementsNotMetException e) {
-            dispatch(new ErrCardRequirements(view,
-                    e.getMissingDevCards().orElse(new HashSet<>()).stream().map(Entry::reduce).toList(),
-                    e.getMissingResources().orElse(new HashMap<>()).entrySet().stream()
-                            .collect(Collectors.toMap(entry -> entry.getKey().getName(), entry -> entry.getValue()))));
-            return;
         } catch (IllegalCardDepositException e) {
             dispatch(new ErrBuyDevCard(view, false));
             return;

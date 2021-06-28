@@ -82,12 +82,9 @@ public class DevelopmentCard extends Card {
      * @param game          the game the player is playing in
      * @param player        the player to assign the card to and to take the resources from
      * @param resContainers selection map specifying where to take the resources from
-     * @throws CardRequirementsNotMetException  if the player does not own the required resources
      * @throws IllegalResourceTransferException if the player cannot pay for the card
      */
-    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws CardRequirementsNotMetException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
-        cost.checkRequirements(player);
-
+    public void takeFromPlayer(Game game, Player player, Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         ResourceTransactionRecipe transactionRecipe = new ResourceTransactionRecipe(
                 cost.getDiscountedCost(player), 0, Map.of(), 0);
 

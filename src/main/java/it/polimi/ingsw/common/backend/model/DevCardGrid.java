@@ -127,19 +127,18 @@ public class DevCardGrid extends EventDispatcher {
      * @param slotIndex     the position of the dev slot where to put the development card
      * @param resContainers a map of the resource containers where to take the storable resources
      * @throws IllegalCardDepositException      Bought card cannot be placed in the chosen player slot
-     * @throws CardRequirementsNotMetException  error while player was depositing the card
      * @throws EmptyStackException              No cards available with given color and level
      * @throws IllegalResourceTransferException if the player cannot pay for the card
      */
     public void buyDevCard(Game game, Player player, DevCardColor color, int level, int slotIndex,
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
-            throws CardRequirementsNotMetException, IllegalCardDepositException, EmptyStackException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
+            throws IllegalCardDepositException, EmptyStackException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
 
         DevelopmentCard card = grid.get(color).get(level).pop();
         try {
             player.addToDevSlot(game, slotIndex, card, resContainers);
             dispatch(new UpdateDevCardGrid(reduce()));
-        } catch (CardRequirementsNotMetException | IllegalCardDepositException e) {
+        } catch (IllegalCardDepositException e) {
             grid.get(color).get(level).push(card);
             throw e;
         }
