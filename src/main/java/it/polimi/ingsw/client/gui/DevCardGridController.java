@@ -65,10 +65,10 @@ public class DevCardGridController extends GuiController {
 
         devCardGridPane.getChildren().add(devCardGrid);
 
-        for (int i = 0; i < vm.getSlotsCount(); i++)
+        for (int i = 1; i <= vm.getSlotsCount(); i++)
             devSlotChoicePicker.getItems().add(i);
 
-        devSlotChoicePicker.setValue(0);
+        devSlotChoicePicker.setValue(devSlotChoicePicker.getItems().get(0));
 
         submitBtn.setDefaultButton(true);
         submitBtn.setOnAction(this::submitPressed);
@@ -291,7 +291,7 @@ public class DevCardGridController extends GuiController {
      */
     private void submitPressed(ActionEvent actionEvent) {
         strongbox.fillContainersMap(shelvesMap);
-        gui.getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue(), shelvesMap));
+        gui.getUi().dispatch(new ReqBuyDevCard(selectedColor, selectedLevel, devSlotChoicePicker.getValue() - 1, shelvesMap));
     }
 
     /**
