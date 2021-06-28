@@ -164,3 +164,7 @@ Production:selected > VBox {
 .discountleader {
     -fx-background-image: url('leadertemplates/discountleader.png');
 }
+
+.backleader {
+    -fx-background-image: url('leadertemplates/backleader.png');
+}

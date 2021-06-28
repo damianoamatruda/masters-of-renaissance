@@ -258,11 +258,7 @@ public class ViewModel {
      * @return the reduced (active) leader cards owned by the player
      */
     public synchronized List<ReducedLeaderCard> getPlayerActiveLeaderCards(String nickname) {
-        if (!playerData.containsKey(nickname))
-            return new ArrayList<>();
-        return playerData.get(nickname).getLeadersHand().stream()
-                .map(this::getLeaderCard)
-                .flatMap(Optional::stream)
+        return getPlayerLeaderCards(nickname).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .toList();
     }

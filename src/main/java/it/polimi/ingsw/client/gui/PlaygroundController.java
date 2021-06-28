@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Gui abstract controller for the main turn scenes,
@@ -78,6 +80,10 @@ public abstract class PlaygroundController extends GuiController {
         leadersBox.getChildren().addAll(
                 vm.getPlayerLeaderCards(vm.getCurrentPlayer()).stream().map(reducedLeaderCard ->
                         new LeaderBox(reducedLeaderCard, this::handleActivate, this::handleDiscard, this::handleProduce, allowProductions)).toList());
+        leadersBox.getChildren().addAll(
+                Stream.iterate(vm.getPlayerLeaderCards(vm.getCurrentPlayer()).size(),
+                        n -> n < vm.getPlayerLeadersCount(vm.getCurrentPlayer()), n -> n + 1)
+                    .map(i -> new LeaderCard(null, null)).toList());
     }
 
     private void refreshLeaderBoxes() {

@@ -36,7 +36,7 @@ public class LeaderCard extends Card {
      * @param resourceType  the target resource type of the leader card
      */
     public LeaderCard(LeaderType leaderType, String resourceType) {
-        super(leaderType.toString().toLowerCase().concat("leader"));
+        super(leaderType == null ? "backleader" : leaderType.toString().toLowerCase().concat("leader"));
         this.leaderType = leaderType;
         this.resourceType = resourceType;
     }
