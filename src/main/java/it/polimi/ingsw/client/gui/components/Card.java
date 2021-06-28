@@ -101,7 +101,7 @@ public abstract class Card extends Pane {
      * @param points the victory points given to the player by this card
      */
     public void setVictoryPoints(int points) {
-        victoryPoints.setText(Integer.toString(points));
+        victoryPoints.setText(String.valueOf(points));
     }
 
     /**

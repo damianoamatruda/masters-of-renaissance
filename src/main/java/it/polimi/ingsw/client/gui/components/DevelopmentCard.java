@@ -42,8 +42,8 @@ public class DevelopmentCard extends Card {
      * @param level the card level
      */
     public void setLevel(int level) {
-        levelLeft.setText(Integer.toString(level));
-        levelRight.setText(Integer.toString(level));
+        levelLeft.setText(String.valueOf(level));
+        levelRight.setText(String.valueOf(level));
     }
 
     /**

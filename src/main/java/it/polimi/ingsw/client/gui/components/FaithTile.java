@@ -4,7 +4,10 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 import javafx.scene.CacheHint;
-import javafx.scene.effect.*;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -58,7 +61,7 @@ public class FaithTile extends StackPane {
             this.getChildren().add(bonusPts);
 
             ReducedYellowTile y = Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getYellowTiles().stream().filter(yt -> yt.getFaithPoints() == tileId).findAny().orElseThrow();
-            Text t = new Text(Integer.toString(y.getVictoryPoints()));
+            Text t = new Text(String.valueOf(y.getVictoryPoints()));
             t.setScaleX(bg.getScaleY()*2);
             t.setScaleY(bg.getScaleY()*2);
             this.getChildren().add(t);

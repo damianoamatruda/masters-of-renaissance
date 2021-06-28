@@ -132,7 +132,7 @@ public class FaithTrack extends HBox {
                 popesFavor.setFitHeight(110);
                 popesFavor.setFitWidth(110);
                 favorPane.getChildren().add(popesFavor);
-                Text pointsText = new Text(Integer.toString(section.getVictoryPoints()));
+                Text pointsText = new Text(String.valueOf(section.getVictoryPoints()));
                 pointsText.setScaleX(1.8);
                 pointsText.setScaleY(1.8);
                 if(gotBonus && isActivated) favorPane.getChildren().add(pointsText);

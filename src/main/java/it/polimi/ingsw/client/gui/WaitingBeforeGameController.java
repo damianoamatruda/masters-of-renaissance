@@ -44,7 +44,7 @@ public class WaitingBeforeGameController extends GuiController {
      * @param bookedSeatsValue the count of players who joined the lobby
      */
     public void setBookedSeats(int bookedSeatsValue) {
-        bookedSeats.setText(Integer.toString(bookedSeatsValue));
+        bookedSeats.setText(String.valueOf(bookedSeatsValue));
     }
 
     /**

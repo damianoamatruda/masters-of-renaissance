@@ -25,7 +25,7 @@ public class CardRequirement extends HBox {
         for (String resource : requirements.getRequirements().keySet()) {
             HBox entry = new HBox();
 
-            Text l = new Text(Integer.toString(requirements.getRequirements().get(resource)));
+            Text l = new Text(String.valueOf(requirements.getRequirements().get(resource)));
             l.maxHeight(maxRowHeight);
             HBox.setMargin(l, new Insets(0, 0, 0, 6));
 
@@ -54,11 +54,11 @@ public class CardRequirement extends HBox {
         for (ReducedDevCardRequirementEntry color : requirements.getEntries()) {
             HBox entry = new HBox();
 
-            Text amountText = new Text(Integer.toString(color.getAmount()));
+            Text amountText = new Text(String.valueOf(color.getAmount()));
 
             ImageView levelImage = new ImageView();
             String fileName = color.getColor().toLowerCase();
-            if (color.getLevel() > 0) fileName += Integer.toString(color.getLevel());
+            if (color.getLevel() > 0) fileName += String.valueOf(color.getLevel());
             levelImage.setImage(new Image(Objects.requireNonNull(getClass().getResource(
                     String.format("/assets/gui/cardrequirements/%s.png", fileName))).toExternalForm()));
 
