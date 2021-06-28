@@ -12,7 +12,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -52,7 +50,9 @@ public abstract class PlaygroundController extends GuiController {
         List<DevSlot> devSlots = getDevSlots();
         FaithTrack faithTrack = new FaithTrack(vm.getFaithTrack().orElseThrow());
 
-        playerBoard = new Playerboard(warehouse, strongbox, baseProduction, devSlots, faithTrack);
+        boolean hasInkwell = vm.getInkwellPlayer().equals(vm.getCurrentPlayer());
+
+        playerBoard = new Playerboard(warehouse, strongbox, baseProduction, devSlots, faithTrack, hasInkwell);
         AnchorPane.setBottomAnchor(playerBoard, 0d);
         AnchorPane.setTopAnchor(playerBoard, 0d);
         AnchorPane.setLeftAnchor(playerBoard, 0d);

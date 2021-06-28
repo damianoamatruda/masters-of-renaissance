@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
-import javafx.beans.binding.Bindings;
 import javafx.scene.CacheHint;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;

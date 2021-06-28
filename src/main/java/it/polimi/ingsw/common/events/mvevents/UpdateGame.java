@@ -17,6 +17,7 @@ public class UpdateGame extends ViewEvent {
     private final ReducedFaithTrack faithTrack;
     private final boolean isSetupDone;
     private final int slotsCount;
+    private final String inkwellPlayer;
 
     /**
      * Class constructor.
@@ -43,7 +44,8 @@ public class UpdateGame extends ViewEvent {
                       ReducedFaithTrack faithTrack,
                       int slotsCount,
                       List<ReducedActionToken> actionTokens,
-                      boolean isSetupDone) {
+                      boolean isSetupDone,
+                      String inkwellPlayer) {
         super(view);
         this.players = players;
         this.leaderCards = leaderCards;
@@ -56,6 +58,7 @@ public class UpdateGame extends ViewEvent {
         this.faithTrack = faithTrack;
         this.isSetupDone = isSetupDone;
         this.slotsCount = slotsCount;
+        this.inkwellPlayer = inkwellPlayer;
     }
 
     public UpdateGame(List<String> players,
@@ -68,8 +71,9 @@ public class UpdateGame extends ViewEvent {
                       ReducedFaithTrack faithTrack,
                       int slotsCount,
                       List<ReducedActionToken> actionTokens,
-                      boolean isSetupDone) {
-        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, faithTrack, slotsCount, actionTokens, isSetupDone);
+                      boolean isSetupDone,
+                      String inkwellPlayer) {
+        this(null, players, colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, faithTrack, slotsCount, actionTokens, isSetupDone, inkwellPlayer);
     }
 
     /**
@@ -141,5 +145,9 @@ public class UpdateGame extends ViewEvent {
 
     public int getSlotsCount() {
         return slotsCount;
+    }
+
+    public String getInkwellPlayer() {
+        return inkwellPlayer;
     }
 }

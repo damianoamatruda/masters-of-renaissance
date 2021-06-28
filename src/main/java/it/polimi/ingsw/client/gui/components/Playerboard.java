@@ -8,10 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,14 +34,14 @@ public class Playerboard extends HBox {
 
     /**
      * Class constructor.
-     *
-     * @param warehouse  the player's warehouse
+     *  @param warehouse  the player's warehouse
      * @param strongbox  the player's strongbox
      * @param production the base production
      * @param devSlots   the player's development slots
      * @param faithTrack the faith track
+     * @param hasInkwell
      */
-    public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> devSlots, FaithTrack faithTrack) {
+    public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> devSlots, FaithTrack faithTrack, boolean hasInkwell) {
         this.devSlots = devSlots;
         this.faithTrack = faithTrack;
 
@@ -59,8 +56,24 @@ public class Playerboard extends HBox {
         }
 
         setBackground();
+
+        VBox middleBox = new VBox();
+        middleBox.setAlignment(Pos.CENTER);
+        middleBox.setSpacing(30);
+        board.add(middleBox, 2, 1);
+
+        // inkwell
+        if(hasInkwell) {
+            ImageView inkwell = new ImageView(new Image("/assets/gui/playerboard/inkwell.png"));
+//            inkwell.setScaleX(0.3);
+//            inkwell.setScaleY(0.3);
+            inkwell.setFitHeight(100);
+            inkwell.setFitWidth(100);
+            middleBox.getChildren().add(inkwell);
+        }
+
         setContainers(warehouse, strongbox);
-        setBaseProduction(production);
+        setBaseProduction(production, middleBox);
         setDevSlotsBox();
 
         Group faithTrackGroup = new Group(faithTrack);
@@ -68,6 +81,7 @@ public class Playerboard extends HBox {
 
         this.widthProperty().addListener((observable, oldValue, newValue) -> setSizes());
         this.heightProperty().addListener((observable, oldValue, newValue) -> setSizes());
+
     }
 
     private void setSizes() {
@@ -153,7 +167,7 @@ public class Playerboard extends HBox {
         storageColumn.add(strongbox, 0, 3);
     }
 
-    public void setBaseProduction(Production production) {
+    public void setBaseProduction(Production production, VBox middleBox) {
         this.production = production;
 
         StackPane baseProduction = new StackPane();
@@ -171,7 +185,7 @@ public class Playerboard extends HBox {
         StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
         baseProduction.getChildren().add(production);
 
-        board.add(baseProduction, 3, 1);
+        middleBox.getChildren().add(baseProduction);
     }
 
     public void setDevSlotsBox() {

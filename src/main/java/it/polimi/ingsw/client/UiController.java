@@ -136,6 +136,7 @@ public abstract class UiController {
         vm.setResourceTypes(event.getResourceTypes());
         vm.setSetupDone(event.isSetupDone());
         vm.setSlotsCount(event.getSlotsCount());
+        vm.setInkwellPlayer(event.getInkwellPlayer());
     }
 
     public void on(UpdateJoinGame event) {

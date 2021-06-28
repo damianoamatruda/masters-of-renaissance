@@ -115,7 +115,8 @@ public class Game extends EventDispatcher {
                 faithTrack.reduce(),
                 slotsCount,
                 null, /* actionTokens not sent */
-                players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone)));
+                players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone),
+                getFirstPlayer().getNickname()));
         dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
     }
 

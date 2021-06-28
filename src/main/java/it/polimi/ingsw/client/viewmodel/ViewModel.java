@@ -86,6 +86,7 @@ public class ViewModel {
 
     /** The map of unique player string encoded colors (GUI only). */
     private final Map<String, String> mappedGuiColors;
+    private String inkwellPlayer;
 
     /**
      * Class constructor.
@@ -860,5 +861,14 @@ public class ViewModel {
      */
     public synchronized boolean isCurrentPlayer() {
         return currentPlayer.equals(localPlayerNickname);
+    }
+
+    // TODO Javadoc
+    public void setInkwellPlayer(String inkwellPlayer) {
+        this.inkwellPlayer = inkwellPlayer;
+    }
+
+    public String getInkwellPlayer() {
+        return inkwellPlayer;
     }
 }

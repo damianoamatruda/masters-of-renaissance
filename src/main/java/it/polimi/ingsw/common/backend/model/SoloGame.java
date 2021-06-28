@@ -64,7 +64,8 @@ public class SoloGame extends Game {
                 faithTrack.reduce(),
                 slotsCount,
                 actionTokens.stream().map(ActionToken::reduce).toList(),
-                players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone)));
+                players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone),
+                getFirstPlayer().getNickname()));
         dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
     }
 
