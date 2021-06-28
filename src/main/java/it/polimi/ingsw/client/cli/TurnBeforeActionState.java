@@ -17,7 +17,7 @@ public class TurnBeforeActionState extends CliTurnState {
         }
 
         cli.getOut().println();
-        cli.getOut().println(center("~ It's your turn ~"));
+        cli.getOut().println(center("~ Your turn ~"));
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
