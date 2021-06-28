@@ -188,7 +188,7 @@ public abstract class CliController extends UiController implements Renderable {
             cli.reloadController("Output of resource transfer cannot be discarded");
         else
             cli.reloadController(String.format(
-                    "Irregular amount of %s specified in the container map: %d specified, %d required.",
+                    "Irregular amount of %s specified in the container map: %d requested, %d chosen.",
                     event.getResType().isEmpty() ? "resources" : event.getResType(),
                     event.getReplacedCount(),
                     event.getShelvesChoiceResCount()));
