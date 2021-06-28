@@ -3,6 +3,7 @@
 <?import it.polimi.ingsw.client.gui.components.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
 <fx:root xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          type="BorderPane"
@@ -41,4 +42,9 @@
       <SButton fx:id="submit" text="Activate" defaultButton="true"/>
     </HBox>
   </bottom>
+
+  <padding>
+    <Insets bottom="10.0"/>
+  </padding>
+
 </fx:root>
