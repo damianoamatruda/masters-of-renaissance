@@ -212,6 +212,7 @@ public abstract class PlaygroundController extends GuiController {
             warehouse.setWaitingForSwap(s1, s2);
             gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
         });
+        warehouse.setWhiteText();
         return warehouse;
     }
 

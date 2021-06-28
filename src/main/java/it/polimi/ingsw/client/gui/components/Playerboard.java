@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,21 +62,19 @@ public class Playerboard extends HBox {
         VBox middleBox = new VBox();
         middleBox.setAlignment(Pos.CENTER);
         middleBox.setSpacing(30);
-        middleBox.setPadding(new Insets(0, 0, 0, 20));
+//        middleBox.setPadding(new Insets(0, 0, 0, 20));
         board.add(middleBox, 2, 1);
 
         // inkwell
         if(hasInkwell) {
             ImageView inkwell = new ImageView(new Image("/assets/gui/playerboard/inkwell.png"));
-//            inkwell.setScaleX(0.3);
-//            inkwell.setScaleY(0.3);
             inkwell.setFitHeight(120);
             inkwell.setFitWidth(100);
             middleBox.getChildren().add(inkwell);
         }
 
-        setContainers(warehouse, strongbox);
         setBaseProduction(production, middleBox);
+        setContainers(warehouse, strongbox);
         setDevSlotsBox();
 
         Group faithTrackGroup = new Group(faithTrack);

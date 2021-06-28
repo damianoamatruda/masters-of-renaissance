@@ -3,7 +3,10 @@ package it.polimi.ingsw.client.gui.components;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -173,5 +176,9 @@ public class Warehouse extends VBox {
      */
     public void addResourcesSelector(BiConsumer<String, Integer> insert, BiConsumer<String, Integer> remove) {
         shelves.values().forEach(s -> s.addResourcesSelector(insert, remove));
+    }
+
+    public void setWhiteText() {
+        shelves.values().forEach(s -> ((Text) ((BorderPane) s.getChildren().get(0)).getChildren().get(0)).setFill(Color.WHITE));
     }
 }
