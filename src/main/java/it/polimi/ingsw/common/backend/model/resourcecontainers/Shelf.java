@@ -46,12 +46,12 @@ public class Shelf extends ResourceContainer {
         quantity = shelf.quantity;
     }
 
-    public static ResourceType getShelfResourceType(Map<ResourceType, Integer> resMap) {
+    public static ResourceType getShelfResourceType(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
         validateStorableResourceMap(resMap);
         resMap = sanitizeResourceMap(resMap);
 
         if (resMap.size() != 1)
-            throw new IllegalArgumentException(); // TODO: Add more specific exception (this is the case of resMap with more than one resType)
+            throw new IllegalResourceTransferException(null, true, Kind.BOUNDED_RESTYPE_DIFFER);
 
         return resMap.keySet().stream().findAny().orElseThrow();
     }

@@ -28,7 +28,7 @@ public class IllegalResourceTransferException extends Exception {
     public IllegalResourceTransferException(ResourceType resource,
             boolean isAdded,
             Kind kind) {
-                this.kind = kind;
+        this.kind = kind;
         this.resource = resource;
         this.isAdded = isAdded;
     }

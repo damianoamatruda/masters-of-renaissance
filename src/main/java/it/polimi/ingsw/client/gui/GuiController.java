@@ -213,7 +213,9 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
 
         final String reason = switch (event.getReason()) {
-            case BOUNDED_RESTYPE_DIFFER -> "shelf's binding resource type is different from transferring resource";
+            case BOUNDED_RESTYPE_DIFFER -> event.getResType() != null ?
+                    "shelf's binding resource type is different from transferring resource" :
+                    "multiple resource types cannot be bound to the same shelf";
             case NON_STORABLE -> "resource type is not storable";
             case CAPACITY_REACHED -> "shelf's capacity boundaries reached";
             case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
@@ -221,8 +223,9 @@ public abstract class GuiController extends UiController implements Initializabl
 
         gui.reloadScene("Resource transfer error",
                 String.format("Error %s resource %s container: %s.",
-                        event.isAdded() ? "adding to" : "removing from",
-                        event.getResType(),
+                        event.isAdded() ? "adding" : "removing",
+                        event.getResType() == null ? "" : event.getResType(),
+                        event.isAdded() ? " to" : " from",
                         reason));
     }
     

@@ -165,7 +165,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             // resources already chosen
             dispatch(new ErrInitialChoice(view, false, 0));
         } catch (IllegalResourceTransferException e) {
-            dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
+            dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
         }
     }
 
@@ -205,7 +205,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             ResourceContainer.swap(shelf1, shelf2);
             dispatch(new UpdateAction(nickname, ActionType.SWAP_SHELVES));
         } catch (IllegalResourceTransferException e) {
-            dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
+            dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
         }
     }
 
@@ -333,7 +333,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
             return;
         } catch (IllegalResourceTransferException e) {
-            dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
+            dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
             return;
         } catch (IllegalArgumentException e) {
             dispatch(new ErrNoSuchEntity(view, IDType.MARKET_INDEX, index, null));
@@ -403,7 +403,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
             return;
         } catch (IllegalResourceTransferException e) {
-            dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
+            dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
             return;
         }
 
@@ -483,7 +483,7 @@ public class GameContext extends AsynchronousEventDispatcher {
         try {
             transaction.execute();
         } catch (IllegalResourceTransferException e) {
-            dispatch(new ErrResourceTransfer(view, e.getResource().getName(), e.isAdded(), e.getKind().name()));
+            dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
             return;
         }
 
