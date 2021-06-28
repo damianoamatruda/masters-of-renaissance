@@ -90,64 +90,62 @@ public class SetupResourcesController extends GuiController {
 
         // On drag over + dropped for the warehouse shelves
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
-                    Dragboard db = event.getDragboard();
-                    if (db.hasImage()) {
-                        event.acceptTransferModes(TransferMode.COPY);
-                    }
-                    event.consume();
-                }
-        ));
+            Dragboard db = event.getDragboard();
+            if (db.hasImage()) {
+                event.acceptTransferModes(TransferMode.COPY);
+            }
+            event.consume();
+        }));
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragDropped((event) -> {
-                    Dragboard db = event.getDragboard();
-                    boolean success = false;
-                    if (db.hasImage()) {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasImage()) {
+                try {
+                    int id = ((Shelf) shelf).getShelfId();
+                    String resource = ((Resource) event.getGestureSource()).getName();
+
+                    boolean alreadyHasBoundShelf = selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != id)
+                            && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
+
+                    if((selection.get(id) == null || selection.get(id).get(resource) == null ||
+                            ((Shelf) shelf).getSize() > selection.get(id).get(resource)) && !alreadyHasBoundShelf)
                         try {
-                            int id = ((Shelf) shelf).getShelfId();
-                            String resource = ((Resource) event.getGestureSource()).getName();
-
-                            boolean alreadyHasBoundShelf = selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != id)
-                                    && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
-
-                            if((selection.get(id) == null || selection.get(id).get(resource) == null ||
-                                    ((Shelf) shelf).getSize() > selection.get(id).get(resource)) && !alreadyHasBoundShelf)
-                                try {
-                                    int amount = selection.get(id).get(resource) + 1;
-                                    selection.get(id).put(resource, amount);
-                                    success = true;
-                                } catch (NullPointerException e) {
-                                    if (selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
-                                        Map<String, Integer> entry = new HashMap<>();
-                                        entry.put(resource, 1);
-                                        selection.put(id, entry);
-                                        success = true;
-                                    }
-
-                                }
-                            if (success) warehouse.getShelf(id).addResourceDraggable(resource);
-                            updateChoiceButton();
-
-                        } catch (Exception e) { // TODO remove this catch once debugged
-                            LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
-                        }
-                    }
-                    if(db.hasString() && success) {
-                        int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                        String resource = ((Resource) event.getGestureSource()).getName();
-
-                        int amount = selection.get(id).get(resource) - 1;
-                        if(amount > 0)
+                            int amount = selection.get(id).get(resource) + 1;
                             selection.get(id).put(resource, amount);
-                        else
-                            selection.get(id).remove(resource);
+                            success = true;
+                        } catch (NullPointerException e) {
+                            if (selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
+                                Map<String, Integer> entry = new HashMap<>();
+                                entry.put(resource, 1);
+                                selection.put(id, entry);
+                                success = true;
+                            }
 
-                        warehouse.refreshShelfRemove(id);
-                        updateChoiceButton();
+                        }
+                    if (success) warehouse.getShelf(id).addResourceDraggable(resource);
+                    updateChoiceButton();
 
-                    }
-                    event.setDropCompleted(success);
-                    event.consume();
+                } catch (Exception e) { // TODO remove this catch once debugged
+                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                 }
-        ));
+            }
+            if(db.hasString() && success) {
+                int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
+                String resource = ((Resource) event.getGestureSource()).getName();
+
+                int amount = selection.get(id).get(resource) - 1;
+                if(amount > 0)
+                    selection.get(id).put(resource, amount);
+                else
+                    selection.get(id).remove(resource);
+
+                warehouse.refreshShelfRemove(id);
+                updateChoiceButton();
+
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        }));
 
         // On drag over + dropped outside of warehouse
         this.canvas.setOnDragOver((event) -> {
@@ -181,10 +179,9 @@ public class SetupResourcesController extends GuiController {
                 // Drop is simply ignored
             }
 
-                    event.setDropCompleted(success);
-                    event.consume();
-                }
-        );
+            event.setDropCompleted(success);
+            event.consume();
+        });
 
         updateChoiceButton();
 
