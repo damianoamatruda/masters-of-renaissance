@@ -217,8 +217,8 @@ public abstract class GuiController extends UiController implements Initializabl
         };
 
         gui.reloadScene("Resource transfer error",
-                String.format("Error %s resource %s from container: %s.",
-                        event.isAdded() ? "adding" : "removing",
+                String.format("Error %s resource %s container: %s.",
+                        event.isAdded() ? "adding to" : "removing from",
                         event.getResType(),
                         reason));
     }

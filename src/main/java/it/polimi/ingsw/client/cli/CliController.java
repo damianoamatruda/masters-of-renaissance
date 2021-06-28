@@ -211,8 +211,8 @@ public abstract class CliController extends UiController implements Renderable {
             case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
         };
 
-        cli.reloadController(String.format("Error %s resource %s from container: %s.",
-                event.isAdded() ? "adding" : "removing",
+        cli.reloadController(String.format("Error %s resource %s container: %s.",
+                event.isAdded() ? "adding to" : "removing from",
                 event.getResType(),
                 reason));
     }
