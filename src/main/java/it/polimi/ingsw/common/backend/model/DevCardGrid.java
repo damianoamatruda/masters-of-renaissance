@@ -134,14 +134,12 @@ public class DevCardGrid extends EventDispatcher {
                            Map<ResourceContainer, Map<ResourceType, Integer>> resContainers)
             throws IllegalCardDepositException, EmptyStackException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
 
-        DevelopmentCard card = grid.get(color).get(level).pop();
-        try {
-            player.addToDevSlot(game, slotIndex, card, resContainers);
-            dispatch(new UpdateDevCardGrid(reduce()));
-        } catch (IllegalCardDepositException e) {
-            grid.get(color).get(level).push(card);
-            throw e;
-        }
+        DevelopmentCard card = grid.get(color).get(level).peek();
+
+        player.addToDevSlot(game, slotIndex, card, resContainers);
+        grid.get(color).get(level).pop();
+        
+        dispatch(new UpdateDevCardGrid(reduce()));
     }
 
     /**
