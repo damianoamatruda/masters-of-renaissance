@@ -247,7 +247,11 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
+        if (event.getPlayer().equals(vm.getLocalPlayerNickname())) {
+            cli.getOut().println(center("It's your turn."));
+            cli.setController(new TurnBeforeActionState(), true);
+        } else
+            cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
     }
 
     @Override
