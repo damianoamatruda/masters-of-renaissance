@@ -239,7 +239,7 @@ public abstract class PlaygroundController extends GuiController {
     @Override
     public void on(UpdateLeadersHandCount event) {
         super.on(event);
-        // TODO: Update unknown cards of other players
+        refreshLeaderBoxes();
     }
 
     @Override
