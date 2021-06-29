@@ -16,7 +16,7 @@ public class WaitingForTurnController extends TurnController {
 
         title.setText(String.format("Watching playerboard of: %s", gui.getViewModel().getCurrentPlayer()));
 
-        AnchorPane.setLeftAnchor(title, 450d);
+        AnchorPane.setLeftAnchor(title, 400d);
         AnchorPane.setTopAnchor(title, 10.0);
 
         canvas.getChildren().add(title);
