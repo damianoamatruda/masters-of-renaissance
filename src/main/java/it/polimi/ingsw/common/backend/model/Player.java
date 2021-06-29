@@ -91,7 +91,8 @@ public class Player extends EventDispatcher {
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
                 setup.reduce(),
-                faithPoints));
+                faithPoints,
+                victoryPoints));
     }
 
     public void dispatchPublicState() {

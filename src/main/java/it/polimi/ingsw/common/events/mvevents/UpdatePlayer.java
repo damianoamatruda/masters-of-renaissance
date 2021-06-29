@@ -11,13 +11,14 @@ public class UpdatePlayer extends ViewEvent {
     private final List<Integer> warehouseShelves;
     private final int strongbox;
     private final ReducedPlayerSetup playerSetup;
-    private int faithPoints;
+    private final int faithPoints;
+    private final int victoryPoints;
 
     /**
      * Class constructor.
      */
     public UpdatePlayer(View view, String player, int baseProduction, List<Integer> warehouseShelves, int strongbox,
-                        ReducedPlayerSetup playerSetup, int faithPoints) {
+                        ReducedPlayerSetup playerSetup, int faithPoints, int victoryPoints) {
         super(view);
         this.player = player;
         this.baseProduction = baseProduction;
@@ -25,6 +26,7 @@ public class UpdatePlayer extends ViewEvent {
         this.strongbox = strongbox;
         this.playerSetup = playerSetup;
         this.faithPoints = faithPoints;
+        this.victoryPoints = victoryPoints;
     }
 
     /**
@@ -64,5 +66,9 @@ public class UpdatePlayer extends ViewEvent {
 
     public int getFaithPoints() {
         return faithPoints;
+    }
+
+    public int getVictoryPoints() {
+        return victoryPoints;
     }
 }
