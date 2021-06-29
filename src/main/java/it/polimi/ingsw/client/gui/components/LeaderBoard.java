@@ -85,13 +85,15 @@ public class LeaderBoard extends StackPane {
             protected void updateItem(LeaderBoardEntry item, boolean empty) {
                 super.updateItem(item, empty);
                 if(item != null) {
+                    // add indicator of local player
+                    if (item.getPlayer().equals(viewModel.getLocalPlayerNickname()))
+                        item.setLocalPlayer();
+
                     String player = item.getPlayer();
-                    Optional<String> color = Gui.getInstance().getViewModel().getClientGuiColor(item.getPlayer());
+                    if(item.isMe()) player = player.substring(0, player.length() - 5);
+                    Optional<String> color = Gui.getInstance().getViewModel().getClientGuiColor(player);
                     color.ifPresent(c -> setStyle("-fx-background-color: " + c + ";"));
 
-                    // add indicator of local player
-                    if (player.equals(viewModel.getLocalPlayerNickname()))
-                        item.setLocalPlayer();
                 }
             }
         });
@@ -110,6 +112,7 @@ public class LeaderBoard extends StackPane {
         private String player;
         private final int points;
         private final int faith;
+        private boolean isMe;
 
         public LeaderBoardEntry(String player, int faith, int points) {
             this.player = player;
@@ -129,7 +132,12 @@ public class LeaderBoard extends StackPane {
             return faith;
         }
 
+        public boolean isMe() {
+            return isMe;
+        }
+
         public void setLocalPlayer() {
+            isMe = true;
             player += " (me)";
         }
     }
