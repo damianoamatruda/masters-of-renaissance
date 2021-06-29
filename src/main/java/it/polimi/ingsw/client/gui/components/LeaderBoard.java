@@ -64,14 +64,18 @@ public class LeaderBoard extends StackPane {
         playerColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry,String>("player"));
         playerColumn.setSortable(false);
 
-        TableColumn pointsColumn = new TableColumn("Victory points");
+        TableColumn faithColumn = new TableColumn("F. points");
+        faithColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry,Integer>("faith"));
+        faithColumn.setSortable(false);
+
+        TableColumn pointsColumn = new TableColumn("V. points");
         pointsColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry,Integer>("points"));
         pointsColumn.setSortable(false);
 
-        content.getColumns().addAll(playerColumn, pointsColumn);
+        content.getColumns().addAll(playerColumn, faithColumn, pointsColumn);
 
         List<LeaderBoardEntry> entries = viewModel.getPlayerNicknames().stream()
-                .map(player -> new LeaderBoardEntry(player, viewModel.getPlayerVictoryPoints(player)))
+                .map(player -> new LeaderBoardEntry(player, viewModel.getPlayerFaithPoints(player), viewModel.getPlayerVictoryPoints(player)))
                 .sorted(Comparator.comparingInt(a -> a.points))
                 .toList();
 
@@ -104,10 +108,12 @@ public class LeaderBoard extends StackPane {
     public static class LeaderBoardEntry {
         private String player;
         private final int points;
+        private final int faith;
 
-        public LeaderBoardEntry(String player, int points) {
+        public LeaderBoardEntry(String player, int faith, int points) {
             this.player = player;
             this.points = points;
+            this.faith = faith;
         }
 
         public String getPlayer() {
@@ -116,6 +122,10 @@ public class LeaderBoard extends StackPane {
 
         public int getPoints() {
             return points;
+        }
+
+        public int getFaith() {
+            return faith;
         }
 
         public void setLocalPlayer() {
