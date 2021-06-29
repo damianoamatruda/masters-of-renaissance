@@ -110,7 +110,7 @@ public class SetupLeadersController extends GuiController {
                         new Alert("Setup phase is concluded", "Advancing to game turns."));
 
         if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-            gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"), callback);
+            gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"), callback);
         else
             gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
     }

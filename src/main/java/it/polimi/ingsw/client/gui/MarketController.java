@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
@@ -420,14 +419,14 @@ public class MarketController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
     }
 
     @Override
     public void on(UpdateAction event) {
         super.on(event);
         if(event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
-            gui.setScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
 
         else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();

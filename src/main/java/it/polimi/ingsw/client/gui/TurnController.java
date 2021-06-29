@@ -22,10 +22,10 @@ import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 /**
- * Gui abstract controller for the main turn scenes,
- * which will show the playerboard of the current player and the available actions, depending on the turn phase.
+ * Gui abstract controller for the main turn scenes, which will show the playerboard of the current player and the
+ * available actions, depending on the turn phase.
  */
-public abstract class PlaygroundController extends GuiController {
+public abstract class TurnController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
     @FXML
     protected AnchorPane canvas;

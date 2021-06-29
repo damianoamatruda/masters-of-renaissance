@@ -10,10 +10,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Gui controller used when the local player is current player, and hasn't chosen a base turn action.
- * Here the client can choose to produce, buy a card or visit the market, as well as doing leader actions and swap shelves.
+ * Gui controller used when the local player is current player, and hasn't chosen a base turn action. Here the client
+ * can choose to produce, buy a card or visit the market, as well as doing leader actions and swap shelves.
  */
-public class PlaygroundBeforeActionController extends PlaygroundController {
+public class TurnBeforeActionController extends TurnController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allowProductions = true;
@@ -52,6 +52,6 @@ public class PlaygroundBeforeActionController extends PlaygroundController {
         if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD ||
                 event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES ||
                 event.getAction() == UpdateAction.ActionType.ACTIVATE_PRODUCTION)
-            gui.setScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
     }
 }

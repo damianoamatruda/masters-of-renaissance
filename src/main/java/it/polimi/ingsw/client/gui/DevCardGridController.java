@@ -14,8 +14,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
@@ -289,7 +291,7 @@ public class DevCardGridController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
     }
 
     @Override
@@ -316,7 +318,7 @@ public class DevCardGridController extends GuiController {
     public void on(UpdateAction event) {
         super.on(event);
         if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
-            gui.setScene(getClass().getResource("/assets/gui/playgroundafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
 
         else if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();

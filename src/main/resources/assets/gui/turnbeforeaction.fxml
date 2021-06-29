@@ -3,5 +3,5 @@
 
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="canvas" xmlns="http://javafx.com/javafx/16"
-            fx:controller="it.polimi.ingsw.client.gui.PlaygroundAfterActionController"
+            fx:controller="it.polimi.ingsw.client.gui.TurnBeforeActionController"
             maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280"/>

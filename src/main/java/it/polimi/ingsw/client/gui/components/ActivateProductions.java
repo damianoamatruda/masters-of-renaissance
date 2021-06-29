@@ -186,7 +186,7 @@ public class ActivateProductions extends StackPane {
     }
 
     /**
-     * Handles going back to previous production, or back to playground scene.
+     * Handles going back to previous production, or back to turn scene.
      */
     private void handleBack() {
         if(index > 0)

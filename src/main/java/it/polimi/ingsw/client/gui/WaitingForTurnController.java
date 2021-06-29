@@ -6,10 +6,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Gui controller used when local player is not the current player.
- * The current player's leaderboard is shown (without their leader cards and/or other secret components).
+ * Gui controller used when local player is not the current player. The current player's leaderboard is shown (without
+ * their leader cards and/or other secret components).
  */
-public class WaitingForTurnController extends PlaygroundController {
+public class WaitingForTurnController extends TurnController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);

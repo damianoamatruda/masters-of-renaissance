@@ -26,7 +26,7 @@ public class TriggerActionToken extends GuiController {
 
         next.setOnAction(actionEvent -> {
             if (!vm.isGameEnded())
-                gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+                gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
             else gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
         });
 

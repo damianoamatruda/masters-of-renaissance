@@ -38,7 +38,7 @@ public abstract class GuiController extends UiController implements Initializabl
                 if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
                         !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty()) { // setup is done
                     if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                        gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
+                        gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
                     else
                         gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
                 } else // setup not done
@@ -76,7 +76,7 @@ public abstract class GuiController extends UiController implements Initializabl
             case EARLY_TURN_END -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
                     "You cannot end the turn yet",
                     "A mandatory action needs to be done before ending the turn.",
-                    () -> gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml")))));
+                    () -> gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml")))));
             case GAME_ENDED -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
                     "The game has ended",
                     "Advancing to ending screen.",
