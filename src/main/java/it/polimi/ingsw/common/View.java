@@ -305,7 +305,6 @@ public class View extends AsynchronousEventDispatcher {
     }
 
     private <T extends ViewEvent> void on(T viewEvent, EventListener<T> listener) {
-        LOGGER.info(String.format("%s, isPresent: %s, equals: %s", viewEvent, viewEvent.getView().isPresent(), viewEvent.getView().isPresent() && viewEvent.getView().get().equals(this)));
         if (viewEvent.getView().isPresent() && !viewEvent.getView().get().equals(this))
             return;
         listener.on(viewEvent);
