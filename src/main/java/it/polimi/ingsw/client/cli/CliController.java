@@ -299,11 +299,6 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(UpdateJoinGame event) {
-        super.on(event);
-    }
-
-    @Override
     public void on(UpdateLastRound event) {
         super.on(event);
 
