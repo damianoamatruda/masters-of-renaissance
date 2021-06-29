@@ -284,8 +284,11 @@ public abstract class CliController extends UiController implements Renderable {
 
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
                 .collect(Collectors.toMap(nick -> nick, nick -> 0));
-        cli.getOut().println();
-        new FaithTrack(vm.getFaithTrack().orElseThrow(), points).render();
+
+        vm.getFaithTrack().ifPresent(faithTrack -> {
+            cli.getOut().println();
+            new FaithTrack(faithTrack, points).render();
+        });
     }
 
     @Override
