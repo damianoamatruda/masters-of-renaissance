@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
-import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.Map;
@@ -273,11 +272,10 @@ public abstract class CliController extends UiController implements Renderable {
         Map<String, Integer> points = vm.getPlayerNicknames().stream()
                 .collect(Collectors.toMap(n -> n, vm::getPlayerFaithPoints));
 
-        Optional<ReducedFaithTrack> ft = vm.getFaithTrack();
-        if (ft.isPresent()) {
+        vm.getFaithTrack().ifPresent(faithTrack -> {
             cli.getOut().println();
-            new FaithTrack(ft.get(), points).render();
-        }
+            new FaithTrack(faithTrack, points).render();
+        });
     }
 
     @Override
