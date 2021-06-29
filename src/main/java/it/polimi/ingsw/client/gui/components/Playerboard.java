@@ -25,6 +25,7 @@ public class Playerboard extends HBox {
     private GridPane board;
     @FXML
     private GridPane storageColumn;
+    private VBox middleBox;
     private Warehouse warehouse;
     private Strongbox strongbox;
     private Production production;
@@ -59,19 +60,16 @@ public class Playerboard extends HBox {
 
         setBackground();
 
-        VBox middleBox = new VBox();
+        middleBox = new VBox();
         middleBox.setAlignment(Pos.CENTER);
         middleBox.setSpacing(30);
         board.add(middleBox, 3, 1);
 
-//        middleBox.setBorder(new Border(new BorderStroke(Color.RED,
-//                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
         // inkwell
         if(hasInkwell) {
             ImageView inkwell = new ImageView(new Image("/assets/gui/playerboard/inkwell.png"));
-            inkwell.setFitHeight(120);
-            inkwell.setFitWidth(100);
+            inkwell.setPreserveRatio(true);
+            inkwell.setFitHeight(90);
             middleBox.getChildren().add(inkwell);
         }
 
@@ -84,7 +82,6 @@ public class Playerboard extends HBox {
 
         this.widthProperty().addListener((observable, oldValue, newValue) -> setSizes());
         this.heightProperty().addListener((observable, oldValue, newValue) -> setSizes());
-
     }
 
     private void setSizes() {
@@ -127,6 +124,14 @@ public class Playerboard extends HBox {
         double ftScaleFactor = boardWidth / ftWidth;
         faithTrack.setScaleX(ftScaleFactor);
         faithTrack.setScaleY(ftScaleFactor);
+
+        double prodSizeRatio = (board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100) / production.getMaxWidth();
+        production.setScaleX(prodSizeRatio);
+        production.setScaleY(prodSizeRatio);
+
+        double midBoxWidth = board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100;
+        middleBox.setMaxWidth(midBoxWidth);
+        middleBox.setMinWidth(midBoxWidth);
     }
 
     private static void scalePreservingRatio(Pane child, double parentSizeLimitWidth, double componentRatio) {
@@ -174,17 +179,14 @@ public class Playerboard extends HBox {
         this.production = production;
 
         StackPane baseProduction = new StackPane();
-        baseProduction.setMaxHeight(107);
-        baseProduction.setScaleX(0.95);
-        baseProduction.setScaleY(0.95);
+        baseProduction.setMaxHeight(100);
+        baseProduction.setMaxWidth(100);
 
         ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
-        baseProdPaper.setFitWidth(107);
-        baseProdPaper.setFitHeight(107);
+        baseProdPaper.setFitWidth(100);
+        baseProdPaper.setFitHeight(100);
         baseProduction.getChildren().add(baseProdPaper);
 
-        production.setScaleX(0.85);
-        production.setScaleY(0.85);
         StackPane.setAlignment(production, Pos.BOTTOM_LEFT);
         baseProduction.getChildren().add(production);
 
