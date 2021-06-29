@@ -140,10 +140,14 @@ public abstract class PlaygroundController extends GuiController {
 
     @Override
     public void on(UpdateCurrentPlayer event) {
-        while (alertLock.get() == false)
+        while (!alertLock.get()) {
             try {
                 alertLock.wait();
-            } catch (InterruptedException ignored) { }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
 
         String prevPlayer = vm.getCurrentPlayer();
         gui.getUi().getController().on(event);

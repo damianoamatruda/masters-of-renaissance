@@ -263,7 +263,9 @@ public abstract class GuiController extends UiController implements Initializabl
         while (!alertLock.get()) {
             try {
                 alertLock.wait();
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
             }
         }
 
