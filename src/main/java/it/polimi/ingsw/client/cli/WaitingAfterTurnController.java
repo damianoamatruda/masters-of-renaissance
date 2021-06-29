@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
+import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 
 public class WaitingAfterTurnController extends CliController {
     @Override
@@ -12,14 +14,15 @@ public class WaitingAfterTurnController extends CliController {
     }
 
     @Override
-    public void on(UpdateCurrentPlayer event) {
+    public void on(UpdateAction event) {
         super.on(event);
-
+        
         cli.getOut().println();
-        if (event.getPlayer().equals(vm.getLocalPlayerNickname())) {
+        if (event.getAction() == ActionType.END_TURN &&
+            !event.getPlayer().equals(vm.getLocalPlayerNickname()) &&
+            vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname())) {
             cli.getOut().println(Cli.center("It's your turn."));
             cli.setController(new TurnBeforeActionController(), true);
-        } else
-            cli.getOut().println(Cli.center(String.format("Current player: %s", event.getPlayer())));
+        }
     }
 }

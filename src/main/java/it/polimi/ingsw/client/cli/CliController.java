@@ -242,6 +242,14 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+        
+        // DO NOT DO STATE SWITCHING HERE
+        cli.getOut().println(Cli.center(String.format("Current player: %s", event.getPlayer())));
+    }
+
+    @Override
     public void on(UpdateDevCardGrid event) {
         super.on(event);
 
