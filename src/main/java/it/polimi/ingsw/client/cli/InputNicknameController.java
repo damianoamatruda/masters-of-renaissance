@@ -8,10 +8,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class InputNicknameState extends CliController {
+public class InputNicknameController extends CliController {
     private final String title;
 
-    public InputNicknameState(String title) {
+    public InputNicknameController(String title) {
         this.title = title;
     }
 
@@ -37,7 +37,7 @@ public class InputNicknameState extends CliController {
     @Override
     public void on(UpdateBookedSeats event) {
         if (event.canPrepareNewGame().equals(vm.getLocalPlayerNickname()))
-            cli.setController(new InputPlayersCountState(), false);
+            cli.setController(new WaitingBeforeGameController(), false);
         else if (!vm.getLocalPlayerNickname().equals("")) // if the nickname isn't set don't print updates (do not disturb)
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }

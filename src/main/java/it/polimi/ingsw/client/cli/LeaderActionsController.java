@@ -11,12 +11,12 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class LeaderActionsState extends CliController {
-    private final CliController sourceState;
+public class LeaderActionsController extends CliController {
+    private final CliController sourceController;
     private int leaderId;
 
-    public LeaderActionsState(CliController sourceState) {
-        this.sourceState = sourceState;
+    public LeaderActionsController(CliController sourceController) {
+        this.sourceController = sourceController;
     }
 
     public void render() {
@@ -27,7 +27,7 @@ public class LeaderActionsState extends CliController {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(true)));
         entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(false)));
-        new Menu(entries, cli1 -> cli1.setController(sourceState, false)).render();
+        new Menu(entries, cli1 -> cli1.setController(sourceController, false)).render();
     }
 
     private void executeLeaderAction(boolean isActivate) {
@@ -47,6 +47,6 @@ public class LeaderActionsState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.setController(sourceState, true);
+        cli.setController(sourceController, true);
     }
 }

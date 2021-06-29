@@ -6,13 +6,13 @@ import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SwapShelvesState extends CliController {
-    private final CliController sourceState;
+public class SwapShelvesController extends CliController {
+    private final CliController sourceController;
     private int shelfId1;
     private int shelfId2;
 
-    public SwapShelvesState(CliController sourceState) {
-        this.sourceState = sourceState;
+    public SwapShelvesController(CliController sourceController) {
+        this.sourceController = sourceController;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SwapShelvesState extends CliController {
         cli.promptInt("First shelf").ifPresentOrElse(shelfId1 -> {
             this.shelfId1 = shelfId1;
             promptSecondShelf(cli);
-        }, () -> cli.setController(sourceState, false));
+        }, () -> cli.setController(sourceController, false));
     }
 
     private void promptSecondShelf(Cli cli) {
@@ -47,6 +47,6 @@ public class SwapShelvesState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.setController(sourceState, true);
+        cli.setController(sourceController, true);
     }
 }

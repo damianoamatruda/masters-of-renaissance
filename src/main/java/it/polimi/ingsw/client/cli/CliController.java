@@ -35,15 +35,15 @@ public abstract class CliController extends UiController implements Renderable {
             if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
                 !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty()) { // setup is done
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                    cli.setController(new TurnBeforeActionState(), false);
+                    cli.setController(new TurnBeforeActionController(), false);
                 else
-                    cli.setController(new WaitingAfterTurnState(), false);
+                    cli.setController(new WaitingAfterTurnController(), false);
             } else // setup not done
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
-                            cli.setController(new SetupLeadersState(), false);
+                            cli.setController(new SetupLeadersController(), false);
                         else if (isResourceSetupAvailable())
-                            cli.setController(new SetupResourcesState(), false);
+                            cli.setController(new SetupResourcesController(), false);
                     });
             });
         });
@@ -60,34 +60,34 @@ public abstract class CliController extends UiController implements Renderable {
             case LATE_SETUP_ACTION -> {
                 cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
                 if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-                    cli.setController(new TurnBeforeActionState(), true);
+                    cli.setController(new TurnBeforeActionController(), true);
                 else
-                    cli.setController(new WaitingAfterTurnState(), true);
+                    cli.setController(new WaitingAfterTurnController(), true);
             }
             case EARLY_MANDATORY_ACTION -> {
                 cli.getOut().println(center("Setup phase is not concluded yet. Returning to setup phase."));
                 if (!isLocalLeaderSetupDone())
-                    cli.setController(new SetupLeadersState(), true);
+                    cli.setController(new SetupLeadersController(), true);
                 else if (!isLocalResourceSetupDone())
-                    cli.setController(new SetupResourcesState(), true);
+                    cli.setController(new SetupResourcesController(), true);
                 else
                     setNextState();
             }
             case LATE_MANDATORY_ACTION -> {
                 cli.getOut().println(center("You have already done a mandatory action. Advancing to optional actions."));
-                cli.setController(new TurnAfterActionState(), true);
+                cli.setController(new TurnAfterActionController(), true);
             }
             case EARLY_TURN_END -> {
                 cli.getOut().println(center("You cannot end the turn yet. A mandatory action needs to be done before ending the turn."));
-                cli.setController(new TurnBeforeActionState(), true);
+                cli.setController(new TurnBeforeActionController(), true);
             }
             case GAME_ENDED -> {
                 cli.getOut().println(center("The game has ended. Advancing to ending screen."));
-                cli.setController(new GameEndState(), true);
+                cli.setController(new GameEndController(), true);
             }
             case NOT_CURRENT_PLAYER -> {
                 cli.getOut().println(center("You are not the current player. Please wait for your turn."));
-                cli.setController(new WaitingAfterTurnState(), true);
+                cli.setController(new WaitingAfterTurnController(), true);
             }
         }
     }
@@ -146,7 +146,7 @@ public abstract class CliController extends UiController implements Renderable {
             case NOT_IN_GAME -> {
                 cli.getOut().println("Match not joined yet.");
 
-                cli.setController(new InputNicknameState(cli.getUi().isOffline() ? "Play Offline" : "Play Online"), true);
+                cli.setController(new InputNicknameController(cli.getUi().isOffline() ? "Play Offline" : "Play Online"), true);
             }
         }
     }
@@ -214,14 +214,14 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrServerUnavailable event) {
         cli.getOut().println("Server disconnected, returning to main menu");
 
-        cli.setController(new MainMenuState(), true);
+        cli.setController(new MainMenuController(), true);
     }
 
     @Override
     public void on(ResQuit event) {
         super.on(event);
 
-        cli.setController(new MainMenuState(), false);
+        cli.setController(new MainMenuController(), false);
     }
 
     @Override
@@ -248,7 +248,7 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println();
         if (event.getPlayer().equals(vm.getLocalPlayerNickname())) {
             cli.getOut().println(center("It's your turn."));
-            cli.setController(new TurnBeforeActionState(), true);
+            cli.setController(new TurnBeforeActionController(), true);
         } else
             cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
     }

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.*;
 
 /** Gui controller class of the development card purchase action. */
-public class DevCardGridController extends GuiController {
+public class BuyDevelopmentCardController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
     @FXML

@@ -68,7 +68,7 @@ public class Cli implements Runnable {
 
     public void start() {
         runThread.start();
-        setController(new SplashState(), false);
+        setController(new SplashController(), false);
     }
 
     /**

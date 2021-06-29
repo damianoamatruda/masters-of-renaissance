@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class BuyDevelopmentCardState extends CliController {
-    private final CliController sourceState;
+public class BuyDevelopmentCardController extends CliController {
+    private final CliController sourceController;
     private final AtomicBoolean isExitingState;
     private ReducedDevCardGrid grid;
     private String color;
@@ -29,8 +29,8 @@ public class BuyDevelopmentCardState extends CliController {
     private Map<Integer, Map<String, Integer>> shelves;
     private int slot;
 
-    public BuyDevelopmentCardState(CliController sourceState) {
-        this.sourceState = sourceState;
+    public BuyDevelopmentCardController(CliController sourceController) {
+        this.sourceController = sourceController;
         isExitingState = new AtomicBoolean(false);
         this.shelves = new HashMap<>();
     }
@@ -80,7 +80,7 @@ public class BuyDevelopmentCardState extends CliController {
                 }
             }, () -> {
                 isExitingState.set(true);
-                cli.setController(this.sourceState, false);
+                cli.setController(this.sourceController, false);
             });
         }
     }
@@ -172,6 +172,6 @@ public class BuyDevelopmentCardState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.setController(new TurnAfterActionState(), true);
+        cli.setController(new TurnAfterActionController(), true);
     }
 }

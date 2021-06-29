@@ -16,16 +16,16 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class TakeFromMarketState extends CliController {
-    private final CliController sourceState;
+public class TakeFromMarketController extends CliController {
+    private final CliController sourceController;
     private boolean isRow;
     private int index;
     private List<String> resources;
     private Map<String, Integer> replacements;
     private Map<Integer, Map<String, Integer>> shelves;
 
-    public TakeFromMarketState(CliController sourceState) {
-        this.sourceState = sourceState;
+    public TakeFromMarketController(CliController sourceController) {
+        this.sourceController = sourceController;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class TakeFromMarketState extends CliController {
                     chooseIndex(cli);
                 } else
                     valid.set(false);
-            }, () -> cli.setController(this.sourceState, false));
+            }, () -> cli.setController(this.sourceController, false));
         }
     }
 
@@ -149,14 +149,8 @@ public class TakeFromMarketState extends CliController {
         }, () -> chooseIndex(cli)); // TODO: Check this
     }
 
-    // ErrObjectNotOwned handled in CliState
-    // ErrNoSuchEntity handled in CliState
-    // ErrResourceReplacement handled in CliState
-    // ErrReplacedTransRecipe handled in CliState
-    // ErrResourceTransfer handled in CliState
-
     @Override
     public void on(UpdateAction event) {
-        cli.setController(new TurnAfterActionState(), true);
+        cli.setController(new TurnAfterActionController(), true);
     }
 }

@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class InputPlayersCountState extends CliController {
+public class WaitingBeforeGameController extends CliController {
     @Override
     public void render() {
         if (cli.getUi().isOffline()) {

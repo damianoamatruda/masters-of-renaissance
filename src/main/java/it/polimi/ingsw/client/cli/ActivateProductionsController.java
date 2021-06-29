@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class ActivateProductionsState extends CliController {
-    private final CliController sourceState;
+public class ActivateProductionsController extends CliController {
+    private final CliController sourceController;
     private final List<ReducedProductionRequest> requests;
     private boolean done;
     private ReducedResourceTransactionRecipe selectedProd;
@@ -23,8 +23,8 @@ public class ActivateProductionsState extends CliController {
     private Map<String, Integer> outputReplacement;
     private Map<Integer, Map<String, Integer>> shelves;
 
-    public ActivateProductionsState(CliController sourceState) {
-        this.sourceState = sourceState;
+    public ActivateProductionsController(CliController sourceController) {
+        this.sourceController = sourceController;
         this.requests = new ArrayList<>();
         this.done = false;
     }
@@ -65,7 +65,7 @@ public class ActivateProductionsState extends CliController {
         if (!this.requests.isEmpty())
             cli.getUi().dispatch(new ReqActivateProduction(this.requests));
         else
-            cli.setController(this.sourceState, false);
+            cli.setController(this.sourceController, false);
     }
 
     private void chooseInputReplacements(Cli cli) {
@@ -121,6 +121,6 @@ public class ActivateProductionsState extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.setController(new TurnAfterActionState(), true);
+        cli.setController(new TurnAfterActionController(), true);
     }
 }

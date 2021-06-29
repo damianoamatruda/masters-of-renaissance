@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class PlayOnlineState extends CliController {
+public class PlayOnlineController extends CliController {
     private static final String serverConfigPath = "/config/server.json";
-    
+
     @Override
     public void render() {
         cli.getOut().println();
@@ -51,7 +51,7 @@ public class PlayOnlineState extends CliController {
                     }
                 } else
                     valid.set(false);
-            }, () -> cli.setController(new MainMenuState(), false));
+            }, () -> cli.setController(new MainMenuController(), false));
         }
     }
 
@@ -69,9 +69,9 @@ public class PlayOnlineState extends CliController {
         }
 
         if (connected)
-            cli.setController(new InputNicknameState("Play Online"), false);
+            cli.setController(new InputNicknameController("Play Online"), false);
         else {
-            cli.setController(new PlayOnlineState(), true);
+            cli.setController(new PlayOnlineController(), true);
         }
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
-public class WaitingAfterTurnState extends CliController {
+public class WaitingAfterTurnController extends CliController {
     @Override
     public void render() {
         if (!vm.isLastRound())

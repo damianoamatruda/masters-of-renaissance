@@ -213,7 +213,7 @@ public class SetupResourcesController extends GuiController {
 
     @Override
     public void on(ErrAction event) {
-        /* If the data in the VM is correct setNextSetupState() could be used here as well.
+        /* If the data in the VM is correct setNextState() could be used here as well.
            This different handler, which keeps track of the current player only,
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */

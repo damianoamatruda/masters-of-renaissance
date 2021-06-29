@@ -22,14 +22,14 @@ public class TurnBeforeActionController extends TurnController {
 
         Button marketButton = new SButton("Market");
         marketButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
-                gui.setScene(getClass().getResource("/assets/gui/market.fxml")));
+                gui.setScene(getClass().getResource("/assets/gui/takefrommarket.fxml")));
         AnchorPane.setLeftAnchor(marketButton, 10d);
         AnchorPane.setTopAnchor(marketButton, 10d);
         canvas.getChildren().add(marketButton);
 
         Button gridButton = new SButton("Grid");
         gridButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
-                gui.setScene(getClass().getResource("/assets/gui/devcardgrid.fxml")));
+                gui.setScene(getClass().getResource("/assets/gui/buydevelopmentcard.fxml")));
         AnchorPane.setRightAnchor(gridButton, 10d);
         AnchorPane.setTopAnchor(gridButton, 10d);
         canvas.getChildren().add(gridButton);

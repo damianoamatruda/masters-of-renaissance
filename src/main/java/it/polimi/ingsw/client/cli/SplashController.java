@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.cli.components.MainTitle;
 import static it.polimi.ingsw.client.cli.Cli.center;
 import static it.polimi.ingsw.client.cli.Cli.convertStreamToString;
 
-public class SplashState extends CliController {
+public class SplashController extends CliController {
     @Override
     public void render() {
         new MainTitle().render();
@@ -14,7 +14,7 @@ public class SplashState extends CliController {
         renderCastle(cli);
         cli.getOut().println();
         pausePressEnter(cli);
-        cli.setController(new MainMenuState(), false);
+        cli.setController(new MainMenuController(), false);
     }
 
     private void renderCredits(Cli cli) {

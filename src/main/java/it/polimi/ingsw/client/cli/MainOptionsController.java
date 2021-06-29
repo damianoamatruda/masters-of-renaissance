@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class OptionsState extends CliController {
+public class MainOptionsController extends CliController {
     @Override
     public void render() {
         cli.getOut().println();
@@ -23,19 +23,19 @@ public class OptionsState extends CliController {
     }
 
     private void goBack(Cli cli) {
-        cli.setController(new MainMenuState(), false);
+        cli.setController(new MainMenuController(), false);
     }
 
     private void defaultConfig(Cli cli) {
         cli.getUi().setGameConfigStream(null);
-        cli.setController(new MainMenuState(), false);
+        cli.setController(new MainMenuController(), false);
     }
 
     private void customConfig(Cli cli) {
         cli.promptFile("Path of custom config.json").ifPresentOrElse(gameConfigFile -> {
             try {
                 cli.getUi().setGameConfigStream(new FileInputStream(gameConfigFile));
-                cli.setController(new MainMenuState(), false);
+                cli.setController(new MainMenuController(), false);
                 cli.getOut().println(center("Config loaded."));
                 cli.promptPause();
             } catch (FileNotFoundException e) {

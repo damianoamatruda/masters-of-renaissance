@@ -13,11 +13,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /** Gui controller used on Solo game turn switch, which displays the activated action token. */
-public class TriggerActionToken extends GuiController {
-    @FXML private BorderPane canvas;
-    @FXML private ImageView token;
-    @FXML private Text message;
-    @FXML private Button next;
+public class TriggerActionTokenController extends GuiController {
+    @FXML
+    private BorderPane canvas;
+    @FXML
+    private ImageView token;
+    @FXML
+    private Text message;
+    @FXML
+    private Button next;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

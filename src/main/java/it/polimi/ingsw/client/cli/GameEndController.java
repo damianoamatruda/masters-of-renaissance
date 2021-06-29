@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
-public class GameEndState extends CliController {
+public class GameEndController extends CliController {
     @Override
     public void render() {
         String prefix = vm.getWinner() + " is the winner";

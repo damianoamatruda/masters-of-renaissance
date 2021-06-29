@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SetupResourcesState extends SetupState {
+public class SetupResourcesController extends SetupController {
     @Override
     public void render() {
         cli.getOut().println();
@@ -55,17 +55,11 @@ public class SetupResourcesState extends SetupState {
         super.on(event);
     }
 
-    // ErrObjectNotOwned handled in CliState
-    // ErrNoSuchEntity handled in CliState
-    // ErrResourceReplacement handled in CliState
-    // ErrReplacedTransRecipe handled in CliState
-    // ErrResourceTransfer handled in CliState
-
     @Override
     public void on(UpdateAction event) {
         if (event.getAction() != ActionType.CHOOSE_RESOURCES && event.getPlayer().equals(vm.getLocalPlayerNickname()))
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
-        
-        // super.on(event); // not needed, as UpdateSetupDone will take care of state switching, see SetupState
+
+        // super.on(event); // TODO: not needed, as UpdateSetupDone will take care of state switching, see SetupController
     }
 }

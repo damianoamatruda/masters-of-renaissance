@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-public class SetupLeadersState extends SetupState {
+public class SetupLeadersController extends SetupController {
     @Override
     public void render() {
         cli.getOut().println();
@@ -30,7 +30,7 @@ public class SetupLeadersState extends SetupState {
         List<ReducedLeaderCard> lCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname());
         if (lCards.isEmpty()) {
             cli.getOut().println("No leader cards to choose from. Setup cannot continue.");
-            cli.setController(new MainMenuState(), true);
+            cli.setController(new MainMenuController(), true);
             return;
         }
 

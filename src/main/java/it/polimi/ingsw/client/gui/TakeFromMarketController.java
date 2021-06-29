@@ -28,8 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Gui controller class of the take Market resources action. */
-public class MarketController extends GuiController {
-    private static final Logger LOGGER = Logger.getLogger(MarketController.class.getName());
+public class TakeFromMarketController extends GuiController {
+    private static final Logger LOGGER = Logger.getLogger(TakeFromMarketController.class.getName());
 
     @FXML
     private AnchorPane canvas;

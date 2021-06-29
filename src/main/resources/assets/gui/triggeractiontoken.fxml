@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="canvas" xmlns="http://javafx.com/javafx/16"
-            fx:controller="it.polimi.ingsw.client.gui.TriggerActionToken"
+            fx:controller="it.polimi.ingsw.client.gui.TriggerActionTokenController"
             prefHeight="400.0" prefWidth="600.0"
             maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
   <center>

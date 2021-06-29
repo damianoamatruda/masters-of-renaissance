@@ -6,20 +6,20 @@ import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 
-public abstract class SetupState extends CliController {
+public abstract class SetupController extends CliController {
     @Override
     public void on(ErrAction event) {
         /* If the data in the VM is correct setNextSetupState() could be used here as well.
            This different handler, which keeps track of the current player only,
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
-        
+
         cli.getOut().println("Setup phase is concluded, advancing to game turns.");
-        
+
         if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
-            cli.setController(new TurnBeforeActionState(), true);
+            cli.setController(new TurnBeforeActionController(), true);
         else
-            cli.setController(new WaitingAfterTurnState(), true);
+            cli.setController(new WaitingAfterTurnController(), true);
     }
 
     @Override
