@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.gui.components.SButton;
-import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -35,11 +34,5 @@ public class TurnAfterActionController extends TurnController {
         canvas.getChildren().add(title);
 
         warehouse.enableSwapper();
-    }
-
-    @Override
-    public void on(UpdateActionToken event) {
-        super.on(event);
-        gui.setScene(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
     }
 }

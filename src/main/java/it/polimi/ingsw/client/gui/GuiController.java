@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.common.events.mvevents.ResQuit;
+import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
 import it.polimi.ingsw.common.events.mvevents.UpdatePlayerStatus;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
@@ -240,6 +241,12 @@ public abstract class GuiController extends UiController implements Initializabl
     }
 
     @Override
+    public void on(UpdateActionToken event) {
+        super.on(event);
+        gui.setScene(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
+    }
+
+    @Override
     public void on(UpdatePlayerStatus event) {
         super.on(event);
 
@@ -249,7 +256,7 @@ public abstract class GuiController extends UiController implements Initializabl
                         String.format("Player %s %s", event.getPlayer(), event.isActive() ? "reconnected" : "disconnected"),
                         () -> {
                             alertLock.set(true);
-                            synchronized(alertLock) {
+                            synchronized (alertLock) {
                                 alertLock.notifyAll();
                             }
                         })));
