@@ -281,14 +281,6 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(UpdateGameEnd event) {
-        super.on(event);
-
-        cli.getOut().println();
-        cli.getOut().println("Game ended!");
-    }
-
-    @Override
     public void on(UpdateGame event) {
         super.on(event);
 
@@ -296,6 +288,14 @@ public abstract class CliController extends UiController implements Renderable {
                 .collect(Collectors.toMap(nick -> nick, nick -> 0));
         cli.getOut().println();
         new FaithTrack(vm.getFaithTrack().orElseThrow(), points).render();
+    }
+
+    @Override
+    public void on(UpdateGameEnd event) {
+        super.on(event);
+
+        cli.getOut().println();
+        cli.getOut().println("Game ended!");
     }
 
     @Override
