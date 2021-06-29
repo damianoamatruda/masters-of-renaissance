@@ -80,7 +80,7 @@ public class LeaderBoard extends StackPane {
             protected void updateItem(LeaderBoardEntry item, boolean empty) {
                 super.updateItem(item, empty);
                 if(item != null) {
-                    Optional<String> color = Gui.getInstance().getViewModel().getClientGuiColor(item.getPlayer());
+                    Optional<String> color = Gui.getInstance().getViewModel().getClientGuiColor(item.getPlayer().substring(0, item.getPlayer().indexOf(' ')));
                     color.ifPresent(c -> setStyle("-fx-background-color: " + c + ";"));
                 }
             }
@@ -101,7 +101,7 @@ public class LeaderBoard extends StackPane {
         private final int points;
 
         public LeaderBoardEntry(String player, int points) {
-            this.player = player;
+            this.player = player + (Gui.getInstance().getViewModel().getCurrentPlayer().equals(player) ? " (me)" : "");
             this.points = points;
         }
 
