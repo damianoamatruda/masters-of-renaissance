@@ -56,12 +56,11 @@ public class DevCardGridController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
 
+        submitBtn.setDisable(true);
+
         devCardGrid = new DevCardGrid();
         devCardGrid.setGrid(vm.getDevCardGrid().orElseThrow());
         devCardGrid.setControllerListener(this::devCardPressed);
-
-//        devCardGrid.setScaleX(0.7);
-//        devCardGrid.setScaleY(0.7);
 
         devCardGridPane.getChildren().add(devCardGrid);
 
@@ -82,20 +81,6 @@ public class DevCardGridController extends GuiController {
 
         gui.setPauseHandler(canvas);
         gui.addPauseButton(canvas);
-
-        canvas.setBorder(new Border(new BorderStroke(Color.RED,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-        devCardGridPane.setBorder(new Border(new BorderStroke(Color.BLACK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        containersBox.setBorder(new Border(new BorderStroke(Color.BLACK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        devSlotsBox.setBorder(new Border(new BorderStroke(Color.BLACK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        leadersBox.setBorder(new Border(new BorderStroke(Color.BLACK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        rightVBox.setBorder(new Border(new BorderStroke(Color.PINK,
-            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     }
 
     /**
@@ -194,6 +179,8 @@ public class DevCardGridController extends GuiController {
             selectedCard = null;
             selectedColor = "";
             selectedLevel = 0;
+            
+            submitBtn.setDisable(true);
         }
         else {
             if (selectedCard != null)
@@ -202,6 +189,8 @@ public class DevCardGridController extends GuiController {
             selectedCard = guicard;
             selectedColor = card.getColor();
             selectedLevel = card.getLevel();
+
+            submitBtn.setDisable(false);
         }
 
         shelvesMap = new HashMap<>();
