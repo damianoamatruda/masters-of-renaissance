@@ -90,7 +90,8 @@ public class Player extends EventDispatcher {
                 baseProduction.getId(),
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
-                setup.reduce()));
+                setup.reduce(),
+                faithPoints));
     }
 
     public void dispatchPublicState() {

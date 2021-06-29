@@ -40,13 +40,14 @@ public class PlayerData {
      * @param strongbox        the player's strongbox's ID
      * @param warehouseShelves the player's warehouse shelves' ID
      */
-    public PlayerData(int baseProduction, ReducedPlayerSetup setup, int strongbox, List<Integer> warehouseShelves) {
+    public PlayerData(int baseProduction, ReducedPlayerSetup setup, int strongbox, List<Integer> warehouseShelves, int faithPoints) {
         devSlots = new ArrayList<>();
         leadersHand = new HashSet<>();
         this.baseProduction = baseProduction;
         this.setup = setup;
         this.strongbox = strongbox;
         this.warehouseShelves = warehouseShelves;
+        this.faithPoints = faithPoints;
     }
 
     /**

@@ -176,7 +176,8 @@ public abstract class UiController {
                 event.getBaseProduction(),
                 event.getPlayerSetup(),
                 event.getStrongbox(),
-                event.getWarehouseShelves()));
+                event.getWarehouseShelves(),
+                event.getFaithPoints()));
         // TODO put baseProd outside of PlayerData, since it is unique (?)
     }
 

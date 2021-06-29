@@ -66,8 +66,8 @@ public class GameContext extends AsynchronousEventDispatcher {
         game.dispatchState();
         game.getMarket().dispatchInitialState();
         game.getDevCardGrid().dispatchInitialState();
-        game.getPlayers().forEach(Player::dispatchPublicState);
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
+        game.getPlayers().forEach(Player::dispatchPublicState);
     }
 
     public void dispatchStartPrivateStates(View view, String nickname) {
