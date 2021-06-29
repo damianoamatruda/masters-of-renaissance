@@ -44,8 +44,6 @@ public class PlayOnlineController extends GuiController {
             return;
         }
 
-        // Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert("Play Online", String.format("Connecting to %s...", server.getText()))));
-
         try {
             gui.getUi().openOnlineClient(host, port);
         } catch (UnknownHostException e) {

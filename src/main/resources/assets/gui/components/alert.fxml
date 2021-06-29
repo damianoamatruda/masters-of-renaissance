@@ -8,7 +8,6 @@
 <fx:root xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
          type="StackPane"
          stylesheets="@../index.css">
-  <Pane styleClass="overlay"/>
   <BorderPane fx:id="main">
     <center>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="floating"

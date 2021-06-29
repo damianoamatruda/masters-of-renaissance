@@ -14,11 +14,9 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
-    protected final AtomicBoolean alertLock = new AtomicBoolean(true);
     
     public GuiController() {
         super(Gui.getInstance().getUi());
@@ -62,19 +60,19 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
 
         switch (event.getReason()) {
-            case LATE_SETUP_ACTION -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+            case LATE_SETUP_ACTION -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "Setup phase is concluded",
                     "Advancing to game turns.",
                     this::setNextState)));
-            case EARLY_MANDATORY_ACTION -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+            case EARLY_MANDATORY_ACTION -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "Setup phase is not concluded yet",
                     "Returning to setup phase.",
                     this::setNextState)));
-            case LATE_MANDATORY_ACTION -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+            case LATE_MANDATORY_ACTION -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You have already done a mandatory action",
                     "Advancing to optional actions.",
                     () -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml")))));
-            case EARLY_TURN_END -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+            case EARLY_TURN_END -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You cannot end the turn yet",
                     "A mandatory action needs to be done before ending the turn.",
                     () -> gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml")))));
@@ -82,7 +80,7 @@ public abstract class GuiController extends UiController implements Initializabl
                     "The game has ended",
                     "Advancing to ending screen.",
                     () -> gui.setScene(getClass().getResource("/assets/gui/endgame.fxml")))));
-            case NOT_CURRENT_PLAYER -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+            case NOT_CURRENT_PLAYER -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You are not the current player",
                     "Please wait for your turn.",
                     () -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml")))));
@@ -150,7 +148,7 @@ public abstract class GuiController extends UiController implements Initializabl
                     "Nickname error", "Nickname is blank.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case NOT_IN_GAME -> gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
-                    gui.getRoot().getChildren().add(new Alert("Nickname error", "Match not joined yet.")));
+                    gui.addToOverlay(new Alert("Nickname error", "Match not joined yet.")));
         }
     }
 
@@ -228,7 +226,7 @@ public abstract class GuiController extends UiController implements Initializabl
 
         gui.getUi().closeClient();
 
-        Platform.runLater(() -> gui.getRoot().getChildren().add(
+        Platform.runLater(() -> gui.addToOverlay(
                 new Alert("Connection error", "Server is down. Try again later.", () ->
                         gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml")))));
     }
@@ -250,15 +248,8 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(UpdatePlayerStatus event) {
         super.on(event);
 
-        alertLock.set(false);
-        Platform.runLater(() -> gui.getRoot().getChildren().add(
+        Platform.runLater(() -> gui.addToOverlay(
                 new Alert("Player status change",
-                        String.format("Player %s %s", event.getPlayer(), event.isActive() ? "reconnected" : "disconnected"),
-                        () -> {
-                            alertLock.set(true);
-                            synchronized (alertLock) {
-                                alertLock.notifyAll();
-                            }
-                        })));
+                        String.format("Player %s %s", event.getPlayer(), event.isActive() ? "reconnected" : "disconnected"))));
     }
 }

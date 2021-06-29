@@ -9,8 +9,10 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
@@ -49,6 +51,8 @@ public class Gui extends Application {
     static final double realWidth = 1280;
     static final double realHeight = 720;
 
+    private static NumberBinding maxScale;
+
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
     private static final String mainStylesheetCss = "/assets/gui/index.css";
     private static final String title = "Masters of Renaissance";
@@ -58,6 +62,7 @@ public class Gui extends Application {
     private Pane root;
     private URL currentScene;
     private Pane pauseMenu;
+    private StackPane overlay;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
 
@@ -66,8 +71,15 @@ public class Gui extends Application {
         this.ui = new Ui();
         this.currentScene = null;
         this.pauseMenu = null;
+        this.overlay = new StackPane();
         this.musicPlayer = null;
         this.soundFxVolume = 1;
+
+        setOverlayDimensions(0, 0);
+
+        overlay.getStyleClass().add("overlay");
+
+        this.overlay.getChildren().addListener(this::overlayContentChanged);
     }
 
     public static void main(String[] args) {
@@ -92,6 +104,7 @@ public class Gui extends Application {
         root.getStylesheets().add(mainStylesheetCss);
         Parent scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(initialSceneFxml)));
         root.getChildren().add(scene);
+        root.getChildren().add(overlay);
         setSceneScaling(scene);
         stage = primaryStage;
         stage.setScene(new Scene(root, startWidth, startHeight, false, SceneAntialiasing.BALANCED));
@@ -131,8 +144,8 @@ public class Gui extends Application {
             if (callback != null)
                 callback.accept(fxmlLoader.getController());
             Platform.runLater(() -> {
-                root.getChildren().clear();
-                root.getChildren().add(scene);
+                root.getChildren().set(0, scene);
+                // ((Pane) scene).getChildren().add(overlay);
             });
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "IOException when setting root", e);
@@ -160,7 +173,7 @@ public class Gui extends Application {
             - a reloadRoot(Callback) that would call setRoot(currentRoot, callback)
                 Discarded, since the runLater methods wouldn't get executed in order and
                 the Alert would be visible for only a split second */
-        Platform.runLater(() -> root.getChildren().add(new Alert(title, content, () -> setScene(currentScene, callback))));
+        Platform.runLater(() -> addToOverlay(new Alert(title, content, () -> setScene(currentScene, callback))));
     }
 
     /**
@@ -174,11 +187,13 @@ public class Gui extends Application {
     }
 
     public void setSceneScaling(Parent scene) {
-        NumberBinding maxScale = Bindings.min(
+        maxScale = Bindings.min(
                 root.widthProperty().divide(realWidth),
                 root.heightProperty().divide(realHeight));
         scene.scaleXProperty().bind(maxScale);
         scene.scaleYProperty().bind(maxScale);
+        overlay.scaleXProperty().bind(maxScale);
+        overlay.scaleYProperty().bind(maxScale);
     }
 
     public Stage getStage() {
@@ -198,10 +213,10 @@ public class Gui extends Application {
             pauseMenu = new PauseMenu();
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
-                if (!root.getChildren().contains(pauseMenu))
-                    root.getChildren().add(pauseMenu);
+                if (!overlay.getChildren().contains(pauseMenu))
+                    addToOverlay(pauseMenu);
                 else
-                    root.getChildren().remove(pauseMenu);
+                    removeFromOverlay(pauseMenu);
             }
         });
     }
@@ -211,12 +226,38 @@ public class Gui extends Application {
         if (pauseMenu == null)
             pauseMenu = new PauseMenu();
         pause.addEventHandler(ActionEvent.ACTION, actionEvent -> {
-            if (!root.getChildren().contains(pauseMenu))
-                root.getChildren().add(pauseMenu);
+            if (!overlay.getChildren().contains(pauseMenu))
+                addToOverlay(pauseMenu);
         });
         scene.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 10.0);
         AnchorPane.setLeftAnchor(pause, 10.0);
+    }
+
+    public void addToOverlay(Pane child) {
+        overlay.getChildren().add(child);
+    }
+
+    public void removeFromOverlay(Pane child) {
+        overlay.getChildren().remove(child);
+    }
+
+    private void overlayContentChanged(ListChangeListener.Change<? extends Node> change) {
+        if (overlay.getChildren().isEmpty())
+            setOverlayDimensions(0, 0);
+        else
+            setOverlayDimensions(realWidth, realHeight);
+    }
+
+    private void setOverlayDimensions(double width, double height) {
+        this.overlay.setMinWidth(width);
+        this.overlay.setMaxWidth(width);
+        this.overlay.setMinHeight(height);
+        this.overlay.setMaxHeight(height);
+        if (maxScale != null) {
+            overlay.scaleXProperty().bind(maxScale);
+            overlay.scaleYProperty().bind(maxScale);
+        }
     }
 
     public double getSoundFxVolume() {

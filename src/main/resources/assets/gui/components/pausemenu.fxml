@@ -10,7 +10,6 @@
          xmlns="http://javafx.com/javafx"
          type="StackPane"
          stylesheets="@../index.css">
-  <Pane styleClass="overlay"/>
   <BorderPane fx:id="main" styleClass="dark">
     <center>
       <VBox maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER">

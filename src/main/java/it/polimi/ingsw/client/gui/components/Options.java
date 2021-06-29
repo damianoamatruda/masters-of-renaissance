@@ -156,7 +156,7 @@ public class Options extends BorderPane {
                 resetConfigButton.setDisable(false);
             } catch (FileNotFoundException e) {
                 Platform.runLater(() ->
-                        ((Pane) this.getParent()).getChildren().add(
+                        gui.addToOverlay(
                                 new Alert(title, String.format("Couldn't gain access to file %s.%n", gameConfigFile.getPath()))));
             }
         }

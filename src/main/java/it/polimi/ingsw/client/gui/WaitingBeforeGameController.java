@@ -69,7 +69,7 @@ public class WaitingBeforeGameController extends GuiController {
             int count = Integer.parseInt(inputRadio.getText());
             gui.getUi().dispatch(new ReqNewGame(count));
         } catch (NumberFormatException e) {
-            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert("Play Online", "Not a number")));
+            Platform.runLater(() -> gui.addToOverlay(new Alert("Play Online", "Not a number")));
         }
     }
 
@@ -79,7 +79,7 @@ public class WaitingBeforeGameController extends GuiController {
             gui.reloadScene("You cannot prepare a new game",
                     "You have given an invalid players' count.");
         else
-            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+            Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You cannot prepare a new game",
                     "You are not allowed to prepare a new game.",
                     this::setNextState

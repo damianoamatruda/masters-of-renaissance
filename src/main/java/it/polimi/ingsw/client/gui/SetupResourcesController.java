@@ -218,7 +218,7 @@ public class SetupResourcesController extends GuiController {
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
         Consumer<? extends GuiController> callback = controller ->
-                gui.getRoot().getChildren().add(
+                gui.addToOverlay(
                         new Alert("Setup already concluded", "You have already concluded setup, advancing to game turns."));
 
         if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
@@ -231,7 +231,7 @@ public class SetupResourcesController extends GuiController {
     public void on(ErrInitialChoice event) {
         if (event.isLeadersChoice()) // if the error is from the initial leaders choice
             if (event.getMissingLeadersCount() == 0) // no leaders missing -> already chosen
-                Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+                Platform.runLater(() -> gui.addToOverlay(new Alert(
                         "You cannot choose the leader cards",
                         "You have already chosen the initial leader cards.",
                         this::setNextState
@@ -240,7 +240,7 @@ public class SetupResourcesController extends GuiController {
                 gui.reloadScene("You cannot buy the development card",
                         String.format("You have not chosen enough leader cards: %d missing.", event.getMissingLeadersCount()));
         else
-            Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
+            Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You cannot choose the leader cards",
                     "You have already chosen the initial resources.",
                     this::setNextState
