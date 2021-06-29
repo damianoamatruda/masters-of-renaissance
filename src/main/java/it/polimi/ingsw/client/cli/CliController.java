@@ -254,8 +254,10 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateDevCardGrid event) {
         super.on(event);
 
-        cli.getOut().println();
-        new DevCardGrid(vm.getDevCardGrid().orElseThrow()).render();
+        vm.getDevCardGrid().ifPresent(devCardGrid -> {
+            cli.getOut().println();
+            new DevCardGrid(devCardGrid).render();
+        });
     }
 
     @Override
