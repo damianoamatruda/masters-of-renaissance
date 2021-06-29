@@ -226,13 +226,6 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(UpdateAction event) {
-        super.on(event);
-
-        // TODO: IMPLEMENT IN STATES
-    }
-
-    @Override
     public void on(UpdateActionToken event) {
         super.on(event);
 
