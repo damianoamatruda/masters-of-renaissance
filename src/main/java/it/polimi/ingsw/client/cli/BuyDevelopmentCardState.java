@@ -45,6 +45,7 @@ public class BuyDevelopmentCardState extends CliController {
         cli.getOut().println();
         new DevCardGrid(grid).render();
         cli.getOut().println();
+
         new ResourceContainers(vm.getLocalPlayerNickname(),
                 vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
                 vm.getPlayerDepots(vm.getLocalPlayerNickname()),

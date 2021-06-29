@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.cli.components;
 
-import java.util.List;
-
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+
+import java.util.List;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
@@ -14,21 +14,16 @@ public class ResourceContainers extends StringComponent {
     private final ReducedResourceContainer strongbox;
 
     public ResourceContainers(String player, List<ReducedResourceContainer> warehouseShelves,
-            List<ReducedResourceContainer> depots, ReducedResourceContainer strongbox) {
-        
-        this.depots = depots;
+                              List<ReducedResourceContainer> depots, ReducedResourceContainer strongbox) {
         this.player = player;
-        this.strongbox = strongbox;
         this.warehouseShelves = warehouseShelves;
+        this.depots = depots;
+        this.strongbox = strongbox;
     }
 
     @Override
     public String getString(Cli cli) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append(showShelves(cli));
-        stringBuilder.append(showStrongbox(cli));
-        return stringBuilder.toString();
+        return showShelves(cli) + "\n\n" + showStrongbox(cli);
     }
 
     private String showShelves(Cli cli) {
@@ -39,8 +34,9 @@ public class ResourceContainers extends StringComponent {
             warehouseShelves.forEach(c ->
                     stringBuilder.append("\n").append(center(new Box(new ResourceContainer(c)).getString(cli))));
         }
+
         if (depots.size() > 0) {
-            stringBuilder.append("\n");
+            stringBuilder.append("\n\n");
             stringBuilder.append(center(String.format("%s's available leader depots:%n", player)));
             depots.forEach(c ->
                     stringBuilder.append("\n").append(center(new Box(new ResourceContainer(c)).getString(cli))));
@@ -52,7 +48,7 @@ public class ResourceContainers extends StringComponent {
     private String showStrongbox(Cli cli) {
         if (strongbox == null)
             return "";
-        
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(center(String.format("%n%s's strongbox:", player))).append("\n");
