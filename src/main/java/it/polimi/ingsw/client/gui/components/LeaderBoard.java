@@ -80,8 +80,13 @@ public class LeaderBoard extends StackPane {
             protected void updateItem(LeaderBoardEntry item, boolean empty) {
                 super.updateItem(item, empty);
                 if(item != null) {
-                    Optional<String> color = Gui.getInstance().getViewModel().getClientGuiColor(item.getPlayer().substring(0, item.getPlayer().indexOf(' ')));
+                    String player = item.getPlayer();
+                    Optional<String> color = Gui.getInstance().getViewModel().getClientGuiColor(item.getPlayer());
                     color.ifPresent(c -> setStyle("-fx-background-color: " + c + ";"));
+
+                    // add indicator of local player
+                    if (player.equals(viewModel.getLocalPlayerNickname()))
+                        item.setLocalPlayer();
                 }
             }
         });
@@ -97,11 +102,11 @@ public class LeaderBoard extends StackPane {
      * Class representing a single entry in the leaderboards.
      */
     public static class LeaderBoardEntry {
-        private final String player;
+        private String player;
         private final int points;
 
         public LeaderBoardEntry(String player, int points) {
-            this.player = player + (Gui.getInstance().getViewModel().getCurrentPlayer().equals(player) ? " (me)" : "");
+            this.player = player;
             this.points = points;
         }
 
@@ -111,6 +116,10 @@ public class LeaderBoard extends StackPane {
 
         public int getPoints() {
             return points;
+        }
+
+        public void setLocalPlayer() {
+            player += " (me)";
         }
     }
 }
