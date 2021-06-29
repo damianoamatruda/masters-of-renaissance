@@ -8,14 +8,12 @@
 <?import javafx.scene.layout.*?>
 <fx:root xmlns:fx="http://javafx.com/fxml"
          xmlns="http://javafx.com/javafx"
-         type="StackPane">
+         type="StackPane"
+         stylesheets="@../index.css">
   <Pane styleClass="overlay"/>
-  <BorderPane styleClass="dark">
+  <BorderPane fx:id="main" styleClass="dark">
     <center>
-      <VBox maxWidth="-Infinity" maxHeight="-Infinity"
-            alignment="CENTER"
-            stylesheets="@../index.css"
-            fx:id="window">
+      <VBox maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER">
         <VBox alignment="CENTER">
           <VBox.margin>
             <Insets bottom="40.0"/>

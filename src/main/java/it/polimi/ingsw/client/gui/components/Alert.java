@@ -4,9 +4,9 @@ import it.polimi.ingsw.client.gui.Gui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class Alert extends StackPane {
     @FXML
-    private VBox window;
+    private BorderPane main;
     @FXML
     private Title titleText;
     @FXML
@@ -41,7 +41,7 @@ public class Alert extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        Gui.getInstance().setSceneScaling(window);
+        Gui.getInstance().setSceneScaling(main);
 
         titleText.setText(title);
 

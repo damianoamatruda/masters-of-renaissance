@@ -9,13 +9,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<fx:root xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-         type="BorderPane">
+<fx:root xmlns:fx="http://javafx.com/fxml/1"
+         xmlns="http://javafx.com/javafx/16"
+         type="BorderPane"
+         stylesheets="@../index.css">
    <center>
-      <VBox maxWidth="-Infinity" maxHeight="-Infinity"
-            alignment="CENTER"
-            stylesheets="@../index.css"
-            fx:id="window">
+      <VBox maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER">
          <padding>
             <Insets left="30.0" right="30.0"/>
          </padding>

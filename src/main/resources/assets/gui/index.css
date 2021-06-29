@@ -19,13 +19,13 @@
     -fx-font-size: 22px;
 }
 
-.root, .main {
+.root, .background {
     -fx-background-image: url('background.png');
     -fx-background-size: 500px;
     -fx-background-position: center;
 }
 
-.main-small {
+.floating {
     -fx-background-color: #cdcdb6;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class PauseOptions extends StackPane {
     @FXML
-    private Options window;
+    private Options main;
 
     public PauseOptions() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/pauseoptions.fxml"));
@@ -22,9 +22,9 @@ public class PauseOptions extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        Gui.getInstance().setSceneScaling(window);
+        Gui.getInstance().setSceneScaling(main);
 
-        window.setOnBack(e -> {
+        main.setOnBack(e -> {
             Gui.getInstance().getRoot().getChildren().remove(this);
             Gui.getInstance().getRoot().getChildren().add(new PauseMenu());
         });

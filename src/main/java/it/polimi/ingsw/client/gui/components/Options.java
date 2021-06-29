@@ -21,7 +21,7 @@ import java.io.IOException;
 /** Gui component representing the Options screen. */
 public class Options extends BorderPane {
     @FXML
-    private VBox window;
+    private BorderPane main;
     @FXML
     private VBox configContainer;
     @FXML
@@ -175,7 +175,7 @@ public class Options extends BorderPane {
      * TODO
      */
     public boolean getConfigContainer() {
-        return window.getChildren().contains(configContainer);
+        return ((Pane) configContainer.getParent()).getChildren().contains(configContainer);
     }
 
     /**
@@ -183,7 +183,7 @@ public class Options extends BorderPane {
      */
     public void setConfigContainer(boolean isPresent) {
         if (!isPresent)
-            window.getChildren().remove(configContainer);
+            ((Pane) configContainer.getParent()).getChildren().remove(configContainer);
     }
 
     public EventHandler<ActionEvent> getOnBack() {

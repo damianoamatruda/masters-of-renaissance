@@ -7,11 +7,12 @@
 <?import javafx.scene.layout.*?>
 <fx:root xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
-         type="StackPane" stylesheets="@../index.css">
+         type="StackPane"
+         stylesheets="@../index.css">
   <Pane styleClass="overlay"/>
-  <BorderPane>
+  <BorderPane fx:id="main">
     <center>
-      <VBox fx:id="window" alignment="CENTER" maxHeight="-Infinity" maxWidth="600" spacing="50" styleClass="main-small">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="600" spacing="50" styleClass="floating">
         <Title text="Leaderboard" maxWidth="-Infinity"/>
         <TableView fx:id="content"/>
         <SButton fx:id="back" text="Back"/>

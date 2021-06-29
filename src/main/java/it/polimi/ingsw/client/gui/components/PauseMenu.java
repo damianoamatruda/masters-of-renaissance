@@ -4,16 +4,16 @@ import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
 /** Gui component representing the pause menu. */
 public class PauseMenu extends StackPane {
     @FXML
-    private VBox window;
+    private BorderPane main;
     @FXML
     private SButton back;
     @FXML
@@ -32,9 +32,9 @@ public class PauseMenu extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        setHandlers();
+        Gui.getInstance().setSceneScaling(main);
 
-        Gui.getInstance().setSceneScaling(window);
+        setHandlers();
     }
 
     /**

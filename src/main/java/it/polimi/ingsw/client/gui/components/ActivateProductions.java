@@ -7,11 +7,11 @@ import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 /** Pane component used to choose input source for a selected production. */
-public class ActivateProductions extends BorderPane {
+public class ActivateProductions extends StackPane {
+    @FXML
+    private BorderPane main;
     @FXML
     private SButton back;
     @FXML
@@ -79,7 +81,7 @@ public class ActivateProductions extends BorderPane {
         this.toActivate = toActivate;
         this.index = index;
 
-        gui.setSceneScaling(this);
+        gui.setSceneScaling(main);
 
         ReducedResourceTransactionRecipe selectedProd = gui.getViewModel().getProduction(toActivate.get(index)).orElseThrow();
 
