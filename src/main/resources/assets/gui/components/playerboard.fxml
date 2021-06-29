@@ -10,8 +10,8 @@
     <GridPane fx:id="board" alignment="CENTER" prefHeight="720" prefWidth="1012" StackPane.alignment="CENTER">
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="24.3"/>
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="1.82"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="22.3"/>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="3.82"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="10.55"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="58.43"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="4.5"/>
