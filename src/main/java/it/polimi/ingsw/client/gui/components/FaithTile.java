@@ -10,6 +10,8 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class FaithTile extends StackPane {
     private final int tileId;
     private final ImageView bg;
+    private final Pane markersPane;
 
     /**
      * Class constructor.
@@ -33,6 +36,9 @@ public class FaithTile extends StackPane {
     public FaithTile(int tileId, boolean isYellow, boolean isSection, boolean isSectionEnd) {
         this.tileId = tileId;
         String template;
+        markersPane = new Pane();
+        markersPane.setMaxHeight(117);
+        markersPane.setMaxWidth(117);
 
         if (isYellow) {
             if(isSection) template = "/assets/gui/faithtrack/yellowsectiontile.png";
@@ -94,8 +100,13 @@ public class FaithTile extends StackPane {
 
         marker.setScaleX(bg.getScaleX() / 1.5);
         marker.setScaleY(bg.getScaleY() / 1.5);
-        this.getChildren().add(marker);
 
+        if(!this.getChildren().contains(markersPane))
+            this.getChildren().add(markersPane);
+
+        markersPane.getChildren().add(marker);
+
+        adjustMarkers();
         markers.put(player, marker);
     }
 
@@ -150,8 +161,25 @@ public class FaithTile extends StackPane {
      * @param markers
      */
     public void removePlayerMarker(String player, HashMap<String, ImageView> markers) {
-        this.getChildren().remove(markers.get(player));
+        markersPane.getChildren().remove(markers.get(player));
         markers.remove(player);
+        adjustMarkers();
+    }
+
+    /**
+     * Adjusts positions of overlapping markers
+     */
+    private void adjustMarkers() {
+        if(markersPane.getChildren().size() > 0)
+            markersPane.getChildren().get(0).setLayoutX(12);
+
+        // if overlapping player markers
+        if (markersPane.getChildren().stream().filter(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("faithmarker")).count() >= 2) {
+            for (int i = 1; i < markersPane.getChildren().size(); i++) {
+                markersPane.getChildren().subList(0, i).forEach(m -> m.setLayoutX(m.getLayoutX() - 7));
+                markersPane.getChildren().get(i).setLayoutX(markersPane.getChildren().get(i - 1).getLayoutX() + 10);
+            }
+        }
     }
 
     /**
