@@ -130,86 +130,6 @@ public abstract class PlaygroundController extends GuiController {
         }
     }
 
-    @Override
-    public void on(UpdateFaithPoints event) {
-        int oldPoints = !event.isBlackCross() ? vm.getPlayerFaithPoints(event.getPlayer()) : vm.getBlackCrossFP();
-        super.on(event);
-        if (oldPoints < vm.getFaithTrack().orElseThrow().getMaxFaith())
-            Platform.runLater(() -> playerBoard.updateFaithPoints(event, oldPoints));
-    }
-
-    @Override
-    public void on(UpdateCurrentPlayer event) {
-        while (!alertLock.get()) {
-            try {
-                alertLock.wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
-        }
-
-        String prevPlayer = vm.getCurrentPlayer();
-        gui.getUi().getController().on(event);
-        if (vm.getPlayerNicknames().size() > 1)
-            gui.setScene(event.getPlayer().equals(vm.getLocalPlayerNickname())
-                    ? getClass().getResource("/assets/gui/playgroundbeforeaction.fxml")
-                    : getClass().getResource("/assets/gui/waitingforturn.fxml"));
-        else if (prevPlayer.equals(event.getPlayer()))
-            gui.setScene(getClass().getResource("/assets/gui/playgroundbeforeaction.fxml"));
-    }
-
-    @Override
-    public void on(UpdateActivateLeader event) {
-        super.on(event);
-        if (vm.isCurrentPlayer())
-            leadersBox.getChildren().stream()
-                    .map(LeaderBox.class::cast)
-                    .filter(leaderBox -> leaderBox.getLeaderCard().getLeaderId() == event.getLeader())
-                    .findAny()
-                    .ifPresent(leaderBox -> {
-                        leaderBox.getLeaderCard().setActive(true);
-                        leaderBox.refreshButtons(allowProductions);
-                    });
-        else Platform.runLater(() -> setLeadersBox(54d, 30d));
-    }
-
-    @Override
-    public void on(UpdateLeadersHand event) {
-        super.on(event);
-        refreshLeaderBoxes();
-    }
-
-    @Override
-    public void on(UpdateLeadersHandCount event) {
-        super.on(event);
-        // TODO: Update unknown cards of other players
-    }
-
-    @Override
-    public void on(UpdateAction event) {
-        super.on(event);
-        if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES && event.getPlayer().equals(vm.getLocalPlayerNickname())) {
-            Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
-            Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
-            warehouse.swapShelves(s1, s2);
-        }
-    }
-
-    @Override
-    public void on(UpdateGameEnd event) {
-        super.on(event);
-        gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
-    }
-
-    @Override
-    public void on(UpdateResourceContainer event) {
-        super.on(event);
-        if (!vm.isCurrentPlayer())
-            Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
-            }));
-    }
-
     protected Warehouse getWarehouse() {
         Warehouse warehouse = new Warehouse();
         warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
@@ -268,5 +188,65 @@ public abstract class PlaygroundController extends GuiController {
         canvas.getChildren().add(leaderboardsBtn);
         AnchorPane.setTopAnchor(leaderboardsBtn, 10.0);
         AnchorPane.setLeftAnchor(leaderboardsBtn, 850.0);
+    }
+
+    @Override
+    public void on(UpdateAction event) {
+        super.on(event);
+        if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES && event.getPlayer().equals(vm.getLocalPlayerNickname())) {
+            Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
+            Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
+            warehouse.swapShelves(s1, s2);
+        } else if (event.getAction() == UpdateAction.ActionType.END_TURN)
+            setNextState();
+    }
+
+    @Override
+    public void on(UpdateActivateLeader event) {
+        super.on(event);
+        if (vm.isCurrentPlayer())
+            leadersBox.getChildren().stream()
+                    .map(LeaderBox.class::cast)
+                    .filter(leaderBox -> leaderBox.getLeaderCard().getLeaderId() == event.getLeader())
+                    .findAny()
+                    .ifPresent(leaderBox -> {
+                        leaderBox.getLeaderCard().setActive(true);
+                        leaderBox.refreshButtons(allowProductions);
+                    });
+        else Platform.runLater(() -> setLeadersBox(54d, 30d));
+    }
+
+    @Override
+    public void on(UpdateFaithPoints event) {
+        int oldPoints = !event.isBlackCross() ? vm.getPlayerFaithPoints(event.getPlayer()) : vm.getBlackCrossFP();
+        super.on(event);
+        if (oldPoints < vm.getFaithTrack().orElseThrow().getMaxFaith())
+            Platform.runLater(() -> playerBoard.updateFaithPoints(event, oldPoints));
+    }
+
+    @Override
+    public void on(UpdateGameEnd event) {
+        super.on(event);
+        gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
+    }
+
+    @Override
+    public void on(UpdateLeadersHand event) {
+        super.on(event);
+        refreshLeaderBoxes();
+    }
+
+    @Override
+    public void on(UpdateLeadersHandCount event) {
+        super.on(event);
+        // TODO: Update unknown cards of other players
+    }
+
+    @Override
+    public void on(UpdateResourceContainer event) {
+        super.on(event);
+        if (!vm.isCurrentPlayer())
+            Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
+            }));
     }
 }

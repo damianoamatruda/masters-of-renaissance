@@ -91,6 +91,13 @@ public class WaitingBeforeGameController extends GuiController {
         super.on(event);
         setBookedSeats(event.getBookedSeats());
     }
+    
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextState();
+    }
 
     @Override
     public void on(UpdateGame event) {

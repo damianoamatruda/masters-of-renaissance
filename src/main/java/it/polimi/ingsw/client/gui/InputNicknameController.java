@@ -63,6 +63,13 @@ public class InputNicknameController extends GuiController {
                 controller.setCanPrepareNewGame(event.canPrepareNewGame());
             });
     }
+    
+    @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextState();
+    }
 
     @Override
     public void on(UpdateGame event) {

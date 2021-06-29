@@ -255,20 +255,4 @@ public abstract class GuiController extends UiController implements Initializabl
                             }
                         })));
     }
-
-    @Override
-    public void on(UpdateCurrentPlayer event) {
-        super.on(event);
-
-        while (!alertLock.get()) {
-            try {
-                alertLock.wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
-        }
-
-        setNextState();
-    }
 }
