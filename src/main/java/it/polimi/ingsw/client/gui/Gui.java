@@ -114,10 +114,6 @@ public class Gui extends Application {
         ui.setController(controller);
     }
 
-    GuiController getController() {
-        return (GuiController) ui.getController();
-    }
-
     public ViewModel getViewModel() {
         return ui.getViewModel();
     }
