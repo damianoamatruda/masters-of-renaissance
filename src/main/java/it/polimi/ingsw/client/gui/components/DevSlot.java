@@ -17,12 +17,14 @@ public class DevSlot extends StackPane {
      */
     public DevSlot(BiConsumer<DevelopmentCard, Production> onProduce) {
         this.onProduce = onProduce;
-        this.setMaxHeight(459);
+
         Image bgImg = new Image(
                 Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/devslot.png")).toExternalForm());
         this.setBackground(new Background(new BackgroundImage(bgImg,
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(1.0, 1.0, true, true, true, false))));
+
+        this.minWidthProperty().addListener(n -> this.setMaxHeight(this.getMinWidth() * 2.33));
     }
 
     public DevSlot() {
