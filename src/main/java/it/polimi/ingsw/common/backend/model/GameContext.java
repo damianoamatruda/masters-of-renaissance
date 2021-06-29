@@ -54,15 +54,6 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     public void dispatchStartPublicStates() {
-        LOGGER.info(() -> {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("context.start, players:").append("\n");
-            for (String n : game.getPlayers().stream().map(Player::getNickname).toList())
-                stringBuilder.append(n).append("\n");
-            stringBuilder.append("context.start, players: end of list").append("\n");
-            return stringBuilder.toString();
-        });
-
         game.dispatchState();
         game.getMarket().dispatchInitialState();
         game.getDevCardGrid().dispatchInitialState();
