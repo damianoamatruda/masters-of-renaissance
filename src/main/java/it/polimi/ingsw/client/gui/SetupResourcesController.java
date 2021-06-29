@@ -56,7 +56,7 @@ public class SetupResourcesController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
 
-        titleComponent.setText(String.format("Choose %d resources.",
+        titleComponent.setText(String.format("Choose %d resources",
                 vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources()));
 
         resourceTypesContainer.setSpacing(40);
