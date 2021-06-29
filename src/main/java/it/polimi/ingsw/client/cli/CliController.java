@@ -234,7 +234,6 @@ public abstract class CliController extends UiController implements Renderable {
                     cli.getOut().println();
                     new ActionToken(t).render();
                 });
-        new Thread(cli::promptPause).start();
     }
 
     @Override

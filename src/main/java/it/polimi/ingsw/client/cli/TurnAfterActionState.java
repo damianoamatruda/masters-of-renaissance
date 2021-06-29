@@ -33,8 +33,6 @@ public class TurnAfterActionState extends CliTurnState {
     public void on(UpdateAction event) {
         if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
             cli.setController(new WaitingAfterTurnState(), true);
-        else
-            cli.setController(new TurnAfterActionState(), true);
     }
 
     @Override
@@ -42,7 +40,5 @@ public class TurnAfterActionState extends CliTurnState {
         super.on(event);
         if (vm.getLocalPlayerNickname().equals(event.getPlayer()))
             cli.setController(new TurnBeforeActionState(), false);
-        else
-            cli.setController(new WaitingAfterTurnState(), false);
     }
 }
