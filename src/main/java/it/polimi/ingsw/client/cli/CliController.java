@@ -242,18 +242,6 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(UpdateCurrentPlayer event) {
-        super.on(event);
-
-        cli.getOut().println();
-        if (event.getPlayer().equals(vm.getLocalPlayerNickname())) {
-            cli.getOut().println(center("It's your turn."));
-            cli.setController(new TurnBeforeActionController(), true);
-        } else
-            cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
-    }
-
-    @Override
     public void on(UpdateDevCardGrid event) {
         super.on(event);
 

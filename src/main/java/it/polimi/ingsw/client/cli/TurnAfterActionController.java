@@ -31,14 +31,7 @@ public class TurnAfterActionController extends TurnController {
 
     @Override
     public void on(UpdateAction event) {
-        if (event.getAction().equals(UpdateAction.ActionType.END_TURN))
-            cli.setController(new WaitingAfterTurnController(), true);
-    }
-
-    @Override
-    public void on(UpdateCurrentPlayer event) {
-        super.on(event);
-        if (vm.getLocalPlayerNickname().equals(event.getPlayer()))
-            cli.setController(new TurnBeforeActionController(), false);
+        if (event.getAction() == UpdateAction.ActionType.END_TURN)
+            setNextState();
     }
 }
