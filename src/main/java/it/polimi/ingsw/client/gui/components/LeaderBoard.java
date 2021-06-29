@@ -76,6 +76,7 @@ public class LeaderBoard extends StackPane {
 
         List<LeaderBoardEntry> entries = viewModel.getPlayerNicknames().stream()
                 .map(player -> new LeaderBoardEntry(player, viewModel.getPlayerFaithPoints(player), viewModel.getPlayerVictoryPoints(player)))
+                .sorted(Comparator.comparingInt(LeaderBoardEntry::getPoints).reversed())
                 .sorted(Comparator.comparingInt(a -> a.points))
                 .toList();
 
