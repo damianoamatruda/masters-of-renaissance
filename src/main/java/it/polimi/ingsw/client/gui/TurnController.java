@@ -36,6 +36,7 @@ public abstract class TurnController extends GuiController {
     protected Title title = new Title();
     protected Warehouse warehouse;
     protected Strongbox strongbox;
+    protected List<DevSlot> devSlots;
     private final List<Integer> toActivate = new ArrayList<>();
     private SButton activateProdButton;
     protected boolean allowProductions;
@@ -48,7 +49,7 @@ public abstract class TurnController extends GuiController {
         warehouse = getWarehouse();
         strongbox = getStrongBox();
         Production baseProduction = getBaseProduction();
-        List<DevSlot> devSlots = getDevSlots();
+        devSlots = getDevSlots();
         FaithTrack faithTrack = new FaithTrack(vm.getFaithTrack().orElseThrow());
 
         boolean hasInkwell = vm.getInkwellPlayer().equals(vm.getCurrentPlayer());
@@ -215,6 +216,15 @@ public abstract class TurnController extends GuiController {
                         leaderBox.refreshButtons(allowProductions);
                     });
         else Platform.runLater(() -> setLeadersBox(54d, 30d));
+    }
+
+    @Override
+    public void on(UpdateDevSlot event) {
+        super.on(event);
+
+        devSlots = getDevSlots();
+
+        Platform.runLater(() -> playerBoard.setDevSlotsBox(devSlots));
     }
 
     @Override

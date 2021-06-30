@@ -18,7 +18,7 @@ import java.util.Objects;
 public class Playerboard extends HBox {
     @FXML
     private ImageView frontBG;
-    private final List<DevSlot> devSlots;
+    private List<DevSlot> devSlots;
     @FXML
     private GridPane board;
     @FXML
@@ -48,7 +48,6 @@ public class Playerboard extends HBox {
      * @param hasInkwell
      */
     public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> devSlots, FaithTrack faithTrack, boolean hasInkwell) {
-        this.devSlots = devSlots;
         this.faithTrack = faithTrack;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/playerboard.fxml"));
@@ -80,7 +79,7 @@ public class Playerboard extends HBox {
 
         setBaseProduction(production, middleBox);
         setContainers(warehouse, strongbox);
-        setDevSlotsBox();
+        setDevSlotsBox(devSlots);
 
         Group faithTrackGroup = new Group(faithTrack);
         board.add(faithTrackGroup, 1, 0);
@@ -224,11 +223,14 @@ public class Playerboard extends HBox {
         middleBox.getChildren().add(baseProduction);
     }
 
-    public void setDevSlotsBox() {
+    public void setDevSlotsBox(List<DevSlot> devSlots) {
+        this.devSlots = devSlots;
         HBox devSlotsBox = new HBox();
         devSlotsBox.setAlignment(Pos.TOP_CENTER);
         devSlots.forEach(devSlot -> devSlot.setMinWidth(197));
         devSlotsBox.getChildren().addAll(devSlots);
         board.add(devSlotsBox, 4, 1);
+
+        setDevSlotsSize(_boardWidth);
     }
 }
