@@ -313,7 +313,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(Cli.center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer(), event.getLeader())));
+        cli.getOut().println(Cli.center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer().get(), event.getLeader())));
         cli.getOut().println();
         cli.getOut().println(Cli.center(new Box(new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow())).getString()));
     }
