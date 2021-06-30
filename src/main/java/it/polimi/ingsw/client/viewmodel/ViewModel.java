@@ -31,7 +31,7 @@ public class ViewModel {
     private List<ReducedResourceContainer> containers;
 
     /** The current player's nickname. */
-    private String currentPlayer;
+    private String currentPlayerNickname;
 
     /** The list of development card colors present in the game. */
     private List<ReducedColor> devCardColors;
@@ -106,7 +106,7 @@ public class ViewModel {
         isLastRound = false;
         ansiPlayerColors = new HashMap<>();
         hexPlayerColors = new HashMap<>();
-        currentPlayer = "";
+        currentPlayerNickname = "";
     }
 
     /**
@@ -456,18 +456,16 @@ public class ViewModel {
      * @return the currentPlayer
      */
     public synchronized String getCurrentPlayer() {
-        return currentPlayer;
+        return currentPlayerNickname;
     }
 
     /**
-     * Updates the nickname of the player now playing a turn.
+     * Retrieves whether the local player is now the current player.
      *
-     * @param currentPlayer the currentPlayer to set
+     * @return true if the local player is now the current player
      */
-    public synchronized void setCurrentPlayer(String currentPlayer) {
-        if (currentPlayer == null)
-            currentPlayer = ""; // TODO: Do not do anything in this case, instead of setting it to ""
-        this.currentPlayer = currentPlayer;
+    public synchronized boolean getCurrentPlayerNickname() {
+        return currentPlayerNickname.equals(localPlayerNickname);
     }
 
     /**
@@ -847,12 +845,14 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves whether the local player is now the current player.
+     * Updates the nickname of the player now playing a turn.
      *
-     * @return true if the local player is now the current player
+     * @param currentPlayerNickname the currentPlayer to set
      */
-    public synchronized boolean isCurrentPlayer() {
-        return currentPlayer.equals(localPlayerNickname);
+    public synchronized void setCurrentPlayerNickname(String currentPlayerNickname) {
+        if (currentPlayerNickname == null)
+            currentPlayerNickname = ""; // TODO: Do not do anything in this case, instead of setting it to ""
+        this.currentPlayerNickname = currentPlayerNickname;
     }
 
     // TODO Javadoc

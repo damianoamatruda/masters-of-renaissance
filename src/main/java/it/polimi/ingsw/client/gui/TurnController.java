@@ -204,7 +204,7 @@ public abstract class TurnController extends GuiController {
     @Override
     public void on(UpdateActivateLeader event) {
         super.on(event);
-        if (vm.isCurrentPlayer())
+        if (vm.getCurrentPlayerNickname())
             leadersBox.getChildren().stream()
                     .map(LeaderBox.class::cast)
                     .filter(leaderBox -> leaderBox.getLeaderCard().getLeaderId() == event.getLeader())
@@ -245,7 +245,7 @@ public abstract class TurnController extends GuiController {
     @Override
     public void on(UpdateResourceContainer event) {
         super.on(event);
-        if (!vm.isCurrentPlayer())
+        if (!vm.getCurrentPlayerNickname())
             Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
             }));
     }

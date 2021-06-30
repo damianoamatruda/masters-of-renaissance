@@ -99,7 +99,7 @@ public abstract class UiController {
     }
 
     public void on(UpdateCurrentPlayer event) {
-        vm.setCurrentPlayer(event.getPlayer());
+        vm.setCurrentPlayerNickname(event.getPlayer());
     }
 
     public void on(UpdateDevCardGrid event) {
