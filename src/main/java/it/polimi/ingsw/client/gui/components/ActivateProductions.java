@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.gui.Gui;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;

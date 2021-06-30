@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.Ui;
+import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 
 import java.io.File;
 import java.io.InputStream;

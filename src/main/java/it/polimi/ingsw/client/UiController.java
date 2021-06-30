@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;

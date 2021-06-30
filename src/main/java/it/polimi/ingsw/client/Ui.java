@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.Network;
 import it.polimi.ingsw.common.View;
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli.components;
 
+import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.cli.Cli;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 public class LeaderCard extends StringComponent {

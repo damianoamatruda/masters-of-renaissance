@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.Ui;
+import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.client.gui.components.PauseMenu;
 import it.polimi.ingsw.client.gui.components.SButton;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;

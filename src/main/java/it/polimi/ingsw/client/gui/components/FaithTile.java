@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
+import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.gui.Gui;
-import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 import javafx.scene.CacheHint;
 import javafx.scene.effect.Blend;

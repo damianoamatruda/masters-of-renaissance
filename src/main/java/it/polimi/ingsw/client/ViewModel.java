@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.viewmodel;
+package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.common.reducedmodel.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
