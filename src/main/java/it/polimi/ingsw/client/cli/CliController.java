@@ -38,7 +38,7 @@ public abstract class CliController extends UiController implements Renderable {
                         cli.setController(new TurnBeforeActionController(), false);
                     else
                         cli.setController(new WaitingAfterTurnController(), false);
-                } else // setup not done
+                } else if (!isSetupDone) // setup not done
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
                             cli.setController(new SetupLeadersController(), false);

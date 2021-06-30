@@ -40,7 +40,7 @@ public abstract class GuiController extends UiController implements Initializabl
                         gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
                     else
                         gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-                } else // setup not done
+                } else if (!isSetupDone) // setup not done
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
                             gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
