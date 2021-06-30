@@ -139,16 +139,16 @@ public abstract class GuiController extends UiController implements Initializabl
 
         switch (event.getReason()) {
             case ALREADY_SET -> gui.reloadScene(
-                    "Nickname error", "Nickname is already set.", (InputNicknameController controller) ->
+                    "Error setting nickname", "Nickname is already set.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case TAKEN -> gui.reloadScene(
-                    "Nickname error", "Nickname is taken.", (InputNicknameController controller) ->
+                    "Error setting nickname", "Nickname is taken.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case NOT_SET -> gui.reloadScene(
-                    "Nickname error", "Nickname is blank.", (InputNicknameController controller) ->
+                    "Error setting nickname", "Nickname is blank.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case NOT_IN_GAME -> gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
-                    gui.addToOverlay(new Alert("Nickname error", "Match not joined yet.")));
+                    gui.addToOverlay(new Alert("Error setting nickname", "Match not joined yet.")));
         }
     }
 

@@ -140,9 +140,9 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         switch (event.getReason()) {
-            case ALREADY_SET -> cli.reloadController("Nickname error: nickname is already set.");
-            case TAKEN -> cli.reloadController("Nickname error: nickname is taken.");
-            case NOT_SET -> cli.reloadController("Nickname error: nickname is blank.");
+            case ALREADY_SET -> cli.reloadController("Error setting nickname: nickname is already set.");
+            case TAKEN -> cli.reloadController("Error setting nickname: nickname is taken.");
+            case NOT_SET -> cli.reloadController("Error setting nickname: nickname is blank.");
             case NOT_IN_GAME -> {
                 cli.getOut().println("Match not joined yet.");
 
