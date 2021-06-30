@@ -120,15 +120,6 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves the data regarding the player currently playing a turn.
-     *
-     * @return the playerData of the current player
-     */
-    public synchronized Optional<PlayerData> getCurrentPlayerData() {
-        return getPlayerData(getCurrentPlayer());
-    }
-
-    /**
      * Retrieves the data regarding the local player.
      *
      * @return the playerData of the local player
