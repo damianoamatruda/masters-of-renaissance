@@ -5,9 +5,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 
 /**
  * Gui controller used when local player is not the current player. The current player's leaderboard is shown (without
@@ -28,13 +26,14 @@ public class WaitingForTurnController extends TurnController {
         setLeadersBox(20d, 30d);
     }
 
+    /* Other players' UpdateAction isn't a good indicator
+       of the need a state change: it is not fired when a player disconnects.
+       Therefore, UpdateCurrentPlayer is necessary. */
     @Override
-    public void on(UpdateAction event) {
+    public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        if (event.getAction() == ActionType.END_TURN &&
-            !event.getPlayer().equals(vm.getLocalPlayerNickname()) &&
-            vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
             setNextState();
     }
 }

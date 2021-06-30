@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
-import it.polimi.ingsw.common.events.mvevents.UpdateAction.ActionType;
 
 public class WaitingAfterTurnController extends CliController {
     @Override
@@ -13,14 +11,15 @@ public class WaitingAfterTurnController extends CliController {
             cli.getOut().println("You have played your last turn. Waiting for others to finish...");
     }
 
+    /* Other players' UpdateAction isn't a good indicator
+       of the need a state change: it is not fired when a player disconnects.
+       Therefore, UpdateCurrentPlayer is necessary. */
     @Override
-    public void on(UpdateAction event) {
+    public void on(UpdateCurrentPlayer event) {
         super.on(event);
         
         cli.getOut().println();
-        if (event.getAction() == ActionType.END_TURN &&
-            !event.getPlayer().equals(vm.getLocalPlayerNickname()) &&
-            vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname())) {
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname())) {
             cli.getOut().println(Cli.center("It's your turn."));
             cli.setController(new TurnBeforeActionController(), true);
         }
