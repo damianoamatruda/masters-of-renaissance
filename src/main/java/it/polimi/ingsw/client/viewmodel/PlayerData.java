@@ -10,14 +10,21 @@ import java.util.Optional;
 public class PlayerData {
     private final int baseProduction;
 
+    private final ReducedPlayerSetup setup;
+
+    private final int strongbox;
+
+    private final List<Integer> warehouseShelves;
+
     private final List<List<Integer>> devSlots;
 
     private int faithPoints;
 
     private boolean isActive;
 
-    /** When not activated, cards are hidden.
-     * Therefore, only their number is stored. */
+    /**
+     * When not activated, cards are hidden. Therefore, only their number is stored.
+     */
     private int leadersCount;
 
     /* For the player owning the leader cards, this list contains
@@ -26,13 +33,7 @@ public class PlayerData {
        of the player that owns them. */
     private List<Integer> leadersHand;
 
-    private final ReducedPlayerSetup setup;
-
-    private final int strongbox;
-
     private int victoryPoints;
-
-    private final List<Integer> warehouseShelves;
 
     /**
      * Class constructor.
@@ -54,14 +55,14 @@ public class PlayerData {
     /**
      * @return the baseProduction
      */
-    int getBaseProduction() {
+    synchronized int getBaseProduction() {
         return baseProduction;
     }
 
     /**
      * @return the devSlots
      */
-    List<List<Integer>> getDevSlots() {
+    synchronized List<List<Integer>> getDevSlots() {
         return devSlots;
     }
 
@@ -78,7 +79,7 @@ public class PlayerData {
     /**
      * @return the faithPoints
      */
-    int getFaithPoints() {
+    synchronized int getFaithPoints() {
         return faithPoints;
     }
 
@@ -92,7 +93,7 @@ public class PlayerData {
     /**
      * @return the isActive
      */
-    boolean isActive() {
+    synchronized boolean isActive() {
         return isActive;
     }
 
@@ -106,7 +107,7 @@ public class PlayerData {
     /**
      * @return the leadersCount
      */
-    int getLeadersCount() {
+    synchronized int getLeadersCount() {
         return leadersCount;
     }
 
@@ -120,7 +121,7 @@ public class PlayerData {
     /**
      * @return the leadersHand
      */
-    List<Integer> getLeadersHand() {
+    synchronized List<Integer> getLeadersHand() {
         return leadersHand;
     }
 
@@ -143,14 +144,14 @@ public class PlayerData {
     /**
      * @return the strongbox
      */
-    int getStrongbox() {
+    synchronized int getStrongbox() {
         return strongbox;
     }
 
     /**
      * @return the victoryPoints
      */
-    int getVictoryPoints() {
+    synchronized int getVictoryPoints() {
         return victoryPoints;
     }
 
@@ -164,7 +165,7 @@ public class PlayerData {
     /**
      * @return the warehouseShelves
      */
-    List<Integer> getWarehouseShelves() {
+    synchronized List<Integer> getWarehouseShelves() {
         return warehouseShelves;
     }
 }

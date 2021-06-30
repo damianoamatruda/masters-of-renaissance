@@ -8,9 +8,9 @@ import java.util.stream.Stream;
 
 /** Data storage cache on the Masters Of Renaissance client. */
 public class ViewModel {
-    /** 
+    /**
      * Player data.
-     * 
+     *
      * E.g. ownership of objects, victory points...
      */
     private final Map<String, PlayerData> playerData;
@@ -117,10 +117,10 @@ public class ViewModel {
     public synchronized Optional<PlayerData> getPlayerData(String nickname) {
         return Optional.ofNullable(playerData.get(nickname));
     }
-    
+
     /**
      * To be used when receiving the first UpdatePlayer message.
-     * 
+     *
      * @param playerData the player's data
      */
     public synchronized void setPlayerData(String nickname, PlayerData playerData) {
@@ -139,10 +139,9 @@ public class ViewModel {
 
     /**
      * @param id the ID of the development card the discounted cost of which needs to be computed
-     * @return the cost of the development card
-     *         discounted by the active leader cards of the local player
+     * @return the cost of the development card discounted by the active leader cards of the local player
      */
-    public Map<String, Integer> getDevCardDiscountedCost(int id) {
+    public synchronized Map<String, Integer> getDevCardDiscountedCost(int id) {
         Map<String, Integer> discountedCost = new HashMap<>(getDevelopmentCard(id)
                 .flatMap(ReducedDevCard::getCost)
                 .map(ReducedResourceRequirement::getRequirements)
@@ -182,7 +181,7 @@ public class ViewModel {
                 cards.set(i, slotIDs.stream().map(this::getDevelopmentCard).toList());
             }
         }
-        
+
         return cards;
     }
 
@@ -500,7 +499,7 @@ public class ViewModel {
     /**
      * Returns a development card from the top cards of the development card grid,
      * based on color and level.
-     * 
+     *
      * @param color the card's color
      * @param level the card's level
      * @return the card of the specified color and level
@@ -648,7 +647,7 @@ public class ViewModel {
     public synchronized void setPlayerNicknames(List<String> playerNicknames) {
         if (this.playerNicknames != null)
             this.playerNicknames = new ArrayList<>(playerNicknames);
-            
+
         for(int i = 0; i < playerNicknames.size(); i++) {
             hexPlayerColors.put(playerNicknames.get(i), hexColors.get(i % hexColors.size()));
             ansiPlayerColors.put(playerNicknames.get(i), ansiColors.get(i % ansiColors.size()));
@@ -661,7 +660,7 @@ public class ViewModel {
      * @param id the ID of the production to be returned
      * @return the reduced production (transaction recipe)
      */
-     public synchronized Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
+    public synchronized Optional<ReducedResourceTransactionRecipe> getProduction(int id) {
         return productions.stream().filter(p -> p.getId() == id).findAny();
     }
 
@@ -837,12 +836,12 @@ public class ViewModel {
     }
 
     // TODO Javadoc
-    public void setInkwellPlayer(String inkwellPlayer) {
-        this.inkwellPlayer = inkwellPlayer;
+    public synchronized Optional<String> getInkwellPlayer() {
+        return Optional.ofNullable(inkwellPlayer);
     }
 
     // TODO Javadoc
-    public Optional<String> getInkwellPlayer() {
-        return Optional.ofNullable(inkwellPlayer);
+    public synchronized void setInkwellPlayer(String inkwellPlayer) {
+        this.inkwellPlayer = inkwellPlayer;
     }
 }
