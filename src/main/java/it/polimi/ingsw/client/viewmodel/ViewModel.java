@@ -739,15 +739,6 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves the vatican sections in the faith track.
-     *
-     * @return all the vatican sections in the faith track
-     */
-    public synchronized Map<Integer, ReducedVaticanSection> getVaticanSections() {
-        return getFaithTrack().map(ReducedFaithTrack::getVaticanSections).orElse(new HashMap<>());
-    }
-
-    /**
      * Activates the vatican section given by the ID.
      *
      * @param id the ID of the section to activate
