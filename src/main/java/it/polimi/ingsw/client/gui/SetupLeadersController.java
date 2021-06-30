@@ -44,7 +44,7 @@ public class SetupLeadersController extends GuiController {
         gui.setSceneScaling(canvas);
 
         titleComponent.setText(String.format("Choose %d leader cards",
-                vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()));
+                vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()));
 
         leadersContainer.setSpacing(10);
         leadersContainer.setAlignment(Pos.CENTER);
@@ -63,7 +63,7 @@ public class SetupLeadersController extends GuiController {
                     selection.remove(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
                     updateChoiceButton();
-                } else if (selection.size() != vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
+                } else if (selection.size() != vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
                     selection.add(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
                     updateChoiceButton();
@@ -81,7 +81,7 @@ public class SetupLeadersController extends GuiController {
      * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
      */
     private void updateChoiceButton() {
-        choiceButton.setDisable(selection.size() != vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+        choiceButton.setDisable(selection.size() != vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
     }
 
     /**

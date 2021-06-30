@@ -24,14 +24,14 @@ public class SetupResourcesController extends SetupController {
 
         Set<String> allowedResources = vm.getResourceTypes().stream()
                 .map(ReducedResourceType::getName)
-                .filter(r -> !vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialExcludedResources().orElse(new ArrayList<>()).contains(r))
+                .filter(r -> !vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getInitialExcludedResources().orElse(new ArrayList<>()).contains(r))
                 .map(r -> vm.getResourceTypes().stream().filter(res -> res.getName().equals(r)).findAny())
                 .flatMap(Optional::stream)
                 .filter(ReducedResourceType::isStorable)
                 .map(ReducedResourceType::getName)
                 .collect(Collectors.toUnmodifiableSet());
 
-        int totalQuantity = vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
+        int totalQuantity = vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getInitialResources();
 
         Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
                 .map(ReducedResourceContainer::getId)

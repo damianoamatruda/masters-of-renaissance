@@ -118,15 +118,6 @@ public class ViewModel {
     public synchronized Optional<PlayerData> getPlayerData(String nickname) {
         return Optional.ofNullable(playerData.get(nickname));
     }
-
-    /**
-     * Retrieves the data regarding the local player.
-     *
-     * @return the playerData of the local player
-     */
-    public synchronized Optional<PlayerData> getLocalPlayerData() {
-        return getPlayerData(getLocalPlayerNickname());
-    }
     
     /**
      * To be used when receiving the first UpdatePlayer message.

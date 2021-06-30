@@ -20,10 +20,10 @@ public class SetupLeadersController extends SetupController {
     @Override
     public void render() {
         cli.getOut().println();
-        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
+        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
 
         int leadersToChoose = vm
-                .getLocalPlayerData().orElseThrow()
+                .getPlayerData(vm.getLocalPlayerNickname()).orElseThrow()
                 .getSetup().orElseThrow()
                 .getChosenLeadersCount();
 
@@ -47,7 +47,7 @@ public class SetupLeadersController extends SetupController {
             cli.promptInt((leadersToChoose - chosen.get()) + " leader cards left to be chosen").ifPresentOrElse(id -> {
                 leaders.add(id);
                 chosen.getAndIncrement();
-                done.set(chosen.get() >= vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+                done.set(chosen.get() >= vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
             }, () -> {
                 leaders.clear();
                 done.set(true);
