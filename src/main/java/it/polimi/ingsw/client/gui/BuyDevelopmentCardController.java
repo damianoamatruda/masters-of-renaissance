@@ -324,7 +324,7 @@ public class BuyDevelopmentCardController extends GuiController {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
             Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
 
-            warehouse.swapShelves(s1, s2);
+            warehouse.swapShelves(s1, s2, true);
         }
     }
 }

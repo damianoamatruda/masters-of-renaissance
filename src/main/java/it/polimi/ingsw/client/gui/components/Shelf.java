@@ -219,27 +219,28 @@ public class Shelf extends BorderPane {
     /**
      * Refreshes the shelf after a swap, so that only the content is swapped.
      *
-     * @param size the shelf max size
-     * @param newId the ID of the shelf
+     * @param size            the shelf max size
+     * @param newId           the ID of the shelf
+     * @param setResourcesDnD whether the resources can be drag and dropped
      */
-    public void refresh(int size, int newId) {
+    public void refresh(int size, int newId, boolean setResourcesDnD) {
         /* Adjust size */
         this.size = size;
         sizeText.setText(String.format("Max%n%d", size));
         this.shelfId = newId;
 
-        /* Adjust clipboard content of resources */
-        for (Node r : content.getChildren()) {
-            // TODO handle duplicated code
-            r.setOnDragDetected(event -> {
-                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putImage(((Resource) r).getImage());
-                content.putString(String.valueOf(newId));
-                db.setContent(content);
-                event.consume();
-            });
-        }
+        if (setResourcesDnD)
+            /* Adjust clipboard content of resources */
+            for (Node r : content.getChildren())
+                // TODO handle duplicated code
+                r.setOnDragDetected(event -> {
+                    Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(((Resource) r).getImage());
+                    content.putString(String.valueOf(newId));
+                    db.setContent(content);
+                    event.consume();
+                });
     }
 
     /**

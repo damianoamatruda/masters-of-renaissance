@@ -122,10 +122,11 @@ public class Warehouse extends VBox {
     /**
      * Swaps the content of two shelves.
      *
-     * @param s1    shelf one (source)
-     * @param s2    shelf two (destination)
+     * @param s1              shelf one (source)
+     * @param s2              shelf two (destination)
+     * @param setResourcesDnD whether the resources can be drag and dropped
      */
-    public void swapShelves(Shelf s1, Shelf s2) {
+    public void swapShelves(Shelf s1, Shelf s2, boolean setResourcesDnD) {
         int index1 = Math.min(getChildren().indexOf(s1), getChildren().indexOf(s2));
         int index2 = Math.max(getChildren().indexOf(s1), getChildren().indexOf(s2));
 
@@ -140,8 +141,8 @@ public class Warehouse extends VBox {
             shelves.put(s1.getShelfId(), s2);
             shelves.put(s2.getShelfId(), s1);
 
-            s1.refresh(s2.getSize(), s2.getShelfId());
-            s2.refresh(tempSize, tempId);
+            s1.refresh(s2.getSize(), s2.getShelfId(), setResourcesDnD);
+            s2.refresh(tempSize, tempId, setResourcesDnD);
         });
     }
 

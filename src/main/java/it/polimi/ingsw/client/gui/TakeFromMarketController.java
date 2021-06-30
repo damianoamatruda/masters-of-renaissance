@@ -441,7 +441,7 @@ public class TakeFromMarketController extends GuiController {
                     selection.put(s2.getShelfId(), temp);
                 else selection.remove(s2.getShelfId());
 
-                warehouse.swapShelves(s1, s2);
+                warehouse.swapShelves(s1, s2, true);
             });
         }
     }
