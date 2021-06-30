@@ -109,8 +109,8 @@ public abstract class UiController {
         vm.setDevCardGrid(event.getCards());
     }
 
-    public void on(UpdateDevCardSlot event) {
-        vm.getCurrentPlayerData().orElseThrow().pushToDevSlot(event.getDevSlot(), event.getDevCard());
+    public void on(UpdateDevSlot event) {
+        vm.getCurrentPlayerData().orElseThrow().setDevSlot(event.getDevSlot(), event.getDevCards());
     }
 
     public void on(UpdateFaithPoints event) {

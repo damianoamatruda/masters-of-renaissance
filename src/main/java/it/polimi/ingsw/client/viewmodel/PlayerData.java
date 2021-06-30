@@ -66,14 +66,13 @@ public class PlayerData {
     }
 
     /**
-     * @param slot   the index of the slot (0-based) to place the card into
-     * @param cardID the ID of the card to place on top (set at position 0)
+     * @param slot    the index of the slot (0-based) to place the card into
+     * @param cardIDs the IDs of the cards
      */
-    public synchronized void pushToDevSlot(int slot, int cardID) {
+    public synchronized void setDevSlot(int slot, List<Integer> cardIDs) {
         while (devSlots.size() - 1 < slot)
             devSlots.add(new ArrayList<>());
-
-        devSlots.get(slot).add(0, cardID);
+        devSlots.set(slot, cardIDs);
     }
 
     /**
@@ -129,8 +128,9 @@ public class PlayerData {
      * @param leadersHand the leadersHand to set
      */
     public synchronized void setLeadersHand(Set<Integer> leadersHand) {
-        if (leadersHand != null)
-            this.leadersHand = new HashSet<>(leadersHand);
+        if (leadersHand == null)
+            return;
+        this.leadersHand = new HashSet<>(leadersHand);
     }
 
     /**

@@ -52,7 +52,7 @@ public class View extends AsynchronousEventDispatcher {
     };
     private EventListener<UpdateDevCardGrid> updateDevCardGridEventListener = event -> {
     };
-    private EventListener<UpdateDevCardSlot> updateDevCardSlotEventListener = event -> {
+    private EventListener<UpdateDevSlot> updateDevSlotEventListener = event -> {
     };
     private EventListener<UpdateFaithPoints> updateFaithPointsEventListener = event -> {
     };
@@ -116,7 +116,7 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.addEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
         gameContext.addEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
         gameContext.addEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
-        gameContext.addEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
+        gameContext.addEventListener(UpdateDevSlot.class, updateDevSlotEventListener);
         gameContext.addEventListener(UpdateFaithPoints.class, updateFaithPointsEventListener);
         gameContext.addEventListener(UpdateGame.class, updateGameEventListener);
         gameContext.addEventListener(UpdateGameEnd.class, updateGameEndEventListener);
@@ -148,7 +148,7 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.removeEventListener(UpdateActivateLeader.class, updateActivateLeaderEventListener);
         gameContext.removeEventListener(UpdateCurrentPlayer.class, updateCurrentPlayerEventListener);
         gameContext.removeEventListener(UpdateDevCardGrid.class, updateDevCardGridEventListener);
-        gameContext.removeEventListener(UpdateDevCardSlot.class, updateDevCardSlotEventListener);
+        gameContext.removeEventListener(UpdateDevSlot.class, updateDevSlotEventListener);
         gameContext.removeEventListener(UpdateFaithPoints.class, updateFaithPointsEventListener);
         gameContext.removeEventListener(UpdateGame.class, updateGameEventListener);
         gameContext.removeEventListener(UpdateGameEnd.class, updateGameEndEventListener);
@@ -244,8 +244,8 @@ public class View extends AsynchronousEventDispatcher {
         this.updateDevCardGridEventListener = event -> on(event, updateDevCardGridEventListener);
     }
 
-    public void setUpdateDevCardSlotEventListener(EventListener<UpdateDevCardSlot> updateDevCardSlotEventListener) {
-        this.updateDevCardSlotEventListener = event -> on(event, updateDevCardSlotEventListener);
+    public void setUpdateDevSlotEventListener(EventListener<UpdateDevSlot> updateDevSlotEventListener) {
+        this.updateDevSlotEventListener = event -> on(event, updateDevSlotEventListener);
     }
 
     public void setUpdateFaithPointsEventListener(EventListener<UpdateFaithPoints> updateFaithPointsEventListener) {

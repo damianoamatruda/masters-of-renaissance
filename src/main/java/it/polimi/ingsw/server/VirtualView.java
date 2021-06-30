@@ -29,7 +29,7 @@ public class VirtualView extends View {
         setUpdateActionTokenEventListener(networkHandler::send);
         setUpdateCurrentPlayerEventListener(networkHandler::send);
         setUpdateDevCardGridEventListener(networkHandler::send);
-        setUpdateDevCardSlotEventListener(networkHandler::send);
+        setUpdateDevSlotEventListener(networkHandler::send);
         setUpdateFaithPointsEventListener(networkHandler::send);
         setUpdateGameEventListener(networkHandler::send);
         setUpdateGameEndEventListener(networkHandler::send);

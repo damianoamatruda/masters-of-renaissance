@@ -39,7 +39,7 @@
         2. [UpdateActivateLeader](#updateactivateleader)
         3. [UpdateCurrentPlayer](#updatecurrentplayer)
         4. [UpdateDevCardGrid](#updatedevcardgrid)
-        5. [UpdateDevCardSlot](#updatedevcardslot)
+        5. [UpdateDevSlot](#updatedevslot)
         6. [UpdateFaithPoints](#updatefaithpoints)
         7. [UpdateGame](#updategame)
             1. [Caching](#caching)
@@ -1175,28 +1175,32 @@ The list of IDs are the respective top cards of each deck, the level of which is
 }
 ```
 
-## UpdateDevCardSlot
-Notifies the clients of a card being added to a player's board's development card slot.
+## UpdateDevSlot
+
+Notifies the clients of cards being in a player's board's development card slot.
 
 ```
            ┌────────┒                      ┌────────┒ 
            │ Client ┃                      │ Server ┃
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
                │                                │
-               │              UpdateDevCardSlot │
+               │              UpdateDevSlot │
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**UpdateDevCardSlot (server)**
+
+**UpdateDevSlot (server)**
+
 ```json
 {
-  "type": "UpdateDevCardSlot",
+  "type": "UpdateDevSlot",
   "slot": 0,
-  "card": 7
+  "cards": [ 7, 9 ]
 }
 ```
 
 ## UpdateFaithPoints
+
 Notifies clients of a player progressing on the faith track.
 
 ```

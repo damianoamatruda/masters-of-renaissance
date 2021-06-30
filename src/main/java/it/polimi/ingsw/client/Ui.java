@@ -115,7 +115,7 @@ public class Ui extends View {
         setUpdateActionTokenEventListener(event -> controller.on(event));
         setUpdateCurrentPlayerEventListener(event -> controller.on(event));
         setUpdateDevCardGridEventListener(event -> controller.on(event));
-        setUpdateDevCardSlotEventListener(event -> controller.on(event));
+        setUpdateDevSlotEventListener(event -> controller.on(event));
         setUpdateFaithPointsEventListener(event -> controller.on(event));
         setUpdateGameEventListener(event -> controller.on(event));
         setUpdateGameEndEventListener(event -> controller.on(event));

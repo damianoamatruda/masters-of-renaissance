@@ -2,7 +2,6 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
-import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.*;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionContainersException;
@@ -294,18 +293,18 @@ public class Player extends EventDispatcher {
      */
     public void addToDevSlot(Game game, int devSlotIndex, DevelopmentCard devCard,
                              Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalCardDepositException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
-        Stack<DevelopmentCard> slot = devSlots.get(devSlotIndex);
-        if ((slot.isEmpty() && devCard.getLevel() != 1) || (!slot.isEmpty() && slot.peek().getLevel() != devCard.getLevel() - 1))
+        Stack<DevelopmentCard> devSlot = devSlots.get(devSlotIndex);
+        if ((devSlot.isEmpty() && devCard.getLevel() != 1) || (!devSlot.isEmpty() && devSlot.peek().getLevel() != devCard.getLevel() - 1))
             throw new IllegalCardDepositException();
 
         devCard.takeFromPlayer(game, this, resContainers);
 
-        game.onAddToDevSlot(this.devSlots.stream().mapToInt(Vector::size).sum());
+        game.onAddToDevSlot(devSlots.stream().mapToInt(Vector::size).sum());
 
-        slot.push(devCard);
-
+        devSlot.push(devCard);
         incrementVictoryPoints(devCard.getVictoryPoints());
-        dispatch(new UpdateDevCardSlot(devCard.getId(), devSlotIndex));
+
+        dispatch(new UpdateDevSlot(devSlotIndex, devSlot.stream().map(DevelopmentCard::getId).toList()));
     }
 
     /**

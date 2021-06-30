@@ -260,7 +260,7 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(UpdateDevCardSlot event) {
+    public void on(UpdateDevSlot event) {
         super.on(event);
 
         new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
