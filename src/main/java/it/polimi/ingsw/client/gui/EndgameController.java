@@ -44,6 +44,9 @@ public class EndgameController extends GuiController {
                             vm.getPlayerVictoryPoints(vm.getWinnerPlayer().get()) + " points!");
         else
             outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
+
+        gui.setPauseHandler(canvas);
+        gui.addPauseButton(canvas);
     }
 
     /**

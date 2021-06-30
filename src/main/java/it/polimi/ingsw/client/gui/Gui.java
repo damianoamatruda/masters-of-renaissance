@@ -132,7 +132,6 @@ public class Gui extends Application {
                 callback.accept(fxmlLoader.getController());
             Platform.runLater(() -> {
                 root.getChildren().set(0, scene);
-                // ((Pane) scene).getChildren().add(overlay);
             });
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "IOException when setting root", e);
