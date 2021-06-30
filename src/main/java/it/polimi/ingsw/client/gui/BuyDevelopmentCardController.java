@@ -66,7 +66,7 @@ public class BuyDevelopmentCardController extends GuiController {
 
         devCardGridPane.getChildren().add(devCardGrid);
 
-        for (int i = 1; i <= vm.getSlotsCount(); i++)
+        for (int i = 1; i <= vm.getDevSlotsCount(); i++)
             devSlotChoicePicker.getItems().add(i);
 
         devSlotChoicePicker.setValue(devSlotChoicePicker.getItems().get(0));
@@ -265,8 +265,8 @@ public class BuyDevelopmentCardController extends GuiController {
             for(int i = 0; i < cards.size(); i++)
                 AnchorPane.setBottomAnchor(cards.get(i), 40 + 50d * i);
         });
-        
-        for(int i = 0; i < vm.getSlotsCount() - modelSlots.size(); i++)
+
+        for (int i = 0; i < vm.getDevSlotsCount() - modelSlots.size(); i++)
             devSlots.add(new DevSlot(null));
 
         devSlotsBox.getChildren().clear();

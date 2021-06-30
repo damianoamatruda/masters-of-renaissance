@@ -115,7 +115,7 @@ public class BuyDevelopmentCardController extends CliController {
             valid.set(true);
             cli.promptInt("Slot").ifPresentOrElse(slot -> {
                 isExitingState.set(false);
-                if (slot < 1 || slot > vm.getSlotsCount()) {
+                if (slot < 1 || slot > vm.getDevSlotsCount()) {
                     valid.set(false);
                     return;
                 }

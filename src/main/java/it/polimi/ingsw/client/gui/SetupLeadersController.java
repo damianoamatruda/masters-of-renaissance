@@ -44,7 +44,7 @@ public class SetupLeadersController extends GuiController {
         gui.setSceneScaling(canvas);
 
         titleComponent.setText(String.format("Choose %d leader cards",
-                vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()));
+                vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getChosenLeadersCount()));
 
         leadersContainer.setSpacing(10);
         leadersContainer.setAlignment(Pos.CENTER);
@@ -63,7 +63,7 @@ public class SetupLeadersController extends GuiController {
                     selection.remove(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
                     updateChoiceButton();
-                } else if (selection.size() != vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
+                } else if (selection.size() != vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getChosenLeadersCount()) {
                     selection.add(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
                     updateChoiceButton();
@@ -81,7 +81,7 @@ public class SetupLeadersController extends GuiController {
      * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
      */
     private void updateChoiceButton() {
-        choiceButton.setDisable(selection.size() != vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+        choiceButton.setDisable(selection.size() != vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getChosenLeadersCount());
     }
 
     /**
@@ -90,7 +90,7 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private void handleChoice() {
         gui.getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
-        if(!gui.getUi().isOffline() && vm.getPlayerNicknames().size() > 1){
+        if (!gui.getUi().isOffline() && vm.getPlayers().size() > 1) {
             waitingText.setVisible(true);
             ((VBox) leadersContainer.getParent()).getChildren().remove(leadersContainer);
             ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);

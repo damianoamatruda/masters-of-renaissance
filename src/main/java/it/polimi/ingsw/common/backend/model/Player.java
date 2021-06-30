@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResource
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.mvevents.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
 
 import java.util.*;
 
@@ -80,27 +81,6 @@ public class Player extends EventDispatcher {
         this.victoryPoints = 0;
         this.active = true;
         this.winner = false;
-    }
-
-    public void dispatchPublicState(View view) {
-        dispatch(new UpdatePlayer(
-                view,
-                nickname,
-                baseProduction.getId(),
-                warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
-                strongbox.getId(),
-                setup.reduce()));
-        dispatch(new UpdateVictoryPoints(view, nickname, victoryPoints));
-        dispatch(new UpdateFaithPoints(view, nickname, faithPoints, false));
-        for (int devSlotIndex = 0; devSlotIndex < devSlots.size(); devSlotIndex++) {
-            Stack<DevelopmentCard> devSlot = devSlots.get(devSlotIndex);
-            if (!devSlot.empty())
-                dispatch(new UpdateDevSlot(view, nickname, devSlotIndex, devSlot.stream().map(DevelopmentCard::getId).toList()));
-        }
-    }
-
-    public void dispatchPrivateState(View view) {
-        dispatch(new UpdateLeadersHand(view, nickname, leaders.stream().map(Card::getId).toList()));
     }
 
     /**
@@ -175,7 +155,7 @@ public class Player extends EventDispatcher {
         game.updatePtsFromYellowTiles(this, points);
         game.onIncrementFaithPoints(faithPoints);
 
-        dispatch(new UpdateFaithPoints(null, getNickname(), faithPoints, false));
+        dispatch(new UpdateFaithPoints(getNickname(), faithPoints, false));
     }
 
     /**
@@ -240,7 +220,7 @@ public class Player extends EventDispatcher {
      */
     public void incrementVictoryPoints(int points) {
         this.victoryPoints += points;
-        dispatch(new UpdateVictoryPoints(null, nickname, victoryPoints));
+        dispatch(new UpdateVictoryPoints(nickname, victoryPoints));
     }
 
     /**
@@ -367,5 +347,20 @@ public class Player extends EventDispatcher {
         if (production.isEmpty())
             production = devSlots.stream().flatMap(Collection::stream).map(DevelopmentCard::getProduction).filter(p -> p.getId() == id).findAny();
         return production;
+    }
+
+    public ReducedPlayer reduce(boolean includeLeadersHand) {
+        return new ReducedPlayer(
+                nickname,
+                baseProduction.getId(),
+                warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
+                strongbox.getId(),
+                setup.reduce(),
+                includeLeadersHand ? leaders.stream().map(LeaderCard::getId).toList() : null,
+                leaders.size(),
+                devSlots.stream().map(devSlot -> devSlot.stream().map(DevelopmentCard::getId).toList()).toList(),
+                faithPoints,
+                victoryPoints,
+                active);
     }
 }

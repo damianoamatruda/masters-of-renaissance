@@ -20,6 +20,12 @@ public class Game extends EventDispatcher {
     /** Reference to the collection from which all the player's data can be accessed. */
     protected final List<Player> players;
 
+    /** The development card colors used in the game. */
+    protected List<DevCardColor> devCardColors;
+
+    /** The resource types used in the game. */
+    protected List<ResourceType> resourceTypes;
+
     /** The leader cards used in the game. */
     protected final List<LeaderCard> leaderCards;
 
@@ -31,12 +37,6 @@ public class Game extends EventDispatcher {
 
     /** The productions used in the game. */
     protected final List<ResourceTransactionRecipe> productions;
-
-    /** The development card colors used in the game. */
-    protected List<DevCardColor> colors;
-
-    /** The resource types used in the game. */
-    protected List<ResourceType> resourceTypes;
 
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
@@ -56,12 +56,13 @@ public class Game extends EventDispatcher {
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
-    protected int slotsCount;
+    protected int devSlotsCount;
 
     /**
      * Constructor of Game instances.
+     *
      * @param players               the list of nicknames of players who joined
-     * @param colors                the list of development card colors
+     * @param devCardColors         the list of development card colors
      * @param resourceTypes         the list of resource types
      * @param leaderCards           the list of leader cards
      * @param developmentCards      the list of development cards
@@ -72,10 +73,11 @@ public class Game extends EventDispatcher {
      * @param faithTrack            the faith track
      * @param maxObtainableDevCards the number of development cards a player can have, before triggering the end of the
      */
-    public Game(List<Player> players, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
+    public Game(List<Player> players, List<DevCardColor> devCardColors, List<ResourceType> resourceTypes,
+                List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
-                DevCardGrid devCardGrid, Market market,
-                FaithTrack faithTrack, int maxObtainableDevCards, int slotsCount) {
+                DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxObtainableDevCards,
+                int devSlotsCount) {
         if (players.isEmpty())
             throw new IllegalArgumentException(); // TODO: Add description
 
@@ -89,11 +91,11 @@ public class Game extends EventDispatcher {
         this.faithTrack = faithTrack;
 
         this.resourceTypes = resourceTypes;
-        this.colors = colors;
+        this.devCardColors = devCardColors;
 
         this.maxObtainableDevCards = maxObtainableDevCards;
         this.ended = false;
-        this.slotsCount = slotsCount;
+        this.devSlotsCount = devSlotsCount;
 
         this.players.forEach(p -> p.addEventListener(MVEvent.class, this::dispatch));
         this.leaderCards.forEach(l -> l.addEventListener(MVEvent.class, this::dispatch));
@@ -103,21 +105,28 @@ public class Game extends EventDispatcher {
         this.faithTrack.addEventListener(MVEvent.class, this::dispatch);
     }
 
-    public void dispatchState(View view) {
+    public void dispatchState(View view, Player player) {
         dispatch(new UpdateGame(
-                players.stream().map(Player::getNickname).toList(),
-                colors.stream().map(DevCardColor::reduce).toList(),
+                view,
+                players.stream().map(p -> p.reduce(p.equals(player))).toList(),
+                devCardColors.stream().map(DevCardColor::reduce).toList(),
                 resourceTypes.stream().map(ResourceType::reduce).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                faithTrack.reduce(),
-                slotsCount,
                 null, /* actionTokens not sent */
+                faithTrack.reduce(),
+                market.reduce(),
+                devCardGrid.reduce(),
+                devSlotsCount,
                 players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone),
-                getInkwellPlayer().getNickname()));
-        dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
+                getCurrentPlayer().getNickname(),
+                getInkwellPlayer().getNickname(),
+                getWinnerPlayer().map(Player::getNickname).orElse(null),
+                0, /* blackPoints */
+                lastRound,
+                ended));
     }
 
     /**
@@ -214,7 +223,6 @@ public class Game extends EventDispatcher {
      */
     public void onTurnEnd() {
         if (players.stream().anyMatch(Player::isActive)) {
-
             do
                 players.add(players.remove(0));
             while (!players.get(0).isActive());

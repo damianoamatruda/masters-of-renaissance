@@ -5,10 +5,9 @@ import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
-import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
+import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
@@ -31,7 +30,7 @@ public abstract class CliController extends UiController implements Renderable {
      */
     protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            vm.getLocalPlayer().flatMap(vm::getPlayerData).ifPresent(pd -> {
+            vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
                         !vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().isEmpty()) { // setup is done
                     if (vm.isCurrentPlayer())
@@ -39,12 +38,10 @@ public abstract class CliController extends UiController implements Renderable {
                     else
                         cli.setController(new WaitingAfterTurnController(), false);
                 } else if (!isSetupDone) // setup not done
-                    pd.getSetup().ifPresent(setup -> { // received local player's setup
-                        if (isLeaderSetupAvailable())
-                            cli.setController(new SetupLeadersController(), false);
-                        else if (isLocalLeaderSetupDone())
-                            cli.setController(new SetupResourcesController(), false);
-                    });
+                    if (isLeaderSetupAvailable())
+                        cli.setController(new SetupLeadersController(), false);
+                    else if (isLocalLeaderSetupDone())
+                        cli.setController(new SetupResourcesController(), false);
             });
         });
     }
@@ -270,7 +267,8 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateFaithPoints event) {
         super.on(event);
 
-        Map<String, Integer> points = vm.getPlayerNicknames().stream()
+        Map<String, Integer> points = vm.getPlayers().stream()
+                .map(ReducedPlayer::getNickname)
                 .collect(Collectors.toMap(n -> n, vm::getPlayerFaithPoints));
 
         vm.getFaithTrack().ifPresent(faithTrack -> {
@@ -283,7 +281,8 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateGame event) {
         super.on(event);
 
-        Map<String, Integer> points = vm.getPlayerNicknames().stream()
+        Map<String, Integer> points = vm.getPlayers().stream()
+                .map(ReducedPlayer::getNickname)
                 .collect(Collectors.toMap(nick -> nick, nick -> 0));
 
         vm.getFaithTrack().ifPresent(faithTrack -> {
@@ -333,7 +332,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersCount())));
+        cli.getOut().println(center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersHandCount())));
         new Thread(cli::promptPause).start();
     }
 
@@ -343,27 +342,6 @@ public abstract class CliController extends UiController implements Renderable {
 
         cli.getOut().println();
         new Market(event.getMarket()).render();
-    }
-
-    @Override
-    public void on(UpdatePlayer event) {
-        super.on(event);
-
-        cli.getOut().println();
-        new ResourceContainers(
-                event.getPlayer(),
-                vm.getPlayerWarehouseShelves(event.getPlayer()),
-                vm.getPlayerDepots(event.getPlayer()),
-                vm.getPlayerStrongbox(event.getPlayer()).orElse(null))
-                .render();
-
-        Optional<ReducedResourceTransactionRecipe> baseProds;
-
-        baseProds = vm.getLocalPlayer().map(vm::getPlayerBaseProduction).orElseThrow();
-        // TODO put baseProd outside of PlayerData, since it is unique (?)
-
-        cli.getOut().println(center("\nBase Production:"));
-        cli.getOut().println(center(new Box(new ResourceTransactionRecipe(baseProds.orElseThrow()), -1).getString()));
     }
 
     @Override
@@ -386,7 +364,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateSetupDone event) {
         super.on(event);
 
-        if (vm.getPlayerNicknames().size() > 1) {
+        if (vm.getPlayers().size() > 1) {
             cli.getOut().println();
             cli.getOut().println("All players have finished their setup! Game starting...");
         }

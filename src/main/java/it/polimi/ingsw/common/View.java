@@ -68,8 +68,6 @@ public class View extends AsynchronousEventDispatcher {
     };
     private EventListener<UpdateMarket> updateMarketEventListener = event -> {
     };
-    private EventListener<UpdatePlayer> updatePlayerEventListener = event -> {
-    };
     private EventListener<UpdatePlayerStatus> updatePlayerStatusEventListener = event -> {
     };
     private EventListener<UpdateResourceContainer> updateResourceContainerEventListener = event -> {
@@ -124,7 +122,6 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.addEventListener(UpdateLeadersHand.class, updateLeadersHandEventListener);
         gameContext.addEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
         gameContext.addEventListener(UpdateMarket.class, updateMarketEventListener);
-        gameContext.addEventListener(UpdatePlayer.class, updatePlayerEventListener);
         gameContext.addEventListener(UpdatePlayerStatus.class, updatePlayerStatusEventListener);
         gameContext.addEventListener(UpdateResourceContainer.class, updateResourceContainerEventListener);
         gameContext.addEventListener(UpdateSetupDone.class, updateSetupDoneEventListener);
@@ -156,7 +153,6 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.removeEventListener(UpdateLeadersHand.class, updateLeadersHandEventListener);
         gameContext.removeEventListener(UpdateLeadersHandCount.class, updateLeadersHandCountEventListener);
         gameContext.removeEventListener(UpdateMarket.class, updateMarketEventListener);
-        gameContext.removeEventListener(UpdatePlayer.class, updatePlayerEventListener);
         gameContext.removeEventListener(UpdatePlayerStatus.class, updatePlayerStatusEventListener);
         gameContext.removeEventListener(UpdateResourceContainer.class, updateResourceContainerEventListener);
         gameContext.removeEventListener(UpdateSetupDone.class, updateSetupDoneEventListener);
@@ -274,10 +270,6 @@ public class View extends AsynchronousEventDispatcher {
 
     public void setUpdateMarketEventListener(EventListener<UpdateMarket> updateMarketEventListener) {
         this.updateMarketEventListener = event -> on(event, updateMarketEventListener);
-    }
-
-    public void setUpdatePlayerEventListener(EventListener<UpdatePlayer> updatePlayerEventListener) {
-        this.updatePlayerEventListener = event -> on(event, updatePlayerEventListener);
     }
 
     public void setUpdatePlayerStatusEventListener(EventListener<UpdatePlayerStatus> updatePlayerStatusEventListener) {

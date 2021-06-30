@@ -33,7 +33,7 @@ public abstract class GuiController extends UiController implements Initializabl
      */
     protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            vm.getLocalPlayer().flatMap(vm::getPlayerData).ifPresent(pd -> {
+            vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
                         !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
                     if (vm.isCurrentPlayer())
@@ -41,12 +41,10 @@ public abstract class GuiController extends UiController implements Initializabl
                     else
                         gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
                 } else if (!isSetupDone) // setup not done
-                    pd.getSetup().ifPresent(setup -> { // received local player's setup
-                        if (isLeaderSetupAvailable())
-                            gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
-                        else if (isLocalLeaderSetupDone())
-                            gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"));
-                    });
+                    if (isLeaderSetupAvailable())
+                        gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
+                    else if (isLocalLeaderSetupDone())
+                        gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"));
             });
         });
     }

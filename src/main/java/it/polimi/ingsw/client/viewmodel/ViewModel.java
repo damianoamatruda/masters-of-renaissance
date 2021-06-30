@@ -6,15 +6,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import java.util.*;
 import java.util.stream.Stream;
 
-/** Data storage cache on the Masters Of Renaissance client. */
+/** View model of the client of the Masters of Renaissance game. */
 public class ViewModel {
-    /**
-     * Player data.
-     *
-     * E.g. ownership of objects, victory points...
-     */
-    private final Map<String, PlayerData> playerData;
-
     /** The nickname of the local player. */
     private String localPlayer;
 
@@ -42,14 +35,17 @@ public class ViewModel {
     /** The list of development cards present in the game. */
     private List<ReducedDevCard> developmentCards;
 
+    /** The development slots count. */
+    private int devSlotsCount;
+
     /** The faith track state. */
     private ReducedFaithTrack faithTrack;
 
     /** The status of finalization of the game. */
-    private boolean isGameEnded = false;
+    private boolean gameEnded = false;
 
     /** The status of last round of the game. */
-    private boolean isLastRound;
+    private boolean lastRound;
 
     /** The latest action token activated. */
     private ReducedActionToken latestToken;
@@ -61,16 +57,13 @@ public class ViewModel {
     private ReducedMarket market;
 
     /** The list of players, by their nicknames. */
-    private List<String> playerNicknames;
+    private List<ReducedPlayer> players;
 
     /** The list of productions present in the game. */
     private List<ReducedResourceTransactionRecipe> productions;
 
     /** The list of resource types present in the game. */
     private List<ReducedResourceType> resourceTypes;
-
-    /** The development slots count. */
-    private int slotsCount;
 
     /** The nickname of the winner. */
     private String winnerPlayer;
@@ -94,16 +87,15 @@ public class ViewModel {
      * Class constructor. Initializes empty objects.
      */
     public ViewModel() {
-        playerData = new HashMap<>();
         actionTokens = new ArrayList<>();
         containers = new ArrayList<>();
         devCardColors = new ArrayList<>();
         developmentCards = new ArrayList<>();
         leaderCards = new ArrayList<>();
-        playerNicknames = new ArrayList<>();
+        players = new ArrayList<>();
         productions = new ArrayList<>();
         resourceTypes = new ArrayList<>();
-        isLastRound = false;
+        lastRound = false;
         ansiPlayerColors = new HashMap<>();
         hexPlayerColors = new HashMap<>();
     }
@@ -112,19 +104,19 @@ public class ViewModel {
      * Retrieves the data regarding one of the players.
      *
      * @param nickname the nickname of the player whose data needs to be retrieved
-     * @return the playerData of the specified player
+     * @return the player
      */
-    public synchronized Optional<PlayerData> getPlayerData(String nickname) {
-        return Optional.ofNullable(playerData.get(nickname));
+    public synchronized Optional<ReducedPlayer> getPlayer(String nickname) {
+        return players.stream().filter(player -> player.getNickname().equals(nickname)).findAny();
     }
 
     /**
-     * To be used when receiving the first UpdatePlayer message.
+     * TODO
      *
-     * @param playerData the player's data
+     * @param player the player's data
      */
-    public synchronized void setPlayerData(String nickname, PlayerData playerData) {
-        this.playerData.put(nickname, playerData);
+    public synchronized void putPlayer(ReducedPlayer player) {
+        players.replaceAll(p -> p.getNickname().equals(player.getNickname()) ? player : p);
     }
 
     /**
@@ -134,7 +126,7 @@ public class ViewModel {
      * @return the topmost development cards in the player's slots
      */
     public synchronized Optional<ReducedResourceTransactionRecipe> getPlayerBaseProduction(String nickname) {
-        return playerData.containsKey(nickname) ? getProduction(playerData.get(nickname).getBaseProduction()) : Optional.empty();
+        return getPlayer(nickname).map(ReducedPlayer::getBaseProduction).flatMap(this::getProduction);
     }
 
     /**
@@ -167,20 +159,17 @@ public class ViewModel {
     public synchronized List<List<Optional<ReducedDevCard>>> getPlayerDevelopmentCards(String nickname) {
         List<List<Optional<ReducedDevCard>>> cards = new ArrayList<>();
 
-        while (cards.size() < slotsCount)
+        while (cards.size() < devSlotsCount)
             cards.add(new ArrayList<>());
 
-        if (playerData.containsKey(nickname)) {
-            List<List<Integer>> slots = playerData.get(nickname).getDevSlots();
-
+        getPlayer(nickname).map(ReducedPlayer::getDevSlots).ifPresent(devSlots -> {
             /* Iterate over each slot */
             for (int i = 0; i < cards.size(); i++) {
                 /* Get the IDs of all the cards in the slot */
-                List<Integer> slotIDs = i < slots.size() ? slots.get(i) : new ArrayList<>();
-
+                List<Integer> slotIDs = i < devSlots.size() ? devSlots.get(i) : new ArrayList<>();
                 cards.set(i, slotIDs.stream().map(this::getDevelopmentCard).toList());
             }
-        }
+        });
 
         return cards;
     }
@@ -205,7 +194,7 @@ public class ViewModel {
      * @return the faith points of the selected player
      */
     public synchronized int getPlayerFaithPoints(String nickname) {
-        return playerData.containsKey(nickname) ? playerData.get(nickname).getFaithPoints() : 0;
+        return getPlayer(nickname).map(ReducedPlayer::getFaithPoints).orElse(0);
     }
 
     /**
@@ -215,7 +204,7 @@ public class ViewModel {
      * @return the state of the selected player
      */
     public synchronized boolean isPlayerActive(String nickname) {
-        return playerData.containsKey(nickname) && playerData.get(nickname).isActive();
+        return getPlayer(nickname).map(ReducedPlayer::isActive).orElse(false);
     }
 
     /**
@@ -225,9 +214,9 @@ public class ViewModel {
      * @return the reduced leader cards owned by the player
      */
     public synchronized List<ReducedLeaderCard> getPlayerLeaderCards(String nickname) {
-        if (!playerData.containsKey(nickname))
+        if (getPlayer(nickname).isEmpty())
             return new ArrayList<>();
-        return playerData.get(nickname).getLeadersHand().stream()
+        return getPlayer(nickname).get().getLeadersHand().stream()
                 .map(this::getLeaderCard)
                 .flatMap(Optional::stream)
                 .toList();
@@ -252,7 +241,7 @@ public class ViewModel {
      * @return the number of leader cards owned by the player
      */
     public synchronized int getPlayerLeadersCount(String nickname) {
-        return playerData.containsKey(nickname) ? playerData.get(nickname).getLeadersCount() : 0;
+        return getPlayer(nickname).map(ReducedPlayer::getLeadersHandCount).orElse(0);
     }
 
     /**
@@ -267,13 +256,9 @@ public class ViewModel {
      *          </ul>
      */
     public synchronized List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
-        if (!playerData.containsKey(nickname))
-            return new ArrayList<>();
-
-        PlayerData pd = playerData.get(nickname);
-
         List<Integer> ids = new ArrayList<>();
-        ids.add(pd.getBaseProduction());
+
+        getPlayer(nickname).ifPresent(player -> ids.add(player.getBaseProduction()));
         ids.addAll(getPlayerLeaderCards(nickname).stream().filter(ReducedLeaderCard::isActive).map(ReducedCard::getProduction).toList());
         ids.addAll(getPlayerDevelopmentSlots(nickname).stream().flatMap(Optional::stream).map(ReducedCard::getProduction).toList());
 
@@ -290,8 +275,6 @@ public class ViewModel {
      * @return the player's warehouse shelves and depots
      */
     public synchronized List<ReducedResourceContainer> getPlayerShelves(String nickname) {
-        if (!playerData.containsKey(nickname))
-            return new ArrayList<>();
         List<ReducedResourceContainer> containers = new ArrayList<>();
         containers.addAll(getPlayerWarehouseShelves(nickname));
         containers.addAll(getPlayerDepots(nickname));
@@ -305,9 +288,9 @@ public class ViewModel {
      * @return the player's warehouse shelves
      */
     public synchronized List<ReducedResourceContainer> getPlayerWarehouseShelves(String nickname) {
-        if (!playerData.containsKey(nickname))
+        if (getPlayer(nickname).isEmpty())
             return new ArrayList<>();
-        return playerData.get(nickname).getWarehouseShelves().stream()
+        return getPlayer(nickname).get().getWarehouseShelves().stream()
                 .map(this::getContainer)
                 .flatMap(Optional::stream)
                 .toList();
@@ -320,7 +303,7 @@ public class ViewModel {
      * @return the player's active leaders' depots
      */
     public synchronized List<ReducedResourceContainer> getPlayerDepots(String nickname) {
-        if (!playerData.containsKey(nickname))
+        if (getPlayer(nickname).isEmpty())
             return new ArrayList<>();
         return getPlayerLeaderCards(nickname).stream()
                 .filter(ReducedLeaderCard::isActive)
@@ -337,7 +320,7 @@ public class ViewModel {
      * @return the player's strongbox
      */
     public synchronized Optional<ReducedResourceContainer> getPlayerStrongbox(String nickname) {
-        return playerData.containsKey(nickname) ? getContainer(playerData.get(nickname).getStrongbox()) : Optional.empty();
+        return getPlayer(nickname).map(ReducedPlayer::getStrongbox).flatMap(this::getContainer);
     }
 
     /**
@@ -347,7 +330,7 @@ public class ViewModel {
      * @return the player's victory points
      */
     public synchronized int getPlayerVictoryPoints(String nickname) {
-        return playerData.containsKey(nickname) ? playerData.get(nickname).getVictoryPoints() : 0;
+        return getPlayer(nickname).map(ReducedPlayer::getVictoryPoints).orElse(0);
     }
 
     /**
@@ -545,7 +528,12 @@ public class ViewModel {
      * @return whether the game has ended or not
      */
     public synchronized boolean isGameEnded() {
-        return isGameEnded;
+        return gameEnded;
+    }
+
+    // TODO Javadoc
+    public synchronized void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
     }
 
     /**
@@ -554,14 +542,7 @@ public class ViewModel {
      * @return whether it's the last round of the match
      */
     public synchronized boolean isLastRound() {
-        return isLastRound;
-    }
-
-    /**
-     * Sets last round to true.
-     */
-    public synchronized void setLastRound() {
-        this.isLastRound = true;
+        return lastRound;
     }
 
     /**
@@ -631,27 +612,19 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves all the players that initially joined the game, by their nicknames.
-     *
-     * @return the playerNicknames
+     * Sets last round to true.
      */
-    public synchronized List<String> getPlayerNicknames() {
-        return playerNicknames;
+    public synchronized void setLastRound(boolean lastRound) {
+        this.lastRound = lastRound;
     }
 
     /**
-     * Sets all the joined players nicknames.
+     * Retrieves all the players that initially joined the game.
      *
-     * @param playerNicknames the playerNicknames to set
+     * @return the players
      */
-    public synchronized void setPlayerNicknames(List<String> playerNicknames) {
-        if (this.playerNicknames != null)
-            this.playerNicknames = new ArrayList<>(playerNicknames);
-
-        for(int i = 0; i < playerNicknames.size(); i++) {
-            hexPlayerColors.put(playerNicknames.get(i), hexColors.get(i % hexColors.size()));
-            ansiPlayerColors.put(playerNicknames.get(i), ansiColors.get(i % ansiColors.size()));
-        }
+    public synchronized List<ReducedPlayer> getPlayers() {
+        return players;
     }
 
     /**
@@ -696,21 +669,27 @@ public class ViewModel {
     }
 
     /**
+     * Sets all the joined players nicknames.
+     *
+     * @param players the playerNicknames to set
+     */
+    public synchronized void setPlayers(List<ReducedPlayer> players) {
+        if (this.players != null)
+            this.players = new ArrayList<>(players);
+
+        for (int i = 0; i < players.size(); i++) {
+            hexPlayerColors.put(players.get(i).getNickname(), hexColors.get(i % hexColors.size()));
+            ansiPlayerColors.put(players.get(i).getNickname(), ansiColors.get(i % ansiColors.size()));
+        }
+    }
+
+    /**
      * Retrieves the max development slots count.
      *
      * @return the max available development slots
      */
-    public synchronized int getSlotsCount() {
-        return slotsCount;
-    }
-
-    /**
-     * Sets the max development slots count.
-     *
-     * @param slotsCount the max available development slots
-     */
-    public synchronized void setSlotsCount(int slotsCount) {
-        this.slotsCount = slotsCount;
+    public synchronized int getDevSlotsCount() {
+        return devSlotsCount;
     }
 
     /**
@@ -745,17 +724,12 @@ public class ViewModel {
     }
 
     /**
-     * Sets the status of a leader card to activated and adds it to the leader
+     * Sets the max development slots count.
      *
-     * @param id the ID of the card to be activated
+     * @param devSlotsCount the max available development slots
      */
-    public synchronized void activateLeaderCard(int id) {
-        leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
-        if (playerData.containsKey(currentPlayer)) {
-            List<Integer> lc = playerData.get(currentPlayer).getLeadersHand();
-            lc.add(id);
-            playerData.get(currentPlayer).setLeadersHand(lc);
-        }
+    public synchronized void setDevSlotsCount(int devSlotsCount) {
+        this.devSlotsCount = devSlotsCount;
     }
 
     /**
@@ -786,15 +760,27 @@ public class ViewModel {
     }
 
     /**
+     * Sets the status of a leader card to activated and adds it to the player
+     *
+     * @param id the ID of the card to be activated
+     */
+    public synchronized void activateLeaderCard(int id) {
+        leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
+        getPlayer(currentPlayer).ifPresent(player -> {
+            List<Integer> leadersHand = player.getLeadersHand();
+            if (!leadersHand.contains(id))
+                leadersHand.add(id);
+            putPlayer(player.setLeadersHand(leadersHand));
+        });
+    }
+
+    /**
      * Sets the winner of the game.
      *
      * @param winnerPlayer the winner to set
      */
     public synchronized void setWinnerPlayer(String winnerPlayer) {
-        if (winnerPlayer == null)
-            winnerPlayer = ""; // TODO: Do not do anything in this case, instead of setting it to ""
         this.winnerPlayer = winnerPlayer;
-        this.isGameEnded = true;
     }
 
     /**
@@ -830,8 +816,6 @@ public class ViewModel {
      * @param localPlayer the nickname to set
      */
     public synchronized void setLocalPlayer(String localPlayer) {
-        if (localPlayer == null)
-            localPlayer = "Player 1"; // TODO: Do not do anything in this case, instead of setting it to "Player 1"
         this.localPlayer = localPlayer;
     }
 

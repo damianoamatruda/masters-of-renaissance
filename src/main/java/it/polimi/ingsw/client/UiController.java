@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.viewmodel.PlayerData;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
+import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
 
 public abstract class UiController {
     private final Ui ui;
@@ -22,8 +22,8 @@ public abstract class UiController {
         /* if req not accepted in a previous connection by server,
            card count to choose > 0 and cards can be discarded (hand size - count > 0) */
         return vm.getLocalPlayer()
-                .flatMap(vm::getPlayerData)
-                .flatMap(PlayerData::getSetup).map(setup ->
+                .flatMap(vm::getPlayer)
+                .map(ReducedPlayer::getSetup).map(setup ->
                         setup.hasChosenLeaders() || setup.getChosenLeadersCount() == 0
                                 || vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().size() == setup.getChosenLeadersCount())
                 .orElse(false);
@@ -39,8 +39,8 @@ public abstract class UiController {
      */
     public boolean isLocalResourceSetupDone() {
         return vm.getLocalPlayer()
-                .flatMap(vm::getPlayerData)
-                .flatMap(PlayerData::getSetup).map(setup ->
+                .flatMap(vm::getPlayer)
+                .map(ReducedPlayer::getSetup).map(setup ->
                         setup.hasChosenResources() || setup.getInitialResources() == 0)
                 .orElse(false);
     }
@@ -109,15 +109,16 @@ public abstract class UiController {
     }
 
     public void on(UpdateDevSlot event) {
-        vm.getPlayerData(event.getPlayer()).ifPresent(pData ->
-                pData.setDevSlot(event.getDevSlot(), event.getDevCards()));
+        vm.getPlayer(event.getPlayer()).ifPresent(player ->
+                vm.putPlayer(player.setDevSlot(event.getDevSlot(), event.getDevCards())));
     }
 
     public void on(UpdateFaithPoints event) {
         if (event.isBlackCross())
             vm.setBlackCrossFP(event.getFaithPoints());
         else
-            vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setFaithPoints(event.getFaithPoints()));
+            vm.getPlayer(event.getPlayer()).ifPresent(player ->
+                    vm.putPlayer(player.setFaithPoints(event.getFaithPoints())));
     }
 
     public void on(UpdateGameEnd event) {
@@ -125,25 +126,31 @@ public abstract class UiController {
     }
 
     public void on(UpdateGame event) {
-        vm.setActionTokens(event.getActionTokens());
-        vm.setContainers(event.getResContainers());
-        vm.setDevelopmentCards(event.getDevelopmentCards());
-        vm.setLeaderCards(event.getLeaderCards());
-        vm.setPlayerNicknames(event.getPlayers());
-        vm.setProductions(event.getProductions());
-        vm.setFaithTrack(event.getFaithTrack());
-        vm.setDevCardColors(event.getColors());
+        vm.setPlayers(event.getPlayers());
+        vm.setDevCardColors(event.getDevCardColors());
         vm.setResourceTypes(event.getResourceTypes());
+        vm.setLeaderCards(event.getLeaderCards());
+        vm.setDevelopmentCards(event.getDevelopmentCards());
+        vm.setContainers(event.getResContainers());
+        vm.setProductions(event.getProductions());
+        vm.setActionTokens(event.getActionTokens());
+        vm.setFaithTrack(event.getFaithTrack());
+        vm.setMarket(event.getMarket());
+        vm.setDevCardGrid(event.getDevCardGrid());
         vm.setSetupDone(event.isSetupDone());
-        vm.setSlotsCount(event.getSlotsCount());
+        vm.setDevSlotsCount(event.getDevSlotsCount());
+        vm.setCurrentPlayer(event.getCurrentPlayer());
         vm.setInkwellPlayer(event.getInkwellPlayer());
+        vm.setWinnerPlayer(event.getWinnerPlayer());
+        vm.setLastRound(event.isLastRound());
+        vm.setGameEnded(event.isEnded());
     }
 
     public void on(UpdateJoinGame event) {
     }
 
     public void on(UpdateLastRound event) {
-        vm.setLastRound();
+        vm.setLastRound(true);
     }
 
     public void on(UpdateActivateLeader event) {
@@ -151,27 +158,22 @@ public abstract class UiController {
     }
 
     public void on(UpdateLeadersHand event) {
-        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setLeadersHand(event.getLeaders()));
+        vm.getPlayer(event.getPlayer()).ifPresent(player ->
+                vm.putPlayer(player.setLeadersHand(event.getLeaders())));
     }
 
     public void on(UpdateLeadersHandCount event) {
-        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setLeadersCount(event.getLeadersCount()));
+        vm.getPlayer(event.getPlayer()).ifPresent(player ->
+                vm.putPlayer(player.setLeadersHandCount(event.getLeadersHandCount())));
     }
 
     public void on(UpdateMarket event) {
         vm.setMarket(event.getMarket());
     }
 
-    public void on(UpdatePlayer event) {
-        vm.setPlayerData(event.getPlayer(), new PlayerData(
-                event.getBaseProduction(),
-                event.getPlayerSetup(),
-                event.getStrongbox(),
-                event.getWarehouseShelves()));
-    }
-
     public void on(UpdatePlayerStatus event) {
-        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setActive(event.isActive()));
+        vm.getPlayer(event.getPlayer()).ifPresent(player ->
+                vm.putPlayer(player.setActive(event.isActive())));
     }
 
     public void on(UpdateResourceContainer event) {
@@ -190,6 +192,7 @@ public abstract class UiController {
     }
 
     public void on(UpdateVictoryPoints event) {
-        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setVictoryPoints(event.getVictoryPoints()));
+        vm.getPlayer(event.getPlayer()).ifPresent(player ->
+                vm.putPlayer(player.setVictoryPoints(event.getVictoryPoints())));
     }
 }

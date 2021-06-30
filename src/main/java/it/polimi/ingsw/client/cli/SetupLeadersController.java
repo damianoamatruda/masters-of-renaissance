@@ -20,12 +20,12 @@ public class SetupLeadersController extends SetupController {
     @Override
     public void render() {
         cli.getOut().println();
-        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
+        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getChosenLeadersCount())));
 
         int leadersToChoose = vm
                 .getLocalPlayer()
-                .flatMap(vm::getPlayerData).orElseThrow()
-                .getSetup().orElseThrow()
+                .flatMap(vm::getPlayer).orElseThrow()
+                .getSetup()
                 .getChosenLeadersCount();
 
         List<ReducedLeaderCard> lCards = vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow();
@@ -48,7 +48,7 @@ public class SetupLeadersController extends SetupController {
             cli.promptInt((leadersToChoose - chosen.get()) + " leader cards left to be chosen").ifPresentOrElse(id -> {
                 leaders.add(id);
                 chosen.getAndIncrement();
-                done.set(chosen.get() >= vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+                done.set(chosen.get() >= vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getChosenLeadersCount());
             }, () -> {
                 leaders.clear();
                 done.set(true);

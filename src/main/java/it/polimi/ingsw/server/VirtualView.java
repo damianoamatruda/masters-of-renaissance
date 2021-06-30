@@ -37,7 +37,6 @@ public class VirtualView extends View {
         setUpdateActivateLeaderEventListener(networkHandler::send);
         setUpdateLeadersHandCountEventListener(networkHandler::send);
         setUpdateMarketEventListener(networkHandler::send);
-        setUpdatePlayerEventListener(networkHandler::send);
         setUpdatePlayerStatusEventListener(networkHandler::send);
         setUpdateResourceContainerEventListener(networkHandler::send);
         setUpdateSetupDoneEventListener(networkHandler::send);

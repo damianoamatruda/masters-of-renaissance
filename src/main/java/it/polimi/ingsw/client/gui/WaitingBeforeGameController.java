@@ -114,13 +114,6 @@ public class WaitingBeforeGameController extends GuiController {
     }
 
     @Override
-    public void on(UpdatePlayer event) {
-        super.on(event);
-
-        setNextState();
-    }
-
-    @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
         

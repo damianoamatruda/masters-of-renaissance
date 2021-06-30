@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.client.viewmodel.ViewModel;
+import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,7 +75,8 @@ public class LeaderBoard extends StackPane {
 
         content.getColumns().addAll(playerColumn, faithColumn, pointsColumn);
 
-        List<LeaderBoardEntry> entries = vm.getPlayerNicknames().stream()
+        List<LeaderBoardEntry> entries = vm.getPlayers().stream()
+                .map(ReducedPlayer::getNickname)
                 .map(player -> new LeaderBoardEntry(player, vm.getPlayerFaithPoints(player), vm.getPlayerVictoryPoints(player)))
                 .sorted(Comparator.comparingInt(LeaderBoardEntry::getPoints).reversed())
                 .sorted(Comparator.comparingInt(a -> a.points))

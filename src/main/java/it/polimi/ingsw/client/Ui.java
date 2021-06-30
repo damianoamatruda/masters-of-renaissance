@@ -123,7 +123,6 @@ public class Ui extends View {
         setUpdateActivateLeaderEventListener(event -> controller.on(event));
         setUpdateLeadersHandCountEventListener(event -> controller.on(event));
         setUpdateMarketEventListener(event -> controller.on(event));
-        setUpdatePlayerEventListener(event -> controller.on(event));
         setUpdatePlayerStatusEventListener(event -> controller.on(event));
         setUpdateResourceContainerEventListener(event -> controller.on(event));
         setUpdateSetupDoneEventListener(event -> controller.on(event));

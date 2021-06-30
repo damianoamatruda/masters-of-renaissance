@@ -6,17 +6,17 @@ public class UpdateLeadersHandCount implements MVEvent {
     private final String player;
 
     /** The number of leader cards in the hand of the player. */
-    private final int leadersCount;
+    private final int leadersHandCount;
 
     /**
      * Class constructor.
      *
-     * @param player       the nickname of the player that has chosen the leader cards
-     * @param leadersCount the number of leader cards in the hand of the player
+     * @param player           the nickname of the player that has chosen the leader cards
+     * @param leadersHandCount the number of leader cards in the hand of the player
      */
-    public UpdateLeadersHandCount(String player, int leadersCount) {
+    public UpdateLeadersHandCount(String player, int leadersHandCount) {
         this.player = player;
-        this.leadersCount = leadersCount;
+        this.leadersHandCount = leadersHandCount;
     }
 
     /**
@@ -29,7 +29,7 @@ public class UpdateLeadersHandCount implements MVEvent {
     /**
      * @return the number of leader cards in the hand of the player
      */
-    public int getLeadersCount() {
-        return leadersCount;
+    public int getLeadersHandCount() {
+        return leadersHandCount;
     }
 }

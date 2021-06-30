@@ -6,7 +6,10 @@ import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
-import it.polimi.ingsw.common.events.mvevents.*;
+import it.polimi.ingsw.common.events.mvevents.UpdateActionToken;
+import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
+import it.polimi.ingsw.common.events.mvevents.UpdateGame;
+import it.polimi.ingsw.common.events.mvevents.UpdateGameEnd;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,21 +55,28 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public void dispatchState(View view) {
+    public void dispatchState(View view, Player player) {
         dispatch(new UpdateGame(
-                players.stream().map(Player::getNickname).toList(),
-                colors.stream().map(DevCardColor::reduce).toList(),
+                view,
+                players.stream().map(p -> p.reduce(p.equals(player))).toList(),
+                devCardColors.stream().map(DevCardColor::reduce).toList(),
                 resourceTypes.stream().map(ResourceType::reduce).toList(),
                 leaderCards.stream().map(LeaderCard::reduce).toList(),
                 developmentCards.stream().map(DevelopmentCard::reduce).toList(),
                 resContainers.stream().map(ResourceContainer::reduce).toList(),
                 productions.stream().map(ResourceTransactionRecipe::reduce).toList(),
-                faithTrack.reduce(),
-                slotsCount,
                 actionTokens.stream().map(ActionToken::reduce).toList(),
+                faithTrack.reduce(),
+                market.reduce(),
+                devCardGrid.reduce(),
+                devSlotsCount,
                 players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone),
-                getInkwellPlayer().getNickname()));
-        dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
+                getInkwellPlayer().getNickname(),
+                getCurrentPlayer().getNickname(),
+                getWinnerPlayer().map(Player::getNickname).orElse(null),
+                blackPoints,
+                lastRound,
+                ended));
     }
 
     @Override
@@ -127,6 +137,6 @@ public class SoloGame extends Game {
 
         onIncrementFaithPoints(blackPoints);
 
-        dispatch(new UpdateFaithPoints(null, null, blackPoints, true));
+        dispatch(new UpdateFaithPoints(null, blackPoints, true));
     }
 }

@@ -53,24 +53,13 @@ public class GameContext extends AsynchronousEventDispatcher {
         this.mandatoryActionDone = false;
     }
 
-    public void dispatchStartPublicStates() {
-        game.dispatchState(null);
-        game.getMarket().dispatchState(null);
-        game.getDevCardGrid().dispatchState(null);
-        game.getPlayers().forEach(player -> player.dispatchPublicState(null));
+    public void dispatchStartState(View view, String nickname) {
+        dispatchResumeState(view, nickname);
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
-    public void dispatchStartPrivateStates(View view, String nickname) {
-        getPlayerByNickname(nickname).dispatchPrivateState(view);
-    }
-
-    public void dispatchResumeStates(View view, String nickname) {
-        game.dispatchState(view);
-        game.getMarket().dispatchState(view);
-        game.getDevCardGrid().dispatchState(view);
-        game.getPlayers().forEach(p -> p.dispatchPublicState(view));
-        getPlayerByNickname(nickname).dispatchPrivateState(view);
+    public void dispatchResumeState(View view, String nickname) {
+        game.dispatchState(view, getPlayerByNickname(nickname));
     }
 
     /**

@@ -69,13 +69,6 @@ public class WaitingBeforeGameController extends CliController {
     }
 
     @Override
-    public void on(UpdatePlayer event) {
-        super.on(event);
-
-        setNextState();
-    }
-
-    @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 

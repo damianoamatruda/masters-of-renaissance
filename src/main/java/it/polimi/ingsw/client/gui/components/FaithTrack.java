@@ -91,10 +91,10 @@ public class FaithTrack extends HBox {
         }
         tilesBox.getChildren().add(hBox);
 
-        if(vm.getPlayerNicknames().size() == 1)
+        if (vm.getPlayers().size() == 1)
             updateBlackMarker(vm.getBlackCrossFP(), -1);
 
-        vm.getPlayerNicknames().forEach(nick -> updatePlayerMarker(nick, vm.getPlayerFaithPoints(nick), -1));
+        vm.getPlayers().forEach(player -> updatePlayerMarker(player.getNickname(), vm.getPlayerFaithPoints(player.getNickname()), -1));
 //        if (!vm.isCurrentPlayer())
 //            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
 

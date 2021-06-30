@@ -73,13 +73,6 @@ public class InputNicknameController extends CliController {
     }
 
     @Override
-    public void on(UpdatePlayer event) {
-        super.on(event);
-
-        setNextState();
-    }
-
-    @Override
     public void on(UpdateSetupDone event) {
         super.on(event);
 
