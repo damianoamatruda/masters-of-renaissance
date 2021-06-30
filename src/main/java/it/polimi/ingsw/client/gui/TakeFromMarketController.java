@@ -308,7 +308,7 @@ public class TakeFromMarketController extends GuiController {
                             leaderCard.setZeroReplacement(reducedLeader.getResourceType());
                         }
                         case DEPOT -> {
-                            leaderCard.setDepotContent(gui.getViewModel().getContainer(reducedLeader.getContainerId()).orElseThrow(),
+                            leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
                                     reducedLeader.getResourceType(), true);
 
                             leaderCard.setOnDragOver((event) -> {

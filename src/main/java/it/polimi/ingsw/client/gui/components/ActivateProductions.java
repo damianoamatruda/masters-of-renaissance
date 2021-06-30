@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
 import it.polimi.ingsw.common.reducedmodel.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
@@ -74,6 +75,7 @@ public class ActivateProductions extends StackPane {
         }
 
         Gui gui = Gui.getInstance();
+        ViewModel vm = gui.getViewModel();
 
         this.tempShelves = new ArrayList<>(); // this does need to be a deep copy
         for(ReducedResourceContainer container : tempShelves)
@@ -88,13 +90,13 @@ public class ActivateProductions extends StackPane {
 
         gui.setSceneScaling(main);
 
-        ReducedResourceTransactionRecipe selectedProd = gui.getViewModel().getProduction(toActivate.get(index)).orElseThrow();
+        ReducedResourceTransactionRecipe selectedProd = vm.getProduction(toActivate.get(index)).orElseThrow();
 
         /* Add spinners to choose amount */
-        gui.getViewModel().getProductionInputResTypes(selectedProd).forEach(r ->
+        vm.getProductionInputResTypes(selectedProd).forEach(r ->
                 addSpinner(choosableInputResources, r, selectedProd.getInputBlanks()));
 
-        gui.getViewModel().getProductionOutputResTypes(selectedProd).forEach(r ->
+        vm.getProductionOutputResTypes(selectedProd).forEach(r ->
                 addSpinner(choosableOutputResources, r, selectedProd.getOutputBlanks()));
 
         /* Remove HBox containers if no extra choosable resource available */
@@ -122,16 +124,16 @@ public class ActivateProductions extends StackPane {
             submit.setDisable(true);
 
         /* Production */
-        gui.getViewModel().getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
+        vm.getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
 
         /* Strongbox */
-        gui.getViewModel().getPlayerStrongbox(gui.getViewModel().getCurrentPlayer()).ifPresent(c -> {
+        vm.getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(c -> {
             strongbox.setContent(c);
             strongbox.addSpinners();
         });
 
         /* Leaders */
-        leadersBox.getChildren().addAll(gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
+        leadersBox.getChildren().addAll(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DEPOT)
                 .map(reducedLeader -> {

@@ -25,7 +25,7 @@ public class FaithTrack extends HBox {
     Map<Integer, FaithTile> tiles = new HashMap<>();
     private final VBox tilesBox = new VBox();
     private final VBox popesFavors = new VBox();
-    private HashMap<String, ImageView> markers = new HashMap<>();
+    private final HashMap<String, ImageView> markers = new HashMap<>();
 
     /**
      * Class constructor.
@@ -108,8 +108,10 @@ public class FaithTrack extends HBox {
     }
 
     private void setPopesFavors() {
-        popesFavors.getChildren().clear();
         ViewModel vm = Gui.getInstance().getViewModel();
+
+        popesFavors.getChildren().clear();
+
         vm.getFaithTrack().ifPresent(track -> {
             Map<Integer, ReducedVaticanSection> sections = track.getVaticanSections();
 

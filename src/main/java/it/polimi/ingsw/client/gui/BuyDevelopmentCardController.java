@@ -111,7 +111,7 @@ public class BuyDevelopmentCardController extends GuiController {
 
     private void resetLeaders() {
         leadersBox.getChildren().clear();
-        List<LeaderCard> leaders = gui.getViewModel().getPlayerLeaderCards(gui.getViewModel().getLocalPlayerNickname()).stream()
+        List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DEPOT || c.getLeaderType() == LeaderType.DISCOUNT)
                 .map(reducedLeader -> {

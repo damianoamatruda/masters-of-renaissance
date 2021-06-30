@@ -53,7 +53,7 @@ public class WaitingBeforeGameController extends GuiController {
      * @param canPrepareNewGame true if the player can prepare a new game
      */
     public void setCanPrepareNewGame(String canPrepareNewGame) {
-        if (gui.getViewModel().getLocalPlayerNickname().equals(canPrepareNewGame)) {
+        if (vm.getLocalPlayerNickname().equals(canPrepareNewGame)) {
             youCanPrepare = true;
             canPrepare.setVisible(true);
         }

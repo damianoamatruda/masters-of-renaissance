@@ -51,14 +51,14 @@ public class FaithTile extends StackPane {
         ImageView bg = new ImageView(bgimg);
         this.bg = bg;
         this.getChildren().add(bg);
-        if(isSectionEnd) {
+        if (isSectionEnd) {
             ImageView v = new ImageView("/assets/gui/faithtrack/vaticanreport.png");
             v.setScaleX(bg.getScaleX() / 1.5);
             v.setScaleY(bg.getScaleY() / 1.5);
             this.getChildren().add(v);
         }
 
-        if(isYellow) {
+        if (isYellow) {
             ImageView bonusPts = new ImageView(new Image("/assets/gui/faithtrack/victorypointmark.png"));
             bonusPts.setScaleX(bg.getScaleX() / 2);
             bonusPts.setScaleY(bg.getScaleY() / 2);
@@ -67,8 +67,8 @@ public class FaithTile extends StackPane {
 
             ReducedYellowTile y = Gui.getInstance().getViewModel().getFaithTrack().orElseThrow().getYellowTiles().stream().filter(yt -> yt.getFaithPoints() == tileId).findAny().orElseThrow();
             Text t = new Text(String.valueOf(y.getVictoryPoints()));
-            t.setScaleX(bg.getScaleY()*2);
-            t.setScaleY(bg.getScaleY()*2);
+            t.setScaleX(bg.getScaleY() * 2);
+            t.setScaleY(bg.getScaleY() * 2);
             this.getChildren().add(t);
         }
 

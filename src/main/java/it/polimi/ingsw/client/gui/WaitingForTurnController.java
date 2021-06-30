@@ -1,11 +1,10 @@
 package it.polimi.ingsw.client.gui;
 
+import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 
 /**
  * Gui controller used when local player is not the current player. The current player's leaderboard is shown (without
@@ -16,7 +15,7 @@ public class WaitingForTurnController extends TurnController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        title.setText(String.format("Watching playerboard of: %s", gui.getViewModel().getCurrentPlayer()));
+        title.setText(String.format("Watching playerboard of: %s", vm.getCurrentPlayer()));
 
         AnchorPane.setLeftAnchor(title, 400d);
         AnchorPane.setTopAnchor(title, 10.0);

@@ -36,8 +36,7 @@ public class SetupResourcesController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
 
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
-    private final int choosableCount = gui.getViewModel()
-            .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
+    private final int choosableCount = vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getInitialResources();
     private List<ReducedResourceType> choosableResources;
     @FXML
     private BorderPane canvas;

@@ -271,12 +271,14 @@ public class Cli implements Runnable {
 
     // TODO: Maybe make it a component, like Menu
     Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves, boolean discardable) {
+        ViewModel vm = ui.getViewModel();
+
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         new ResourceContainers(
-                ui.getViewModel().getLocalPlayerNickname(),
-                ui.getViewModel().getPlayerWarehouseShelves(ui.getViewModel().getLocalPlayerNickname()),
-                ui.getViewModel().getPlayerDepots(ui.getViewModel().getLocalPlayerNickname()),
+                vm.getLocalPlayerNickname(),
+                vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
+                vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 null)
                 .render();
 
@@ -371,12 +373,14 @@ public class Cli implements Runnable {
     }
 
     Optional<Map<Integer, Map<String, Integer>>> promptShelvesSetup(Set<String> allowedResources, int totalQuantity, Set<Integer> allowedShelves) {
+        ViewModel vm = ui.getViewModel();
+
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         new ResourceContainers(
-                ui.getViewModel().getLocalPlayerNickname(),
-                ui.getViewModel().getPlayerWarehouseShelves(ui.getViewModel().getLocalPlayerNickname()),
-                ui.getViewModel().getPlayerDepots(ui.getViewModel().getLocalPlayerNickname()),
+                vm.getLocalPlayerNickname(),
+                vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
+                vm.getPlayerDepots(vm.getLocalPlayerNickname()),
                 null)
                 .render();
 

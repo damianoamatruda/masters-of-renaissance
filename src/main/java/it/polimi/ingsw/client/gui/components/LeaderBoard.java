@@ -58,24 +58,24 @@ public class LeaderBoard extends StackPane {
     }
 
     public void createLeaderboardTable(TableView<LeaderBoardEntry> content) {
-        ViewModel viewModel = Gui.getInstance().getViewModel();
+        ViewModel vm = Gui.getInstance().getViewModel();
 
         TableColumn playerColumn = new TableColumn("Player");
         playerColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry,String>("player"));
         playerColumn.setSortable(false);
 
         TableColumn faithColumn = new TableColumn("F. points");
-        faithColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry,Integer>("faith"));
+        faithColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry, Integer>("faith"));
         faithColumn.setSortable(false);
 
         TableColumn pointsColumn = new TableColumn("V. points");
-        pointsColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry,Integer>("points"));
+        pointsColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry, Integer>("points"));
         pointsColumn.setSortable(false);
 
         content.getColumns().addAll(playerColumn, faithColumn, pointsColumn);
 
-        List<LeaderBoardEntry> entries = viewModel.getPlayerNicknames().stream()
-                .map(player -> new LeaderBoardEntry(player, viewModel.getPlayerFaithPoints(player), viewModel.getPlayerVictoryPoints(player)))
+        List<LeaderBoardEntry> entries = vm.getPlayerNicknames().stream()
+                .map(player -> new LeaderBoardEntry(player, vm.getPlayerFaithPoints(player), vm.getPlayerVictoryPoints(player)))
                 .sorted(Comparator.comparingInt(LeaderBoardEntry::getPoints).reversed())
                 .sorted(Comparator.comparingInt(a -> a.points))
                 .toList();
@@ -84,14 +84,14 @@ public class LeaderBoard extends StackPane {
             @Override
             protected void updateItem(LeaderBoardEntry item, boolean empty) {
                 super.updateItem(item, empty);
-                if(item != null) {
+                if (item != null) {
                     // add indicator of local player
-                    if (item.getPlayer().equals(viewModel.getLocalPlayerNickname()))
+                    if (item.getPlayer().equals(vm.getLocalPlayerNickname()))
                         item.setLocalPlayer();
 
                     String player = item.getPlayer();
                     if(item.isMe()) player = player.substring(0, player.length() - 5);
-                    Optional<String> color = Gui.getInstance().getViewModel().getHexPlayerColor(player);
+                    Optional<String> color = vm.getHexPlayerColor(player);
                     color.ifPresent(c -> setStyle("-fx-background-color: " + c + ";"));
 
                 }

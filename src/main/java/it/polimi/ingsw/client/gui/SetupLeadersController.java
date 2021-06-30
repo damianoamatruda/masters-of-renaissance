@@ -81,9 +81,7 @@ public class SetupLeadersController extends GuiController {
      * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
      */
     private void updateChoiceButton() {
-        choiceButton.setDisable(
-                selection.size() != gui.getViewModel()
-                        .getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+        choiceButton.setDisable(selection.size() != vm.getLocalPlayerData().orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
     }
 
     /**
@@ -135,7 +133,7 @@ public class SetupLeadersController extends GuiController {
 
     @Override
     public void on(UpdateAction event) {
-        if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(gui.getViewModel().getLocalPlayerNickname()))
+        if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(vm.getLocalPlayerNickname()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
             

@@ -32,7 +32,7 @@ public class InputNicknameController extends GuiController {
     @FXML
     private void handleNicknameInput() {
         nicknameValue = nickname.getText();
-        gui.getViewModel().setLocalPlayerNickname(nicknameValue);
+        vm.setLocalPlayerNickname(nicknameValue);
         gui.getUi().dispatch(new ReqJoin(nicknameValue));
     }
 
