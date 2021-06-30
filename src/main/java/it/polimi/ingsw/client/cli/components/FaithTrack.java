@@ -131,7 +131,7 @@ public class FaithTrack extends StringComponent {
         // Print activation of vatican sections
         for(ReducedVaticanSection s : sections.stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getFaithPointsEnd)).toList()) {
             stringBuilder.append(String.format("Section %d: %s%n", i,
-                    s.isActivated() ? (s.getBonusGivenPlayers().contains(vm.getLocalPlayer())
+                    s.isActivated() ? (vm.getLocalPlayer().isPresent() && s.getBonusGivenPlayers().contains(vm.getLocalPlayer().get())
                             ? "earned" : "missed") : "inactive"));
             i++;
         }

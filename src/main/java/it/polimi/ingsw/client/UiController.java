@@ -21,15 +21,16 @@ public abstract class UiController {
     public boolean isLocalLeaderSetupDone() {
         /* if req not accepted in a previous connection by server,
            card count to choose > 0 and cards can be discarded (hand size - count > 0) */
-        return vm.getPlayerData(vm.getLocalPlayer())
+        return vm.getLocalPlayer()
+                .flatMap(vm::getPlayerData)
                 .flatMap(PlayerData::getSetup).map(setup ->
                         setup.hasChosenLeaders() || setup.getChosenLeadersCount() == 0
-                                || vm.getPlayerLeaderCards(vm.getLocalPlayer()).size() == setup.getChosenLeadersCount())
+                                || vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().size() == setup.getChosenLeadersCount())
                 .orElse(false);
     }
 
     public boolean isLeaderSetupAvailable() {
-        return !isLocalLeaderSetupDone() && !vm.getPlayerLeaderCards(vm.getLocalPlayer()).isEmpty();
+        return !isLocalLeaderSetupDone() && vm.getLocalPlayer().isPresent() && !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty();
     }
 
     /**
@@ -37,7 +38,8 @@ public abstract class UiController {
      *         <code>false</code> if it has not or if there's not enough data to know whether it has
      */
     public boolean isLocalResourceSetupDone() {
-        return vm.getPlayerData(vm.getLocalPlayer())
+        return vm.getLocalPlayer()
+                .flatMap(vm::getPlayerData)
                 .flatMap(PlayerData::getSetup).map(setup ->
                         setup.hasChosenResources() || setup.getInitialResources() == 0)
                 .orElse(false);

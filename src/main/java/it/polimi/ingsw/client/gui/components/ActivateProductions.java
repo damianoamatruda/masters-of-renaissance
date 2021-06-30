@@ -127,13 +127,13 @@ public class ActivateProductions extends StackPane {
         vm.getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
 
         /* Strongbox */
-        vm.getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(c -> {
+        vm.getCurrentPlayer().flatMap(vm::getPlayerStrongbox).ifPresent(c -> {
             strongbox.setContent(c);
             strongbox.addSpinners();
         });
 
         /* Leaders */
-        leadersBox.getChildren().addAll(vm.getPlayerLeaderCards(vm.getLocalPlayer()).stream()
+        leadersBox.getChildren().addAll(vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DEPOT)
                 .map(reducedLeader -> {

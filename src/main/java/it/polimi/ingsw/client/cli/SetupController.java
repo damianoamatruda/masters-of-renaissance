@@ -16,7 +16,7 @@ public abstract class SetupController extends CliController {
 
         cli.getOut().println("Setup phase is concluded, advancing to game turns.");
 
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
+        if (vm.isCurrentPlayer())
             cli.setController(new TurnBeforeActionController(), true);
         else
             cli.setController(new WaitingAfterTurnController(), true);
@@ -40,7 +40,7 @@ public abstract class SetupController extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        if (!event.getPlayer().equals(vm.getLocalPlayer()))
+        if (vm.getLocalPlayer().isPresent() && !event.getPlayer().equals(vm.getLocalPlayer().get()))
             return;
 
         setNextState();

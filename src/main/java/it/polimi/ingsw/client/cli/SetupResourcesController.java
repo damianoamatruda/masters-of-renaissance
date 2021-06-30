@@ -24,16 +24,16 @@ public class SetupResourcesController extends SetupController {
 
         Set<String> allowedResources = vm.getResourceTypes().stream()
                 .map(ReducedResourceType::getName)
-                .filter(r -> !vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getInitialExcludedResources().orElse(new ArrayList<>()).contains(r))
+                .filter(r -> !vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getInitialExcludedResources().orElse(new ArrayList<>()).contains(r))
                 .map(r -> vm.getResourceTypes().stream().filter(res -> res.getName().equals(r)).findAny())
                 .flatMap(Optional::stream)
                 .filter(ReducedResourceType::isStorable)
                 .map(ReducedResourceType::getName)
                 .collect(Collectors.toUnmodifiableSet());
 
-        int totalQuantity = vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getInitialResources();
+        int totalQuantity = vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getInitialResources();
 
-        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayer()).stream()
+        Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
@@ -57,7 +57,7 @@ public class SetupResourcesController extends SetupController {
 
     @Override
     public void on(UpdateAction event) {
-        if (event.getAction() != ActionType.CHOOSE_RESOURCES && event.getPlayer().equals(vm.getLocalPlayer()))
+        if (event.getAction() != ActionType.CHOOSE_RESOURCES && vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
         // super.on(event); // TODO: not needed, as UpdateSetupDone will take care of state switching, see SetupController

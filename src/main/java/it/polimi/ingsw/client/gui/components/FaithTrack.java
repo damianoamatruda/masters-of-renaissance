@@ -95,7 +95,7 @@ public class FaithTrack extends HBox {
             updateBlackMarker(vm.getBlackCrossFP(), -1);
 
         vm.getPlayerNicknames().forEach(nick -> updatePlayerMarker(nick, vm.getPlayerFaithPoints(nick), -1));
-//        if(!vm.getLocalPlayerNickname().equals(vm.getCurrentPlayer()))
+//        if (!vm.isCurrentPlayer())
 //            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
 
         setPopesFavors();
@@ -127,7 +127,7 @@ public class FaithTrack extends HBox {
                 sectionText.setScaleY(2);
                 hbox.getChildren().add(sectionText);
 
-                boolean gotBonus = section.getBonusGivenPlayers().contains(vm.getCurrentPlayer());
+                boolean gotBonus = vm.getCurrentPlayer().isPresent() && section.getBonusGivenPlayers().contains(vm.getCurrentPlayer().get());
                 boolean isActivated = section.isActivated();
                 StackPane favorPane = new StackPane();
                 ImageView popesFavor = getPopesFavorImage(isActivated, gotBonus);

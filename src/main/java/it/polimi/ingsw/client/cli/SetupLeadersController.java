@@ -20,14 +20,15 @@ public class SetupLeadersController extends SetupController {
     @Override
     public void render() {
         cli.getOut().println();
-        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
+        cli.getOut().println(center(String.format("~ Choose %s leader cards ~", vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount())));
 
         int leadersToChoose = vm
-                .getPlayerData(vm.getLocalPlayer()).orElseThrow()
+                .getLocalPlayer()
+                .flatMap(vm::getPlayerData).orElseThrow()
                 .getSetup().orElseThrow()
                 .getChosenLeadersCount();
 
-        List<ReducedLeaderCard> lCards = vm.getPlayerLeaderCards(vm.getLocalPlayer());
+        List<ReducedLeaderCard> lCards = vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow();
         if (lCards.isEmpty()) {
             cli.getOut().println("No leader cards to choose from. Setup cannot continue.");
             cli.setController(new MainMenuController(), true);
@@ -47,7 +48,7 @@ public class SetupLeadersController extends SetupController {
             cli.promptInt((leadersToChoose - chosen.get()) + " leader cards left to be chosen").ifPresentOrElse(id -> {
                 leaders.add(id);
                 chosen.getAndIncrement();
-                done.set(chosen.get() >= vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+                done.set(chosen.get() >= vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
             }, () -> {
                 leaders.clear();
                 done.set(true);
@@ -70,7 +71,7 @@ public class SetupLeadersController extends SetupController {
 
     @Override
     public void on(UpdateAction event) {
-        if (event.getAction() != ActionType.CHOOSE_LEADERS && event.getPlayer().equals(vm.getLocalPlayer()))
+        if (event.getAction() != ActionType.CHOOSE_LEADERS && vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
         
         super.on(event);

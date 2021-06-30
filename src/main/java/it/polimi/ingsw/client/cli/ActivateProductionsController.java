@@ -38,7 +38,7 @@ public class ActivateProductionsController extends CliController {
         cli.getOut().println();
         cli.getOut().println(center("~ Activate Productions ~"));
 
-        List<ReducedResourceTransactionRecipe> allowedProds = vm.getPlayerProductions(vm.getLocalPlayer());
+        List<ReducedResourceTransactionRecipe> allowedProds = vm.getLocalPlayer().map(vm::getPlayerProductions).orElseThrow();
 
         cli.getOut().println();
         cli.getOut().println(center(new ProductionSet(allowedProds).getString()));
@@ -98,7 +98,7 @@ public class ActivateProductionsController extends CliController {
         Map<String, Integer> totalRes = new HashMap<>(this.selectedProd.getInput());
         this.inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 
-        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayer()).stream()
+        Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 

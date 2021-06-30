@@ -111,7 +111,7 @@ public class BuyDevelopmentCardController extends GuiController {
 
     private void resetLeaders() {
         leadersBox.getChildren().clear();
-        List<LeaderCard> leaders = vm.getPlayerLeaderCards(vm.getLocalPlayer()).stream()
+        List<LeaderCard> leaders = vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DEPOT || c.getLeaderType() == LeaderType.DISCOUNT)
                 .map(reducedLeader -> {
@@ -211,7 +211,7 @@ public class BuyDevelopmentCardController extends GuiController {
         warehouse.setPrefHeight(245);
         warehouse.setPrefWidth(301);
 
-        List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayer());
+        List<ReducedResourceContainer> whShelves = vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow();
 
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
             warehouse.setWaitingForSwap(s1, s2);
@@ -234,7 +234,7 @@ public class BuyDevelopmentCardController extends GuiController {
         strongbox.setPrefHeight(245);
         strongbox.setPrefWidth(291);
 
-        strongbox.setContent(vm.getPlayerStrongbox(vm.getLocalPlayer()).orElseThrow());
+        strongbox.setContent(vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElseThrow());
         strongbox.addSpinners();
 
         if (containersBox.getChildren().size() == 2)
@@ -250,7 +250,7 @@ public class BuyDevelopmentCardController extends GuiController {
      */
     private void resetSlots() {
         List<DevSlot> devSlots = new ArrayList<>();
-        List<List<Optional<ReducedDevCard>>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
+        List<List<Optional<ReducedDevCard>>> modelSlots = vm.getCurrentPlayer().map(vm::getPlayerDevelopmentCards).orElseThrow();
 
         modelSlots.forEach(modelSlot -> {
             DevSlot slot = new DevSlot(null);
@@ -301,7 +301,7 @@ public class BuyDevelopmentCardController extends GuiController {
                     String.format("You cannot buy the development card with color %s and level %d: deck is empty.",
                             selectedColor, selectedLevel));
         else {
-            int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayer()).get(devSlotChoicePicker.getValue()).map(ReducedDevCard::getLevel).orElse(0);
+            int slotLevel = vm.getLocalPlayer().map(vm::getPlayerDevelopmentSlots).orElseThrow().get(devSlotChoicePicker.getValue()).map(ReducedDevCard::getLevel).orElse(0);
             int maxLevel = Math.max(slotLevel, selectedLevel);
 
             String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel + 1);

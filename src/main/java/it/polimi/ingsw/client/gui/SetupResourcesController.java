@@ -36,7 +36,7 @@ public class SetupResourcesController extends GuiController {
     private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
 
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
-    private final int choosableCount = vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getInitialResources();
+    private final int choosableCount = vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getInitialResources();
     private List<ReducedResourceType> choosableResources;
     @FXML
     private BorderPane canvas;
@@ -56,7 +56,7 @@ public class SetupResourcesController extends GuiController {
         gui.setSceneScaling(canvas);
 
         titleComponent.setText(String.format("Choose %d resources",
-                vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getInitialResources()));
+                vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getInitialResources()));
 
         resourceTypesContainer.setSpacing(40);
         resourceTypesContainer.setAlignment(Pos.CENTER);
@@ -83,7 +83,7 @@ public class SetupResourcesController extends GuiController {
             resourceTypesContainer.getChildren().add(r);
         });
 
-        warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getLocalPlayer()), (s1, s2) -> {
+        warehouse.setWarehouseShelves(vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(), (s1, s2) -> {
             warehouse.setWaitingForSwap(s1, s2);
             gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
         });
@@ -220,7 +220,7 @@ public class SetupResourcesController extends GuiController {
                 gui.addToOverlay(
                         new Alert("Setup already concluded", "You have already concluded setup, advancing to game turns."));
 
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
+        if (vm.isCurrentPlayer())
             gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"), callback);
         else
             gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
@@ -248,10 +248,10 @@ public class SetupResourcesController extends GuiController {
 
     @Override
     public void on(UpdateAction event) {
-        if (event.getAction() != ActionType.CHOOSE_RESOURCES && event.getPlayer().equals(vm.getLocalPlayer()))
+        if (event.getAction() != ActionType.CHOOSE_RESOURCES && vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
-        if (event.getPlayer().equals(vm.getLocalPlayer()))
+        if (vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             titleComponent.setText("Resource setup done.");
     }
 

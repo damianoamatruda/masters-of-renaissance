@@ -31,10 +31,10 @@ public abstract class CliController extends UiController implements Renderable {
      */
     protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            vm.getPlayerData(vm.getLocalPlayer()).ifPresent(pd -> {
-                if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
-                        !vm.getPlayerLeaderCards(vm.getLocalPlayer()).isEmpty()) { // setup is done
-                    if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
+            vm.getLocalPlayer().flatMap(vm::getPlayerData).ifPresent(pd -> {
+                if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
+                        !vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().isEmpty()) { // setup is done
+                    if (vm.isCurrentPlayer())
                         cli.setController(new TurnBeforeActionController(), false);
                     else
                         cli.setController(new WaitingAfterTurnController(), false);
@@ -59,7 +59,7 @@ public abstract class CliController extends UiController implements Renderable {
         switch (event.getReason()) {
             case LATE_SETUP_ACTION -> {
                 cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
-                if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
+                if (vm.isCurrentPlayer())
                     cli.setController(new TurnBeforeActionController(), true);
                 else
                     cli.setController(new WaitingAfterTurnController(), true);
@@ -359,7 +359,7 @@ public abstract class CliController extends UiController implements Renderable {
 
         Optional<ReducedResourceTransactionRecipe> baseProds;
 
-        baseProds = vm.getPlayerBaseProduction(vm.getLocalPlayer());
+        baseProds = vm.getLocalPlayer().map(vm::getPlayerBaseProduction).orElseThrow();
         // TODO put baseProd outside of PlayerData, since it is unique (?)
 
         cli.getOut().println(center("\nBase Production:"));

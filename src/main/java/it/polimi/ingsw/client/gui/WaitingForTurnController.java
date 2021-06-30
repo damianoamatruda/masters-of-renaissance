@@ -32,7 +32,7 @@ public class WaitingForTurnController extends TurnController {
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
+        if (vm.isCurrentPlayer())
             setNextState();
     }
 }

@@ -276,9 +276,9 @@ public class Cli implements Runnable {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         new ResourceContainers(
-                vm.getLocalPlayer(),
-                vm.getPlayerWarehouseShelves(vm.getLocalPlayer()),
-                vm.getPlayerDepots(vm.getLocalPlayer()),
+                vm.getLocalPlayer().orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
                 null)
                 .render();
 
@@ -378,9 +378,9 @@ public class Cli implements Runnable {
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
         new ResourceContainers(
-                vm.getLocalPlayer(),
-                vm.getPlayerWarehouseShelves(vm.getLocalPlayer()),
-                vm.getPlayerDepots(vm.getLocalPlayer()),
+                vm.getLocalPlayer().orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
                 null)
                 .render();
 

@@ -36,9 +36,9 @@ public class InputNicknameController extends CliController {
 
     @Override
     public void on(UpdateBookedSeats event) {
-        if (event.canPrepareNewGame().equals(vm.getLocalPlayer()))
+        if (vm.getLocalPlayer().isPresent() && event.canPrepareNewGame().equals(vm.getLocalPlayer().get()))
             cli.setController(new WaitingBeforeGameController(), false);
-        else if (!vm.getLocalPlayer().equals("")) // if the nickname isn't set don't print updates (do not disturb)
+        else if (vm.getLocalPlayer().isPresent()) // if the nickname isn't set don't print updates (do not disturb)
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
 

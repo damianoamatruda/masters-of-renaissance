@@ -22,9 +22,9 @@ public class SwapShelvesController extends CliController {
 
         cli.getOut().println();
         new ResourceContainers(
-                vm.getLocalPlayer(),
-                vm.getPlayerWarehouseShelves(vm.getLocalPlayer()),
-                vm.getPlayerDepots(vm.getLocalPlayer()),
+                vm.getLocalPlayer().orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
                 null)
                 .render();
 

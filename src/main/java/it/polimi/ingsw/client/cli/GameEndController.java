@@ -9,7 +9,7 @@ public class GameEndController extends CliController {
         if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
             prefix = "You won";
 
-        cli.getOut().println(prefix + " with " + vm.getPlayerVictoryPoints(vm.getWinnerPlayer()) + " points!");
+        cli.getOut().println(prefix + " with " + vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).orElseThrow() + " points!");
 
         cli.getUi().dispatch(new ReqQuit());
         cli.promptPause();

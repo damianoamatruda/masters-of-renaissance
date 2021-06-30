@@ -46,15 +46,16 @@ public class BuyDevelopmentCardController extends CliController {
         new DevCardGrid(grid).render();
         cli.getOut().println();
 
-        new ResourceContainers(vm.getLocalPlayer(),
-                vm.getPlayerWarehouseShelves(vm.getLocalPlayer()),
-                vm.getPlayerDepots(vm.getLocalPlayer()),
-                vm.getPlayerStrongbox(vm.getLocalPlayer()).orElse(null))
+        new ResourceContainers(
+                vm.getLocalPlayer().orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
+                vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
                 .render();
 
-        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer())).render();
+        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer().orElseThrow())).render();
 
-        List<ReducedLeaderCard> discountLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayer()).stream()
+        List<ReducedLeaderCard> discountLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayer().orElseThrow()).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DISCOUNT).toList();
         new LeadersHand(discountLeaders).render();
@@ -141,7 +142,7 @@ public class BuyDevelopmentCardController extends CliController {
     }
 
     private void chooseShelves(Cli cli) {
-        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayer()).stream()
+        Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
@@ -157,7 +158,7 @@ public class BuyDevelopmentCardController extends CliController {
             cli.reloadController(center(String.format(
                     "You cannot buy the development card with color %s and level %d: deck is empty.", color, level)));
         else {
-            int slotLevel = vm.getPlayerDevelopmentSlots(vm.getLocalPlayer()).get(slot).map(ReducedDevCard::getLevel).orElse(0);
+            int slotLevel = vm.getLocalPlayer().map(vm::getPlayerDevelopmentSlots).orElseThrow().get(slot).map(ReducedDevCard::getLevel).orElse(0);
             int maxLevel = Math.max(slotLevel, level);
 
             String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel + 1);

@@ -33,10 +33,10 @@ public abstract class GuiController extends UiController implements Initializabl
      */
     protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            vm.getPlayerData(vm.getLocalPlayer()).ifPresent(pd -> {
-                if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
-                        !vm.getPlayerLeaderCards(vm.getLocalPlayer()).isEmpty()) { // setup is done
-                    if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
+            vm.getLocalPlayer().flatMap(vm::getPlayerData).ifPresent(pd -> {
+                if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
+                        !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
+                    if (vm.isCurrentPlayer())
                         gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
                     else
                         gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));

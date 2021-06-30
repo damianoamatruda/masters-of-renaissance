@@ -16,7 +16,7 @@ public class ViewModel {
     private final Map<String, PlayerData> playerData;
 
     /** The nickname of the local player. */
-    private String localPlayer = "";
+    private String localPlayer;
 
     /** The state of finalization of the setup phase. */
     private Boolean isSetupDone;
@@ -31,7 +31,7 @@ public class ViewModel {
     private List<ReducedResourceContainer> containers;
 
     /** The current player's nickname. */
-    private String currentPlayer = "";
+    private String currentPlayer;
 
     /** The list of development card colors present in the game. */
     private List<ReducedColor> devCardColors;
@@ -73,7 +73,7 @@ public class ViewModel {
     private int slotsCount;
 
     /** The nickname of the winner. */
-    private String winnerPlayer = "";
+    private String winnerPlayer;
 
     /** The list of the available user interface ANSI colors. */
     private final List<String> ansiColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
@@ -148,7 +148,7 @@ public class ViewModel {
                 .map(ReducedResourceRequirement::getRequirements)
                 .orElse(Map.of()));
 
-        List<ReducedLeaderCard> discountLeaders = getPlayerLeaderCards(getLocalPlayer()).stream()
+        List<ReducedLeaderCard> discountLeaders = getPlayerLeaderCards(localPlayer).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DISCOUNT)
                 .toList();
@@ -436,8 +436,8 @@ public class ViewModel {
      *
      * @return the currentPlayer
      */
-    public synchronized String getCurrentPlayer() {
-        return currentPlayer;
+    public synchronized Optional<String> getCurrentPlayer() {
+        return Optional.ofNullable(currentPlayer);
     }
 
     /**
@@ -752,10 +752,10 @@ public class ViewModel {
      */
     public synchronized void activateLeaderCard(int id) {
         leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
-        if (playerData.containsKey(getCurrentPlayer())) {
-            List<Integer> lc = playerData.get(getCurrentPlayer()).getLeadersHand();
+        if (playerData.containsKey(currentPlayer)) {
+            List<Integer> lc = playerData.get(currentPlayer).getLeadersHand();
             lc.add(id);
-            playerData.get(getCurrentPlayer()).setLeadersHand(lc);
+            playerData.get(currentPlayer).setLeadersHand(lc);
         }
     }
 
@@ -764,8 +764,8 @@ public class ViewModel {
      *
      * @return the winner
      */
-    public synchronized String getWinnerPlayer() {
-        return winnerPlayer;
+    public synchronized Optional<String> getWinnerPlayer() {
+        return Optional.ofNullable(winnerPlayer);
     }
 
     /**
@@ -803,8 +803,8 @@ public class ViewModel {
      *
      * @return the local player's nickname
      */
-    public synchronized String getLocalPlayer() {
-        return localPlayer;
+    public synchronized Optional<String> getLocalPlayer() {
+        return Optional.ofNullable(localPlayer);
     }
 
     /**
@@ -841,7 +841,8 @@ public class ViewModel {
         this.inkwellPlayer = inkwellPlayer;
     }
 
-    public String getInkwellPlayer() {
-        return inkwellPlayer;
+    // TODO Javadoc
+    public Optional<String> getInkwellPlayer() {
+        return Optional.ofNullable(inkwellPlayer);
     }
 }
