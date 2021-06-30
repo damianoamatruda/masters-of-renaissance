@@ -202,6 +202,8 @@ public class Playerboard extends HBox {
         storageColumn.getChildren().clear();
         storageColumn.add(new Group(warehouse), 0, 1);
         storageColumn.add(strongbox, 0, 3);
+
+        setContainersSize(_storageColWidth);
     }
 
     public void setBaseProduction(Production production, VBox middleBox) {

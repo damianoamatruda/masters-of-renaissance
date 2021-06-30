@@ -35,6 +35,7 @@ public abstract class TurnController extends GuiController {
     @FXML
     protected Title title = new Title();
     protected Warehouse warehouse;
+    protected Strongbox strongbox;
     private final List<Integer> toActivate = new ArrayList<>();
     private SButton activateProdButton;
     protected boolean allowProductions;
@@ -45,7 +46,7 @@ public abstract class TurnController extends GuiController {
         gui.setPauseHandler(canvas);
         
         warehouse = getWarehouse();
-        Strongbox strongbox = getStrongBox();
+        strongbox = getStrongBox();
         Production baseProduction = getBaseProduction();
         List<DevSlot> devSlots = getDevSlots();
         FaithTrack faithTrack = new FaithTrack(vm.getFaithTrack().orElseThrow());
@@ -246,7 +247,11 @@ public abstract class TurnController extends GuiController {
     public void on(UpdateResourceContainer event) {
         super.on(event);
         if (!vm.isCurrentPlayer())
-            Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getCurrentPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(), (s1, s2) -> {
-            }));
+            Platform.runLater(() -> {
+                warehouse = getWarehouse();
+                strongbox = getStrongBox();
+
+                playerBoard.setContainers(warehouse, strongbox);
+        });
     }
 }
