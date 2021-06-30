@@ -315,7 +315,7 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println();
         cli.getOut().println(Cli.center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer(), event.getLeader())));
         cli.getOut().println();
-        cli.getOut().println(Cli.center(new Box(new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow())).getString(cli)));
+        cli.getOut().println(Cli.center(new Box(new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow())).getString()));
     }
 
     @Override
@@ -363,7 +363,7 @@ public abstract class CliController extends UiController implements Renderable {
         // TODO put baseProd outside of PlayerData, since it is unique (?)
 
         cli.getOut().println(center("\nBase Production:"));
-        cli.getOut().println(center(new Box(new ResourceTransactionRecipe(baseProds.orElseThrow()), -1).getString(cli)));
+        cli.getOut().println(center(new Box(new ResourceTransactionRecipe(baseProds.orElseThrow()), -1).getString()));
     }
 
     @Override
@@ -379,7 +379,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(new Box(new ResourceContainer(event.getResContainer())).getString(cli)));
+        cli.getOut().println(center(new Box(new ResourceContainer(event.getResContainer())).getString()));
     }
 
     @Override

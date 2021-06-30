@@ -41,7 +41,7 @@ public class ActivateProductionsController extends CliController {
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getPlayerProductions(vm.getLocalPlayerNickname());
 
         cli.getOut().println();
-        cli.getOut().println(center(new ProductionSet(allowedProds).getString(cli)));
+        cli.getOut().println(center(new ProductionSet(allowedProds).getString()));
         cli.getOut().println();
         cli.getOut().println(center("Input the IDs of the productions to be activated."));
 

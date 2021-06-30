@@ -14,8 +14,9 @@ public class ProductionSet extends StringComponent {
     public ProductionSet(List<ReducedResourceTransactionRecipe> reducedProductionSet) {
         this.reducedProductionSet = reducedProductionSet;
     }
+
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < reducedProductionSet.size(); i += 4) {
@@ -28,12 +29,12 @@ public class ProductionSet extends StringComponent {
             for (int j = 0; j < 4 && j < reducedProductionSet.size() - i; j++)
                 cliProductions.add(new ResourceTransactionRecipe(productions.get(j)));
 
-            int maxWidth = cliProductions.stream().map(c -> c.getString(cli)).mapToInt(Cli::maxLineWidth).max().orElse(0);
-            int maxHeight = maxLinesHeight(cliProductions.stream().map(c -> c.getString(cli)).toList());
+            int maxWidth = cliProductions.stream().map(c -> c.getString()).mapToInt(Cli::maxLineWidth).max().orElse(0);
+            int maxHeight = maxLinesHeight(cliProductions.stream().map(c -> c.getString()).toList());
 
             List<List<String>> rows = new ArrayList<>();
             for (ResourceTransactionRecipe prod : cliProductions)
-                rows.add(new Box(prod, -1, maxWidth, maxHeight).getString(cli).lines().toList());
+                rows.add(new Box(prod, -1, maxWidth, maxHeight).getString().lines().toList());
 
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {

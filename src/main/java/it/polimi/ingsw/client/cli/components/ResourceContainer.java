@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.cli.components;
 
-import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 public class ResourceContainer extends StringComponent {
@@ -11,21 +10,21 @@ public class ResourceContainer extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(String.format("--- Container (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---",
                 reducedResourceContainer.getId())).append("\n");
 
         reducedResourceContainer.getBoundedResType().ifPresent(bResType ->
-                stringBuilder.append(String.format("Bound resource: %s", new Resource(bResType).getString(cli))).append("\n"));
+                stringBuilder.append(String.format("Bound resource: %s", new Resource(bResType).getString())).append("\n"));
 
         if (reducedResourceContainer.getSize() >= 0)
             stringBuilder.append(String.format("Size: %d%n", reducedResourceContainer.getSize()));
 
         if (reducedResourceContainer.getContent().size() > 0) {
             stringBuilder.append("Content:").append("\n");
-            stringBuilder.append(new ResourceMap(reducedResourceContainer.getContent()).getString(cli));
+            stringBuilder.append(new ResourceMap(reducedResourceContainer.getContent()).getString());
         } else
             stringBuilder.append("(Empty)");
 

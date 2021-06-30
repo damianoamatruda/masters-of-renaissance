@@ -18,7 +18,7 @@ public class DevSlots extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < slots.size(); i += 4) {
@@ -31,12 +31,12 @@ public class DevSlots extends StringComponent {
             for (int j = 0; j < 4 && j < slots.size() - i; j++)
                 devCardComponents.add(cards.get(j).map(DevelopmentCard::new));
 
-            int maxWidth = devCardComponents.stream().map(oc -> oc.map(c -> c.getString(cli)).orElse("")).mapToInt(Cli::maxLineWidth).max().orElse(0);
-            int maxHeight = maxLinesHeight(devCardComponents.stream().map(oc -> oc.map(c -> c.getString(cli)).orElse("")).toList());
+            int maxWidth = devCardComponents.stream().map(oc -> oc.map(c -> c.getString()).orElse("")).mapToInt(Cli::maxLineWidth).max().orElse(0);
+            int maxHeight = maxLinesHeight(devCardComponents.stream().map(oc -> oc.map(c -> c.getString()).orElse("")).toList());
 
             List<List<String>> rows = new ArrayList<>();
             for (Optional<DevelopmentCard> optionalDevCardComponent : devCardComponents)
-                optionalDevCardComponent.ifPresent(devCardComponent -> rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString(cli).lines().toList()));
+                optionalDevCardComponent.ifPresent(devCardComponent -> rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString().lines().toList()));
 
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {

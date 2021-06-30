@@ -13,10 +13,10 @@ public class Resource extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         AtomicReference<String> str = new AtomicReference<>();
 
-        cli.getViewModel().getResourceTypes().stream()
+        Cli.getInstance().getViewModel().getResourceTypes().stream()
                 .filter(c -> c.getName().equals(resourceType))
                 .map(ReducedResourceType::getColorValue)
                 .findAny()

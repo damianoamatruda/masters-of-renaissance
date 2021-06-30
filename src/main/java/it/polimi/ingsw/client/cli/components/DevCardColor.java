@@ -13,10 +13,10 @@ public class DevCardColor extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         AtomicReference<String> str = new AtomicReference<>();
 
-        cli.getViewModel().getDevCardColors().stream()
+        Cli.getInstance().getViewModel().getDevCardColors().stream()
                 .filter(c -> c.getName().equals(colorName))
                 .map(ReducedColor::getcolorValue)
                 .findAny()

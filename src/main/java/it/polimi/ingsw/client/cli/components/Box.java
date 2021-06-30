@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.cli.components;
 
-import it.polimi.ingsw.client.cli.Cli;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +32,10 @@ public class Box extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        String componentString = component.getString(cli);
+        String componentString = component.getString();
 
         int width = (this.width < 0 ? maxLineWidth(componentString) : this.width) + padding * 2;
         int height = this.height < 0 ? Math.toIntExact(componentString.lines().count()) : this.height;

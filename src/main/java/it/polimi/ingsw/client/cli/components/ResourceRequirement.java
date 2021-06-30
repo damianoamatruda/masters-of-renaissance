@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.cli.components;
 
-import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
 public class ResourceRequirement extends StringComponent {
@@ -11,10 +10,10 @@ public class ResourceRequirement extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("--- Requirements ---").append("\n");
-        stringBuilder.append(new ResourceMap(reducedResourceRequirement.getRequirements()).getString(cli));
+        stringBuilder.append(new ResourceMap(reducedResourceRequirement.getRequirements()).getString());
         return stringBuilder.toString();
     }
 }

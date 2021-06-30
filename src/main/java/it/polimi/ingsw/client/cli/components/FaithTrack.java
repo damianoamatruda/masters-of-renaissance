@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.cli.Cli;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedFaithTrack;
 import it.polimi.ingsw.common.reducedmodel.ReducedVaticanSection;
 import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
@@ -20,7 +21,8 @@ public class FaithTrack extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
+        ViewModel vm = Cli.getInstance().getViewModel();
 
         String boldTopLeftCorner = "╔";
         String slimTopLeftCorner = "┌";
@@ -83,9 +85,9 @@ public class FaithTrack extends StringComponent {
                 if (j < players.size()) {
                     String player = players.get(j);
                     stringBuilder.append("\u001B[0m").append(points.get(player) == i ?
-                            center(cli.getViewModel().getAnsiPlayerColor(player).orElseThrow() + nicks.get(j) + "\u001B[0m", 5) : " ".repeat(cellWidth));
+                            center(vm.getAnsiPlayerColor(player).orElseThrow() + nicks.get(j) + "\u001B[0m", 5) : " ".repeat(cellWidth));
                 } else
-                    stringBuilder.append("\u001B[0m").append(cli.getViewModel().getBlackCrossFP() == i ?
+                    stringBuilder.append("\u001B[0m").append(vm.getBlackCrossFP() == i ?
                             center("\u001B[90mBlack" + "\u001B[0m", 5) : " ".repeat(cellWidth));
             }
             // Rightmost side border
@@ -129,7 +131,7 @@ public class FaithTrack extends StringComponent {
         // Print activation of vatican sections
         for(ReducedVaticanSection s : sections.stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getFaithPointsEnd)).toList()) {
             stringBuilder.append(String.format("Section %d: %s%n", i,
-                    s.isActivated() ? (s.getBonusGivenPlayers().contains(cli.getViewModel().getLocalPlayerNickname())
+                    s.isActivated() ? (s.getBonusGivenPlayers().contains(vm.getLocalPlayerNickname())
                             ? "earned" : "missed") : "inactive"));
             i++;
         }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.cli.components;
 
-import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
 
 import java.util.List;
@@ -15,20 +14,20 @@ public class Market extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
         int width = reducedMarket.getGrid().stream().map(List::size).reduce(Integer::max).orElse(0);
 
         stringBuilder.append("Market:").append("\n").append("\n");
 
-        stringBuilder.append(String.format("(Replaceable resource: %s)", new Resource(reducedMarket.getReplaceableResType()).getString(cli))).append("\n").append("\n");
+        stringBuilder.append(String.format("(Replaceable resource: %s)", new Resource(reducedMarket.getReplaceableResType()).getString())).append("\n").append("\n");
 
         stringBuilder.append("╔").append("═".repeat(4 + (10 + 1) * (width + 1))).append("╗").append("\n");
 
         stringBuilder
                 .append("║").append(" ".repeat(4 + (10 + 1) * width + 1))
-                .append(center(new Resource(reducedMarket.getSlide()).getString(cli), 10))
+                .append(center(new Resource(reducedMarket.getSlide()).getString(), 10))
                 .append("║").append("\n");
 
         stringBuilder
@@ -40,7 +39,7 @@ public class Market extends StringComponent {
             stringBuilder.append("║").append(" ".repeat(4)).append("║");
             for (int j = 0; j < r.size(); j++) {
                 String res = r.get(j);
-                stringBuilder.append(center(new Resource(res).getString(cli), 10));
+                stringBuilder.append(center(new Resource(res).getString(), 10));
                 if (j < r.size() - 1)
                     stringBuilder.append("│");
             }

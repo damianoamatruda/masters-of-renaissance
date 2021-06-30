@@ -117,8 +117,8 @@ public class FaithTile extends StackPane {
      */
     private void setMarkerColor(ImageView marker, String player) {
         ViewModel vm = Gui.getInstance().getViewModel();
-        vm.getHexPlayerColor(player).ifPresent(hex -> {
 
+        vm.getHexPlayerColor(player).ifPresent(hex -> {
             marker.setClip(new ImageView(marker.getImage()));
 
             ColorAdjust monochrome = new ColorAdjust();

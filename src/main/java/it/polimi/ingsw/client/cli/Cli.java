@@ -287,7 +287,7 @@ public class Cli implements Runnable {
             out.println();
 
             String string = "Remaining resources:" + "\n" +
-                    new ResourceMap(remainingResMap).getString(this);
+                    new ResourceMap(remainingResMap).getString();
             out.println(center(string));
 
             AtomicBoolean valid = new AtomicBoolean(true);
@@ -467,9 +467,9 @@ public class Cli implements Runnable {
         int i = 0;
         for (String resType : resources) {
             if (i % 2 == 0)
-                stringBuilder.append(String.format("  %s", left(String.format("%s", new Resource(resType).getString(this)), padding)));
+                stringBuilder.append(String.format("  %s", left(String.format("%s", new Resource(resType).getString()), padding)));
             else
-                stringBuilder.append(String.format("%s", new Resource(resType).getString(this))).append("\n");
+                stringBuilder.append(String.format("%s", new Resource(resType).getString())).append("\n");
             i++;
         }
         if (resources.size() % 2 != 0)

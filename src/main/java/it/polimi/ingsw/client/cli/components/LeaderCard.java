@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.client.cli.Cli;
+import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 public class LeaderCard extends StringComponent {
@@ -11,7 +12,9 @@ public class LeaderCard extends StringComponent {
     }
 
     @Override
-    public String getString(Cli cli) {
+    public String getString() {
+        ViewModel vm = Cli.getInstance().getViewModel();
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("[Leader]").append("\n");
@@ -22,7 +25,7 @@ public class LeaderCard extends StringComponent {
         )).append("\n");
 
         stringBuilder.append(String.format("Bound resource: %s, VP: %d",
-                new Resource(reducedLeaderCard.getResourceType()).getString(cli),
+                new Resource(reducedLeaderCard.getResourceType()).getString(),
                 reducedLeaderCard.getVictoryPoints()
         )).append("\n");
 
@@ -32,15 +35,15 @@ public class LeaderCard extends StringComponent {
             stringBuilder.append(String.format("Discount: %d", reducedLeaderCard.getDiscount())).append("\n");
 
         if (reducedLeaderCard.getDevCardRequirement().isPresent())
-            stringBuilder.append(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement().get()).getString(cli));
+            stringBuilder.append(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement().get()).getString());
         if (reducedLeaderCard.getResourceRequirement().isPresent())
-            stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement().get()).getString(cli));
+            stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement().get()).getString());
 
-        cli.getViewModel().getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->
-                stringBuilder.append(new ResourceContainer(c).getString(cli)));
+        vm.getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->
+                stringBuilder.append(new ResourceContainer(c).getString()));
 
-        cli.getViewModel().getProduction(reducedLeaderCard.getProduction()).ifPresent(p ->
-                stringBuilder.append(new ResourceTransactionRecipe(p).getString(cli)));
+        vm.getProduction(reducedLeaderCard.getProduction()).ifPresent(p ->
+                stringBuilder.append(new ResourceTransactionRecipe(p).getString()));
 
         return stringBuilder.toString();
     }
