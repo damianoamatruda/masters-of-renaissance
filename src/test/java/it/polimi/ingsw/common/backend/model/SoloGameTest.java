@@ -15,8 +15,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
+import static it.polimi.ingsw.common.backend.model.FaithTrack.VaticanSection;
+import static it.polimi.ingsw.common.backend.model.FaithTrack.YellowTile;
 import static org.junit.jupiter.api.Assertions.*;
 
 /** Test of SoloGame operations */
@@ -38,13 +41,13 @@ public class SoloGameTest {
         ), new Warehouse(3), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 3, new PlayerSetup(0, 0, 0, Set.of()));
 
         track = new FaithTrack(Set.of(
-                new FaithTrack.VaticanSection(0, 5, 8, 2),
-                new FaithTrack.VaticanSection(0, 12, 16, 3),
-                new FaithTrack.VaticanSection(0, 19, 24, 4)
+                new VaticanSection(0, 5, 8, 2),
+                new VaticanSection(0, 12, 16, 3),
+                new VaticanSection(0, 19, 24, 4)
         ), Set.of(
-                new FaithTrack.YellowTile(15, 9),
-                new FaithTrack.YellowTile(18, 12),
-                new FaithTrack.YellowTile(24, 20)
+                new YellowTile(15, 9),
+                new YellowTile(18, 12),
+                new YellowTile(24, 20)
         ), 24);
 
         ResourceType r1 = new ResourceType("r1", true);
@@ -118,8 +121,9 @@ public class SoloGameTest {
          */
         @Test
         void FirstSoloReport() {
-            int result = track.getVaticanSectionReport(game.getBlackPoints()).getVictoryPoints();
-            assertEquals(result, player.getVictoryPoints());
+            Optional<VaticanSection> vaticanSectionOptional = track.getVaticanSectionReport(game.getBlackPoints());
+            assertTrue(vaticanSectionOptional.isPresent());
+            assertEquals(player.getVictoryPoints(), vaticanSectionOptional.get().getVictoryPoints());
         }
 
         /**

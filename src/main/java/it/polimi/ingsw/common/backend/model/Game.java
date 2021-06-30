@@ -152,11 +152,7 @@ public class Game extends EventDispatcher {
      * @param faithPoints the faith marker (points) of whoever has just moved ahead
      */
     public void onIncrementFaithPoints(int faithPoints) {
-        FaithTrack.VaticanSection vaticanSection = faithTrack.getVaticanSectionReport(faithPoints);
-        if (vaticanSection != null && !vaticanSection.isActivated()) {
-
-            vaticanSection.activate(players);
-        }
+        faithTrack.getVaticanSectionReport(faithPoints).ifPresent(vaticanSection -> vaticanSection.activate(players));
 
         if (faithPoints == faithTrack.getMaxFaithPointsCount())
             setLastRound();

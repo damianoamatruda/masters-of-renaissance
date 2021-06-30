@@ -40,16 +40,19 @@ public class FaithTrack extends EventDispatcher {
     }
 
     /**
-     * Returns the Vatican Section ending on the faith points.
+     * Returns the optional Vatican Section ending on the faith points.
      *
      * @param faithPoints the faith points
      * @return the Vatican Section ending there
      */
-    public VaticanSection getVaticanSectionReport(int faithPoints) {
-        OptionalInt latestSectionTile = vaticanSectionsMap.values()
+    public Optional<VaticanSection> getVaticanSectionReport(int faithPoints) {
+        return vaticanSectionsMap.values()
                 .stream().filter(v -> v.getFaithPointsEnd() <= faithPoints)
-                .mapToInt(VaticanSection::getFaithPointsEnd).reduce(Integer::max);
-        return  latestSectionTile.stream().mapToObj(vaticanSectionsMap::get).findAny().orElse(null);
+                .mapToInt(VaticanSection::getFaithPointsEnd)
+                .max()
+                .stream()
+                .mapToObj(vaticanSectionsMap::get)
+                .findAny();
     }
 
     /**
@@ -84,8 +87,8 @@ public class FaithTrack extends EventDispatcher {
 
     public ReducedFaithTrack reduce() {
         return new ReducedFaithTrack(
-                vaticanSectionsMap.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().reduce())),
-                yellowTiles.stream().map(t -> t.reduce()).toList(), maxFaithPointsCount);
+                vaticanSectionsMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().reduce())),
+                yellowTiles.stream().map(YellowTile::reduce).toList(), maxFaithPointsCount);
     }
 
     public int getMaxFaithPointsCount() {
@@ -177,7 +180,9 @@ public class FaithTrack extends EventDispatcher {
          * @param players   the players of the game that might or might not receive a bonus
          */
         public void activate(List<Player> players) {
-            this.activated = true;
+            if (activated)
+                return;
+            activated = true;
             for (Player p : players)
                 if (p.getFaithPoints() >= this.getFaithPointsBeginning()) {
                     p.incrementVictoryPoints(this.getVictoryPoints());
