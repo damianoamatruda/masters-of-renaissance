@@ -21,15 +21,15 @@ public abstract class UiController {
     public boolean isLocalLeaderSetupDone() {
         /* if req not accepted in a previous connection by server,
            card count to choose > 0 and cards can be discarded (hand size - count > 0) */
-        return vm.getPlayerData(vm.getLocalPlayerNickname())
+        return vm.getPlayerData(vm.getLocalPlayer())
                 .flatMap(PlayerData::getSetup).map(setup ->
                         setup.hasChosenLeaders() || setup.getChosenLeadersCount() == 0
-                                || vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() == setup.getChosenLeadersCount())
+                                || vm.getPlayerLeaderCards(vm.getLocalPlayer()).size() == setup.getChosenLeadersCount())
                 .orElse(false);
     }
 
     public boolean isLeaderSetupAvailable() {
-        return !isLocalLeaderSetupDone() && !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty();
+        return !isLocalLeaderSetupDone() && !vm.getPlayerLeaderCards(vm.getLocalPlayer()).isEmpty();
     }
 
     /**
@@ -37,7 +37,7 @@ public abstract class UiController {
      *         <code>false</code> if it has not or if there's not enough data to know whether it has
      */
     public boolean isLocalResourceSetupDone() {
-        return vm.getPlayerData(vm.getLocalPlayerNickname())
+        return vm.getPlayerData(vm.getLocalPlayer())
                 .flatMap(PlayerData::getSetup).map(setup ->
                         setup.hasChosenResources() || setup.getInitialResources() == 0)
                 .orElse(false);
@@ -99,7 +99,7 @@ public abstract class UiController {
     }
 
     public void on(UpdateCurrentPlayer event) {
-        vm.setCurrentPlayerNickname(event.getPlayer());
+        vm.setCurrentPlayer(event.getPlayer());
     }
 
     public void on(UpdateDevCardGrid event) {
@@ -119,7 +119,7 @@ public abstract class UiController {
     }
 
     public void on(UpdateGameEnd event) {
-        vm.setWinner(event.getWinner());
+        vm.setWinnerPlayer(event.getWinner());
     }
 
     public void on(UpdateGame event) {

@@ -31,18 +31,18 @@ public abstract class CliController extends UiController implements Renderable {
      */
     protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            vm.getPlayerData(vm.getLocalPlayerNickname()).ifPresent(pd -> {
-            if (isSetupDone && !vm.getCurrentPlayerNickname().equals("") &&
-                    !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty()) { // setup is done
-                if (vm.getCurrentPlayerNickname().equals(vm.getLocalPlayerNickname()))
-                    cli.setController(new TurnBeforeActionController(), false);
-                else
-                    cli.setController(new WaitingAfterTurnController(), false);
-            } else // setup not done
-                pd.getSetup().ifPresent(setup -> { // received local player's setup
-                    if (isLeaderSetupAvailable())
-                        cli.setController(new SetupLeadersController(), false);
-                    else if (isResourceSetupAvailable())
+            vm.getPlayerData(vm.getLocalPlayer()).ifPresent(pd -> {
+                if (isSetupDone && !vm.getCurrentPlayer().equals("") &&
+                        !vm.getPlayerLeaderCards(vm.getLocalPlayer()).isEmpty()) { // setup is done
+                    if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
+                        cli.setController(new TurnBeforeActionController(), false);
+                    else
+                        cli.setController(new WaitingAfterTurnController(), false);
+                } else // setup not done
+                    pd.getSetup().ifPresent(setup -> { // received local player's setup
+                        if (isLeaderSetupAvailable())
+                            cli.setController(new SetupLeadersController(), false);
+                        else if (isResourceSetupAvailable())
                             cli.setController(new SetupResourcesController(), false);
                     });
             });
@@ -59,7 +59,7 @@ public abstract class CliController extends UiController implements Renderable {
         switch (event.getReason()) {
             case LATE_SETUP_ACTION -> {
                 cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
-                if (vm.getCurrentPlayerNickname().equals(vm.getLocalPlayerNickname()))
+                if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
                     cli.setController(new TurnBeforeActionController(), true);
                 else
                     cli.setController(new WaitingAfterTurnController(), true);
@@ -263,7 +263,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateDevSlot event) {
         super.on(event);
 
-        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayerNickname())).render();
+        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer())).render();
     }
 
     @Override
@@ -313,7 +313,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(Cli.center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayerNickname(), event.getLeader())));
+        cli.getOut().println(Cli.center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer(), event.getLeader())));
         cli.getOut().println();
         cli.getOut().println(Cli.center(new Box(new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow())).getString()));
     }
@@ -359,7 +359,7 @@ public abstract class CliController extends UiController implements Renderable {
 
         Optional<ReducedResourceTransactionRecipe> baseProds;
 
-        baseProds = vm.getPlayerBaseProduction(vm.getLocalPlayerNickname());
+        baseProds = vm.getPlayerBaseProduction(vm.getLocalPlayer());
         // TODO put baseProd outside of PlayerData, since it is unique (?)
 
         cli.getOut().println(center("\nBase Production:"));

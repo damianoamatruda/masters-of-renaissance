@@ -158,7 +158,7 @@ public class TakeFromMarketController extends GuiController {
     private void resetWarehouse() {
         warehouse = new Warehouse();
 
-        List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname());
+        List<ReducedResourceContainer> whShelves = vm.getPlayerWarehouseShelves(vm.getLocalPlayer());
 
         warehouse.setWarehouseShelves(whShelves, (s1, s2) -> {
             warehouse.setWaitingForSwap(s1, s2);
@@ -296,7 +296,7 @@ public class TakeFromMarketController extends GuiController {
      * Resets the leaders box view component.
      */
     private void resetLeaders() {
-        leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
+        leaderCards = vm.getPlayerLeaderCards(vm.getLocalPlayer()).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.ZERO || c.getLeaderType() == LeaderType.DEPOT)
                 .map(reducedLeader -> {

@@ -44,12 +44,12 @@ public class SetupLeadersController extends GuiController {
         gui.setSceneScaling(canvas);
 
         titleComponent.setText(String.format("Choose %d leader cards",
-                vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()));
+                vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()));
 
         leadersContainer.setSpacing(10);
         leadersContainer.setAlignment(Pos.CENTER);
 
-        leadersContainer.getChildren().addAll(vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream().map(reducedLeader -> {
+        leadersContainer.getChildren().addAll(vm.getPlayerLeaderCards(vm.getLocalPlayer()).stream().map(reducedLeader -> {
             LeaderCard leaderCard = new LeaderCard(reducedLeader);
             switch (reducedLeader.getLeaderType()) {
                 case ZERO -> leaderCard.setZeroReplacement(reducedLeader.getResourceType());
@@ -63,7 +63,7 @@ public class SetupLeadersController extends GuiController {
                     selection.remove(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
                     updateChoiceButton();
-                } else if (selection.size() != vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
+                } else if (selection.size() != vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount()) {
                     selection.add(leaderCard);
                     leaderCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
                     updateChoiceButton();
@@ -81,7 +81,7 @@ public class SetupLeadersController extends GuiController {
      * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
      */
     private void updateChoiceButton() {
-        choiceButton.setDisable(selection.size() != vm.getPlayerData(vm.getLocalPlayerNickname()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
+        choiceButton.setDisable(selection.size() != vm.getPlayerData(vm.getLocalPlayer()).orElseThrow().getSetup().orElseThrow().getChosenLeadersCount());
     }
 
     /**
@@ -107,7 +107,7 @@ public class SetupLeadersController extends GuiController {
                 gui.addToOverlay(
                         new Alert("Setup phase is concluded", "Advancing to game turns."));
 
-        if (vm.getCurrentPlayerNickname().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayer()))
             gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"), callback);
         else
             gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);
@@ -133,11 +133,11 @@ public class SetupLeadersController extends GuiController {
 
     @Override
     public void on(UpdateAction event) {
-        if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(vm.getLocalPlayerNickname()))
+        if (event.getAction() != UpdateAction.ActionType.CHOOSE_LEADERS && event.getPlayer().equals(vm.getLocalPlayer()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
 
-            
-        if (event.getPlayer().equals(vm.getLocalPlayerNickname())) {
+
+        if (event.getPlayer().equals(vm.getLocalPlayer())) {
             titleComponent.setText("Leader setup done.");
             setNextState();
         }

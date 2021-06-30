@@ -50,7 +50,7 @@ public abstract class TurnController extends GuiController {
         List<DevSlot> devSlots = getDevSlots();
         FaithTrack faithTrack = new FaithTrack(vm.getFaithTrack().orElseThrow());
 
-        boolean hasInkwell = vm.getInkwellPlayer().equals(vm.getCurrentPlayerNickname());
+        boolean hasInkwell = vm.getInkwellPlayer().equals(vm.getCurrentPlayer());
 
         playerBoard = new Playerboard(warehouse, strongbox, baseProduction, devSlots, faithTrack, hasInkwell);
         AnchorPane.setBottomAnchor(playerBoard, 0d);
@@ -85,11 +85,11 @@ public abstract class TurnController extends GuiController {
     private void setLeaderBoxes() {
         leadersBox.getChildren().clear();
         leadersBox.getChildren().addAll(
-                vm.getPlayerLeaderCards(vm.getCurrentPlayerNickname()).stream().map(reducedLeaderCard ->
+                vm.getPlayerLeaderCards(vm.getCurrentPlayer()).stream().map(reducedLeaderCard ->
                         new LeaderBox(reducedLeaderCard, this::handleActivate, this::handleDiscard, this::handleProduce, allowProductions)).toList());
         leadersBox.getChildren().addAll(
-                Stream.iterate(vm.getPlayerLeaderCards(vm.getCurrentPlayerNickname()).size(),
-                        n -> n < vm.getPlayerLeadersCount(vm.getCurrentPlayerNickname()), n -> n + 1)
+                Stream.iterate(vm.getPlayerLeaderCards(vm.getCurrentPlayer()).size(),
+                        n -> n < vm.getPlayerLeadersCount(vm.getCurrentPlayer()), n -> n + 1)
                         .map(i -> new LeaderCard(null, null)).toList());
     }
 
@@ -132,7 +132,7 @@ public abstract class TurnController extends GuiController {
 
     protected Warehouse getWarehouse() {
         Warehouse warehouse = new Warehouse();
-        warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayerNickname()), (s1, s2) -> {
+        warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
             warehouse.setWaitingForSwap(s1, s2);
             gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
         });
@@ -142,18 +142,18 @@ public abstract class TurnController extends GuiController {
 
     protected Strongbox getStrongBox() {
         Strongbox strongbox = new Strongbox();
-        vm.getPlayerStrongbox(vm.getCurrentPlayerNickname()).ifPresent(strongbox::setContent);
+        vm.getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(strongbox::setContent);
         return strongbox;
     }
 
     protected Production getBaseProduction() {
         Production baseProduction = new Production(this::handleProduce);
-        vm.getPlayerBaseProduction(vm.getCurrentPlayerNickname()).ifPresent(baseProduction::setProduction);
+        vm.getPlayerBaseProduction(vm.getCurrentPlayer()).ifPresent(baseProduction::setProduction);
         return baseProduction;
     }
 
     protected List<DevSlot> getDevSlots() {
-        return vm.getPlayerDevelopmentCards(vm.getCurrentPlayerNickname()).stream().map(modelSlot -> {
+        return vm.getPlayerDevelopmentCards(vm.getCurrentPlayer()).stream().map(modelSlot -> {
             DevSlot slot = new DevSlot(this::handleProduce);
             slot.setDevCards(modelSlot.stream()
                     .flatMap(Optional::stream)
@@ -168,7 +168,7 @@ public abstract class TurnController extends GuiController {
     protected void addProduceButtons() {
         activateProdButton = new SButton("Activate production");
         activateProdButton.setOnAction(event ->
-                gui.getRoot().getChildren().add(new ActivateProductions(new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayerNickname())), new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayerNickname())), toActivate, 0
+                gui.getRoot().getChildren().add(new ActivateProductions(new ArrayList<>(), new ArrayList<>(vm.getPlayerShelves(vm.getCurrentPlayer())), new ArrayList<>(vm.getPlayerDepots(vm.getLocalPlayer())), toActivate, 0
                 )));
         activateProdButton.setDisable(true);
         AnchorPane.setLeftAnchor(activateProdButton, 318d);
@@ -193,7 +193,7 @@ public abstract class TurnController extends GuiController {
     @Override
     public void on(UpdateAction event) {
         super.on(event);
-        if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES && event.getPlayer().equals(vm.getLocalPlayerNickname())) {
+        if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES && event.getPlayer().equals(vm.getLocalPlayer())) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
             Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
             warehouse.swapShelves(s1, s2);
@@ -246,7 +246,7 @@ public abstract class TurnController extends GuiController {
     public void on(UpdateResourceContainer event) {
         super.on(event);
         if (!vm.isCurrentPlayer())
-            Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayerNickname()), (s1, s2) -> {
+            Platform.runLater(() -> warehouse.setWarehouseShelves(vm.getPlayerWarehouseShelves(vm.getCurrentPlayer()), (s1, s2) -> {
             }));
     }
 }

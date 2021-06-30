@@ -16,7 +16,7 @@ public class ViewModel {
     private final Map<String, PlayerData> playerData;
 
     /** The nickname of the local player. */
-    private String localPlayerNickname = "";
+    private String localPlayer = "";
 
     /** The state of finalization of the setup phase. */
     private Boolean isSetupDone;
@@ -31,7 +31,7 @@ public class ViewModel {
     private List<ReducedResourceContainer> containers;
 
     /** The current player's nickname. */
-    private String currentPlayerNickname;
+    private String currentPlayer = "";
 
     /** The list of development card colors present in the game. */
     private List<ReducedColor> devCardColors;
@@ -73,7 +73,7 @@ public class ViewModel {
     private int slotsCount;
 
     /** The nickname of the winner. */
-    private String winner = "";
+    private String winnerPlayer = "";
 
     /** The list of the available user interface ANSI colors. */
     private final List<String> ansiColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
@@ -106,7 +106,6 @@ public class ViewModel {
         isLastRound = false;
         ansiPlayerColors = new HashMap<>();
         hexPlayerColors = new HashMap<>();
-        currentPlayerNickname = "";
     }
 
     /**
@@ -149,7 +148,7 @@ public class ViewModel {
                 .map(ReducedResourceRequirement::getRequirements)
                 .orElse(Map.of()));
 
-        List<ReducedLeaderCard> discountLeaders = getPlayerLeaderCards(getLocalPlayerNickname()).stream()
+        List<ReducedLeaderCard> discountLeaders = getPlayerLeaderCards(getLocalPlayer()).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DISCOUNT)
                 .toList();
@@ -437,8 +436,8 @@ public class ViewModel {
      *
      * @return the currentPlayer
      */
-    public synchronized String getCurrentPlayerNickname() {
-        return currentPlayerNickname;
+    public synchronized String getCurrentPlayer() {
+        return currentPlayer;
     }
 
     /**
@@ -447,7 +446,7 @@ public class ViewModel {
      * @return true if the local player is now the current player
      */
     public synchronized boolean isCurrentPlayer() {
-        return currentPlayerNickname.equals(localPlayerNickname);
+        return currentPlayer.equals(localPlayer);
     }
 
     /**
@@ -593,17 +592,14 @@ public class ViewModel {
     }
 
     /**
-     * Sets the status of a leader card to activated and adds it to the leader
+     * Updates the nickname of the player now playing a turn.
      *
-     * @param id the ID of the card to be activated
+     * @param currentPlayer the currentPlayer to set
      */
-    public synchronized void activateLeaderCard(int id) {
-        leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
-        if (playerData.containsKey(getCurrentPlayerNickname())) {
-            List<Integer> lc = playerData.get(getCurrentPlayerNickname()).getLeadersHand();
-            lc.add(id);
-            playerData.get(getCurrentPlayerNickname()).setLeadersHand(lc);
-        }
+    public synchronized void setCurrentPlayer(String currentPlayer) {
+        if (currentPlayer == null)
+            currentPlayer = ""; // TODO: Do not do anything in this case, instead of setting it to ""
+        this.currentPlayer = currentPlayer;
     }
 
     /**
@@ -750,24 +746,26 @@ public class ViewModel {
     }
 
     /**
+     * Sets the status of a leader card to activated and adds it to the leader
+     *
+     * @param id the ID of the card to be activated
+     */
+    public synchronized void activateLeaderCard(int id) {
+        leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
+        if (playerData.containsKey(getCurrentPlayer())) {
+            List<Integer> lc = playerData.get(getCurrentPlayer()).getLeadersHand();
+            lc.add(id);
+            playerData.get(getCurrentPlayer()).setLeadersHand(lc);
+        }
+    }
+
+    /**
      * Retrieves the winner of the game.
      *
      * @return the winner
      */
-    public synchronized String getWinner() {
-        return winner;
-    }
-
-    /**
-     * Sets the winner of the game.
-     *
-     * @param winner the winner to set
-     */
-    public synchronized void setWinner(String winner) {
-        if (winner == null)
-            winner = ""; // TODO: Do not do anything in this case, instead of setting it to ""
-        this.winner = winner;
-        this.isGameEnded = true;
+    public synchronized String getWinnerPlayer() {
+        return winnerPlayer;
     }
 
     /**
@@ -789,23 +787,24 @@ public class ViewModel {
     }
 
     /**
+     * Sets the winner of the game.
+     *
+     * @param winnerPlayer the winner to set
+     */
+    public synchronized void setWinnerPlayer(String winnerPlayer) {
+        if (winnerPlayer == null)
+            winnerPlayer = ""; // TODO: Do not do anything in this case, instead of setting it to ""
+        this.winnerPlayer = winnerPlayer;
+        this.isGameEnded = true;
+    }
+
+    /**
      * Retrieves the nickname of the local player's nickname.
      *
      * @return the local player's nickname
      */
-    public synchronized String getLocalPlayerNickname() {
-        return localPlayerNickname;
-    }
-
-    /**
-     * Sets the nickname of the local player's nickname.
-     *
-     * @param localPlayerNickname the nickname to set
-     */
-    public synchronized void setLocalPlayerNickname(String localPlayerNickname) {
-        if (localPlayerNickname == null)
-            localPlayerNickname = "Player 1"; // TODO: Do not do anything in this case, instead of setting it to "Player 1"
-        this.localPlayerNickname = localPlayerNickname;
+    public synchronized String getLocalPlayer() {
+        return localPlayer;
     }
 
     /**
@@ -827,14 +826,14 @@ public class ViewModel {
     }
 
     /**
-     * Updates the nickname of the player now playing a turn.
+     * Sets the nickname of the local player's nickname.
      *
-     * @param currentPlayerNickname the currentPlayer to set
+     * @param localPlayer the nickname to set
      */
-    public synchronized void setCurrentPlayerNickname(String currentPlayerNickname) {
-        if (currentPlayerNickname == null)
-            currentPlayerNickname = ""; // TODO: Do not do anything in this case, instead of setting it to ""
-        this.currentPlayerNickname = currentPlayerNickname;
+    public synchronized void setLocalPlayer(String localPlayer) {
+        if (localPlayer == null)
+            localPlayer = "Player 1"; // TODO: Do not do anything in this case, instead of setting it to "Player 1"
+        this.localPlayer = localPlayer;
     }
 
     // TODO Javadoc

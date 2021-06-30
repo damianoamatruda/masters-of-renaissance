@@ -26,7 +26,7 @@ public class InputNicknameController extends CliController {
             valid.set(true);
             cli.prompt("Nickname").ifPresentOrElse(nickname -> {
                 if (!nickname.isBlank()) {
-                    vm.setLocalPlayerNickname(nickname);
+                    vm.setLocalPlayer(nickname);
                     cli.getUi().dispatch(new ReqJoin(nickname));
                 } else
                     valid.set(false);
@@ -36,9 +36,9 @@ public class InputNicknameController extends CliController {
 
     @Override
     public void on(UpdateBookedSeats event) {
-        if (event.canPrepareNewGame().equals(vm.getLocalPlayerNickname()))
+        if (event.canPrepareNewGame().equals(vm.getLocalPlayer()))
             cli.setController(new WaitingBeforeGameController(), false);
-        else if (!vm.getLocalPlayerNickname().equals("")) // if the nickname isn't set don't print updates (do not disturb)
+        else if (!vm.getLocalPlayer().equals("")) // if the nickname isn't set don't print updates (do not disturb)
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
 

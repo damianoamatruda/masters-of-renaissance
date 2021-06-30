@@ -38,9 +38,9 @@ public class TakeFromMarketController extends CliController {
 
         cli.getOut().println();
         new ResourceContainers(
-                vm.getLocalPlayerNickname(),
-                vm.getPlayerWarehouseShelves(vm.getLocalPlayerNickname()),
-                vm.getPlayerDepots(vm.getLocalPlayerNickname()),
+                vm.getLocalPlayer(),
+                vm.getPlayerWarehouseShelves(vm.getLocalPlayer()),
+                vm.getPlayerDepots(vm.getLocalPlayer()),
                 null)
                 .render();
 
@@ -109,7 +109,7 @@ public class TakeFromMarketController extends CliController {
         //     this.replacements.compute(res, (k, v) -> v == null ? 1 : v++);
 
         if (blanksCount > 0) {
-            List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).stream()
+            List<ReducedLeaderCard> zeroLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayer()).stream()
                     .filter(ReducedLeaderCard::isActive)
                     .filter(c -> c.getLeaderType() == LeaderType.ZERO)
                     .toList();
@@ -138,7 +138,7 @@ public class TakeFromMarketController extends CliController {
         Map<String, Integer> totalRes = new HashMap<>(this.replacements);
         this.resources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
-        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayerNickname()).stream()
+        Set<Integer> allowedShelves = vm.getPlayerShelves(vm.getLocalPlayer()).stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 

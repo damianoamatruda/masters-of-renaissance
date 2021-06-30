@@ -86,7 +86,7 @@ public class LeaderBoard extends StackPane {
                 super.updateItem(item, empty);
                 if (item != null) {
                     // add indicator of local player
-                    if (item.getPlayer().equals(vm.getLocalPlayerNickname()))
+                    if (item.getPlayer().equals(vm.getLocalPlayer()))
                         item.setLocalPlayer();
 
                     String player = item.getPlayer();

@@ -36,12 +36,12 @@ public class EndgameController extends GuiController {
         leaderboard.getChildren().add(leaderboards);
         new LeaderBoard().createLeaderboardTable(leaderboards);
 
-        if (vm.getWinner() != null && vm.getWinner().equals(vm.getLocalPlayerNickname()))
-            outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinner()) + " points! CONGRATULATIONS!");
-        else if (vm.getWinner() != null && !vm.getWinner().isEmpty())
+        if (vm.getWinnerPlayer() != null && vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
+            outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinnerPlayer()) + " points! CONGRATULATIONS!");
+        else if (vm.getWinnerPlayer() != null && !vm.getWinnerPlayer().isEmpty())
             outcome.setText(
-                    vm.getWinner() + " is the winner with " +
-                            vm.getPlayerVictoryPoints(vm.getWinner()) + " points!");
+                    vm.getWinnerPlayer() + " is the winner with " +
+                            vm.getPlayerVictoryPoints(vm.getWinnerPlayer()) + " points!");
         else
             outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
     }

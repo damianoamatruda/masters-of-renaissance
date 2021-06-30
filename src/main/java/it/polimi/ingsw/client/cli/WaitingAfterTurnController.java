@@ -19,7 +19,7 @@ public class WaitingAfterTurnController extends CliController {
         super.on(event);
         
         cli.getOut().println();
-        if (vm.getCurrentPlayerNickname().equals(vm.getLocalPlayerNickname())) {
+        if (vm.getCurrentPlayer().equals(vm.getLocalPlayer())) {
             cli.getOut().println(Cli.center("It's your turn."));
             cli.setController(new TurnBeforeActionController(), true);
         }
