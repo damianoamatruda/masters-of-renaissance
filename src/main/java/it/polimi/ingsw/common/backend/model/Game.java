@@ -116,7 +116,7 @@ public class Game extends EventDispatcher {
                 slotsCount,
                 null, /* actionTokens not sent */
                 players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone),
-                getFirstPlayer().getNickname()));
+                getInkwellPlayer().getNickname()));
         dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
     }
 
@@ -239,7 +239,7 @@ public class Game extends EventDispatcher {
      *
      * @return the first player
      */
-    public Player getFirstPlayer() {
+    public Player getInkwellPlayer() {
         return players.stream().filter(Player::hasInkwell).findAny().orElseThrow();
     }
 

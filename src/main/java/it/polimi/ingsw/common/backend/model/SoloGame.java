@@ -65,7 +65,7 @@ public class SoloGame extends Game {
                 slotsCount,
                 actionTokens.stream().map(ActionToken::reduce).toList(),
                 players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone),
-                getFirstPlayer().getNickname()));
+                getInkwellPlayer().getNickname()));
         dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
     }
 
