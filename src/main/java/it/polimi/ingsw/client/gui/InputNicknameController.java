@@ -81,6 +81,13 @@ public class InputNicknameController extends GuiController {
     }
 
     @Override
+    public void on(UpdateLeadersHand event) {
+        super.on(event);
+
+        setNextState();
+    }
+
+    @Override
     public void on(UpdatePlayer event) {
         super.on(event);
 
@@ -88,7 +95,7 @@ public class InputNicknameController extends GuiController {
     }
 
     @Override
-    public void on(UpdateLeadersHand event) {
+    public void on(UpdateSetupDone event) {
         super.on(event);
 
         setNextState();

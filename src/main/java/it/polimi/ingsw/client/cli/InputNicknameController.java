@@ -43,6 +43,13 @@ public class InputNicknameController extends CliController {
     }
 
     @Override
+    public void on(UpdateCurrentPlayer event) {
+        super.on(event);
+
+        setNextState();
+    }
+
+    @Override
     public void on(UpdateJoinGame event) {
         if (!cli.getUi().isOffline())
             cli.getOut().printf("A new player joined the game! Getting to %d...%n%n", event.getPlayersCount());
@@ -50,20 +57,6 @@ public class InputNicknameController extends CliController {
 
     @Override
     public void on(UpdateGame event) {
-        super.on(event);
-
-        setNextState();
-    }
-
-    @Override
-    public void on(UpdatePlayer event) {
-        super.on(event);
-
-        setNextState();
-    }
-
-    @Override
-    public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
         setNextState();
@@ -77,5 +70,19 @@ public class InputNicknameController extends CliController {
             cli.promptPause();
             setNextState();
         }).start();
+    }
+
+    @Override
+    public void on(UpdatePlayer event) {
+        super.on(event);
+
+        setNextState();
+    }
+
+    @Override
+    public void on(UpdateSetupDone event) {
+        super.on(event);
+
+        setNextState();
     }
 }

@@ -55,6 +55,11 @@ public class SetupResourcesController extends GuiController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
 
+        if (isLocalResourceSetupDone()) {
+            showWaitingText();
+            return;
+        }
+
         titleComponent.setText(String.format("Choose %d resources",
                 vm.getLocalPlayer().flatMap(vm::getPlayerData).orElseThrow().getSetup().orElseThrow().getInitialResources()));
 
@@ -201,14 +206,16 @@ public class SetupResourcesController extends GuiController {
      */
     public void handleChoice() {
         gui.getUi().dispatch(new ReqChooseResources(selection));
-        if(!gui.getUi().isOffline() && vm.getPlayerNicknames().size() > 1) {
-            waitingText.setVisible(true);
-            ((VBox) resourceTypesContainer.getParent()).getChildren().remove(resourceTypesContainer);
-            ((VBox) warehouse.getParent()).getChildren().remove(warehouse);
-            ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
-        }
+        if(!gui.getUi().isOffline() && vm.getPlayerNicknames().size() > 1)
+            showWaitingText();
     }
 
+    private void showWaitingText() {
+        waitingText.setVisible(true);
+        ((VBox) resourceTypesContainer.getParent()).getChildren().remove(resourceTypesContainer);
+        ((VBox) warehouse.getParent()).getChildren().remove(warehouse);
+        ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
+    }
 
     @Override
     public void on(ErrAction event) {

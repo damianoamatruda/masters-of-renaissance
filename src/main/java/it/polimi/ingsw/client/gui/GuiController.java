@@ -44,7 +44,7 @@ public abstract class GuiController extends UiController implements Initializabl
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
                             gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
-                        else if (isResourceSetupAvailable())
+                        else if (isLocalLeaderSetupDone())
                             gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"));
                     });
             });

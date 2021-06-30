@@ -42,7 +42,7 @@ public abstract class CliController extends UiController implements Renderable {
                     pd.getSetup().ifPresent(setup -> { // received local player's setup
                         if (isLeaderSetupAvailable())
                             cli.setController(new SetupLeadersController(), false);
-                        else if (isResourceSetupAvailable())
+                        else if (isLocalLeaderSetupDone())
                             cli.setController(new SetupResourcesController(), false);
                     });
             });
