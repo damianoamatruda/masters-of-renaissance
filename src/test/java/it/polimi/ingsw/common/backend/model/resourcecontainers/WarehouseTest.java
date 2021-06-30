@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse.WarehouseShelf;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -32,14 +33,14 @@ public class WarehouseTest {
     @Test
     void resourceTypesOfNewWarehouseShelf() {
         Warehouse warehouse = new Warehouse(1);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
         assertEquals(Set.of(), warehouseShelf.getResourceTypes());
     }
 
     @Test
     void quantityOfNewWarehouseShelf() {
         Warehouse warehouse = new Warehouse(1);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
         assertEquals(0, warehouseShelf.getQuantity());
     }
 
@@ -47,28 +48,28 @@ public class WarehouseTest {
     void resourceQuantityOfNewWarehouseShelf() {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(1);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
         assertEquals(0, warehouseShelf.getResourceQuantity(r));
     }
 
     @Test
     void resourceTypeOfNewWarehouseShelf() {
         Warehouse warehouse = new Warehouse(1);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
         assertTrue(warehouseShelf.getResourceType().isEmpty());
     }
 
     @Test
     void newWarehouseShelfShouldBeEmpty() {
         Warehouse warehouse = new Warehouse(1);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
         assertTrue(warehouseShelf.isEmpty());
     }
 
     @Test
     void newWarehouseShelfShouldNotBeFull() {
         Warehouse warehouse = new Warehouse(1);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
         assertFalse(warehouseShelf.isFull());
     }
 
@@ -77,7 +78,7 @@ public class WarehouseTest {
     void resourceTypesOfWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(r), warehouseShelf.getResourceTypes());
     }
@@ -87,7 +88,7 @@ public class WarehouseTest {
     void quantityOfWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, warehouseShelf.getQuantity());
     }
@@ -97,7 +98,7 @@ public class WarehouseTest {
     void resourceQuantityOfWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, warehouseShelf.getResourceQuantity(r));
     }
@@ -107,7 +108,7 @@ public class WarehouseTest {
     void warehouseShelfShouldNotBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertFalse(warehouseShelf.isEmpty());
     }
@@ -117,7 +118,7 @@ public class WarehouseTest {
     void warehouseShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(resourcesCount + 1);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertFalse(warehouseShelf.isFull());
     }
@@ -126,7 +127,7 @@ public class WarehouseTest {
     @ValueSource(ints = {1, 2, 3})
     void warehouseShelfShouldBeFull(int resourcesCount) throws IllegalResourceTransferException {
         Warehouse warehouse = new Warehouse(resourcesCount);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount - 1);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount - 1);
         ResourceType r = new ResourceType("r", true);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertTrue(warehouseShelf.isFull());
@@ -137,7 +138,7 @@ public class WarehouseTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r1, 2));
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.addResources(Map.of(r2, 1)));
     }
@@ -147,10 +148,10 @@ public class WarehouseTest {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(2);
 
-        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(0);
+        WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(0);
         warehouseShelf1.addResources(Map.of(r, 1));
 
-        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(1);
+        WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(1);
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf2.addResources(Map.of(r, 1)));
     }
 
@@ -159,7 +160,7 @@ public class WarehouseTest {
         ResourceType r1 = new ResourceType("r1", true);
         ResourceType r2 = new ResourceType("r2", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r1, 3));
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResources(Map.of(r2, 1)));
     }
@@ -168,7 +169,7 @@ public class WarehouseTest {
     void emptyWarehouseShelfShouldNotBeAbleToRemoveResource() {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResources(Map.of(r, 1)));
     }
 
@@ -177,7 +178,7 @@ public class WarehouseTest {
     void quantityOfWarehouseShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, 1));
         assertEquals(resourcesCount - 1, warehouseShelf.getQuantity());
@@ -188,7 +189,7 @@ public class WarehouseTest {
     void resourceQuantityOfWarehouseShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, 1));
         assertEquals(resourcesCount - 1, warehouseShelf.getResourceQuantity(r));
@@ -199,7 +200,7 @@ public class WarehouseTest {
     void resourceTypesOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(), warehouseShelf.getResourceTypes());
@@ -210,7 +211,7 @@ public class WarehouseTest {
     void quantityOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(0, warehouseShelf.getQuantity());
@@ -221,7 +222,7 @@ public class WarehouseTest {
     void resourceQuantityOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertEquals(0, warehouseShelf.getResourceQuantity(r));
@@ -232,7 +233,7 @@ public class WarehouseTest {
     void resourceTypeOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertTrue(warehouseShelf.getResourceType().isEmpty());
@@ -243,7 +244,7 @@ public class WarehouseTest {
     void clearedWarehouseShelfShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertTrue(warehouseShelf.isEmpty());
@@ -254,7 +255,7 @@ public class WarehouseTest {
     void clearedShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(3);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertFalse(warehouseShelf.isFull());
@@ -265,7 +266,7 @@ public class WarehouseTest {
     void clearedShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
         ResourceType r = new ResourceType("r", true);
         Warehouse warehouse = new Warehouse(5);
-        Warehouse.WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         warehouseShelf.removeResources(Map.of(r, resourcesCount));
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResources(Map.of(r, 1)));
@@ -279,10 +280,10 @@ public class WarehouseTest {
 
         Warehouse warehouse = new Warehouse(13);
 
-        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(6);
+        WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(6);
         warehouseShelf1.addResources(Map.of(r1, 3));
 
-        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(12);
+        WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(12);
         warehouseShelf2.addResources(Map.of(r2, 5));
 
         if (direct)
@@ -313,10 +314,10 @@ public class WarehouseTest {
 
         Warehouse warehouse = new Warehouse(6);
 
-        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(2);
+        WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(2);
         warehouseShelf1.addResources(Map.of(r1, 3));
 
-        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(4);
+        WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(4);
         warehouseShelf2.addResources(Map.of(r2, 5));
 
         assertThrows(IllegalResourceTransferException.class, () -> ResourceContainer.swap(warehouseShelf1, warehouseShelf2));
@@ -328,13 +329,13 @@ public class WarehouseTest {
         ResourceType r2 = new ResourceType("r2", true);
 
         Warehouse warehouse1 = new Warehouse(7);
-        Warehouse.WarehouseShelf warehouseShelf1a = warehouse1.getShelves().get(5);
+        WarehouseShelf warehouseShelf1a = warehouse1.getShelves().get(5);
         warehouseShelf1a.addResources(Map.of(r1, 2));
-        Warehouse.WarehouseShelf warehouseShelf1b = warehouse1.getShelves().get(6);
+        WarehouseShelf warehouseShelf1b = warehouse1.getShelves().get(6);
         warehouseShelf1b.addResources(Map.of(r2, 3));
 
         Warehouse warehouse2 = new Warehouse(13);
-        Warehouse.WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
+        WarehouseShelf warehouseShelf2 = warehouse2.getShelves().get(12);
         warehouseShelf2.addResources(Map.of(r1, 5));
 
         assertThrows(IllegalResourceTransferException.class, () -> ResourceContainer.swap(warehouseShelf1b, warehouseShelf2));
@@ -347,10 +348,10 @@ public class WarehouseTest {
 
         Warehouse warehouse = new Warehouse(13);
 
-        Warehouse.WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(6);
+        WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(6);
         warehouseShelf1.addResources(Map.of(r1, 3));
 
-        Warehouse.WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(12);
+        WarehouseShelf warehouseShelf2 = warehouse.getShelves().get(12);
         warehouseShelf2.addResources(Map.of(r2, 5));
 
         ResourceContainer.swap(warehouseShelf1, warehouseShelf2);
