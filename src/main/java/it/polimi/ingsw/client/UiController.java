@@ -110,7 +110,8 @@ public abstract class UiController {
     }
 
     public void on(UpdateDevSlot event) {
-        vm.getCurrentPlayerData().orElseThrow().setDevSlot(event.getDevSlot(), event.getDevCards());
+        vm.getPlayerData(event.getPlayer()).ifPresent(pdata ->
+                pdata.setDevSlot(event.getDevSlot(), event.getDevCards()));
     }
 
     public void on(UpdateFaithPoints event) {

@@ -304,7 +304,7 @@ public class Player extends EventDispatcher {
         devSlot.push(devCard);
         incrementVictoryPoints(devCard.getVictoryPoints());
 
-        dispatch(new UpdateDevSlot(devSlotIndex, devSlot.stream().map(DevelopmentCard::getId).toList()));
+        dispatch(new UpdateDevSlot(nickname, devSlotIndex, devSlot.stream().map(DevelopmentCard::getId).toList()));
     }
 
     /**

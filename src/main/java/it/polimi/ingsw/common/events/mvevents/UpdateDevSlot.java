@@ -4,6 +4,9 @@ import java.util.List;
 
 /** Development card slot state update. */
 public class UpdateDevSlot implements MVEvent {
+    /** The nickname of the player that has added the development cards. */
+    private final String player;
+
     /** The ID of the slot the cards were added to. */
     private final int devSlot;
 
@@ -13,12 +16,21 @@ public class UpdateDevSlot implements MVEvent {
     /**
      * Class constructor.
      *
+     * @param player   the nickname of the player that has added the leader cards
      * @param devSlot  the ID of the slot the cards were added to
      * @param devCards the IDs of the cards added to the slot
      */
-    public UpdateDevSlot(int devSlot, List<Integer> devCards) {
+    public UpdateDevSlot(String player, int devSlot, List<Integer> devCards) {
+        this.player = player;
         this.devSlot = devSlot;
         this.devCards = devCards;
+    }
+
+    /**
+     * @return the nickname of the player that has added the development cards
+     */
+    public String getPlayer() {
+        return player;
     }
 
     /**
