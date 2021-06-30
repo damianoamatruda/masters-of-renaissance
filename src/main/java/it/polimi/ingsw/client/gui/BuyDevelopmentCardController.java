@@ -250,7 +250,7 @@ public class BuyDevelopmentCardController extends GuiController {
      */
     private void resetSlots() {
         List<DevSlot> devSlots = new ArrayList<>();
-        List<List<Optional<ReducedDevCard>>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayer());
+        List<List<Optional<ReducedDevCard>>> modelSlots = vm.getPlayerDevelopmentCards(vm.getCurrentPlayerNickname());
 
         modelSlots.forEach(modelSlot -> {
             DevSlot slot = new DevSlot(null);

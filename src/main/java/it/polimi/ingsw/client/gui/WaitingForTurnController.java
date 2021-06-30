@@ -15,7 +15,7 @@ public class WaitingForTurnController extends TurnController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        title.setText(String.format("Watching playerboard of: %s", vm.getCurrentPlayer()));
+        title.setText(String.format("Watching playerboard of: %s", vm.getCurrentPlayerNickname()));
 
         AnchorPane.setLeftAnchor(title, 400d);
         AnchorPane.setTopAnchor(title, 10.0);
@@ -32,7 +32,7 @@ public class WaitingForTurnController extends TurnController {
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayerNickname().equals(vm.getLocalPlayerNickname()))
             setNextState();
     }
 }

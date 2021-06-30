@@ -107,7 +107,7 @@ public class SetupLeadersController extends GuiController {
                 gui.addToOverlay(
                         new Alert("Setup phase is concluded", "Advancing to game turns."));
 
-        if (vm.getCurrentPlayer().equals(vm.getLocalPlayerNickname()))
+        if (vm.getCurrentPlayerNickname().equals(vm.getLocalPlayerNickname()))
             gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"), callback);
         else
             gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);

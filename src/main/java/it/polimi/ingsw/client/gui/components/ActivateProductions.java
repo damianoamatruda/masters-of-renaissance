@@ -127,7 +127,7 @@ public class ActivateProductions extends StackPane {
         vm.getProduction(toActivate.get(index)).ifPresent(p -> productionRecipe.setProduction(p));
 
         /* Strongbox */
-        vm.getPlayerStrongbox(vm.getCurrentPlayer()).ifPresent(c -> {
+        vm.getPlayerStrongbox(vm.getCurrentPlayerNickname()).ifPresent(c -> {
             strongbox.setContent(c);
             strongbox.addSpinners();
         });

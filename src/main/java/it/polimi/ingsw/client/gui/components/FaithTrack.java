@@ -127,7 +127,7 @@ public class FaithTrack extends HBox {
                 sectionText.setScaleY(2);
                 hbox.getChildren().add(sectionText);
 
-                boolean gotBonus = section.getBonusGivenPlayers().contains(vm.getCurrentPlayer());
+                boolean gotBonus = section.getBonusGivenPlayers().contains(vm.getCurrentPlayerNickname());
                 boolean isActivated = section.isActivated();
                 StackPane favorPane = new StackPane();
                 ImageView popesFavor = getPopesFavorImage(isActivated, gotBonus);

@@ -437,7 +437,7 @@ public class ViewModel {
      *
      * @return the currentPlayer
      */
-    public synchronized String getCurrentPlayer() {
+    public synchronized String getCurrentPlayerNickname() {
         return currentPlayerNickname;
     }
 
@@ -446,7 +446,7 @@ public class ViewModel {
      *
      * @return true if the local player is now the current player
      */
-    public synchronized boolean getCurrentPlayerNickname() {
+    public synchronized boolean isCurrentPlayer() {
         return currentPlayerNickname.equals(localPlayerNickname);
     }
 
@@ -599,10 +599,10 @@ public class ViewModel {
      */
     public synchronized void activateLeaderCard(int id) {
         leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
-        if (playerData.containsKey(getCurrentPlayer())) {
-            List<Integer> lc = playerData.get(getCurrentPlayer()).getLeadersHand();
+        if (playerData.containsKey(getCurrentPlayerNickname())) {
+            List<Integer> lc = playerData.get(getCurrentPlayerNickname()).getLeadersHand();
             lc.add(id);
-            playerData.get(getCurrentPlayer()).setLeadersHand(lc);
+            playerData.get(getCurrentPlayerNickname()).setLeadersHand(lc);
         }
     }
 
