@@ -2,7 +2,9 @@ package it.polimi.ingsw.client.viewmodel;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /** Data relative to a player's objects. */
 public class PlayerData {
@@ -22,7 +24,7 @@ public class PlayerData {
        the IDs of all the leader cards in their hand.
        For every other player, this contains the IDs of the activated (therefore, visible) cards
        of the player that owns them. */
-    private Set<Integer> leadersHand;
+    private List<Integer> leadersHand;
 
     private final ReducedPlayerSetup setup;
 
@@ -41,8 +43,8 @@ public class PlayerData {
      * @param warehouseShelves the player's warehouse shelves' ID
      */
     public PlayerData(int baseProduction, ReducedPlayerSetup setup, int strongbox, List<Integer> warehouseShelves) {
-        devSlots = new ArrayList<>();
-        leadersHand = new HashSet<>();
+        this.devSlots = new ArrayList<>();
+        this.leadersHand = new ArrayList<>();
         this.baseProduction = baseProduction;
         this.setup = setup;
         this.strongbox = strongbox;
@@ -118,17 +120,17 @@ public class PlayerData {
     /**
      * @return the leadersHand
      */
-    Set<Integer> getLeadersHand() {
+    List<Integer> getLeadersHand() {
         return leadersHand;
     }
 
     /**
      * @param leadersHand the leadersHand to set
      */
-    public synchronized void setLeadersHand(Set<Integer> leadersHand) {
+    public synchronized void setLeadersHand(List<Integer> leadersHand) {
         if (leadersHand == null)
             return;
-        this.leadersHand = new HashSet<>(leadersHand);
+        this.leadersHand = new ArrayList<>(leadersHand);
     }
 
     /**

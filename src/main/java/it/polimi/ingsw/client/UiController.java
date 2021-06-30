@@ -5,16 +5,13 @@ import it.polimi.ingsw.client.viewmodel.ViewModel;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 
-import java.util.HashSet;
-import java.util.Optional;
-
 public abstract class UiController {
     private final Ui ui;
     protected final ViewModel vm;
 
     public UiController(Ui ui) {
         this.ui = ui;
-        vm = ui.getViewModel();
+        this.vm = ui.getViewModel();
     }
 
     /**
@@ -24,15 +21,15 @@ public abstract class UiController {
     public boolean isLocalLeaderSetupDone() {
         /* if req not accepted in a previous connection by server,
            card count to choose > 0 and cards can be discarded (hand size - count > 0) */
-        return vm.getPlayerData(vm.getLocalPlayerNickname()).map(pd -> pd.getSetup().map(setup ->
-                setup.hasChosenLeaders() || setup.getChosenLeadersCount() == 0 ||
-                vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() == setup.getChosenLeadersCount()))
-                .orElse(Optional.of(false))
-                .get();
+        return vm.getPlayerData(vm.getLocalPlayerNickname())
+                .flatMap(PlayerData::getSetup).map(setup ->
+                        setup.hasChosenLeaders() || setup.getChosenLeadersCount() == 0
+                                || vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() == setup.getChosenLeadersCount())
+                .orElse(false);
     }
 
     public boolean isLeaderSetupAvailable() {
-        return !isLocalLeaderSetupDone() && vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).size() > 0;
+        return !isLocalLeaderSetupDone() && !vm.getPlayerLeaderCards(vm.getLocalPlayerNickname()).isEmpty();
     }
 
     /**
@@ -40,10 +37,10 @@ public abstract class UiController {
      *         <code>false</code> if it has not or if there's not enough data to know whether it has
      */
     public boolean isLocalResourceSetupDone() {
-        return vm.getPlayerData(vm.getLocalPlayerNickname()).map(pd -> pd.getSetup().map(setup ->
-                setup.hasChosenResources() || setup.getInitialResources() == 0))
-                .orElse(Optional.of(false))
-                .get();
+        return vm.getPlayerData(vm.getLocalPlayerNickname())
+                .flatMap(PlayerData::getSetup).map(setup ->
+                        setup.hasChosenResources() || setup.getInitialResources() == 0)
+                .orElse(false);
     }
 
     public boolean isResourceSetupAvailable() {
@@ -91,7 +88,7 @@ public abstract class UiController {
     }
 
     public void on(UpdateAction event) {
-        // TODO: IMPLEMENT IN STATES
+        /* Implemented in subclasses */
     }
 
     public void on(UpdateActionToken event) {
@@ -110,15 +107,15 @@ public abstract class UiController {
     }
 
     public void on(UpdateDevSlot event) {
-        vm.getPlayerData(event.getPlayer()).ifPresent(pdata ->
-                pdata.setDevSlot(event.getDevSlot(), event.getDevCards()));
+        vm.getPlayerData(event.getPlayer()).ifPresent(pData ->
+                pData.setDevSlot(event.getDevSlot(), event.getDevCards()));
     }
 
     public void on(UpdateFaithPoints event) {
         if (event.isBlackCross())
             vm.setBlackCrossFP(event.getFaithPoints());
         else
-            vm.getPlayerData(event.getPlayer()).orElseThrow().setFaithPoints(event.getFaithPoints());
+            vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setFaithPoints(event.getFaithPoints()));
     }
 
     public void on(UpdateGameEnd event) {
@@ -152,20 +149,11 @@ public abstract class UiController {
     }
 
     public void on(UpdateLeadersHand event) {
-        /* this message arrives last among the starting events:
-            joingame
-            updategame
-            currplayer
-            market
-            devcardgrid
-            player
-            leadershand -> client has enough info for leader choice */
-
-        vm.getPlayerData(event.getPlayer()).orElseThrow().setLeadersHand(new HashSet<>(event.getLeaders()));
+        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setLeadersHand(event.getLeaders()));
     }
 
     public void on(UpdateLeadersHandCount event) {
-        vm.getPlayerData(event.getPlayer()).orElseThrow().setLeadersCount(event.getLeadersCount());
+        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setLeadersCount(event.getLeadersCount()));
     }
 
     public void on(UpdateMarket event) {
@@ -181,7 +169,7 @@ public abstract class UiController {
     }
 
     public void on(UpdatePlayerStatus event) {
-        vm.getPlayerData(event.getPlayer()).ifPresent(pdata -> pdata.setActive(event.isActive()));
+        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setActive(event.isActive()));
     }
 
     public void on(UpdateResourceContainer event) {
@@ -193,8 +181,6 @@ public abstract class UiController {
 
     public void on(UpdateSetupDone event) {
         vm.setSetupDone(true);
-        if (vm.getPlayerNicknames().size() > 1) {
-        }
     }
 
     public void on(UpdateVaticanSection event) {
@@ -202,6 +188,6 @@ public abstract class UiController {
     }
 
     public void on(UpdateVictoryPoints event) {
-        vm.getPlayerData(event.getPlayer()).orElseThrow().setVictoryPoints(event.getVictoryPoints());
+        vm.getPlayerData(event.getPlayer()).ifPresent(pData -> pData.setVictoryPoints(event.getVictoryPoints()));
     }
 }

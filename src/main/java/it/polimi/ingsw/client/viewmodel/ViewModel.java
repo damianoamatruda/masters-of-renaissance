@@ -620,7 +620,7 @@ public class ViewModel {
     public synchronized void activateLeaderCard(int id) {
         leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
         if (playerData.containsKey(getCurrentPlayer())) {
-            Set<Integer> lc = playerData.get(getCurrentPlayer()).getLeadersHand();
+            List<Integer> lc = playerData.get(getCurrentPlayer()).getLeadersHand();
             lc.add(id);
             playerData.get(getCurrentPlayer()).setLeadersHand(lc);
         }
