@@ -75,8 +75,13 @@ public class ActivateProductions extends StackPane {
 
         Gui gui = Gui.getInstance();
 
-        this.tempShelves = new ArrayList<>(tempShelves); // this does need to be a deep copy
-        this.tempDepots = new ArrayList<>(tempDepots); // this as well
+        this.tempShelves = new ArrayList<>(); // this does need to be a deep copy
+        for(ReducedResourceContainer container : tempShelves)
+            this.tempShelves.add(new ReducedResourceContainer(container.getId(), container.getSize(), container.getContent(), container.getBoundedResType().orElse(null)));
+        this.tempDepots = new ArrayList<>(); // this as well
+        for(ReducedResourceContainer container : tempDepots)
+            this.tempDepots.add(new ReducedResourceContainer(container.getId(), container.getSize(), container.getContent(), container.getBoundedResType().orElse(null)));
+
         this.requests = requests;
         this.toActivate = toActivate;
         this.index = index;
