@@ -91,7 +91,7 @@ public class LeaderBoard extends StackPane {
 
                     String player = item.getPlayer();
                     if(item.isMe()) player = player.substring(0, player.length() - 5);
-                    Optional<String> color = Gui.getInstance().getViewModel().getClientGuiColor(player);
+                    Optional<String> color = Gui.getInstance().getViewModel().getHexPlayerColor(player);
                     color.ifPresent(c -> setStyle("-fx-background-color: " + c + ";"));
 
                 }

@@ -10,7 +10,6 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -118,7 +117,7 @@ public class FaithTile extends StackPane {
      */
     private void setMarkerColor(ImageView marker, String player) {
         ViewModel vm = Gui.getInstance().getViewModel();
-        vm.getClientGuiColor(player).ifPresent(hex -> {
+        vm.getHexPlayerColor(player).ifPresent(hex -> {
 
             marker.setClip(new ImageView(marker.getImage()));
 

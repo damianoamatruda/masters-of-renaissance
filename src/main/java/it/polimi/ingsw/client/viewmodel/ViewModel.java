@@ -75,22 +75,23 @@ public class ViewModel {
     /** The nickname of the winner. */
     private String winner = "";
 
-    /** The list of the available user interface colors (CLI only). */
-    private final List<String> clientCliColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
+    /** The list of the available user interface ANSI colors. */
+    private final List<String> ansiColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
 
-    /** The map of unique player string encoded colors (CLI only). */
-    private final Map<String, String> mappedCliColors;
+    /** The map of unique player string encoded ANSI colors. */
+    private final Map<String, String> ansiPlayerColors;
 
-    /** The list of the available user interface colors (GUI only). */
-    private final List<String> clientGuiColors = List.of("#5D99FD", "#961126", "#14A76C", "#ffe933");
+    /** The list of the available user interface HEX colors. */
+    private final List<String> hexColors = List.of("#5D99FD", "#961126", "#14A76C", "#ffe933");
 
-    /** The map of unique player string encoded colors (GUI only). */
-    private final Map<String, String> mappedGuiColors;
+    /** The map of unique player string encoded HEX colors. */
+    private final Map<String, String> hexPlayerColors;
+
+    // TODO Javadoc
     private String inkwellPlayer;
 
     /**
-     * Class constructor.
-     * Initializes empty objects.
+     * Class constructor. Initializes empty objects.
      */
     public ViewModel() {
         playerData = new HashMap<>();
@@ -103,8 +104,8 @@ public class ViewModel {
         productions = new ArrayList<>();
         resourceTypes = new ArrayList<>();
         isLastRound = false;
-        mappedCliColors = new HashMap<>();
-        mappedGuiColors = new HashMap<>();
+        ansiPlayerColors = new HashMap<>();
+        hexPlayerColors = new HashMap<>();
         currentPlayer = "";
     }
 
@@ -673,8 +674,8 @@ public class ViewModel {
             this.playerNicknames = new ArrayList<>(playerNicknames);
             
         for(int i = 0; i < playerNicknames.size(); i++) {
-            mappedGuiColors.put(playerNicknames.get(i), clientGuiColors.get(i % clientGuiColors.size()));
-            mappedCliColors.put(playerNicknames.get(i), clientCliColors.get(i % clientCliColors.size()));
+            hexPlayerColors.put(playerNicknames.get(i), hexColors.get(i % hexColors.size()));
+            ansiPlayerColors.put(playerNicknames.get(i), ansiColors.get(i % ansiColors.size()));
         }
     }
 
@@ -837,21 +838,21 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves the uniquely associated color of a player (CLI only).
+     * Retrieves the uniquely associated ANSI color of a player.
      *
-     * @return the string that encodes the color uniquely associated to a player
+     * @return the string that encodes the ANSI color uniquely associated to a player
      */
-    public synchronized Optional<String> getClientCliColor(String nick) {
-        return Optional.ofNullable(mappedCliColors.get(nick));
+    public synchronized Optional<String> getAnsiPlayerColor(String nickname) {
+        return Optional.ofNullable(ansiPlayerColors.get(nickname));
     }
 
     /**
-     * Retrieves the uniquely associated color of a player (GUI only).
+     * Retrieves the uniquely associated HEX color of a player.
      *
-     * @return the string that encodes the color uniquely associated to a player
+     * @return the string that encodes the HEX color uniquely associated to a player
      */
-    public synchronized Optional<String> getClientGuiColor(String nick) {
-        return Optional.ofNullable(mappedGuiColors.get(nick));
+    public synchronized Optional<String> getHexPlayerColor(String nickname) {
+        return Optional.ofNullable(hexPlayerColors.get(nickname));
     }
 
     /**
