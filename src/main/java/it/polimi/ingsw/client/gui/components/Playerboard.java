@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.gui.components;
 
-import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.mvevents.UpdateFaithPoints;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -34,6 +32,11 @@ public class Playerboard extends HBox {
     private final double bgPixelWidth = 908;
     private final double bgPixelHeight = 646;
     private final double bgRatio = bgPixelWidth / bgPixelHeight;
+    private final double storageColWidthPercentage = .2235;
+
+    private double _boardHeight;
+    private double _boardWidth;
+    private double _storageColWidth;
 
     /**
      * Class constructor.
@@ -57,6 +60,8 @@ public class Playerboard extends HBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        setBoardSizes();
 
         setBackground();
 
@@ -84,10 +89,10 @@ public class Playerboard extends HBox {
         this.heightProperty().addListener((observable, oldValue, newValue) -> setSizes());
     }
 
-    private void setSizes() {
-        double boardHeight = 720;
-        double boardWidth = boardHeight * bgRatio;
-        double storageColWidth = .2235 * boardWidth;
+    private void setBoardSizes() {
+        _boardHeight = 720;
+        _boardWidth = _boardHeight * bgRatio;
+        _storageColWidth = storageColWidthPercentage * _boardWidth;
 
         if (getHeight() > 0 && getWidth() > 0) {
             double newDimRatio = getWidth() / getHeight();
@@ -100,38 +105,62 @@ public class Playerboard extends HBox {
         }
 
         if (board.getHeight() > 0 && board.getWidth() > 0) {
-            boardWidth = board.getWidth();
-            boardHeight = board.getHeight();
-            storageColWidth = storageColumn.getWidth();
+            _boardWidth = board.getWidth();
+            _boardHeight = board.getHeight();
+            _storageColWidth = storageColumn.getWidth();
         }
+    }
 
-        frontBG.setFitWidth(boardWidth);
-        frontBG.setFitHeight(boardHeight);
-
+    private void setContainersSize(double storageColWidth) {
         double whWidth = warehouse.getWidth() > 0 ? warehouse.getWidth() : warehouse.getPrefWidth();
         double whScaleFactor = storageColWidth / whWidth;
         warehouse.setScaleX(whScaleFactor);
         warehouse.setScaleY(whScaleFactor);
 
         scalePreservingRatio(strongbox, storageColWidth, strongbox.getPrefWidth() / strongbox.getPrefHeight());
+    }
 
+    private void setDevSlotsSize(double boardWidth) {
         for (DevSlot devSlot : devSlots)
-            scalePreservingRatio(devSlot,
-                    board.getColumnConstraints().get(5).getPercentWidth() * boardWidth / 100,
-                    devSlot.getPrefWidth() / devSlot.getPrefHeight());
+        scalePreservingRatio(devSlot,
+                board.getColumnConstraints().get(5).getPercentWidth() * boardWidth / 100,
+                devSlot.getPrefWidth() / devSlot.getPrefHeight());
+    }
 
+    private void setFaithTrackSize(double boardWidth) {
         double ftWidth = faithTrack.getWidth() > 0 ? faithTrack.getWidth() : 1768;
         double ftScaleFactor = boardWidth / ftWidth;
         faithTrack.setScaleX(ftScaleFactor);
         faithTrack.setScaleY(ftScaleFactor);
+    }
 
+    private void setBaseProductionSize(double boardWidth) {
         double prodSizeRatio = (board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100) / production.getMaxWidth();
         production.setScaleX(prodSizeRatio);
         production.setScaleY(prodSizeRatio);
+    }
 
+    private void setMiddleBoxSize(double boardWidth) {
         double midBoxWidth = board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100;
         middleBox.setMaxWidth(midBoxWidth);
         middleBox.setMinWidth(midBoxWidth);
+    }
+
+    private void setSizes() {
+        setBoardSizes();
+
+        frontBG.setFitWidth(_boardWidth);
+        frontBG.setFitHeight(_boardHeight);
+
+        setContainersSize(_storageColWidth);
+
+        setDevSlotsSize(_boardWidth);
+
+        setFaithTrackSize(_boardWidth);
+
+        setBaseProductionSize(_boardWidth);
+
+        setMiddleBoxSize(_boardWidth);
     }
 
     private static void scalePreservingRatio(Pane child, double parentSizeLimitWidth, double componentRatio) {
