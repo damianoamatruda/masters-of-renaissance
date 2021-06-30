@@ -368,9 +368,4 @@ public class Player extends EventDispatcher {
             production = devSlots.stream().flatMap(Collection::stream).map(DevelopmentCard::getProduction).filter(p -> p.getId() == id).findAny();
         return production;
     }
-
-    @Override
-    public String toString() {
-        return nickname;
-    }
 }

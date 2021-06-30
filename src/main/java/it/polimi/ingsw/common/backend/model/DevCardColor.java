@@ -30,11 +30,6 @@ public class DevCardColor {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public ReducedColor reduce() {
         return new ReducedColor(name, colorValue);
     }

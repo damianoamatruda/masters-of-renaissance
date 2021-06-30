@@ -95,11 +95,6 @@ public class ResourceType {
     public void takeFromPlayer(Game game, Player player, int quantity) {
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public ReducedResourceType reduce() {
         return new ReducedResourceType(name, colorValue, storable, isGiveableToPlayer(), isTakeableFromPlayer());
     }
