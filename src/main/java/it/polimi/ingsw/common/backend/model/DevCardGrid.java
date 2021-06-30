@@ -1,7 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
-import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionContainersException;
@@ -58,8 +58,8 @@ public class DevCardGrid extends EventDispatcher {
         }
     }
 
-    public void dispatchInitialState() {
-        dispatch(new UpdateDevCardGrid(reduce()));
+    public void dispatchState(View view) {
+        dispatch(new UpdateDevCardGrid(view, reduce()));
     }
 
     /**
@@ -138,8 +138,8 @@ public class DevCardGrid extends EventDispatcher {
 
         player.addToDevSlot(game, slotIndex, card, resContainers);
         grid.get(color).get(level).pop();
-        
-        dispatch(new UpdateDevCardGrid(reduce()));
+
+        dispatch(new UpdateDevCardGrid(null, reduce()));
     }
 
     /**
@@ -162,7 +162,7 @@ public class DevCardGrid extends EventDispatcher {
         }
         if (quantity > 0) grid.remove(color);
 
-        dispatch(new UpdateDevCardGrid(reduce()));
+        dispatch(new UpdateDevCardGrid(null, reduce()));
     }
 
     public ReducedDevCardGrid reduce() {

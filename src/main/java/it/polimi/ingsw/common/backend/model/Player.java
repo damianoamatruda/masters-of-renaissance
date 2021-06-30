@@ -89,13 +89,14 @@ public class Player extends EventDispatcher {
                 baseProduction.getId(),
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
-                setup.reduce(),
-                faithPoints,
-                victoryPoints));
-    }
-
-    public void dispatchPublicState() {
-        dispatchPublicState(null);
+                setup.reduce()));
+        dispatch(new UpdateVictoryPoints(view, nickname, victoryPoints));
+        dispatch(new UpdateFaithPoints(view, nickname, faithPoints, false));
+        for (int devSlotIndex = 0; devSlotIndex < devSlots.size(); devSlotIndex++) {
+            Stack<DevelopmentCard> devSlot = devSlots.get(devSlotIndex);
+            if (!devSlot.empty())
+                dispatch(new UpdateDevSlot(view, nickname, devSlotIndex, devSlot.stream().map(DevelopmentCard::getId).toList()));
+        }
     }
 
     public void dispatchPrivateState(View view) {
@@ -174,7 +175,7 @@ public class Player extends EventDispatcher {
         game.updatePtsFromYellowTiles(this, points);
         game.onIncrementFaithPoints(faithPoints);
 
-        dispatch(new UpdateFaithPoints(getNickname(), faithPoints, false));
+        dispatch(new UpdateFaithPoints(null, getNickname(), faithPoints, false));
     }
 
     /**
@@ -239,7 +240,7 @@ public class Player extends EventDispatcher {
      */
     public void incrementVictoryPoints(int points) {
         this.victoryPoints += points;
-        dispatch(new UpdateVictoryPoints(nickname, victoryPoints));
+        dispatch(new UpdateVictoryPoints(null, nickname, victoryPoints));
     }
 
     /**

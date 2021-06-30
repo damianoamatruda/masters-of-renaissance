@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
+import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Shelf;
@@ -68,8 +69,8 @@ public class Market extends EventDispatcher {
         this.replaceableResType = replaceableResType;
     }
 
-    public void dispatchInitialState() {
-        dispatch(new UpdateMarket(reduce()));
+    public void dispatchState(View view) {
+        dispatch(new UpdateMarket(view, reduce()));
     }
 
     /**

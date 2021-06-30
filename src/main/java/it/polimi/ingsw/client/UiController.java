@@ -177,9 +177,7 @@ public abstract class UiController {
                 event.getBaseProduction(),
                 event.getPlayerSetup(),
                 event.getStrongbox(),
-                event.getWarehouseShelves(),
-                event.getFaithPoints(),
-                event.getVictoryPoints()));
+                event.getWarehouseShelves()));
     }
 
     public void on(UpdatePlayerStatus event) {

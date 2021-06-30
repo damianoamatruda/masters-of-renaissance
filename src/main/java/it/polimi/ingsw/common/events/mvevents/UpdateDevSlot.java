@@ -1,9 +1,11 @@
 package it.polimi.ingsw.common.events.mvevents;
 
+import it.polimi.ingsw.common.View;
+
 import java.util.List;
 
 /** Development card slot state update. */
-public class UpdateDevSlot implements MVEvent {
+public class UpdateDevSlot extends ViewEvent {
     /** The nickname of the player that has added the development cards. */
     private final String player;
 
@@ -16,14 +18,20 @@ public class UpdateDevSlot implements MVEvent {
     /**
      * Class constructor.
      *
+     * @param view
      * @param player   the nickname of the player that has added the leader cards
      * @param devSlot  the ID of the slot the cards were added to
      * @param devCards the IDs of the cards added to the slot
      */
-    public UpdateDevSlot(String player, int devSlot, List<Integer> devCards) {
+    public UpdateDevSlot(View view, String player, int devSlot, List<Integer> devCards) {
+        super(view);
         this.player = player;
         this.devSlot = devSlot;
         this.devCards = devCards;
+    }
+
+    public UpdateDevSlot(String player, int devSlot, List<Integer> devCards) {
+        this(null, player, devSlot, devCards);
     }
 
     /**

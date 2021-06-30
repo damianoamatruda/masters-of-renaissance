@@ -120,10 +120,6 @@ public class Game extends EventDispatcher {
         dispatch(new UpdateCurrentPlayer(view, players.get(0).getNickname()));
     }
 
-    public void dispatchState() {
-        dispatchState(null);
-    }
-
     /**
      * Returns whether the game is at its last round.
      *

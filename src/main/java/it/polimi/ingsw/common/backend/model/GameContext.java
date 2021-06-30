@@ -54,11 +54,11 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     public void dispatchStartPublicStates() {
-        game.dispatchState();
-        game.getMarket().dispatchInitialState();
-        game.getDevCardGrid().dispatchInitialState();
+        game.dispatchState(null);
+        game.getMarket().dispatchState(null);
+        game.getDevCardGrid().dispatchState(null);
+        game.getPlayers().forEach(player -> player.dispatchPublicState(null));
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
-        game.getPlayers().forEach(Player::dispatchPublicState);
     }
 
     public void dispatchStartPrivateStates(View view, String nickname) {
@@ -67,8 +67,8 @@ public class GameContext extends AsynchronousEventDispatcher {
 
     public void dispatchResumeStates(View view, String nickname) {
         game.dispatchState(view);
-        game.getMarket().dispatchInitialState();
-        game.getDevCardGrid().dispatchInitialState();
+        game.getMarket().dispatchState(view);
+        game.getDevCardGrid().dispatchState(view);
         game.getPlayers().forEach(p -> p.dispatchPublicState(view));
         getPlayerByNickname(nickname).dispatchPrivateState(view);
     }

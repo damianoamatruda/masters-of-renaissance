@@ -127,6 +127,6 @@ public class SoloGame extends Game {
 
         onIncrementFaithPoints(blackPoints);
 
-        dispatch(new UpdateFaithPoints(null, blackPoints, true));
+        dispatch(new UpdateFaithPoints(null, null, blackPoints, true));
     }
 }
