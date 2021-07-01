@@ -91,6 +91,7 @@ public class GameTest {
      */
     @Test
     void noYellowTilesEndOfGame() {
+        game.getPlayers().stream().filter(p -> !p.equals(game.getPlayers().get(0))).forEach(p -> p.setActive(false));
         game.getPlayers().get(0).incrementFaithPoints(game, 24);
         game.onTurnEnd();
         assertAll(() -> assertTrue(game.isEnded()),
