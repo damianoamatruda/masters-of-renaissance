@@ -55,6 +55,20 @@ Syntax: `java -jar AM49-1.0-SNAPSHOT-server.jar [options]`
 --config    path of the custom configuration file
 ```
 
+### Public instance
+A public instance of the server is available at 51.15.199.149:51015.
+
+### Docker image
+A [`Dockerfile`](dockerfile) and a [`docker-compose.yml`](docker-compose.yaml) are available to build and deploy
+a docker container running the server.
+
+To build the container:
+1. Place the server's jar in the same folder as the Dockerfile
+2. Rename the jar file to `server.jar`
+3. Run `docker build -t ingsw-server .`
+
+To deploy the container, run `docker-compose up -d` in the same folder as the `docker-compose.yaml` file.
+
 ## Running the client:
 **(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore necessary.
 Running the GUI works from any terminal.
