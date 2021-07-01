@@ -4,9 +4,12 @@ import it.polimi.ingsw.common.events.Event;
 
 import java.util.concurrent.*;
 
+/** Non-blocking event dispatcher. */
 public class AsynchronousEventDispatcher extends EventDispatcher implements AutoCloseable {
+    /** The executor doing the dispathing. */
     private final ExecutorService executor;
 
+    /** Class constructor. */
     public AsynchronousEventDispatcher() {
         executor = Executors.newSingleThreadExecutor();
     }
@@ -18,6 +21,12 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
         asyncDispatch(event);
     }
 
+    /**
+     * Dispatches an event synchronously, waiting for its delivery.
+     * 
+     * @param <T>
+     * @param event the event to dispatch.
+     */
     public <T extends Event> void awaitDispatch(T event) {
         if (executor.isShutdown())
             return;
@@ -31,6 +40,13 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
         }
     }
 
+    /**
+     * Dispatches an event asynchronously, not waiting for its delivery.
+     * 
+     * @param <T>
+     * @param event the event to dispatch.
+     * @return      a Future representing pending completion of the dispatching process.
+     */
     private <T extends Event> Future<?> asyncDispatch(T event) {
         return executor.submit(() -> super.dispatch(event));
     }

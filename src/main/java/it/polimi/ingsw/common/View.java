@@ -81,6 +81,11 @@ public class View extends AsynchronousEventDispatcher {
     private EventListener<UpdateLeadersHand> updateLeadersHandEventListener = event -> {
     };
 
+    /**
+     * Registers this View as a listener for Lobby-related events
+     * 
+     * @param lobby the dispatcher to register this to
+     */
     public void registerOnModelLobby(EventDispatcher lobby) {
         lobby.addEventListener(ErrNewGame.class, errNewGameEventListener);
         lobby.addEventListener(ErrNickname.class, errNicknameEventListener);
@@ -90,6 +95,11 @@ public class View extends AsynchronousEventDispatcher {
         lobby.addEventListener(ErrServerUnavailable.class, updateServerUnavailableEventListener);
     }
 
+    /**
+     * Unregisters this View as a listener for events dispatched by the EventDispatcher lobby (stops listening)
+     * 
+     * @param lobby the dipatcher to stop listening for events from
+     */
     public void unregisterOnModelLobby(EventDispatcher lobby) {
         lobby.removeEventListener(ErrNewGame.class, errNewGameEventListener);
         lobby.removeEventListener(ErrNickname.class, errNicknameEventListener);
@@ -98,6 +108,11 @@ public class View extends AsynchronousEventDispatcher {
         lobby.removeEventListener(UpdateJoinGame.class, updateJoinGameEventListener);
     }
 
+    /**
+     * Registers this View as a listener for GameContext-related events
+     * 
+     * @param gameContext the dispatcher to register this to
+     */
     public void registerOnModelGameContext(EventDispatcher gameContext) {
         gameContext.addEventListener(ErrAction.class, errActionEventListener);
         gameContext.addEventListener(ErrActiveLeaderDiscarded.class, errActiveLeaderDiscardedEventListener);
@@ -129,6 +144,11 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.addEventListener(UpdateVictoryPoints.class, updateVictoryPointsEventListener);
     }
 
+    /**
+     * Unregisters this View as a listener for events dispatched by the EventDispatcher gameContext (stops listening)
+     * 
+     * @param gameContext the dipatcher to stop listening for events from
+     */
     public void unregisterOnModelGameContext(EventDispatcher gameContext) {
         gameContext.removeEventListener(ErrAction.class, errActionEventListener);
         gameContext.removeEventListener(ErrActiveLeaderDiscarded.class, errActiveLeaderDiscardedEventListener);
@@ -296,12 +316,28 @@ public class View extends AsynchronousEventDispatcher {
         this.updateLeadersHandEventListener = event -> on(event, updateLeadersHandEventListener);
     }
 
+    /**
+     * ViewEvent handler.
+     * ViewEvents are filtered to prevent Views they are not addressed to to handle them.
+     * 
+     * @param <T>       
+     * @param viewEvent the received event
+     * @param listener  the listener to pass the event to
+     */
     private <T extends ViewEvent> void on(T viewEvent, EventListener<T> listener) {
         if (viewEvent.getView().isPresent() && !viewEvent.getView().get().equals(this))
             return;
         listener.on(viewEvent);
     }
 
+    /**
+     * Event handler.
+     * Does not filter events (see View.on(T viewEvent)).
+     * 
+     * @param <T>
+     * @param event    the received event
+     * @param listener the listener to pass the event to
+     */
     private <T extends Event> void on(T event, EventListener<T> listener) {
         listener.on(event);
     }

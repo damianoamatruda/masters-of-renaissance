@@ -14,11 +14,16 @@ import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/** Event dispatcher responsible for transferring messages over the network. */
 public class NetworkHandler extends AsynchronousEventDispatcher implements Runnable, AutoCloseable {
     private static final Logger LOGGER = Logger.getLogger(NetworkHandler.class.getName());
+    /** The socket to send and receive messages on. */
     private final Socket socket;
+    /** The messages' (de)serializer. */
     private final NetworkProtocol protocol;
+    /** Function used to process network-side incoming messages. */
     private final BiFunction<String, NetworkProtocol, Event> processInput;
+    /** Heartbeat message timeout. */
     private final int timeout;
     private final EventListener<ReqWelcome> reqWelcomeEventListener = this::on;
     private final EventListener<ReqHeartbeat> reqHeartbeatEventListener = this::on;
@@ -30,6 +35,14 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
     private Runnable onClose = () -> {
     };
 
+    /**
+     * Class constructor.
+     * 
+     * @param socket       the network socket to listen for events on.
+     * @param protocol     the message (de)serializer.
+     * @param processInput function to use to deserialize messages incoming from the network.
+     * @param timeout      timeout (in ms) to use with Heartbeat events.
+     */
     public NetworkHandler(Socket socket, NetworkProtocol protocol, BiFunction<String, NetworkProtocol, Event> processInput, int timeout) {
         this.socket = socket;
         this.protocol = protocol;
@@ -115,6 +128,11 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
         }
     }
 
+    /**
+     * Sends an event on the network.
+     * 
+     * @param event the event to be sent.
+     */
     public void send(Event event) {
         String output = protocol.processOutput(event);
         if (socket.isClosed()) {
