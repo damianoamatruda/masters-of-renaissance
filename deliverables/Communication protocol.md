@@ -4,7 +4,7 @@
 2. [Client-server connection management - Network level](#client-server-connection-management---network-level)
     1. [Connecting to the server](#connecting-to-the-server)
     2. [Closing the connection](#closing-the-connection)
-    2. [UpdateServerUnavailable](#updateserverunavailable)
+    2. [ErrServerUnavailable](#errserverunavailable)
     3. [Reconnection](#reconnection)
     4. [Heartbeat](#heartbeat)
     5. [Errors](#errors)
@@ -49,12 +49,11 @@
         10. [UpdateLeadersHand](#updateleadershand)
         11. [UpdateLeadersHandCount](#updateleadershandcount)
         12. [UpdateMarket](#updatemarket)
-        13. [UpdatePlayer](#updateplayer)
-        14. [UpdatePlayerStatus](#updateplayerstatus)
-        15. [UpdateResourceContainer](#updateresourcecontainer)
-        16. [UpdateSetupDone](#updatesetupdone)
-        17. [UpdateVaticanSection](#updatevaticansection)
-        18. [UpdateVictoryPoints](#updatevictorypoints)
+        13. [UpdatePlayerStatus](#updateplayerstatus)
+        14. [UpdateResourceContainer](#updateresourcecontainer)
+        15. [UpdateSetupDone](#updatesetupdone)
+        16. [UpdateVaticanSection](#updatevaticansection)
+        17. [UpdateVictoryPoints](#updatevictorypoints)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -132,12 +131,12 @@ A `ResGoodbye` message is sent by the server as an acknowledgement:
 
 Only then the network sockets is closed by both parties.
 
-## UpdateServerUnavailable
+## ErrServerUnavailable
 This message is used internally by the network layer to notify the application layer of the fact that the connection with the server was closed by the server itself.
 
-**UpdateServerUnavailable**
+**ErrServerUnavailable**
 ```json
-{ "type": "UpdateServerUnavailable" }
+{ "type": "ErrServerUnavailable" }
 ```
 
 ## Reconnection
@@ -400,8 +399,7 @@ The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be rec
 This message signals an error when replacing a production's resources.
 
 The `isNonStorable` field is set to true when a resource in the request is defined as non-storable and takeable/givable to players.  
-The `isExcluded` field is set to true if a forbidden resource type is requested as a replacement.  
-The `replacedCount` and `blanks` fields are used to indicate a discrepancy between the number of specified replacements and the amount of blanks needing to be filled.
+The `isExcluded` field is set to true if a forbidden resource type is requested as a replacement.
 
 **ErrResourceReplacement (server)**
 ```json
@@ -409,9 +407,7 @@ The `replacedCount` and `blanks` fields are used to indicate a discrepancy betwe
   "type": "ErrResourceReplacement",
   "isInput": true,
   "isNonStorable": false,
-  "isExcluded": false,
-  "replacedCount": 1,
-  "blanks": 0
+  "isExcluded": false
 }
 ```
 
@@ -1194,6 +1190,7 @@ Notifies the clients of cards being in a player's board's development card slot.
 ```json
 {
   "type": "UpdateDevSlot",
+  "player": "NicknameA",
   "slot": 0,
   "cards": [ 7, 9 ]
 }
@@ -1232,11 +1229,14 @@ Caching allows partial checks to be preemptively (but not exclusively) done clie
 ### Parameters and indices
 The game's model has been parameterized to allow for flexibility. The parameters are set via
 a [configuration file](../src/main/resources/config/config.json), which also contains serialized game data (e.g. cards,
-resources, etc...).  
+resources, etc).  
 
 Clients have a default configuration file embedded to allow for local single player matches. Both clients and server also support loading custom configuration files.
 
 Since the file on a server may be different from the one embedded in a client, all game elements need to be sent at the start of a match, ensuring proper synchronization between the clients and the server, both in terms of IDs and actual game data.
+
+Since the connection and reconnection phases are very delicate, a modular approach was discarded in favor of a monolithic message.  
+If a modular approach were to be chosen, the clients' state-switching logic would become unmanageable, needing to manage asynchronous and independent state messages to handle transitions that depend on the presence of the data itself (some of these transitions would in fact be impossible to model if the data wasn't sent all in the same message).
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -1251,31 +1251,52 @@ Since the file on a server may be different from the one embedded in a client, a
 ```json
 {
   "type": "UpdateGame",
-  "colors": [
+  "players":[
     {
-      "name": "Yellow",
-      "colorValue": "\u001B[33m"
-    }, {
-      "name": "Purple",
-      "colorValue": "\u001B[35m"
+      "nickname": "NicknameA",
+      "baseProduction": 0,
+      "warehouseShelves": [ 0, 1, 2 ],
+      "strongbox": 3,
+      "setup": {
+        "chosenLeadersCount": 2,
+        "initialResources": 1,
+        "initialExcludedResources": [ "Faith" ],
+        "hasChosenLeaders": false,
+        "hasChosenResources": false
+      },
+      "leadersHand": [ 3, 5, 7, 15 ],
+      "leadersHandCount": 4,
+      "devSlots": [ [], [], [] ],
+      "faithPoints": 0,
+      "victoryPoints": 0,
+      "active":true
+    }
+  ],
+  "devCardColors": [
+    {
+      "name": "Blue",
+      "colorValue": "\u001b[34m"
+    },
+    {
+      "name": "Green",
+      "colorValue": "\u001b[32m"
     }
   ],
   "resourceTypes": [
     {
       "name": "Servant",
-      "storable": true,
       "colorValue": "\u001B[95m",
+      "isStorable": true,
       "isGiveableToPlayer": true,
       "isTakeableFromPlayer": true
     }, {
       "name": "Zero",
-      "storable": false,
       "colorValue": "\u001B[37m",
+      "isStorable": false,
       "isGiveableToPlayer": false,
       "isTakeableFromPlayer": false
     }
   ],
-  "players": [ "NicknameA", "NicknameB", "NicknameC" ],
   "leaderCards": [
     {
       "resourceType": "Servant",
@@ -1357,8 +1378,30 @@ Since the file on a server may be different from the one embedded in a client, a
       }
     ]
   },
-  "isSetupDone": false,
-  "slotsCount": 3
+  "market": {
+    "grid": [
+      [ "Stone", "Shield", "Zero", "Faith" ],
+      [ "Zero", "Servant", "Zero", "Zero" ]
+    ],
+    "replaceableResType":"Zero",
+    "slide":"Servant"
+  },
+  "devCardGrid":{
+    "levelsCount":3,
+    "colorsCount":4,
+    "topCards":{
+      "Yellow":[ null, 11, 31, 39 ],
+      "Purple":[ null, 5, 29, 33 ]
+    }
+  },
+  "isSetupDone":false,
+  "devSlotsCount":3,
+  "currentPlayer":"NicknameA",
+  "inkwellPlayer":"NicknameA",
+  "blackPoints":0,
+  "lastRound":false,
+  "ended":false,
+  "isMandatoryActionDone":false
 }
 ```
 
@@ -1442,7 +1485,7 @@ This allows for the cards' IDs to remain hidden while informing clients of event
 {
   "type": "UpdateLeadersHandCount",
   "player": "NicknameA",
-  "leadersCount": 1
+  "leadersHandCount": 1
 }
 ```
 
@@ -1471,41 +1514,6 @@ It specifies what resource type is to be accounted for as replaceable, since the
     ],
     "replaceableResType": "Zero",
     "slide": "Stone"
-  }
-}
-```
-
-## UpdatePlayer
-This message holds the state of a player object.  
-It is usually only sent at match start time, since other state messages take care of incrementally updating the player's data.
-
-This message also contains the player's setup details, which are needed for the setup phase.  
-The `chosenLeadersCount` field specifies how many leader cards must be retained during setup, among the ones sent in the first [UpdateLeadersHand](#updateleadershand) message the client receives.
-In the same way, the `initialResources` field specifies the number of resources the player needs to choose during the setup phase.
-
-```
-           ┌────────┒                      ┌────────┒ 
-           │ Client ┃                      │ Server ┃
-           ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
-               │                                │
-               │                   UpdatePlayer │
-               │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
-               │                                │
-```
-**UpdatePlayer (server)**
-```json
-{
-  "type": "UpdatePlayer",
-  "player": "NicknameA",
-  "baseProduction": 0,
-  "warehouseShelves": [ 0, 1, 2 ],
-  "strongbox": 3,
-  "playerSetup": {
-    "chosenLeadersCount": 2,
-    "initialResources": 1,
-    "initialExcludedResources": [ "Faith" ],
-    "hasChosenLeaders": false,
-    "hasChosenResources":false
   }
 }
 ```
