@@ -20,19 +20,37 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/** Server application for the Masters of Renaissance game. */
 public class Server implements Network, Runnable {
     private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+    /** Timeout used for heartbeat events. */
     private static final int timeout = 25000;
+    /** Default server configuration path. */
     private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
+    /** Default game data file path. */
     private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
+    /** Thread to run the server on. */
     private final Thread runThread;
+    /** Socket to accept incoming connections to. */
     private final ServerSocket serverSocket;
+    /** Executor to run client hook threads on. */
     private final ExecutorService executor;
+    /** JSON message (de)serializer. */
     private final NetworkProtocol protocol;
+    /** Server's Lobby to welcome connecting players and handle new matches/reconnections. */
     private final Lobby model;
+    /** Server's Controller to handle requests from clients. */
     private final Controller controller;
+    /** Map associating NetworkHandlers with VirtualViews' dispatch methods. */
     private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
 
+    /**
+     * Class constructor.
+     * 
+     * @param port             the network port to listen for incoming connections on.
+     * @param gameConfigStream the data stream to be used by the GameFactory to create new matches.
+     * @throws IOException     if an I/O error occurs when opening the socket.
+     */
     public Server(int port, InputStream gameConfigStream) throws IOException {
         this.runThread = new Thread(this);
         this.serverSocket = new ServerSocket(port);
@@ -43,6 +61,12 @@ public class Server implements Network, Runnable {
         this.vcEventListeners = new HashMap<>();
     }
 
+    /**
+     * Class constructor for a Server that uses the default game data file.
+     * 
+     * @param port         the network port to listen for incoming connections on.
+     * @throws IOException if an I/O error occurs when opening the socket.
+     */
     public Server(int port) throws IOException {
         this(port, null);
     }
@@ -114,6 +138,8 @@ public class Server implements Network, Runnable {
     @Override
     public void run() {
         LOGGER.info("Server is ready");
+
+        // routine to accept new clients
         while (!Thread.currentThread().isInterrupted()) {
             Socket socket;
 
@@ -126,9 +152,12 @@ public class Server implements Network, Runnable {
             NetworkHandler networkHandler = new NetworkHandler(socket, protocol, (input, protocol) -> protocol.processInputAsVCEvent(input), timeout);
 
             View virtualView = new VirtualView(networkHandler);
+            // hook the VirtualView to the NetworkHandler so it can receive the client's events from the network
             networkHandler.addEventListener(VCEvent.class, vcEventListeners.computeIfAbsent(networkHandler, n -> virtualView::dispatch));
 
+            // hook the VirtualView to the Lobby so it can receive events from it
             virtualView.registerOnModelLobby(model);
+            // hook the Controller to the VirtualView so events can be processed by the Controller
             controller.registerOnVC(virtualView);
 
             networkHandler.setOnClose(() -> {

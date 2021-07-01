@@ -3,11 +3,21 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.View;
 
+/** Server-side View, interfacing the NetworkHandler and the Model */
 public class VirtualView extends View {
+    /**
+     * Class constructor.
+     * 
+     * @param networkHandler the NetworkHandler to pass the events to
+     */
     public VirtualView(NetworkHandler networkHandler) {
         setListeners(networkHandler);
     }
 
+    /**
+     * Hooks the NetworkHandler to the View's listeners
+     * @param networkHandler the NetworkHandler to connect
+     */
     private void setListeners(NetworkHandler networkHandler) {
         setErrNewGameEventListener(networkHandler::send);
         setErrNicknameEventListener(networkHandler::send);
