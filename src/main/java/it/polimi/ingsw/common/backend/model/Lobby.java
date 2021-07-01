@@ -117,13 +117,15 @@ public class Lobby extends AsynchronousEventDispatcher {
             if (context != null) {
                 view.unregisterOnModelGameContext(context);
 
-                if(!context.hasGameEnded()) {
+                joined.remove(view);
+
+                if (!context.hasGameEnded()) {
                     context.setActive(nickname, false);
                     disconnected.put(nickname, context);
-                } else if (disconnected.entrySet().stream().noneMatch(entry -> entry.getValue() == context))
+                } else if (joined.entrySet().stream().noneMatch(entry -> entry.getValue() == context)) {
+                    disconnected.entrySet().removeIf(entry -> entry.getValue() == context);
                     context.close();
-
-                joined.remove(view);
+                }
 
             }
             nicknames.remove(view);
