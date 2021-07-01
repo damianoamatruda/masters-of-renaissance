@@ -224,14 +224,14 @@ public class Game extends EventDispatcher {
      */
     public void onTurnEnd() {
         if (players.stream().anyMatch(Player::isActive)) {
-            do
+            do {
                 players.add(players.remove(0));
-            while (!getCurrentPlayer().isActive());
+                if (lastRound && getCurrentPlayer().hasInkwell())
+                    end();
+            } while (!getCurrentPlayer().isActive());
 
             dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
 
-            if (lastRound && getCurrentPlayer().hasInkwell())
-                end();
         }
     }
 
