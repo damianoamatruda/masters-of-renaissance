@@ -55,7 +55,8 @@ public class GameContext extends AsynchronousEventDispatcher {
 
     public void dispatchStartState(View view, String nickname) {
         game.dispatchState(view, getPlayerByNickname(nickname), false);
-        game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
+        getPlayerByNickname(nickname).getSetup().giveInitialFaithPoints(game, getPlayerByNickname(nickname));
+//        game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
     public void dispatchResumeState(View view, String nickname) {

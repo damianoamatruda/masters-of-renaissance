@@ -129,7 +129,6 @@ public class Lobby extends AsynchronousEventDispatcher {
 
             }
             nicknames.remove(view);
-
             waiting.remove(view);
         }
         dispatch(new ResQuit(view));
