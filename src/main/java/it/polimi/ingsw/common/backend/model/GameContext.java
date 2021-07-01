@@ -54,12 +54,16 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     public void dispatchStartState(View view, String nickname) {
-        dispatchResumeState(view, nickname);
+        game.dispatchState(view, getPlayerByNickname(nickname), false);
         game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
     public void dispatchResumeState(View view, String nickname) {
-        game.dispatchState(view, getPlayerByNickname(nickname));
+        /* info about the turn's state needs to be sent
+           if it's the current player reconnecting */
+        game.dispatchState(view,
+            getPlayerByNickname(nickname),
+            getPlayerByNickname(nickname).equals(game.getCurrentPlayer()) ? mandatoryActionDone : false);
     }
 
     /**

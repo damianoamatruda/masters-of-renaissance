@@ -65,7 +65,10 @@ public class WaitingBeforeGameController extends CliController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        setNextState();
+        if (event.isMandatoryActionDone())
+            cli.setController(new TurnAfterActionController(), false);
+        else
+            setNextState();
     }
 
     @Override

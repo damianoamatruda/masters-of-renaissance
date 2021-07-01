@@ -103,7 +103,10 @@ public class WaitingBeforeGameController extends GuiController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        setNextState();
+        if (event.isMandatoryActionDone())
+            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
+        else
+            setNextState();
     }
 
     @Override

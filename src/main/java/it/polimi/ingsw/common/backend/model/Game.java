@@ -105,7 +105,7 @@ public class Game extends EventDispatcher {
         this.faithTrack.addEventListener(MVEvent.class, this::dispatch);
     }
 
-    public void dispatchState(View view, Player player) {
+    public void dispatchState(View view, Player player, boolean isMandatoryActionDone) {
         dispatch(new UpdateGame(
                 view,
                 players.stream().map(p -> p.reduce(p.equals(player))).toList(),
@@ -126,7 +126,8 @@ public class Game extends EventDispatcher {
                 getWinnerPlayer().map(Player::getNickname).orElse(null),
                 0, /* blackPoints */
                 lastRound,
-                ended));
+                ended,
+                isMandatoryActionDone));
     }
 
     /**

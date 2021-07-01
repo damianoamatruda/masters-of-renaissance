@@ -55,7 +55,7 @@ public class SoloGame extends Game {
     }
 
     @Override
-    public void dispatchState(View view, Player player) {
+    public void dispatchState(View view, Player player, boolean isMandatoryActionDone) {
         dispatch(new UpdateGame(
                 view,
                 players.stream().map(p -> p.reduce(p.equals(player))).toList(),
@@ -76,7 +76,8 @@ public class SoloGame extends Game {
                 getWinnerPlayer().map(Player::getNickname).orElse(null),
                 blackPoints,
                 lastRound,
-                ended));
+                ended,
+                isMandatoryActionDone));
     }
 
     @Override

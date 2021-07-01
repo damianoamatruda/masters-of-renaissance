@@ -25,6 +25,7 @@ public class UpdateGame extends ViewEvent {
     private final int blackPoints;
     private final boolean lastRound;
     private final boolean ended;
+    private final boolean isMandatoryActionDone;
 
     /**
      * Class constructor.
@@ -62,7 +63,8 @@ public class UpdateGame extends ViewEvent {
                       String winnerPlayer,
                       int blackPoints,
                       boolean lastRound,
-                      boolean ended) {
+                      boolean ended,
+                      boolean isMandatoryActionDone) {
         super(view);
         this.players = players;
         this.devCardColors = devCardColors;
@@ -83,6 +85,7 @@ public class UpdateGame extends ViewEvent {
         this.blackPoints = blackPoints;
         this.lastRound = lastRound;
         this.ended = ended;
+        this.isMandatoryActionDone = isMandatoryActionDone;
     }
 
     /**
@@ -176,11 +179,19 @@ public class UpdateGame extends ViewEvent {
         return winnerPlayer;
     }
 
+    public int getBlackPoints() {
+        return blackPoints;
+    }
+
     public boolean isLastRound() {
         return lastRound;
     }
 
     public boolean isEnded() {
         return ended;
+    }
+
+    public boolean isMandatoryActionDone() {
+        return isMandatoryActionDone;
     }
 }
