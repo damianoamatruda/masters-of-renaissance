@@ -152,7 +152,7 @@ public class Game extends EventDispatcher {
      *
      * @return <code>true</code> if the game has ended; <code>false</code> otherwise.
      */
-    public boolean hasEnded() {
+    public boolean isEnded() {
         return ended;
     }
 

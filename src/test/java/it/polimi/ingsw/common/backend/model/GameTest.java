@@ -93,7 +93,7 @@ public class GameTest {
     void noYellowTilesEndOfGame() {
         game.getPlayers().get(0).incrementFaithPoints(game, 24);
         game.onTurnEnd();
-        assertAll(() -> assertTrue(game.hasEnded()),
+        assertAll(() -> assertTrue(game.isEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
 
@@ -138,7 +138,7 @@ public class GameTest {
          */
         @Test
         void hasTheGameEnded() {
-            assertFalse(game.hasEnded());
+            assertFalse(game.isEnded());
         }
     }
 
@@ -296,7 +296,7 @@ public class GameTest {
              */
             @Test
             void hasTheGameEnded() {
-                assertTrue(game.hasEnded());
+                assertTrue(game.isEnded());
             }
 
             /**

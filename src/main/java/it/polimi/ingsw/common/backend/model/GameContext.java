@@ -63,8 +63,8 @@ public class GameContext extends AsynchronousEventDispatcher {
         /* info about the turn's state needs to be sent
            if it's the current player reconnecting */
         game.dispatchState(view,
-            getPlayerByNickname(nickname),
-            getPlayerByNickname(nickname).equals(game.getCurrentPlayer()) ? mandatoryActionDone : false);
+                getPlayerByNickname(nickname),
+                getPlayerByNickname(nickname).equals(game.getCurrentPlayer()) && mandatoryActionDone);
     }
 
     /**
@@ -523,7 +523,7 @@ public class GameContext extends AsynchronousEventDispatcher {
      * @return whether the checks passed
      */
     private boolean preliminaryChecks(View view, Player player) {
-        if (!player.getSetup().isDone() || game.hasEnded()) {
+        if (!player.getSetup().isDone() || game.isEnded()) {
             dispatch(new ErrAction(view, !player.getSetup().isDone() ? ErrActionReason.EARLY_MANDATORY_ACTION : ErrActionReason.GAME_ENDED));
             return false;
         }
@@ -572,6 +572,6 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     public boolean hasGameEnded() {
-        return game.hasEnded();
+        return game.isEnded();
     }
 }
