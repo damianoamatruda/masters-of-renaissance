@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedActionToken;
 
 import static it.polimi.ingsw.client.cli.Cli.centerAll;
 
+/** Cli component that gives a string representation of action tokens. */
 public class ActionToken extends StringComponent {
     private final ReducedActionToken reducedActionToken;
 

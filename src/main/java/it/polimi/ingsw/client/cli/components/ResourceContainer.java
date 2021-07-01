@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
+/** Cli component that gives a string representation of a shelf, strongbox or depot. */
 public class ResourceContainer extends StringComponent {
     private final ReducedResourceContainer reducedResourceContainer;
 

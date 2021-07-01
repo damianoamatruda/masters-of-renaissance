@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+/** Cli component that represents the resources as bold and colored strings. */
 public class Resource extends StringComponent {
     private final String resourceType;
 

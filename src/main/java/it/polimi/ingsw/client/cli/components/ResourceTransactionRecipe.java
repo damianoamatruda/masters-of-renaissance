@@ -4,6 +4,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.Map;
 
+/** Cli component that gives a string representation a production. */
 public class ResourceTransactionRecipe extends StringComponent {
     private final ReducedResourceTransactionRecipe reducedResourceTransactionRecipe;
 

@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
+/** Cli component that gives a string representation of the faith track. */
 public class FaithTrack extends StringComponent {
     private final ReducedFaithTrack reducedFaithTrack;
     private final Map<String, Integer> points;

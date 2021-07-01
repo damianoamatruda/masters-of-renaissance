@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedColor;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+/** Cli component that represents card colors as bold and colored strings. */
 public class DevCardColor extends StringComponent {
     private final String colorName;
 

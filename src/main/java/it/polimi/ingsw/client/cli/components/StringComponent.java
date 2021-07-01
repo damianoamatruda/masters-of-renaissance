@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.cli.Renderable;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
+/** Cli abstract component that provides a common method in order to render components. */
 public abstract class StringComponent implements Renderable {
     public abstract String getString();
 

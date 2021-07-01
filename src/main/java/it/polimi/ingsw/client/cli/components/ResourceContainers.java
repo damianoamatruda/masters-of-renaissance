@@ -6,6 +6,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
+/** Cli component that gives a string representation of multiple resource containers. */
 public class ResourceContainers extends StringComponent {
     private final String player;
     private final List<ReducedResourceContainer> warehouseShelves;
