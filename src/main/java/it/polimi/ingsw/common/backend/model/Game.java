@@ -164,7 +164,7 @@ public class Game extends EventDispatcher {
     public void onIncrementFaithPoints(int faithPoints) {
         faithTrack.getVaticanSectionReport(faithPoints).ifPresent(vaticanSection -> vaticanSection.activate(players));
 
-        if (faithPoints == faithTrack.getMaxFaithPointsCount())
+        if (faithPoints >= faithTrack.getMaxFaithPointsCount())
             setLastRound();
     }
 

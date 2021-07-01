@@ -40,7 +40,7 @@ public class EndgameController extends GuiController {
             outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinnerPlayer().get()) + " points! CONGRATULATIONS!");
         else if (vm.getWinnerPlayer().isPresent())
             outcome.setText(
-                    vm.getWinnerPlayer() + " is the winner with " +
+                    vm.getWinnerPlayer().get() + " is the winner with " +
                             vm.getPlayerVictoryPoints(vm.getWinnerPlayer().get()) + " points!");
         else
             outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
