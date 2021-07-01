@@ -209,16 +209,26 @@ public class Gui extends Application {
     }
 
     private void handlePause() {
-        if (pauseOptions == null)
-            pauseOptions = new PauseOptions();
-        if (pauseMenu == null)
-            pauseMenu = new PauseMenu(pauseOptions);
-        if (!root.getChildren().contains(pauseMenu) && !root.getChildren().contains(pauseOptions)) {
+        Pane pauseMenu = getPauseMenu();
+        Pane pauseOptions = getPauseOptions();
+        if (!root.getChildren().contains(pauseMenu) && !root.getChildren().contains(pauseOptions))
             addToOverlay(pauseMenu);
-        } else {
+        else {
             removeFromOverlay(pauseMenu);
             removeFromOverlay(pauseOptions);
         }
+    }
+
+    public Pane getPauseMenu() {
+        if (pauseMenu == null)
+            pauseMenu = new PauseMenu(getPauseOptions());
+        return pauseMenu;
+    }
+
+    public Pane getPauseOptions() {
+        if (pauseOptions == null)
+            pauseOptions = new PauseOptions();
+        return pauseOptions;
     }
 
     public void addToOverlay(Pane child) {

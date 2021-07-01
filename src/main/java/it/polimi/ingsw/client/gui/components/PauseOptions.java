@@ -22,11 +22,13 @@ public class PauseOptions extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        Gui.getInstance().setSceneScaling(main);
+        Gui gui = Gui.getInstance();
+
+        gui.setSceneScaling(main);
 
         main.setOnBack(e -> {
-            Gui.getInstance().removeFromOverlay(this);
-            Gui.getInstance().addToOverlay(new PauseMenu(this));
+            gui.removeFromOverlay(this);
+            gui.addToOverlay(gui.getPauseMenu());
         });
     }
 }
