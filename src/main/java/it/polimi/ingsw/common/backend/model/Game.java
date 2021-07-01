@@ -226,11 +226,11 @@ public class Game extends EventDispatcher {
         if (players.stream().anyMatch(Player::isActive)) {
             do
                 players.add(players.remove(0));
-            while (!players.get(0).isActive());
+            while (!getCurrentPlayer().isActive());
 
-            dispatch(new UpdateCurrentPlayer(players.get(0).getNickname()));
+            dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
 
-            if (lastRound && players.get(0).hasInkwell())
+            if (lastRound && getCurrentPlayer().hasInkwell())
                 end();
         }
     }
