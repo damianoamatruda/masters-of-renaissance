@@ -26,10 +26,15 @@ public abstract class GuiController extends UiController implements Initializabl
     /**
      * Sets the next state based on the following algorithm:
      * <p>
-     * UpdateGame tells the client whether the game's setup phase is still ongoing or not. If the setup is done, the
-     * client needs to wait until UpdateCurrentPlayer to know which state to change to. If the setup phase is not done:
-     * The local player's UpdatePlayer tells the client what part of the player setup to switch to. If the leaders hand
-     * still needs to be chosen the client will need to wait for UpdateLeadersHand.
+     * Differentiation between setup phase and turn phase
+     *  -> check isSetupDone to know which phase to limit the choice to
+     * If the setup phase is not concluded:
+     *  -> check whether the leader setup still needs to be done,
+     *     else go to the resource setup, which will internally choose
+     *         whether it still needs to be done or whether it has to simply show the waiting screen
+     * If the setup phase is concluded:
+     *  -> check whether the current player and the local player
+     *     are the same player and switch accordingly
      */
     protected void setNextState() {
         vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
