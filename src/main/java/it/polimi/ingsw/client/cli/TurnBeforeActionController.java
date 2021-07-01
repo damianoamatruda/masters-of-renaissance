@@ -26,7 +26,7 @@ public class TurnBeforeActionController extends TurnController {
         entries.put('3', new Menu.Entry("Activate Productions", cli1 -> cli1.setController(new ActivateProductionsController(this), false)));
         entries.put('L', new Menu.Entry("Leader Actions", cli1 -> cli1.setController(new LeaderActionsController(this), false)));
         entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setController(new SwapShelvesController(this), false)));
-        entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
-        new Menu(entries, this::quitToTitle).render();
+        entries.put('Q', new Menu.Entry("Quit to Title", cli1 -> quitToTitle()));
+        new Menu(entries, cli1 -> quitToTitle()).render();
     }
 }
