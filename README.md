@@ -32,7 +32,7 @@ The system must be based on the MVC architecture.
 The communication-side architecture of this project is built to support machine-local matches and remote matches,
 doing this by choosing the right [Network](#src/main/java/it/polimi/ingsw/common/Network.java), either instantiating a local backend
 or connecting the client to the remote server instead.  
-Both the client's ViewModel and the backend's model are therefore recreated at every connection, including local ones.
+Both the client's ViewModel and the backend's model are therefore [recreated at every connection](src/main/java/it/polimi/ingsw/client/Ui.java#L64), including local ones.
 This implies that there is no persistence of data when playing locally with the current implementation,
 as the local backend gets recreated too.
 
