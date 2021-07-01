@@ -230,7 +230,7 @@ Information about the player being the first of the match is included in the res
 {
   "type": "UpdateBookedSeats",
   "bookedSeats":1,
-  "canPrepareNewGame":"NicknameA",
+  "canPrepareNewGame":"NicknameA"
 }
 ```
 **ErrNickname (server)**
