@@ -569,4 +569,8 @@ public class GameContext extends AsynchronousEventDispatcher {
         }, e -> e.getValue()
         ));
     }
+
+    public boolean hasGameEnded() {
+        return game.hasEnded();
+    }
 }
