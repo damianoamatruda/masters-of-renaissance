@@ -171,7 +171,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         if (event.isIllegalDiscardedOut())
-            cli.reloadController("Output of resource transfer cannot be discarded");
+            cli.reloadController("The payment's cost is erroneously specified, please choose all and only the needed resources.");
         else
             cli.reloadController(String.format(
                     "Irregular amount of %s specified in the container map: %d requested, %d chosen.",

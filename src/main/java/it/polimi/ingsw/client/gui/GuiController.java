@@ -176,7 +176,7 @@ public abstract class GuiController extends UiController implements Initializabl
         
         if (event.isIllegalDiscardedOut())
             gui.reloadScene("Resource transaction error",
-                    "Output of resource transfer cannot be discarded");
+                    "The payment's cost is erroneously specified, please choose all and only the needed resources.");
         else
             gui.reloadScene("Resource transaction error",
                     String.format(
