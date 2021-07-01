@@ -157,6 +157,7 @@ public class ActivateProductions extends StackPane {
     private void handleSubmit() {
         buildRequest();
         Gui.getInstance().getUi().dispatch(new ReqActivateProduction(requests));
+        ((Pane) this.getParent()).getChildren().remove(this);
     }
 
     /**
