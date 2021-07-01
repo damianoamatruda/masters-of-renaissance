@@ -1,29 +1,22 @@
 # Table of Contents
 1. [Communication protocol documentation](#communication-protocol-documentation)
     1. [Common data structures](#common-data-structures)
-2. [Client-server connection management - Network level](#client-server-connection-management---network-level)
+2. [NetEvents - Network level client-server connection management](#netevents---network-level-client-server-connection-management)
     1. [Connecting to the server](#connecting-to-the-server)
     2. [Closing the connection](#closing-the-connection)
     2. [ErrServerUnavailable](#errserverunavailable)
     3. [Reconnection](#reconnection)
     4. [Heartbeat](#heartbeat)
     5. [Errors](#errors)
-3. [Client-server connection management - Application level](#client-server-connection-management---application-level)
+3. [Application level client-server connection management](#application-level-client-server-connection-management)
     1. [Choosing a nickname](#choosing-a-nickname)
     2. [Choosing the number of players](#choosing-the-number-of-players)
     3. [Quitting the game](#quitting-the-game)
     4. [Reconnecting](#reconnecting)
-4. [General Errors](#general-errors)
-    1. [ErrAction](#erraction)
-    2. [ErrNoSuchEntity](#erraction)
-    3. [ErrObjectNotOwned](#errobjectnotowned)
-    4. [ErrReplacedTransRecipe](#errreplacedtransrecipe)
-    5. [ErrResourceReplacement](#errresourcereplacement)
-    6. [ErrResourceTransfer](#errresourcetransfer)
-5. [Game phase - Player setup](#game-phase---player-setup)
+4. [VCEvents - Player setup game phase](#vcevents---player-setup-game-phase)
     1. [Choosing leader cards](#choosing-leader-cards)
     2. [Choosing starting resources](#choosing-starting-resources)
-6. [Game phase - Turns](#game-phase---turns)
+5. [VCEvents - Turns game phase](#vcevents---turns-game-phase)
     1. [Main actions](#main-actions)
         1. [Getting resources from the market](#getting-resources-from-the-market)
         2. [Buying a development card](#buying-a-development-card)
@@ -34,26 +27,33 @@
         2. [Leader Actions](#leader-actions)
             1. [Activating a leader card](#activating-a-leader-card)
             2. [Discarding a leader card](#discarding-a-leader-card)
-    3. [State messages](#state-messages)
-        1. [UpdateActionToken](#updateactiontoken)
-        2. [UpdateActivateLeader](#updateactivateleader)
-        3. [UpdateCurrentPlayer](#updatecurrentplayer)
-        4. [UpdateDevCardGrid](#updatedevcardgrid)
-        5. [UpdateDevSlot](#updatedevslot)
-        6. [UpdateFaithPoints](#updatefaithpoints)
-        7. [UpdateGame](#updategame)
-            1. [Caching](#caching)
-            2. [Parameters and indices](#parameters-and-indices)
-        8. [UpdateGameEnd](#updategameend)
-        9. [UpdateLastRound](#updatelastround)
-        10. [UpdateLeadersHand](#updateleadershand)
-        11. [UpdateLeadersHandCount](#updateleadershandcount)
-        12. [UpdateMarket](#updatemarket)
-        13. [UpdatePlayerStatus](#updateplayerstatus)
-        14. [UpdateResourceContainer](#updateresourcecontainer)
-        15. [UpdateSetupDone](#updatesetupdone)
-        16. [UpdateVaticanSection](#updatevaticansection)
-        17. [UpdateVictoryPoints](#updatevictorypoints)
+6. [MVEvents - State events](#mvevents---state-events)
+    1. [UpdateActionToken](#updateactiontoken)
+    2. [UpdateActivateLeader](#updateactivateleader)
+    3. [UpdateCurrentPlayer](#updatecurrentplayer)
+    4. [UpdateDevCardGrid](#updatedevcardgrid)
+    5. [UpdateDevSlot](#updatedevslot)
+    6. [UpdateFaithPoints](#updatefaithpoints)
+    7. [UpdateGame](#updategame)
+        1. [Caching](#caching)
+        2. [Parameters and indices](#parameters-and-indices)
+    8. [UpdateGameEnd](#updategameend)
+    9. [UpdateLastRound](#updatelastround)
+    10. [UpdateLeadersHand](#updateleadershand)
+    11. [UpdateLeadersHandCount](#updateleadershandcount)
+    12. [UpdateMarket](#updatemarket)
+    13. [UpdatePlayerStatus](#updateplayerstatus)
+    14. [UpdateResourceContainer](#updateresourcecontainer)
+    15. [UpdateSetupDone](#updatesetupdone)
+    16. [UpdateVaticanSection](#updatevaticansection)
+    17. [UpdateVictoryPoints](#updatevictorypoints)
+    18. [Shared Errors](#shared-errors)
+        1. [ErrAction](#erraction)
+        2. [ErrNoSuchEntity](#erraction)
+        3. [ErrObjectNotOwned](#errobjectnotowned)
+        4. [ErrReplacedTransRecipe](#errreplacedtransrecipe)
+        5. [ErrResourceReplacement](#errresourcereplacement)
+        6. [ErrResourceTransfer](#errresourcetransfer)
 
 # Communication protocol documentation
 This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
@@ -73,7 +73,7 @@ Two data structures that are often used inside messages are:
 2. ***Resource container maps*** - correlate a container ID (expressed as an integer) with a resource map, corresponding to the resource(s) to add to/remove from it
 
 
-# Client-server connection management - Network level
+# NetEvents - Network level client-server connection management
 To make the protocol more resilient and situation-aware, `NetEvents` have been separated from application-level events.  
 
 The player, when starting the client, can choose whether to connect to the server (singleplayer and multiplayer playmodes) or playing locally (singleplayer only).  
@@ -184,7 +184,7 @@ Broken (unparsable) messages are signaled with a `ErrProtocol` messsage containi
 
 
 
-# Client-server connection management - Application level
+# Application level client-server connection management
 A summary of the requirements highlighting the relevant parts is reported below:
 > - On player connection: the player is automatically added to the game currently being filled. If there is no game in its starting phase, a new one is created.
 > - The player starting a new game chooses how many players have to join before the game can start.
@@ -321,118 +321,8 @@ When reconnecting, the server will send all the necessary game data for the clie
 
 
 
-# General Errors
-Error messages that are sent in multiple occasions are reported here.  
-Any successive mentions of these messages refer to this section for syntax and examples.
 
-## ErrAction
-This message signals to the client that the action is being requested at the wrong time.  
-The `reason` field offers a more detailed explanation:
-1. `LATE_SETUP_ACTION` - a setup request is sent after the setup phase is concluded
-2. `EARLY_MANDATORY_ACTION` - an action request (non-setup) is sent during the setup phase
-3. `LATE_MANDATORY_ACTION` - a action request (non-setup) is sent for the second time during a player's turn
-4. `EARLY_TURN_END` - a request to end the player's turn is sent before a mandatory action request
-5. `GAME_ENDED` - an action request is sent after the match's end
-6. `NOT_CURRENT_PLAYER` - the player requesting the action is not the current player
-
-**ErrAction (server)**
-```json
-{
-  "type": "ErrAction",
-  "reason": "LATE_SETUP_ACTION"
-}
-```
-
-## ErrNoSuchEntity
-This message signals the absence of an entity to match an ID with.
-
-The `originalEntity` field describes the kind of entity the request pertained to, which include:
-1. `MARKET_INDEX` - index of a market's row/column does not exist
-2. `LEADER` - leader card with referenced ID does not exist
-3. `DEVCARD` - development card with referenced ID does not exist
-4. `COLOR` - referenced color does not exist
-5. `RESOURCE` - referenced resource type does not exist
-
-The message also reports the `id` or the `code` string of the missing object.
-
-**ErrNoSuchEntity (server)**
-```json
-{
-  "type": "ErrNoSuchEntity",
-  "originalEntity": "LEADER",
-  "id": 50,
-  "code": null
-}
-```
-
-## ErrObjectNotOwned
-When a request message from a client references the ID of an object that is not owned by the player, an `ErrObjectNotOwned` message is sent by the server, detailing the erroneus ID and the object's kind.
-
-**ErrObjectNotOwned (server)**
-```json
-{
-  "type": "ErrObjectNotOwned",
-  "id": "NicknameA",
-  "objectType": "LeaderCard"
-}
-```
-
-## ErrReplacedTransRecipe
-This message signals a discrepancy between the available and specified numbers of resources to be put in a container.
-
-The `replacedCount` field details the number of available resources in the transaction after the replacements have been factored in.  
-The `shelvesChoiceResCount` field details the number of resources requested to be put in the container.  
-The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be reconduced to illegally discarded resources in output.
-
-**ErrReplacedTransRecipe (server)**
-```json
-{
-  "type": "ErrReplacedTransRecipe",
-  "resType": "Coin",
-  "replacedCount": 3,
-  "shelvesChoiceResCount": 4,
-  "isIllegalDiscardedOut": false
-}
-```
-
-## ErrResourceReplacement
-This message signals an error when replacing a production's resources.
-
-The `isNonStorable` field is set to true when a resource in the request is defined as non-storable and takeable/givable to players.  
-The `isExcluded` field is set to true if a forbidden resource type is requested as a replacement.
-
-**ErrResourceReplacement (server)**
-```json
-{
-  "type": "ErrResourceReplacement",
-  "isInput": true,
-  "isNonStorable": false,
-  "isExcluded": false
-}
-```
-
-## ErrResourceTransfer
-This error signals an error with a resource transfer request.
-
-Reasons included in the message are:
-1. `BOUNDED_RESTYPE_DIFFER` - a resource is trying to be added/removed to a shelf that's bound to another resource type
-2. `NON_STORABLE` - a non-storable resource is trying to be added/removed to a resource container
-3. `CAPACITY_REACHED` - the resource transfer requests that the number of resulting resources in the container is either less than zero or greater than the container's capacity
-4. `DUPLICATE_BOUNDED_RESOURCE` - a resource is trying to be added to a shelf while there's another shelf bound to the same resource type
-
-**ErrResourceTransfer (server)**
-```json
-{
-  "type": "ErrResourceTransfer",
-  "resType": "Coin",
-  "isAdded": true,
-  "reason": "CAPACITY_REACHED"
-}
-```
-
-
-
-# Game phase - Player setup
+# VCEvents - Player setup game phase
 When the game starts, the server instantiates its internal model.  
 It will then send the game data to the clients (see TODO), and the player setup phase will start.
 
@@ -584,7 +474,7 @@ Error messages are fired in these situations:
 
 
 
-# Game phase - Turns
+# VCEvents - Turns game phase
 After all players have gone through the setup phase, the server will start the turn loop.
 
 The messages in this section can be differentiated into:
@@ -1072,7 +962,7 @@ The `ErrActiveLeaderDiscarded` error message is sent by the server when a player
 
 
 
-# State messages
+# MVEvents - State events
 These messages are used to update the clients' caches so that the data is synchronized with the server's.
 
 State update messages are sent autonomously by the updated entities. Clients cannot assume that a state update message will be sent or the timing it will be sent with (ordering with respect to other messages, etc.).  
@@ -1630,5 +1520,116 @@ The victory points' amount is updated in real time.
   "type": "UpdateVictoryPoints",
   "player": "NicknameA",
   "victoryPoints": 20
+}
+```
+
+
+
+# Shared Errors
+Error messages that are sent in multiple occasions are reported here.  
+Any successive mentions of these messages refer to this section for syntax and examples.
+
+## ErrAction
+This message signals to the client that the action is being requested at the wrong time.  
+The `reason` field offers a more detailed explanation:
+1. `LATE_SETUP_ACTION` - a setup request is sent after the setup phase is concluded
+2. `EARLY_MANDATORY_ACTION` - an action request (non-setup) is sent during the setup phase
+3. `LATE_MANDATORY_ACTION` - a action request (non-setup) is sent for the second time during a player's turn
+4. `EARLY_TURN_END` - a request to end the player's turn is sent before a mandatory action request
+5. `GAME_ENDED` - an action request is sent after the match's end
+6. `NOT_CURRENT_PLAYER` - the player requesting the action is not the current player
+
+**ErrAction (server)**
+```json
+{
+  "type": "ErrAction",
+  "reason": "LATE_SETUP_ACTION"
+}
+```
+
+## ErrNoSuchEntity
+This message signals the absence of an entity to match an ID with.
+
+The `originalEntity` field describes the kind of entity the request pertained to, which include:
+1. `MARKET_INDEX` - index of a market's row/column does not exist
+2. `LEADER` - leader card with referenced ID does not exist
+3. `DEVCARD` - development card with referenced ID does not exist
+4. `COLOR` - referenced color does not exist
+5. `RESOURCE` - referenced resource type does not exist
+
+The message also reports the `id` or the `code` string of the missing object.
+
+**ErrNoSuchEntity (server)**
+```json
+{
+  "type": "ErrNoSuchEntity",
+  "originalEntity": "LEADER",
+  "id": 50,
+  "code": null
+}
+```
+
+## ErrObjectNotOwned
+When a request message from a client references the ID of an object that is not owned by the player, an `ErrObjectNotOwned` message is sent by the server, detailing the erroneus ID and the object's kind.
+
+**ErrObjectNotOwned (server)**
+```json
+{
+  "type": "ErrObjectNotOwned",
+  "id": "NicknameA",
+  "objectType": "LeaderCard"
+}
+```
+
+## ErrReplacedTransRecipe
+This message signals a discrepancy between the available and specified numbers of resources to be put in a container.
+
+The `replacedCount` field details the number of available resources in the transaction after the replacements have been factored in.  
+The `shelvesChoiceResCount` field details the number of resources requested to be put in the container.  
+The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be reconduced to illegally discarded resources in output.
+
+**ErrReplacedTransRecipe (server)**
+```json
+{
+  "type": "ErrReplacedTransRecipe",
+  "resType": "Coin",
+  "replacedCount": 3,
+  "shelvesChoiceResCount": 4,
+  "isIllegalDiscardedOut": false
+}
+```
+
+## ErrResourceReplacement
+This message signals an error when replacing a production's resources.
+
+The `isNonStorable` field is set to true when a resource in the request is defined as non-storable and takeable/givable to players.  
+The `isExcluded` field is set to true if a forbidden resource type is requested as a replacement.
+
+**ErrResourceReplacement (server)**
+```json
+{
+  "type": "ErrResourceReplacement",
+  "isInput": true,
+  "isNonStorable": false,
+  "isExcluded": false
+}
+```
+
+## ErrResourceTransfer
+This error signals an error with a resource transfer request.
+
+Reasons included in the message are:
+1. `BOUNDED_RESTYPE_DIFFER` - a resource is trying to be added/removed to a shelf that's bound to another resource type
+2. `NON_STORABLE` - a non-storable resource is trying to be added/removed to a resource container
+3. `CAPACITY_REACHED` - the resource transfer requests that the number of resulting resources in the container is either less than zero or greater than the container's capacity
+4. `DUPLICATE_BOUNDED_RESOURCE` - a resource is trying to be added to a shelf while there's another shelf bound to the same resource type
+
+**ErrResourceTransfer (server)**
+```json
+{
+  "type": "ErrResourceTransfer",
+  "resType": "Coin",
+  "isAdded": true,
+  "reason": "CAPACITY_REACHED"
 }
 ```
