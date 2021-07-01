@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.vcevents.ReqJoin;
-import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -30,7 +29,14 @@ public class InputNicknameController extends CliController {
                     cli.getUi().dispatch(new ReqJoin(nickname));
                 } else
                     valid.set(false);
-            }, () -> cli.getUi().dispatch(new ReqQuit()));
+            }, () -> {
+                if (cli.getUi().isOffline())
+                    cli.setController(new MainMenuController(), false);
+                else {
+                    cli.getUi().closeClient();
+                    cli.setController(new PlayOnlineController(), false);
+                }
+            });
         }
     }
 

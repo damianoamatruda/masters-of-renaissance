@@ -43,7 +43,12 @@ public class InputNicknameController extends GuiController {
      */
     @FXML
     private void handleBack() {
-        gui.setScene(getClass().getResource(gui.getUi().isOffline() ? "/assets/gui/mainmenu.fxml" : "/assets/gui/playonline.fxml"));
+        if (gui.getUi().isOffline())
+            gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        else {
+            gui.getUi().closeClient();
+            gui.setScene(getClass().getResource("/assets/gui/playonline.fxml"));
+        }
     }
 
     /**
