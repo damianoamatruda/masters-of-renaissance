@@ -143,8 +143,8 @@ public class Game extends EventDispatcher {
      * Proceeds to sum the remaining points, decide a winner and end the game.
      */
     private void end() {
-        setWinnerPlayer();
         ended = true;
+        setWinnerPlayer();
     }
 
     /**
@@ -230,7 +230,7 @@ public class Game extends EventDispatcher {
 
             dispatch(new UpdateCurrentPlayer(players.get(0).getNickname()));
 
-            if (lastRound)
+            if (lastRound && players.get(0).hasInkwell())
                 end();
         }
     }
