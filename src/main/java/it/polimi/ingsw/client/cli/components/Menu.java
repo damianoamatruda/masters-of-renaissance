@@ -7,16 +7,15 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 /** Cli component that renders a menu. */
 public class Menu implements Renderable {
     private final Map<Character, Entry> entries;
-    private final Consumer<Cli> backAction;
+    private final Runnable onBack;
 
-    public Menu(Map<Character, Entry> entries, Consumer<Cli> backAction) {
+    public Menu(Map<Character, Entry> entries, Runnable onBack) {
         if (!entries.keySet().stream().map(Character::toLowerCase).allMatch(new HashSet<>()::add))
             throw new IllegalArgumentException("Duplicate entries.");
 
@@ -24,7 +23,7 @@ public class Menu implements Renderable {
         for (Character c : entries.keySet())
             this.entries.put(Character.toUpperCase(c), entries.get(c));
 
-        this.backAction = backAction;
+        this.onBack = onBack;
     }
 
     @Override
@@ -41,11 +40,11 @@ public class Menu implements Renderable {
             cli.prompt("").ifPresentOrElse(input -> {
                 Character c = !input.isBlank() ? Character.toUpperCase(input.charAt(0)) : null;
                 if (c != null && entries.containsKey(c)) {
-                    entries.get(c).action.accept(cli);
+                    entries.get(c).onAction.run();
                     valid.set(true);
                 }
             }, () -> {
-                backAction.accept(cli);
+                onBack.run();
                 valid.set(true);
             });
         }
@@ -53,11 +52,11 @@ public class Menu implements Renderable {
 
     public static class Entry {
         private final String description;
-        private final Consumer<Cli> action;
+        private final Runnable onAction;
 
-        public Entry(String description, Consumer<Cli> action) {
+        public Entry(String description, Runnable onAction) {
             this.description = description;
-            this.action = action;
+            this.onAction = onAction;
         }
     }
 }

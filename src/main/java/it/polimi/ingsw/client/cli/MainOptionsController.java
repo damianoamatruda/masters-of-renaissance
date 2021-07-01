@@ -17,9 +17,9 @@ public class MainOptionsController extends CliController {
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('D', new Menu.Entry("Default Config", cli2 -> defaultConfig()));
-        entries.put('C', new Menu.Entry("Custom Config", cli2 -> customConfig()));
-        new Menu(entries, cli1 -> goBack()).render();
+        entries.put('D', new Menu.Entry("Default Config", this::defaultConfig));
+        entries.put('C', new Menu.Entry("Custom Config", this::customConfig));
+        new Menu(entries, this::goBack).render();
     }
 
     private void goBack() {
