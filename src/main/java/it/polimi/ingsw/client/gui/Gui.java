@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.gui.components.Alert;
 import it.polimi.ingsw.client.gui.components.PauseMenu;
+import it.polimi.ingsw.client.gui.components.PauseOptions;
 import it.polimi.ingsw.client.gui.components.SButton;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -58,6 +59,7 @@ public class Gui extends Application {
     private Pane root;
     private URL currentScene;
     private Pane pauseMenu;
+    private Pane pauseOptions;
     private MediaPlayer musicPlayer;
     private double soundFxVolume;
 
@@ -66,6 +68,7 @@ public class Gui extends Application {
         this.ui = new Ui();
         this.currentScene = null;
         this.pauseMenu = null;
+        this.pauseOptions = null;
         this.musicPlayer = null;
         this.soundFxVolume = 1;
     }
@@ -130,9 +133,7 @@ public class Gui extends Application {
             setSceneScaling(scene);
             if (callback != null)
                 callback.accept(fxmlLoader.getController());
-            Platform.runLater(() -> {
-                root.getChildren().set(0, scene);
-            });
+            Platform.runLater(() -> root.getChildren().set(0, scene));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "IOException when setting root", e);
             throw new RuntimeException(e);
@@ -193,29 +194,31 @@ public class Gui extends Application {
     }
 
     public void setPauseHandler(Pane scene) {
-        if (pauseMenu == null)
-            pauseMenu = new PauseMenu();
         scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ESCAPE) {
-                if (!root.getChildren().contains(pauseMenu))
-                    addToOverlay(pauseMenu);
-                else
-                    removeFromOverlay(pauseMenu);
-            }
+            if (e.getCode() == KeyCode.ESCAPE)
+                handlePause();
         });
     }
 
     public void addPauseButton(Pane scene) {
         Button pause = new SButton("Pause");
-        if (pauseMenu == null)
-            pauseMenu = new PauseMenu();
-        pause.addEventHandler(ActionEvent.ACTION, actionEvent -> {
-            if (!root.getChildren().contains(pauseMenu))
-                addToOverlay(pauseMenu);
-        });
+        pause.addEventHandler(ActionEvent.ACTION, actionEvent -> handlePause());
         scene.getChildren().add(pause);
         AnchorPane.setBottomAnchor(pause, 10.0);
         AnchorPane.setLeftAnchor(pause, 10.0);
+    }
+
+    private void handlePause() {
+        if (pauseOptions == null)
+            pauseOptions = new PauseOptions();
+        if (pauseMenu == null)
+            pauseMenu = new PauseMenu(pauseOptions);
+        if (!root.getChildren().contains(pauseMenu) && !root.getChildren().contains(pauseOptions)) {
+            addToOverlay(pauseMenu);
+        } else {
+            removeFromOverlay(pauseMenu);
+            removeFromOverlay(pauseOptions);
+        }
     }
 
     public void addToOverlay(Pane child) {

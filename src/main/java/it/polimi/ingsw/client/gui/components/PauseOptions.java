@@ -26,7 +26,7 @@ public class PauseOptions extends StackPane {
 
         main.setOnBack(e -> {
             Gui.getInstance().removeFromOverlay(this);
-            Gui.getInstance().addToOverlay(new PauseMenu());
+            Gui.getInstance().addToOverlay(new PauseMenu(this));
         });
     }
 }

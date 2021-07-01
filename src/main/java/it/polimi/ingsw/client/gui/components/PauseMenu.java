@@ -20,8 +20,9 @@ public class PauseMenu extends StackPane {
     private SButton opt;
     @FXML
     private SButton quit;
+    private final Pane pauseOptions;
 
-    public PauseMenu() {
+    public PauseMenu(Pane pauseOptions) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/pausemenu.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -33,6 +34,8 @@ public class PauseMenu extends StackPane {
         }
 
         Gui.getInstance().setSceneScaling(main);
+
+        this.pauseOptions = pauseOptions;
 
         setHandlers();
     }
@@ -51,7 +54,6 @@ public class PauseMenu extends StackPane {
     @FXML
     private void handleOptions() {
         Gui gui = Gui.getInstance();
-        PauseOptions pauseOptions = new PauseOptions();
         gui.removeFromOverlay(this);
         gui.addToOverlay(pauseOptions);
     }
