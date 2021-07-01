@@ -1253,7 +1253,7 @@ If a modular approach were to be chosen, the clients' state-switching logic woul
 ```json
 {
   "type": "UpdateGame",
-  "players":[
+  "players": [
     {
       "nickname": "NicknameA",
       "baseProduction": 0,
@@ -1385,25 +1385,25 @@ If a modular approach were to be chosen, the clients' state-switching logic woul
       [ "Stone", "Shield", "Zero", "Faith" ],
       [ "Zero", "Servant", "Zero", "Zero" ]
     ],
-    "replaceableResType":"Zero",
-    "slide":"Servant"
+    "replaceableResType": "Zero",
+    "slide": "Servant"
   },
-  "devCardGrid":{
-    "levelsCount":3,
-    "colorsCount":4,
-    "topCards":{
-      "Yellow":[ null, 11, 31, 39 ],
-      "Purple":[ null, 5, 29, 33 ]
+  "devCardGrid": {
+    "levelsCount": 3,
+    "colorsCount": 4,
+    "topCards": {
+      "Yellow": [ null, 11, 31, 39 ],
+      "Purple": [ null, 5, 29, 33 ]
     }
   },
-  "isSetupDone":false,
-  "devSlotsCount":3,
-  "currentPlayer":"NicknameA",
-  "inkwellPlayer":"NicknameA",
-  "blackPoints":0,
-  "lastRound":false,
-  "ended":false,
-  "isMandatoryActionDone":false
+  "isSetupDone": false,
+  "devSlotsCount": 3,
+  "currentPlayer": "NicknameA",
+  "inkwellPlayer": "NicknameA",
+  "blackPoints": 0,
+  "lastRound": false,
+  "ended": false,
+  "isMandatoryActionDone": false
 }
 ```
 
