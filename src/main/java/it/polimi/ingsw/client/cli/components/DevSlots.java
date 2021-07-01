@@ -21,6 +21,8 @@ public class DevSlots extends StringComponent {
     public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append(String.format("%s's development card slots:\n", Cli.getInstance().getViewModel().getLocalPlayer().get()));
+
         for (int i = 0; i < slots.size(); i += 4) {
             List<Optional<ReducedDevCard>> cards = new ArrayList<>();
             for (int j = 0; j < 4 && j < slots.size() - i; j++) {
@@ -36,7 +38,9 @@ public class DevSlots extends StringComponent {
 
             List<List<String>> rows = new ArrayList<>();
             for (Optional<DevelopmentCard> optionalDevCardComponent : devCardComponents)
-                optionalDevCardComponent.ifPresent(devCardComponent -> rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString().lines().toList()));
+                optionalDevCardComponent.ifPresentOrElse(
+                    devCardComponent -> rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString().lines().toList()),
+                    () -> rows.add(new Box(null).getString().lines().toList()));
 
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {
