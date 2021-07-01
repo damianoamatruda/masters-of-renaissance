@@ -356,7 +356,7 @@ public class Player extends EventDispatcher {
                 warehouse.getShelves().stream().map(ResourceContainer::getId).toList(),
                 strongbox.getId(),
                 setup.reduce(),
-                includeLeadersHand ? leaders.stream().map(LeaderCard::getId).toList() : null,
+                includeLeadersHand ? leaders.stream().map(LeaderCard::getId).toList() : new ArrayList<>(),
                 leaders.size(),
                 devSlots.stream().map(devSlot -> devSlot.stream().map(DevelopmentCard::getId).toList()).toList(),
                 faithPoints,
