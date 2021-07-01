@@ -38,14 +38,14 @@ public class Game extends EventDispatcher {
     /** The productions used in the game. */
     protected final List<ResourceTransactionRecipe> productions;
 
+    /** The "Faith Track", where vatican sections can be activated. */
+    protected final FaithTrack faithTrack;
+
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
 
     /** The "Market Board", from which resources can be "bought". */
     protected final Market market;
-
-    /** The "Faith Track", where vatican sections can be activated. */
-    protected final FaithTrack faithTrack;
 
     /** Number of development cards a player can have, before triggering the end of the game. */
     protected final int maxObtainableDevCards;
@@ -86,16 +86,16 @@ public class Game extends EventDispatcher {
         this.developmentCards = List.copyOf(developmentCards);
         this.resContainers = List.copyOf(resContainers);
         this.productions = List.copyOf(productions);
+        this.faithTrack = faithTrack;
         this.devCardGrid = devCardGrid;
         this.market = market;
-        this.faithTrack = faithTrack;
 
         this.resourceTypes = resourceTypes;
         this.devCardColors = devCardColors;
 
         this.maxObtainableDevCards = maxObtainableDevCards;
-        this.ended = false;
         this.devSlotsCount = devSlotsCount;
+        this.ended = false;
 
         this.players.forEach(p -> p.addEventListener(MVEvent.class, this::dispatch));
         this.leaderCards.forEach(l -> l.addEventListener(MVEvent.class, this::dispatch));
