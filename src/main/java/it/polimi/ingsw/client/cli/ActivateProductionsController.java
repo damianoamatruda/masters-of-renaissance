@@ -51,7 +51,12 @@ public class ActivateProductionsController extends CliController {
                 valid.set(true);
                 cli.promptInt("Production").ifPresentOrElse(productionId -> allowedProds.stream().filter(p -> p.getId() == productionId).findAny().ifPresentOrElse(selectedProd -> {
                     this.selectedProd = selectedProd;
-                    chooseInputReplacements(cli);
+                    if (!vm.getProductionInputResTypes(selectedProd).isEmpty())
+                        chooseInputReplacements(cli);
+                    else {
+                        inputReplacement = new HashMap<>();
+                        chooseOutputReplacements(cli);
+                    }
                 }, () -> valid.set(false)), () -> {
                     // TODO: Take only one step back
                     this.requests.clear();

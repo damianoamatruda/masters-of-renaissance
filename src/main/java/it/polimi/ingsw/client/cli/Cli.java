@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.cli.components.Resource;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
+import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.io.File;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Cli implements Runnable {
@@ -311,7 +313,11 @@ public class Cli implements Runnable {
 
             if (valid.get()) {
                 out.println();
-                promptResource(remainingResMap.keySet()).ifPresentOrElse(res -> promptQuantity(remainingResMap.get(res)).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+                Set<String> keys;
+                if(remainingResMap.containsKey("Blanks")) {
+                    keys = vm.getResourceTypes().stream().filter(ReducedResourceType::isStorable).map(ReducedResourceType::getName).collect(Collectors.toSet());
+                } else keys = remainingResMap.keySet();
+                promptResource(keys).ifPresentOrElse(res -> promptQuantity(remainingResMap.containsKey("Blanks") ? remainingResMap.get("Blanks") : remainingResMap.get(res)).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
                         // TODO: Check for shelf overshooting
                         shelves.compute(shelfId, (sid, rMap) -> {
                             if (rMap == null)
@@ -334,11 +340,10 @@ public class Cli implements Runnable {
         return Optional.of(shelves);
     }
 
-    // TODO: Maybe make it a component, like Menu
     Optional<Map<String, Integer>> promptResources(Set<String> allowedResources, int totalQuantity) {
         Map<String, Integer> replacedRes = new HashMap<>();
 
-        out.println("Resources you can choose:");
+        if(!allowedResources.isEmpty()) out.println(center("Resources you can choose:"));
 
         out.println();
         allowedResources.forEach(r -> {
