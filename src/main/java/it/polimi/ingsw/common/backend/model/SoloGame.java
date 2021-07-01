@@ -134,7 +134,7 @@ public class SoloGame extends Game {
         if (points <= 0)
             return;
 
-        blackPoints += points;
+        blackPoints = Integer.min(blackPoints + points, getFaithTrack().getMaxFaithPointsCount());
 
         onIncrementFaithPoints(blackPoints);
 
