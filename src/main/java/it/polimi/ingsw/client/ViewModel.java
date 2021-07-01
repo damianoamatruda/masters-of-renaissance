@@ -577,8 +577,6 @@ public class ViewModel {
      * @param currentPlayer the currentPlayer to set
      */
     public synchronized void setCurrentPlayer(String currentPlayer) {
-        if (currentPlayer == null)
-            currentPlayer = ""; // TODO: Do not do anything in this case, instead of setting it to ""
         this.currentPlayer = currentPlayer;
     }
 
