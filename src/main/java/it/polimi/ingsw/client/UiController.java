@@ -122,6 +122,7 @@ public abstract class UiController {
 
     public void on(UpdateGameEnd event) {
         vm.setWinnerPlayer(event.getWinner());
+        vm.setGameEnded(true);
     }
 
     public void on(UpdateGame event) {
