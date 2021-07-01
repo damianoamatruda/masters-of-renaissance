@@ -24,8 +24,6 @@ public class InputNicknameController extends GuiController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
-
-        gui.setPauseHandler(canvas);
     }
 
     /**
