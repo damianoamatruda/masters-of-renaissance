@@ -103,7 +103,7 @@ public class Gui extends Application {
         stage.setMinWidth(minWidth);
         stage.setMinHeight(minHeight);
         stage.setTitle(title);
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource(iconPng).toExternalForm())));
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPng))));
         stage.show();
     }
 

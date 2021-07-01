@@ -13,13 +13,13 @@ public class MainMenuController extends CliController {
 
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Play Offline", this::playOffline));
-        entries.put('2', new Menu.Entry("Play Online", cli1 -> cli1.setController(new PlayOnlineController(), false)));
-        entries.put('O', new Menu.Entry("Options...", cli1 -> cli1.setController(new MainOptionsController(), false)));
-        entries.put('Q', new Menu.Entry("Quit Game", Cli::quit));
-        new Menu(entries, Cli::quit).render();
+        entries.put('2', new Menu.Entry("Play Online", () -> cli.setController(new PlayOnlineController(), false)));
+        entries.put('O', new Menu.Entry("Options...", () -> cli.setController(new MainOptionsController(), false)));
+        entries.put('Q', new Menu.Entry("Quit Game", cli::quit));
+        new Menu(entries, cli::quit).render();
     }
 
-    private void playOffline(Cli cli) {
+    private void playOffline() {
         cli.getUi().openOfflineClient();
         cli.setController(new InputNicknameController("Play Offline"), false);
     }

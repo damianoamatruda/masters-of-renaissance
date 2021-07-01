@@ -14,10 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /** Gui component representing the faith track. */
@@ -170,11 +167,12 @@ public class FaithTrack extends HBox {
 
     public ImageView getPopesFavorImage(boolean isActivated, boolean gotBonus) {
         ImageView popesFavor;
-        if(!isActivated) return new ImageView("/assets/gui/faithtrack/popesfavorinactive.png");
-        if(gotBonus)
-            popesFavor = new ImageView(new Image("/assets/gui/faithtrack/popesfavor.png"));
+        if (!isActivated)
+            return new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/popesfavorinactive.png"))));
+        if (gotBonus)
+            popesFavor = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/popesfavor.png"))));
         else
-            popesFavor = new ImageView(new Image("/assets/gui/faithtrack/popesfavormissed.png"));
+            popesFavor = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/popesfavormissed.png"))));
         return popesFavor;
     }
 }

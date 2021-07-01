@@ -4,7 +4,7 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrActiveLeaderDiscarded;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 public abstract class TurnController extends CliController {
-    protected void quitToTitle(Cli cli) {
+    protected void quitToTitle() {
         cli.getUi().dispatch(new ReqQuit());
     }
 

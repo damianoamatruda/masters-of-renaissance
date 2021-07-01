@@ -227,7 +227,7 @@ public class SetupResourcesController extends GuiController {
                 gui.addToOverlay(
                         new Alert("Setup already concluded", "You have already concluded setup, advancing to game turns."));
 
-        if (vm.isCurrentPlayer())
+        if (vm.localPlayerIsCurrent())
             gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"), callback);
         else
             gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"), callback);

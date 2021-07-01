@@ -60,13 +60,13 @@ public class BuyDevelopmentCardController extends CliController {
                 .filter(c -> c.getLeaderType() == LeaderType.DISCOUNT).toList();
         new LeadersHand(discountLeaders).render();
 
-        chooseColor(cli);
+        chooseColor();
     }
 
-    private void chooseColor(Cli cli) {
+    private void chooseColor() {
         Set<String> allowedColors = grid.getTopCards().keySet().stream()
-            .map(String::toLowerCase)
-            .collect(Collectors.toUnmodifiableSet());
+                .map(String::toLowerCase)
+                .collect(Collectors.toUnmodifiableSet());
 
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
@@ -77,7 +77,7 @@ public class BuyDevelopmentCardController extends CliController {
                     valid.set(false);
                 else {
                     this.color = color.substring(0, 1).toUpperCase() + color.substring(1);
-                    chooseLevel(cli);
+                    chooseLevel();
                 }
             }, () -> {
                 isExitingState.set(true);
@@ -86,13 +86,13 @@ public class BuyDevelopmentCardController extends CliController {
         }
     }
 
-    private void chooseLevel(Cli cli) {
+    private void chooseLevel() {
         Set<Integer> levels = grid.getTopCards().values().stream()
                 .flatMap(Collection::stream)
                 .flatMap(Optional::stream)
                 .map(vm::getDevelopmentCard)
                 .map(card -> card.map(ReducedDevCard::getLevel).orElse(-1))
-            .filter(level -> level >= 0).collect(Collectors.toUnmodifiableSet());
+                .filter(level -> level >= 0).collect(Collectors.toUnmodifiableSet());
 
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
@@ -101,15 +101,15 @@ public class BuyDevelopmentCardController extends CliController {
                 isExitingState.set(false);
                 if (!levels.contains(level))
                     valid.set(false);
-                else {    
+                else {
                     this.level = level;
-                    chooseSlot(cli);
+                    chooseSlot();
                 }
-            }, () -> chooseColor(cli));
+            }, this::chooseColor);
         }
     }
 
-    private void chooseSlot(Cli cli) {
+    private void chooseSlot() {
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
             valid.set(true);
@@ -132,16 +132,16 @@ public class BuyDevelopmentCardController extends CliController {
                     cli.getOut().println(center("Please specify how many resources to take from which container."));
                     cli.getOut().println();
 
-                    chooseShelves(cli);
+                    chooseShelves();
                 }
 
                 if (!isExitingState.get())
                     cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot - 1, this.shelves));
-            }, () -> chooseLevel(cli));
+            }, this::chooseLevel);
         }
     }
 
-    private void chooseShelves(Cli cli) {
+    private void chooseShelves() {
         Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
@@ -149,7 +149,7 @@ public class BuyDevelopmentCardController extends CliController {
         cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
             isExitingState.set(false);
             this.shelves = shelves;
-        }, () -> chooseSlot(cli));
+        }, this::chooseSlot);
     }
 
     @Override

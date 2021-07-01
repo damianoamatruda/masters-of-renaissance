@@ -31,10 +31,10 @@ public class ActivateProductionsController extends CliController {
 
     @Override
     public void render() {
-        chooseProductions(cli);
+        chooseProductions();
     }
 
-    private void chooseProductions(Cli cli) {
+    private void chooseProductions() {
         cli.getOut().println();
         cli.getOut().println(center("~ Activate Productions ~"));
 
@@ -52,10 +52,10 @@ public class ActivateProductionsController extends CliController {
                 cli.promptInt("Production").ifPresentOrElse(productionId -> allowedProds.stream().filter(p -> p.getId() == productionId).findAny().ifPresentOrElse(selectedProd -> {
                     this.selectedProd = selectedProd;
                     if (!vm.getProductionInputResTypes(selectedProd).isEmpty())
-                        chooseInputReplacements(cli);
+                        chooseInputReplacements();
                     else {
                         inputReplacement = new HashMap<>();
-                        chooseOutputReplacements(cli);
+                        chooseOutputReplacements();
                     }
                 }, () -> valid.set(false)), () -> {
                     // TODO: Take only one step back
@@ -71,7 +71,7 @@ public class ActivateProductionsController extends CliController {
             cli.setController(this.sourceController, false);
     }
 
-    private void chooseInputReplacements(Cli cli) {
+    private void chooseInputReplacements() {
         cli.getOut().println();
         cli.getOut().println(center("-- Input replacements --"));
         cli.getOut().println();
@@ -80,11 +80,11 @@ public class ActivateProductionsController extends CliController {
                 this.selectedProd.getInputBlanks()
         ).ifPresentOrElse(inputReplacement -> {
             this.inputReplacement = inputReplacement;
-            chooseOutputReplacements(cli);
-        }, () -> chooseProductions(cli));
+            chooseOutputReplacements();
+        }, this::chooseProductions);
     }
 
-    private void chooseOutputReplacements(Cli cli) {
+    private void chooseOutputReplacements() {
         cli.getOut().println();
         cli.getOut().println(center("-- Output replacements --"));
         cli.getOut().println();
@@ -93,11 +93,11 @@ public class ActivateProductionsController extends CliController {
                 this.selectedProd.getOutputBlanks()
         ).ifPresentOrElse(outputReplacement -> {
             this.outputReplacement = outputReplacement;
-            chooseShelves(cli);
-        }, () -> chooseInputReplacements(cli));
+            chooseShelves();
+        }, this::chooseInputReplacements);
     }
 
-    private void chooseShelves(Cli cli) {
+    private void chooseShelves() {
         Map<String, Integer> totalRes = new HashMap<>(this.selectedProd.getInput());
         this.inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 
@@ -111,13 +111,13 @@ public class ActivateProductionsController extends CliController {
         cli.promptShelves(totalRes, allowedShelves, false).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
             this.requests.add(new ReducedProductionRequest(this.selectedProd.getId(), this.shelves, this.inputReplacement, this.outputReplacement));
-            chooseDone(cli);
-        }, () -> chooseOutputReplacements(cli));
+            chooseDone();
+        }, this::chooseOutputReplacements);
     }
 
-    private void chooseDone(Cli cli) {
+    private void chooseDone() {
         cli.getOut().println();
-        cli.prompt("Done [y/n]").ifPresentOrElse(input -> this.done = input.equalsIgnoreCase("y"), () -> chooseShelves(cli));
+        cli.prompt("Done [y/n]").ifPresentOrElse(input -> this.done = input.equalsIgnoreCase("y"), this::chooseShelves);
     }
 
     @Override

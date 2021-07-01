@@ -427,7 +427,7 @@ public class ViewModel {
      *
      * @return true if the local player is now the current player
      */
-    public synchronized boolean isCurrentPlayer() {
+    public synchronized boolean localPlayerIsCurrent() {
         return currentPlayer.equals(localPlayer);
     }
 

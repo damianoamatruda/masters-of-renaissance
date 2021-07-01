@@ -25,9 +25,9 @@ public class LeaderActionsController extends CliController {
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('A', new Menu.Entry("Activate leader", cli1 -> executeLeaderAction(true)));
-        entries.put('D', new Menu.Entry("Discard leader", cli1 -> executeLeaderAction(false)));
-        new Menu(entries, cli1 -> cli1.setController(sourceController, false)).render();
+        entries.put('A', new Menu.Entry("Activate leader", () -> executeLeaderAction(true)));
+        entries.put('D', new Menu.Entry("Discard leader", () -> executeLeaderAction(false)));
+        new Menu(entries, () -> cli.setController(sourceController, false)).render();
     }
 
     private void executeLeaderAction(boolean isActivate) {

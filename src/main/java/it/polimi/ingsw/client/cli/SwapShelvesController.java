@@ -28,21 +28,21 @@ public class SwapShelvesController extends CliController {
                 null)
                 .render();
 
-        promptFirstShelf(cli);
+        promptFirstShelf();
     }
 
-    private void promptFirstShelf(Cli cli) {
+    private void promptFirstShelf() {
         cli.promptInt("First shelf").ifPresentOrElse(shelfId1 -> {
             this.shelfId1 = shelfId1;
-            promptSecondShelf(cli);
+            promptSecondShelf();
         }, () -> cli.setController(sourceController, false));
     }
 
-    private void promptSecondShelf(Cli cli) {
+    private void promptSecondShelf() {
         cli.promptInt("Second shelf").ifPresentOrElse(shelfId2 -> {
             this.shelfId2 = shelfId2;
             cli.getUi().dispatch(new ReqSwapShelves(this.shelfId1, this.shelfId2));
-        }, () -> promptFirstShelf(cli));
+        }, this::promptFirstShelf);
     }
 
     @Override

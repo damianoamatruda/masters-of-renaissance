@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import it.polimi.ingsw.client.OnlineClient;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,7 +21,7 @@ public class PlayOnlineController extends CliController {
 
         cli.getOut().println();
 
-        JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(OnlineClient.class.getResourceAsStream(serverConfigPath))), JsonObject.class);
+        JsonObject jsonConfig = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(serverConfigPath))), JsonObject.class);
 
         String defaultHost = jsonConfig.get("host").getAsString();
         int defaultPort = jsonConfig.get("port").getAsInt();

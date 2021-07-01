@@ -3,15 +3,12 @@ package it.polimi.ingsw.common.backend;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializer;
-
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.backend.model.FileGameFactory;
 import it.polimi.ingsw.common.backend.model.GameFactory;
 import it.polimi.ingsw.common.backend.model.Lobby;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.MVEvent;
-import it.polimi.ingsw.server.Server;
-
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
@@ -55,7 +52,7 @@ public class ControllerTest {
      */
     @BeforeEach
     void setup() {
-        gf = new FileGameFactory(Server.class.getResourceAsStream("/config/config.json"));
+        gf = new FileGameFactory(getClass().getResourceAsStream("/config/config.json"));
         m = new Lobby(gf);
         c = new Controller(m);
         v = new DummyView();

@@ -44,27 +44,27 @@ public class TakeFromMarketController extends CliController {
                 null)
                 .render();
 
-        chooseRowCol(cli);
+        chooseRowCol();
     }
 
-    private void chooseRowCol(Cli cli) {
+    private void chooseRowCol() {
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
             valid.set(true);
             cli.prompt("[row/col]").ifPresentOrElse(input -> {
                 if (input.equalsIgnoreCase("row")) {
                     this.isRow = true;
-                    chooseIndex(cli);
+                    chooseIndex();
                 } else if (input.equalsIgnoreCase("col")) {
                     this.isRow = false;
-                    chooseIndex(cli);
+                    chooseIndex();
                 } else
                     valid.set(false);
             }, () -> cli.setController(this.sourceController, false));
         }
     }
 
-    private void chooseIndex(Cli cli) {
+    private void chooseIndex() {
         AtomicBoolean valid = new AtomicBoolean(false);
         while (!valid.get()) {
             valid.set(true);
@@ -74,14 +74,14 @@ public class TakeFromMarketController extends CliController {
                         && (this.isRow && this.index < vm.getMarket().orElseThrow().getGrid().size()
                         || !this.isRow && vm.getMarket().orElseThrow().getGrid().size() > 0
                         && this.index < vm.getMarket().orElseThrow().getGrid().get(0).size()))
-                    chooseReplacements(cli);
+                    chooseReplacements();
                 else
                     valid.set(false);
-            }, () -> chooseRowCol(cli));
+            }, this::chooseRowCol);
         }
     }
 
-    private void chooseReplacements(Cli cli) {
+    private void chooseReplacements() {
         // get a list with the selected resources
         this.resources = new ArrayList<>();
         if (this.isRow)
@@ -121,15 +121,15 @@ public class TakeFromMarketController extends CliController {
                     valid.set(true);
                     cli.promptResources(
                             zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).collect(Collectors.toUnmodifiableSet()), blanksCount
-                    ).ifPresentOrElse(replacements -> this.replacements = replacements, () -> chooseIndex(cli));
+                    ).ifPresentOrElse(replacements -> this.replacements = replacements, this::chooseIndex);
                 }
             }
         }
 
-        chooseShelves(cli);
+        chooseShelves();
     }
 
-    private void chooseShelves(Cli cli) {
+    private void chooseShelves() {
         Map<String, Integer> totalRes = new HashMap<>(this.replacements);
         this.resources.forEach(r -> totalRes.compute(r, (res, c) -> c == null ? 1 : c + 1));
 
@@ -141,7 +141,7 @@ public class TakeFromMarketController extends CliController {
         cli.promptShelves(totalRes, allowedShelves, true).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
             cli.getUi().dispatch(new ReqTakeFromMarket(this.isRow, this.index, this.replacements, this.shelves));
-        }, () -> chooseIndex(cli)); // TODO: Check this
+        }, this::chooseIndex); // TODO: Check this
     }
 
     @Override

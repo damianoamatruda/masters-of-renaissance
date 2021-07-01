@@ -1,12 +1,9 @@
 package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedMarket;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +11,7 @@ import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /** Gui component representing the market. */
@@ -65,33 +63,31 @@ public class Market extends StackPane {
         int marketRows = m.getGrid().size() + 2,
             marketColumns = m.getGrid().get(0).size() + 3;
         int row = 0, col = 0;
-        
+
         // these are used for scalin, caps are arbitrary and looked good on my machine
         double cellSide = Math.min(height / marketRows, width / marketColumns);
-        
+
         RowConstraints rc = grid.getRowConstraints().remove(0);
         rc.setVgrow(Priority.ALWAYS);
-        rc.setPercentHeight(100d/marketRows);
+        rc.setPercentHeight(100d / marketRows);
         ColumnConstraints cc = grid.getColumnConstraints().remove(0);
         cc.setHgrow(Priority.ALWAYS);
-        cc.setPercentWidth(100d/marketColumns);
-        
-        
-        ImageView slide = new ImageView();
-        slide.setImage(new Image(Resource.getMarblePath(m.getSlide())));
+        cc.setPercentWidth(100d / marketColumns);
+
+
+        ImageView slide = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(Resource.getMarblePath(m.getSlide())))));
         slide.setFitHeight(cellSide);
         slide.setFitWidth(cellSide);
         grid.add(slide, m.getGrid().get(0).size() + 1, 0);
 
-        
+
         while (row < m.getGrid().size()) {
             List<String> mRow = m.getGrid().get(row);
 
             while (col < mRow.size()) {
                 String sRes = mRow.get(col);
 
-                ImageView r = new ImageView();
-                r.setImage(new Image(Resource.getMarblePath(sRes)));
+                ImageView r = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(Resource.getMarblePath(sRes)))));
                 r.setFitHeight(cellSide);
                 r.setFitWidth(cellSide);
 

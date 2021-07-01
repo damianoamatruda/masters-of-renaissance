@@ -70,7 +70,7 @@ public class Playerboard extends HBox {
 
         // inkwell
         if(hasInkwell) {
-            ImageView inkwell = new ImageView(new Image("/assets/gui/playerboard/inkwell.png"));
+            ImageView inkwell = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/playerboard/inkwell.png"))));
             inkwell.setPreserveRatio(true);
             inkwell.setFitHeight(90);
             middleBox.getChildren().add(inkwell);
@@ -170,7 +170,7 @@ public class Playerboard extends HBox {
      * Sets and displays a background for the playerboard.
      */
     private void setBackground() {
-        frontBG.setImage(new Image(Objects.requireNonNull(getClass().getResource("/assets/gui/playerboard/background.png")).toExternalForm()));
+        frontBG.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/playerboard/background.png"))));
     }
 
     /**
@@ -211,7 +211,7 @@ public class Playerboard extends HBox {
         baseProduction.setMaxHeight(100);
         baseProduction.setMaxWidth(100);
 
-        ImageView baseProdPaper = new ImageView(new Image("/assets/gui/playerboard/baseproduction.png"));
+        ImageView baseProdPaper = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/playerboard/baseproduction.png"))));
         baseProdPaper.setFitWidth(100);
         baseProdPaper.setFitHeight(100);
         baseProduction.getChildren().add(baseProdPaper);

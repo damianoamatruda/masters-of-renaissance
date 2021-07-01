@@ -17,14 +17,14 @@ public class TurnAfterActionController extends TurnController {
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('L', new Menu.Entry("Leader Actions", cli1 -> cli1.setController(new LeaderActionsController(this), false)));
-        entries.put('S', new Menu.Entry("Swap Shelves", cli1 -> cli1.setController(new SwapShelvesController(this), false)));
+        entries.put('L', new Menu.Entry("Leader Actions", () -> cli.setController(new LeaderActionsController(this), false)));
+        entries.put('S', new Menu.Entry("Swap Shelves", () -> cli.setController(new SwapShelvesController(this), false)));
         entries.put('E', new Menu.Entry("End Turn", this::endTurn));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
         new Menu(entries, this::quitToTitle).render();
     }
 
-    private void endTurn(Cli cli) {
+    private void endTurn() {
         cli.getUi().dispatch(new ReqEndTurn());
     }
 

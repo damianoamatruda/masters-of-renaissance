@@ -22,16 +22,16 @@ public class MainOptionsController extends CliController {
         new Menu(entries, this::goBack).render();
     }
 
-    private void goBack(Cli cli) {
+    private void goBack() {
         cli.setController(new MainMenuController(), false);
     }
 
-    private void defaultConfig(Cli cli) {
+    private void defaultConfig() {
         cli.getUi().setGameConfigStream(null);
         cli.setController(new MainMenuController(), false);
     }
 
-    private void customConfig(Cli cli) {
+    private void customConfig() {
         cli.promptFile("Path of custom config.json").ifPresentOrElse(gameConfigFile -> {
             try {
                 cli.getUi().setGameConfigStream(new FileInputStream(gameConfigFile));

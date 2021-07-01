@@ -9,23 +9,23 @@ public class SplashController extends CliController {
     @Override
     public void render() {
         new MainTitle().render();
-        renderCredits(cli);
+        renderCredits();
         cli.getOut().println();
-        renderCastle(cli);
+        renderCastle();
         cli.getOut().println();
-        pausePressEnter(cli);
+        pausePressEnter();
         cli.setController(new MainMenuController(), false);
     }
 
-    private void renderCredits(Cli cli) {
-        cli.getOut().println(center(convertStreamToString(CliController.class.getResourceAsStream("/assets/cli/credits.txt"))));
+    private void renderCredits() {
+        cli.getOut().println(center(convertStreamToString(getClass().getResourceAsStream("/assets/cli/credits.txt"))));
     }
 
-    private void renderCastle(Cli cli) {
-        cli.getOut().println(center(convertStreamToString(CliController.class.getResourceAsStream("/assets/cli/castle.txt"))));
+    private void renderCastle() {
+        cli.getOut().println(center(convertStreamToString(getClass().getResourceAsStream("/assets/cli/castle.txt"))));
     }
 
-    private void pausePressEnter(Cli cli) {
+    private void pausePressEnter() {
         cli.getOut().println(center("[Press ENTER]"));
         cli.pause();
     }

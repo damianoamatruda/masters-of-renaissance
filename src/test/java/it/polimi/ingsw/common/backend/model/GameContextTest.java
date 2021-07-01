@@ -12,7 +12,6 @@ import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransac
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
-import it.polimi.ingsw.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameContextTest {
-    private static final Logger LOGGER = Logger.getLogger(GameContext.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GameContextTest.class.getName());
 
     /** A dummy view. */
     View view;
@@ -45,7 +44,7 @@ class GameContextTest {
     void setup() {
         view = new View();
         view.addEventListener(Event.class, e -> LOGGER.info(e.getClass().getSimpleName()));
-        gameFactory = new FileGameFactory(Server.class.getResourceAsStream("/config/config.json"));
+        gameFactory = new FileGameFactory(getClass().getResourceAsStream("/config/config.json"));
         multiGame = gameFactory.getMultiGame(List.of("A", "B"));
         soloGame = gameFactory.getSoloGame("A");
 
