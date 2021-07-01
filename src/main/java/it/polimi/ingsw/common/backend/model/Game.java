@@ -240,7 +240,7 @@ public class Game extends EventDispatcher {
      */
     public void onPlayerSetupDone() {
         if (players.stream().filter(Player::isActive).map(Player::getSetup).allMatch(PlayerSetup::isDone))
-            dispatch(new UpdateSetupDone()); // TODO: Evaluate whether this event can be removed
+            dispatch(new UpdateSetupDone());
     }
 
     /**
