@@ -765,7 +765,7 @@ public class ViewModel {
      * @param id the ID of the card to be activated
      */
     public synchronized void activateLeaderCard(int id) {
-        leaderCards.replaceAll(l -> l.getId() == id ? l.getActivated() : l);
+        leaderCards.replaceAll(l -> l.getId() == id ? l.setActive(true) : l);
         getPlayer(currentPlayer).ifPresent(player -> {
             List<Integer> leadersHand = player.getLeadersHand();
             if (!leadersHand.contains(id))
