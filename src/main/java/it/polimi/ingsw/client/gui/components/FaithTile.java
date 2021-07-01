@@ -86,13 +86,14 @@ public class FaithTile extends StackPane {
      */
     public void addPlayerMarker(String player, HashMap<String, ImageView> markers) {
         ImageView marker = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/faithmarker.png"))));
+        marker.getStyleClass().add("faithmarker");
 
         setMarkerColor(marker, player);
 
         marker.setScaleX(bg.getScaleX() / 1.5);
         marker.setScaleY(bg.getScaleY() / 1.5);
 
-        if(!this.getChildren().contains(markersPane))
+        if (!this.getChildren().contains(markersPane))
             this.getChildren().add(markersPane);
 
         markersPane.getChildren().add(marker);
@@ -140,6 +141,7 @@ public class FaithTile extends StackPane {
      */
     public void addBlackMarker() {
         ImageView marker = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/blackcross.png"))));
+        marker.getStyleClass().add("blackmarker");
         marker.setScaleX(bg.getScaleX() / 1.2);
         marker.setScaleY(bg.getScaleY() / 1.2);
         this.getChildren().add(marker);
@@ -161,11 +163,11 @@ public class FaithTile extends StackPane {
      * Adjusts positions of overlapping markers
      */
     private void adjustMarkers() {
-        if(markersPane.getChildren().size() > 0)
+        if (markersPane.getChildren().size() > 0)
             markersPane.getChildren().get(0).setLayoutX(12);
 
         // if overlapping player markers
-        if (markersPane.getChildren().stream().filter(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("faithmarker")).count() >= 2) {
+        if (markersPane.getChildren().stream().filter(marker -> marker.getStyleClass().contains("faithmarker")).count() >= 2) {
             for (int i = 1; i < markersPane.getChildren().size(); i++) {
                 markersPane.getChildren().subList(0, i).forEach(m -> m.setLayoutX(m.getLayoutX() - 7));
                 markersPane.getChildren().get(i).setLayoutX(markersPane.getChildren().get(i - 1).getLayoutX() + 10);
@@ -177,6 +179,6 @@ public class FaithTile extends StackPane {
      * Removes Lorenzo's faith marker (used when it has to be updated to a new position).
      */
     public void removeBlackMarker() {
-        this.getChildren().removeIf(img -> img instanceof ImageView && ((ImageView) img).getImage().getUrl().contains("blackcross"));
+        this.getChildren().removeIf(marker -> marker.getStyleClass().contains("blackmarker"));
     }
 }
