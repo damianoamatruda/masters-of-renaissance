@@ -21,7 +21,7 @@ The system must be based on the MVC architecture.
 ## Implemented features
 | Feature | Implemented |
 | ------- | ----------- |
-| Complete game rules | :heavy_check_mark: 1+ players supported |
+| Complete game rules | :heavy_check_mark: 1+ players supported (see [configuration file](#configuration-file)) |
 | CLI-based client | :heavy_check_mark: |
 | GUI-based client | :heavy_check_mark: |
 | Communication protocol ("Socket") | :heavy_check_mark: |
@@ -49,7 +49,8 @@ Syntax: `java -jar AM49-1.0-SNAPSHOT-server.jar [options]`
 ```
 
 ## Running the client:
-**(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore necessary. Running the GUI works from any terminal.
+**(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore necessary.
+Running the GUI works from any terminal.
 
 Run the `-client` jar file in the `/target` folder.  
 Syntax: `java -jar AM49-1.0-SNAPSHOT-client.jar [options]`
@@ -65,7 +66,20 @@ The default configuration file can be found in [`/src/main/resources`](src/main/
 This file contains all the necessary parameters and the game data needed for the server's Model to work.  
 Since the Model is completely parameterized, all parameters are necessary and must be specified.
 
-Custom configuration files can be specified from within the clients, by going to the *Options* menu. The custom configuration files will work only for local matches, as online matches use the server's configuration files. To know more about how the game's data is synchronized when a client joins an online match, see the [Communication protocol](deliverables/Communication%20protocol.md)'s specification.
+Custom configuration files can be specified from within the clients, by going to the *Options* menu.
+The custom configuration files will work only for local matches, as online matches use the server's configuration files.
+To know more about how the game's data is synchronized when a client joins an online match,
+see the [Communication protocol](deliverables/Communication%20protocol.md)'s specification.
+
+### Disclaimer
+As stated above, the configuration file contains **all** the game's data.
+Since supporting custom configurations was not a requirement for the project, this functionality is largely untested.  
+While it can be very handy to test some of the functionality (want free development cards? Not a problem!),
+it will also let you load illogical configurations (2 Billion marbles per market's side, negative starting resources, etc.).  
+Some configurations may not work at all, some may seem to work but may later result in breaking some of the game's constraints,
+some may work but show graphical glitches (all graphical components have been made to be fully adaptive,
+but have not been tested with unconventional (very large or negative) values).
 
 ## License
-This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it) and [Cranio Creations](http://www.craniocreations.it).
+This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it) and
+[Cranio Creations](http://www.craniocreations.it).
