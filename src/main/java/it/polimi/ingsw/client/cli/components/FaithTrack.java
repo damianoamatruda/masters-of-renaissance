@@ -87,7 +87,7 @@ public class FaithTrack extends StringComponent {
                     stringBuilder.append("\u001B[0m").append(points.get(player) == i ?
                             center(vm.getAnsiPlayerColor(player).orElseThrow() + nicks.get(j) + "\u001B[0m", 5) : " ".repeat(cellWidth));
                 } else
-                    stringBuilder.append("\u001B[0m").append(vm.getBlackCrossFP() == i ?
+                    stringBuilder.append("\u001B[0m").append(vm.getBlackPoints() == i ?
                             center("\u001B[90mBlack" + "\u001B[0m", 5) : " ".repeat(cellWidth));
             }
             // Rightmost side border

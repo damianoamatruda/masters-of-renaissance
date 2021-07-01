@@ -18,7 +18,7 @@ public class ViewModel {
     private List<ReducedActionToken> actionTokens;
 
     /** The faith points of Lorenzo il Magnifico. */
-    private int blackCrossFP;
+    private int blackPoints;
 
     /** The list of resource containers present in the game. */
     private List<ReducedResourceContainer> containers;
@@ -359,17 +359,17 @@ public class ViewModel {
      *
      * @return blackCross' faith points
      */
-    public synchronized int getBlackCrossFP() {
-        return blackCrossFP;
+    public synchronized int getBlackPoints() {
+        return blackPoints;
     }
 
     /**
      * Sets Lorenzo's faith points amount
      *
-     * @param blackCrossFP the blackCross faith points to set
+     * @param blackPoints the blackCross faith points to set
      */
-    public synchronized void setBlackCrossFP(int blackCrossFP) {
-        this.blackCrossFP = blackCrossFP;
+    public synchronized void setBlackPoints(int blackPoints) {
+        this.blackPoints = blackPoints;
     }
 
     /**

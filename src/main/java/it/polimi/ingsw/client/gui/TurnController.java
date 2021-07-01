@@ -229,7 +229,7 @@ public abstract class TurnController extends GuiController {
 
     @Override
     public void on(UpdateFaithPoints event) {
-        int oldPoints = !event.isBlackCross() ? vm.getPlayerFaithPoints(event.getPlayer()) : vm.getBlackCrossFP();
+        int oldPoints = !event.isBlackCross() ? vm.getPlayerFaithPoints(event.getPlayer()) : vm.getBlackPoints();
         super.on(event);
         if (oldPoints < vm.getFaithTrack().orElseThrow().getMaxFaith())
             Platform.runLater(() -> playerBoard.updateFaithPoints(event, oldPoints));

@@ -114,7 +114,7 @@ public abstract class UiController {
 
     public void on(UpdateFaithPoints event) {
         if (event.isBlackCross())
-            vm.setBlackCrossFP(event.getFaithPoints());
+            vm.setBlackPoints(event.getFaithPoints());
         else
             vm.getPlayer(event.getPlayer()).ifPresent(player ->
                     vm.putPlayer(player.setFaithPoints(event.getFaithPoints())));
@@ -141,7 +141,7 @@ public abstract class UiController {
         vm.setCurrentPlayer(event.getCurrentPlayer());
         vm.setInkwellPlayer(event.getInkwellPlayer());
         vm.setWinnerPlayer(event.getWinnerPlayer());
-        vm.setBlackCrossFP(event.getBlackPoints());
+        vm.setBlackPoints(event.getBlackPoints());
         vm.setLastRound(event.isLastRound());
         vm.setGameEnded(event.isEnded());
     }
