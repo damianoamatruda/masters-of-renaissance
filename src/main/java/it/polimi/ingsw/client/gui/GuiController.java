@@ -41,7 +41,7 @@ public abstract class GuiController extends UiController implements Initializabl
             vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
                         !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
-                    if (vm.isCurrentPlayer())
+                    if (vm.localPlayerIsCurrent())
                         gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
                     else
                         gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));

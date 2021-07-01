@@ -37,7 +37,7 @@ public abstract class CliController extends UiController implements Renderable {
             vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
                         !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
-                    if (vm.isCurrentPlayer())
+                    if (vm.localPlayerIsCurrent())
                         cli.setController(new TurnBeforeActionController(), false);
                     else
                         cli.setController(new WaitingAfterTurnController(), false);
@@ -60,7 +60,7 @@ public abstract class CliController extends UiController implements Renderable {
         switch (event.getReason()) {
             case LATE_SETUP_ACTION -> {
                 cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
-                if (vm.isCurrentPlayer())
+                if (vm.localPlayerIsCurrent())
                     cli.setController(new TurnBeforeActionController(), true);
                 else
                     cli.setController(new WaitingAfterTurnController(), true);
