@@ -262,6 +262,8 @@ public abstract class TurnController extends GuiController {
                 strongbox = getStrongBox();
 
                 playerBoard.setContainers(warehouse, strongbox);
+
+                refreshLeaderBoxes();
         });
     }
 }
