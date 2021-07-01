@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -50,9 +51,10 @@ public class Gui extends Application {
     static final double realWidth = 1280;
     static final double realHeight = 720;
 
+    private static final String title = "Masters of Renaissance";
+    private static final String iconPng = "/assets/gui/playerboard/inkwell.png";
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
     private static final String mainStylesheetCss = "/assets/gui/index.css";
-    private static final String title = "Masters of Renaissance";
     private static Gui instance = null;
     private final Ui ui;
     private Stage stage;
@@ -101,6 +103,7 @@ public class Gui extends Application {
         stage.setMinWidth(minWidth);
         stage.setMinHeight(minHeight);
         stage.setTitle(title);
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource(iconPng).toExternalForm())));
         stage.show();
     }
 
