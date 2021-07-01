@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.gui.Gui;
-import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
+import it.polimi.ingsw.common.events.vcevents.ReqActivateProductions;
 import it.polimi.ingsw.common.reducedmodel.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import javafx.fxml.FXML;
@@ -156,7 +156,7 @@ public class ActivateProductions extends StackPane {
      */
     private void handleSubmit() {
         buildRequest();
-        Gui.getInstance().getUi().dispatch(new ReqActivateProduction(requests));
+        Gui.getInstance().getUi().dispatch(new ReqActivateProductions(requests));
         ((Pane) this.getParent()).getChildren().remove(this);
     }
 

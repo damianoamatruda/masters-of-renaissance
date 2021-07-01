@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.ProductionSet;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.vcevents.ReqActivateProduction;
+import it.polimi.ingsw.common.events.vcevents.ReqActivateProductions;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
@@ -63,7 +63,7 @@ public class ActivateProductionsController extends CliController {
         }
 
         if (!this.requests.isEmpty())
-            cli.getUi().dispatch(new ReqActivateProduction(this.requests));
+            cli.getUi().dispatch(new ReqActivateProductions(this.requests));
         else
             cli.setController(this.sourceController, false);
     }

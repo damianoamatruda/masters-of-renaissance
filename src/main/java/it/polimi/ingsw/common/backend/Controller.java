@@ -11,7 +11,7 @@ import java.util.Map;
 public class Controller {
     private final Lobby model;
 
-    private final Map<View, EventListener<ReqActivateProduction>> reqActivateProductionEventListeners = new HashMap<>();
+    private final Map<View, EventListener<ReqActivateProductions>> reqActivateProductionEventListeners = new HashMap<>();
     private final Map<View, EventListener<ReqBuyDevCard>> reqBuyDevCardEventListeners = new HashMap<>();
     private final Map<View, EventListener<ReqChooseLeaders>> reqChooseLeadersEventListeners = new HashMap<>();
     private final Map<View, EventListener<ReqChooseResources>> reqChooseResourcesEventListeners = new HashMap<>();
@@ -28,7 +28,7 @@ public class Controller {
     }
 
     public void registerOnVC(View view) {
-        view.addEventListener(ReqActivateProduction.class, reqActivateProductionEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
+        view.addEventListener(ReqActivateProductions.class, reqActivateProductionEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
         view.addEventListener(ReqBuyDevCard.class, reqBuyDevCardEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
         view.addEventListener(ReqChooseLeaders.class, reqChooseLeadersEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
         view.addEventListener(ReqChooseResources.class, reqChooseResourcesEventListeners.computeIfAbsent(view, v -> event -> on(v, event)));
@@ -42,7 +42,7 @@ public class Controller {
     }
 
     public void unregisterOnVC(View view) {
-        view.removeEventListener(ReqActivateProduction.class, reqActivateProductionEventListeners.remove(view));
+        view.removeEventListener(ReqActivateProductions.class, reqActivateProductionEventListeners.remove(view));
         view.removeEventListener(ReqBuyDevCard.class, reqBuyDevCardEventListeners.remove(view));
         view.removeEventListener(ReqChooseLeaders.class, reqChooseLeadersEventListeners.remove(view));
         view.removeEventListener(ReqChooseResources.class, reqChooseResourcesEventListeners.remove(view));
@@ -102,7 +102,7 @@ public class Controller {
                 gameContext.buyDevCard(view, nickname, event.getColor(), event.getLevel(), event.getDevSlot(), event.getResContainers()));
     }
 
-    private void on(View view, ReqActivateProduction event) {
+    private void on(View view, ReqActivateProductions event) {
         model.checkJoinedThen(view, (gameContext, nickname) ->
                 gameContext.activateProductionRequests(view, nickname, event.getProdRequests()));
     }

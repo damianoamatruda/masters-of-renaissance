@@ -793,7 +793,7 @@ See TODO for more details on a specific error.
            ┕━━━┯━━━━┛                      ┕━━━━┯━━━┛
 ╭────────────╮ │                                │
 │ user input ├─┤                                │ 
-╰────────────╯ │ ReqActivateProd                │
+╰────────────╯ │ ReqActivateProductions         │
                ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
                │                                │ ╭──────────────────╮
                │                                ├─┤ try exec / check │
@@ -822,10 +822,12 @@ See TODO for more details on a specific error.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
-**ReqActivateProd (client)**
+
+**ReqActivateProductions (client)**
+
 ```json
 {
-  "type": "ReqActivateProd",
+  "type": "ReqActivateProductions",
   "prodRequests": [
     {
       "id": 0,
