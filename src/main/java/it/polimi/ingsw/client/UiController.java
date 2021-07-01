@@ -141,6 +141,7 @@ public abstract class UiController {
         vm.setCurrentPlayer(event.getCurrentPlayer());
         vm.setInkwellPlayer(event.getInkwellPlayer());
         vm.setWinnerPlayer(event.getWinnerPlayer());
+        vm.setBlackCrossFP(event.getBlackPoints());
         vm.setLastRound(event.isLastRound());
         vm.setGameEnded(event.isEnded());
     }
