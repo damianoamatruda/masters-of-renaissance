@@ -49,12 +49,10 @@ public class ActivateProductionsController extends CliController {
             AtomicBoolean valid = new AtomicBoolean(false);
             while (!valid.get()) {
                 valid.set(true);
-                cli.promptInt("Production").ifPresentOrElse(productionId -> {
-                    allowedProds.stream().filter(p -> p.getId() == productionId).findAny().ifPresentOrElse(selectedProd -> {
-                        this.selectedProd = selectedProd;
-                        chooseInputReplacements(cli);
-                    }, () -> valid.set(false));
-                }, () -> {
+                cli.promptInt("Production").ifPresentOrElse(productionId -> allowedProds.stream().filter(p -> p.getId() == productionId).findAny().ifPresentOrElse(selectedProd -> {
+                    this.selectedProd = selectedProd;
+                    chooseInputReplacements(cli);
+                }, () -> valid.set(false)), () -> {
                     // TODO: Take only one step back
                     this.requests.clear();
                     this.done = true;
@@ -114,9 +112,7 @@ public class ActivateProductionsController extends CliController {
 
     private void chooseDone(Cli cli) {
         cli.getOut().println();
-        cli.prompt("Done [y/n]").ifPresentOrElse(input -> {
-            this.done = input.equalsIgnoreCase("y");
-        }, () -> chooseShelves(cli));
+        cli.prompt("Done [y/n]").ifPresentOrElse(input -> this.done = input.equalsIgnoreCase("y"), () -> chooseShelves(cli));
     }
 
     @Override

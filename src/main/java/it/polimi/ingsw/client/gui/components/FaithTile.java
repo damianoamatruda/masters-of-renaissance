@@ -74,10 +74,6 @@ public class FaithTile extends StackPane {
 
     }
 
-//    public int getTileId() {
-//        return tileId;
-//    }
-
     /**
      * Invisible tile, used only for alignment between other faith track tiles.
      */

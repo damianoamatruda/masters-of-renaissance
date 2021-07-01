@@ -1,7 +1,5 @@
 package it.polimi.ingsw.common.reducedmodel;
 
-import it.polimi.ingsw.common.backend.model.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -124,11 +124,9 @@ public class Market extends StackPane {
             grid.getRowConstraints().add(rc);
 
 
-        indexSelectors.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-            public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
-                if (indexSelectors.getSelectedToggle() != null)
-                    controllerListener.accept(((IndexRadioButton) newToggle).getIndex(), ((IndexRadioButton) newToggle).isRow());
-            }
+        indexSelectors.selectedToggleProperty().addListener((ov, oldToggle, newToggle) -> {
+            if (indexSelectors.getSelectedToggle() != null)
+                controllerListener.accept(((IndexRadioButton) newToggle).getIndex(), ((IndexRadioButton) newToggle).isRow());
         });
     }
 

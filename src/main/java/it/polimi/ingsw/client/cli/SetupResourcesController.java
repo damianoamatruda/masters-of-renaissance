@@ -42,9 +42,7 @@ public class SetupResourcesController extends SetupController {
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
-        cli.promptShelvesSetup(allowedResources, totalQuantity, allowedShelves).ifPresentOrElse(shelves -> {
-            cli.getUi().dispatch(new ReqChooseResources(shelves));
-        }, () -> cli.prompt("You cannot go back. Do you want to quit to title? [y/n]").ifPresentOrElse(input -> {
+        cli.promptShelvesSetup(allowedResources, totalQuantity, allowedShelves).ifPresentOrElse(shelves -> cli.getUi().dispatch(new ReqChooseResources(shelves)), () -> cli.prompt("You cannot go back. Do you want to quit to title? [y/n]").ifPresentOrElse(input -> {
             if (input.equalsIgnoreCase("y"))
                 cli.getUi().dispatch(new ReqQuit());
             else

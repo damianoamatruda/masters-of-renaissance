@@ -13,7 +13,7 @@ import java.util.*;
  * Test class for ResourceTransactionRecipes.
  */
 public class ResourceTransactionRecipeTest {
-    private ResourceType coin = new ResourceType("coin", true);
+    private final ResourceType coin = new ResourceType("coin", true);
 
     @Test
     void nullInput() {

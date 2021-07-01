@@ -53,9 +53,7 @@ public class LeaderBoard extends StackPane {
      * Sets handler to back button.
      */
     private void addBackHandler() {
-        back.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
-            ((Pane) getParent()).getChildren().remove(this);
-        });
+        back.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> ((Pane) getParent()).getChildren().remove(this));
     }
 
     public void createLeaderboardTable(TableView<LeaderBoardEntry> content) {

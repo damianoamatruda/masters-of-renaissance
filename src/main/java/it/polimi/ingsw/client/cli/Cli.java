@@ -311,22 +311,18 @@ public class Cli implements Runnable {
 
             if (valid.get()) {
                 out.println();
-                promptResource(remainingResMap.keySet()).ifPresentOrElse(res -> {
-                    promptQuantity(remainingResMap.get(res)).ifPresentOrElse(quantity -> {
-                        promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
-                            // TODO: Check for shelf overshooting
-                            shelves.compute(shelfId, (sid, rMap) -> {
-                                if (rMap == null)
-                                    rMap = new HashMap<>();
-                                rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
-                                return rMap;
-                            });
+                promptResource(remainingResMap.keySet()).ifPresentOrElse(res -> promptQuantity(remainingResMap.get(res)).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+                        // TODO: Check for shelf overshooting
+                        shelves.compute(shelfId, (sid, rMap) -> {
+                            if (rMap == null)
+                                rMap = new HashMap<>();
+                            rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                            return rMap;
+                        });
 
-                            allocQuantity.addAndGet(quantity);
-                            remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
-                        }, () -> valid.set(false));
-                    }, () -> valid.set(false));
-                }, () -> valid.set(false));
+                        allocQuantity.addAndGet(quantity);
+                        remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+                    }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
             }
 
             if (!valid.get()) {
@@ -356,12 +352,10 @@ public class Cli implements Runnable {
 
             AtomicBoolean valid = new AtomicBoolean(true);
 
-            promptResource(allowedResources).ifPresentOrElse(res -> {
-                promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> {
-                    allocQuantity.addAndGet(quantity);
-                    replacedRes.compute(res, (r, q) -> q == null ? quantity : q + quantity);
-                }, () -> valid.set(false));
-            }, () -> valid.set(false));
+            promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> {
+                allocQuantity.addAndGet(quantity);
+                replacedRes.compute(res, (r, q) -> q == null ? quantity : q + quantity);
+            }, () -> valid.set(false)), () -> valid.set(false));
 
             if (!valid.get()) {
                 // TODO: Take only one step back
@@ -395,21 +389,17 @@ public class Cli implements Runnable {
             out.println();
 
             AtomicBoolean valid = new AtomicBoolean(true);
-            promptResource(allowedResources).ifPresentOrElse(res -> {
-                promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> {
-                    promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
-                        // TODO: Check for shelf overshooting
-                        shelves.compute(shelfId, (sid, rMap) -> {
-                            if (rMap == null)
-                                rMap = new HashMap<>();
-                            rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
-                            return rMap;
-                        });
+            promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+                    // TODO: Check for shelf overshooting
+                    shelves.compute(shelfId, (sid, rMap) -> {
+                        if (rMap == null)
+                            rMap = new HashMap<>();
+                        rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                        return rMap;
+                    });
 
-                        allocQuantity.addAndGet(quantity);
-                    }, () -> valid.set(false));
-                }, () -> valid.set(false));
-            }, () -> valid.set(false));
+                    allocQuantity.addAndGet(quantity);
+                }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
 
             if (!valid.get()) {
                 // TODO: Take only one step back

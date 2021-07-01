@@ -31,8 +31,8 @@ public class LeadersHand extends StringComponent {
             for (int j = 0; j < 4 && j < leaders.size() - i; j++)
                 leaderCardComponents.add(new LeaderCard(cards.get(j)));
 
-            int maxWidth = leaderCardComponents.stream().map(c -> c.getString()).mapToInt(Cli::maxLineWidth).max().orElse(0);
-            int maxHeight = maxLinesHeight(leaderCardComponents.stream().map(c -> c.getString()).toList());
+            int maxWidth = leaderCardComponents.stream().map(LeaderCard::getString).mapToInt(Cli::maxLineWidth).max().orElse(0);
+            int maxHeight = maxLinesHeight(leaderCardComponents.stream().map(LeaderCard::getString).toList());
 
             List<List<String>> rows = new ArrayList<>();
             for (LeaderCard leaderCardComponent : leaderCardComponents)

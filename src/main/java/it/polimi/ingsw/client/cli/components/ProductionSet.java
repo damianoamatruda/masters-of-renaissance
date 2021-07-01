@@ -30,8 +30,8 @@ public class ProductionSet extends StringComponent {
             for (int j = 0; j < 4 && j < reducedProductionSet.size() - i; j++)
                 cliProductions.add(new ResourceTransactionRecipe(productions.get(j)));
 
-            int maxWidth = cliProductions.stream().map(c -> c.getString()).mapToInt(Cli::maxLineWidth).max().orElse(0);
-            int maxHeight = maxLinesHeight(cliProductions.stream().map(c -> c.getString()).toList());
+            int maxWidth = cliProductions.stream().map(ResourceTransactionRecipe::getString).mapToInt(Cli::maxLineWidth).max().orElse(0);
+            int maxHeight = maxLinesHeight(cliProductions.stream().map(ResourceTransactionRecipe::getString).toList());
 
             List<List<String>> rows = new ArrayList<>();
             for (ResourceTransactionRecipe prod : cliProductions)

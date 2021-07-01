@@ -119,7 +119,7 @@ class GameContextTest {
             LeaderCard leader = soloGame.getInkwellPlayer().getLeaders().get(0);
 
             Optional<Map<ResourceType, Integer>> resReq = Optional.empty();
-            Optional<Set<DevCardRequirement.Entry>> cardReq = Optional.empty();;
+            Optional<Set<DevCardRequirement.Entry>> cardReq = Optional.empty();
             try {
                 leader.activate(soloGame.getInkwellPlayer());
             } catch (CardRequirementsNotMetException e) {
@@ -177,14 +177,6 @@ class GameContextTest {
                 soloContext.takeMarketResources(view, soloGame.getInkwellPlayer().getNickname(), true,
                         0, Map.of(), choice);
             });
-
-//            res2.ifPresent(r -> {
-//                Map<Integer, Map<String, Integer>> choice = new HashMap<>();
-//                choice.put(shelves.get(1), Map.of(r.getName(), 1));
-//
-//                soloContext.takeMarketResources(view, soloGame.getInkwellPlayer().getNickname(), false,
-//                        soloGame.getMarket().getGrid().stream().map(re -> re.get(0)).toList().indexOf(r), Map.of(), choice);
-//            });
 
             assertAll(() -> assertTrue(res1.isEmpty() || whShelves.get(0).getResourceMap().equals(Map.of(res1.get(), 1)))/*,
                     () -> assertTrue(res2.isEmpty() || whShelves.get(1).getResourceMap().equals(Map.of(res2.get(), 1)))*/);

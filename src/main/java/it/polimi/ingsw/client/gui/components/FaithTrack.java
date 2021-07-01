@@ -95,8 +95,6 @@ public class FaithTrack extends HBox {
             updateBlackMarker(vm.getBlackPoints(), -1);
 
         vm.getPlayers().forEach(player -> updatePlayerMarker(player.getNickname(), vm.getPlayerFaithPoints(player.getNickname()), -1));
-//        if (!vm.isCurrentPlayer())
-//            updatePlayerMarker(vm.getPlayerFaithPoints(vm.getLocalPlayerNickname()), -1);
 
         setPopesFavors();
 

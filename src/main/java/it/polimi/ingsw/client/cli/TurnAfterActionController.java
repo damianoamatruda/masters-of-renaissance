@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.Menu;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
-import it.polimi.ingsw.common.events.mvevents.UpdateCurrentPlayer;
 import it.polimi.ingsw.common.events.vcevents.ReqEndTurn;
 
 import java.util.LinkedHashMap;

@@ -265,8 +265,6 @@ public class TakeFromMarketController extends GuiController {
                                 .map(LeaderCard::getGuiDepot).findAny().ifPresent(Shelf::removeResource);
                         resourcesBox.getChildren().add(res);
                         setDragAndDropSource(res);
-//                        replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) - 1 : 0);
-//                        if(replacements.containsKey(resource) && replacements.get(resource) == 0) replacements.remove(resource);
                         success = true;
                     } catch (NumberFormatException | NullPointerException e) {
                         // it is fine if it passes here. Drop will be ignored
@@ -382,13 +380,11 @@ public class TakeFromMarketController extends GuiController {
     }
 
     private boolean replaceBlank(String resourceType) {
-        resourcesBox.getChildren().stream().filter(r -> ((Resource) r).isBlank()).findFirst().ifPresent(node -> {
-            Platform.runLater(() -> {
-                Resource replacement = new Resource(resourceType);
-                setDragAndDropSource(replacement);
-                resourcesBox.getChildren().set(resourcesBox.getChildren().indexOf(node), replacement);
-            });
-        });
+        resourcesBox.getChildren().stream().filter(r -> ((Resource) r).isBlank()).findFirst().ifPresent(node -> Platform.runLater(() -> {
+            Resource replacement = new Resource(resourceType);
+            setDragAndDropSource(replacement);
+            resourcesBox.getChildren().set(resourcesBox.getChildren().indexOf(node), replacement);
+        }));
 
         return resourcesBox.getChildren().stream().noneMatch(r -> ((Resource) r).isBlank());
     }

@@ -213,7 +213,7 @@ public class GameContext extends AsynchronousEventDispatcher {
         LeaderCard leader;
 
         try {
-            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
+            leader = player.getLeaderById(leaderId).orElseThrow(Exception::new);
         } catch (Exception e) {
             dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             return;
@@ -228,7 +228,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrCardRequirements(view,
                     e.getMissingDevCards().orElse(new HashSet<>()).stream().map(Entry::reduce).toList(),
                     e.getMissingResources().orElse(new HashMap<>()).entrySet().stream()
-                            .collect(Collectors.toMap(entry -> entry.getKey().getName(), entry -> entry.getValue()))));
+                            .collect(Collectors.toMap(entry -> entry.getKey().getName(), Map.Entry::getValue))));
         }
     }
 
@@ -251,7 +251,7 @@ public class GameContext extends AsynchronousEventDispatcher {
         LeaderCard leader;
 
         try {
-            leader = player.getLeaderById(leaderId).orElseThrow(() -> new Exception());
+            leader = player.getLeaderById(leaderId).orElseThrow(Exception::new);
         } catch (Exception e) {
             dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
             return;
@@ -567,7 +567,7 @@ public class GameContext extends AsynchronousEventDispatcher {
         return r.entrySet().stream().collect(Collectors.toMap(e -> {
             String name = e.getKey().substring(0, 1).toUpperCase() + e.getKey().substring(1);
             return gameFactory.getResourceType(name).orElseThrow(() -> new NoSuchElementException(name));
-        }, e -> e.getValue()
+        }, Map.Entry::getValue
         ));
     }
 

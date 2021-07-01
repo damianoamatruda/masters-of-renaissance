@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import it.polimi.ingsw.client.gui.components.LeaderBoard?>
 <?import it.polimi.ingsw.client.gui.components.SButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.*?>

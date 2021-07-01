@@ -86,7 +86,7 @@ public class DevCardRequirement implements CardRequirement {
 
     @Override
     public ReducedDevCardRequirement reduceDR() {
-        return new ReducedDevCardRequirement(entryList.stream().map(e -> e.reduce()).toList());
+        return new ReducedDevCardRequirement(entryList.stream().map(Entry::reduce).toList());
     }
 
     /**

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.backend.model.cardrequirements.CardRequirementsNotMetException;
 import it.polimi.ingsw.common.backend.model.cardrequirements.DevCardRequirement;
 import it.polimi.ingsw.common.backend.model.cardrequirements.ResourceRequirement;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.IllegalResourceTransferException;

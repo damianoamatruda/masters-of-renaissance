@@ -143,15 +143,11 @@ public class BuyDevelopmentCardController extends GuiController {
         if(!leaders.isEmpty()) {
             leadersBox.setMinHeight(180);
             leadersBox.setMaxHeight(180);
-            // devSlotsBox.setMinHeight(400);
-            // devSlotsBox.setMaxHeight(400);
             devSlotsBox.setScaleX(0.6);
             devSlotsBox.setScaleY(0.6);
             containersBox.setScaleX(0.7);
             containersBox.setScaleY(0.7);
 
-            // devSlotsBox.setMinHeight(100);
-            // devSlotsBox.setMaxHeight(100);
         }
 
     }
@@ -241,8 +237,6 @@ public class BuyDevelopmentCardController extends GuiController {
             containersBox.getChildren().remove(1);
         containersBox.getChildren().add(strongbox);
 
-        // strongbox.setScaleX(0.71);
-        // strongbox.setScaleY(0.71);
     }
 
     /**

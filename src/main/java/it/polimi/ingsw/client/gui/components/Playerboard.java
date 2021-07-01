@@ -8,7 +8,6 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +22,7 @@ public class Playerboard extends HBox {
     private GridPane board;
     @FXML
     private GridPane storageColumn;
-    private VBox middleBox;
+    private final VBox middleBox;
     private Warehouse warehouse;
     private Strongbox strongbox;
     private Production production;

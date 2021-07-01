@@ -105,9 +105,6 @@ public class TakeFromMarketController extends CliController {
 
         this.replacements = new HashMap<>();
 
-        // for (String res : chosenResources)
-        //     this.replacements.compute(res, (k, v) -> v == null ? 1 : v++);
-
         if (blanksCount > 0) {
             List<ReducedLeaderCard> zeroLeaders = vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().stream()
                     .filter(ReducedLeaderCard::isActive)
@@ -124,9 +121,7 @@ public class TakeFromMarketController extends CliController {
                     valid.set(true);
                     cli.promptResources(
                             zeroLeaders.stream().map(ReducedLeaderCard::getResourceType).collect(Collectors.toUnmodifiableSet()), blanksCount
-                    ).ifPresentOrElse(replacements -> {
-                        this.replacements = replacements;
-                    }, () -> chooseIndex(cli));
+                    ).ifPresentOrElse(replacements -> this.replacements = replacements, () -> chooseIndex(cli));
                 }
             }
         }
