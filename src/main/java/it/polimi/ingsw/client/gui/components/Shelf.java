@@ -19,6 +19,7 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -297,7 +298,7 @@ public class Shelf extends BorderPane {
     }
 
     public void setPlaceholder(String resource) {
-        ImageView img = new ImageView(new Image(getResourcePlaceholderPath(resource)));
+        ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(getResourcePlaceholderPath(resource)))));
         img.setFitHeight(30);
         img.setFitWidth(30);
         content.getChildren().add(img);

@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /** Gui controller used on Solo game turn switch, which displays the activated action token. */
@@ -37,7 +38,7 @@ public class TriggerActionTokenController extends GuiController {
         AnchorPane.setTopAnchor(message, 20.0);
         AnchorPane.setBottomAnchor(next, 20.0);
 
-        this.token.setImage(new Image(getTokenImage(vm.getLatestToken().orElseThrow())));
+        this.token.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(getTokenImage(vm.getLatestToken().orElseThrow())))));
 
         AnchorPane.setTopAnchor(this.token, 200.0);
     }

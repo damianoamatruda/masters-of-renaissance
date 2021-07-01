@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /** Gui component that represents a production recipe. */
@@ -113,7 +114,7 @@ public class Production extends StackPane {
         for(String resource : blanksExclusions) {
             StackPane exclusion = new StackPane();
             exclusion.getChildren().add(new Resource(resource));
-            exclusion.getChildren().add(new ImageView(new Image("/assets/gui/resourcetypes/blankexclusion.png")));
+            exclusion.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/resourcetypes/blankexclusion.png")))));
 
             Group group = new Group(exclusion);
             group.setScaleX(0.3);

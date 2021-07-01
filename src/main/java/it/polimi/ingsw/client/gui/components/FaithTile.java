@@ -40,26 +40,22 @@ public class FaithTile extends StackPane {
         markersPane.setMaxWidth(117);
 
         if (isYellow) {
-            if(isSection) template = "/assets/gui/faithtrack/yellowsectiontile.png";
+            if (isSection) template = "/assets/gui/faithtrack/yellowsectiontile.png";
             else template = "/assets/gui/faithtrack/yellowtile.png";
-        } else
-            if(isSection) template = "/assets/gui/faithtrack/sectiontile.png";
-            else template = "/assets/gui/faithtrack/faithtile.png";
+        } else if (isSection) template = "/assets/gui/faithtrack/sectiontile.png";
+        else template = "/assets/gui/faithtrack/faithtile.png";
 
-        Image bgimg = new Image(Objects.requireNonNull(getClass().getResource(template)).toExternalForm());
-
-        ImageView bg = new ImageView(bgimg);
-        this.bg = bg;
+        bg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(template))));
         this.getChildren().add(bg);
         if (isSectionEnd) {
-            ImageView v = new ImageView("/assets/gui/faithtrack/vaticanreport.png");
+            ImageView v = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/vaticanreport.png"))));
             v.setScaleX(bg.getScaleX() / 1.5);
             v.setScaleY(bg.getScaleY() / 1.5);
             this.getChildren().add(v);
         }
 
         if (isYellow) {
-            ImageView bonusPts = new ImageView(new Image("/assets/gui/faithtrack/victorypointmark.png"));
+            ImageView bonusPts = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/victorypointmark.png"))));
             bonusPts.setScaleX(bg.getScaleX() / 2);
             bonusPts.setScaleY(bg.getScaleY() / 2);
             bonusPts.setLayoutY(bg.getScaleX() - bonusPts.getScaleY() / 2);
@@ -89,7 +85,7 @@ public class FaithTile extends StackPane {
      * @param markers
      */
     public void addPlayerMarker(String player, HashMap<String, ImageView> markers) {
-        ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/faithmarker.png"));
+        ImageView marker = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/faithmarker.png"))));
 
         setMarkerColor(marker, player);
 
@@ -143,7 +139,7 @@ public class FaithTile extends StackPane {
      * Sets and displays Lorenzo's faith marker.
      */
     public void addBlackMarker() {
-        ImageView marker = new ImageView(new Image("/assets/gui/faithtrack/blackcross.png"));
+        ImageView marker = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/blackcross.png"))));
         marker.setScaleX(bg.getScaleX() / 1.2);
         marker.setScaleY(bg.getScaleY() / 1.2);
         this.getChildren().add(marker);

@@ -82,7 +82,7 @@ public class Server implements Network, Runnable {
             @Override
             public JsonObject get() {
                 if (object == null)
-                    object = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(Server.class.getResourceAsStream(serverConfigPath))), JsonObject.class);
+                    object = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(serverConfigPath))), JsonObject.class);
                 return object;
             }
         };

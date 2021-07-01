@@ -18,11 +18,11 @@ public class SplashController extends CliController {
     }
 
     private void renderCredits() {
-        cli.getOut().println(center(convertStreamToString(CliController.class.getResourceAsStream("/assets/cli/credits.txt"))));
+        cli.getOut().println(center(convertStreamToString(getClass().getResourceAsStream("/assets/cli/credits.txt"))));
     }
 
     private void renderCastle() {
-        cli.getOut().println(center(convertStreamToString(CliController.class.getResourceAsStream("/assets/cli/castle.txt"))));
+        cli.getOut().println(center(convertStreamToString(getClass().getResourceAsStream("/assets/cli/castle.txt"))));
     }
 
     private void pausePressEnter() {
