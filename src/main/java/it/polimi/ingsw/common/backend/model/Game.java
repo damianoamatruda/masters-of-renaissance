@@ -159,13 +159,11 @@ public class Game extends EventDispatcher {
 
     /**
      * Method called after a faith marker has been moved ahead, checks for available Vatican reports.
-     *
-     * @param faithPoints the faith marker (points) of whoever has just moved ahead
      */
-    public void onIncrementFaithPoints(int faithPoints) {
-        faithTrack.getVaticanSectionReport(faithPoints).ifPresent(vaticanSection -> vaticanSection.activate(players));
-
-        if (faithPoints >= faithTrack.getMaxFaithPointsCount())
+    public void activateVaticanSections() {
+        int maxFaithPoints = getMaxFaithPoints();
+        faithTrack.getVaticanSectionReport(maxFaithPoints).ifPresent(vaticanSection -> vaticanSection.activate(players));
+        if (maxFaithPoints >= faithTrack.getMaxFaithPointsCount())
             setLastRound();
     }
 
@@ -343,6 +341,11 @@ public class Game extends EventDispatcher {
     public boolean isBlackWinner() {
         // return false;
         throw new RuntimeException("isBlackWinner called on a mutiplayer game: method not implemented.");
+    }
+
+    // TODO Javadoc
+    public int getMaxFaithPoints() {
+        return players.stream().mapToInt(Player::getFaithPoints).max().orElse(0);
     }
 
     /**

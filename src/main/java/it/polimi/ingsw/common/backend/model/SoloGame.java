@@ -123,6 +123,11 @@ public class SoloGame extends Game {
         return blackWinner;
     }
 
+    @Override
+    public int getMaxFaithPoints() {
+        return Math.max(super.getMaxFaithPoints(), blackPoints);
+    }
+
     /**
      * This action is triggered by certain type(s) of token. Shuffles and resets the deck.
      */
@@ -140,8 +145,6 @@ public class SoloGame extends Game {
             return;
 
         blackPoints = Integer.min(blackPoints + points, getFaithTrack().getMaxFaithPointsCount());
-
-        onIncrementFaithPoints(blackPoints);
 
         dispatch(new UpdateFaithPoints(null, blackPoints, true));
     }

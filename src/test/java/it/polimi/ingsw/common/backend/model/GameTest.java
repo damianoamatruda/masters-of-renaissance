@@ -82,6 +82,7 @@ public class GameTest {
     @Test
     void firstAdvanceNoPts() {
         game.getPlayers().get(0).incrementFaithPoints(game, 1);
+        game.activateVaticanSections();
         assertEquals(0, game.getPlayers().get(0).getVictoryPoints());
     }
 
@@ -93,6 +94,7 @@ public class GameTest {
     void noYellowTilesEndOfGame() {
         game.getPlayers().stream().filter(p -> !p.equals(game.getPlayers().get(0))).forEach(p -> p.setActive(false));
         game.getPlayers().get(0).incrementFaithPoints(game, 24);
+        game.activateVaticanSections();
         game.onTurnEnd();
         assertAll(() -> assertTrue(game.isEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
@@ -115,7 +117,9 @@ public class GameTest {
         @BeforeEach
         void advancePlayers() {
             game.getPlayers().get(0).incrementFaithPoints(game, 5);
+            game.activateVaticanSections();
             game.getPlayers().get(1).incrementFaithPoints(game, 8);
+            game.activateVaticanSections();
         }
 
         /**
@@ -161,9 +165,12 @@ public class GameTest {
         @BeforeEach
         void advancePlayers() {
             game.getPlayers().get(0).incrementFaithPoints(game, 5);
+            game.activateVaticanSections();
             game.getPlayers().get(2).incrementFaithPoints(game, 8);
+            game.activateVaticanSections();
 
             game.getPlayers().get(1).incrementFaithPoints(game, 16);
+            game.activateVaticanSections();
         }
 
         /**
@@ -210,13 +217,19 @@ public class GameTest {
         @BeforeEach
         void advancePlayers() {
             game.getPlayers().get(0).incrementFaithPoints(game, 5);
+            game.activateVaticanSections();
             game.getPlayers().get(2).incrementFaithPoints(game, 8);
+            game.activateVaticanSections();
 
             game.getPlayers().get(1).incrementFaithPoints(game, 16);
+            game.activateVaticanSections();
 
             game.getPlayers().get(2).incrementFaithPoints(game, 8);
+            game.activateVaticanSections();
             game.getPlayers().get(1).incrementFaithPoints(game, 4);
+            game.activateVaticanSections();
             game.getPlayers().get(0).incrementFaithPoints(game, 19);
+            game.activateVaticanSections();
         }
 
         /**

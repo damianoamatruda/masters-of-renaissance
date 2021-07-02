@@ -78,6 +78,7 @@ public class SoloGameTest {
     @Test
     void blackPointsGetterTest() {
         game.incrementBlackPoints(2);
+        game.activateVaticanSections();
         assertEquals(2, game.getBlackPoints());
     }
 
@@ -114,6 +115,7 @@ public class SoloGameTest {
         void setup() {
             player.incrementFaithPoints(game, 7);
             game.incrementBlackPoints(8);
+            game.activateVaticanSections();
         }
 
         /**

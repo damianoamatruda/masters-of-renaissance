@@ -156,7 +156,6 @@ public class Player extends EventDispatcher {
 
         faithPoints = Integer.min(faithPoints + points, game.getFaithTrack().getMaxFaithPointsCount());
         game.updatePtsFromYellowTiles(this, points);
-        game.onIncrementFaithPoints(faithPoints);
 
         dispatch(new UpdateFaithPoints(getNickname(), faithPoints, false));
     }

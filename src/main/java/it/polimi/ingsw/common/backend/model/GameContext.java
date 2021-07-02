@@ -108,12 +108,15 @@ public class GameContext extends AsynchronousEventDispatcher {
 
         try {
             player.getSetup().chooseLeaders(view, game, player, leaders);
-            dispatch(new UpdateAction(nickname, ActionType.CHOOSE_LEADERS));
         } catch (CannotChooseException e) {
             dispatch(new ErrInitialChoice(view, true, e.getMissingLeadersCount()));
+            return;
         } catch (IllegalArgumentException e) {
             dispatch(new ErrObjectNotOwned(view, missing.get(), "LeaderCard"));
+            return;
         }
+
+        dispatch(new UpdateAction(nickname, ActionType.CHOOSE_LEADERS));
     }
 
     /**
@@ -149,19 +152,26 @@ public class GameContext extends AsynchronousEventDispatcher {
 
         try {
             player.getSetup().chooseResources(game, player, shelves);
-            dispatch(new UpdateAction(nickname, ActionType.CHOOSE_RESOURCES));
         } catch (IllegalResourceTransactionReplacementsException e) {
             // illegal replaced resources
             dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
+            return;
         } catch (IllegalResourceTransactionContainersException e) {
             // quantity of resources in replaced map is different from shelves mapping
             dispatch(new ErrReplacedTransRecipe(view, e.isInput(), e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
+            return;
         } catch (CannotChooseException e1) {
             // resources already chosen
             dispatch(new ErrInitialChoice(view, false, 0));
+            return;
         } catch (IllegalResourceTransferException e) {
             dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
+            return;
         }
+
+        game.activateVaticanSections();
+
+        dispatch(new UpdateAction(nickname, ActionType.CHOOSE_RESOURCES));
     }
 
     /**
@@ -198,10 +208,12 @@ public class GameContext extends AsynchronousEventDispatcher {
 
         try {
             ResourceContainer.swap(shelf1, shelf2);
-            dispatch(new UpdateAction(nickname, ActionType.SWAP_SHELVES));
         } catch (IllegalResourceTransferException e) {
             dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
+            return;
         }
+
+        dispatch(new UpdateAction(nickname, ActionType.SWAP_SHELVES));
     }
 
     /**
@@ -231,15 +243,18 @@ public class GameContext extends AsynchronousEventDispatcher {
 
         try {
             leader.activate(player);
-            dispatch(new UpdateAction(nickname, ActionType.ACTIVATE_LEADER));
         } catch (IllegalArgumentException e) {
             dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
+            return;
         } catch (CardRequirementsNotMetException e) {
             dispatch(new ErrCardRequirements(view,
                     e.getMissingDevCards().orElse(new HashSet<>()).stream().map(Entry::reduce).toList(),
                     e.getMissingResources().orElse(new HashMap<>()).entrySet().stream()
                             .collect(Collectors.toMap(entry -> entry.getKey().getName(), Map.Entry::getValue))));
+            return;
         }
+
+        dispatch(new UpdateAction(nickname, ActionType.ACTIVATE_LEADER));
     }
 
     /**
@@ -269,12 +284,17 @@ public class GameContext extends AsynchronousEventDispatcher {
 
         try {
             player.discardLeader(view, game, leader);
-            dispatch(new UpdateAction(nickname, ActionType.DISCARD_LEADER));
         } catch (IllegalArgumentException e) {
             dispatch(new ErrObjectNotOwned(view, leaderId, "LeaderCard"));
+            return;
         } catch (ActiveLeaderDiscardException e) {
             dispatch(new ErrActiveLeaderDiscarded(view));
+            return;
         }
+
+        game.activateVaticanSections();
+
+        dispatch(new UpdateAction(nickname, ActionType.DISCARD_LEADER));
     }
 
     /**
@@ -337,6 +357,8 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrNoSuchEntity(view, IDType.RESOURCE, -1, e.getMessage()));
             return;
         }
+
+        game.activateVaticanSections();
 
         mandatoryActionDone = true;
 
@@ -405,6 +427,8 @@ public class GameContext extends AsynchronousEventDispatcher {
         mandatoryActionDone = true;
 
         dispatch(new UpdateAction(nickname, ActionType.BUY_DEVELOPMENT_CARD));
+
+        game.activateVaticanSections();
     }
 
     /**
@@ -481,6 +505,8 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrResourceTransfer(view, e.getResource() == null ? null : e.getResource().getName(), e.isAdded(), e.getKind().name()));
             return;
         }
+
+        game.activateVaticanSections();
 
         mandatoryActionDone = true;
 
@@ -584,7 +610,7 @@ public class GameContext extends AsynchronousEventDispatcher {
         ));
     }
 
-    public boolean hasGameEnded() {
+    public boolean isGameEnded() {
         return game.isEnded();
     }
 }
