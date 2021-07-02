@@ -34,21 +34,24 @@ public abstract class CliController extends UiController implements Renderable {
      *     are the same player and switch accordingly
      */
     protected void setNextState() {
-        vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
-                if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
-                        !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
-                    if (vm.localPlayerIsCurrent())
-                        cli.setController(new TurnBeforeActionController(), true);
-                    else
-                        cli.setController(new WaitingAfterTurnController(), true);
-                } else if (!isSetupDone) // setup not done
-                    if (isLeaderSetupAvailable())
-                        cli.setController(new SetupLeadersController(), true);
-                    else if (isLocalLeaderSetupDone())
-                        cli.setController(new SetupResourcesController(), true);
+        if (vm.isGameEnded())
+            cli.setController(new EndGameController(), true);
+        else
+            vm.isSetupDone().ifPresent(isSetupDone -> {
+                vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
+                    if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
+                            !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
+                        if (vm.localPlayerIsCurrent())
+                            cli.setController(new TurnBeforeActionController(), true);
+                        else
+                            cli.setController(new WaitingAfterTurnController(), true);
+                    } else if (!isSetupDone) // setup not done
+                        if (isLeaderSetupAvailable())
+                            cli.setController(new SetupLeadersController(), true);
+                        else if (isLocalLeaderSetupDone())
+                            cli.setController(new SetupResourcesController(), true);
+                });
             });
-        });
     }
 
     @Override

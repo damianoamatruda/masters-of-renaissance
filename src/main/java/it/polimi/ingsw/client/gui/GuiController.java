@@ -37,21 +37,24 @@ public abstract class GuiController extends UiController implements Initializabl
      *     are the same player and switch accordingly
      */
     protected void setNextState() {
-        vm.isSetupDone().ifPresent(isSetupDone -> { // received UpdateGame (if not, wait for it)
-            vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
-                if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
-                        !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
-                    if (vm.localPlayerIsCurrent())
-                        gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
-                    else
-                        gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-                } else if (!isSetupDone) // setup not done
-                    if (isLeaderSetupAvailable())
-                        gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
-                    else if (isLocalLeaderSetupDone())
-                        gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"));
+        if (vm.isGameEnded())
+            gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
+        else
+            vm.isSetupDone().ifPresent(isSetupDone -> {
+                vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
+                    if (isSetupDone && vm.getCurrentPlayer().isPresent() &&
+                            !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
+                        if (vm.localPlayerIsCurrent())
+                            gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
+                        else
+                            gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+                    } else if (!isSetupDone) // setup not done
+                        if (isLeaderSetupAvailable())
+                            gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
+                        else if (isLocalLeaderSetupDone())
+                            gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"));
+                });
             });
-        });
     }
 
     @FXML
