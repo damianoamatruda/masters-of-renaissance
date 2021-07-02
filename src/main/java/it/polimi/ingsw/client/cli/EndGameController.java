@@ -5,7 +5,7 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 public class EndGameController extends CliController {
     @Override
     public void render() {
-        String prefix = vm.getWinnerPlayer().orElse("unknown") + " is the winner";
+        String prefix = vm.getWinnerPlayer().orElse("Lorenzo il Magnifico") + " is the winner";
         if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
             prefix = "You won";
 

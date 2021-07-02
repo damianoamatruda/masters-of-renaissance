@@ -8,7 +8,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.*;
 
@@ -366,6 +365,7 @@ public abstract class CliController extends UiController implements Renderable {
 
         cli.getOut().println();
         cli.getOut().println(center("Game ended!"));
+        cli.setController(new EndGameController());
     }
 
     @Override

@@ -2,6 +2,14 @@ version: "3.8"
 services:
   ingsw-server:
     image: ingsw-server
+    # comment deploy section if not running a docker swarm
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - "node.role==manager"
+      restart_policy:
+        condition: any
     restart: always
     ports:
       - '51015:1234'
