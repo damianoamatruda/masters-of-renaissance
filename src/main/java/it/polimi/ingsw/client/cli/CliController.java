@@ -8,7 +8,6 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.*;
 
@@ -33,7 +32,7 @@ public abstract class CliController extends UiController implements Renderable {
      *     are the same player and switch accordingly
      */
     protected void setNextState() {
-        if (vm.isGameEnded()) {
+        if (vm.isGameEnded() && vm.getWinnerPlayer().isPresent()) {
             cli.promptPause();
             cli.setController(new EndGameController());
         } else
@@ -94,7 +93,7 @@ public abstract class CliController extends UiController implements Renderable {
             }
             case GAME_ENDED -> {
                 cli.alert("The game has ended. Advancing to ending screen.");
-                cli.setController(new EndGameController());
+                setNextState();
             }
             case NOT_CURRENT_PLAYER -> {
                 cli.alert("You are not the current player. Please wait for your turn.");
@@ -366,6 +365,7 @@ public abstract class CliController extends UiController implements Renderable {
 
         cli.getOut().println();
         cli.getOut().println(center("Game ended!"));
+        setNextState();
     }
 
     @Override
