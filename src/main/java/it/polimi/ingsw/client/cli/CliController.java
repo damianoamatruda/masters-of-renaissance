@@ -269,6 +269,8 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
+        cli.getOut().println(center(String.format("%s's development card slot has been updated:", event.getPlayer())));
+        cli.getOut().println();
         new DevSlots(vm.getPlayerDevelopmentSlots(event.getPlayer())).render();
     }
 
@@ -431,6 +433,8 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateResourceContainer event) {
         super.on(event);
 
+        cli.getOut().println();
+        cli.getOut().println(center(String.format("%s's resource container has been updated:", vm.getCurrentPlayer().get())));
         cli.getOut().println();
         new Box(new ResourceContainer(event.getResContainer())).render();
     }
