@@ -93,7 +93,7 @@ Since the Model is completely parameterized, all parameters are necessary and mu
 Custom configuration files can be specified from within the clients, by going to the *Options* menu. The custom
 configuration files will work only for local games, as online games use the server's configuration files. To know more
 about how the game's data is synchronized when a client joins an online game, see
-the [Communication protocol](deliverables/Communication%20protocol.md)'s specification.
+the [Communication protocol](deliverables/communication-protocol.md)'s specification.
 
 ### Disclaimer
 As stated above, the configuration file contains **all** the game's data.  
@@ -101,5 +101,6 @@ Since custom configurations were not a requirement for the project, this functio
 in all possible configurations.
 
 ## License
+
 This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it) and
-[Cranio Creations](http://www.craniocreations.it).
+[Cranio Creations](https://www.craniocreations.it).
