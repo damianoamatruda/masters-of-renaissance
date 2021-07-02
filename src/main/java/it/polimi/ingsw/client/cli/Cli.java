@@ -91,20 +91,21 @@ public class Cli implements Runnable {
      * @param newController the controller to set
      */
     synchronized void setController(CliController newController, boolean pauseBeforeChange) {
-        executor.submit(() -> {
-            synchronized (this) {
-                if (pauseBeforeChange)
-                    promptPause();
+        if (!executor.isShutdown())
+            executor.submit(() -> {
+                synchronized (this) {
+                    if (pauseBeforeChange)
+                        promptPause();
 
-                if (Thread.currentThread().isInterrupted())
-                    return;
+                    if (Thread.currentThread().isInterrupted())
+                        return;
 
-                ui.setController(newController);
-                this.controller = newController;
-                this.hasNextState = true;
-                notifyAll();
-            }
-        });
+                    ui.setController(newController);
+                    this.controller = newController;
+                    this.hasNextState = true;
+                    notifyAll();
+                }
+            });
     }
 
     synchronized void reloadController(String str) {
