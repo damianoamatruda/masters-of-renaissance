@@ -18,8 +18,8 @@ public class ErrInvalidResourceTransaction extends ViewEvent {
     /**
      * @param view
      * @param isInput
-     * @param isNonStorable
-     * @param isExcluded
+     * @param isReplacement
+     * @param reason
      */
     public ErrInvalidResourceTransaction(View view, boolean isInput, boolean isReplacement, String reason) {
         super(view);
