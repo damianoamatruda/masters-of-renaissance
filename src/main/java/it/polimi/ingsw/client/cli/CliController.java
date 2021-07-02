@@ -213,8 +213,14 @@ public abstract class CliController extends UiController implements Renderable {
 
     @Override
     public void on(ErrServerUnavailable event) {
-        cli.getOut().println("Server disconnected, returning to main menu");
+        super.on(event);
 
+        if (!cli.getUi().hasClientOpen())
+            return;
+
+        cli.getUi().closeClient();
+
+        cli.getOut().println(Cli.center("Server is down. Try again later."));
         cli.setController(new MainMenuController(), true);
     }
 
