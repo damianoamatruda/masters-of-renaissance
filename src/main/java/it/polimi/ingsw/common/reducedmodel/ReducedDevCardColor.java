@@ -1,14 +1,14 @@
 package it.polimi.ingsw.common.reducedmodel;
 
-public class ReducedColor {
+public class ReducedDevCardColor {
     private final String name, colorValue;
 
-    public ReducedColor(String name, String colorValue) {
+    public ReducedDevCardColor(String name, String colorValue) {
         if (name == null)
             throw new IllegalArgumentException("Null name constructing reduced color.");
         if (colorValue == null)
             throw new IllegalArgumentException("Null color value constructing reduced color.");
-        
+
         this.name = name;
         this.colorValue = colorValue;
     }

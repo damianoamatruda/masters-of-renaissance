@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UpdateGame extends ViewEvent {
     private final List<ReducedPlayer> players;
-    private final List<ReducedColor> devCardColors;
+    private final List<ReducedDevCardColor> devCardColors;
     private final List<ReducedResourceType> resourceTypes;
     private final List<ReducedLeaderCard> leaderCards;
     private final List<ReducedDevCard> developmentCards;
@@ -46,7 +46,7 @@ public class UpdateGame extends ViewEvent {
      */
     public UpdateGame(View view,
                       List<ReducedPlayer> players,
-                      List<ReducedColor> devCardColors,
+                      List<ReducedDevCardColor> devCardColors,
                       List<ReducedResourceType> resourceTypes,
                       List<ReducedLeaderCard> leaderCards,
                       List<ReducedDevCard> developmentCards,
@@ -98,7 +98,7 @@ public class UpdateGame extends ViewEvent {
     /**
      * @return the card colors
      */
-    public List<ReducedColor> getDevCardColors() {
+    public List<ReducedDevCardColor> getDevCardColors() {
         return devCardColors;
     }
 

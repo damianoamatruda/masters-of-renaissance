@@ -1,6 +1,6 @@
 package it.polimi.ingsw.common.backend.model;
 
-import it.polimi.ingsw.common.reducedmodel.ReducedColor;
+import it.polimi.ingsw.common.reducedmodel.ReducedDevCardColor;
 
 /**
  * This class represents a development card color.
@@ -30,7 +30,7 @@ public class DevCardColor {
         return name;
     }
 
-    public ReducedColor reduce() {
-        return new ReducedColor(name, colorValue);
+    public ReducedDevCardColor reduce() {
+        return new ReducedDevCardColor(name, colorValue);
     }
 }

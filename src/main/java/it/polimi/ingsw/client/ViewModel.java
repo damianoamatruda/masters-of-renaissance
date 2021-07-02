@@ -27,7 +27,7 @@ public class ViewModel {
     private String currentPlayer;
 
     /** The list of development card colors present in the game. */
-    private List<ReducedColor> devCardColors;
+    private List<ReducedDevCardColor> devCardColors;
 
     /** The development card grid state. */
     private ReducedDevCardGrid devCardGrid;
@@ -436,7 +436,7 @@ public class ViewModel {
      *
      * @return the devCardColors
      */
-    public synchronized List<ReducedColor> getDevCardColors() {
+    public synchronized List<ReducedDevCardColor> getDevCardColors() {
         return devCardColors;
     }
 
@@ -445,7 +445,7 @@ public class ViewModel {
      *
      * @param devCardColors the devCardColors to set
      */
-    public synchronized void setDevCardColors(List<ReducedColor> devCardColors) {
+    public synchronized void setDevCardColors(List<ReducedDevCardColor> devCardColors) {
         if (devCardColors == null)
             return;
         this.devCardColors = new ArrayList<>(devCardColors);
