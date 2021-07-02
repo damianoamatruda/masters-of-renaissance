@@ -126,7 +126,7 @@ public abstract class TurnController extends GuiController {
             toActivate.add(production.getProductionId());
             activateProdButton.setDisable(false);
         } else {
-            toActivate.remove(Integer.valueOf(production.getProductionId())); // TODO: Use Production instead of ID
+            toActivate.remove(Integer.valueOf(production.getProductionId()));
             if (toActivate.size() == 0)
                 activateProdButton.setDisable(true);
         }

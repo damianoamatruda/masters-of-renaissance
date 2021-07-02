@@ -210,7 +210,6 @@ public class Shelf extends BorderPane {
             if (db.hasString() && db.getString().startsWith("[swap]")) {
                 int sourceShelfID = Integer.parseInt(db.getString().substring(6, db.getString().indexOf(" ")));
                 callback.accept(sourceShelfID, this.shelfId);
-                // TODO disable temporarily dnd until response is received (?)
             }
             event.setDropCompleted(success);
             event.consume();
@@ -233,7 +232,6 @@ public class Shelf extends BorderPane {
         if (setResourcesDnD)
             /* Adjust clipboard content of resources */
             for (Node r : content.getChildren())
-                // TODO handle duplicated code
                 r.setOnDragDetected(event -> {
                     Dragboard db = r.startDragAndDrop(TransferMode.ANY);
                     ClipboardContent content = new ClipboardContent();

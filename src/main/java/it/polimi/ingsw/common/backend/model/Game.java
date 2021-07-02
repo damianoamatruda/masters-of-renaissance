@@ -343,7 +343,9 @@ public class Game extends EventDispatcher {
         throw new RuntimeException("isBlackWinner called on a mutiplayer game: method not implemented.");
     }
 
-    // TODO Javadoc
+    /**
+     * @return the highest amount of faith points owned by any of the Player's game
+     */
     public int getMaxFaithPoints() {
         return players.stream().mapToInt(Player::getFaithPoints).max().orElse(0);
     }

@@ -68,7 +68,6 @@ public class ActivateProductionsController extends CliController {
                         chooseOutputReplacements();
                     }
                 }, () -> valid.set(false)), () -> {
-                    // TODO: Take only one step back
                     this.requests.clear();
                     this.done = true;
                 });

@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Gui controller used for the resources setup scene. */
@@ -105,34 +104,29 @@ public class SetupResourcesController extends GuiController {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasImage()) {
-                try {
-                    int id = ((Shelf) shelf).getShelfId();
-                    String resource = ((Resource) event.getGestureSource()).getName();
+                int id = ((Shelf) shelf).getShelfId();
+                String resource = ((Resource) event.getGestureSource()).getName();
 
-                    boolean alreadyHasBoundShelf = selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != id)
-                            && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
+                boolean alreadyHasBoundShelf = selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != id)
+                        && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
 
-                    if((selection.get(id) == null || selection.get(id).get(resource) == null ||
-                            ((Shelf) shelf).getSize() > selection.get(id).get(resource)) && !alreadyHasBoundShelf)
-                        try {
-                            int quantity = selection.get(id).get(resource) + 1;
-                            selection.get(id).put(resource, quantity);
+                if((selection.get(id) == null || selection.get(id).get(resource) == null ||
+                        ((Shelf) shelf).getSize() > selection.get(id).get(resource)) && !alreadyHasBoundShelf)
+                    try {
+                        int quantity = selection.get(id).get(resource) + 1;
+                        selection.get(id).put(resource, quantity);
+                        success = true;
+                    } catch (NullPointerException e) {
+                        if (selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
+                            Map<String, Integer> entry = new HashMap<>();
+                            entry.put(resource, 1);
+                            selection.put(id, entry);
                             success = true;
-                        } catch (NullPointerException e) {
-                            if (selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
-                                Map<String, Integer> entry = new HashMap<>();
-                                entry.put(resource, 1);
-                                selection.put(id, entry);
-                                success = true;
-                            }
-
                         }
-                    if (success) warehouse.getShelf(id).addResourceDraggable(resource);
-                    updateChoiceButton();
 
-                } catch (Exception e) { // TODO remove this catch once debugged
-                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
-                }
+                    }
+                if (success) warehouse.getShelf(id).addResourceDraggable(resource);
+                updateChoiceButton();
             }
             if(db.hasString() && success) {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
@@ -190,7 +184,7 @@ public class SetupResourcesController extends GuiController {
 
         updateChoiceButton();
 
-        gui.setPauseHandler(canvas); // TODO: Add pause button
+        gui.setPauseHandler(canvas);
     }
 
     /**

@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 public abstract class LeaderCard extends Card {
     private final ResourceType resource;
-    protected final CardRequirement requirement; // TODO: Merge ReducedDepotLeaderCard, ReducedDiscountLeaderCard, ReducedProductionLeaderCard and ReducedLeaderCard
+    protected final CardRequirement requirement;
 
     /** The card's status. If active, the ability can be triggered. */
     private boolean active = false;

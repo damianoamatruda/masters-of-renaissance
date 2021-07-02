@@ -209,7 +209,7 @@ public abstract class CliController extends UiController implements Renderable {
         };
 
         cli.reloadController(String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container:",
-                event.getResType() == null ? "" : String.format(" %s", event.getResType()), // TODO: Create error for this
+                event.getResType() == null ? "" : String.format(" %s", event.getResType()),
                 reason));
     }
 
@@ -353,14 +353,10 @@ public abstract class CliController extends UiController implements Renderable {
             cli.getOut().println(center("Match ended!"));
         }
 
-        Map<String, Integer> points = vm.getPlayers().stream()
-                .map(ReducedPlayer::getNickname)
-                .collect(Collectors.toMap(nick -> nick, nick -> 0));
-
         cli.getOut().println();
         vm.getFaithTrack().ifPresent(faithTrack -> {
             cli.getOut().println();
-            new FaithTrack(faithTrack, points).render();
+            new FaithTrack(faithTrack, vm.getPlayersFaithPoints()).render();
         });
     }
 
@@ -444,7 +440,15 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(String.format("Activated vatican section %d", event.getVaticanSection()))); // TODO: improve
+        cli.getOut().println(center(String.format("Activated vatican section %d", event.getVaticanSection())));
+
+        vm.getFaithTrack().ifPresent(faithTrack -> {
+            cli.getOut().println();
+            new FaithTrack(faithTrack, vm.getPlayersFaithPoints()).render();
+        });
+
+        cli.getOut().println();
+        new LeaderBoard().render();
     }
 
     @Override

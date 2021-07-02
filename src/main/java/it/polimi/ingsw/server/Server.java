@@ -26,9 +26,9 @@ public class Server implements Network, Runnable {
     /** Timeout used for heartbeat events. */
     private static final int timeout = 25000;
     /** Default server configuration path. */
-    private static final String serverConfigPath = "/config/server.json"; // TODO: Share this constant with client
+    private static final String serverConfigPath = "/config/server.json";
     /** Default game data file path. */
-    private static final String defaultGameConfigPath = "/config/config.json"; // TODO: Share this constant with OfflineClient
+    private static final String defaultGameConfigPath = "/config/config.json";
     /** Thread to run the server on. */
     private final Thread runThread;
     /** Socket to accept incoming connections to. */

@@ -94,14 +94,14 @@ public class Production extends StackPane {
         input.getChildren().addAll(buildResourceLines(production.getInput()));
 
         if (production.getInputBlanks() > 0) {
-            Resource blank = new Resource("Zero"); // TODO: parameterize
+            Resource blank = new Resource("Zero");
             input.getChildren().add(row(production.getInputBlanks(), blank));
         }
 
         output.getChildren().addAll(buildResourceLines(production.getOutput()));
 
         if (production.getOutputBlanks() > 0) {
-            Resource blank = new Resource("Zero"); // TODO: parameterize
+            Resource blank = new Resource("Zero");
             output.getChildren().add(row(production.getOutputBlanks(), blank));
         }
 
@@ -181,7 +181,6 @@ public class Production extends StackPane {
      * Adds the buttons to select the productions to be activated.
      */
     public void addProduceButton() {
-        // TODO duplicated code
         AnchorPane pane = new AnchorPane();
         SButton activate = new SButton("Produce");
         activate.setOnAction(event -> onProduce.accept(this, this));

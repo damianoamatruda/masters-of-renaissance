@@ -322,7 +322,6 @@ public class Cli implements Runnable {
         return Optional.of(new File(path.get()));
     }
 
-    // TODO: Maybe make it a component, like Menu
     Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves, boolean discardable) {
         ViewModel vm = ui.getViewModel();
 
@@ -385,10 +384,8 @@ public class Cli implements Runnable {
                     }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
             }
 
-            if (!valid.get()) {
-                // TODO: Take only one step back
+            if (!valid.get())
                 return Optional.empty();
-            }
         }
 
         return Optional.of(shelves);
@@ -416,10 +413,8 @@ public class Cli implements Runnable {
                 replacedRes.compute(res, (r, q) -> q == null ? quantity : q + quantity);
             }, () -> valid.set(false)), () -> valid.set(false));
 
-            if (!valid.get()) {
-                // TODO: Take only one step back
+            if (!valid.get())
                 return Optional.empty();
-            }
         }
 
         return Optional.of(replacedRes);
@@ -460,10 +455,8 @@ public class Cli implements Runnable {
                     allocQuantity.addAndGet(quantity);
                 }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
 
-            if (!valid.get()) {
-                // TODO: Take only one step back
+            if (!valid.get())
                 return Optional.empty();
-            }
         }
 
         return Optional.of(shelves);

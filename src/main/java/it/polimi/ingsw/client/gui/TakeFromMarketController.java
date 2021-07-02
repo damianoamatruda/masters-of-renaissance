@@ -24,7 +24,6 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Gui controller class of the take Market resources action. */
@@ -177,28 +176,23 @@ public class TakeFromMarketController extends GuiController {
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasImage()) {
-                try {
-                    int shelfID = ((Shelf) shelf).getShelfId();
-                    String resource = ((Resource) event.getGestureSource()).getName();
+                int shelfID = ((Shelf) shelf).getShelfId();
+                String resource = ((Resource) event.getGestureSource()).getName();
 
-                    boolean alreadyHasBoundShelf = (selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != shelfID) ||
-                            warehouse.getShelfByResource(resource).isPresent() && warehouse.getShelfByResource(resource).get().getShelfId() != shelfID)
-                            && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
+                boolean alreadyHasBoundShelf = (selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != shelfID) ||
+                        warehouse.getShelfByResource(resource).isPresent() && warehouse.getShelfByResource(resource).get().getShelfId() != shelfID)
+                        && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
 
-                    Shelf s = warehouse.getShelf(shelfID);
+                Shelf s = warehouse.getShelf(shelfID);
 
-                    if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource)) && !alreadyHasBoundShelf) {
-                        success = putChoice(resource, shelfID);
-                        if (success) {
-                            warehouse.getShelf(shelfID).addResourceDraggable(resource);
-                            if(!db.hasString())
-                                removeResourceFromBox(resource);
-                            replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);
-                        }
+                if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource)) && !alreadyHasBoundShelf) {
+                    success = putChoice(resource, shelfID);
+                    if (success) {
+                        warehouse.getShelf(shelfID).addResourceDraggable(resource);
+                        if(!db.hasString())
+                            removeResourceFromBox(resource);
+                        replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);
                     }
-
-                } catch (Exception e) { // TODO remove this catch once debugged
-                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                 }
             }
             // if the resource of choice was previously inserted in another shelf the moved
@@ -268,8 +262,6 @@ public class TakeFromMarketController extends GuiController {
                         success = true;
                     } catch (NumberFormatException | NullPointerException e) {
                         // it is fine if it passes here. Drop will be ignored
-                    } catch (Exception e) { // TODO remove this catch once debugged
-                        LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                     }
 
                     event.setDropCompleted(success);
@@ -321,23 +313,20 @@ public class TakeFromMarketController extends GuiController {
                                 Shelf s = leaderCard.getGuiDepot();
                                 Dragboard db = event.getDragboard();
                                 boolean success = false;
-                                try {
-                                    int shelfID = (leaderCard.getGuiDepot()).getShelfId();
-                                    String resource = ((Resource) event.getGestureSource()).getName();
 
-                                    if (s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource))) {
-                                        success = putChoice(resource, shelfID);
-                                        if (success) {
-                                            s.addResourceDraggable(resource);
-                                            if (!db.hasString())
-                                                removeResourceFromBox(resource);
-                                            replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);
-                                        }
+                                int shelfID = (leaderCard.getGuiDepot()).getShelfId();
+                                String gestureRes = ((Resource) event.getGestureSource()).getName();
+
+                                if (s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(gestureRes))) {
+                                    success = putChoice(gestureRes, shelfID);
+                                    if (success) {
+                                        s.addResourceDraggable(gestureRes);
+                                        if (!db.hasString())
+                                            removeResourceFromBox(gestureRes);
+                                        replacements.put(gestureRes, replacements.containsKey(gestureRes) ? replacements.get(gestureRes) + 1 : 1);
                                     }
-
-                                } catch (Exception e) { // TODO remove this catch once debugged
-                                    LOGGER.log(Level.SEVERE, "Unknown exception (TODO: Remove this)", e);
                                 }
+
                                 if (db.hasString() && success) {
                                     int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                                     String resource = ((Resource) event.getGestureSource()).getName();

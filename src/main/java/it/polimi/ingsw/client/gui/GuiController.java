@@ -216,7 +216,7 @@ public abstract class GuiController extends UiController implements Initializabl
 
         gui.reloadScene("You cannot move the resources",
                 String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container:",
-                        event.getResType() == null ? "" : String.format(" %s", event.getResType()), // TODO: Create error for this
+                        event.getResType() == null ? "" : String.format(" %s", event.getResType()),
                         reason));
     }
 

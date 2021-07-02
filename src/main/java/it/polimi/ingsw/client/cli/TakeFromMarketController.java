@@ -111,7 +111,6 @@ public class TakeFromMarketController extends CliController {
                     .filter(c -> c.getLeaderType() == LeaderType.ZERO)
                     .toList();
 
-            // TODO: Refactor logic of this
             if (zeroLeaders.size() > 0) {
                 new LeadersHand(zeroLeaders).render();
                 cli.getOut().println(center("These are the active leaders you can use to replace blank resources."));
@@ -141,7 +140,7 @@ public class TakeFromMarketController extends CliController {
         cli.promptShelves(totalRes, allowedShelves, true).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
             cli.getUi().dispatch(new ReqTakeFromMarket(this.isRow, this.index, this.replacements, this.shelves));
-        }, this::chooseIndex); // TODO: Check this
+        }, this::chooseIndex);
     }
 
     @Override
