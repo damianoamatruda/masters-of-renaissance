@@ -99,11 +99,6 @@ public abstract class GuiController extends UiController implements Initializabl
     }
 
     @Override
-    public void on(ErrBuyDevCard event) {
-        super.on(event);
-    }
-
-    @Override
     public void on(ErrCardRequirements event) {
         gui.reloadScene("You cannot activate the leader card",
                 event.getMissingDevCards().map(missingDevCards -> {
@@ -124,16 +119,6 @@ public abstract class GuiController extends UiController implements Initializabl
 
                     return msg.toString();
                 }).orElse("")));
-    }
-
-    @Override
-    public void on(ErrInitialChoice event) {
-        super.on(event);
-    }
-
-    @Override
-    public void on(ErrNewGame event) {
-        super.on(event);
     }
 
     @Override

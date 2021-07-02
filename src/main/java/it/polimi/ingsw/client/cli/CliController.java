@@ -94,16 +94,6 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(ErrActiveLeaderDiscarded event) {
-        super.on(event);
-    }
-
-    @Override
-    public void on(ErrBuyDevCard event) {
-        super.on(event);
-    }
-
-    @Override
     public void on(ErrCardRequirements event) {
         cli.reloadController("You cannot activate the leader card. " +
                 event.getMissingDevCards().map(missingDevCards -> {
@@ -124,16 +114,6 @@ public abstract class CliController extends UiController implements Renderable {
 
                     return msg.toString();
                 }).orElse("")));
-    }
-
-    @Override
-    public void on(ErrInitialChoice event) {
-        super.on(event);
-    }
-
-    @Override
-    public void on(ErrNewGame event) {
-        super.on(event);
     }
 
     @Override
@@ -241,11 +221,6 @@ public abstract class CliController extends UiController implements Renderable {
                     cli.getOut().println();
                     new ActionToken(t).render();
                 });
-    }
-
-    @Override
-    public void on(UpdateBookedSeats event) {
-        super.on(event);
     }
 
     @Override
