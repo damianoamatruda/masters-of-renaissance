@@ -39,7 +39,7 @@ public class Gui extends Application {
     private static final Logger LOGGER = Logger.getLogger(Gui.class.getName());
 
     /* Adjusting the ratio between 'real' and 'starting' sizes
-       will result in the whole GUI changing its intrinsinc scaling.
+       will result in the whole GUI changing its intrinsic scaling.
        'real' values reflect the sizes set in the FXMLs.
        Therefore, if both 'starting' and 'real' sizes are set to 720p,
        the scale will result in a ratio of 1:1 for all sizes

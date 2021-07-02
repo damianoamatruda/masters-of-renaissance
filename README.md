@@ -94,13 +94,9 @@ about how the game's data is synchronized when a client joins an online game, se
 the [Communication protocol](deliverables/Communication%20protocol.md)'s specification.
 
 ### Disclaimer
-As stated above, the configuration file contains **all** the game's data.
-Since supporting custom configurations was not a requirement for the project, this functionality is largely untested.  
-While it can be very handy to test some of the functionality (want free development cards? Not a problem!),
-it will also let you load illogical configurations (2 Billion marbles per market's side, negative starting resources, etc.).  
-Some configurations may not work at all, some may seem to work but may later result in breaking some of the game's constraints,
-some may work but show graphical glitches (all graphical components have been made to be fully adaptive,
-but have not been tested with unconventional (very large or negative) values).
+As stated above, the configuration file contains **all** the game's data.  
+Since custom configurations were not a requirement for the project, this functionality has been implemented but not fully tested
+in all possible configurations.
 
 ## License
 This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it) and
