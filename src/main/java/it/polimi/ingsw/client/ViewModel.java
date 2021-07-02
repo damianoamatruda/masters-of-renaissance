@@ -12,7 +12,7 @@ public class ViewModel {
     private String localPlayer;
 
     /** The state of finalization of the setup phase. */
-    private Boolean isSetupDone;
+    private boolean isSetupDone;
 
     /** The list of action tokens present in the game. */
     private List<ReducedActionToken> actionTokens;
@@ -753,8 +753,8 @@ public class ViewModel {
      *
      * @return whether all the players' setup is done
      */
-    public synchronized Optional<Boolean> isSetupDone() {
-        return Optional.ofNullable(isSetupDone);
+    public synchronized boolean isSetupDone() {
+        return isSetupDone;
     }
 
     /**

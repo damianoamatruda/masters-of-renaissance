@@ -10,7 +10,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class TurnBeforeActionController extends TurnController {
     @Override
     public void render() {
-        if (!vm.isSetupDone().orElseThrow()) {
+        if (!vm.isSetupDone()) {
             cli.getOut().println();
             cli.getOut().println(center("Waiting for all players to finish their setup..."));
             return;
