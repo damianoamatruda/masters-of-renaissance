@@ -60,7 +60,7 @@ Syntax: `java -jar AM49-1.0-SNAPSHOT-server.jar [options]`
 A public instance of the server is available at 51.15.199.149:51015.
 
 ### Docker image
-A [`Dockerfile`](dockerfile) and a [`docker-compose.yml`](docker-compose.yaml) are available to build and deploy
+A [`Dockerfile`](Dockerfile) and a [`docker-compose.yml`](docker-compose.yaml) are available to build and deploy
 a docker container running the server.
 
 To build the container:

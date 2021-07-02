@@ -249,7 +249,6 @@ public class Cli implements Runnable {
             if (isReturningToMainMenu.get())
                 controller = new MainMenuController();
 
-            out.println(center(boldColor(controller.getClass().getSimpleName(), "\u001b[31m")));
             controller.render();
 
             isReturningToMainMenu.set(false);
@@ -275,8 +274,8 @@ public class Cli implements Runnable {
     }
 
     synchronized void clear() {
-        // out.print("\033[H\033[2J");
-        // out.flush();
+        out.print("\033[H\033[2J");
+        out.flush();
     }
 
     public synchronized Optional<String> prompt(String prompt, String defaultValue) {

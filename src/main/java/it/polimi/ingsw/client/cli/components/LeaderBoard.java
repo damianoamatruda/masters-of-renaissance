@@ -8,11 +8,11 @@ public class LeaderBoard extends StringComponent {
     public String getString() {
         ViewModel vm = Cli.getInstance().getViewModel();
 
-        StringBuilder stringBuilder = new StringBuilder("Leaderboard:");
-        stringBuilder.append("Nickname\tFaith Points\tVictory points");
+        StringBuilder stringBuilder = new StringBuilder("Leaderboard:\n");
+        stringBuilder.append("Nickname\tFaith Points\tVictory points\n");
 
         vm.getPlayers().forEach(p ->
-                stringBuilder.append(String.format("%s\t%d\t%d", p.getNickname(), p.getFaithPoints(), p.getVictoryPoints())));
+                stringBuilder.append(String.format("%s\t%d\t%d\n", p.getNickname(), p.getFaithPoints(), p.getVictoryPoints())));
 
         return stringBuilder.toString();
     }
