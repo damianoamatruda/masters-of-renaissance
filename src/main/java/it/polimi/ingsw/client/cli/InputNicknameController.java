@@ -65,7 +65,7 @@ public class InputNicknameController extends CliController {
     public void on(UpdateGame event) {
         super.on(event);
 
-        if (event.isMandatoryActionDone())
+        if (event.isMandatoryActionDone() && vm.getLocalPlayer().equals(vm.getCurrentPlayer()))
             cli.setController(new TurnAfterActionController(), false);
         else
             setNextState();
