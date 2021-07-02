@@ -28,7 +28,7 @@
       </Title>
       <VBox maxWidth="-Infinity" prefHeight="0.0">
         <Label text="Server Address"/>
-        <TextField fx:id="server" prefWidth="400.0" maxWidth="400.0" text="127.0.0.1:1234"/>
+        <TextField fx:id="server" prefWidth="400.0" maxWidth="400.0" text="localhost:1234"/>
       </VBox>
       <BorderPane maxWidth="-Infinity" prefWidth="400.0">
         <left>
