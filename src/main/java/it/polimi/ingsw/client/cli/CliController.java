@@ -70,13 +70,8 @@ public abstract class CliController extends UiController implements Renderable {
             case LATE_SETUP_ACTION -> {
                 cli.getOut().println();
                 cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
-                if (vm.localPlayerIsCurrent()) {
-                    cli.promptPause();
-                    cli.setController(new TurnBeforeActionController());
-                } else {
-                    cli.promptPause();
-                    cli.setController(new TurnBeforeActionController());
-                }
+                cli.promptPause();
+                cli.setController(new TurnBeforeActionController());
             }
             case EARLY_MANDATORY_ACTION -> {
                 cli.getOut().println();
@@ -113,20 +108,20 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrCardRequirements event) {
         cli.reloadController("You cannot activate the leader card. " +
                 event.getMissingDevCards().map(missingDevCards -> {
-                    StringBuilder msg = new StringBuilder("Missing development cards:\n\n");
+                    StringBuilder msg = new StringBuilder("Missing development cards:").append("\n").append("\n");
 
                     for (ReducedDevCardRequirementEntry e : missingDevCards)
-                        msg.append(String.format("%s %s × %d\n",
+                        msg.append(String.format("%s %s × %d%n",
                                 e.getColor(),
                                 e.getLevel() == 0 ? "any level" : String.format("level %d", e.getLevel()),
                                 e.getAmount()));
 
                     return msg.toString();
                 }).orElse(event.getMissingResources().map(missingResources -> {
-                    StringBuilder msg = new StringBuilder("Missing resources:\n\n");
+                    StringBuilder msg = new StringBuilder("Missing resources:").append("\n").append("\n");
 
                     for (Map.Entry<String, Integer> e : missingResources.entrySet())
-                        msg.append(String.format("%s × %d\n", e.getKey(), e.getValue()));
+                        msg.append(String.format("%s × %d%n", e.getKey(), e.getValue()));
 
                     return msg.toString();
                 }).orElse("")));
@@ -298,35 +293,54 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println("Players:");
         event.getPlayers().stream().map(ReducedPlayer::getNickname).forEach(p -> cli.getOut().println(p));
 
-        cli.getOut().println();
-        new ResourceContainers(vm.getLocalPlayer().orElseThrow(),
-            vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
-            vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
-            vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
-            .render();
-        
-        cli.getOut().println();
-        new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayer().get())).render();
+        vm.getLocalPlayer().ifPresent(player -> {
+            cli.getOut().println();
+            new ResourceContainers(
+                    player,
+                    vm.getPlayerWarehouseShelves(player),
+                    vm.getPlayerDepots(player),
+                    vm.getPlayerStrongbox(player).orElse(null)).render();
+        });
 
-        cli.getOut().println();
-        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer().get())).render();
+        vm.getLocalPlayer().map(vm::getPlayerLeaderCards).ifPresent(leaderCards -> {
+            cli.getOut().println();
+            new LeadersHand(leaderCards).render();
+        });
 
-        cli.getOut().println();
-        new Market(vm.getMarket().get()).render();
+        vm.getLocalPlayer().map(vm::getPlayerDevelopmentSlots).ifPresent(devSlots -> {
+            cli.getOut().println();
+            new DevSlots(devSlots).render();
+        });
 
-        cli.getOut().println();
-        new DevCardGrid(vm.getDevCardGrid().get()).render();
+        vm.getMarket().ifPresent(market -> {
+            cli.getOut().println();
+            new Market(market).render();
+        });
 
-        cli.getOut().println(center(String.format("\n%s has the inkwell.\n", vm.getInkwellPlayer().get())));
+        vm.getDevCardGrid().ifPresent(devCardGrid -> {
+            cli.getOut().println();
+            new DevCardGrid(devCardGrid).render();
+        });
 
-        if (event.getWinnerPlayer() != null)
-            cli.getOut().println(center(String.format("%s won the game!\n", event.getWinnerPlayer())));
+        vm.getInkwellPlayer().ifPresent(player -> {
+            cli.getOut().println();
+            cli.getOut().println(center(String.format("%s has the inkwell.", player)));
+        });
 
-        if (event.isLastRound())
-            cli.getOut().println(center("Last round!\n"));
+        vm.getWinnerPlayer().ifPresent(player -> {
+            cli.getOut().println();
+            cli.getOut().println(center(String.format("%s won the game!", event.getWinnerPlayer())));
+        });
 
-        if (event.isEnded())
-            cli.getOut().println(center("Match ended!\n"));
+        if (vm.isLastRound()) {
+            cli.getOut().println();
+            cli.getOut().println(center("Last round!"));
+        }
+
+        if (vm.isGameEnded()) {
+            cli.getOut().println();
+            cli.getOut().println(center("Match ended!"));
+        }
 
         Map<String, Integer> points = vm.getPlayers().stream()
                 .map(ReducedPlayer::getNickname)
@@ -343,7 +357,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println("Game ended!");
+        cli.getOut().println(center("Game ended!"));
     }
 
     @Override
@@ -351,17 +365,22 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println("Last round!");
+        cli.getOut().println(center("Last round!"));
     }
 
     @Override
     public void on(UpdateActivateLeader event) {
         super.on(event);
 
-        cli.getOut().println();
-        cli.getOut().println(center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer().get(), event.getLeader())));
-        cli.getOut().println();
-        cli.getOut().println(center(new Box(new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow())).getString()));
+        vm.getCurrentPlayer().ifPresent(player -> {
+            cli.getOut().println();
+            cli.getOut().println(center(String.format("%s activated leader card %d.", player, event.getLeader())));
+        });
+
+        vm.getLeaderCard(event.getLeader()).ifPresent(leaderCard -> {
+            cli.getOut().println();
+            new Box(new LeaderCard(leaderCard)).render();
+        });
     }
 
     @Override
@@ -378,7 +397,8 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateLeadersHandCount event) {
         super.on(event);
 
-        cli.getOut().println(center(String.format("\nPlayer %s now has %d leader cards.", event.getPlayer(), event.getLeadersHandCount())));
+        cli.getOut().println();
+        cli.getOut().println(center(String.format("Player %s now has %d leader cards.", event.getPlayer(), event.getLeadersHandCount())));
     }
 
     @Override
@@ -394,7 +414,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().printf("Player %s %s.%n", event.getPlayer(), event.isActive() ? "reconnected" : "disconnected");
+        cli.getOut().println(center(String.format("Player %s %s.", event.getPlayer(), event.isActive() ? "reconnected" : "disconnected")));
     }
 
     @Override
@@ -402,7 +422,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(new Box(new ResourceContainer(event.getResContainer())).getString()));
+        new Box(new ResourceContainer(event.getResContainer())).render();
     }
 
     @Override
@@ -410,7 +430,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().printf("Activated vatican section %d%n", event.getVaticanSection()); // TODO: improve
+        cli.getOut().println(center(String.format("Activated vatican section %d", event.getVaticanSection()))); // TODO: improve
     }
 
     @Override
@@ -418,7 +438,6 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(
-                String.format("Victory points for %s: %d.\n", event.getPlayer(), event.getVictoryPoints())));
+        cli.getOut().println(center(String.format("Victory points for %s: %d.", event.getPlayer(), event.getVictoryPoints())));
     }
 }
