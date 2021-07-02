@@ -368,7 +368,6 @@ public class Cli implements Runnable {
                     keys = vm.getResourceTypes().stream().filter(ReducedResourceType::isStorable).map(ReducedResourceType::getName).collect(Collectors.toSet());
                 } else keys = remainingResMap.keySet();
                 promptResource(keys).ifPresentOrElse(res -> promptQuantity(remainingResMap.containsKey("Blanks") ? remainingResMap.get("Blanks") : remainingResMap.get(res)).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
-                        // TODO: Check for shelf overshooting
                         shelves.compute(shelfId, (sid, rMap) -> {
                             if (rMap == null)
                                 rMap = new HashMap<>();
@@ -444,7 +443,6 @@ public class Cli implements Runnable {
 
             AtomicBoolean valid = new AtomicBoolean(true);
             promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
-                    // TODO: Check for shelf overshooting
                     shelves.compute(shelfId, (sid, rMap) -> {
                         if (rMap == null)
                             rMap = new HashMap<>();
