@@ -8,8 +8,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class LeaderBoard extends StringComponent {
     @Override
     public String getString() {
-        Cli cli = Cli.getInstance();
-        ViewModel vm = cli.getViewModel();
+        ViewModel vm = Cli.getInstance().getViewModel();
 
         StringBuilder sb = new StringBuilder(center("Leaderboard:"));
         sb.append(center("Nickname\tFaith Points\tVictory points"));
