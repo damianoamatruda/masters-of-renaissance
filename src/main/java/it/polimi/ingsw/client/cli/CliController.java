@@ -277,6 +277,9 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateFaithPoints event) {
         super.on(event);
 
+        cli.getOut().println();
+        cli.getOut().println(center("Updated the players' faith points!"));
+        cli.getOut().println();
         vm.getFaithTrack().ifPresent(faithTrack -> {
             cli.getOut().println();
             new FaithTrack(faithTrack, vm.getPlayersFaithPoints()).render();
@@ -455,6 +458,8 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateVictoryPoints event) {
         super.on(event);
 
+        cli.getOut().println();
+        cli.getOut().println(center("Updated the victory points:"));
         cli.getOut().println();
         new LeaderBoard().render();
     }
