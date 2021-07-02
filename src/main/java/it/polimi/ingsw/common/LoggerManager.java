@@ -11,7 +11,7 @@ public class LoggerManager {
     private static final String LOG_LEVEL_ENV = "LOG_LEVEL";
 
     /**
-     * Private constructor to avoid unnecessary instantiation of the class
+     * Private constructor to avoid unnecessary instantiation of the class.
      */
     private LoggerManager() {
     }
