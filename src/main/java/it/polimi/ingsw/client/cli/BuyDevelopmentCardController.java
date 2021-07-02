@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.DevCardGrid;
 import it.polimi.ingsw.client.cli.components.DevSlots;
 import it.polimi.ingsw.client.cli.components.LeadersHand;
+import it.polimi.ingsw.client.cli.components.ResourceContainer;
 import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
@@ -144,8 +145,12 @@ public class BuyDevelopmentCardController extends CliController {
     private void chooseShelves() {
         Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(Collectors.toSet());
 
+        allowedShelves.add(vm.getLocalPlayer().map(vm::getPlayerStrongbox).map(c -> c.map(ReducedResourceContainer::getId).orElseThrow()).orElseThrow());
+
+        new ResourceContainer(vm.getLocalPlayer().map(vm::getPlayerStrongbox).orElseThrow().orElseThrow()).render();
+        
         cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
             isExitingState.set(false);
             this.shelves = shelves;
