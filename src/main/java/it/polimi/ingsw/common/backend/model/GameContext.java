@@ -111,6 +111,8 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new UpdateAction(nickname, ActionType.CHOOSE_LEADERS));
         } catch (CannotChooseException e) {
             dispatch(new ErrInitialChoice(view, true, e.getMissingLeadersCount()));
+        } catch (IllegalArgumentException e) {
+            dispatch(new ErrObjectNotOwned(view, missing.get(), "LeaderCard"));
         }
     }
 

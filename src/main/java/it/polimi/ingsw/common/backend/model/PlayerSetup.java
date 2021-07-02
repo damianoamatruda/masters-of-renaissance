@@ -80,7 +80,7 @@ public class PlayerSetup {
      * @param chosenLeaders the leader cards to choose
      * @throws CannotChooseException if the leader cards have already been chosen
      */
-    public void chooseLeaders(View view, Game game, Player player, List<LeaderCard> chosenLeaders) throws CannotChooseException {
+    public void chooseLeaders(View view, Game game, Player player, List<LeaderCard> chosenLeaders) throws CannotChooseException, IllegalArgumentException {
         if (hasChosenLeaders)
             throw new CannotChooseException(0);
 

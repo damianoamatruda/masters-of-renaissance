@@ -110,9 +110,9 @@ public class Player extends EventDispatcher {
         return List.copyOf(leaders);
     }
 
-    public void retainLeaders(View view, List<LeaderCard> leaders) {
+    public void retainLeaders(View view, List<LeaderCard> leaders) throws IllegalArgumentException {
         if (!this.leaders.containsAll(leaders))
-            throw new RuntimeException(); // TODO: Add more specific exception
+            throw new IllegalArgumentException();
 
         this.leaders.retainAll(leaders);
 
