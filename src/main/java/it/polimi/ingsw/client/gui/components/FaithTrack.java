@@ -132,18 +132,19 @@ public class FaithTrack extends HBox {
                 Text pointsText = new Text(String.valueOf(section.getVictoryPoints()));
                 pointsText.setScaleX(1.8);
                 pointsText.setScaleY(1.8);
-                if(gotBonus && isActivated) favorPane.getChildren().add(pointsText);
-                    hbox.getChildren().add(favorPane);
-                    popesFavors.getChildren().add(hbox);
-                    i++;
-                }
+                if(gotBonus && isActivated)
+                    favorPane.getChildren().add(pointsText);
+                hbox.getChildren().add(favorPane);
+                popesFavors.getChildren().add(hbox);
+                i++;
+            }
         });
     }
 
     /**
      * Updates the position of the player's faith marker.
      *
-     * @param player
+     * @param player      the player owner of the marker
      * @param faithPoints the updated player's faith points
      * @param oldPoints   the player's faith points before moving (used to remove marker from old tile)
      */
