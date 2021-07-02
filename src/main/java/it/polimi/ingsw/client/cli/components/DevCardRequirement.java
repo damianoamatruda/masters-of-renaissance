@@ -18,8 +18,10 @@ public class DevCardRequirement extends StringComponent {
         stringBuilder.append("--- Requirements ---").append("\n");
         for (int k = 0; k < reducedDevCardRequirement.getEntries().size(); k++) {
             ReducedDevCardRequirementEntry e = reducedDevCardRequirement.getEntries().get(k);
-            stringBuilder.append(e.getAmount()).append(" ").append(new DevCardColor(e.getColor()).getString())
-                    .append(" card(s) of ").append(e.getLevel() > 0 ? ("level " + e.getLevel()) : "any level").append("\n");
+            stringBuilder.append(String.format(
+                    "  %s %s × %d", new DevCardColor(e.getColor()).getString(),
+                    e.getLevel() == 0 ? "any level" : String.format("level %d", e.getLevel()),
+                    e.getAmount())).append("\n");
         }
 
         return stringBuilder.toString();

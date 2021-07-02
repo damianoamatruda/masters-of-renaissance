@@ -21,9 +21,9 @@ public class ResourceMap extends StringComponent {
         int i = 0;
         for (String resType : reducedResourceMap.keySet()) {
             if (i % 2 == 0)
-                stringBuilder.append(String.format("  %s", left(String.format("%s: %d", new Resource(resType).getString(), reducedResourceMap.get(resType)), padding)));
+                stringBuilder.append(String.format("  %s", left(String.format("%s × %d", new Resource(resType).getString(), reducedResourceMap.get(resType)), padding)));
             else
-                stringBuilder.append(String.format("%s: %d", new Resource(resType).getString(), reducedResourceMap.get(resType))).append("\n");
+                stringBuilder.append(String.format("%s × %d", new Resource(resType).getString(), reducedResourceMap.get(resType))).append("\n");
             i++;
         }
         if (reducedResourceMap.size() % 2 != 0)
