@@ -36,7 +36,7 @@ public class LeadersHand extends StringComponent {
 
             List<List<String>> rows = new ArrayList<>();
             for (LeaderCard leaderCardComponent : leaderCardComponents)
-                rows.add(new Box(leaderCardComponent, -1, maxWidth, maxHeight).getString().lines().toList());
+                rows.add(new Box(leaderCardComponent, maxWidth, maxHeight, -1).getString().lines().toList());
 
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {

@@ -2,31 +2,30 @@ package it.polimi.ingsw.client.cli.components;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static it.polimi.ingsw.client.cli.Cli.*;
 
 /** Cli component that boxes other components, by adding borders to their string representation. */
 public class Box extends StringComponent {
     private static final int defaultPadding = 1;
-    private final Optional<StringComponent> component;
+    private final StringComponent component;
     private final int padding;
     private final int width;
     private final int height;
 
-    public Box(StringComponent component, int padding, int width, int height) {
-        this.component = Optional.ofNullable(component);
+    public Box(StringComponent component, int width, int height, int padding) {
+        this.component = component;
         this.padding = padding >= 0 ? padding : defaultPadding;
         this.width = width;
         this.height = height;
     }
 
-    public Box(StringComponent component, int padding, int width) {
-        this(component, padding, width, -1);
+    public Box(StringComponent component, int width, int height) {
+        this(component, width, height, -1);
     }
 
-    public Box(StringComponent component, int padding) {
-        this(component, padding, -1);
+    public Box(StringComponent component, int width) {
+        this(component, width, -1);
     }
 
     public Box(StringComponent component) {
@@ -37,7 +36,7 @@ public class Box extends StringComponent {
     public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        String componentString = component.map(StringComponent::getString).orElse("");
+        String componentString = component != null ? component.getString() : "";
 
         int width = (this.width < 0 ? maxLineWidth(componentString) : this.width) + padding * 2;
         int height = this.height < 0 ? Math.toIntExact(componentString.lines().count()) : this.height;

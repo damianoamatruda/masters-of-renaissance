@@ -35,7 +35,7 @@ public class ProductionSet extends StringComponent {
 
             List<List<String>> rows = new ArrayList<>();
             for (ResourceTransactionRecipe prod : cliProductions)
-                rows.add(new Box(prod, -1, maxWidth, maxHeight).getString().lines().toList());
+                rows.add(new Box(prod, maxWidth, maxHeight, -1).getString().lines().toList());
 
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {

@@ -76,7 +76,7 @@ public class DevCardGrid extends StringComponent {
     private void fillRows(List<List<String>> rows, List<List<ReducedDevCard>> topCards, int i, int maxHeight) {
         for (int j = 0; j < topCards.get(i - 1).size(); j++) {
             ReducedDevCard card = topCards.get(i - 1).get(j);
-            rows.add(new Box(new DevelopmentCard(card), -1, cellWidth, maxHeight).getString().lines().toList());
+            rows.add(new Box(new DevelopmentCard(card), cellWidth, maxHeight, -1).getString().lines().toList());
         }
     }
 

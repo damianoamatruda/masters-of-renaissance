@@ -40,8 +40,8 @@ public class DevSlots extends StringComponent {
             List<List<String>> rows = new ArrayList<>();
             for (Optional<DevelopmentCard> optionalDevCardComponent : devCardComponents)
                 optionalDevCardComponent.ifPresentOrElse(
-                    devCardComponent -> rows.add(new Box(devCardComponent, -1, maxWidth, maxHeight).getString().lines().toList()),
-                    () -> rows.add(new Box(null).getString().lines().toList()));
+                        devCardComponent -> rows.add(new Box(devCardComponent, maxWidth, maxHeight, -1).getString().lines().toList()),
+                        () -> rows.add(new Box(null).getString().lines().toList()));
 
             int length = rows.stream().mapToInt(List::size).max().orElse(0);
             for (int k = 0; k < length; k++) {
