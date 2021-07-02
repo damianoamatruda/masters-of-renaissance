@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 /** Event dispatcher responsible for transferring messages over the network. */
 public class NetworkHandler extends AsynchronousEventDispatcher implements Runnable, AutoCloseable {
     private static final Logger LOGGER = Logger.getLogger(NetworkHandler.class.getName());
+    // TODO: Javadoc
+    private final EventDispatcher netEventDispatcher;
     /** The socket to send and receive messages on. */
     private final Socket socket;
     /** The messages' (de)serializer. */
@@ -44,6 +46,7 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
      * @param timeout      timeout (in ms) to use with Heartbeat events.
      */
     public NetworkHandler(Socket socket, NetworkProtocol protocol, BiFunction<String, NetworkProtocol, Event> processInput, int timeout) {
+        this.netEventDispatcher = new AsynchronousEventDispatcher();
         this.socket = socket;
         this.protocol = protocol;
         this.processInput = processInput;
@@ -66,12 +69,12 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
 
     @Override
     public void run() {
-        this.addEventListener(ReqWelcome.class, reqWelcomeEventListener);
-        this.addEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
-        this.addEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
-        this.addEventListener(ResWelcome.class, resWelcomeEventListener);
-        this.addEventListener(ResHeartbeat.class, resHeartbeatEventListener);
-        this.addEventListener(ResGoodbye.class, resGoodbyeEventListener);
+        netEventDispatcher.addEventListener(ReqWelcome.class, reqWelcomeEventListener);
+        netEventDispatcher.addEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
+        netEventDispatcher.addEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
+        netEventDispatcher.addEventListener(ResWelcome.class, resWelcomeEventListener);
+        netEventDispatcher.addEventListener(ResHeartbeat.class, resHeartbeatEventListener);
+        netEventDispatcher.addEventListener(ResGoodbye.class, resGoodbyeEventListener);
 
         try (
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -96,7 +99,7 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
                     halfTimeout = false;
 
                     try {
-                        dispatch(protocol.processInputAsNetEvent(inputLine));
+                        netEventDispatcher.dispatch(protocol.processInputAsNetEvent(inputLine));
                     } catch (NetworkProtocolException e1) {
                         try {
                             dispatch(processInput.apply(inputLine, protocol));
@@ -119,12 +122,12 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
         } finally {
             onClose.run();
             super.close();
-            this.removeEventListener(ReqWelcome.class, reqWelcomeEventListener);
-            this.removeEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
-            this.removeEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
-            this.removeEventListener(ResWelcome.class, resWelcomeEventListener);
-            this.removeEventListener(ResHeartbeat.class, resHeartbeatEventListener);
-            this.removeEventListener(ResGoodbye.class, resGoodbyeEventListener);
+            netEventDispatcher.removeEventListener(ReqWelcome.class, reqWelcomeEventListener);
+            netEventDispatcher.removeEventListener(ReqHeartbeat.class, reqHeartbeatEventListener);
+            netEventDispatcher.removeEventListener(ReqGoodbye.class, reqGoodbyeEventListener);
+            netEventDispatcher.removeEventListener(ResWelcome.class, resWelcomeEventListener);
+            netEventDispatcher.removeEventListener(ResHeartbeat.class, resHeartbeatEventListener);
+            netEventDispatcher.removeEventListener(ResGoodbye.class, resGoodbyeEventListener);
         }
     }
 
