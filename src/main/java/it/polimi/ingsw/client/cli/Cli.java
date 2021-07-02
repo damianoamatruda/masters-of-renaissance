@@ -328,7 +328,10 @@ public class Cli implements Runnable {
                         });
 
                         allocQuantity.addAndGet(quantity);
-                        remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+                        if(remainingResMap.containsKey("Blanks") && remainingResMap.get("Blanks") > 0)
+                            remainingResMap.computeIfPresent("Blanks", (k, v) -> v - quantity);
+                        else
+                            remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
                     }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
             }
 
