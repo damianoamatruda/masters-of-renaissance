@@ -22,15 +22,12 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrNoSuchEntity.IDType;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * This class manages the states and actions of a game.
  */
 public class GameContext extends AsynchronousEventDispatcher {
-    private static final Logger LOGGER = Logger.getLogger(GameContext.class.getName());
-
     /** The game. */
     private final Game game;
 
@@ -53,18 +50,18 @@ public class GameContext extends AsynchronousEventDispatcher {
         this.mandatoryActionDone = false;
     }
 
-    public void dispatchStartState(View view, String nickname) {
-        game.dispatchState(view, getPlayerByNickname(nickname), false);
+    // TODO: Javadoc
+    public void start(View view, String nickname) {
+        resume(view, nickname);
+
         getPlayerByNickname(nickname).getSetup().giveInitialFaithPoints(game, getPlayerByNickname(nickname));
-//        game.getPlayers().forEach(player -> player.getSetup().giveInitialFaithPoints(game, player));
     }
 
-    public void dispatchResumeState(View view, String nickname) {
-        /* info about the turn's state needs to be sent
-           if it's the current player reconnecting */
-        game.dispatchState(view,
-                getPlayerByNickname(nickname),
-                getPlayerByNickname(nickname).equals(game.getCurrentPlayer()) && mandatoryActionDone);
+    // TODO: Javadoc (info about the turn's state needs to be sent if it's the current player reconnecting)
+    public void resume(View view, String nickname) {
+        Player player = getPlayerByNickname(nickname);
+
+        game.dispatchState(view, player, player.equals(game.getCurrentPlayer()) && mandatoryActionDone);
     }
 
     /**

@@ -63,7 +63,7 @@ public class Lobby extends AsynchronousEventDispatcher {
             view.registerOnModelGameContext(context);
             joined.put(view, context);
             disconnected.remove(nickname);
-            context.dispatchResumeState(view, nickname);
+            context.resume(view, nickname);
         } else {
             LOGGER.info(String.format("Set nickname '%s'", nickname));
 
@@ -171,7 +171,7 @@ public class Lobby extends AsynchronousEventDispatcher {
             view.registerOnModelGameContext(context);
             joined.put(view, context);
         });
-        waiting.subList(0, newGamePlayersCount).forEach(view -> context.dispatchStartState(view, nicknames.get(view)));
+        waiting.subList(0, newGamePlayersCount).forEach(view -> context.start(view, nicknames.get(view)));
 
         LOGGER.info(String.format("Started context, %d waiting", waiting.size()));
 

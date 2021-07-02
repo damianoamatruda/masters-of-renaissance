@@ -16,9 +16,7 @@ public class TurnAfterActionController extends TurnController {
         cli.getOut().println(center("~ It's your turn ~"));
 
         cli.getOut().println();
-        Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('L', new Menu.Entry("Leader Actions", () -> cli.setController(new LeaderActionsController(this), false)));
-        entries.put('S', new Menu.Entry("Swap Shelves", () -> cli.setController(new SwapShelvesController(this), false)));
+        Map<Character, Menu.Entry> entries = new LinkedHashMap<>(getNonMandatoryMenuEntries());
         entries.put('E', new Menu.Entry("End Turn", this::endTurn));
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
         new Menu(entries, this::quitToTitle).render();

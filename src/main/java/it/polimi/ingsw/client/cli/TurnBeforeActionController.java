@@ -24,9 +24,7 @@ public class TurnBeforeActionController extends TurnController {
         entries.put('1', new Menu.Entry("Take Market Resources", () -> cli.setController(new TakeFromMarketController(this), false)));
         entries.put('2', new Menu.Entry("Buy a Development Card", () -> cli.setController(new BuyDevelopmentCardController(this), false)));
         entries.put('3', new Menu.Entry("Activate Productions", () -> cli.setController(new ActivateProductionsController(this), false)));
-        if(vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().stream().anyMatch(l -> !l.isActive()))
-            entries.put('L', new Menu.Entry("Leader Actions", () -> cli.setController(new LeaderActionsController(this), false)));
-        entries.put('S', new Menu.Entry("Swap Shelves", () -> cli.setController(new SwapShelvesController(this), false)));
+        entries.putAll(getNonMandatoryMenuEntries());
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
         new Menu(entries, this::quitToTitle).render();
     }
