@@ -43,6 +43,9 @@ public class Ui extends View {
     public void setGameConfigStream(InputStream gameConfigStream) {
         this.gameConfigStream = gameConfigStream;
 
+        if (gameConfigStream == null)
+            return;
+            
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[16777216];
 
