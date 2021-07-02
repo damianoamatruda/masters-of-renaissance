@@ -35,7 +35,7 @@ public class Cli implements Runnable {
         Cli.instance = this;
         this.ui = new Ui();
         this.runThread = new Thread(this);
-        this.executor = Executors.newSingleThreadExecutor();
+        this.executor = Executors.newCachedThreadPool();
         this.isReturningToMainMenu = new AtomicBoolean(false);
         this.out = System.out;
         this.in = new Scanner(System.in);
