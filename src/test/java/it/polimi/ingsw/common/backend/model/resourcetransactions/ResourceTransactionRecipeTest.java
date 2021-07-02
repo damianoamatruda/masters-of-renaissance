@@ -1,19 +1,19 @@
 package it.polimi.ingsw.common.backend.model.resourcetransactions;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.Test;
 
-import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for ResourceTransactionRecipes.
  */
 public class ResourceTransactionRecipeTest {
-    private final ResourceType coin = new ResourceType("coin", true);
+    private final ResourceType coin = new ResourceType("Coin", "", true);
 
     @Test
     void nullInput() {

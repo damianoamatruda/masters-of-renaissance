@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of the functionalities of the class 'LeaderCard'.
  */
 public class LeaderCardTest {
-    private final ResourceType coin = new ResourceType("Coin", true);
+    private final ResourceType coin = new ResourceType("Coin", "", true);
     private LeaderCard leader;
 
     @BeforeEach
@@ -68,7 +68,7 @@ public class LeaderCardTest {
     @Test
     void activateWrongResources() {
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        assertDoesNotThrow(() -> p.getStrongbox().addResources(Map.of(new ResourceType("Shield", true), 1)));
+        assertDoesNotThrow(() -> p.getStrongbox().addResources(Map.of(new ResourceType("Shield", "", true), 1)));
 
         assertThrows(CardRequirementsNotMetException.class, () -> leader.activate(p));
         assertFalse(leader.isActive());
@@ -115,8 +115,8 @@ public class LeaderCardTest {
     void replaceMarketResources() {
         leader = new DepotLeader(0, coin, new ResourceRequirement(Map.of(coin, 1)), 0, 0);
 
-        Map<ResourceType, Integer> res = Map.of(new ResourceType("Zero", false), 1);
+        Map<ResourceType, Integer> res = Map.of(new ResourceType("Zero", "", false), 1);
 
-        assertEquals(res, leader.replaceMarketResources(new ResourceType("Zero", false), new HashMap<>(res), null));
+        assertEquals(res, leader.replaceMarketResources(new ResourceType("Zero", "", false), new HashMap<>(res), null));
     }
 }

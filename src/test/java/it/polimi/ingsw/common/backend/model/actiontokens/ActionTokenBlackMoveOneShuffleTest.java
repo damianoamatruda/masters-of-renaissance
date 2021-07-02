@@ -29,7 +29,7 @@ class ActionTokenBlackMoveOneShuffleTest {
         List<ActionToken> deck = new ArrayList<>();
         deck.add(token);
 
-        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
 
         Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
         SoloGame solo = new SoloGame(player, null, null, List.of(), List.of(), List.of(), List.of(), deck, new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of(), 24), 3, 0);

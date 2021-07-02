@@ -9,16 +9,18 @@ public class DevCardColor {
     /** The name of the development card color. */
     private final String name;
 
-    private final String colorValue;
+    // TODO: Javadoc
+    private final String ansiColor;
 
     /**
      * Constructor of the development card color.
      *
-     * @param name the name of the development card color
+     * @param name      the name of the development card color
+     * @param ansiColor TODO
      */
-    public DevCardColor(String name) {
+    public DevCardColor(String name, String ansiColor) {
         this.name = name;
-        this.colorValue = "#ffffff";
+        this.ansiColor = ansiColor;
     }
 
     /**
@@ -31,6 +33,6 @@ public class DevCardColor {
     }
 
     public ReducedDevCardColor reduce() {
-        return new ReducedDevCardColor(name, colorValue);
+        return new ReducedDevCardColor(name, ansiColor);
     }
 }

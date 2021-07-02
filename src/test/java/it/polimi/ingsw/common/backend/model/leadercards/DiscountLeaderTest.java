@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of properties of DiscountLeader.
  */
 public class DiscountLeaderTest {
-    private static final ResourceType coin = new ResourceType("Coin", true);
+    private static final ResourceType coin = new ResourceType("Coin", "", true);
 
     /**
      * Factory method for parameters combination.

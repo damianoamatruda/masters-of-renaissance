@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of properties of ProductionLeader.
  */
 public class ProductionLeaderTest {
-    private final ResourceType coin = new ResourceType("Coin", true);
+    private final ResourceType coin = new ResourceType("Coin", "", true);
 
     /**
      * Tests a production leader initialized with a non-null production.

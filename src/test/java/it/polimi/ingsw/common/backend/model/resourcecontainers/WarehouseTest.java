@@ -46,7 +46,7 @@ public class WarehouseTest {
 
     @Test
     void resourceQuantityOfNewWarehouseShelf() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(1);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(0);
         assertEquals(0, warehouseShelf.getResourceQuantity(r));
@@ -76,7 +76,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -86,7 +86,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void quantityOfWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -96,7 +96,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -106,7 +106,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void warehouseShelfShouldNotBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -116,7 +116,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void warehouseShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(resourcesCount + 1);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -128,15 +128,15 @@ public class WarehouseTest {
     void warehouseShelfShouldBeFull(int resourcesCount) throws IllegalResourceTransferException {
         Warehouse warehouse = new Warehouse(resourcesCount);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(resourcesCount - 1);
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
         assertTrue(warehouseShelf.isFull());
     }
 
     @Test
     void warehouseShelfShouldNotBeAbleToAddResourceOfAnotherType() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r1, 2));
@@ -145,7 +145,7 @@ public class WarehouseTest {
 
     @Test
     void warehouseShelfShouldNotBeAbleToAddResourceInAnotherWarehouseShelf() throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(2);
 
         WarehouseShelf warehouseShelf1 = warehouse.getShelves().get(0);
@@ -157,8 +157,8 @@ public class WarehouseTest {
 
     @Test
     void warehouseShelfShouldNotBeAbleToRemoveResourceOfAnotherType() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r1, 3));
@@ -167,7 +167,7 @@ public class WarehouseTest {
 
     @Test
     void emptyWarehouseShelfShouldNotBeAbleToRemoveResource() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         assertThrows(IllegalResourceTransferException.class, () -> warehouseShelf.removeResources(Map.of(r, 1)));
@@ -176,7 +176,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void quantityOfWarehouseShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -187,7 +187,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfWarehouseShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -198,7 +198,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(3);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -209,7 +209,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void quantityOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(3);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -220,7 +220,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(3);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -231,7 +231,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceTypeOfClearedWarehouseShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(3);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -242,7 +242,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void clearedWarehouseShelfShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(3);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -253,7 +253,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void clearedShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(3);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(2);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -264,7 +264,7 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void clearedShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         Warehouse warehouse = new Warehouse(5);
         WarehouseShelf warehouseShelf = warehouse.getShelves().get(4);
         warehouseShelf.addResources(Map.of(r, resourcesCount));
@@ -275,8 +275,8 @@ public class WarehouseTest {
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     void swapShouldBePossible(boolean direct) throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
 
         Warehouse warehouse = new Warehouse(13);
 
@@ -309,8 +309,8 @@ public class WarehouseTest {
 
     @Test
     void swapShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
 
         Warehouse warehouse = new Warehouse(6);
 
@@ -325,8 +325,8 @@ public class WarehouseTest {
 
     @Test
     void swapShouldNotBePossibleBecauseOfResourceTypes() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
 
         Warehouse warehouse1 = new Warehouse(7);
         WarehouseShelf warehouseShelf1a = warehouse1.getShelves().get(5);
@@ -343,8 +343,8 @@ public class WarehouseTest {
 
     @Test
     void swapTwice() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
 
         Warehouse warehouse = new Warehouse(13);
 

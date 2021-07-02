@@ -172,7 +172,6 @@ public class FileGameFactory implements GameFactory {
      * @param isMultiGame whether the requested game is a multiplayer game
      */
     private void checkNumberOfPlayers(List<String> nicknames, boolean isMultiGame) {
-        
         String baseMsg = "Invalid number of players chosen";
         if (nicknames == null)
             throw new IllegalArgumentException(String.format("%s: %s.", baseMsg, "null"));

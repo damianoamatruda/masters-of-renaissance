@@ -30,10 +30,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class ActionTokenDiscardTwoTest {
     SoloGame game;
     Player player;
-    final DevCardColor blue = new DevCardColor("Blue");
-    final DevCardColor green = new DevCardColor("Green");
-    final DevCardColor purple = new DevCardColor("Purple");
-    final DevCardColor yellow = new DevCardColor("Yellow");
+    final DevCardColor blue = new DevCardColor("Blue", "");
+    final DevCardColor green = new DevCardColor("Green", "");
+    final DevCardColor purple = new DevCardColor("Purple", "");
+    final DevCardColor yellow = new DevCardColor("Yellow", "");
 
     @BeforeEach
     void setup() {
@@ -51,7 +51,7 @@ class ActionTokenDiscardTwoTest {
                     ));
         DevCardGrid devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 
-        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
 
         player = new Player(
                 "",

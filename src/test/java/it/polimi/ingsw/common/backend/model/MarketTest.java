@@ -21,46 +21,46 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MarketTest {
     @Test
     void getColsCount1() {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
-        ResourceType r4 = new ResourceType("r4", true);
-        ResourceType r5 = new ResourceType("r5", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
+        ResourceType r3 = new ResourceType("r3", "", true);
+        ResourceType r4 = new ResourceType("r4", "", true);
+        ResourceType r5 = new ResourceType("r5", "", true);
         Market market = new Market(Map.of(r1, 1, r2, 1, r3, 2, r4, 3), 3, r5);
         assertEquals(3, market.getColsCount());
     }
 
     @Test
     void getRowsCount1() {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
-        ResourceType r4 = new ResourceType("r4", true);
-        ResourceType r5 = new ResourceType("r5", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
+        ResourceType r3 = new ResourceType("r3", "", true);
+        ResourceType r4 = new ResourceType("r4", "", true);
+        ResourceType r5 = new ResourceType("r5", "", true);
         Market market = new Market(Map.of(r1, 1, r2, 1, r3, 2, r4, 3), 3, r5);
         assertEquals(2, market.getRowsCount()); /* 6 / 3 */
     }
 
     @Test
     void getColsCount2() {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
-        ResourceType r4 = new ResourceType("r4", true);
-        ResourceType r5 = new ResourceType("r5", true);
-        ResourceType r6 = new ResourceType("r6", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
+        ResourceType r3 = new ResourceType("r3", "", true);
+        ResourceType r4 = new ResourceType("r4", "", true);
+        ResourceType r5 = new ResourceType("r5", "", true);
+        ResourceType r6 = new ResourceType("r6", "", true);
         Market market = new Market(Map.of(r1, 1, r2, 1, r3, 2, r4, 2, r5, 3, r6, 4), 4, r6);
         assertEquals(4, market.getColsCount());
     }
 
     @Test
     void getRowsCount2() {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
-        ResourceType r4 = new ResourceType("r4", true);
-        ResourceType r5 = new ResourceType("r5", true);
-        ResourceType r6 = new ResourceType("r6", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
+        ResourceType r3 = new ResourceType("r3", "", true);
+        ResourceType r4 = new ResourceType("r4", "", true);
+        ResourceType r5 = new ResourceType("r5", "", true);
+        ResourceType r6 = new ResourceType("r6", "", true);
         Market market = new Market(Map.of(r1, 1, r2, 1, r3, 2, r4, 2, r5, 3, r6, 4), 4, r6);
         assertEquals(3, market.getRowsCount()); /* 12 / 4 */
     }
@@ -73,12 +73,12 @@ public class MarketTest {
      */
     @Test
     void completelyShiftRow() throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", false);
-        ResourceType r3 = new ResourceType("r3", true);
-        ResourceType r4 = new ResourceType("r4", true);
-        ResourceType r5 = new ResourceType("r5", true);
-        ResourceType r6 = new ResourceType("r6", false);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", false);
+        ResourceType r3 = new ResourceType("r3", "", true);
+        ResourceType r4 = new ResourceType("r4", "", true);
+        ResourceType r5 = new ResourceType("r5", "", true);
+        ResourceType r6 = new ResourceType("r6", "", false);
         Market market = new Market(
                 Map.of(r1, 1, r2, 1, r3, 2, r4, 2, r5, 3, r6, 4), 4, r6);
 

@@ -30,14 +30,14 @@ public class PlayerTest {
     Game game;
     Player player;
 
-    final ResourceType coin = new ResourceType("Coin", true);
-    final ResourceType faith = new ResourceType("Faith", false);
-    final ResourceType servant = new ResourceType("Servant", true);
-    final ResourceType shield = new ResourceType("Shield", true);
-    final ResourceType stone = new ResourceType("Stone", true);
-    final ResourceType zero = new ResourceType("Zero", false);
+    final ResourceType coin = new ResourceType("Coin", "", true);
+    final ResourceType faith = new ResourceType("Faith", "", false);
+    final ResourceType servant = new ResourceType("Servant", "", true);
+    final ResourceType shield = new ResourceType("Shield", "", true);
+    final ResourceType stone = new ResourceType("Stone", "", true);
+    final ResourceType zero = new ResourceType("Zero", "", false);
 
-    final DevCardColor blue = new DevCardColor("Blue");
+    final DevCardColor blue = new DevCardColor("Blue", "");
 
     /**
      * Sets up initial conditions by initializing Game and Player.

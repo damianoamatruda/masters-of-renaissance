@@ -16,42 +16,42 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ResourceShelfTest {
     @Test
     void resourceTypesOfNewResourceShelf() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         assertEquals(Set.of(), resourceShelf.getResourceTypes());
     }
 
     @Test
     void quantityOfNewShelf() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         assertEquals(0, resourceShelf.getQuantity());
     }
 
     @Test
     void resourceQuantityOfNewShelf() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         assertEquals(0, resourceShelf.getResourceQuantity(r));
     }
 
     @Test
     void resourceTypeOfNewShelf() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         assertTrue(resourceShelf.getResourceType().isEmpty());
     }
 
     @Test
     void newShelfShouldBeEmpty() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         assertTrue(resourceShelf.isEmpty());
     }
 
     @Test
     void newShelfShouldNotBeFull() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         assertFalse(resourceShelf.isFull());
     }
@@ -59,7 +59,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfResourceShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(Set.of(r), resourceShelf.getResourceTypes());
@@ -68,7 +68,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void quantityOfResourceShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, resourceShelf.getQuantity());
@@ -77,7 +77,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfResourceShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         assertEquals(resourcesCount, resourceShelf.getResourceQuantity(r));
@@ -86,7 +86,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceShelfShouldNotBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         assertFalse(resourceShelf.isEmpty());
@@ -95,7 +95,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, resourcesCount + 1);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         assertFalse(resourceShelf.isFull());
@@ -104,7 +104,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceShelfShouldBeFull(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, resourcesCount);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         assertTrue(resourceShelf.isFull());
@@ -112,8 +112,8 @@ public class ResourceShelfTest {
 
     @Test
     void resourceShelfShouldNotBeAbleToAddResourceOfAnotherType() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r1, 5);
         resourceShelf.addResources(Map.of(r1, 2));
         assertThrows(IllegalResourceTransferException.class, () -> resourceShelf.addResources(Map.of(r2, 1)));
@@ -121,16 +121,16 @@ public class ResourceShelfTest {
 
     @Test
     void emptyResourceShelfShouldNotBeAbleToAddResourceOfNonBoundedType() {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r1, 5);
         assertThrows(IllegalResourceTransferException.class, () -> resourceShelf.addResources(Map.of(r2, 1)));
     }
 
     @Test
     void resourceShelfShouldNotBeAbleToRemoveResourceOfAnotherType() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r1, 5);
         resourceShelf.addResources(Map.of(r1, 3));
         assertThrows(IllegalResourceTransferException.class, () -> resourceShelf.removeResources(Map.of(r2, 1)));
@@ -138,7 +138,7 @@ public class ResourceShelfTest {
 
     @Test
     void emptyResourceShelfShouldNotBeAbleToRemoveResource() {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
         assertThrows(IllegalResourceTransferException.class, () -> resourceShelf.removeResources(Map.of(r, 1)));
     }
@@ -146,7 +146,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void quantityOfResourceShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, 1));
@@ -156,7 +156,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfResourceShelfWithOneRemovedResource(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, 1));
@@ -166,7 +166,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, resourcesCount));
@@ -176,7 +176,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void quantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, resourcesCount));
@@ -186,7 +186,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, resourcesCount));
@@ -196,7 +196,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void resourceTypeOfClearedShelf(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, resourcesCount));
@@ -206,7 +206,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void clearedResourceShelfShouldBeEmpty(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, resourcesCount));
@@ -216,7 +216,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void clearedResourceShelfShouldNotBeFull(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 3);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, resourcesCount));
@@ -226,7 +226,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3})
     void clearedResourceShelfShouldNotBeAbleToRemoveResources(int resourcesCount) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         ResourceShelf resourceShelf = new ResourceShelf(r, 5);
         resourceShelf.addResources(Map.of(r, resourcesCount));
         resourceShelf.removeResources(Map.of(r, resourcesCount));
@@ -236,7 +236,7 @@ public class ResourceShelfTest {
     @ParameterizedTest
     @ValueSource(booleans = {false, true})
     void swapShouldBePossible(boolean direct) throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
 
         ResourceShelf resourceShelf1 = new ResourceShelf(r, 7);
         resourceShelf1.addResources(Map.of(r, 3));
@@ -267,7 +267,7 @@ public class ResourceShelfTest {
 
     @Test
     void swapShouldNotBePossibleBecauseOfQuantities() throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
 
         ResourceShelf resourceShelf1 = new ResourceShelf(r, 3);
         resourceShelf1.addResources(Map.of(r, 3));
@@ -280,8 +280,8 @@ public class ResourceShelfTest {
 
     @Test
     void swapShouldNotBePossibleBecauseOfResourceTypes() throws IllegalResourceTransferException {
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
 
         ResourceShelf resourceShelf1 = new ResourceShelf(r1, 7);
         resourceShelf1.addResources(Map.of(r1, 3));
@@ -294,7 +294,7 @@ public class ResourceShelfTest {
 
     @Test
     void swapTwice() throws IllegalResourceTransferException {
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
 
         ResourceShelf resourceShelf1 = new ResourceShelf(r, 7);
         resourceShelf1.addResources(Map.of(r, 3));

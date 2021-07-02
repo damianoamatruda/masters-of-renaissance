@@ -24,7 +24,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void resourceTypesOfShelfWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertEquals(Set.of(r), strongbox.getResourceTypes());
     }
@@ -33,7 +33,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void quantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertEquals(resourcesCount, strongbox.getQuantity());
     }
@@ -42,7 +42,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfStrongboxWithResourcesOfSameType(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertEquals(resourcesCount, strongbox.getResourceQuantity(r));
     }
@@ -51,7 +51,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void strongboxWithResourcesOfSameTypeShouldNotBeEmpty(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertFalse(strongbox.isEmpty());
     }
@@ -59,9 +59,9 @@ class StrongboxTest {
     @Test
     void resourceTypesOfStrongboxWithResourcesOfMultipleTypes() {
         Strongbox strongbox = new Strongbox();
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
+        ResourceType r3 = new ResourceType("r3", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r1, 2, r2, 3, r3, 5)));
         assertEquals(Set.of(r1, r2, r3), strongbox.getResourceTypes());
     }
@@ -69,9 +69,9 @@ class StrongboxTest {
     @Test
     void quantityOfStrongboxWithResourcesOfMultipleTypes() {
         Strongbox strongbox = new Strongbox();
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
+        ResourceType r3 = new ResourceType("r3", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r1, 2, r2, 3, r3, 5)));
         assertEquals(10, strongbox.getQuantity());
     }
@@ -79,9 +79,9 @@ class StrongboxTest {
     @Test
     void resourceQuantityOfStrongboxWithResourcesOfMultipleTypes() {
         Strongbox strongbox = new Strongbox();
-        ResourceType r1 = new ResourceType("r1", true);
-        ResourceType r2 = new ResourceType("r2", true);
-        ResourceType r3 = new ResourceType("r3", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
+        ResourceType r2 = new ResourceType("r2", "", true);
+        ResourceType r3 = new ResourceType("r3", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r1, 2, r2, 3, r3, 5)));
         assertAll("getResourceQuantity",
                 () -> assertEquals(2, strongbox.getResourceQuantity(r1)),
@@ -94,7 +94,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void quantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertDoesNotThrow(() -> strongbox.removeResources(Map.of(r, 1)));
         assertEquals(resourcesCount - 1, strongbox.getQuantity());
@@ -104,7 +104,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void resourceQuantityOfStrongboxWithResourcesOfSameTypeAndOneRemovedResource(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertDoesNotThrow(() -> strongbox.removeResources(Map.of(r, 1)));
         assertEquals(resourcesCount - 1, strongbox.getResourceQuantity(r));
@@ -114,7 +114,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void clearedStrongboxShouldBeEmpty(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertDoesNotThrow(() -> strongbox.removeResources(Map.of(r, resourcesCount)));
         assertTrue(strongbox.isEmpty());
@@ -124,7 +124,7 @@ class StrongboxTest {
     @ValueSource(ints = {1, 2, 3})
     void emptyStrongboxShouldNotBeAbleToRemoveResources(int resourcesCount) {
         Strongbox strongbox = new Strongbox();
-        ResourceType r = new ResourceType("r", true);
+        ResourceType r = new ResourceType("r", "", true);
         assertDoesNotThrow(() -> strongbox.addResources(Map.of(r, resourcesCount)));
         assertDoesNotThrow(() -> strongbox.removeResources(Map.of(r, resourcesCount)));
         assertThrows(IllegalResourceTransferException.class, () -> strongbox.removeResources(Map.of(r, 1)));

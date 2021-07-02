@@ -12,7 +12,7 @@ public class ResourceType {
     private final String name;
 
     /** The string value of the resource color */
-    private final String colorValue;
+    private final String ansiColor;
 
     /**
      * <code>true</code> if the resources of this type can be stored in a resource container; <code>false</code>
@@ -23,14 +23,15 @@ public class ResourceType {
     /**
      * Class constructor.
      *
-     * @param name     the name of the resource type
-     * @param storable <code>true</code> if the resources of this type can be stored in a resource container;
-     *                 <code>false</code> otherwise.
+     * @param name      the name of the resource type
+     * @param ansiColor TODO
+     * @param storable  <code>true</code> if the resources of this type can be stored in a resource container;
+     *                  <code>false</code> otherwise.
      */
-    public ResourceType(String name, boolean storable) {
+    public ResourceType(String name, String ansiColor, boolean storable) {
         this.name = name;
+        this.ansiColor = ansiColor;
         this.storable = storable;
-        this.colorValue = "#ffffff";
     }
 
     /**
@@ -42,6 +43,11 @@ public class ResourceType {
         return name;
     }
 
+    // TODO: Javadoc
+    public String getAnsiColor() {
+        return ansiColor;
+    }
+
     /**
      * Returns whether the resource type is storable.
      *
@@ -50,10 +56,6 @@ public class ResourceType {
      */
     public final boolean isStorable() {
         return storable;
-    }
-
-    public String getColorValue() {
-        return colorValue;
     }
 
     /**
@@ -96,6 +98,6 @@ public class ResourceType {
     }
 
     public ReducedResourceType reduce() {
-        return new ReducedResourceType(name, colorValue, storable, isGiveableToPlayer(), isTakeableFromPlayer());
+        return new ReducedResourceType(name, ansiColor, storable, isGiveableToPlayer(), isTakeableFromPlayer());
     }
 }

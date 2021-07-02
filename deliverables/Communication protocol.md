@@ -1167,23 +1167,23 @@ If a modular approach were to be chosen, the clients' state-switching logic woul
   "devCardColors": [
     {
       "name": "Blue",
-      "colorValue": "\u001b[34m"
+      "ansiColor": "\u001b[34m"
     },
     {
       "name": "Green",
-      "colorValue": "\u001b[32m"
+      "ansiColor": "\u001b[32m"
     }
   ],
   "resourceTypes": [
     {
       "name": "Servant",
-      "colorValue": "\u001B[95m",
+      "ansiColor": "\u001B[95m",
       "isStorable": true,
       "isGiveableToPlayer": true,
       "isTakeableFromPlayer": true
     }, {
       "name": "Zero",
-      "colorValue": "\u001B[37m",
+      "ansiColor": "\u001B[37m",
       "isStorable": false,
       "isGiveableToPlayer": false,
       "isTakeableFromPlayer": false

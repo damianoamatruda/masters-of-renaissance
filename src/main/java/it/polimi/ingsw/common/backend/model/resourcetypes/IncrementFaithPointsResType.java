@@ -10,12 +10,13 @@ public class IncrementFaithPointsResType extends ResourceType {
     /**
      * Class constructor.
      *
-     * @param name     the name of the resource type
-     * @param storable <code>true</code> if the resources of this type can be stored in a resource container;
-     *                 <code>false</code> otherwise.
+     * @param name      the name of the resource type
+     * @param storable  <code>true</code> if the resources of this type can be stored in a resource container;
+     *                  <code>false</code> otherwise.
+     * @param ansiColor TODO
      */
-    public IncrementFaithPointsResType(String name, boolean storable) {
-        super(name, storable);
+    public IncrementFaithPointsResType(String name, boolean storable, String ansiColor) {
+        super(name, ansiColor, storable);
     }
 
     @Override

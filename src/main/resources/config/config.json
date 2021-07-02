@@ -9,52 +9,52 @@
   "cardColors": [
     {
       "name": "Yellow",
-      "colorValue": "\u001B[33m"
+      "ansiColor": "\u001B[33m"
     },
     {
       "name": "Purple",
-      "colorValue": "\u001B[35m"
+      "ansiColor": "\u001B[35m"
     },
     {
       "name": "Green",
-      "colorValue": "\u001B[32m"
+      "ansiColor": "\u001B[32m"
     },
     {
       "name": "Blue",
-      "colorValue": "\u001B[34m"
+      "ansiColor": "\u001B[34m"
     }
   ],
   "resourceTypes": [
     {
       "type": "IncrementFaithPointsResType",
       "name": "Faith",
-      "storable": false,
-      "colorValue": "\u001B[31m"
+      "ansiColor": "\u001B[31m",
+      "storable": false
     },
     {
       "name": "Servant",
-      "storable": true,
-      "colorValue": "\u001B[95m"
+      "ansiColor": "\u001B[95m",
+      "storable": true
     },
     {
       "name": "Zero",
-      "storable": false,
-      "colorValue": "\u001B[37m"
+      "ansiColor": "\u001B[37m",
+      "storable": false
     },
     {
       "name": "Shield",
-      "storable": true,
-      "colorValue": "\u001B[36m"
+      "ansiColor": "\u001B[36m",
+      "storable": true
     },
     {
       "name": "Coin",
-      "storable": true,
-      "colorValue": "\u001B[93m"
+      "ansiColor": "\u001B[93m",
+      "storable": true
     },
     {
       "name": "Stone",
-      "storable": true,
-      "colorValue": "\u001B[90m"
+      "ansiColor": "\u001B[90m",
+      "storable": true
     }
   ],
   "baseProduction": {

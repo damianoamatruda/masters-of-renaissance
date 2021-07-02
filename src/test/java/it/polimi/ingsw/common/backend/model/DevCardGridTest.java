@@ -26,9 +26,9 @@ public class DevCardGridTest {
     DevCardGrid devCardGrid;
     Player buyer;
     Game game;
-    final ResourceType r1 = new ResourceType("r1", true);
-    final DevCardColor c1 = new DevCardColor("c1");
-    final DevCardColor c2 = new DevCardColor("c2");
+    final ResourceType r1 = new ResourceType("r1", "", true);
+    final DevCardColor c1 = new DevCardColor("c1", "");
+    final DevCardColor c2 = new DevCardColor("c2", "");
 
     @BeforeEach
     void setup() {
@@ -46,7 +46,7 @@ public class DevCardGridTest {
                     ));
         devCardGrid = new DevCardGrid(devCards, levelsCount, colors.size());
 
-        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
 
         buyer = new Player(
                 "",

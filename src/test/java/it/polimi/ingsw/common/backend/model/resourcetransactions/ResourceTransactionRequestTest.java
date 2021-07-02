@@ -43,10 +43,10 @@ public class ResourceTransactionRequestTest {
             higher amount of any resource
     */
 
-    private final ResourceType rIn = new ResourceType("rIn", true);
-    private final ResourceType rOut = new ResourceType("rOut", true);
-    private final ResourceType rInRepl = new ResourceType("rInRepl", true);
-    private final ResourceType rOutRepl = new ResourceType("rOutRepl", true);
+    private final ResourceType rIn = new ResourceType("rIn", "", true);
+    private final ResourceType rOut = new ResourceType("rOut", "", true);
+    private final ResourceType rInRepl = new ResourceType("rInRepl", "", true);
+    private final ResourceType rOutRepl = new ResourceType("rOutRepl", "", true);
     private final ResourceTransactionRecipe stdRecipe = new ResourceTransactionRecipe(Map.of(rIn, 1), 0, Set.of(), Map.of(rOut, 1), 0, Set.of(), false);
     private final Shelf cIn = new Shelf(2);
     private final Shelf cOut = new Shelf(2);

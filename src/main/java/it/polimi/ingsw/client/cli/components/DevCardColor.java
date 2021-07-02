@@ -19,7 +19,7 @@ public class DevCardColor extends StringComponent {
 
         Cli.getInstance().getViewModel().getDevCardColors().stream()
                 .filter(c -> c.getName().equals(colorName))
-                .map(ReducedDevCardColor::getcolorValue)
+                .map(ReducedDevCardColor::getAnsiColor)
                 .findAny()
                 .ifPresentOrElse(
                         color -> str.set(String.format("\u001B[1m%s%s\u001B[0m", color, colorName)),

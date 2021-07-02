@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Test class for DevelopmentCard.
  */
 public class DevelopmentCardTest {
-    private final DevCardColor blue = new DevCardColor("Blue");
-    private final ResourceType coin = new ResourceType("Coin", true);
+    private final DevCardColor blue = new DevCardColor("Blue", "");
+    private final ResourceType coin = new ResourceType("Coin", "", true);
     private DevelopmentCard card;
     private Player player;
     private Game game;
@@ -51,7 +51,7 @@ public class DevelopmentCardTest {
      */
     @Test
     void takeFromPlayerNotEnoughRes() {
-        assertDoesNotThrow(() -> player.getStrongbox().addResources(Map.of(new ResourceType("Shield", true), 1)));
+        assertDoesNotThrow(() -> player.getStrongbox().addResources(Map.of(new ResourceType("Shield", "", true), 1)));
 
         assertThrows(Exception.class, () -> card.takeFromPlayer(game, player, Map.of(player.getStrongbox(), Map.of(coin, 1))));
     }

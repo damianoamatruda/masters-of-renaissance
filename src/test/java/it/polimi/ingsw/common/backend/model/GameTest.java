@@ -39,7 +39,7 @@ public class GameTest {
             players.add(player);
         }
 
-        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
         Market market = new Market(
                 Map.of(r1, 13), 4, r1);
 

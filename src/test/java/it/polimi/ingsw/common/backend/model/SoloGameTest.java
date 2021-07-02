@@ -28,7 +28,7 @@ public class SoloGameTest {
     Player player;
     FaithTrack track;
 
-    final ResourceType coin = new ResourceType("Coin", true);
+    final ResourceType coin = new ResourceType("Coin", "", true);
 
     /**
      * The setup: instantiation of game and the single player.
@@ -50,7 +50,7 @@ public class SoloGameTest {
                 new YellowTile(24, 20)
         ), 24);
 
-        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
 
         game = new SoloGame(player, null, null, List.of(), List.of(), List.of(), List.of(), List.of(
                 new ActionToken() {

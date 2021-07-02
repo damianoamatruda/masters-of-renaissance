@@ -21,12 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DevCardRequirementTest {
     private Player p;
     private Game g;
-    private final DevCardColor green = new DevCardColor("Green");
-    private final DevCardColor blue = new DevCardColor("Blue");
+    private final DevCardColor green = new DevCardColor("Green", "");
+    private final DevCardColor blue = new DevCardColor("Blue", "");
 
     @BeforeEach
     void setup() {
-        ResourceType r1 = new ResourceType("r1", true);
+        ResourceType r1 = new ResourceType("r1", "", true);
         p = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 2, new PlayerSetup(0, 0, 0, Set.of()));
         g = new Game(List.of(p), null, null, List.of(), List.of(), List.of(), List.of(), new DevCardGrid(List.of(), 0, 0), new Market(Map.of(r1, 1), 1, r1), new FaithTrack(Set.of(), Set.of(), 24), 3, 10);
     }

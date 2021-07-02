@@ -19,7 +19,7 @@ public class Resource extends StringComponent {
 
         Cli.getInstance().getViewModel().getResourceTypes().stream()
                 .filter(c -> c.getName().equals(resourceType))
-                .map(ReducedResourceType::getColorValue)
+                .map(ReducedResourceType::getAnsiColor)
                 .findAny()
                 .ifPresentOrElse(
                         color -> str.set(String.format("\u001B[1m%s%s\u001B[0m", color, resourceType)),

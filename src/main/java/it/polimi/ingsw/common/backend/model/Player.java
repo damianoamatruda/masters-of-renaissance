@@ -132,7 +132,10 @@ public class Player extends EventDispatcher {
         if (!leaders.contains(leader))
             throw new IllegalArgumentException(
                     String.format("Leader %d cannot be discarded: inexistent leader, max index allowed %d", leaders.indexOf(leader), leaders.size()));
-        if (leader.isActive()) throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
+
+        if (leader.isActive())
+            throw new ActiveLeaderDiscardException(leaders.indexOf(leader));
+
         game.onDiscardLeader(this);
         leaders.remove(leader);
 
@@ -275,6 +278,7 @@ public class Player extends EventDispatcher {
     public void addToDevSlot(Game game, int devSlotIndex, DevelopmentCard devCard,
                              Map<ResourceContainer, Map<ResourceType, Integer>> resContainers) throws IllegalCardDepositException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         Stack<DevelopmentCard> devSlot = devSlots.get(devSlotIndex);
+
         if ((devSlot.isEmpty() && devCard.getLevel() != 1) || (!devSlot.isEmpty() && devSlot.peek().getLevel() != devCard.getLevel() - 1))
             throw new IllegalCardDepositException();
 
