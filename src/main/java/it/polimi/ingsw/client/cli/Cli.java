@@ -350,6 +350,7 @@ public class Cli implements Runnable {
             if (discardable) {
                 out.println();
                 out.println(center("Press D if you want to discard all remaining resources."));
+                out.println(center("Press ENTER otherwise."));
 
                 out.println();
                 prompt("").ifPresentOrElse(input -> {
