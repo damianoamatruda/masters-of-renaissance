@@ -31,7 +31,7 @@ public class LeaderActionsController extends CliController {
     }
 
     private void executeLeaderAction(boolean isActivate) {
-        new LeadersHand(vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow()).render();
+        new LeadersHand(vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow().stream().filter(l -> !l.isActive()).toList()).render();
 
         cli.getOut().println();
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {
