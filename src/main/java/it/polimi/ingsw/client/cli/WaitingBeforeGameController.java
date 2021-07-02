@@ -20,7 +20,7 @@ public class WaitingBeforeGameController extends CliController {
         cli.getOut().println(center("~ Play Online ~"));
 
         cli.getOut().println();
-        cli.getOut().println(center("You are the first player in the lobby."));
+        cli.getOut().println(center("You can prepare a new game."));
 
         cli.getOut().println();
 
@@ -52,13 +52,16 @@ public class WaitingBeforeGameController extends CliController {
 
     @Override
     public void on(UpdateBookedSeats event) {
-        cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
+        cli.getOut().println();
+        cli.getOut().println(center("%d players waiting for a new game...", event.getBookedSeats()));
     }
 
     @Override
     public void on(UpdateJoinGame event) {
-        if (!cli.getUi().isOffline())
-            cli.alert(String.format("A new player joined the game! Getting to %d...", event.getPlayersCount()));
+        if (event.getPlayersCount() > 1) {
+            cli.getOut().println();
+            cli.getOut().println(center(String.format("A game has been prepared for %d players!", event.getPlayersCount())));
+        }
     }
 
     @Override
