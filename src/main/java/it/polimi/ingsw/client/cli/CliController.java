@@ -271,6 +271,34 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateGame event) {
         super.on(event);
 
+        cli.getOut().println("Players:");
+        event.getPlayers().stream().map(ReducedPlayer::getNickname).forEach(p -> cli.getOut().println(p));
+
+        new ResourceContainers(vm.getLocalPlayer().orElseThrow(),
+            vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
+            vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
+            vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
+            .render();
+
+        new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayer().get())).render();
+
+        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer().get())).render();
+
+        new Market(vm.getMarket().get()).render();
+
+        new DevCardGrid(vm.getDevCardGrid().get()).render();
+
+        cli.getOut().println(center(String.format("\n%s has the inkwell.\n", vm.getInkwellPlayer().get())));
+
+        if (event.getWinnerPlayer() != null)
+            cli.getOut().println(center(String.format("%s won the match!\n", event.getWinnerPlayer())));
+
+        if (event.isLastRound())
+            cli.getOut().println(center("Last round!\n"));
+
+        if (event.isEnded())
+            cli.getOut().println(center("Match ended!\n"));
+
         Map<String, Integer> points = vm.getPlayers().stream()
                 .map(ReducedPlayer::getNickname)
                 .collect(Collectors.toMap(nick -> nick, nick -> 0));
