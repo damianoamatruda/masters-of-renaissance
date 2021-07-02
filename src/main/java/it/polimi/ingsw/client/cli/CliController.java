@@ -392,16 +392,6 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(UpdateSetupDone event) {
-        super.on(event);
-
-        if (vm.getPlayers().size() > 1) {
-            cli.getOut().println();
-            cli.getOut().println("All players have finished their setup! Game starting...");
-        }
-    }
-
-    @Override
     public void on(UpdateVaticanSection event) {
         super.on(event);
 

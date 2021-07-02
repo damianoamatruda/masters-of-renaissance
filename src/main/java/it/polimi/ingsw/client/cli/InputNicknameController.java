@@ -82,6 +82,11 @@ public class InputNicknameController extends CliController {
     public void on(UpdateSetupDone event) {
         super.on(event);
 
+        if (vm.getPlayers().size() > 1) {
+            cli.getOut().println();
+            cli.getOut().println("All players have finished their setup! Game starting...");
+        }
+        
         setNextState();
     }
 }
