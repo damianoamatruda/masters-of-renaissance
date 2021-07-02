@@ -23,24 +23,34 @@ import java.util.logging.Logger;
 /** Server application for the Masters of Renaissance game. */
 public class Server implements Network, Runnable {
     private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+
     /** Timeout used for heartbeat events. */
     private static final int timeout = 25000;
+
     /** Default server configuration path. */
     private static final String serverConfigPath = "/config/server.json";
+
     /** Default game data file path. */
     private static final String defaultGameConfigPath = "/config/config.json";
+
     /** Thread to run the server on. */
     private final Thread runThread;
+
     /** Socket to accept incoming connections to. */
     private final ServerSocket serverSocket;
+
     /** Executor to run client hook threads on. */
     private final ExecutorService executor;
+
     /** JSON message (de)serializer. */
     private final NetworkProtocol protocol;
+
     /** Server's Lobby to welcome connecting players and handle new games/reconnections. */
     private final Lobby model;
+
     /** Server's Controller to handle requests from clients. */
     private final Controller controller;
+
     /** Map associating NetworkHandlers with VirtualViews' dispatch methods. */
     private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
 
@@ -72,6 +82,8 @@ public class Server implements Network, Runnable {
     }
 
     public static void main(String[] args) {
+        LoggerManager.useLogLevelEnv(Level.ALL);
+
         int port = -1;
         String gameConfigPath = null;
         InputStream gameConfigStream = null;
