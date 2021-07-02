@@ -169,7 +169,8 @@ public abstract class CliController extends UiController implements Renderable {
             cli.reloadController("The payment's cost is erroneously specified, please choose all and only the needed resources.");
         else
             cli.reloadController(String.format(
-                    "Irregular quantity of %s specified in the container map: %d requested, %d chosen.",
+                    "Irregular quantity of %s %s specified in the container map: %d required, %d chosen.",
+                    event.isInput() ? "input" : "output",
                     event.getResType().isEmpty() ? "resources" : event.getResType(),
                     event.getReplacedCount(),
                     event.getShelvesChoiceResCount()));
@@ -287,12 +288,20 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateGame event) {
         super.on(event);
+        
+        cli.getOut().println();
+        vm.getDevCardGrid().ifPresent(devCardGrid -> {
+            cli.getOut().println();
+            new DevCardGrid(devCardGrid).render();
+        });
 
-        cli.getOut().println(center("Players:\n" + new UnorderedList(event.getPlayers().stream()
-                .map(ReducedPlayer::getNickname)
-                .map(nickname -> vm.getAnsiPlayerColor(nickname).map(ansiColor -> boldColor(nickname, ansiColor)).orElse(nickname))
-                .toList()).getString()));
+        cli.getOut().println();
+        vm.getMarket().ifPresent(market -> {
+            cli.getOut().println();
+            new Market(market).render();
+        });
 
+        cli.getOut().println();
         vm.getLocalPlayer().ifPresent(player -> {
             cli.getOut().println();
             new ResourceContainers(
@@ -302,31 +311,31 @@ public abstract class CliController extends UiController implements Renderable {
                     vm.getPlayerStrongbox(player).orElse(null)).render();
         });
 
+        cli.getOut().println();
         vm.getLocalPlayer().map(vm::getPlayerLeaderCards).ifPresent(leaderCards -> {
             cli.getOut().println();
             new LeadersHand(leaderCards).render();
         });
 
+        cli.getOut().println();
         vm.getLocalPlayer().map(vm::getPlayerDevelopmentSlots).ifPresent(devSlots -> {
             cli.getOut().println();
             new DevSlots(devSlots).render();
         });
 
-        vm.getMarket().ifPresent(market -> {
-            cli.getOut().println();
-            new Market(market).render();
-        });
+        cli.getOut().println();
+        cli.getOut().println(center("Players:\n" + new UnorderedList(event.getPlayers().stream()
+                .map(ReducedPlayer::getNickname)
+                .map(nickname -> vm.getAnsiPlayerColor(nickname).map(ansiColor -> boldColor(nickname, ansiColor)).orElse(nickname))
+                .toList()).getString()));
 
-        vm.getDevCardGrid().ifPresent(devCardGrid -> {
-            cli.getOut().println();
-            new DevCardGrid(devCardGrid).render();
-        });
-
+        cli.getOut().println();
         vm.getInkwellPlayer().ifPresent(player -> {
             cli.getOut().println();
             cli.getOut().println(center(String.format("%s has the inkwell.", player)));
         });
 
+        cli.getOut().println();
         vm.getWinnerPlayer().ifPresent(player -> {
             cli.getOut().println();
             cli.getOut().println(center(String.format("%s won the game!", event.getWinnerPlayer())));
@@ -346,6 +355,7 @@ public abstract class CliController extends UiController implements Renderable {
                 .map(ReducedPlayer::getNickname)
                 .collect(Collectors.toMap(nick -> nick, nick -> 0));
 
+        cli.getOut().println();
         vm.getFaithTrack().ifPresent(faithTrack -> {
             cli.getOut().println();
             new FaithTrack(faithTrack, points).render();

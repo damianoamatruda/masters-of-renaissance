@@ -52,7 +52,7 @@
         2. [ErrNoSuchEntity](#erraction)
         3. [ErrObjectNotOwned](#errobjectnotowned)
         4. [ErrReplacedTransRecipe](#errreplacedtransrecipe)
-        5. [ErrResourceReplacement](#errresourcereplacement)
+        5. [ErrInvalidResourceTransaction](#errinvalidresourcetransaction)
         6. [ErrResourceTransfer](#errresourcetransfer)
 
 # Communication protocol documentation
@@ -1630,6 +1630,7 @@ When a request message from a client references the ID of an object that is not 
 ## ErrReplacedTransRecipe
 This message signals a discrepancy between the available and specified numbers of resources to be put in a container.
 
+The `isInput` field indicates where in the recipe (input/output) the error happened.
 The `replacedCount` field details the number of available resources in the transaction after the replacements have been factored in.  
 The `shelvesChoiceResCount` field details the number of resources requested to be put in the container.  
 The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be reconduced to illegally discarded resources in output.
@@ -1638,6 +1639,7 @@ The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be rec
 ```json
 {
   "type": "ErrReplacedTransRecipe",
+  "isInput": true,
   "resType": "Coin",
   "replacedCount": 3,
   "shelvesChoiceResCount": 4,

@@ -171,7 +171,8 @@ public abstract class GuiController extends UiController implements Initializabl
         else
             gui.reloadScene("Resource transaction error",
                     String.format(
-                            "Irregular quantity of %s specified in the container map: %d requested, %d chosen.",
+                            "Irregular quantity of %s %s specified in the container map: %d required, %d chosen.",
+                            event.isInput() ? "input" : "output",
                             event.getResType().isEmpty() ? "resources" : event.getResType(),
                             event.getReplacedCount(),
                             event.getShelvesChoiceResCount()));
