@@ -93,7 +93,8 @@ public class Cli implements Runnable {
     }
 
     synchronized void reloadController(String str) {
-        out.println(str);
+        out.println();
+        out.println(center(str));
         setController(controller, true);
     }
 

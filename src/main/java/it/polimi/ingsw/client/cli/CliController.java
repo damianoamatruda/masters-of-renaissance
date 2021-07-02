@@ -11,12 +11,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
+import static it.polimi.ingsw.client.cli.Cli.getInstance;
 
 public abstract class CliController extends UiController implements Renderable {
-    protected final Cli cli = Cli.getInstance();
+    protected final Cli cli = getInstance();
 
     public CliController() {
-        super(Cli.getInstance().getUi());
+        super(getInstance().getUi());
     }
 
     /**
@@ -59,6 +60,7 @@ public abstract class CliController extends UiController implements Renderable {
 
         switch (event.getReason()) {
             case LATE_SETUP_ACTION -> {
+                cli.getOut().println();
                 cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
                 if (vm.localPlayerIsCurrent())
                     cli.setController(new TurnBeforeActionController(), true);
@@ -66,6 +68,7 @@ public abstract class CliController extends UiController implements Renderable {
                     cli.setController(new WaitingAfterTurnController(), true);
             }
             case EARLY_MANDATORY_ACTION -> {
+                cli.getOut().println();
                 cli.getOut().println(center("Setup phase is not concluded yet. Returning to setup phase."));
                 if (!isLocalLeaderSetupDone())
                     cli.setController(new SetupLeadersController(), true);
@@ -75,18 +78,22 @@ public abstract class CliController extends UiController implements Renderable {
                     setNextState();
             }
             case LATE_MANDATORY_ACTION -> {
+                cli.getOut().println();
                 cli.getOut().println(center("You have already done a mandatory action. Advancing to optional actions."));
                 cli.setController(new TurnAfterActionController(), true);
             }
             case EARLY_TURN_END -> {
+                cli.getOut().println();
                 cli.getOut().println(center("You cannot end the turn yet. A mandatory action needs to be done before ending the turn."));
                 cli.setController(new TurnBeforeActionController(), true);
             }
             case GAME_ENDED -> {
+                cli.getOut().println();
                 cli.getOut().println(center("The game has ended. Advancing to ending screen."));
                 cli.setController(new GameEndController(), true);
             }
             case NOT_CURRENT_PLAYER -> {
+                cli.getOut().println();
                 cli.getOut().println(center("You are not the current player. Please wait for your turn."));
                 cli.setController(new WaitingAfterTurnController(), true);
             }
@@ -125,8 +132,8 @@ public abstract class CliController extends UiController implements Renderable {
             case TAKEN -> cli.reloadController("Error setting nickname: nickname is taken.");
             case NOT_SET -> cli.reloadController("Error setting nickname: nickname is blank.");
             case NOT_IN_GAME -> {
+                cli.getOut().println();
                 cli.getOut().println("Match not joined yet.");
-
                 cli.setController(new InputNicknameController(cli.getUi().isOffline() ? "Play Offline" : "Play Online"), true);
             }
         }
@@ -200,7 +207,8 @@ public abstract class CliController extends UiController implements Renderable {
 
         cli.getUi().closeClient();
 
-        cli.getOut().println(Cli.center("Server is down. Try again later."));
+        cli.getOut().println();
+        cli.getOut().println(center("Server is down. Try again later."));
         cli.setController(new MainMenuController(), true);
     }
 
@@ -226,9 +234,10 @@ public abstract class CliController extends UiController implements Renderable {
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
-        
+
         // DO NOT DO STATE SWITCHING HERE
-        cli.getOut().println(Cli.center(String.format("Current player: %s", event.getPlayer())));
+        cli.getOut().println();
+        cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
     }
 
     @Override
@@ -245,6 +254,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateDevSlot event) {
         super.on(event);
 
+        cli.getOut().println();
         new DevSlots(vm.getPlayerDevelopmentSlots(event.getPlayer())).render();
     }
 
@@ -297,9 +307,9 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(Cli.center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer().get(), event.getLeader())));
+        cli.getOut().println(center(String.format("%s activated leader card %d.\n", vm.getCurrentPlayer().get(), event.getLeader())));
         cli.getOut().println();
-        cli.getOut().println(Cli.center(new Box(new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow())).getString()));
+        cli.getOut().println(center(new Box(new LeaderCard(vm.getLeaderCard(event.getLeader()).orElseThrow())).getString()));
     }
 
     @Override
@@ -368,7 +378,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(Cli.center(
+        cli.getOut().println(center(
                 String.format("Victory points for %s: %d.\n", event.getPlayer(), event.getVictoryPoints())));
     }
 }
