@@ -191,16 +191,21 @@ A summary of the requirements highlighting the relevant parts is reported below:
 > - The game starts as soon as the specified number of players (given by the first player to join) is reached.
 > - The server manages the players' turns as per the game's rules. The server must handle a player disconnecting or leaving the game; if there are no players left the game will terminate and all players have to be notified.
 
-The following specification for the additional feature "Multiple Games" is taken into account in the communication protocol's design:
+The following specification for the additional feature "Multiple Games" is taken into account in the communication
+protocol's design:
 > - Only one waiting room is used to manage the players who join the server.
-> - Players who disconnect can successively reconnect to continue the match. While a player isn't connected, the game continues skipping the player's turns.
+> - Players who disconnect can successively reconnect to continue the game. While a player isn't connected, the game continues skipping the player's turns.
 
 Given those requirements, the communication at connection time has been modeled the following way.
 
 ## Choosing a nickname
-After establishing a connection with the server, the client will ask the player to input a nickname of their choice. The entry is sent to the server, and, if acceptable (unique among the registered nicknames, not empty, not already set), is accepted. Else, the server will signal the error, restarting the process.
 
-Information about the player being the first of the match is included in the response sent to the client. This is necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
+After establishing a connection with the server, the client will ask the player to input a nickname of their choice. The
+entry is sent to the server, and, if acceptable (unique among the registered nicknames, not empty, not already set), is
+accepted. Else, the server will signal the error, restarting the process.
+
+Information about the player being the first of the game is included in the response sent to the client. This is
+necessary to [handle the choice of the number of players](#choosing-the-number-of-players).
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -241,8 +246,10 @@ Information about the player being the first of the match is included in the res
 }
 ```
 
-The `UpdateBookedSeats` message gives the client information about who is the first in the waiting list (and therefore can choose the new game's player count) and the amount of players in the waiting list.
-When the match is waiting for players to join before its start, sending notifications allows the players who already joined to know how many empty seats are left, therefore getting a sense for how much waiting time there's left.
+The `UpdateBookedSeats` message gives the client information about who is the first in the waiting list (and therefore
+can choose the new game's player count) and the amount of players in the waiting list. When the game is waiting for
+players to join before its start, sending notifications allows the players who already joined to know how many empty
+seats are left, therefore getting a sense for how much waiting time there's left.
 
 ## Choosing the number of players
 When a player is assigned by the server as the first of a new game, they have to decide the number of players required to start it.
@@ -286,10 +293,14 @@ When a player is assigned by the server as the first of a new game, they have to
 }
 ```
 
-The `UpdateJoinGame` message signals to the first `playersCount` waiting clients that a new match is undergoing creation and the number of players included. Any other client that joins the server and is assigned to the starting match will also receive the message.  
-If a `ReqNewGame` is received from a client that is not allowed to request a new match, `ErrNewGame.isInvalidPlayersCount` is set to false.
+The `UpdateJoinGame` message signals to the first `playersCount` waiting clients that a new game is undergoing creation
+and the number of players included. Any other client that joins the server and is assigned to the starting game will
+also receive the message.  
+If a `ReqNewGame` is received from a client that is not allowed to request a new
+game, `ErrNewGame.isInvalidPlayersCount` is set to false.
 
-See the [Game start](#game-start) section for information on how the protocol defines the initial data transfer after joining a match.
+See the [Game start](#game-start) section for information on how the protocol defines the initial data transfer after
+joining a game.
 
 ## Quitting the game
 When the player quits the game, the client will send a `ReqQuit` message:
@@ -301,10 +312,12 @@ When the player quits the game, the client will send a `ReqQuit` message:
 }
 ```
 
-The server will then execute an internal routine that will allow the player to reconnect at a later time and join back the match they were in, notifying at the same time the other players of the match of the event (see TODO player status).  
-A `ResQuit` message is sent to the client to notify it about the closing routine being completed.  
+The server will then execute an internal routine that will allow the player to reconnect at a later time and join back
+the game they were in, notifying at the same time the other players of the game of the event (see TODO player status).  
+A `ResQuit` message is sent to the client to notify it about the closing routine being completed.
 
 **ResQuit (server)**
+
 ```json
 {
   "type":"ResQuit"
@@ -314,30 +327,36 @@ A `ResQuit` message is sent to the client to notify it about the closing routine
 The network-level closing routine will then start (see TODO).
 
 ## Reconnecting
-A player can reconnect to a match they left, if it's still ongoing.  
+
+A player can reconnect to a game they left, if it's still ongoing.  
 This is done at connection time by choosing the same nickname as they previously had.
 
-When reconnecting, the server will send all the necessary game data for the client to cache (see TODO game start). The client will therefore be able to judge what phase of the game is currently in place (setup, turns, who the current player is, etc.).
-
-
-
+When reconnecting, the server will send all the necessary game data for the client to cache (see TODO game start). The
+client will therefore be able to judge what phase of the game is currently in place (setup, turns, who the current
+player is, etc.).
 
 # VCEvents - Player setup game phase
+
 When the game starts, the server instantiates its internal model.  
 It will then send the game data to the clients (see TODO), and the player setup phase will start.
 
-During this phase the players will have to choose the amount of leader cards and resources specified in the configuration file.
+During this phase the players will have to choose the amount of leader cards and resources specified in the
+configuration file.
 
 ## Choosing leader cards
-As per the game's rules, the players have to decide manually what leader cards they want to keep for the match's
+
+As per the game's rules, the players have to decide manually what leader cards they want to keep for the game's
 duration.
 
 The client is sent the IDs of the leader cards they can choose from, and will send back a subset of them.
 
 Errors related to this action are:
-1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is already concluded)
+
+1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is
+   already concluded)
 2. `ErrObjectNotOwned` - the request message contains IDs that are not in the player's card list
-3. `ErrInitialChoice` - the request message contains too few IDs or the leader cards have alerady been chosen by the player
+3. `ErrInitialChoice` - the request message contains too few IDs or the leader cards have alerady been chosen by the
+   player
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -381,7 +400,9 @@ Errors related to this action are:
   "player": "NicknameA"
 }
 ```
+
 **ErrInitialChoice (server)**
+
 ```json
 {
   "type": "ErrInitialChoice",
@@ -391,15 +412,19 @@ Errors related to this action are:
 ```
 
 ## Choosing starting resources
-After choosing the leader cards the players is prompted to choose their starting resources, following the configuration file's settings.
+
+After choosing the leader cards the players is prompted to choose their starting resources, following the configuration
+file's settings.
 
 The client is sent the amount of resources and the resource types the player has to choose from (see TODO).  
-Every player will have to choose the resources before the match's turns can start, thereby concluding the setup phase.
+Every player will have to choose the resources before the game's turns can start, thereby concluding the setup phase.
 
 The `shelves` field is a standard [resource container map](#common-data-structures)
 
 Error messages are fired in these situations:
-1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is already concluded)
+
+1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is
+   already concluded)
 2. `ErrObjectNotOwned` - the request message contains resource container IDs that are not owned the player
 3. `ErrNoSuchEntity` - a resource type that doesn't exist is specified
 4. `ErrInitialChoice` - the resurces were already chosen
@@ -481,7 +506,7 @@ The messages in this section can be differentiated into:
 
 1. [Main actions](#main-actions), of which the player has to make only one during the turn
 2. [Secondary actions](#secondary-actions), which can be repeated within the player's turn
-3. [State messages](#state-messages), which update the local caches' state to match the server's
+3. [State messages](#state-messages), which update the local caches' state to game the server's
 
 
 
@@ -500,9 +525,12 @@ The following needs to be specified:
 3. For each resource (its type considered after the leaders' processing), which shelf to use to store it
 4. What resources, among the ones taken from the market, to discard
 
-Discarding is simply handled by specifying a lower quantity of resources to add to a shelf. This also easily matches the rule for which only the resources given by the market can be discarded.
+Discarding is simply handled by specifying a lower quantity of resources to add to a shelf. This also easily games the
+rule for which only the resources given by the market can be discarded.
 
-The `replacements` field specifies how the resource conversion should be handled. Since the player knows what type of resource the leader converts to, they can easily select them by specifying, for each type of resource they want as output, how many replaceable resources (of the available ones) to use.
+The `replacements` field specifies how the resource conversion should be handled. Since the player knows what type of
+resource the leader converts to, they can easily select them by specifying, for each type of resource they want as
+output, how many replaceable resources (of the available ones) to use.
 
 The `replacement` field is a standard [resource map](#common-data-structures)
 The `shelves` field is a standard [resource container map](#common-data-structures)
@@ -1119,16 +1147,23 @@ The server sends the game's state to be cached by the clients. Caching parts of 
 Caching allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, reducing network and server loads and improving the game's responsiveness.
 
 ### Parameters and indices
+
 The game's model has been parameterized to allow for flexibility. The parameters are set via
 a [configuration file](../src/main/resources/config/config.json), which also contains serialized game data (e.g. cards,
-resources, etc).  
+resources, etc).
 
-Clients have a default configuration file embedded to allow for local single player matches. Both clients and server also support loading custom configuration files.
+Clients have a default configuration file embedded to allow for local single player games. Both clients and server also
+support loading custom configuration files.
 
-Since the file on a server may be different from the one embedded in a client, all game elements need to be sent at the start of a match, ensuring proper synchronization between the clients and the server, both in terms of IDs and actual game data.
+Since the file on a server may be different from the one embedded in a client, all game elements need to be sent at the
+start of a game, ensuring proper synchronization between the clients and the server, both in terms of IDs and actual
+game data.
 
-Since the connection and reconnection phases are very delicate, a modular approach was discarded in favor of a monolithic message.  
-If a modular approach were to be chosen, the clients' state-switching logic would become unmanageable, needing to manage asynchronous and independent state messages to handle transitions that depend on the presence of the data itself (some of these transitions would in fact be impossible to model if the data wasn't sent all in the same message).
+Since the connection and reconnection phases are very delicate, a modular approach was discarded in favor of a
+monolithic message.  
+If a modular approach were to be chosen, the clients' state-switching logic would become unmanageable, needing to manage
+asynchronous and independent state messages to handle transitions that depend on the presence of the data itself (some
+of these transitions would in fact be impossible to model if the data wasn't sent all in the same message).
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -1298,7 +1333,8 @@ If a modular approach were to be chosen, the clients' state-switching logic woul
 ```
 
 ## UpdateGameEnd
-Notifies the clients of the end of the match, detailing the winner player.
+
+Notifies the clients of the end of the game, detailing the winner player.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -1373,6 +1409,7 @@ This allows for the cards' IDs to remain hidden while informing clients of event
                │                                │
 ```
 **UpdateLeadersHandCount (server)**
+
 ```json
 {
   "type": "UpdateLeadersHandCount",
@@ -1382,9 +1419,11 @@ This allows for the cards' IDs to remain hidden while informing clients of event
 ```
 
 ## UpdateMarket
-This message holds the current state of the match's market.
 
-It specifies what resource type is to be accounted for as replaceable, since the configuration file allows for it to be changed.
+This message holds the current state of the game's market.
+
+It specifies what resource type is to be accounted for as replaceable, since the configuration file allows for it to be
+changed.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -1411,7 +1450,8 @@ It specifies what resource type is to be accounted for as replaceable, since the
 ```
 
 ## UpdatePlayerStatus
-Notifications about players connecting/disconnecting from a match are sent via this message.
+
+Notifications about players connecting/disconnecting from a game are sent via this message.
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -1536,10 +1576,11 @@ The `reason` field offers a more detailed explanation:
 2. `EARLY_MANDATORY_ACTION` - an action request (non-setup) is sent during the setup phase
 3. `LATE_MANDATORY_ACTION` - a action request (non-setup) is sent for the second time during a player's turn
 4. `EARLY_TURN_END` - a request to end the player's turn is sent before a mandatory action request
-5. `GAME_ENDED` - an action request is sent after the match's end
+5. `GAME_ENDED` - an action request is sent after the game's end
 6. `NOT_CURRENT_PLAYER` - the player requesting the action is not the current player
 
 **ErrAction (server)**
+
 ```json
 {
   "type": "ErrAction",
@@ -1548,9 +1589,11 @@ The `reason` field offers a more detailed explanation:
 ```
 
 ## ErrNoSuchEntity
-This message signals the absence of an entity to match an ID with.
+
+This message signals the absence of an entity to game an ID with.
 
 The `originalEntity` field describes the kind of entity the request pertained to, which include:
+
 1. `MARKET_INDEX` - index of a market's row/column does not exist
 2. `LEADER` - leader card with referenced ID does not exist
 3. `DEVCARD` - development card with referenced ID does not exist

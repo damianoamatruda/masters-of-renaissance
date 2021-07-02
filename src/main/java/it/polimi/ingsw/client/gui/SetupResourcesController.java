@@ -194,7 +194,7 @@ public class SetupResourcesController extends GuiController {
     }
 
     /**
-     * Refresh of the Choose button, disabling it if the count of chosen resources does not match.
+     * Refresh of the Choose button, disabling it if the count of chosen resources does not game.
      */
     private void updateChoiceButton() {
         int count = selection.values().stream().flatMap(m -> m.values().stream()).reduce(0, Integer::sum);

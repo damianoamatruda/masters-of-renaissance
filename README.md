@@ -25,16 +25,17 @@ The system must be based on the MVC architecture.
 | CLI-based client | :heavy_check_mark: |
 | GUI-based client | :heavy_check_mark: |
 | Communication protocol ("Socket") | :heavy_check_mark: |
-| Advanced functionality 1 | :heavy_check_mark: Multiple matches ("Partite multiple") |
+| Advanced functionality 1 | :heavy_check_mark: Multiple games ("Partite multiple") |
 | Advanced functionality 2 | :heavy_check_mark: Playing locally ("Partita locale") |
 | Advanced functionality 3 | :heavy_check_mark: Resilience to disconnections ("Resilienza alle disconnessioni", see below) |
 
-The communication-side architecture of this project is built to support machine-local matches and remote matches,
-doing this by choosing the right [Network](#src/main/java/it/polimi/ingsw/common/Network.java), either instantiating a local backend
-or connecting the client to the remote server instead.  
-Both the client's ViewModel and the backend's model are therefore [recreated at every connection](src/main/java/it/polimi/ingsw/client/Ui.java#L64), including local ones.
-This implies that there is no persistence of data when playing locally with the current implementation,
-as the local backend gets recreated too.
+The communication-side architecture of this project is built to support machine-local games and remote games, doing this
+by choosing the right [Network](#src/main/java/it/polimi/ingsw/common/Network.java), either instantiating a local
+backend or connecting the client to the remote server instead.  
+Both the client's ViewModel and the backend's model are
+therefore [recreated at every connection](src/main/java/it/polimi/ingsw/client/Ui.java#L64), including local ones. This
+implies that there is no persistence of data when playing locally with the current implementation, as the local backend
+gets recreated too.
 
 ## Compiling
 To run the tests and compile the software:
@@ -87,10 +88,10 @@ The default configuration file can be found in [`/src/main/resources`](src/main/
 This file contains all the necessary parameters and the game data needed for the server's Model to work.  
 Since the Model is completely parameterized, all parameters are necessary and must be specified.
 
-Custom configuration files can be specified from within the clients, by going to the *Options* menu.
-The custom configuration files will work only for local matches, as online matches use the server's configuration files.
-To know more about how the game's data is synchronized when a client joins an online match,
-see the [Communication protocol](deliverables/Communication%20protocol.md)'s specification.
+Custom configuration files can be specified from within the clients, by going to the *Options* menu. The custom
+configuration files will work only for local games, as online games use the server's configuration files. To know more
+about how the game's data is synchronized when a client joins an online game, see
+the [Communication protocol](deliverables/Communication%20protocol.md)'s specification.
 
 ### Disclaimer
 As stated above, the configuration file contains **all** the game's data.

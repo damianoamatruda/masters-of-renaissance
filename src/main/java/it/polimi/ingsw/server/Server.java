@@ -37,7 +37,7 @@ public class Server implements Network, Runnable {
     private final ExecutorService executor;
     /** JSON message (de)serializer. */
     private final NetworkProtocol protocol;
-    /** Server's Lobby to welcome connecting players and handle new matches/reconnections. */
+    /** Server's Lobby to welcome connecting players and handle new games/reconnections. */
     private final Lobby model;
     /** Server's Controller to handle requests from clients. */
     private final Controller controller;
@@ -46,10 +46,10 @@ public class Server implements Network, Runnable {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param port             the network port to listen for incoming connections on.
-     * @param gameConfigStream the data stream to be used by the GameFactory to create new matches.
-     * @throws IOException     if an I/O error occurs when opening the socket.
+     * @param gameConfigStream the data stream to be used by the GameFactory to create new games.
+     * @throws IOException if an I/O error occurs when opening the socket.
      */
     public Server(int port, InputStream gameConfigStream) throws IOException {
         this.runThread = new Thread(this);

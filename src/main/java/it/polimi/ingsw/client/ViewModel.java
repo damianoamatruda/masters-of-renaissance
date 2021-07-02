@@ -539,7 +539,7 @@ public class ViewModel {
     /**
      * Retrieves whether the game has reached its last round or not.
      *
-     * @return whether it's the last round of the match
+     * @return whether it's the last round of the game
      */
     public synchronized boolean isLastRound() {
         return lastRound;

@@ -78,7 +78,7 @@ public class SetupLeadersController extends GuiController {
     }
 
     /**
-     * Refresh of the Choose button, disabling it if the count of chosen leaders does not match.
+     * Refresh of the Choose button, disabling it if the count of chosen leaders does not game.
      */
     private void updateChoiceButton() {
         choiceButton.setDisable(selection.size() != vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getChosenLeadersCount());

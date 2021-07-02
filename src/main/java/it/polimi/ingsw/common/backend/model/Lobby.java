@@ -55,7 +55,7 @@ public class Lobby extends AsynchronousEventDispatcher {
         if (disconnected.containsKey(nickname)) {
             LOGGER.info(String.format("Player '%s' rejoined", nickname));
 
-            /* Get the match the nickname was previously in and set the player back to active */
+            /* Get the game the nickname was previously in and set the player back to active */
             GameContext context = disconnected.get(nickname);
             context.setActive(nickname, true);
 
@@ -83,7 +83,7 @@ public class Lobby extends AsynchronousEventDispatcher {
         }
     }
 
-    /* If the player is one of the first to join, it will have to choose the total number of players in the match. */
+    /* If the player is one of the first to join, it will have to choose the total number of players in the game. */
     public synchronized void prepareNewGame(View view, int newGamePlayersCount) {
         if (!checkNickname(view))
             return;

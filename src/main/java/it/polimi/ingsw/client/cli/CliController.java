@@ -306,7 +306,7 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println(center(String.format("\n%s has the inkwell.\n", vm.getInkwellPlayer().get())));
 
         if (event.getWinnerPlayer() != null)
-            cli.getOut().println(center(String.format("%s won the match!\n", event.getWinnerPlayer())));
+            cli.getOut().println(center(String.format("%s won the game!\n", event.getWinnerPlayer())));
 
         if (event.isLastRound())
             cli.getOut().println(center("Last round!\n"));

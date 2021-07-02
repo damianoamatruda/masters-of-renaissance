@@ -44,7 +44,7 @@ public class FaithTrack extends StringComponent {
 
         int cellWidth = /*Integer.max(6, points.keySet().stream().map(String::length).reduce(Integer::max).orElse(0))*/5;
         int maxFaith = reducedFaithTrack.getMaxFaith();
-        // Calculate section tiles and yellow tiles, to match the colors
+        // Calculate section tiles and yellow tiles, to game the colors
         List<ReducedVaticanSection> sections = reducedFaithTrack.getVaticanSections().values().stream().toList();
         List<Integer> sectionBegins = sections.stream().map(ReducedVaticanSection::getFaithPointsBeginning).sorted().toList();
         List<Integer> sectionEnds = sections.stream().map(ReducedVaticanSection::getFaithPointsEnd).sorted().toList();
