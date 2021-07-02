@@ -109,6 +109,11 @@ public class SoloGame extends Game {
     }
 
     @Override
+    public List<ActionToken> getActionTokens() {
+        return List.copyOf(actionTokens);
+    }
+
+    @Override
     public int getBlackPoints() {
         return blackPoints;
     }

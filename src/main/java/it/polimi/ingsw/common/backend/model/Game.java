@@ -2,6 +2,7 @@ package it.polimi.ingsw.common.backend.model;
 
 import it.polimi.ingsw.common.EventDispatcher;
 import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.backend.model.actiontokens.ActionToken;
 import it.polimi.ingsw.common.backend.model.leadercards.LeaderCard;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
@@ -304,6 +305,12 @@ public class Game extends EventDispatcher {
         return faithTrack;
     }
 
+    // TODO: Javadoc
+    public List<ActionToken> getActionTokens() {
+        // return List.of();
+        throw new RuntimeException("getActionTokens called on a multiplayer game: method not implemented.");
+    }
+
     /**
      * Returns Lorenzo's faith marker position.
      *
@@ -311,7 +318,7 @@ public class Game extends EventDispatcher {
      */
     public int getBlackPoints() {
         // return 0;
-        throw new RuntimeException("getBlackPoints called on a mutiplayer game: method not implemented.");
+        throw new RuntimeException("getBlackPoints called on a multiplayer game: method not implemented.");
     }
 
     /**
