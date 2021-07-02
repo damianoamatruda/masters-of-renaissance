@@ -117,10 +117,13 @@ public class Cli implements Runnable {
     void quit() {
         clear();
         stop();
+
+        System.exit(0);
     }
 
     public void stop() {
         runThread.interrupt();
+        executor.shutdownNow();
         ui.stop();
     }
 
