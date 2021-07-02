@@ -94,6 +94,8 @@ public class SoloGame extends Game {
         token.trigger(this);
         actionTokens.add(token);
 
+        activateVaticanSections();
+
         dispatch(new UpdateActionToken(token.getId()));
 
         /* Check if Lorenzo is winning */
