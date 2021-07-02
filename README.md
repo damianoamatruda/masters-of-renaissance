@@ -1,7 +1,6 @@
 # Masters of Renaissance
-[![License: MIT][license-image]][license]
-![latest commit](https://img.shields.io/github/last-commit/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca?color=brightgreen)
-![latest release](https://img.shields.io/github/v/release/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca?color=blueviolet)
+<!-- ![latest commit](https://img.shields.io/github/last-commit/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca?color=brightgreen)
+![latest release](https://img.shields.io/github/v/release/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca?color=blueviolet) -->
 
 Project of Software Engineering, Polytechnic University of Milan, A.Y. 2020/2021.
 
@@ -97,7 +96,3 @@ the [Communication protocol](deliverables/Communication%20protocol.md)'s specifi
 As stated above, the configuration file contains **all** the game's data.  
 Since custom configurations were not a requirement for the project, this functionality has been implemented but not fully tested
 in all possible configurations.
-
-## License
-This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it) and
-[Cranio Creations](http://www.craniocreations.it).
