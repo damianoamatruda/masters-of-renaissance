@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.ProductionSet;
+import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProductions;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
@@ -37,6 +38,13 @@ public class ActivateProductionsController extends CliController {
     private void chooseProductions() {
         cli.getOut().println();
         cli.getOut().println(center("~ Activate Productions ~"));
+
+        new ResourceContainers(
+                vm.getLocalPlayer().orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
+                vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
+                .render();
 
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getLocalPlayer().map(vm::getPlayerProductions).orElseThrow();
 
@@ -101,12 +109,19 @@ public class ActivateProductionsController extends CliController {
         Map<String, Integer> totalRes = new HashMap<>(this.selectedProd.getInput());
         this.inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 
+        new ResourceContainers(
+                vm.getLocalPlayer().orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
+                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
+                vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
+                .render();
+
         Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.getOut().println();
-        cli.getOut().println(center("-- Containers to take resources from --"));
+        cli.getOut().println(center("-- Containers to take resources from (Strongbox not allowed) --"));
         cli.getOut().println();
         cli.promptShelves(totalRes, allowedShelves, false).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
