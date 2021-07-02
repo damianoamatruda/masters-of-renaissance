@@ -39,12 +39,12 @@ public class Playerboard extends HBox {
 
     /**
      * Class constructor.
-     *  @param warehouse  the player's warehouse
+     * @param warehouse  the player's warehouse
      * @param strongbox  the player's strongbox
      * @param production the base production
      * @param devSlots   the player's development slots
      * @param faithTrack the faith track
-     * @param hasInkwell
+     * @param hasInkwell true if player has inkwell
      */
     public Playerboard(Warehouse warehouse, Strongbox strongbox, Production production, List<DevSlot> devSlots, FaithTrack faithTrack, boolean hasInkwell) {
         this.faithTrack = faithTrack;
