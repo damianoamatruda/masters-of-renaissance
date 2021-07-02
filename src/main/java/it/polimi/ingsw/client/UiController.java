@@ -78,7 +78,7 @@ public abstract class UiController {
     public void on(ErrReplacedTransRecipe event) {
     }
 
-    public void on(ErrResourceReplacement event) {
+    public void on(ErrInvalidResourceTransaction event) {
     }
 
     public void on(ErrResourceTransfer event) {

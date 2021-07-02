@@ -65,8 +65,8 @@ public class Strongbox extends ResourceContainer {
     }
 
     @Override
-    public void addResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        validateStorableResourceMap(resMap);
+    public void addResources(Map<ResourceType, Integer> resMap) {
+        validateStorableResourceMap(resMap, true);
 
         resMap.forEach((r, q) -> resources.merge(r, q, Integer::sum));
 
@@ -75,7 +75,7 @@ public class Strongbox extends ResourceContainer {
 
     @Override
     public void removeResources(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        validateStorableResourceMap(resMap);
+        validateStorableResourceMap(resMap, true);
 
         for (ResourceType resType : resMap.keySet())
             if (resources.getOrDefault(resType, 0) < resMap.get(resType))

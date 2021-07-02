@@ -1599,19 +1599,24 @@ The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be rec
 }
 ```
 
-## ErrResourceReplacement
-This message signals an error when replacing a production's resources.
+## ErrInvalidResourceTransaction
+This message signals an error when validating a resource transaction request.  
+The issue might lie in either of the shelf maps or the replacement maps.
 
-The `isNonStorable` field is set to true when a resource in the request is defined as non-storable and takeable/givable to players.  
-The `isExcluded` field is set to true if a forbidden resource type is requested as a replacement.
+The `isInput` field distinguishes between the transaction's input and output resources, while the `isReplacement` field distinguishes between replacements and shelf maps.  
+The `reason` field details the reason for which the request was denied, and can be one of:
+1. `NEGATIVE_VALUES` - maps contain negative resource amounts
+2. `ILLEGAL_STORABLE` - a storable resource is specified when non-storable are allowed only
+3. `ILLEGAL_NON_STORABLE` - same as above, but inverted
+4. `EXCLUDED` - a forbidden resource is used as a replacement
 
 **ErrResourceReplacement (server)**
 ```json
 {
   "type": "ErrResourceReplacement",
   "isInput": true,
-  "isNonStorable": false,
-  "isExcluded": false
+  "isReplacement": false,
+  "reason": "ILLEGAL_NON_STORABLE"
 }
 ```
 

@@ -40,7 +40,7 @@ public class View extends AsynchronousEventDispatcher {
     };
     private EventListener<ErrReplacedTransRecipe> errReplacedTransRecipeEventListener = event -> {
     };
-    private EventListener<ErrResourceReplacement> errResourceReplacementEventListener = event -> {
+    private EventListener<ErrInvalidResourceTransaction> errResourceReplacementEventListener = event -> {
     };
     private EventListener<ErrResourceTransfer> errResourceTransferEventListener = event -> {
     };
@@ -122,7 +122,7 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.addEventListener(ErrNoSuchEntity.class, errNoSuchEntityEventListener);
         gameContext.addEventListener(ErrObjectNotOwned.class, errObjectNotOwnedEventListener);
         gameContext.addEventListener(ErrReplacedTransRecipe.class, errReplacedTransRecipeEventListener);
-        gameContext.addEventListener(ErrResourceReplacement.class, errResourceReplacementEventListener);
+        gameContext.addEventListener(ErrInvalidResourceTransaction.class, errResourceReplacementEventListener);
         gameContext.addEventListener(ErrResourceTransfer.class, errResourceTransferEventListener);
         gameContext.addEventListener(UpdateAction.class, updateActionEventListener);
         gameContext.addEventListener(UpdateActionToken.class, updateActionTokenEventListener);
@@ -158,7 +158,7 @@ public class View extends AsynchronousEventDispatcher {
         gameContext.removeEventListener(ErrNoSuchEntity.class, errNoSuchEntityEventListener);
         gameContext.removeEventListener(ErrObjectNotOwned.class, errObjectNotOwnedEventListener);
         gameContext.removeEventListener(ErrReplacedTransRecipe.class, errReplacedTransRecipeEventListener);
-        gameContext.removeEventListener(ErrResourceReplacement.class, errResourceReplacementEventListener);
+        gameContext.removeEventListener(ErrInvalidResourceTransaction.class, errResourceReplacementEventListener);
         gameContext.removeEventListener(ErrResourceTransfer.class, errResourceTransferEventListener);
         gameContext.removeEventListener(UpdateAction.class, updateActionEventListener);
         gameContext.removeEventListener(UpdateActionToken.class, updateActionTokenEventListener);
@@ -236,7 +236,7 @@ public class View extends AsynchronousEventDispatcher {
         this.errReplacedTransRecipeEventListener = event -> on(event, errReplacedTransRecipeEventListener);
     }
 
-    public void setErrResourceReplacementEventListener(EventListener<ErrResourceReplacement> errResourceReplacementEventListener) {
+    public void setErrResourceReplacementEventListener(EventListener<ErrInvalidResourceTransaction> errResourceReplacementEventListener) {
         this.errResourceReplacementEventListener = event -> on(event, errResourceReplacementEventListener);
     }
 

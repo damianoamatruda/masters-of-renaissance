@@ -1,9 +1,9 @@
-package it.polimi.ingsw.common.backend.model.resourcetransactions;
+package it.polimi.ingsw.common.events.mvevents.errors;
 
-/**
- * Exception used in validating transaction requests' replacements.
- */
-public class IllegalResourceTransactionReplacementsException extends IllegalResourceTransactionException {
+import it.polimi.ingsw.common.View;
+import it.polimi.ingsw.common.events.mvevents.ViewEvent;
+
+public class ErrInvalidResourceTransaction extends ViewEvent {
     private final boolean isInput;
     private final boolean isReplacement;
     private final ReplacementReason reason;
@@ -16,15 +16,18 @@ public class IllegalResourceTransactionReplacementsException extends IllegalReso
     }
 
     /**
+     * @param view
      * @param isInput
      * @param isNonStorable
      * @param isExcluded
      */
-    public IllegalResourceTransactionReplacementsException(boolean isInput, boolean isReplacement, ReplacementReason reason) {
+    public ErrInvalidResourceTransaction(View view, boolean isInput, boolean isReplacement, String reason) {
+        super(view);
         this.isInput = isInput;
         this.isReplacement = isReplacement;
-        this.reason = reason;
+        this.reason = ReplacementReason.valueOf(reason);
     }
+
     /**
      * @return the isInput
      */

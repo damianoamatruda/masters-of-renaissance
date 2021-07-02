@@ -47,7 +47,7 @@ public class Shelf extends ResourceContainer {
     }
 
     public static ResourceType getShelfResourceType(Map<ResourceType, Integer> resMap) throws IllegalResourceTransferException {
-        validateStorableResourceMap(resMap);
+        validateStorableResourceMap(resMap, true);
         resMap = sanitizeResourceMap(resMap);
 
         if (resMap.size() != 1)

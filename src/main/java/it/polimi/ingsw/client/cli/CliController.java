@@ -168,12 +168,22 @@ public abstract class CliController extends UiController implements Renderable {
     }
 
     @Override
-    public void on(ErrResourceReplacement event) {
+    public void on(ErrInvalidResourceTransaction event) {
         super.on(event);
 
-        cli.reloadController(String.format("Invalid transaction %s: %s resource given.",
-                event.isInput() ? "input" : "output",
-                event.isNonStorable() ? "non-storable" : "excluded"));
+        String direction = event.isInput() ? "input" : "output";
+        String isReplacement = event.isReplacement() ? " replacements" : "";
+
+        switch (event.getReason()) {
+            case EXCLUDED -> cli.reloadController(String.format("Invalid resource transaction %s%s: excluded resource specified.",
+                    direction, isReplacement));
+            case ILLEGAL_NON_STORABLE -> cli.reloadController(String.format("Invalid resource transaction %s%s: non-storable resource specified in container map.",
+                    direction, isReplacement));
+            case ILLEGAL_STORABLE -> cli.reloadController(String.format("Invalid resource transaction %s%s: storable resource specified as non-storable.",
+                    direction, isReplacement));
+            case NEGATIVE_VALUES -> cli.reloadController(String.format("Invalid resource transaction %s%s: negative amount specified.",
+                    direction, isReplacement));
+        }
     }
 
     @Override

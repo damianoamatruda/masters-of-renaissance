@@ -10,6 +10,7 @@ import it.polimi.ingsw.common.backend.model.resourcecontainers.Strongbox;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse;
 import it.polimi.ingsw.common.backend.model.resourcecontainers.Warehouse.WarehouseShelf;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionContainersException;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionReplacementsException;
 import it.polimi.ingsw.common.backend.model.resourcetransactions.ResourceTransactionRecipe;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
@@ -157,7 +158,7 @@ public class PlayerTest {
          * Prepares stored resources and resources to pay.
          */
         @BeforeEach
-        void prepareResources() throws CardRequirementsNotMetException, IllegalCardDepositException, IllegalResourceTransferException {
+        void prepareResources() throws IllegalResourceTransferException {
             Map<ResourceContainer, Map<ResourceType, Integer>> resContainers = Map.of(
                     player.getStrongbox(), Map.of(coin, 3),
                     player.getWarehouse().getShelves().get(1), Map.of(stone, 2)
@@ -291,10 +292,10 @@ public class PlayerTest {
             Player fourth = players.get(3);
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
 
-            assertAll(() -> assertThrows(IllegalArgumentException.class, () -> fourth.getSetup().chooseResources(
+            assertAll(() -> assertThrows(IllegalResourceTransactionReplacementsException.class, () -> fourth.getSetup().chooseResources(
                     game, fourth, Map.of(shelf, Map.of(zero, 1))
                     )),
-                    () -> assertThrows(IllegalArgumentException.class, () -> fourth.getSetup().chooseResources(
+                    () -> assertThrows(IllegalResourceTransactionReplacementsException.class, () -> fourth.getSetup().chooseResources(
                             game, fourth, Map.of(shelf, Map.of(faith, 1))
                     )));
         }

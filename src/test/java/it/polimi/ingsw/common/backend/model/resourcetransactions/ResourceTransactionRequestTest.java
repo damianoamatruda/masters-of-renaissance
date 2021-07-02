@@ -65,17 +65,17 @@ public class ResourceTransactionRequestTest {
 
     @Test
     void illegalInputReplacementsNumber() {
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(stdRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(rInRepl, -1), Map.of(cOut, Map.of(rOut, 1)), Map.of()));
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(stdRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(rInRepl, 2), Map.of(cOut, Map.of(rOut, 1)), Map.of()));
     }
 
     @Test
     void illegalOutputReplacementsNumber() {
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(stdRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1)), Map.of(rOutRepl, -1)));
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(stdRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1)), Map.of(rOutRepl, 2)));
     }
 
@@ -83,7 +83,7 @@ public class ResourceTransactionRequestTest {
     void illegalInputReplacementsResources() {
         ResourceTransactionRecipe exclusionsRecipe = new ResourceTransactionRecipe(Map.of(rIn, 1), 1, Set.of(rInRepl), Map.of(rOut, 1), 0, Set.of(), false);
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(exclusionsRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(rInRepl, 1), Map.of(cOut, Map.of(rOut, 1)), Map.of()));
 
         // TODO: Use non-storable resource as replacement instead
@@ -94,7 +94,7 @@ public class ResourceTransactionRequestTest {
     void illegalOutputReplacementsResources() {
         ResourceTransactionRecipe exclusionsRecipe = new ResourceTransactionRecipe(Map.of(rIn, 1), 0, Set.of(), Map.of(rOut, 1), 1, Set.of(rOutRepl), false);
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(exclusionsRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1)), Map.of(rOutRepl, 1)));
 
         // TODO: Use non-storable resource as replacement instead

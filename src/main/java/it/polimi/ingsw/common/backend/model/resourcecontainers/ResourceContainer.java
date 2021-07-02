@@ -73,7 +73,12 @@ public abstract class ResourceContainer extends EventDispatcher {
         container2.addResources(clone2.getResourceMap());
     }
 
-    public static void validateResourceMap(Map<ResourceType, Integer> resMap) {
+    /**
+     * @param resMap                    the resourcemap to validate
+     * @throws NullPointerException     if the map is null
+     * @throws IllegalArgumentException if the map contains negative values
+     */
+    public static void validateResourceMap(Map<ResourceType, Integer> resMap) throws NullPointerException, IllegalArgumentException {
         if (resMap == null)
             throw new NullPointerException();
 
@@ -81,20 +86,25 @@ public abstract class ResourceContainer extends EventDispatcher {
             throw new IllegalArgumentException("Illegal negative map values.");
     }
 
-    public static void validateStorableResourceMap(Map<ResourceType, Integer> resMap) {
+    /**
+     * Checks whether the map contains negative values and all mapped resources are storable
+     * 
+     * @param resMap                    the resourcemap to validate
+     * @param checkStorable             if true, check that the mapped resources are storable, else non-storable
+     * @throws NullPointerException     if the map is null
+     * @throws IllegalArgumentException if the map contains negative values or a resource is non-storable
+     */
+    public static void validateStorableResourceMap(Map<ResourceType, Integer> resMap, boolean checkStorable) throws NullPointerException, IllegalArgumentException {
         validateResourceMap(resMap);
 
-        if (!resMap.keySet().stream().allMatch(ResourceType::isStorable))
-            throw new IllegalArgumentException(); // TODO: Add message
+        if (!resMap.keySet().stream().allMatch(r -> checkStorable ? r.isStorable() : !r.isStorable()))
+            throw new IllegalArgumentException("STORABLE_EXCEPTION");
     }
 
-    public static void validateNonStorableResourceMap(Map<ResourceType, Integer> resMap) {
-        validateResourceMap(resMap);
-
-        if (resMap.keySet().stream().anyMatch(ResourceType::isStorable))
-            throw new IllegalArgumentException(); // TODO: Add message
-    }
-
+    /**
+     * @param resMap
+     * @return       the map cleaned of all zero-value entries
+     */
     public static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {
         validateResourceMap(resMap);
         return new HashMap<>(resMap.entrySet().stream()

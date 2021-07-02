@@ -1,6 +1,7 @@
 package it.polimi.ingsw.common.backend.model.resourcetransactions;
 
 import it.polimi.ingsw.common.backend.model.resourcecontainers.ResourceContainer;
+import it.polimi.ingsw.common.backend.model.resourcetransactions.IllegalResourceTransactionReplacementsException.ReplacementReason;
 import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 
 import java.util.HashMap;
@@ -47,37 +48,76 @@ public class ResourceTransactionRequest {
     }
 
     public static void validateInputResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransactionReplacementsException {
-        validateResourceMap(resMap);
+        try {
+            validateResourceMap(resMap);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.NEGATIVE_VALUES);
+        }
 
         if (!resMap.keySet().stream().allMatch(r -> r.isStorable() || r.isTakeableFromPlayer()))
-            throw new IllegalResourceTransactionReplacementsException(true, false, false);
+            throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.ILLEGAL_NON_STORABLE);
     }
 
     public static void validateOutputResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransactionReplacementsException {
-        validateResourceMap(resMap);
+        try {
+            validateResourceMap(resMap);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.NEGATIVE_VALUES);
+        }
 
         if (!resMap.keySet().stream().allMatch(r -> r.isStorable() || r.isGiveableToPlayer()))
-            throw new IllegalResourceTransactionReplacementsException(false, false, false);
+            throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.ILLEGAL_NON_STORABLE);
     }
 
     public static void validateInputStorableResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransactionReplacementsException {
-        validateStorableResourceMap(resMap);
+        try {
+            validateStorableResourceMap(resMap, true);
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("STORABLE_EXCEPTION"))
+            throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.ILLEGAL_NON_STORABLE);
+            
+            throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.NEGATIVE_VALUES);
+        }
+        
         validateInputResourceMap(resMap);
     }
 
     public static void validateInputNonStorableResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransactionReplacementsException {
-        validateNonStorableResourceMap(resMap);
+        try {
+            validateStorableResourceMap(resMap, false);
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("STORABLE_EXCEPTION"))
+                throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.ILLEGAL_STORABLE);
+            
+            throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.NEGATIVE_VALUES);
+        }
+        
         validateInputResourceMap(resMap);
     }
 
     public static void validateOutputStorableResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransactionReplacementsException {
-        validateStorableResourceMap(resMap);
+        try {
+            validateStorableResourceMap(resMap, true);
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("STORABLE_EXCEPTION"))
+                throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.ILLEGAL_NON_STORABLE);
+            
+            throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.NEGATIVE_VALUES);
+        }
+        
         validateOutputResourceMap(resMap);
     }
 
     public static void validateOutputNonStorableResourceMap(Map<ResourceType, Integer> resMap) throws IllegalResourceTransactionReplacementsException {
-        validateNonStorableResourceMap(resMap);
-        validateOutputResourceMap(resMap);
+        try {
+            validateStorableResourceMap(resMap, false);
+            validateOutputResourceMap(resMap);
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("STORABLE_EXCEPTION"))
+                throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.ILLEGAL_STORABLE);
+            
+            throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.NEGATIVE_VALUES);
+        }
     }
 
     public static void validateContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) {
@@ -85,7 +125,7 @@ public class ResourceTransactionRequest {
             throw new NullPointerException();
 
         for (Map<ResourceType, Integer> resMap : containerMap.values())
-            validateStorableResourceMap(resMap);
+            validateStorableResourceMap(resMap, true);
     }
 
     public static void validateInputContainerMap(Map<ResourceContainer, Map<ResourceType, Integer>> containerMap) throws IllegalResourceTransactionReplacementsException {
@@ -168,16 +208,16 @@ public class ResourceTransactionRequest {
         outputNonStorableRep = sanitizeResourceMap(outputNonStorableRep);
 
         if (!inputNonStorableRep.keySet().stream().allMatch(resType -> !resType.isStorable() && resType.isTakeableFromPlayer()))
-            throw new IllegalResourceTransactionReplacementsException(true, true, false);
+            throw new IllegalResourceTransactionReplacementsException(true, true, ReplacementReason.ILLEGAL_STORABLE);
 
         if (!outputNonStorableRep.keySet().stream().allMatch(resType -> !resType.isStorable() && resType.isGiveableToPlayer()))
-            throw new IllegalResourceTransactionReplacementsException(false, true, false);
+            throw new IllegalResourceTransactionReplacementsException(false, true, ReplacementReason.ILLEGAL_STORABLE);
 
         if (inputNonStorableRep.keySet().stream().anyMatch(resType -> recipe.getInputBlanksExclusions().contains(resType)))
-            throw new IllegalResourceTransactionReplacementsException(true, false, true);
+            throw new IllegalResourceTransactionReplacementsException(true, true, ReplacementReason.EXCLUDED);
 
         if (outputNonStorableRep.keySet().stream().anyMatch(resType -> recipe.getOutputBlanksExclusions().contains(resType)))
-            throw new IllegalResourceTransactionReplacementsException(false, false, true);
+            throw new IllegalResourceTransactionReplacementsException(false, true, ReplacementReason.EXCLUDED);
 
         int inputNonStorableRepCount = inputNonStorableRep.values().stream().reduce(0, Integer::sum);
         checkContainers(recipe.getInput(), recipe.getInputBlanks() - inputNonStorableRepCount, recipe.getInputBlanksExclusions(), inputContainers, false);
