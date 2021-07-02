@@ -85,7 +85,7 @@ public abstract class CliController extends UiController implements Renderable {
             }
             case GAME_ENDED -> {
                 cli.getOut().println(center("\nThe game has ended. Advancing to ending screen."));
-                cli.setController(new GameEndController(), true);
+                cli.setController(new EndGameController(), true);
             }
             case NOT_CURRENT_PLAYER -> {
                 cli.getOut().println(center("\nYou are not the current player. Please wait for your turn."));
