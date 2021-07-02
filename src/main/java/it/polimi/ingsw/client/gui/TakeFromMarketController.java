@@ -52,7 +52,7 @@ public class TakeFromMarketController extends GuiController {
     private Warehouse warehouse;
     private List<LeaderCard> leaderCards;
     private Map<Integer, Map<String, Integer>> selection = new HashMap<>();
-    private boolean isZeroReplaceable;
+    private boolean enableReplacements;
     private final Map<String, Integer> replacements = new HashMap<>();
 
     @Override
@@ -101,13 +101,13 @@ public class TakeFromMarketController extends GuiController {
         chosenResources = chosenResources.stream()
                 .map(n -> vm.getResourceTypes().stream().filter(r -> r.getName().equals(n)).findAny())
                 .flatMap(Optional::stream)
-                .filter(r -> r.isStorable() || r.getName().equals("Zero") && isZeroReplaceable) // TODO: why is zero a string?
+                .filter(r -> r.isStorable() || (r.getName().equals(vm.getMarket().get().getReplaceableResType()) && enableReplacements))
                 .map(ReducedResourceType::getName)
                 .toList();
 
         resourcesBox.getChildren().clear();
         resourcesBox.getChildren().addAll(chosenResources.stream().map(n -> {
-            Resource r = new Resource(n, isZeroReplaceable && n.equalsIgnoreCase("Zero"));
+            Resource r = new Resource(n, enableReplacements && n.equals(vm.getMarket().get().getReplaceableResType()));
             setDragAndDropSource(r);
             return r;
         }).toList());
@@ -302,7 +302,7 @@ public class TakeFromMarketController extends GuiController {
 
                     switch (leaderCard.getLeaderType()) {
                         case ZERO -> {
-                            isZeroReplaceable = true;
+                            enableReplacements = true;
                             leaderCard.setZeroReplacement(reducedLeader.getResourceType());
                         }
                         case DEPOT -> {

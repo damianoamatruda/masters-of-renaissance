@@ -61,7 +61,7 @@ public abstract class Card extends Pane {
      * @param prod the card's production
      */
     public void setProduction(ReducedResourceTransactionRecipe prod) {
-        this.production = new Production(null); // TODO: Maybe here there is not to be null
+        this.production = new Production();
         this.production.setProduction(prod);
 
         this.production.maxWidthProperty().bind(this.maxWidthProperty());
