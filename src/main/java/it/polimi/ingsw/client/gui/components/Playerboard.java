@@ -133,7 +133,7 @@ public class Playerboard extends HBox {
     }
 
     private void setBaseProductionSize(double boardWidth) {
-        double prodSizeRatio = (board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100) / production.getMaxWidth();
+        double prodSizeRatio = .8 * (board.getColumnConstraints().get(3).getPercentWidth() * boardWidth / 100) / production.getMaxWidth();
         production.setScaleX(prodSizeRatio);
         production.setScaleY(prodSizeRatio);
     }
