@@ -82,7 +82,7 @@ public class Cli implements Runnable {
 
     public void start() {
         runThread.start();
-        setController(new SplashController(), false);
+        setController(new SplashController());
     }
 
     /**
@@ -90,16 +90,10 @@ public class Cli implements Runnable {
      *
      * @param newController the controller to set
      */
-    synchronized void setController(CliController newController, boolean pauseBeforeChange) {
+    synchronized void setController(CliController newController) {
         if (!executor.isShutdown())
             executor.submit(() -> {
                 synchronized (this) {
-                    if (pauseBeforeChange)
-                        promptPause();
-
-                    if (Thread.currentThread().isInterrupted())
-                        return;
-
                     ui.setController(newController);
                     this.controller = newController;
                     this.hasNextState = true;
@@ -111,7 +105,7 @@ public class Cli implements Runnable {
     synchronized void reloadController(String str) {
         out.println();
         out.println(center(str));
-        setController(controller, true);
+        setController(controller);
     }
 
     void quit() {
@@ -257,6 +251,12 @@ public class Cli implements Runnable {
         out.println();
         out.println(center("[Press ENTER to continue]"));
         pause();
+    }
+
+    synchronized void alert(String message) {
+        out.println();
+        out.println(center(message));
+        promptPause();
     }
 
     synchronized void clear() {

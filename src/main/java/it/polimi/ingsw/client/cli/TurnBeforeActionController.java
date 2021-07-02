@@ -21,9 +21,9 @@ public class TurnBeforeActionController extends TurnController {
 
         cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
-        entries.put('1', new Menu.Entry("Take Market Resources", () -> cli.setController(new TakeFromMarketController(this), false)));
-        entries.put('2', new Menu.Entry("Buy a Development Card", () -> cli.setController(new BuyDevelopmentCardController(this), false)));
-        entries.put('3', new Menu.Entry("Activate Productions", () -> cli.setController(new ActivateProductionsController(this), false)));
+        entries.put('1', new Menu.Entry("Take Market Resources", () -> cli.setController(new TakeFromMarketController(this))));
+        entries.put('2', new Menu.Entry("Buy a Development Card", () -> cli.setController(new BuyDevelopmentCardController(this))));
+        entries.put('3', new Menu.Entry("Activate Productions", () -> cli.setController(new ActivateProductionsController(this))));
         entries.putAll(getNonMandatoryMenuEntries());
         entries.put('Q', new Menu.Entry("Quit to Title", this::quitToTitle));
         new Menu(entries, this::quitToTitle).render();

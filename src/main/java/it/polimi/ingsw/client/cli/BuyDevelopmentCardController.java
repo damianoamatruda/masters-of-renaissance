@@ -39,8 +39,8 @@ public class BuyDevelopmentCardController extends CliController {
 
         cli.getOut().println();
         new DevCardGrid(grid).render();
-        cli.getOut().println();
 
+        cli.getOut().println();
         new ResourceContainers(
                 vm.getLocalPlayer().orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
@@ -48,17 +48,23 @@ public class BuyDevelopmentCardController extends CliController {
                 vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
                 .render();
 
+        cli.getOut().println();
         new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer().orElseThrow())).render();
 
         List<ReducedLeaderCard> discountLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayer().orElseThrow()).stream()
                 .filter(ReducedLeaderCard::isActive)
                 .filter(c -> c.getLeaderType() == LeaderType.DISCOUNT).toList();
-        new LeadersHand(discountLeaders).render();
+        if (!discountLeaders.isEmpty()) {
+            cli.getOut().println();
+            new LeadersHand(discountLeaders).render();
+        }
 
         chooseColor();
     }
 
     private void chooseColor() {
+        cli.getOut().println();
+
         Set<String> allowedColors = grid.getTopCards().keySet().stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toUnmodifiableSet());
@@ -73,7 +79,7 @@ public class BuyDevelopmentCardController extends CliController {
                     this.color = color.substring(0, 1).toUpperCase() + color.substring(1);
                     chooseLevel();
                 }
-            }, () -> cli.setController(this.sourceController, false));
+            }, () -> cli.setController(this.sourceController));
         }
     }
 
@@ -175,6 +181,7 @@ public class BuyDevelopmentCardController extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.setController(new TurnAfterActionController(), true);
+        cli.promptPause();
+        cli.setController(new TurnAfterActionController());
     }
 }

@@ -16,10 +16,13 @@ public abstract class SetupController extends CliController {
 
         cli.getOut().println("Setup phase is concluded, advancing to game turns.");
 
-        if (vm.localPlayerIsCurrent())
-            cli.setController(new TurnBeforeActionController(), true);
-        else
-            cli.setController(new WaitingAfterTurnController(), true);
+        if (vm.localPlayerIsCurrent()) {
+            cli.promptPause();
+            cli.setController(new TurnBeforeActionController());
+        } else {
+            cli.promptPause();
+            cli.setController(new WaitingAfterTurnController());
+        }
     }
 
     @Override

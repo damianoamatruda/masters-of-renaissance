@@ -31,10 +31,10 @@ public class InputNicknameController extends CliController {
                     valid.set(false);
             }, () -> {
                 if (cli.getUi().isOffline())
-                    cli.setController(new MainMenuController(), false);
+                    cli.setController(new MainMenuController());
                 else {
                     cli.getUi().closeClient();
-                    cli.setController(new PlayOnlineController(), false);
+                    cli.setController(new PlayOnlineController());
                 }
             });
         }
@@ -43,7 +43,7 @@ public class InputNicknameController extends CliController {
     @Override
     public void on(UpdateBookedSeats event) {
         if (vm.getLocalPlayer().isPresent() && event.canPrepareNewGame().equals(vm.getLocalPlayer().get()))
-            cli.setController(new WaitingBeforeGameController(), false);
+            cli.setController(new WaitingBeforeGameController());
         else if (vm.getLocalPlayer().isPresent()) // if the nickname isn't set don't print updates (do not disturb)
             cli.getOut().printf("%d players waiting for a new game...", event.getBookedSeats());
     }
@@ -58,7 +58,7 @@ public class InputNicknameController extends CliController {
     @Override
     public void on(UpdateJoinGame event) {
         if (!cli.getUi().isOffline())
-            cli.getOut().printf("A new player joined the game! Getting to %d...%n%n", event.getPlayersCount());
+            cli.alert(String.format("A new player joined the game! Getting to %d...", event.getPlayersCount()));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class InputNicknameController extends CliController {
         super.on(event);
 
         if (event.isMandatoryActionDone() && vm.getLocalPlayer().equals(vm.getCurrentPlayer()))
-            cli.setController(new TurnAfterActionController(), false);
+            cli.setController(new TurnAfterActionController());
         else
             setNextState();
     }

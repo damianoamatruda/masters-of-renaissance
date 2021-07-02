@@ -16,9 +16,9 @@ public abstract class TurnController extends CliController {
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
 
         if (vm.getLocalPlayer().map(vm::getPlayerLeaderCards).map(leaderCards -> leaderCards.stream().anyMatch(l -> !l.isActive())).orElse(false))
-            entries.put('L', new Menu.Entry("Leader Actions", () -> cli.setController(new LeaderActionsController(this), false)));
+            entries.put('L', new Menu.Entry("Leader Actions", () -> cli.setController(new LeaderActionsController(this))));
 
-        entries.put('S', new Menu.Entry("Swap Shelves", () -> cli.setController(new SwapShelvesController(this), false)));
+        entries.put('S', new Menu.Entry("Swap Shelves", () -> cli.setController(new SwapShelvesController(this))));
 
         return entries;
     }

@@ -60,7 +60,7 @@ public class TakeFromMarketController extends CliController {
                     chooseIndex();
                 } else
                     valid.set(false);
-            }, () -> cli.setController(this.sourceController, false));
+            }, () -> cli.setController(this.sourceController));
         }
     }
 
@@ -146,6 +146,7 @@ public class TakeFromMarketController extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.setController(new TurnAfterActionController(), true);
+        cli.promptPause();
+        cli.setController(new TurnAfterActionController());
     }
 }

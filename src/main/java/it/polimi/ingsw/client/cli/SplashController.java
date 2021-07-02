@@ -14,7 +14,7 @@ public class SplashController extends CliController {
         renderCastle();
         cli.getOut().println();
         pausePressEnter();
-        cli.setController(new MainMenuController(), false);
+        cli.setController(new MainMenuController());
     }
 
     private void renderCredits() {

@@ -41,16 +41,16 @@ public class PlayOnlineController extends CliController {
                             inputPort = Integer.parseInt(addressTokens[1]);
                             connect(inputHost, inputPort);
                         } catch (ArrayIndexOutOfBoundsException e) {
-                            cli.getOut().println(String.format("%s is not a valid pair IP:port.", address));
+                            cli.alert(String.format("%s is not a valid pair IP:port.", address));
                             valid.set(false);
                         } catch (NumberFormatException e) {
-                            cli.getOut().println(String.format("Port %d is not a valid port.", addressTokens[1]));
+                            cli.alert(String.format("Port %s is not a valid port.", addressTokens[1]));
                             valid.set(false);
                         }
                     }
                 } else
                     valid.set(false);
-            }, () -> cli.setController(new MainMenuController(), false));
+            }, () -> cli.setController(new MainMenuController()));
         }
     }
 
@@ -60,17 +60,14 @@ public class PlayOnlineController extends CliController {
             cli.getUi().openOnlineClient(host, port);
             connected = true;
         } catch (UnknownHostException e) {
-            cli.getOut().println();
-            cli.getOut().printf("Do not know about host %s%n", host);
+            cli.alert(String.format("Do not know about host %s", host));
         } catch (IOException e) {
-            cli.getOut().println();
-            cli.getOut().println("Could not connect to the server.");
+            cli.alert("Could not connect to the server.");
         }
 
         if (connected)
-            cli.setController(new InputNicknameController("Play Online"), false);
-        else {
-            cli.setController(new PlayOnlineController(), true);
-        }
+            cli.setController(new InputNicknameController("Play Online"));
+        else
+            cli.setController(new PlayOnlineController());
     }
 }

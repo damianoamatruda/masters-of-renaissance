@@ -58,7 +58,7 @@ public class WaitingBeforeGameController extends CliController {
     @Override
     public void on(UpdateJoinGame event) {
         if (!cli.getUi().isOffline())
-            cli.getOut().printf("A new player joined the game! Getting to %d...%n%n", event.getPlayersCount());
+            cli.alert(String.format("A new player joined the game! Getting to %d...", event.getPlayersCount()));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class WaitingBeforeGameController extends CliController {
         super.on(event);
 
         if (event.isMandatoryActionDone() && vm.getLocalPlayer().equals(vm.getCurrentPlayer()))
-            cli.setController(new TurnAfterActionController(), false);
+            cli.setController(new TurnAfterActionController());
         else
             setNextState();
     }

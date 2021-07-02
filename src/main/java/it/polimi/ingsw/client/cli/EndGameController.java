@@ -9,9 +9,7 @@ public class EndGameController extends CliController {
         if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
             prefix = "You won";
 
-        cli.getOut().println(prefix + " with " + vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).orElseThrow() + " points!");
-
+        cli.alert(prefix + " with " + vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).orElseThrow() + " points!");
         cli.getUi().dispatch(new ReqQuit());
-        cli.promptPause();
     }
 }

@@ -53,6 +53,8 @@ public class ActivateProductionsController extends CliController {
         cli.getOut().println();
         cli.getOut().println(center("Input the IDs of the productions to be activated."));
 
+        cli.getOut().println();
+
         while (!this.done) {
             AtomicBoolean valid = new AtomicBoolean(false);
             while (!valid.get()) {
@@ -76,7 +78,7 @@ public class ActivateProductionsController extends CliController {
         if (!this.requests.isEmpty())
             cli.getUi().dispatch(new ReqActivateProductions(this.requests));
         else
-            cli.setController(this.sourceController, false);
+            cli.setController(this.sourceController);
     }
 
     private void chooseInputReplacements() {
@@ -142,6 +144,7 @@ public class ActivateProductionsController extends CliController {
 
     @Override
     public void on(UpdateAction event) {
-        cli.setController(new TurnAfterActionController(), true);
+        cli.promptPause();
+        cli.setController(new TurnAfterActionController());
     }
 }

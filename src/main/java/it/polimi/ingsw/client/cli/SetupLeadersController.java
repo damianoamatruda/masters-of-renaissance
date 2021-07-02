@@ -30,8 +30,8 @@ public class SetupLeadersController extends SetupController {
 
         List<ReducedLeaderCard> lCards = vm.getLocalPlayer().map(vm::getPlayerLeaderCards).orElseThrow();
         if (lCards.isEmpty()) {
-            cli.getOut().println("No leader cards to choose from. Setup cannot continue.");
-            cli.setController(new MainMenuController(), true);
+            cli.alert("No leader cards to choose from. Setup cannot continue.");
+            cli.setController(new MainMenuController());
             return;
         }
 
