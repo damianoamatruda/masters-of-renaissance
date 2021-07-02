@@ -11,6 +11,7 @@ public class ReducedFaithTrack {
     /**
      * @param vaticanSections   the vatican sections in the faith track
      * @param yellowTiles       the bonus point tiles in the faith track
+     * @param maxFaith          ordinal number of the last reachable faith track tile by a player
      */
     public ReducedFaithTrack(Map<Integer, ReducedVaticanSection> vaticanSections, List<ReducedYellowTile> yellowTiles, int maxFaith) {
         if (vaticanSections == null)
@@ -37,6 +38,9 @@ public class ReducedFaithTrack {
         return vaticanSections;
     }
 
+    /**
+     * @return ordinal number of the last reachable faith track tile by a player
+     */
     public int getMaxFaith() {
         return maxFaith;
     }

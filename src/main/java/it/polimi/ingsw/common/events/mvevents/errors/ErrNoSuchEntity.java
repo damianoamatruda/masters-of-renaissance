@@ -3,6 +3,7 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
+/** Event signaling an error when trying to identify a non-existent entity. */
 public class ErrNoSuchEntity extends ViewEvent {
     private final IDType originalEntity;
     private final int id;
@@ -18,9 +19,9 @@ public class ErrNoSuchEntity extends ViewEvent {
 
     /**
      * @param view
-     * @param originalEntity
-     * @param id
-     * @param code
+     * @param originalEntity type of entity trying to be referred
+     * @param id             ID of the object
+     * @param code           name of the color/resource
      */
     public ErrNoSuchEntity(View view, IDType originalEntity, int id, String code) {
         super(view);

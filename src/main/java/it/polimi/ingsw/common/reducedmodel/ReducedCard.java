@@ -5,6 +5,11 @@ public abstract class ReducedCard {
     protected final int victoryPoints;
     protected final int production;
 
+    /**
+     * @param id
+     * @param victoryPoints
+     * @param production    the card's production's ID
+     */
     public ReducedCard(int id, int victoryPoints, int production) {
         this.id = id;
         this.victoryPoints = victoryPoints;

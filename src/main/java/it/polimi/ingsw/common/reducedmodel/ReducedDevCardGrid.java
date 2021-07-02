@@ -12,9 +12,14 @@ public class ReducedDevCardGrid {
     /** Number of columns of separate decks that represent different development card colors. */
     private final int colorsCount;
 
-    /** All the cards that are still not bought by any player. */
+    /** Topmost cards that are still not bought by any player. */
     private final Map<String, List<Integer>> topCards;
 
+    /**
+     * @param levelsCount the number of card levels
+     * @param colorsCount the development cards' colors
+     * @param topCards    the topmost visible cards
+     */
     public ReducedDevCardGrid(int levelsCount, int colorsCount, Map<String, List<Integer>> topCards) {
         if (topCards == null)
             throw new IllegalArgumentException("Null card grid constructing reduced dev card grid.");

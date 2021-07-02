@@ -9,6 +9,14 @@ public class ReducedProductionRequest {
     private final Map<String, Integer> inputNonStorableRep;
     private final Map<String, Integer> outputRep;
 
+    /**
+     * Class constructor.
+     * 
+     * @param production          the productions'ID
+     * @param inputContainers     map container-resource-amount
+     * @param inputNonStorableRep replacements for non-storable resources
+     * @param outputRep           replacements for the production's output
+     */
     public ReducedProductionRequest(int production, Map<Integer, Map<String, Integer>> inputContainers,
                                     Map<String, Integer> inputNonStorableRep, Map<String, Integer> outputRep) {
         if (inputContainers == null)

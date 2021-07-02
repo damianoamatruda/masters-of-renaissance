@@ -3,6 +3,7 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
+/** Event signaling an error related to a resource transfer between containers. */
 public class ErrResourceTransfer extends ViewEvent {
     private final String resType;
     private final boolean isAdded;
@@ -18,9 +19,9 @@ public class ErrResourceTransfer extends ViewEvent {
     /**
      * Class constructor.
      *
-     * @param resType
-     * @param isAdded
-     * @param reason
+     * @param resType the resource type the error relates to
+     * @param isAdded whether the resource was trying to be added to a container
+     * @param reason the reson for which the transfer failed
      */
     public ErrResourceTransfer(View view, String resType, boolean isAdded, String reason) {
         super(view);
@@ -30,21 +31,21 @@ public class ErrResourceTransfer extends ViewEvent {
     }
 
     /**
-     * @return the reason
+     * @return the reason for the transfer failure
      */
     public ErrResourceTransferReason getReason() {
         return reason;
     }
 
     /**
-     * @return the resType
+     * @return the resource type the error originates from
      */
     public String getResType() {
         return resType;
     }
 
     /**
-     * @return the isAdded
+     * @return whether the resource was trying to be added
      */
     public boolean isAdded() {
         return isAdded;

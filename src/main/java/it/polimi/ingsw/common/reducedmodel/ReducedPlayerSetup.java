@@ -32,6 +32,9 @@ public class ReducedPlayerSetup {
         this.hasChosenResources = hasChosenResources;
     }
 
+    /**
+     * @return the number of leader cards to be chosen during the setup
+     */
     public int getChosenLeadersCount() {
         return chosenLeadersCount;
     }

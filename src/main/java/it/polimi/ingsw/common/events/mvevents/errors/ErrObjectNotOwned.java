@@ -9,7 +9,8 @@ public class ErrObjectNotOwned extends ViewEvent {
 
     /**
      * @param view
-     * @param id
+     * @param id         ID of the object
+     * @param objectType type of object the error refers to
      */
     public ErrObjectNotOwned(View view, int id, String objectType) {
         super(view);

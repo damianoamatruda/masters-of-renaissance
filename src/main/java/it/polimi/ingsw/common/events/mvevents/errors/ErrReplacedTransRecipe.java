@@ -3,6 +3,7 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
+/** Event signaling an error when replacing resources in a resource transaction. */
 public class ErrReplacedTransRecipe extends ViewEvent {
     private final String resType;
     private final int replacedCount, shelvesChoiceResCount;
@@ -24,26 +25,26 @@ public class ErrReplacedTransRecipe extends ViewEvent {
     }
 
     /**
-     * @return 
+     * @return if <code>true</code>, replacedcount refers to the recipe's out
      */
     public boolean isIllegalDiscardedOut() {
         return isIllegalDiscardedOut;
     }
 
     /**
-     * @return the resType
+     * @return the resource type the count of which is wrong in the replaced recipe
      */
     public String getResType() {
         return resType;
     }
     /**
-     * @return the shelvesChoiceResCount
+     * @return the count of resources in the shelves mapping
      */
     public int getShelvesChoiceResCount() {
         return shelvesChoiceResCount;
     }
     /**
-     * @return the replacedCount
+     * @return the count of resources in the replaced map
      */
     public int getReplacedCount() {
         return replacedCount;

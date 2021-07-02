@@ -8,6 +8,7 @@ import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 
+/** Error referring to an issue validating a card requirement on a player. */
 public class ErrCardRequirements extends ViewEvent {
     private final List<ReducedDevCardRequirementEntry> missingDevCards;
     private final Map<String, Integer> missingResources;

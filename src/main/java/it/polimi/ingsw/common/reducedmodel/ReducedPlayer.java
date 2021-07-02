@@ -41,12 +41,12 @@ public class ReducedPlayer {
      * @param warehouseShelves the player's warehouse shelves' ID
      * @param strongbox        the player's strongbox's ID
      * @param setup            the player's setup details
-     * @param leadersHand
-     * @param leadersHandCount
-     * @param devSlots
-     * @param faithPoints
-     * @param victoryPoints
-     * @param active
+     * @param leadersHand      the player's leader cards for the cards' owner, the active leader cards for non-owner players
+     * @param leadersHandCount the number of leader cards owned by the player
+     * @param devSlots         the player's development card slots
+     * @param faithPoints      the player's faith points
+     * @param victoryPoints    the player's victory points
+     * @param active           the player's status
      */
     public ReducedPlayer(String nickname, int baseProduction, List<Integer> warehouseShelves, int strongbox, ReducedPlayerSetup setup, List<Integer> leadersHand, int leadersHandCount, List<List<Integer>> devSlots, int faithPoints, int victoryPoints, boolean active) {
         this.nickname = nickname;
