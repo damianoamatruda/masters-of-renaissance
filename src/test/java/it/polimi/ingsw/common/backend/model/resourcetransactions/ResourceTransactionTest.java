@@ -26,8 +26,6 @@ public class ResourceTransactionTest {
 
     @Test
     void singleRequestWithoutBlanks() throws IllegalResourceTransferException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
-        // TODO: Test everything with non-storable resources
-
         ResourceType r1 = new ResourceType("r1", "", true);
         ResourceType r2 = new ResourceType("r2", "", true);
         Player player = new Player("", false, List.of(), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));

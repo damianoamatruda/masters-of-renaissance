@@ -86,7 +86,6 @@ public class ResourceTransactionRequestTest {
         assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(exclusionsRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(rInRepl, 1), Map.of(cOut, Map.of(rOut, 1)), Map.of()));
 
-        // TODO: Use non-storable resource as replacement instead
         assertDoesNotThrow(() -> new ResourceTransactionRequest(exclusionsRecipe, Map.of(cIn, Map.of(rIn, 2, rInRepl, 0)), Map.of(), Map.of(cOut, Map.of(rOut, 1)), Map.of()));
     }
 
@@ -97,7 +96,6 @@ public class ResourceTransactionRequestTest {
         assertThrows(IllegalResourceTransactionReplacementsException.class, () ->
                 new ResourceTransactionRequest(exclusionsRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1)), Map.of(rOutRepl, 1)));
 
-        // TODO: Use non-storable resource as replacement instead
         assertDoesNotThrow(() -> new ResourceTransactionRequest(exclusionsRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 2, rOutRepl, 0)), Map.of()));
     }
 
@@ -105,7 +103,6 @@ public class ResourceTransactionRequestTest {
     void inputReplacements() {
         ResourceTransactionRecipe replacementsRecipe = new ResourceTransactionRecipe(Map.of(rIn, 1), 1, Set.of(), Map.of(rOut, 1), 0, Set.of(), false);
 
-        // TODO: Use non-storable resource as replacement instead
         assertDoesNotThrow(() -> new ResourceTransactionRequest(replacementsRecipe, Map.of(cIn, Map.of(rIn, 1, rInRepl, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1)), Map.of()));
     }
 
@@ -113,7 +110,6 @@ public class ResourceTransactionRequestTest {
     void outputReplacements() {
         ResourceTransactionRecipe replacementsRecipe = new ResourceTransactionRecipe(Map.of(rIn, 1), 0, Set.of(), Map.of(rOut, 1), 1, Set.of(), false);
 
-        // TODO: Use non-storable resource as replacement instead
         assertDoesNotThrow(() -> new ResourceTransactionRequest(replacementsRecipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1, rOutRepl, 1)), Map.of()));
     }
 
@@ -164,16 +160,11 @@ public class ResourceTransactionRequestTest {
     void discardableReplacedOutOutputContainerTest() {
         ResourceTransactionRecipe recipe = new ResourceTransactionRecipe(Map.of(rIn, 1), 0, Set.of(), Map.of(rOut, 1), 1, Set.of(), true);
 
-        // TODO: Use non-storable resource as replacement instead
-
         assertDoesNotThrow(() -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1, rOutRepl, 1)), Map.of()));
         assertDoesNotThrow(() -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1)), Map.of()));
         assertDoesNotThrow(() -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOutRepl, 1)), Map.of()));
         assertDoesNotThrow(() -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 0, rOutRepl, 0)), Map.of()));
         assertDoesNotThrow(() -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of()), Map.of()));
-
-        // TODO: Use non-storable resource as replacement instead
-        // assertThrows(IllegalResourceTransactionContainersException.class, () -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 2)), Map.of()));
 
         assertThrows(IllegalResourceTransactionContainersException.class, () -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 2, rOutRepl, 1)), Map.of()));
         assertThrows(IllegalResourceTransactionContainersException.class, () -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1, rOutRepl, 2)), Map.of()));
