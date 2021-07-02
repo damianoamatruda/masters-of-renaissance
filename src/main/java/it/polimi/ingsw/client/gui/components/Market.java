@@ -25,9 +25,6 @@ public class Market extends StackPane {
 
     ToggleGroup indexSelectors = new ToggleGroup();
 
-    private final int selectedIndex = 0;
-    private final boolean isColumnSelected = false;
-
     /**
      * Class constructor.
      */
@@ -103,7 +100,6 @@ public class Market extends StackPane {
         for (int i = 1; i < marketRows - 1; i++) {
             IndexRadioButton b = new IndexRadioButton(i - 1, true);
             b.setToggleGroup(indexSelectors);
-            // TODO scale text (see Strongbox)
             grid.add(b, marketColumns - 1, i);
         }
         for (int i = 1; i < marketColumns - 2; i++) {

@@ -59,19 +59,19 @@ public class LeaderBoard extends StackPane {
     public void createLeaderboardTable(TableView<LeaderBoardEntry> content) {
         ViewModel vm = Gui.getInstance().getViewModel();
 
-        TableColumn playerColumn = new TableColumn("Player");
-        playerColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry,String>("player"));
+        TableColumn<LeaderBoardEntry, String> playerColumn = new TableColumn<>("Player");
+        playerColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry, String>("player"));
         playerColumn.setSortable(false);
 
-        TableColumn faithColumn = new TableColumn("F. points");
+        TableColumn<LeaderBoardEntry, Integer> faithColumn = new TableColumn<>("F. points");
         faithColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry, Integer>("faith"));
         faithColumn.setSortable(false);
 
-        TableColumn pointsColumn = new TableColumn("V. points");
+        TableColumn<LeaderBoardEntry, Integer> pointsColumn = new TableColumn<>("V. points");
         pointsColumn.setCellValueFactory(new PropertyValueFactory<LeaderBoardEntry, Integer>("points"));
         pointsColumn.setSortable(false);
 
-        content.getColumns().addAll(playerColumn, faithColumn, pointsColumn);
+        content.getColumns().addAll(List.of(playerColumn, faithColumn, pointsColumn));
 
         List<LeaderBoardEntry> entries = vm.getPlayers().stream()
                 .map(ReducedPlayer::getNickname)
