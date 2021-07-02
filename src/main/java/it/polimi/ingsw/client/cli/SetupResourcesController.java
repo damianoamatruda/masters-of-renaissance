@@ -19,7 +19,7 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class SetupResourcesController extends SetupController {
     @Override
     public void render() {
-        if (isLocalResourceSetupDone()) {
+        if (isLocalResourceSetupDone() && vm.getPlayers().size() > 1) {
             printWaitingMessage();
             return;
         }
@@ -51,7 +51,7 @@ public class SetupResourcesController extends SetupController {
     }
 
     private void printWaitingMessage() {
-        cli.getOut().println("Waiting for all players to finish their setup...");
+        cli.getOut().println(center("Waiting for all players to finish their setup..."));
     }
 
     @Override
@@ -68,6 +68,7 @@ public class SetupResourcesController extends SetupController {
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
         // UpdateSetupDone takes care of state switching, see SetupController
-        printWaitingMessage();
+        if (vm.getPlayers().size() > 1)
+            printWaitingMessage();
     }
 }
