@@ -274,18 +274,23 @@ public abstract class CliController extends UiController implements Renderable {
         cli.getOut().println("Players:");
         event.getPlayers().stream().map(ReducedPlayer::getNickname).forEach(p -> cli.getOut().println(p));
 
+        cli.getOut().println();
         new ResourceContainers(vm.getLocalPlayer().orElseThrow(),
             vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
             vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
             vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
             .render();
-
+        
+        cli.getOut().println();
         new LeadersHand(vm.getPlayerLeaderCards(vm.getLocalPlayer().get())).render();
 
+        cli.getOut().println();
         new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer().get())).render();
 
+        cli.getOut().println();
         new Market(vm.getMarket().get()).render();
 
+        cli.getOut().println();
         new DevCardGrid(vm.getDevCardGrid().get()).render();
 
         cli.getOut().println(center(String.format("\n%s has the inkwell.\n", vm.getInkwellPlayer().get())));
