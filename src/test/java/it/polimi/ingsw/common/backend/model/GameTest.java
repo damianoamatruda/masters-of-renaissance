@@ -81,8 +81,7 @@ public class GameTest {
      */
     @Test
     void firstAdvanceNoPts() {
-        game.getPlayers().get(0).incrementFaithPoints(game, 1);
-        game.activateVaticanSections();
+        incrementAndCheckSection(game.getPlayers().get(0), 1);
         assertEquals(0, game.getPlayers().get(0).getVictoryPoints());
     }
 
@@ -93,8 +92,7 @@ public class GameTest {
     @Test
     void noYellowTilesEndOfGame() {
         game.getPlayers().stream().filter(p -> !p.equals(game.getPlayers().get(0))).forEach(p -> p.setActive(false));
-        game.getPlayers().get(0).incrementFaithPoints(game, 24);
-        game.activateVaticanSections();
+        incrementAndCheckSection(game.getPlayers().get(0), 24);
         game.onTurnEnd();
         assertAll(() -> assertTrue(game.isEnded()),
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
@@ -116,10 +114,8 @@ public class GameTest {
          */
         @BeforeEach
         void advancePlayers() {
-            game.getPlayers().get(0).incrementFaithPoints(game, 5);
-            game.activateVaticanSections();
-            game.getPlayers().get(1).incrementFaithPoints(game, 8);
-            game.activateVaticanSections();
+            incrementAndCheckSection(game.getPlayers().get(0), 5);
+            incrementAndCheckSection(game.getPlayers().get(1), 8);
         }
 
         /**
@@ -164,13 +160,10 @@ public class GameTest {
          */
         @BeforeEach
         void advancePlayers() {
-            game.getPlayers().get(0).incrementFaithPoints(game, 5);
-            game.activateVaticanSections();
-            game.getPlayers().get(2).incrementFaithPoints(game, 8);
-            game.activateVaticanSections();
+            incrementAndCheckSection(game.getPlayers().get(0), 5);
+            incrementAndCheckSection(game.getPlayers().get(2), 8);
 
-            game.getPlayers().get(1).incrementFaithPoints(game, 16);
-            game.activateVaticanSections();
+            incrementAndCheckSection(game.getPlayers().get(1), 16);
         }
 
         /**
@@ -216,20 +209,14 @@ public class GameTest {
          */
         @BeforeEach
         void advancePlayers() {
-            game.getPlayers().get(0).incrementFaithPoints(game, 5);
-            game.activateVaticanSections();
-            game.getPlayers().get(2).incrementFaithPoints(game, 8);
-            game.activateVaticanSections();
+            incrementAndCheckSection(game.getPlayers().get(0), 5);
+            incrementAndCheckSection(game.getPlayers().get(2), 8);
 
-            game.getPlayers().get(1).incrementFaithPoints(game, 16);
-            game.activateVaticanSections();
+            incrementAndCheckSection(game.getPlayers().get(1), 16);
 
-            game.getPlayers().get(2).incrementFaithPoints(game, 8);
-            game.activateVaticanSections();
-            game.getPlayers().get(1).incrementFaithPoints(game, 4);
-            game.activateVaticanSections();
-            game.getPlayers().get(0).incrementFaithPoints(game, 19);
-            game.activateVaticanSections();
+            incrementAndCheckSection(game.getPlayers().get(2), 8);
+            incrementAndCheckSection(game.getPlayers().get(1), 4);
+            incrementAndCheckSection(game.getPlayers().get(0), 19);
         }
 
         /**
@@ -397,7 +384,10 @@ public class GameTest {
             Player next = game.getCurrentPlayer();
             assertEquals(expected, next);
         }
-
     }
 
+    private void incrementAndCheckSection(Player player, int points) {
+        player.incrementFaithPoints(game, points);
+        game.activateVaticanSections();
+    }
 }
