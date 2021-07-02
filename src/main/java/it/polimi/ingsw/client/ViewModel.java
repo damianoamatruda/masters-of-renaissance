@@ -81,7 +81,7 @@ public class ViewModel {
     /** The map of unique player string encoded HEX colors. */
     private final Map<String, String> hexPlayerColors;
 
-    // TODO Javadoc
+    /** Player holding the inkwell. */
     private String inkwellPlayer;
 
     /**
@@ -112,8 +112,6 @@ public class ViewModel {
     }
 
     /**
-     * TODO
-     *
      * @param player the player's data
      */
     public synchronized void putPlayer(ReducedPlayer player) {
@@ -121,10 +119,8 @@ public class ViewModel {
     }
 
     /**
-     * TODO
-     *
-     * @param nickname
-     * @return the topmost development cards in the player's slots
+     * @param nickname the player to get the base production of
+     * @return         the base production of the specified player
      */
     public synchronized Optional<ReducedResourceTransactionRecipe> getPlayerBaseProduction(String nickname) {
         return getPlayer(nickname).map(ReducedPlayer::getBaseProduction).flatMap(this::getProduction);
@@ -532,7 +528,9 @@ public class ViewModel {
         return gameEnded;
     }
 
-    // TODO Javadoc
+    /**
+     * @param gameEnded whether the game is finished
+     */
     public synchronized void setGameEnded(boolean gameEnded) {
         this.gameEnded = gameEnded;
     }
@@ -706,7 +704,10 @@ public class ViewModel {
         });
     }
 
-    // TODO: Add Javadoc
+    /**
+     * @param production the production to get the allowed input resource types of
+     * @return           a list containing the resource types allowed to be assigned to the production's input
+     */
     public synchronized List<ReducedResourceType> getProductionInputResTypes(ReducedResourceTransactionRecipe production) {
         return resourceTypes.stream()
                 .filter(r -> !r.isStorable() && r.isTakeableFromPlayer())
@@ -714,7 +715,10 @@ public class ViewModel {
                 .toList();
     }
 
-    // TODO: Add Javadoc
+    /**
+     * @param production the production to get the allowed output resource types of
+     * @return           a list containing the resource types allowed to be assigned to the production's output
+     */
     public synchronized List<ReducedResourceType> getProductionOutputResTypes(ReducedResourceTransactionRecipe production) {
         return resourceTypes.stream()
                 .filter(r -> r.isStorable() || r.isGiveableToPlayer())
@@ -818,12 +822,16 @@ public class ViewModel {
         this.localPlayer = localPlayer;
     }
 
-    // TODO Javadoc
+    /**
+     * @return the nickname of the player holding the inkwell
+     */
     public synchronized Optional<String> getInkwellPlayer() {
         return Optional.ofNullable(inkwellPlayer);
     }
 
-    // TODO Javadoc
+    /**
+     * @param inkwellPlayer the player holding the inkwell
+     */
     public synchronized void setInkwellPlayer(String inkwellPlayer) {
         this.inkwellPlayer = inkwellPlayer;
     }

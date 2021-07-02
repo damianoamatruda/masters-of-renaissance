@@ -24,7 +24,7 @@ public class ResourceType {
      * Class constructor.
      *
      * @param name      the name of the resource type
-     * @param ansiColor TODO
+     * @param ansiColor resource's color
      * @param storable  <code>true</code> if the resources of this type can be stored in a resource container;
      *                  <code>false</code> otherwise.
      */
@@ -43,7 +43,9 @@ public class ResourceType {
         return name;
     }
 
-    // TODO: Javadoc
+    /**
+     * @return the resource's color in ANSI format
+     */
     public String getAnsiColor() {
         return ansiColor;
     }

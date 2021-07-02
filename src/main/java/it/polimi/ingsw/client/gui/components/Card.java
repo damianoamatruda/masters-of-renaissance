@@ -67,7 +67,6 @@ public abstract class Card extends Pane {
         this.production.maxWidthProperty().bind(this.maxWidthProperty());
         this.production.maxHeightProperty().bind(this.maxHeightProperty());
 
-//        this.setAlignment(Pos.BOTTOM_CENTER);
         this.production.setLayoutX(20);
 
         this.getChildren().add(this.production);

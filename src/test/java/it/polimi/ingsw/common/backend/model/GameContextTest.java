@@ -114,7 +114,7 @@ class GameContextTest {
         }
 
         @RepeatedTest(value = 10)
-        void activateLeader() throws IllegalResourceTransferException {
+        void activateLeader() {
             LeaderCard leader = soloGame.getInkwellPlayer().getLeaders().get(0);
 
             Optional<Map<ResourceType, Integer>> resReq = Optional.empty();
@@ -164,7 +164,6 @@ class GameContextTest {
         @Test
         void takeMarketResources() {
             Optional<ResourceType> res1 = soloGame.getMarket().getGrid().get(0).stream().filter(ResourceType::isStorable).findAny();
-            Optional<ResourceType> res2 = soloGame.getMarket().getGrid().stream().map(r -> r.get(0)).filter(ResourceType::isStorable).findAny();
 
             List<Warehouse.WarehouseShelf> whShelves = soloGame.getInkwellPlayer().getWarehouse().getShelves();
             List<Integer> shelves = whShelves.stream().map(ResourceContainer::getId).toList();
@@ -177,12 +176,11 @@ class GameContextTest {
                         0, Map.of(), choice);
             });
 
-            assertAll(() -> assertTrue(res1.isEmpty() || whShelves.get(0).getResourceMap().equals(Map.of(res1.get(), 1)))/*,
-                    () -> assertTrue(res2.isEmpty() || whShelves.get(1).getResourceMap().equals(Map.of(res2.get(), 1)))*/);
+            assertAll(() -> assertTrue(res1.isEmpty() || whShelves.get(0).getResourceMap().equals(Map.of(res1.get(), 1))));
         }
 
         @Test
-        void buyDevCard() throws IllegalResourceTransferException {
+        void buyDevCard() {
             DevelopmentCard developmentCard = soloGame.getDevCardGrid().getDeck(gameFactory.getDevCardColor("Blue").get(), 1).peek();
 
             Map<ResourceType, Integer> req = new HashMap<>();
@@ -205,7 +203,7 @@ class GameContextTest {
         }
 
         @Test
-        void activateProductionRequests() throws IllegalResourceTransferException {
+        void activateProductionRequests() {
             int id = soloGame.getInkwellPlayer().getBaseProduction().getId();
 
             for(ResourceType resource : soloGame.getInkwellPlayer().getBaseProduction().getInput().keySet()) {

@@ -51,7 +51,7 @@ public class Options extends BorderPane {
     }
 
     /**
-     * TODO
+     * Overlay displaying the game's settings
      */
     public Options() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/options.fxml"));
@@ -163,7 +163,7 @@ public class Options extends BorderPane {
     }
 
     /**
-     *
+     * Resets the configuration to the included file
      */
     @FXML
     private void handleResetConfig() {
@@ -171,9 +171,6 @@ public class Options extends BorderPane {
         resetConfigButton.setDisable(true);
     }
 
-    /**
-     * TODO
-     */
     public boolean getConfigContainer() {
         return ((Pane) configContainer.getParent()).getChildren().contains(configContainer);
     }

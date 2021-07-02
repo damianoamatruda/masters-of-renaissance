@@ -13,7 +13,7 @@ public class IncrementFaithPointsResType extends ResourceType {
      * @param name      the name of the resource type
      * @param storable  <code>true</code> if the resources of this type can be stored in a resource container;
      *                  <code>false</code> otherwise.
-     * @param ansiColor TODO
+     * @param ansiColor the resource's color in ANSI format
      */
     public IncrementFaithPointsResType(String name, boolean storable, String ansiColor) {
         super(name, ansiColor, storable);

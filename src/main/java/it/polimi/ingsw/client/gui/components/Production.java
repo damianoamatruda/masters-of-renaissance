@@ -108,7 +108,12 @@ public class Production extends StackPane {
         this.setPadding(new Insets(padding));
     }
 
-    // TODO Javadoc
+    /**
+     * Draws the production's excluded resources
+     * 
+     * @param exclusions
+     * @param blanksExclusions
+     */
     private void fillExclusions(VBox exclusions, List<String> blanksExclusions) {
         exclusions.setSpacing(2);
         for(String resource : blanksExclusions) {

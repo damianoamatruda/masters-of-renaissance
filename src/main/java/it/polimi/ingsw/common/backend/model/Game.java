@@ -80,7 +80,7 @@ public class Game extends EventDispatcher {
                 DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxObtainableDevCards,
                 int devSlotsCount) {
         if (players.isEmpty())
-            throw new IllegalArgumentException(); // TODO: Add description
+            throw new IllegalArgumentException("Empty players list");
 
         this.players = new ArrayList<>(players);
         this.leaderCards = List.copyOf(leaderCards);
@@ -246,7 +246,11 @@ public class Game extends EventDispatcher {
             dispatch(new UpdateSetupDone());
     }
 
-    // TODO: Javadoc
+    /**
+     * @return whether the game's setup phase is finished.
+     *         The answer also depends on the players' status,
+     *         inactive players are not accounted for.
+     */
     public boolean isSetupDone() {
         return players.stream().filter(Player::isActive).map(Player::getSetup).allMatch(PlayerSetup::isDone);
     }
@@ -305,10 +309,11 @@ public class Game extends EventDispatcher {
         return faithTrack;
     }
 
-    // TODO: Javadoc
+    /**
+     * @return the game's action tokens
+     */
     public List<ActionToken> getActionTokens() {
-        // return List.of();
-        throw new RuntimeException("getActionTokens called on a multiplayer game: method not implemented.");
+        return List.of();
     }
 
     /**

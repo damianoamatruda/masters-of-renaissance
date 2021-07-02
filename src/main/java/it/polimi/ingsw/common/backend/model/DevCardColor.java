@@ -9,14 +9,13 @@ public class DevCardColor {
     /** The name of the development card color. */
     private final String name;
 
-    // TODO: Javadoc
     private final String ansiColor;
 
     /**
      * Constructor of the development card color.
      *
      * @param name      the name of the development card color
-     * @param ansiColor TODO
+     * @param ansiColor card's color in ANSI format
      */
     public DevCardColor(String name, String ansiColor) {
         this.name = name;

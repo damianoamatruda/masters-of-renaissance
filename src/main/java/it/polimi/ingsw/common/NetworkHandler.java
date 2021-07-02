@@ -17,7 +17,8 @@ import java.util.logging.Logger;
 /** Event dispatcher responsible for transferring messages over the network. */
 public class NetworkHandler extends AsynchronousEventDispatcher implements Runnable, AutoCloseable {
     private static final Logger LOGGER = Logger.getLogger(NetworkHandler.class.getName());
-    // TODO: Javadoc
+    /** Internal dispatcher for NetEvents.
+        NetEvents are handled independently from application-level events. */
     private final EventDispatcher netEventDispatcher;
     /** The socket to send and receive messages on. */
     private final Socket socket;

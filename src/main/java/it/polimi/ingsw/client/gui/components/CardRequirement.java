@@ -14,7 +14,7 @@ import java.util.Objects;
 
 /** Gui component used to show card requirements. */
 public class CardRequirement extends HBox {
-    private static final double maxRowHeight = 30; // TODO: Parameterize
+    private static final double maxRowHeight = 30;
 
     /**
      * Builds graphic components for the resource requirements.

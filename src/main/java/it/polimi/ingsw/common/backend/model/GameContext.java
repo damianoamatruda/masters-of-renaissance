@@ -50,14 +50,26 @@ public class GameContext extends AsynchronousEventDispatcher {
         this.mandatoryActionDone = false;
     }
 
-    // TODO: Javadoc
+    /**
+     * Starting routine for GameContext.
+     * Dispatches the game's data to the specified client and
+     * assigns the initial faith points to the specified player.
+     * 
+     * @param view     the View to dispatch the state to
+     * @param nickname the nickname of the player connecting to the context
+     */
     public void start(View view, String nickname) {
         resume(view, nickname);
 
         getPlayerByNickname(nickname).getSetup().giveInitialFaithPoints(game, getPlayerByNickname(nickname));
     }
 
-    // TODO: Javadoc (info about the turn's state needs to be sent if it's the current player reconnecting)
+    /**
+     * Sends the game's data to players that reconnect.
+     * 
+     * @param view
+     * @param nickname the nickname of the player reconnecting
+     */
     public void resume(View view, String nickname) {
         Player player = getPlayerByNickname(nickname);
 
@@ -79,7 +91,6 @@ public class GameContext extends AsynchronousEventDispatcher {
             return;
         }
 
-        // TODO: Refactor this
         Optional<Integer> missing = leaderIds.stream().filter(l -> player.getLeaderById(l).isEmpty()).findAny();
         if (missing.isPresent()) {
             dispatch(new ErrObjectNotOwned(view, missing.get(), "LeaderCard"));
