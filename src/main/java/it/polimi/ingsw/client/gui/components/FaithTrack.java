@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -117,10 +118,16 @@ public class FaithTrack extends HBox {
                 hbox.setAlignment(Pos.CENTER);
                 hbox.setSpacing(50);
 
+                BorderPane textPane = new BorderPane();
+                textPane.setMinWidth(80);
+                textPane.setMaxWidth(80);
+
                 Text sectionText = new Text(String.format("Section %d", i));
                 sectionText.setScaleX(2);
                 sectionText.setScaleY(2);
-                hbox.getChildren().add(sectionText);
+                textPane.setCenter(sectionText);
+
+                hbox.getChildren().add(textPane);
 
                 boolean gotBonus = vm.getCurrentPlayer().isPresent() && section.getBonusGivenPlayers().contains(vm.getCurrentPlayer().get());
                 boolean isActivated = section.isActivated();
