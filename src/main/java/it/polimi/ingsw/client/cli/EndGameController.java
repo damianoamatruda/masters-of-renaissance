@@ -6,12 +6,13 @@ import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 public class EndGameController extends CliController {
     @Override
     public void render() {
-        String prefix = vm.getWinnerPlayer().orElse("Lorenzo il Magnifico") + " is the winner";
-        if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
-            prefix = "You won";
+        vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).ifPresentOrElse(points -> {
+                String prefix = vm.getWinnerPlayer().get() + " is the winner";
+                if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
+                    prefix = "You won";
 
-        String finalPrefix = prefix;
-        vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).ifPresentOrElse(pts -> cli.alert(finalPrefix + " with " + pts + " points!"), () -> cli.alert(finalPrefix + "!"));
+                cli.alert(prefix + " with " + points + " points!");
+            }, () -> cli.alert("Lorenzo il Magnifico won, better luck next time!"));
 
         new LeaderBoard().render();
 
