@@ -20,11 +20,11 @@ public class Lobby extends AsynchronousEventDispatcher {
     private static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
     private final Object lock;
     private final GameFactory gameFactory;
-    public final Map<View, String> nicknames;
-    public final Map<View, GameContext> joined;
-    public final Map<String, GameContext> disconnected;
-    public final List<View> waiting;
-    public int newGamePlayersCount;
+    private final Map<View, String> nicknames;
+    private final Map<View, GameContext> joined;
+    private final Map<String, GameContext> disconnected;
+    private final List<View> waiting;
+    private int newGamePlayersCount;
 
     public Lobby(GameFactory gameFactory) {
         this.lock = new Object();
