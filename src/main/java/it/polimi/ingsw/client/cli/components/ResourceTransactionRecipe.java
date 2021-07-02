@@ -4,6 +4,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 
 import java.util.Map;
 
+import static it.polimi.ingsw.client.cli.Cli.boldColor;
+
 /** Cli component that gives a string representation a production. */
 public class ResourceTransactionRecipe extends StringComponent {
     private final ReducedResourceTransactionRecipe reducedResourceTransactionRecipe;
@@ -16,7 +18,8 @@ public class ResourceTransactionRecipe extends StringComponent {
     public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(String.format("--- Production (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---%n", reducedResourceTransactionRecipe.getId()));
+        stringBuilder.append(String.format("--- Production (ID: %s) ---%n",
+                boldColor(String.valueOf(reducedResourceTransactionRecipe.getId()), "\u001B[37m")));
 
         stringBuilder.append("Input:").append("\n");
         Map<String, Integer> inputResourceMap = reducedResourceTransactionRecipe.getInput();

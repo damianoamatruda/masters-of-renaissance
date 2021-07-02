@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.cli.components;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 
+import static it.polimi.ingsw.client.cli.Cli.boldColor;
+
 /** Cli component that gives a string representation of a development card. */
 public class DevelopmentCard extends StringComponent {
     private final ReducedDevCard reducedDevCard;
@@ -16,8 +18,8 @@ public class DevelopmentCard extends StringComponent {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("[Development]").append("\n");
-        stringBuilder.append(String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, color: %s",
-                reducedDevCard.getId(),
+        stringBuilder.append(String.format("ID: %s, color: %s",
+                boldColor(String.valueOf(reducedDevCard.getId()), "\u001B[37m"),
                 new DevCardColor(reducedDevCard.getColor()).getString()
         )).append("\n");
         stringBuilder.append(String.format("Level: %d, VP: %d",

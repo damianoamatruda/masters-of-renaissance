@@ -51,33 +51,8 @@ public class Cli implements Runnable {
         return instance;
     }
 
-    /**
-     * Sets the current state based on the next requested state. If no state is requested, waits for a request. While a
-     * state is being rendered, requested states aren't applied: only the last requested state is applied, and only as
-     * soon as the current state has finished rendering.
-     */
-    @Override
-    public synchronized void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            while (!hasNextState) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-            clear();
-            
-            if (isReturningToMainMenu.get())
-                controller = new MainMenuController();
-            
-            out.println(center(String.format("\u001b[31m%s\u001B[0m", controller.getClass().getSimpleName())));
-            controller.render();
-
-            isReturningToMainMenu.set(false);
-            hasNextState = false;
-        }
+    public static String color(String str, String ansiColor) {
+        return String.format("%s%s\u001B[0m", ansiColor, str);
     }
 
     public void start() {
@@ -243,6 +218,43 @@ public class Cli implements Runnable {
 
     public static String slimLine() {
         return slimLine(width);
+    }
+
+    public static String bold(String str) {
+        return String.format("\u001B[1m%s\u001B[0m", str);
+    }
+
+    public static String boldColor(String str, String ansiColor) {
+        return bold(color(str, ansiColor));
+    }
+
+    /**
+     * Sets the current state based on the next requested state. If no state is requested, waits for a request. While a
+     * state is being rendered, requested states aren't applied: only the last requested state is applied, and only as
+     * soon as the current state has finished rendering.
+     */
+    @Override
+    public synchronized void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            while (!hasNextState) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+            clear();
+
+            if (isReturningToMainMenu.get())
+                controller = new MainMenuController();
+
+            out.println(center(boldColor(controller.getClass().getSimpleName(), "\u001b[31m")));
+            controller.render();
+
+            isReturningToMainMenu.set(false);
+            hasNextState = false;
+        }
     }
 
     synchronized void pause() {

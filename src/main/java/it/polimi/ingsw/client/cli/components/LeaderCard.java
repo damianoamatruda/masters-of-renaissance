@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.cli.Cli;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
+import static it.polimi.ingsw.client.cli.Cli.boldColor;
+
 /** Cli component that gives a string representation of a leader card. */
 public class LeaderCard extends StringComponent {
     private final ReducedLeaderCard reducedLeaderCard;
@@ -21,8 +23,8 @@ public class LeaderCard extends StringComponent {
         stringBuilder.append("[Leader]").append("\n");
 
         // ID, type
-        stringBuilder.append(String.format("ID: \u001B[1m\u001B[37m%d\u001B[0m, type: %s",
-                reducedLeaderCard.getId(),
+        stringBuilder.append(String.format("ID: %s, type: %s",
+                boldColor(String.valueOf(reducedLeaderCard.getId()), "\u001B[37m"),
                 reducedLeaderCard.getLeaderType()
         )).append("\n");
 

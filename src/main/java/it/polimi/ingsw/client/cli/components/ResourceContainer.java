@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
+import static it.polimi.ingsw.client.cli.Cli.boldColor;
+
 /** Cli component that gives a string representation of a shelf, strongbox or depot. */
 public class ResourceContainer extends StringComponent {
     private final ReducedResourceContainer reducedResourceContainer;
@@ -14,8 +16,8 @@ public class ResourceContainer extends StringComponent {
     public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(String.format("--- Container (ID: \u001B[1m\u001B[37m%d\u001B[0m) ---",
-                reducedResourceContainer.getId())).append("\n");
+        stringBuilder.append(String.format("--- Container (ID: %s) ---",
+                boldColor(String.valueOf(reducedResourceContainer.getId()), "\u001B[37m"))).append("\n");
 
         reducedResourceContainer.getBoundedResType().ifPresent(bResType ->
                 stringBuilder.append(String.format("Bound resource: %s", new Resource(bResType).getString())).append("\n"));

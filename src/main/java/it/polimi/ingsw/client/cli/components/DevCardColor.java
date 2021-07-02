@@ -5,6 +5,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardColor;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static it.polimi.ingsw.client.cli.Cli.boldColor;
+
 /** Cli component that represents card colors as bold and colored strings. */
 public class DevCardColor extends StringComponent {
     private final String colorName;
@@ -22,7 +24,7 @@ public class DevCardColor extends StringComponent {
                 .map(ReducedDevCardColor::getAnsiColor)
                 .findAny()
                 .ifPresentOrElse(
-                        color -> str.set(String.format("\u001B[1m%s%s\u001B[0m", color, colorName)),
+                        ansiColor -> str.set(boldColor(colorName, ansiColor)),
                         () -> str.set(colorName));
 
         return str.get();

@@ -5,6 +5,8 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static it.polimi.ingsw.client.cli.Cli.boldColor;
+
 /** Cli component that represents the resources as bold and colored strings. */
 public class Resource extends StringComponent {
     private final String resourceType;
@@ -22,7 +24,7 @@ public class Resource extends StringComponent {
                 .map(ReducedResourceType::getAnsiColor)
                 .findAny()
                 .ifPresentOrElse(
-                        color -> str.set(String.format("\u001B[1m%s%s\u001B[0m", color, resourceType)),
+                        ansiColor -> str.set(boldColor(resourceType, ansiColor)),
                         () -> str.set(resourceType));
 
         return str.get();
