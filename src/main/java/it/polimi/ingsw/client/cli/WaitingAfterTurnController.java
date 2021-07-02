@@ -6,9 +6,9 @@ public class WaitingAfterTurnController extends CliController {
     @Override
     public void render() {
         if (!vm.isLastRound())
-            cli.getOut().println("Please wait for other players to end their turn...");
+            cli.getOut().println(Cli.center("Please wait for other players to end their turn..."));
         else
-            cli.getOut().println("You have played your last turn. Waiting for others to finish...");
+            cli.getOut().println(Cli.center("You have played your last turn. Waiting for others to finish..."));
     }
 
     /* Other players' UpdateAction isn't a good indicator
