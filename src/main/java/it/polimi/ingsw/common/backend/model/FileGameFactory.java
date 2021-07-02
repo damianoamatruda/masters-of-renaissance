@@ -258,7 +258,7 @@ public class FileGameFactory implements GameFactory {
      * @return all the cars colors
      */
     private Set<DevCardColor> buildDevCardColors() {
-        return new Gson().fromJson(rootObject.get("cardColors"), new TypeToken<Set<DevCardColor>>() {
+        return new Gson().fromJson(rootObject.get("devCardColors"), new TypeToken<Set<DevCardColor>>() {
         }.getType());
     }
 

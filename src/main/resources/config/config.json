@@ -6,7 +6,7 @@
   "maxDevCards": 7,
   "levelsCount": 3,
   "devSlotsCount": 3,
-  "cardColors": [
+  "devCardColors": [
     {
       "name": "Yellow",
       "ansiColor": "\u001B[33m"
