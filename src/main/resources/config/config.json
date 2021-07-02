@@ -5,7 +5,7 @@
   "maxFaith": 24,
   "maxDevCards": 7,
   "levelsCount": 3,
-  "slotsCount": 3,
+  "devSlotsCount": 3,
   "cardColors": [
     {
       "name": "Yellow",

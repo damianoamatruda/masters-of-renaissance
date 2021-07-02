@@ -47,8 +47,8 @@ public class SoloGame extends Game {
     public SoloGame(Player player, List<DevCardColor> colors, List<ResourceType> resourceTypes, List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                     List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                     List<ActionToken> actionTokens, DevCardGrid devCardGrid, Market market, FaithTrack faithTrack,
-                    int maxObtainableDevCards, int slotsCount) {
-        super(List.of(player), colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxObtainableDevCards, slotsCount);
+                    int maxObtainableDevCards, int devSlotsCount) {
+        super(List.of(player), colors, resourceTypes, leaderCards, developmentCards, resContainers, productions, devCardGrid, market, faithTrack, maxObtainableDevCards, devSlotsCount);
         this.actionTokens = new ArrayList<>(actionTokens);
         this.blackPoints = 0;
         this.blackWinner = false;

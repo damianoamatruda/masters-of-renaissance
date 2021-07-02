@@ -46,7 +46,7 @@ public class FileGameFactory implements GameFactory {
     private final int levelsCount;
 
     /** Number of development card production slots per player. */
-    private final int slotsCount;
+    private final int devSlotsCount;
 
     /** The development card colors. */
     private final Map<String, DevCardColor> devCardColorMap;
@@ -75,7 +75,7 @@ public class FileGameFactory implements GameFactory {
         maxFaith = gson.fromJson(rootObject.get("maxFaith"), int.class);
         maxDevCards = gson.fromJson(rootObject.get("maxDevCards"), int.class);
         levelsCount = gson.fromJson(rootObject.get("levelsCount"), int.class);
-        slotsCount = gson.fromJson(rootObject.get("slotsCount"), int.class);
+        devSlotsCount = gson.fromJson(rootObject.get("devSlotsCount"), int.class);
 
         devCardColorMap = buildDevCardColors().stream().collect(Collectors.toUnmodifiableMap(DevCardColor::getName, Function.identity()));
         resTypeMap = buildResourceTypes().stream().collect(Collectors.toUnmodifiableMap(ResourceType::getName, Function.identity()));
@@ -105,7 +105,7 @@ public class FileGameFactory implements GameFactory {
                 buildMarket(),
                 buildFaithTrack(),
                 maxDevCards,
-                slotsCount
+                devSlotsCount
         );
     }
 
@@ -134,7 +134,7 @@ public class FileGameFactory implements GameFactory {
                 buildMarket(),
                 buildFaithTrack(),
                 maxDevCards,
-                slotsCount
+                devSlotsCount
         );
     }
 
@@ -222,7 +222,7 @@ public class FileGameFactory implements GameFactory {
                     warehouse,
                     strongbox,
                     baseProduction,
-                    slotsCount,
+                    devSlotsCount,
                     playerSetups.get(i)));
         }
 
