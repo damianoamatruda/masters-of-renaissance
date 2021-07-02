@@ -75,10 +75,7 @@ public class InputNicknameController extends CliController {
     public void on(UpdateLeadersHand event) {
         super.on(event);
 
-        new Thread(() -> {
-            cli.promptPause();
-            setNextState();
-        }).start();
+        setNextState();
     }
 
     @Override

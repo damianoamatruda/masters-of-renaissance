@@ -200,8 +200,8 @@ public abstract class CliController extends UiController implements Renderable {
 
         cli.getUi().closeClient();
 
-        cli.setController(new MainMenuController(), true);
         cli.getOut().println(center("\nServer is down. Try again later."));
+        cli.setReturningToMainMenu();
     }
 
     @Override

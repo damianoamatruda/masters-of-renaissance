@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -22,18 +24,22 @@ public class Cli implements Runnable {
     private static Cli instance = null;
     private final Ui ui;
     private final Thread runThread;
+    private ExecutorService executor;
+    private final AtomicBoolean isReturningToMainMenu;
     private final PrintStream out;
     private final Scanner in;
-    private volatile boolean ready;
+    private volatile boolean hasNextState;
     private volatile CliController controller;
 
     public Cli() {
         Cli.instance = this;
         this.ui = new Ui();
         this.runThread = new Thread(this);
+        this.executor = Executors.newSingleThreadExecutor();
+        this.isReturningToMainMenu = new AtomicBoolean(false);
         this.out = System.out;
         this.in = new Scanner(System.in);
-        this.ready = false;
+        this.hasNextState = false;
         this.controller = null;
     }
 
@@ -53,7 +59,7 @@ public class Cli implements Runnable {
     @Override
     public synchronized void run() {
         while (!Thread.currentThread().isInterrupted()) {
-            while (!ready) {
+            while (!hasNextState) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
@@ -61,10 +67,16 @@ public class Cli implements Runnable {
                     break;
                 }
             }
-            ready = false;
-
             clear();
+            
+            if (isReturningToMainMenu.get())
+                controller = new MainMenuController();
+            
+            out.println(center(String.format("\u001b[31m%s\u001B[0m", controller.getClass().getSimpleName())));
             controller.render();
+
+            isReturningToMainMenu.set(false);
+            hasNextState = false;
         }
     }
 
@@ -76,20 +88,23 @@ public class Cli implements Runnable {
     /**
      * Sets the controller.
      *
-     * @param controller the controller
+     * @param newController the controller to set
      */
-    void setController(CliController controller, boolean pauseBeforeChange) {
-        new Thread(() -> {
+    synchronized void setController(CliController newController, boolean pauseBeforeChange) {
+        executor.submit(() -> {
             synchronized (this) {
                 if (pauseBeforeChange)
                     promptPause();
 
-                ui.setController(controller);
-                this.controller = controller;
-                this.ready = true;
+                if (Thread.currentThread().isInterrupted())
+                    return;
+
+                ui.setController(newController);
+                this.controller = newController;
+                this.hasNextState = true;
                 notifyAll();
             }
-        }).start();
+        });
     }
 
     synchronized void reloadController(String str) {
@@ -106,6 +121,22 @@ public class Cli implements Runnable {
     public void stop() {
         runThread.interrupt();
         ui.stop();
+    }
+
+    void setReturningToMainMenu() {
+        isReturningToMainMenu.set(true);
+
+        executor.shutdownNow();
+
+        synchronized (this) {
+            controller = new MainMenuController();
+            hasNextState = true;
+            notifyAll();
+        }
+    }
+
+    public void restartExecutor() {
+        executor = Executors.newSingleThreadExecutor();
     }
 
     public Ui getUi() {
@@ -225,8 +256,8 @@ public class Cli implements Runnable {
     }
 
     synchronized void clear() {
-        out.print("\033[H\033[2J");
-        out.flush();
+        // out.print("\033[H\033[2J");
+        // out.flush();
     }
 
     public synchronized Optional<String> prompt(String prompt, String defaultValue) {

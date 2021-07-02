@@ -9,8 +9,10 @@ import java.util.Map;
 public class MainMenuController extends CliController {
     @Override
     public void render() {
+        cli.restartExecutor();
+        
         new MainTitle().render();
-
+        
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Play Offline", this::playOffline));
         entries.put('2', new Menu.Entry("Play Online", () -> cli.setController(new PlayOnlineController(), false)));
