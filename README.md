@@ -1,7 +1,4 @@
 # Masters of Renaissance
-<!-- ![latest commit](https://img.shields.io/github/last-commit/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca?color=brightgreen)
-![latest release](https://img.shields.io/github/v/release/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca?color=blueviolet) -->
-
 Project of Software Engineering, Polytechnic University of Milan, A.Y. 2020/2021.
 
 Digital version of the board game *Masters of Renaissance*, implemented in Java.
@@ -13,8 +10,10 @@ Digital version of the board game *Masters of Renaissance*, implemented in Java.
 
 ## Project Requirements
 The project consists in developing a digital version of the board game *Masters of Renaissance (Maestri del Rinascimento)*,
-using the Java programming language.  
-The game needs to be implemented as a distributed system, with a single server and multiple clients that connect to it.  
+using the Java programming language.
+
+The game needs to be implemented as a distributed system, with a single server and multiple clients that connect to it.
+  
 The system must be based on the MVC architecture.
 
 ## Implemented features
@@ -25,13 +24,14 @@ The system must be based on the MVC architecture.
 | GUI-based client | :heavy_check_mark: |
 | Communication protocol ("Socket") | :heavy_check_mark: |
 | Advanced functionality 1 | :heavy_check_mark: Multiple games ("Partite multiple") |
-| Advanced functionality 2 | :heavy_check_mark: Playing locally ("Partita locale") |
+| Advanced functionality 2 | :heavy_check_mark: Local game ("Partita locale") |
 | Advanced functionality 3 | :heavy_check_mark: Resilience to disconnections ("Resilienza alle disconnessioni", see below) |
 
 The communication-side architecture of this project is built to support machine-local games and remote games, doing this
 by choosing the right [Network](#src/main/java/it/polimi/ingsw/common/Network.java), either instantiating a local
-backend or connecting the client to the remote server instead.  
-Both the client's ViewModel and the backend's model are
+backend or connecting the client to the remote server instead.
+
+Both the client's view model and the backend's model are
 therefore [recreated at every connection](src/main/java/it/polimi/ingsw/client/Ui.java#L64), including local ones. This
 implies that there is no persistence of data when playing locally with the current implementation, as the local backend
 gets recreated too.
@@ -45,8 +45,9 @@ To run the tests and compile the software:
 4. In the cloned repo folder, run: `mvn package -DskipTests`
 5. The compiled artifacts (`-server` and `-client` jar files) will be inside the `/target` folder.
 
-## Running the server:
+## Running the server
 Run the `-server` jar file in the `/target` folder.  
+
 Syntax: `java -jar AM49-1.0-SNAPSHOT-server.jar [options]`
 
 **Supported options:**
@@ -69,11 +70,13 @@ To build the container:
 
 To deploy the container, run `docker-compose up -d` in the same folder as the `docker-compose.yaml` file.
 
-## Running the client:
+## Running the client
+
 **(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore necessary.
 Running the GUI works from any terminal.
 
-Run the `-client` jar file in the `/target` folder.  
+Run the `-client` jar file in the `/target` folder.
+
 Syntax: `java -jar AM49-1.0-SNAPSHOT-client.jar [options]`
 
 **Supported options:**
@@ -96,3 +99,7 @@ the [Communication protocol](deliverables/Communication%20protocol.md)'s specifi
 As stated above, the configuration file contains **all** the game's data.  
 Since custom configurations were not a requirement for the project, this functionality has been implemented but not fully tested
 in all possible configurations.
+
+## License
+This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it) and
+[Cranio Creations](http://www.craniocreations.it).
