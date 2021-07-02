@@ -120,7 +120,7 @@ public class Game extends EventDispatcher {
                 market.reduce(),
                 devCardGrid.reduce(),
                 devSlotsCount,
-                players.stream().map(Player::getSetup).allMatch(PlayerSetup::isDone),
+                isSetupDone(),
                 getCurrentPlayer().getNickname(),
                 getInkwellPlayer().getNickname(),
                 getWinnerPlayer().map(Player::getNickname).orElse(null),
@@ -223,25 +223,31 @@ public class Game extends EventDispatcher {
      *
      */
     public void onTurnEnd() {
-        if (players.stream().anyMatch(Player::isActive)) {
-            do {
-                players.add(players.remove(0));
-                if (lastRound && players.get(0).hasInkwell()) {
-                    end();
-                    return;
-                }
-            } while (!players.get(0).isActive());
+        if (players.stream().noneMatch(Player::isActive))
+            return;
 
-            dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
-        }
+        do {
+            players.add(players.remove(0));
+            if (lastRound && players.get(0).hasInkwell()) {
+                end();
+                return;
+            }
+        } while (!players.get(0).isActive());
+
+        dispatch(new UpdateCurrentPlayer(getCurrentPlayer().getNickname()));
     }
 
     /**
      * Check if the last necessary setup move has been made.
      */
     public void onPlayerSetupDone() {
-        if (players.stream().filter(Player::isActive).map(Player::getSetup).allMatch(PlayerSetup::isDone))
+        if (isSetupDone())
             dispatch(new UpdateSetupDone());
+    }
+
+    // TODO: Javadoc
+    public boolean isSetupDone() {
+        return players.stream().filter(Player::isActive).map(Player::getSetup).allMatch(PlayerSetup::isDone);
     }
 
     /**
