@@ -298,7 +298,7 @@ public class BuyDevelopmentCardController extends GuiController {
             int slotLevel = vm.getLocalPlayer().map(vm::getPlayerDevelopmentSlots).orElseThrow().get(devSlotChoicePicker.getValue()).map(ReducedDevCard::getLevel).orElse(0);
             int maxLevel = Math.max(slotLevel, selectedLevel);
 
-            String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel + 1);
+            String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel - 1);
             String errMsg = String.format("You cannot place the development card into slot %d: card level %d%s, slot level %d%s.",
                     devSlotChoicePicker.getValue(),
                     selectedLevel, slotLevel >= selectedLevel ? insMsg : "",

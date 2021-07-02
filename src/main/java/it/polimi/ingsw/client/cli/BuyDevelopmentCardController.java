@@ -169,7 +169,7 @@ public class BuyDevelopmentCardController extends CliController {
             int slotLevel = vm.getLocalPlayer().map(vm::getPlayerDevelopmentSlots).orElseThrow().get(slot).map(ReducedDevCard::getLevel).orElse(0);
             int maxLevel = Math.max(slotLevel, level);
 
-            String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel + 1);
+            String insMsg = String.format(" is insufficient (it has to be %d)", maxLevel - 1);
             String errMsg = String.format("Cannot place the development card into slot %d: card level %d%s, slot level %d%s.",
                     slot,
                     level, slotLevel >= level ? insMsg : "",
