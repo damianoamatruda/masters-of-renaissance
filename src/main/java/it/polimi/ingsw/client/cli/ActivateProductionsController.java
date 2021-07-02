@@ -80,6 +80,9 @@ public class ActivateProductionsController extends CliController {
     }
 
     private void chooseInputReplacements() {
+        if (vm.getProductionInputResTypes(selectedProd).isEmpty())
+            return;
+
         cli.getOut().println();
         cli.getOut().println(center("-- Input replacements --"));
         cli.getOut().println();
@@ -118,7 +121,9 @@ public class ActivateProductionsController extends CliController {
 
         Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(Collectors.toSet());
+
+        vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).ifPresent(s -> allowedShelves.add(s.getId()));
 
         cli.getOut().println();
         cli.getOut().println(center("-- Containers to take resources from (Strongbox not allowed) --"));
