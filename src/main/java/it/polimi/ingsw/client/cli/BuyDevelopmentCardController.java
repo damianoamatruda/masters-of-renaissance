@@ -18,7 +18,6 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 
 public class BuyDevelopmentCardController extends CliController {
     private final CliController sourceController;
-    private final AtomicBoolean isExitingState;
     private ReducedDevCardGrid grid;
     private String color;
     private int level;
@@ -28,7 +27,6 @@ public class BuyDevelopmentCardController extends CliController {
 
     public BuyDevelopmentCardController(CliController sourceController) {
         this.sourceController = sourceController;
-        isExitingState = new AtomicBoolean(false);
         this.shelves = new HashMap<>();
     }
 
@@ -69,17 +67,13 @@ public class BuyDevelopmentCardController extends CliController {
         while (!valid.get()) {
             valid.set(true);
             cli.prompt("Card color").ifPresentOrElse(color -> {
-                isExitingState.set(false);
                 if (!allowedColors.contains(color.toLowerCase()))
                     valid.set(false);
                 else {
                     this.color = color.substring(0, 1).toUpperCase() + color.substring(1);
                     chooseLevel();
                 }
-            }, () -> {
-                isExitingState.set(true);
-                cli.setController(this.sourceController, false);
-            });
+            }, () -> cli.setController(this.sourceController, false));
         }
     }
 
@@ -95,7 +89,6 @@ public class BuyDevelopmentCardController extends CliController {
         while (!valid.get()) {
             valid.set(true);
             cli.promptInt("Card level").ifPresentOrElse(level -> {
-                isExitingState.set(false);
                 if (!levels.contains(level))
                     valid.set(false);
                 else {
@@ -111,7 +104,6 @@ public class BuyDevelopmentCardController extends CliController {
         while (!valid.get()) {
             valid.set(true);
             cli.promptInt("Slot").ifPresentOrElse(slot -> {
-                isExitingState.set(false);
                 if (slot < 1 || slot > vm.getDevSlotsCount()) {
                     valid.set(false);
                     return;
@@ -123,38 +115,43 @@ public class BuyDevelopmentCardController extends CliController {
 
                 this.cost = vm.getDevCardDiscountedCost(card.getId());
 
+                chooseShelves();
+
                 if (!this.cost.isEmpty()) {
                     cli.getOut().println();
                     cli.getOut().println(center("Resources need to be paid."));
                     cli.getOut().println(center("Please specify how many resources to take from which container."));
                     cli.getOut().println();
-
-                    chooseShelves();
                 }
-
-                if (!isExitingState.get())
-                    cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot - 1, this.shelves));
             }, this::chooseLevel);
         }
     }
 
     private void chooseShelves() {
-        Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
-                .map(ReducedResourceContainer::getId)
-                .collect(Collectors.toSet());
+        if (!this.cost.isEmpty()) {
+            cli.getOut().println();
+            cli.getOut().println(center("Resources need to be paid."));
+            cli.getOut().println(center("Please specify how many resources to take from which container."));
+            cli.getOut().println();
 
-        vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).ifPresent(s -> {
-            cli.getOut().println(center(String.format("%s's strongbox:%n", vm.getLocalPlayer().orElse(""))));
-            allowedShelves.add(s.getId());
-        });
+            Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
+                    .map(ReducedResourceContainer::getId)
+                    .collect(Collectors.toSet());
 
-        vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).map(s -> new Box(new ResourceContainer(s))).ifPresent(StringComponent::render);
-        cli.getOut().println();
+            vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).ifPresent(s -> {
+                cli.getOut().println(center(String.format("%s's strongbox:%n", vm.getLocalPlayer().orElse(""))));
+                allowedShelves.add(s.getId());
+            });
 
-        cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
-            isExitingState.set(false);
-            this.shelves = shelves;
-        }, this::chooseSlot);
+            vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).map(s -> new Box(new ResourceContainer(s))).ifPresent(StringComponent::render);
+            cli.getOut().println();
+
+            cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
+                this.shelves = shelves;
+            }, this::chooseSlot);
+        }
+
+        cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot - 1, this.shelves));
     }
 
     @Override
