@@ -43,18 +43,18 @@ public class ZeroLeader extends LeaderCard {
         /* If toProcess doesn't have zeros to convert, do nothing;
            if zeros contains this card's resource -> card can be activated (leader was chosen by player) */
         if (toProcess.containsKey(replaceableResType) && replacements.containsKey(this.getResource())) {
-            int convertibleAmount = toProcess.get(replaceableResType),
-                    chosenAmount = replacements.get(this.getResource()),
-                    amountToConvert = Math.min(convertibleAmount, chosenAmount); // can't convert more than the lowest of the two
+            int convertibleQuantity = toProcess.get(replaceableResType),
+                    chosenQuantity = replacements.get(this.getResource()),
+                    quantityToConvert = Math.min(convertibleQuantity, chosenQuantity); // can't convert more than the lowest of the two
 
             /* Add converted resources */
-            resCopy.compute(this.getResource(), (res, amount) -> amount == null ? amountToConvert : amount + amountToConvert);
+            resCopy.compute(this.getResource(), (res, quantity) -> quantity == null ? quantityToConvert : quantity + quantityToConvert);
             
             /* Remove converted resources, deleting key if none left.
                If there's some left, zeros can be used in successive conversions; else it shouldn't be possible to do so,
                for that would transform more resources than it is allowed */
-            resCopy.compute(replaceableResType, (res, amount) -> amount == null || amount - amountToConvert == 0 ? null : amount - amountToConvert);
-            replacements.compute(this.getResource(), (res, amount) -> amount == null || amount - amountToConvert == 0 ? null : amount - amountToConvert);
+            resCopy.compute(replaceableResType, (res, quantity) -> quantity == null || quantity - quantityToConvert == 0 ? null : quantity - quantityToConvert);
+            replacements.compute(this.getResource(), (res, quantity) -> quantity == null || quantity - quantityToConvert == 0 ? null : quantity - quantityToConvert);
         }
 
         return resCopy;

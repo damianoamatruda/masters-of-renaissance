@@ -109,7 +109,7 @@ public abstract class GuiController extends UiController implements Initializabl
                         msg.append(String.format("%s %s × %d\n",
                                 e.getColor(),
                                 e.getLevel() == 0 ? "any level" : String.format("level %d", e.getLevel()),
-                                e.getAmount()));
+                                e.getQuantity()));
 
                     return msg.toString();
                 }).orElse(event.getMissingResources().map(missingResources -> {
@@ -171,7 +171,7 @@ public abstract class GuiController extends UiController implements Initializabl
         else
             gui.reloadScene("Resource transaction error",
                     String.format(
-                            "Irregular amount of %s specified in the container map: %d requested, %d chosen.",
+                            "Irregular quantity of %s specified in the container map: %d requested, %d chosen.",
                             event.getResType().isEmpty() ? "resources" : event.getResType(),
                             event.getReplacedCount(),
                             event.getShelvesChoiceResCount()));
@@ -195,8 +195,8 @@ public abstract class GuiController extends UiController implements Initializabl
                     String.format("Invalid resource transaction %s%s: storable resource specified as non-storable.",
                         direction, isReplacement));
             case NEGATIVE_VALUES -> gui.reloadScene("Resource replacement error",
-                    String.format("Invalid resource transaction %s%s: negative amount specified.",
-                        direction, isReplacement));
+                    String.format("Invalid resource transaction %s%s: negative quantity specified.",
+                            direction, isReplacement));
         }
     }
 

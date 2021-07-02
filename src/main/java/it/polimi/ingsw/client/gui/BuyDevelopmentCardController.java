@@ -94,8 +94,8 @@ public class BuyDevelopmentCardController extends GuiController {
     private boolean putChoice(String resource, int shelfID) {
         boolean success = false;
         try {
-            int amount = shelvesMap.get(shelfID).get(resource) + 1;
-            shelvesMap.get(shelfID).put(resource, amount);
+            int quantity = shelvesMap.get(shelfID).get(resource) + 1;
+            shelvesMap.get(shelfID).put(resource, quantity);
             success = true;
         } catch (NullPointerException e) {
             if(shelvesMap.get(shelfID) == null || shelvesMap.get(shelfID).keySet().isEmpty()) {
@@ -159,9 +159,9 @@ public class BuyDevelopmentCardController extends GuiController {
      * @return
      */
     private void removeChoice(String resource, int shelfID) {
-        int amount = shelvesMap.get(shelfID).get(resource) - 1;
-        shelvesMap.get(shelfID).put(resource, amount);
-        if(shelvesMap.get(shelfID).get(resource) == 0)
+        int quantity = shelvesMap.get(shelfID).get(resource) - 1;
+        shelvesMap.get(shelfID).put(resource, quantity);
+        if (shelvesMap.get(shelfID).get(resource) == 0)
             shelvesMap.get(shelfID).remove(resource);
     }
 

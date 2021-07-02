@@ -167,7 +167,7 @@ public class GameTest {
         }
 
         /**
-         * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points excluded).
+         * Checks the correct progressive quantity of points earned so far by Player 1 (yellow tiles points excluded).
          */
         @Test
         void secondVaticanReportPtsAlessandro() {
@@ -175,7 +175,7 @@ public class GameTest {
         }
 
         /**
-         * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points excluded).
+         * Checks the correct progressive quantity of points earned so far by Player 2 (yellow tiles points excluded).
          */
         @Test
         void secondVaticanReportPtsDamiano() {
@@ -183,7 +183,7 @@ public class GameTest {
         }
 
         /**
-         * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points excluded).
+         * Checks the correct progressive quantity of points earned so far by Player 3 (yellow tiles points excluded).
          */
         @Test
         void secondVaticanReportPtsMarco() {
@@ -248,7 +248,7 @@ public class GameTest {
         @DisplayName("Last Vatican Report tests before deciding winner")
         class LateGameBeforeWinnerCalcs {
             /**
-             * Checks the correct progressive amount of points earned so far by Player 2 (yellow tiles points
+             * Checks the correct progressive quantity of points earned so far by Player 2 (yellow tiles points
              * excluded).
              */
             @Test
@@ -257,7 +257,7 @@ public class GameTest {
             }
 
             /**
-             * Checks the correct progressive amount of points earned so far by Player 1 (yellow tiles points
+             * Checks the correct progressive quantity of points earned so far by Player 1 (yellow tiles points
              * excluded).
              */
             @Test
@@ -266,7 +266,7 @@ public class GameTest {
             }
 
             /**
-             * Checks the correct progressive amount of points earned so far by Player 3 (yellow tiles points
+             * Checks the correct progressive quantity of points earned so far by Player 3 (yellow tiles points
              * excluded).
              */
             @Test

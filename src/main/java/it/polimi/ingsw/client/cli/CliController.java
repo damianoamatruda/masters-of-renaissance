@@ -113,7 +113,7 @@ public abstract class CliController extends UiController implements Renderable {
                         msg.append(String.format("%s %s × %d%n",
                                 e.getColor(),
                                 e.getLevel() == 0 ? "any level" : String.format("level %d", e.getLevel()),
-                                e.getAmount()));
+                                e.getQuantity()));
 
                     return msg.toString();
                 }).orElse(event.getMissingResources().map(missingResources -> {
@@ -169,7 +169,7 @@ public abstract class CliController extends UiController implements Renderable {
             cli.reloadController("The payment's cost is erroneously specified, please choose all and only the needed resources.");
         else
             cli.reloadController(String.format(
-                    "Irregular amount of %s specified in the container map: %d requested, %d chosen.",
+                    "Irregular quantity of %s specified in the container map: %d requested, %d chosen.",
                     event.getResType().isEmpty() ? "resources" : event.getResType(),
                     event.getReplacedCount(),
                     event.getShelvesChoiceResCount()));
@@ -189,7 +189,7 @@ public abstract class CliController extends UiController implements Renderable {
                     direction, isReplacement));
             case ILLEGAL_STORABLE -> cli.reloadController(String.format("Invalid resource transaction %s%s: storable resource specified as non-storable.",
                     direction, isReplacement));
-            case NEGATIVE_VALUES -> cli.reloadController(String.format("Invalid resource transaction %s%s: negative amount specified.",
+            case NEGATIVE_VALUES -> cli.reloadController(String.format("Invalid resource transaction %s%s: negative quantity specified.",
                     direction, isReplacement));
         }
     }

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.common.backend.model.cardrequirements;
 
+import it.polimi.ingsw.common.backend.model.cardrequirements.DevCardRequirement.Entry;
+import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import it.polimi.ingsw.common.backend.model.cardrequirements.DevCardRequirement.Entry;
-import it.polimi.ingsw.common.backend.model.resourcetypes.ResourceType;
 
 /**
  * Exception signaling that the player being examined does not meet the specified requirements.
@@ -30,7 +30,7 @@ public class CardRequirementsNotMetException extends Exception {
     /**
      * Class constructor.
      *
-     * @param missingResources the missing resources with the respective amounts.
+     * @param missingResources the missing resources with the respective quantities.
      */
     public CardRequirementsNotMetException(Map<ResourceType, Integer> missingResources) {
         this.missingDevCards = null;

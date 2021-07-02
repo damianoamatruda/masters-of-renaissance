@@ -92,7 +92,7 @@ public class ActivateProductions extends StackPane {
 
         ReducedResourceTransactionRecipe selectedProd = vm.getProduction(toActivate.get(index)).orElseThrow();
 
-        /* Add spinners to choose amount */
+        /* Add spinners to choose quantity */
         vm.getProductionInputResTypes(selectedProd).forEach(r ->
                 addSpinner(choosableInputResources, r, selectedProd.getInputBlanks()));
 

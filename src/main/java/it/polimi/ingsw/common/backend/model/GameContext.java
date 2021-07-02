@@ -154,7 +154,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             // illegal replaced resources
             dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
         } catch (IllegalResourceTransactionContainersException e) {
-            // amount of resources in replaced map is different from shelves mapping
+            // quantity of resources in replaced map is different from shelves mapping
             dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
         } catch (CannotChooseException e1) {
             // resources already chosen
@@ -324,7 +324,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
             return;
         } catch (IllegalResourceTransactionContainersException e) {
-            // amount of resources in replaced map is different from shelves mapping
+            // quantity of resources in replaced map is different from shelves mapping
             dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
             return;
         } catch (IllegalResourceTransferException e) {
@@ -394,7 +394,7 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
             return;
         } catch (IllegalResourceTransactionContainersException e) {
-            // amount of resources in replaced map is different from shelves mapping
+            // quantity of resources in replaced map is different from shelves mapping
             dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
             return;
         } catch (IllegalResourceTransferException e) {
@@ -465,7 +465,7 @@ public class GameContext extends AsynchronousEventDispatcher {
                 dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
                 return;
             } catch (IllegalResourceTransactionContainersException e) {
-                // amount of resources in replaced map is different from shelves mapping
+                // quantity of resources in replaced map is different from shelves mapping
                 dispatch(new ErrReplacedTransRecipe(view, e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
                 return;
             } catch (NoSuchElementException e) {

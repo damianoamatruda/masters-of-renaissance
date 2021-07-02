@@ -21,7 +21,7 @@ public class DevCardRequirement extends StringComponent {
             stringBuilder.append(String.format(
                     "  %s %s × %d", new DevCardColor(e.getColor()).getString(),
                     e.getLevel() == 0 ? "any level" : String.format("level %d", e.getLevel()),
-                    e.getAmount())).append("\n");
+                    e.getQuantity())).append("\n");
         }
 
         return stringBuilder.toString();

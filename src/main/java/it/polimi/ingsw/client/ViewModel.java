@@ -4,8 +4,8 @@ import it.polimi.ingsw.common.reducedmodel.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 
 import java.util.*;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** View model of the client of the Masters of Renaissance game. */
 public class ViewModel {
@@ -323,7 +323,7 @@ public class ViewModel {
     /**
      * Retrieves the current victory points of a player.
      *
-     * @param nickname the nickname of the player whose victory points amount needs to be retrieved
+     * @param nickname the nickname of the player whose victory points quantity needs to be retrieved
      * @return the player's victory points
      */
     public synchronized int getPlayerVictoryPoints(String nickname) {
@@ -352,7 +352,7 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves Lorenzo's faith points amount
+     * Retrieves Lorenzo's faith points quantity
      *
      * @return blackCross' faith points
      */
@@ -361,7 +361,7 @@ public class ViewModel {
     }
 
     /**
-     * Sets Lorenzo's faith points amount
+     * Sets Lorenzo's faith points quantity
      *
      * @param blackPoints the blackCross faith points to set
      */

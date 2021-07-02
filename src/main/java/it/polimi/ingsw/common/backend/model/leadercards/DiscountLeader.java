@@ -14,16 +14,17 @@ import java.util.Map;
  * @see LeaderCard
  */
 public class DiscountLeader extends LeaderCard {
-    /** The amount of the leader's resource to be subtracted from the development card's cost. */
+    /** The quantity of the leader's resources to be subtracted from the development card's cost. */
     private final int discount;
 
     /**
      * Class constructor.
-     * @param discount      the amount of resources to be subtracted when applying the ability.
+     *
+     * @param discount      the quantity of resources to be subtracted when applying the ability.
      * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied in order to enable the card.
-     * @param victoryPoints the amount of victory points associated with the card.
+     * @param victoryPoints the quantity of victory points associated with the card.
      * @param id            the card id
      */
     public DiscountLeader(int discount, ResourceType resource, CardRequirement requirement, int victoryPoints, int id) {

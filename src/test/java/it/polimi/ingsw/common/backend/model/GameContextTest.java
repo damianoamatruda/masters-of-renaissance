@@ -135,13 +135,13 @@ class GameContextTest {
                 int i = 0;
                 List<Stack<DevelopmentCard>> slots = soloGame.getInkwellPlayer().getDevSlots();
                 for(DevCardRequirement.Entry r : req) {
-                    for(int k = 0; k < r.reduce().getAmount(); k++) {
-                       slots.get(i).push(new DevelopmentCard(gameFactory.getDevCardColor(r.reduce().getColor()).get(),
-                               1, new ResourceRequirement(Map.of()), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0));
-                       for(int j = 2; j <= r.reduce().getLevel(); j++)
-                           slots.get(i).push(new DevelopmentCard(gameFactory.getDevCardColor(r.reduce().getColor()).get(),
-                                   j, new ResourceRequirement(Map.of()), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0));
-                       i++;
+                    for (int k = 0; k < r.reduce().getQuantity(); k++) {
+                        slots.get(i).push(new DevelopmentCard(gameFactory.getDevCardColor(r.reduce().getColor()).get(),
+                                1, new ResourceRequirement(Map.of()), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0));
+                        for (int j = 2; j <= r.reduce().getLevel(); j++)
+                            slots.get(i).push(new DevelopmentCard(gameFactory.getDevCardColor(r.reduce().getColor()).get(),
+                                    j, new ResourceRequirement(Map.of()), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0));
+                        i++;
                     }
                 }
             } else {

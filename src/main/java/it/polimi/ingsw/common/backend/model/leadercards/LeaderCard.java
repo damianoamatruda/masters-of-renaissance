@@ -90,7 +90,7 @@ public abstract class LeaderCard extends Card {
      * Applies the leader card's discount.
      *
      * @param devCardCost the cost to apply the discount on.
-     * @return the cost discounted by the card's ability's amount.
+     * @return the cost discounted by the card's ability's quantity.
      */
     public Map<ResourceType, Integer> getDevCardCost(Map<ResourceType, Integer> devCardCost) {
         return devCardCost;

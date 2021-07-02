@@ -19,7 +19,8 @@ public class DepotLeader extends LeaderCard {
 
     /**
      * Class constructor.
-     * @param shelfSize     the maximum amount of resources the card can store
+     *
+     * @param shelfSize     the maximum quantity of resources the card can store
      * @param resource      the resource that binds the card's shelf's contents
      * @param requirement   the requirement to be satisfied to activate the card
      * @param victoryPoints the victory points associated with the card

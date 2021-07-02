@@ -12,7 +12,7 @@ public class ReducedVaticanSection {
     /** The last tile of the Vatican Section, which needs to be reached in order to activate a Vatican report. */
     private final int faithPointsEnd;
 
-    /** The corresponding amount of bonus points that will be rewarded to the players after the Report is over. */
+    /** The corresponding quantity of bonus points that will be rewarded to the players after the Report is over. */
     private final int victoryPoints;
 
     /** <code>true</code> if the Vatican report is already over; <code>false</code> otherwise. */

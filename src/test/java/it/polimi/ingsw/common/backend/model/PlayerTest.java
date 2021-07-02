@@ -180,7 +180,7 @@ public class PlayerTest {
         }
 
         /**
-         * Checks amount of coins left.
+         * Checks quantity of coins left.
          */
         @Test
         void addToDevSlotStrongboxCoins() {
@@ -188,7 +188,7 @@ public class PlayerTest {
         }
 
         /**
-         * Checks amount of servants left.
+         * Checks quantity of servants left.
          */
         @Test
         void addToDevSlotStrongboxServants() {
@@ -196,7 +196,7 @@ public class PlayerTest {
         }
 
         /**
-         * Checks amount of stones left.
+         * Checks quantity of stones left.
          */
         @Test
         void addToDevSlotWarehouseShelfStones() {

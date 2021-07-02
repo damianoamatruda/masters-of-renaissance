@@ -11,9 +11,9 @@ public class ReducedProductionRequest {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param production          the productions'ID
-     * @param inputContainers     map container-resource-amount
+     * @param inputContainers     map container-resource-quantity
      * @param inputNonStorableRep replacements for non-storable resources
      * @param outputRep           replacements for the production's output
      */

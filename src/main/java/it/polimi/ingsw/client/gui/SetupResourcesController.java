@@ -115,8 +115,8 @@ public class SetupResourcesController extends GuiController {
                     if((selection.get(id) == null || selection.get(id).get(resource) == null ||
                             ((Shelf) shelf).getSize() > selection.get(id).get(resource)) && !alreadyHasBoundShelf)
                         try {
-                            int amount = selection.get(id).get(resource) + 1;
-                            selection.get(id).put(resource, amount);
+                            int quantity = selection.get(id).get(resource) + 1;
+                            selection.get(id).put(resource, quantity);
                             success = true;
                         } catch (NullPointerException e) {
                             if (selection.get(id) == null || selection.get(id).keySet().isEmpty()) {
@@ -138,9 +138,9 @@ public class SetupResourcesController extends GuiController {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                 String resource = ((Resource) event.getGestureSource()).getName();
 
-                int amount = selection.get(id).get(resource) - 1;
-                if(amount > 0)
-                    selection.get(id).put(resource, amount);
+                int quantity = selection.get(id).get(resource) - 1;
+                if (quantity > 0)
+                    selection.get(id).put(resource, quantity);
                 else
                     selection.get(id).remove(resource);
 
@@ -168,17 +168,17 @@ public class SetupResourcesController extends GuiController {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                 String resource = ((Resource) event.getGestureSource()).getName();
 
-                int amount = selection.get(id).get(resource) - 1;
-                if (amount > 0)
-                    selection.get(id).put(resource, amount);
+                int quantity = selection.get(id).get(resource) - 1;
+                if (quantity > 0)
+                    selection.get(id).put(resource, quantity);
                 else
-                        selection.get(id).remove(resource);
+                    selection.get(id).remove(resource);
 
-                    warehouse.refreshShelfRemove(id);
-                    updateChoiceButton();
+                warehouse.refreshShelfRemove(id);
+                updateChoiceButton();
 
-                    success = true;
-                } catch (NumberFormatException e) {
+                success = true;
+            } catch (NumberFormatException e) {
                     // It is normal if it gets here:
                 // it means that the resource hasn't been dropped inside of any shelf, but outside instead
                 // Drop is simply ignored

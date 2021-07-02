@@ -36,7 +36,7 @@ public class FileGameFactory implements GameFactory {
     /** Initial number of leader cards per player. */
     private final int playerLeadersCount;
 
-    /** The maximum amount of faith points a player can have. */
+    /** The maximum quantity of faith points a player can have. */
     private final int maxFaith;
 
     /** The number of development cards a player can have before triggering the end of a game. */

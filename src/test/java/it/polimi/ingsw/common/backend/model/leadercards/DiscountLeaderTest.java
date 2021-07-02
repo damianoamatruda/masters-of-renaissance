@@ -33,7 +33,7 @@ public class DiscountLeaderTest {
         Map<ResourceType, Integer> ogNonemptyCost = Map.of(coin, 1);
 
         List<Map<ResourceType, Integer>> ogCosts = Arrays.asList(null, ogZeroCost, ogNonemptyCost); // cost maps to discount
-        List<Integer> discounts = Arrays.asList(-1, 0, 1); // discount amounts
+        List<Integer> discounts = Arrays.asList(-1, 0, 1); // discount quantities
 
         // build every possible combination of the above
         discounts.forEach(discount ->
@@ -46,7 +46,7 @@ public class DiscountLeaderTest {
     /**
      * Tests whether the discount process works given a certain cost map.
      *
-     * @param discount the discount's amount to be applied.
+     * @param discount the discount's quantity to be applied.
      * @param ogCost   the original cost to check the result against.
      */
     @ParameterizedTest

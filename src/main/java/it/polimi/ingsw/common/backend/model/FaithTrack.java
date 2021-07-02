@@ -107,7 +107,7 @@ public class FaithTrack extends EventDispatcher {
         /** The last tile of the Vatican Section, which needs to be reached in order to activate a Vatican report. */
         private final int faithPointsEnd;
 
-        /** The corresponding amount of bonus points that will be rewarded to the players after the Report is over. */
+        /** The corresponding quantity of bonus points that will be rewarded to the players after the Report is over. */
         private final int victoryPoints;
 
         /** <code>true</code> if the Vatican report is already over; <code>false</code> otherwise. */
@@ -123,7 +123,7 @@ public class FaithTrack extends EventDispatcher {
          *                             bonus points
          * @param faithPointsEnd       the last tile of the Vatican Section, which needs to be reached in order to
          *                             activate a Vatican report
-         * @param victoryPoints        the corresponding amount of bonus points that will be rewarded to the players
+         * @param victoryPoints        the corresponding quantity of bonus points that will be rewarded to the players
          *                             after the Report is over
          * @see VaticanSection
          */
@@ -156,7 +156,7 @@ public class FaithTrack extends EventDispatcher {
         }
 
         /**
-         * Returns the corresponding amount of bonus points that will be rewarded to the players after the Report is
+         * Returns the corresponding quantity of bonus points that will be rewarded to the players after the Report is
          * over.
          *
          * @return the victory points

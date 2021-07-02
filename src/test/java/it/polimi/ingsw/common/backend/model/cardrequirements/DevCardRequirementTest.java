@@ -62,11 +62,11 @@ public class DevCardRequirementTest {
     }
 
     /**
-     * Tests whether the requirement checking process works in a scenario where it should fail due to the amount of
+     * Tests whether the requirement checking process works in a scenario where it should fail due to the quantity of
      * cards the player possesses being different from the requirement's.
      */
     @Test
-    void checkReqsWrongAmount() {
+    void checkReqsWrongQuantity() {
         DevelopmentCard devCard = new DevelopmentCard(green, 1, new ResourceRequirement(Map.of()), null, 1, 0);
 
         assertDoesNotThrow(() -> p.addToDevSlot(g, 0, devCard, Map.of()));

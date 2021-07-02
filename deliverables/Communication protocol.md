@@ -69,8 +69,10 @@ Error messages are unicast to the client that sent the illegal request.
 
 ### Common data structures
 Two data structures that are often used inside messages are:
-1. ***Resource maps*** - correlate a string, representing a resource type, with an integer, corresponding to its amount
-2. ***Resource container maps*** - correlate a container ID (expressed as an integer) with a resource map, corresponding to the resource(s) to add to/remove from it
+1. ***Resource maps*** - correlate a string, representing a resource type, with an integer, corresponding to its
+   quantity
+2. ***Resource container maps*** - correlate a container ID (expressed as an integer) with a resource map, corresponding
+   to the resource(s) to add to/remove from it
 
 
 # NetEvents - Network level client-server connection management
@@ -247,7 +249,7 @@ necessary to [handle the choice of the number of players](#choosing-the-number-o
 ```
 
 The `UpdateBookedSeats` message gives the client information about who is the first in the waiting list (and therefore
-can choose the new game's player count) and the amount of players in the waiting list. When the game is waiting for
+can choose the new game's player count) and the quantity of players in the waiting list. When the game is waiting for
 players to join before its start, sending notifications allows the players who already joined to know how many empty
 seats are left, therefore getting a sense for how much waiting time there's left.
 
@@ -340,7 +342,7 @@ player is, etc.).
 When the game starts, the server instantiates its internal model.  
 It will then send the game data to the clients (see TODO), and the player setup phase will start.
 
-During this phase the players will have to choose the amount of leader cards and resources specified in the
+During this phase the players will have to choose the quantity of leader cards and resources specified in the
 configuration file.
 
 ## Choosing leader cards
@@ -416,7 +418,7 @@ Errors related to this action are:
 After choosing the leader cards the players is prompted to choose their starting resources, following the configuration
 file's settings.
 
-The client is sent the amount of resources and the resource types the player has to choose from (see TODO).  
+The client is sent the quantity of resources and the resource types the player has to choose from (see TODO).  
 Every player will have to choose the resources before the game's turns can start, thereby concluding the setup phase.
 
 The `shelves` field is a standard [resource container map](#common-data-structures)
@@ -926,7 +928,7 @@ To activate or discard a leader the server needs to know which card the player w
     {
       "color": "Blue",
       "level": 1,
-      "amount": 2
+      "quantity": 2
     }
   ],
   "missingResources": null
@@ -1230,7 +1232,7 @@ of these transitions would in fact be impossible to model if the data wasn't sen
       "leaderType": "DiscountLeader",
       "devCardRequirement": {
         "entries": [
-          { "color": "Yellow", "amount": 1, "level": 2 }
+          { "color": "Yellow", "quantity": 1, "level": 2 }
         ]
       },
       "isActive": false,
@@ -1542,8 +1544,9 @@ This message contains the list of players who benefit from the vatican section's
 ```
 
 ## UpdateVictoryPoints
-This message contains the current amount of victory points for the specified player.  
-The victory points' amount is updated in real time.
+
+This message contains the current quantity of victory points for the specified player.  
+The victory points' quantity is updated in real time.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -1648,7 +1651,8 @@ The issue might lie in either of the shelf maps or the replacement maps.
 
 The `isInput` field distinguishes between the transaction's input and output resources, while the `isReplacement` field distinguishes between replacements and shelf maps.  
 The `reason` field details the reason for which the request was denied, and can be one of:
-1. `NEGATIVE_VALUES` - maps contain negative resource amounts
+
+1. `NEGATIVE_VALUES` - maps contain negative resource quantities
 2. `ILLEGAL_STORABLE` - a storable resource is specified when non-storable are allowed only
 3. `ILLEGAL_NON_STORABLE` - same as above, but inverted
 4. `EXCLUDED` - a forbidden resource is used as a replacement

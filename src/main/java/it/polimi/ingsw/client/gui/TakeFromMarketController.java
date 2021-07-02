@@ -128,8 +128,8 @@ public class TakeFromMarketController extends GuiController {
     private boolean putChoice(String resource, int shelfID) {
         boolean success = false;
         try {
-            int amount = selection.get(shelfID).get(resource) + 1;
-            selection.get(shelfID).put(resource, amount);
+            int quantity = selection.get(shelfID).get(resource) + 1;
+            selection.get(shelfID).put(resource, quantity);
             success = true;
         } catch (NullPointerException e) {
             if(selection.get(shelfID) == null || selection.get(shelfID).isEmpty()) {
@@ -206,9 +206,9 @@ public class TakeFromMarketController extends GuiController {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                 String resource = ((Resource) event.getGestureSource()).getName();
 
-                int amount = selection.get(id).get(resource) - 1;
-                if(amount > 0)
-                    selection.get(id).put(resource, amount);
+                int quantity = selection.get(id).get(resource) - 1;
+                if (quantity > 0)
+                    selection.get(id).put(resource, quantity);
                 else
                     selection.get(id).remove(resource);
 
@@ -252,13 +252,13 @@ public class TakeFromMarketController extends GuiController {
                         Resource res = (Resource) event.getGestureSource();
                         String resource = res.getName();
 
-                        int amount = selection.get(id).get(res.getName()) - 1;
-                        if(amount > 0)
-                            selection.get(id).put(resource, amount);
+                        int quantity = selection.get(id).get(res.getName()) - 1;
+                        if (quantity > 0)
+                            selection.get(id).put(resource, quantity);
                         else
                             selection.get(id).remove(resource);
 
-                        if(warehouse.getShelf(id) != null)
+                        if (warehouse.getShelf(id) != null)
                             warehouse.refreshShelfRemove(id);
                         else leaderCards.stream()
                                 .filter(l -> l.getGuiDepot() != null && l.getGuiDepot().getBoundResource().equals(resource))
@@ -342,9 +342,9 @@ public class TakeFromMarketController extends GuiController {
                                     int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                                     String resource = ((Resource) event.getGestureSource()).getName();
 
-                                    int amount = selection.get(id).get(resource) - 1;
-                                    if (amount > 0)
-                                        selection.get(id).put(resource, amount);
+                                    int quantity = selection.get(id).get(resource) - 1;
+                                    if (quantity > 0)
+                                        selection.get(id).put(resource, quantity);
                                     else
                                         selection.get(id).remove(resource);
 

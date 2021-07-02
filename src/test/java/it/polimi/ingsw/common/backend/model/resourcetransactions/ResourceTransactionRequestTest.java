@@ -33,14 +33,14 @@ public class ResourceTransactionRequestTest {
     containers:
         right:
         non-discardable output:
-            same amount per each resource
+            same quantity per each resource
         discardable output:
-            lower or equal amount on any resource
+            lower or equal quantity on any resource
         wrong:
         non-discardable output:
-            lower or higher amount of any resource
+            lower or higher quantity of any resource
         discardable output:
-            higher amount of any resource
+            higher quantity of any resource
     */
 
     private final ResourceType rIn = new ResourceType("rIn", "", true);

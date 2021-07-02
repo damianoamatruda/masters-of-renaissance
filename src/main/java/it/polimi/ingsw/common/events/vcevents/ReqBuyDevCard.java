@@ -22,7 +22,7 @@ public class ReqBuyDevCard implements VCEvent {
      * @param color         the card's color
      * @param level         the card's level
      * @param devSlot       the index of the development card slot to fit the card into
-     * @param resContainers the mapping container-resourcetype-amount that details how the payment should be handled
+     * @param resContainers the mapping container-resourcetype-quantity that details how the payment should be handled
      */
     public ReqBuyDevCard(String color, int level, int devSlot, Map<Integer, Map<String, Integer>> resContainers) {
         this.color = color;
@@ -53,8 +53,7 @@ public class ReqBuyDevCard implements VCEvent {
     }
 
     /**
-     * @return the mapping container-resourcetype-amount
-     *         that details how the payment should be handled
+     * @return the mapping container-resourcetype-quantity that details how the payment should be handled
      */
     public Map<Integer, Map<String, Integer>> getResContainers() {
         return resContainers;

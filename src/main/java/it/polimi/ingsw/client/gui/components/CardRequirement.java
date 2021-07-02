@@ -54,7 +54,7 @@ public class CardRequirement extends HBox {
         for (ReducedDevCardRequirementEntry color : requirements.getEntries()) {
             HBox entry = new HBox();
 
-            Text amountText = new Text(String.valueOf(color.getAmount()));
+            Text quantityText = new Text(String.valueOf(color.getQuantity()));
 
             String fileName = color.getColor().toLowerCase();
             if (color.getLevel() > 0) fileName += String.valueOf(color.getLevel());
@@ -64,13 +64,13 @@ public class CardRequirement extends HBox {
 
             HBox.setMargin(levelImage, new Insets(0, 5, 0, 3));
 
-            entry.getChildren().add(amountText);
+            entry.getChildren().add(quantityText);
             entry.getChildren().add(levelImage);
             entry.setAlignment(Pos.CENTER);
 
             levelImage.setPreserveRatio(true);
             levelImage.setFitHeight(maxRowHeight);
-            amountText.maxHeight(maxRowHeight);
+            quantityText.maxHeight(maxRowHeight);
 
             entry.maxHeight(maxRowHeight);
 

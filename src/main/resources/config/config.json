@@ -1311,12 +1311,12 @@
           {
             "color": "Yellow",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Green",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },
@@ -1333,12 +1333,12 @@
           {
             "color": "Purple",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Blue",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },
@@ -1355,12 +1355,12 @@
           {
             "color": "Green",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Blue",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },
@@ -1377,12 +1377,12 @@
           {
             "color": "Yellow",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Purple",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },
@@ -1450,12 +1450,12 @@
           {
             "color": "Blue",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Yellow",
             "level": 0,
-            "amount": 2
+            "quantity": 2
           }
         ]
       },
@@ -1471,12 +1471,12 @@
           {
             "color": "Purple",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Green",
             "level": 0,
-            "amount": 2
+            "quantity": 2
           }
         ]
       },
@@ -1492,12 +1492,12 @@
           {
             "color": "Yellow",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Blue",
             "level": 0,
-            "amount": 2
+            "quantity": 2
           }
         ]
       },
@@ -1513,12 +1513,12 @@
           {
             "color": "Green",
             "level": 0,
-            "amount": 1
+            "quantity": 1
           },
           {
             "color": "Purple",
             "level": 0,
-            "amount": 2
+            "quantity": 2
           }
         ]
       },
@@ -1546,7 +1546,7 @@
           {
             "color": "Yellow",
             "level": 2,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },
@@ -1574,7 +1574,7 @@
           {
             "color": "Blue",
             "level": 2,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },
@@ -1602,7 +1602,7 @@
           {
             "color": "Purple",
             "level": 2,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },
@@ -1630,7 +1630,7 @@
           {
             "color": "Green",
             "level": 2,
-            "amount": 1
+            "quantity": 1
           }
         ]
       },

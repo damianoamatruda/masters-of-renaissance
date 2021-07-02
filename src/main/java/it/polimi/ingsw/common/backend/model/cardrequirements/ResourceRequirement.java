@@ -9,15 +9,15 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * A concrete requirement for leader card activation.
  * <p>
  * A <code>LeaderCard</code> with a <code>ResourceRequirement</code> can only be activated if the <code>Player</code>
- * that owns it also owns the specified amount of <code>Resource</code>s.
+ * that owns it also owns the specified quantity of <code>Resource</code>s.
  *
  * @see LeaderCard
  * @see CardRequirement
@@ -58,7 +58,7 @@ public class ResourceRequirement implements CardRequirement {
         /* in order for the player to be able to buy the devcard,
          * satisfying the discounted cost is enough
          * for each resource type in the requirement,
-         * the player is then checked for ownership of the specified amount */
+         * the player is then checked for ownership of the specified quantity */
 
         Map<ResourceType, Integer> discountedRes = getDiscountedCost(player),
                 missingResources = new HashMap<>();
@@ -67,12 +67,12 @@ public class ResourceRequirement implements CardRequirement {
         Set<ResourceContainer> resContainers = player.getResContainers();
 
         for (ResourceType r : discountedRes.keySet()) {
-            // get the amount of this resource the player owns
-            int playerAmount = resContainers.stream().mapToInt(c -> c.getResourceQuantity(r)).sum();
+            // get the quantity of this resource the player owns
+            int playerQuantity = resContainers.stream().mapToInt(c -> c.getResourceQuantity(r)).sum();
 
             // if the player does not own enough of this resource, the requirements aren't met
-            if (discountedRes.get(r) - playerAmount > 0)
-                missingResources.put(r, discountedRes.get(r) - playerAmount);
+            if (discountedRes.get(r) - playerQuantity > 0)
+                missingResources.put(r, discountedRes.get(r) - playerQuantity);
         }
 
         if (!missingResources.isEmpty())

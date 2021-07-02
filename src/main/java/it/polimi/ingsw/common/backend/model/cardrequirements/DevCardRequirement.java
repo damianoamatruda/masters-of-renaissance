@@ -7,11 +7,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirement;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +44,7 @@ public class DevCardRequirement implements CardRequirement {
 
         Set<Entry> playerState = new HashSet<>(),
                 reqCopy = new HashSet<>(entryList.stream()
-                        .filter(e -> e.amount > 0)
+                        .filter(e -> e.quantity > 0)
                         .collect(Collectors.toUnmodifiableSet())),
                 missing = new HashSet<>();
 
@@ -58,7 +54,7 @@ public class DevCardRequirement implements CardRequirement {
             playerState.stream().filter(e -> e.equals(currCard))
                     .findAny()
                     .ifPresentOrElse(
-                            e -> e.amount++,
+                            e -> e.quantity++,
                             () -> playerState.add(currCard));
         });
 
@@ -66,11 +62,11 @@ public class DevCardRequirement implements CardRequirement {
             // entry not found in player's cards -> requirements not satisfied
             if (playerState.stream().noneMatch(e -> e.equals(entry)))
                 missing.add(entry);
-                // if the entry is found the amount of cards the player owns in that entry is subtracted from the requirements
+                // if the entry is found the quantity of cards the player owns in that entry is subtracted from the requirements
             else
                 playerState.stream().filter(e -> e.equals(entry)).findAny().ifPresent(e -> {
-                    if (entry.amount - e.amount > 0)
-                        missing.add(new Entry(entry.color, entry.level, entry.amount - e.amount));
+                    if (entry.quantity - e.quantity > 0)
+                        missing.add(new Entry(entry.color, entry.level, entry.quantity - e.quantity));
                 });
         }
 
@@ -90,15 +86,15 @@ public class DevCardRequirement implements CardRequirement {
     }
 
     /**
-     * Models a requirement entry. It mimics a double-keyed map, with color and level as keys and amount as value.
+     * Models a requirement entry. It mimics a double-keyed map, with color and level as keys and quantity as value.
      */
     public static class Entry {
         private final DevCardColor color;
         private final int level;
-        private int amount = 0;
+        private int quantity = 0;
 
         /**
-         * Class constructor. Creates an Entry with set color and level, and zero as its amount.
+         * Class constructor. Creates an Entry with set color and level, and zero as its quantity.
          *
          * @param color the card color to be matched.
          * @param level the card level to be matched.
@@ -109,30 +105,30 @@ public class DevCardRequirement implements CardRequirement {
         }
 
         /**
-         * Class constructor. Creates an Entry with set color, level and amount.
+         * Class constructor. Creates an Entry with set color, level and quantity.
          *
-         * @param color  the card color to be matched.
-         * @param level  the card level to be matched.
-         * @param amount the amount of cards to be matched.
+         * @param color    the card color to be matched.
+         * @param level    the card level to be matched.
+         * @param quantity the quantity of cards to be matched.
          */
-        public Entry(DevCardColor color, int level, int amount) {
+        public Entry(DevCardColor color, int level, int quantity) {
             this.color = color;
             this.level = level;
-            this.amount = amount;
+            this.quantity = quantity;
         }
 
         public ReducedDevCardRequirementEntry reduce() {
-            return new ReducedDevCardRequirementEntry(color.getName(), level, amount);
+            return new ReducedDevCardRequirementEntry(color.getName(), level, quantity);
         }
 
         /**
-         * Sets the new amount of cards in the entry.
+         * Sets the new quantity of cards in the entry.
          *
-         * @param newAmount the new amount of cards the entry holds.
+         * @param newQuantity the new quantity of cards the entry holds.
          * @return the updated entry.
          */
-        public Entry setAmount(int newAmount) {
-            amount = newAmount;
+        public Entry setQuantity(int newQuantity) {
+            quantity = newQuantity;
             return this;
         }
 

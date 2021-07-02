@@ -4,7 +4,7 @@ import java.util.Map;
 
 /** Client request for setup resource choice. */
 public class ReqChooseResources implements VCEvent {
-    /** Container-resourcetype-amount mappings. */
+    /** Container-resourcetype-quantity mappings. */
     private final Map<Integer, Map<String, Integer>> shelves;
 
     /**
