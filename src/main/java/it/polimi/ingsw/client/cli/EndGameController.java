@@ -10,7 +10,8 @@ public class EndGameController extends CliController {
         if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
             prefix = "You won";
 
-        cli.alert(prefix + " with " + vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).orElse(vm.getBlackPoints()) + " points!");
+        String finalPrefix = prefix;
+        vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).ifPresentOrElse(pts -> cli.alert(finalPrefix + " with " + pts + " points!"), () -> cli.alert(finalPrefix + "!"));
 
         new LeaderBoard().render();
 
