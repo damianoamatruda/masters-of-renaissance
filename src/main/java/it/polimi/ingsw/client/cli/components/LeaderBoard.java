@@ -10,12 +10,12 @@ public class LeaderBoard extends StringComponent {
     public String getString() {
         ViewModel vm = Cli.getInstance().getViewModel();
 
-        StringBuilder sb = new StringBuilder(center("Leaderboard:"));
-        sb.append(center("Nickname\tFaith Points\tVictory points"));
+        StringBuilder stringBuilder = new StringBuilder(center("Leaderboard:"));
+        stringBuilder.append(center("Nickname\tFaith Points\tVictory points"));
 
         vm.getPlayers().forEach(p ->
-            sb.append(center(String.format("%s\t%d\t%d", p.getNickname(), p.getFaithPoints(), p.getVictoryPoints()))));
+                stringBuilder.append(center(String.format("%s\t%d\t%d", p.getNickname(), p.getFaithPoints(), p.getVictoryPoints()))));
 
-        return sb.toString();
+        return stringBuilder.toString();
     }
 }

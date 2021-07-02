@@ -10,8 +10,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.client.cli.Cli.center;
-import static it.polimi.ingsw.client.cli.Cli.getInstance;
+import static it.polimi.ingsw.client.cli.Cli.*;
 
 public abstract class CliController extends UiController implements Renderable {
     protected final Cli cli = getInstance();
@@ -289,8 +288,10 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateGame event) {
         super.on(event);
 
-        cli.getOut().println("Players:");
-        event.getPlayers().stream().map(ReducedPlayer::getNickname).forEach(p -> cli.getOut().println(p));
+        cli.getOut().println(center("Players:\n" + new UnorderedList(event.getPlayers().stream()
+                .map(ReducedPlayer::getNickname)
+                .map(nickname -> vm.getAnsiPlayerColor(nickname).map(ansiColor -> boldColor(nickname, ansiColor)).orElse(nickname))
+                .toList()).getString()));
 
         vm.getLocalPlayer().ifPresent(player -> {
             cli.getOut().println();
