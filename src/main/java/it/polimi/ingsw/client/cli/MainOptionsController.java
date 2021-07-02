@@ -35,12 +35,11 @@ public class MainOptionsController extends CliController {
         cli.promptFile("Path of custom config.json").ifPresentOrElse(gameConfigFile -> {
             try {
                 cli.getUi().setGameConfigStream(new FileInputStream(gameConfigFile));
-                cli.setController(new MainMenuController());
                 cli.alert("Config loaded.");
+                cli.setController(new MainMenuController());
             } catch (FileNotFoundException e) {
-                cli.alert(String.format("Could not gain access to file %s.", gameConfigFile.getPath()));
-                cli.setController(this);
+                cli.reloadController(String.format("Could not gain access to file %s.", gameConfigFile.getPath()));
             }
-        }, () -> cli.setController(this));
+        }, cli::reloadController);
     }
 }

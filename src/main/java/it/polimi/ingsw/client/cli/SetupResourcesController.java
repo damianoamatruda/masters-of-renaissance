@@ -46,8 +46,8 @@ public class SetupResourcesController extends SetupController {
             if (input.equalsIgnoreCase("y"))
                 cli.getUi().dispatch(new ReqQuit());
             else
-                cli.setController(this);
-        }, () -> cli.setController(this)));
+                cli.reloadController();
+        }, cli::reloadController));
     }
 
     private void printWaitingMessage() {

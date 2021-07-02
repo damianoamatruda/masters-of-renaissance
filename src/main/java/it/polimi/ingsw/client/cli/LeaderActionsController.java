@@ -37,7 +37,7 @@ public class LeaderActionsController extends CliController {
         cli.promptInt("Leader").ifPresentOrElse(leaderId -> {
             this.leaderId = leaderId;
             cli.getUi().dispatch(new ReqLeaderAction(leaderId, isActivate));
-        }, () -> cli.setController(this));
+        }, cli::reloadController);
     }
 
     @Override

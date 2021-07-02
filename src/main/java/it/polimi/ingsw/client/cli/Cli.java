@@ -102,10 +102,13 @@ public class Cli implements Runnable {
             });
     }
 
-    synchronized void reloadController(String str) {
-        out.println();
-        out.println(center(str));
+    synchronized void reloadController() {
         setController(controller);
+    }
+
+    synchronized void reloadController(String str) {
+        alert(str);
+        reloadController();
     }
 
     void quit() {
