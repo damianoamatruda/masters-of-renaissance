@@ -5,6 +5,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 
 import java.util.*;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 /** View model of the client of the Masters of Renaissance game. */
 public class ViewModel {
@@ -825,5 +826,23 @@ public class ViewModel {
     // TODO Javadoc
     public synchronized void setInkwellPlayer(String inkwellPlayer) {
         this.inkwellPlayer = inkwellPlayer;
+    }
+
+    /**
+     * @return a map associating the players' nicknames to their faith points
+     */
+    public synchronized Map<String, Integer> getPlayersFaithPoints() {
+        return getPlayers().stream()
+                    .map(ReducedPlayer::getNickname)
+                    .collect(Collectors.toMap(n -> n, this::getPlayerFaithPoints));
+    }
+
+    /**
+     * @return a map associating the players' nicknames to their faith points
+     */
+    public synchronized Map<String, Integer> getPlayersVictoryPoints() {
+        return getPlayers().stream()
+                    .map(ReducedPlayer::getNickname)
+                    .collect(Collectors.toMap(n -> n, this::getPlayerVictoryPoints));
     }
 }

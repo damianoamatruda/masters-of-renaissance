@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.UiController;
 import it.polimi.ingsw.client.cli.components.*;
+import it.polimi.ingsw.client.cli.components.LeaderBoard;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
@@ -276,14 +277,14 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateFaithPoints event) {
         super.on(event);
 
-        Map<String, Integer> points = vm.getPlayers().stream()
-                .map(ReducedPlayer::getNickname)
-                .collect(Collectors.toMap(n -> n, vm::getPlayerFaithPoints));
+        Map<String, Integer> points = vm.getPlayersFaithPoints();
 
         vm.getFaithTrack().ifPresent(faithTrack -> {
             cli.getOut().println();
             new FaithTrack(faithTrack, points).render();
         });
+
+        new LeaderBoard().render();
     }
 
     @Override
@@ -438,6 +439,6 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(String.format("Victory points for %s: %d.", event.getPlayer(), event.getVictoryPoints())));
+        new LeaderBoard().render();
     }
 }
