@@ -1,10 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.cli.components.DevCardGrid;
-import it.polimi.ingsw.client.cli.components.DevSlots;
-import it.polimi.ingsw.client.cli.components.LeadersHand;
-import it.polimi.ingsw.client.cli.components.ResourceContainer;
-import it.polimi.ingsw.client.cli.components.ResourceContainers;
+import it.polimi.ingsw.client.cli.components.*;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;
@@ -147,10 +143,14 @@ public class BuyDevelopmentCardController extends CliController {
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toSet());
 
-        allowedShelves.add(vm.getLocalPlayer().map(vm::getPlayerStrongbox).map(c -> c.map(ReducedResourceContainer::getId).orElseThrow()).orElseThrow());
+        vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).ifPresent(s -> {
+            cli.getOut().println(center(String.format("%s's strongbox:%n", vm.getLocalPlayer().orElse(""))));
+            allowedShelves.add(s.getId());
+        });
 
-        new ResourceContainer(vm.getLocalPlayer().map(vm::getPlayerStrongbox).orElseThrow().orElseThrow()).render();
-        
+        vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).map(s -> new Box(new ResourceContainer(s))).ifPresent(StringComponent::render);
+        cli.getOut().println();
+
         cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
             isExitingState.set(false);
             this.shelves = shelves;
