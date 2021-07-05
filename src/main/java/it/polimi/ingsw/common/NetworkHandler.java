@@ -47,7 +47,7 @@ public class NetworkHandler extends AsynchronousEventDispatcher implements Runna
      * @param timeout      timeout (in ms) to use with Heartbeat events.
      */
     public NetworkHandler(Socket socket, NetworkProtocol protocol, BiFunction<String, NetworkProtocol, Event> processInput, int timeout) {
-        this.netEventDispatcher = new AsynchronousEventDispatcher();
+        this.netEventDispatcher = new EventDispatcher();
         this.socket = socket;
         this.protocol = protocol;
         this.processInput = processInput;
