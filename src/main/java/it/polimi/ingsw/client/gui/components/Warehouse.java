@@ -69,8 +69,8 @@ public class Warehouse extends VBox {
      *
      * @param id the involved shelf ID
      */
-    public void refreshShelfRemove(int id) {
-        shelves.get(id).removeResource();
+    public void refreshShelfRemove(int id, Resource res) {
+        shelves.get(id).removeResource(res);
     }
 
     /**

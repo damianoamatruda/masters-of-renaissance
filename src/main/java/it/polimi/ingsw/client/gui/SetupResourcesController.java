@@ -8,6 +8,8 @@ import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 import it.polimi.ingsw.common.events.vcevents.ReqChooseResources;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
+import it.polimi.ingsw.common.reducedmodel.ReducedPlayer;
+import it.polimi.ingsw.common.reducedmodel.ReducedPlayerSetup;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -32,8 +34,6 @@ import java.util.logging.Logger;
 
 /** Gui controller used for the resources setup scene. */
 public class SetupResourcesController extends GuiController {
-    private static final Logger LOGGER = Logger.getLogger(SetupResourcesController.class.getName());
-
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private final int choosableCount = vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getInitialResources();
     private List<ReducedResourceType> choosableResources;
@@ -65,7 +65,7 @@ public class SetupResourcesController extends GuiController {
         resourceTypesContainer.setSpacing(40);
         resourceTypesContainer.setAlignment(Pos.CENTER);
 
-        choosableResources = vm.getResourceTypes().stream().filter(r -> r.isStorable() && !r.getName().equalsIgnoreCase("Faith")).toList();
+        choosableResources = vm.getResourceTypes().stream().filter(r -> r.isStorable() && !vm.getLocalPlayer().flatMap(vm::getPlayer).map(ReducedPlayer::getSetup).flatMap(ReducedPlayerSetup::getInitialExcludedResources).orElseThrow().contains(r.getName())).toList();
 
         // enable resources from choice box as drag source
         choosableResources.forEach(res -> {
@@ -130,7 +130,8 @@ public class SetupResourcesController extends GuiController {
             }
             if(db.hasString() && success) {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                String resource = ((Resource) event.getGestureSource()).getName();
+                Resource res = (Resource) event.getGestureSource();
+                String resource = res.getName();
 
                 int quantity = selection.get(id).get(resource) - 1;
                 if (quantity > 0)
@@ -138,7 +139,7 @@ public class SetupResourcesController extends GuiController {
                 else
                     selection.get(id).remove(resource);
 
-                warehouse.refreshShelfRemove(id);
+                warehouse.refreshShelfRemove(id, res);
                 updateChoiceButton();
 
             }
@@ -160,7 +161,8 @@ public class SetupResourcesController extends GuiController {
             boolean success = false;
             try {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                String resource = ((Resource) event.getGestureSource()).getName();
+                Resource res = (Resource) event.getGestureSource();
+                String resource = res.getName();
 
                 int quantity = selection.get(id).get(resource) - 1;
                 if (quantity > 0)
@@ -168,7 +170,7 @@ public class SetupResourcesController extends GuiController {
                 else
                     selection.get(id).remove(resource);
 
-                warehouse.refreshShelfRemove(id);
+                warehouse.refreshShelfRemove(id, res);
                 updateChoiceButton();
 
                 success = true;

@@ -112,7 +112,6 @@ public class TakeFromMarketController extends GuiController {
         }).toList());
 
         resetChoice();
-        resetLeaders();
 
         submitBtn.setDisable(false);
     }
@@ -198,7 +197,8 @@ public class TakeFromMarketController extends GuiController {
             // if the resource of choice was previously inserted in another shelf the moved
             if(db.hasString() && success) {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                String resource = ((Resource) event.getGestureSource()).getName();
+                Resource res = (Resource) event.getGestureSource();
+                String resource = res.getName();
 
                 int quantity = selection.get(id).get(resource) - 1;
                 if (quantity > 0)
@@ -206,7 +206,11 @@ public class TakeFromMarketController extends GuiController {
                 else
                     selection.get(id).remove(resource);
 
-                warehouse.refreshShelfRemove(id);
+                if (warehouse.getShelf(id) != null)
+                    warehouse.refreshShelfRemove(id, res);
+                else leaderCards.stream()
+                        .filter(l -> l.getGuiDepot() != null && l.getGuiDepot().getBoundResource().equals(resource))
+                        .map(LeaderCard::getGuiDepot).findAny().ifPresent(s -> s.removeResource(res));
             }
             event.setDropCompleted(success);
             event.consume();
@@ -253,10 +257,12 @@ public class TakeFromMarketController extends GuiController {
                             selection.get(id).remove(resource);
 
                         if (warehouse.getShelf(id) != null)
-                            warehouse.refreshShelfRemove(id);
+                            warehouse.refreshShelfRemove(id, res);
                         else leaderCards.stream()
                                 .filter(l -> l.getGuiDepot() != null && l.getGuiDepot().getBoundResource().equals(resource))
-                                .map(LeaderCard::getGuiDepot).findAny().ifPresent(Shelf::removeResource);
+                                .map(LeaderCard::getGuiDepot).findAny().ifPresent(s -> s.removeResource(res));
+                        res.setFitHeight(Double.NEGATIVE_INFINITY);
+                        res.setFitWidth(100);
                         resourcesBox.getChildren().add(res);
                         setDragAndDropSource(res);
                         success = true;
@@ -299,7 +305,7 @@ public class TakeFromMarketController extends GuiController {
                         }
                         case DEPOT -> {
                             leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                                    reducedLeader.getResourceType(), true);
+                                    reducedLeader.getResourceType(), false);
 
                             leaderCard.setOnDragOver((event) -> {
                                 Dragboard db = event.getDragboard();
@@ -329,7 +335,8 @@ public class TakeFromMarketController extends GuiController {
 
                                 if (db.hasString() && success) {
                                     int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
-                                    String resource = ((Resource) event.getGestureSource()).getName();
+                                    Resource res = (Resource) event.getGestureSource();
+                                    String resource = res.getName();
 
                                     int quantity = selection.get(id).get(resource) - 1;
                                     if (quantity > 0)
@@ -337,7 +344,7 @@ public class TakeFromMarketController extends GuiController {
                                     else
                                         selection.get(id).remove(resource);
 
-                                    s.removeResource();
+                                    s.removeResource(res);
                                 }
                                 event.setDropCompleted(success);
                                 event.consume();
@@ -382,9 +389,11 @@ public class TakeFromMarketController extends GuiController {
      * Resets the player's choices.
      */
     private void resetChoice() {
-        resetWarehouse();
+        Platform.runLater(() -> {
+            resetWarehouse();
 
-        resetLeaders();
+            resetLeaders();
+        });
 
         selection = new HashMap<>();
     }

@@ -32,6 +32,7 @@ public class Shelf extends BorderPane {
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
     private boolean isLeaderDepot;
+    private ImageView placeholder = null;
 
     /**
      * Class constructor.
@@ -118,8 +119,6 @@ public class Shelf extends BorderPane {
      * @param resource the resource type
      */
     public void addResource(String resource) {
-        if (isLeaderDepot)
-            removePlaceholder();
         Resource r = new Resource(resource);
         addResource(r);
     }
@@ -145,9 +144,9 @@ public class Shelf extends BorderPane {
     /**
      * Removes a resource from the shelf
      */
-    public void removeResource() {
-        content.getChildren().remove(content.getChildren().size() - 1);
-        if (isLeaderDepot)
+    public void removeResource(Resource res) {
+        content.getChildren().remove(res);
+        if (isLeaderDepot && content.getChildren().isEmpty() && placeholder != null)
             setPlaceholder(getBoundResource());
     }
 
@@ -296,10 +295,11 @@ public class Shelf extends BorderPane {
     }
 
     public void setPlaceholder(String resource) {
-        ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(getResourcePlaceholderPath(resource)))));
-        img.setFitHeight(30);
-        img.setFitWidth(30);
-        content.getChildren().add(img);
+        removePlaceholder();
+        placeholder = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(getResourcePlaceholderPath(resource)))));
+        placeholder.setPreserveRatio(true);
+        placeholder.setFitHeight(30);
+        content.getChildren().add(placeholder);
     }
 
     /**
@@ -313,11 +313,9 @@ public class Shelf extends BorderPane {
     }
 
     private void removePlaceholder() {
-        Optional<ReducedResourceContainer> container = Gui.getInstance().getViewModel().getContainer(shelfId);
-        container.ifPresent(c -> {
-            if (content.getChildren().size() == 1 && c.getContent().size() == 0)
-                content.getChildren().clear();
-        });
+        if (placeholder == null)
+            return;
+        content.getChildren().remove(placeholder);
     }
 
     /**
