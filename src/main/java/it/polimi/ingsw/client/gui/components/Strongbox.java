@@ -136,11 +136,11 @@ public class Strongbox extends StackPane {
             this.resource = resource;
             this.count = count;
 
-            this.setSpacing(cellWidth * 0.1);
+            this.setSpacing(cellWidth * 0.05);
             this.setAlignment(Pos.CENTER);
 
             Resource r = new Resource(resource);
-            r.setFitHeight(cellHeight * 0.8);
+            r.setFitHeight(cellHeight * 0.6);
 
             Text t = new Text(String.valueOf(count));
             t.setScaleX(scaleRatio);
