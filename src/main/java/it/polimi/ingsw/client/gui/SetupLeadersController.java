@@ -28,9 +28,7 @@ import java.util.function.Consumer;
 /** Gui controller used for the leader cards setup scene. */
 public class SetupLeadersController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
-    
     private final List<LeaderCard> selection = new ArrayList<>();
-    
     @FXML
     private BorderPane canvas;
     @FXML
@@ -42,6 +40,13 @@ public class SetupLeadersController extends GuiController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
+
+        if (isLocalLeaderSetupDone()) {
+            titleComponent.setText("Leader setup done");
+            showWaitingText();
+            gui.setPauseHandler(canvas);
+            return;
+        }
 
         titleComponent.setText(String.format("Choose %d leader cards",
                 vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getChosenLeadersCount()));
@@ -90,11 +95,14 @@ public class SetupLeadersController extends GuiController {
     @FXML
     private void handleChoice() {
         gui.getUi().dispatch(new ReqChooseLeaders(selection.stream().map(LeaderCard::getLeaderId).toList()));
-        if (!gui.getUi().isOffline() && vm.getPlayers().size() > 1) {
-            waitingText.setVisible(true);
-            ((VBox) leadersContainer.getParent()).getChildren().remove(leadersContainer);
-            ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
-        }
+        if (!gui.getUi().isOffline() && vm.getPlayers().size() > 1)
+            Platform.runLater(this::showWaitingText);
+    }
+
+    private void showWaitingText() {
+        waitingText.setVisible(true);
+        ((VBox) leadersContainer.getParent()).getChildren().remove(leadersContainer);
+        ((VBox) choiceButton.getParent()).getChildren().remove(choiceButton);
     }
 
     @Override
@@ -103,9 +111,8 @@ public class SetupLeadersController extends GuiController {
            This different handler, which keeps track of the current player only,
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
-        Consumer<? extends GuiController> callback = controller ->
-                gui.addToOverlay(
-                        new Alert("Setup phase is concluded", "Advancing to game turns."));
+        Consumer<? extends GuiController> callback = controller -> gui.addToOverlay(
+                new Alert("Setup phase is concluded", "Advancing to game turns."));
 
         if (vm.localPlayerIsCurrent())
             gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"), callback);
@@ -138,8 +145,11 @@ public class SetupLeadersController extends GuiController {
 
 
         if (vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get())) {
-            titleComponent.setText("Leader setup done.");
-            setNextState();
+            // Platform.runLater(() -> titleComponent.setText("Leader setup done"));
+            if (!isLocalResourceSetupDone())
+                setNextState();
+            else
+                gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
         }
     }
 

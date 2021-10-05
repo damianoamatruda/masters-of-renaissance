@@ -55,7 +55,9 @@ public class SetupResourcesController extends GuiController {
         gui.setSceneScaling(canvas);
 
         if (isLocalResourceSetupDone()) {
+            titleComponent.setText("Resource setup done");
             showWaitingText();
+            gui.setPauseHandler(canvas);
             return;
         }
 
@@ -203,7 +205,7 @@ public class SetupResourcesController extends GuiController {
     public void handleChoice() {
         gui.getUi().dispatch(new ReqChooseResources(selection));
         if (!gui.getUi().isOffline() && vm.getPlayers().size() > 1)
-            showWaitingText();
+            Platform.runLater(this::showWaitingText);
     }
 
     private void showWaitingText() {
@@ -219,9 +221,8 @@ public class SetupResourcesController extends GuiController {
            This different handler, which keeps track of the current player only,
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
-        Consumer<? extends GuiController> callback = controller ->
-                gui.addToOverlay(
-                        new Alert("Setup already concluded", "You have already concluded setup, advancing to game turns."));
+        Consumer<? extends GuiController> callback = controller -> gui.addToOverlay(
+                new Alert("Setup already concluded", "You have already concluded setup, advancing to game turns."));
 
         if (vm.localPlayerIsCurrent())
             gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"), callback);
@@ -255,7 +256,7 @@ public class SetupResourcesController extends GuiController {
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
         if (vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
-            titleComponent.setText("Resource setup done.");
+            Platform.runLater(() -> titleComponent.setText("Resource setup done"));
     }
 
     @Override
