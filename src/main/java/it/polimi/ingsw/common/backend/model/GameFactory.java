@@ -26,6 +26,8 @@ public interface GameFactory {
      */
     SoloGame getSoloGame(String nickname);
 
+    int getMaxPlayersCount();
+
     Optional<ResourceType> getResourceType(String name);
 
     Optional<DevCardColor> getDevCardColor(String name);

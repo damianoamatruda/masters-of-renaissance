@@ -82,7 +82,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     @Override
-    public Game getMultiGame(List<String> nicknames) {
+    public Game getMultiGame(List<String> nicknames) throws IllegalArgumentException {
         checkNumberOfPlayers(nicknames, true);
         
         baseProduction = buildBaseProduction();
@@ -143,6 +143,13 @@ public class FileGameFactory implements GameFactory {
             warehouses.add(new Warehouse(warehouseShelvesCount));
             strongboxes.add(new Strongbox());
         }
+    }
+
+    /**
+     * @return the maximum allowed number of players for a single game.
+     */
+    public int getMaxPlayersCount() {
+        return maxPlayers;
     }
 
     /**

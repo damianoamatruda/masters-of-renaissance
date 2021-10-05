@@ -543,11 +543,18 @@ public class GameContext extends AsynchronousEventDispatcher {
     public void setActive(String nickname, boolean active) {
         Player player = getPlayerByNickname(nickname);
 
+        boolean isCurrentPlayerDisconnecting = !active && player.equals(game.getCurrentPlayer());
+        boolean isNotCurrentReconnecting = active && !player.equals(game.getCurrentPlayer());
+        boolean isFirstPlayerReconnecting = game.getPlayers().stream().filter(Player::isActive).findAny().isEmpty();
+        
         player.setActive(active);
 
         game.onPlayerSetupDone();
 
-        if (!active && player.equals(game.getCurrentPlayer())) {
+        /* If the current player is disconnecting the turn needs to pass to another player,
+           if all players are inactive and the player reconnecting is the first one
+           the turn needs to pass to them. */
+        if (isCurrentPlayerDisconnecting || (isNotCurrentReconnecting && isFirstPlayerReconnecting)) {
             game.onTurnEnd();
 
             mandatoryActionDone = false;

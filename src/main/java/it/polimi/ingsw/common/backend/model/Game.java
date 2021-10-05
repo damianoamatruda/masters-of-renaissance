@@ -78,7 +78,7 @@ public class Game extends EventDispatcher {
                 List<LeaderCard> leaderCards, List<DevelopmentCard> developmentCards,
                 List<ResourceContainer> resContainers, List<ResourceTransactionRecipe> productions,
                 DevCardGrid devCardGrid, Market market, FaithTrack faithTrack, int maxObtainableDevCards,
-                int devSlotsCount) {
+                int devSlotsCount) throws IllegalArgumentException {
         if (players.isEmpty())
             throw new IllegalArgumentException("Empty players list");
 

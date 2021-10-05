@@ -94,7 +94,7 @@ public class Lobby extends AsynchronousEventDispatcher {
             return;
         }
 
-        if (newGamePlayersCount == 0) {
+        if (newGamePlayersCount == 0 || newGamePlayersCount > gameFactory.getMaxPlayersCount()) {
             dispatch(new ErrNewGame(view, true));
             return;
         }

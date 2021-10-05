@@ -84,42 +84,42 @@ public class Server implements Network, Runnable {
     public static void main(String[] args) {
         LoggerManager.useLogLevelEnv(Level.ALL);
 
-        int port = -1;
-        String gameConfigPath = null;
-        InputStream gameConfigStream = null;
-
         Supplier<JsonObject> serverConfigSupplier = new Supplier<>() {
             private JsonObject object;
 
             @Override
             public JsonObject get() {
                 if (object == null)
-                    object = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(serverConfigPath))), JsonObject.class);
+                    object = new Gson().fromJson(new InputStreamReader(Objects.requireNonNull(
+                            getClass().getResourceAsStream(serverConfigPath))), JsonObject.class);
                 return object;
             }
         };
 
         List<String> arguments = Arrays.asList(args);
 
-        if (arguments.contains("--port")) {
-            if (arguments.indexOf("--port") + 1 < arguments.size())
-                port = Integer.parseUnsignedInt(arguments.get(arguments.indexOf("--port") + 1));
-        }
-
-        if (port == -1)
+        int portIndex = arguments.indexOf("--port");
+        int port;
+        if (portIndex >= 0 && portIndex + 1 < arguments.size()) {
+            String portStr = arguments.get(portIndex + 1);
+            try {
+                port = Integer.parseUnsignedInt(portStr);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.SEVERE, String.format("'%s' is not a valid port", portStr), e);
+                return;
+            }
+        } else
             port = serverConfigSupplier.get().get("port").getAsInt();
 
-        if (arguments.contains("--config")) {
-            if (arguments.indexOf("--config") + 1 < arguments.size())
-                gameConfigPath = arguments.get(arguments.indexOf("--config") + 1);
-        }
-
-        if (gameConfigPath != null) {
+        int configIndex = arguments.indexOf("--config");
+        InputStream gameConfigStream = null;
+        if (configIndex >= 0 && configIndex + 1 < arguments.size()) {
+            String gameConfigPath = arguments.get(configIndex + 1);
             try {
                 gameConfigStream = new FileInputStream(gameConfigPath);
                 LOGGER.info("Loaded custom config");
             } catch (FileNotFoundException e) {
-                LOGGER.log(Level.SEVERE, String.format("Couldn't gain access to file %s", gameConfigPath), e);
+                LOGGER.log(Level.SEVERE, String.format("Could not gain access to file %s", gameConfigPath), e);
                 return;
             }
         }
@@ -127,7 +127,7 @@ public class Server implements Network, Runnable {
         try {
             new Server(port, gameConfigStream).open();
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, String.format("Couldn't listen on port %d", port), e);
+            LOGGER.log(Level.SEVERE, String.format("Could not listen on port %d", port), e);
         }
     }
 
@@ -149,9 +149,9 @@ public class Server implements Network, Runnable {
 
     @Override
     public void run() {
-        LOGGER.info("Server is ready");
+        LOGGER.info(String.format("Server is listening on port %d", serverSocket.getLocalPort()));
 
-        // routine to accept new clients
+        /* Routine to accept new clients */
         while (!Thread.currentThread().isInterrupted()) {
             Socket socket;
 
@@ -164,12 +164,14 @@ public class Server implements Network, Runnable {
             NetworkHandler networkHandler = new NetworkHandler(socket, protocol, (input, protocol) -> protocol.processInputAsVCEvent(input), timeout);
 
             View virtualView = new VirtualView(networkHandler);
-            // hook the VirtualView to the NetworkHandler so it can receive the client's events from the network
+
+            /* Hook the VirtualView to the NetworkHandler, so it can receive the client's events from the network */
             networkHandler.addEventListener(VCEvent.class, vcEventListeners.computeIfAbsent(networkHandler, n -> virtualView::dispatch));
 
-            // hook the VirtualView to the Lobby so it can receive events from it
+            /* Hook the VirtualView to the Lobby, so it can receive events from it */
             virtualView.registerOnModelLobby(model);
-            // hook the Controller to the VirtualView so events can be processed by the Controller
+
+            /* Hook the Controller to the VirtualView, so events can be processed by the Controller */
             controller.registerOnVC(virtualView);
 
             networkHandler.setOnClose(() -> {

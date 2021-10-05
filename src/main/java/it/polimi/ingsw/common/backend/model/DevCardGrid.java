@@ -50,10 +50,9 @@ public class DevCardGrid extends EventDispatcher {
                 Stack<DevelopmentCard> deck = column.get(card.getLevel());
                 deck.push(card);
             }
-            for (DevCardColor column : grid.keySet()) {
+            for (DevCardColor column : grid.keySet())
                 for (int cardLevel = 1; cardLevel <= levelsCount; cardLevel++)
                     Collections.shuffle(grid.get(column).get(cardLevel));
-            }
         }
     }
 
@@ -155,7 +154,8 @@ public class DevCardGrid extends EventDispatcher {
                 level++;
             quantity--;
         }
-        if (quantity > 0) grid.remove(color);
+        if (quantity > 0)
+            grid.remove(color);
 
         dispatch(new UpdateDevCardGrid(reduce()));
     }
