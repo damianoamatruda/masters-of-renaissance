@@ -1,5 +1,5 @@
 # Masters of Renaissance
-Project of Software Engineering, Polytechnic University of Milan, A.Y. 2020/2021.
+Project of Software Engineering, Polytechnic University of Milan, A.Y. 2020/2021. Grade: 30 with Honors.
 
 Digital version of the board game *Masters of Renaissance*, implemented in Java.
 
