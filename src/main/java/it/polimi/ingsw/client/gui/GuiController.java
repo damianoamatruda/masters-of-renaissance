@@ -75,7 +75,7 @@ public abstract class GuiController extends UiController implements Initializabl
             case LATE_MANDATORY_ACTION -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You have already done a mandatory action",
                     "Advancing to optional actions.",
-                    () -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml")))));
+                    () -> gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml")))));
             case EARLY_TURN_END -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You cannot end the turn yet",
                     "A mandatory action needs to be done before ending the turn.",

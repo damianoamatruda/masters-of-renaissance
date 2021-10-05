@@ -68,20 +68,12 @@ public abstract class CliController extends UiController implements Renderable {
             case LATE_SETUP_ACTION -> {
                 cli.getOut().println();
                 cli.getOut().println(center("Setup phase is concluded. Advancing to game turns."));
-                cli.promptPause();
-                cli.setController(new TurnBeforeActionController());
+                setNextState();
             }
             case EARLY_MANDATORY_ACTION -> {
                 cli.getOut().println();
                 cli.getOut().println(center("Setup phase is not concluded yet. Returning to setup phase."));
-                if (!isLocalLeaderSetupDone()) {
-                    cli.promptPause();
-                    cli.setController(new SetupLeadersController());
-                } else if (!isLocalResourceSetupDone()) {
-                    cli.promptPause();
-                    cli.setController(new SetupResourcesController());
-                } else
-                    setNextState();
+                setNextState();
             }
             case LATE_MANDATORY_ACTION -> {
                 cli.alert("You have already done a mandatory action. Advancing to optional actions.");
