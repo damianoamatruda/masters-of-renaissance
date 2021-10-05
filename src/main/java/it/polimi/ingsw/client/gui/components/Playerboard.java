@@ -80,8 +80,10 @@ public class Playerboard extends HBox {
         setContainers(warehouse, strongbox);
         setDevSlotsBox(devSlots);
 
-        Group faithTrackGroup = new Group(faithTrack);
-        board.add(faithTrackGroup, 1, 0);
+        HBox ftContainer = new HBox(new Group(faithTrack));
+        ftContainer.setAlignment(Pos.CENTER);
+
+        board.add(ftContainer, 1, 0, 4, 1);
 
         this.widthProperty().addListener((observable, oldValue, newValue) -> setSizes());
         this.heightProperty().addListener((observable, oldValue, newValue) -> setSizes());

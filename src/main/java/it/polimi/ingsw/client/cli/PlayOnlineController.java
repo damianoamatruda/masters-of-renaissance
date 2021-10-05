@@ -41,10 +41,10 @@ public class PlayOnlineController extends CliController {
                             inputPort = Integer.parseInt(addressTokens[1]);
                             connect(inputHost, inputPort);
                         } catch (ArrayIndexOutOfBoundsException e) {
-                            cli.alert(String.format("%s is not a valid pair IP:port.", address));
+                            cli.alert(String.format("'%s' is not a valid pair IP:port.", address));
                             valid.set(false);
                         } catch (NumberFormatException e) {
-                            cli.alert(String.format("Port %s is not a valid port.", addressTokens[1]));
+                            cli.alert(String.format("'%s' is not a valid port.", addressTokens[1]));
                             valid.set(false);
                         }
                     }

@@ -27,6 +27,6 @@ public abstract class TurnController extends CliController {
     public void on(ErrActiveLeaderDiscarded event) {
         super.on(event);
 
-        cli.reloadController("Active leader cannot be discarded.");
+        cli.reloadController("Active leader card cannot be discarded.");
     }
 }

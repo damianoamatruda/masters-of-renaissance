@@ -40,7 +40,7 @@ public class FaithTrack extends HBox {
         List<Integer> sectionTiles = sections.keySet().stream().flatMapToInt(k -> IntStream.range(sections.get(k).getFaithPointsBeginning(), sections.get(k).getFaithPointsEnd()+1)).boxed().toList();
 
         this.setAlignment(Pos.CENTER);
-        this.setSpacing(-165);
+        this.setSpacing(-150);
         this.setPadding(new Insets(100,100,0,100));
 
         HBox hBox = new HBox();

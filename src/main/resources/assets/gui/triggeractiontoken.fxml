@@ -12,7 +12,7 @@
             maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
   <center>
     <VBox alignment="CENTER" spacing="30">
-      <Text fx:id="message" text="This token has been triggered." textAlignment="CENTER"/>
+      <Text fx:id="message" text="This action token has been triggered." textAlignment="CENTER"/>
       <ImageView fx:id="token" layoutY="200" layoutX="300"/>
       <SButton fx:id="next" text="Continue" alignment="BOTTOM_CENTER" defaultButton="true"/>
       <padding>

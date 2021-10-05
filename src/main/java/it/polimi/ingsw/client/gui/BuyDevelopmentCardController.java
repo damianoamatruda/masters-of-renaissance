@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard.LeaderType;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import javafx.application.Platform;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,10 +77,12 @@ public class BuyDevelopmentCardController extends GuiController {
 
         back.setOnAction(this::back);
 
-        resetWarehouse();
-        resetStrongbox();
-        resetSlots();
-        resetLeaders();
+        Platform.runLater(() -> {
+            resetWarehouse();
+            resetStrongbox();
+            resetSlots();
+            resetLeaders();
+        });
 
         gui.setPauseHandler(canvas);
         gui.addPauseButton(canvas);
@@ -120,12 +123,9 @@ public class BuyDevelopmentCardController extends GuiController {
                     switch (reducedLeader.getLeaderType()) {
                         case DEPOT -> {
                             leaderCard.setDepotContent(vm.getContainer(reducedLeader.getContainerId()).orElseThrow(),
-                                    reducedLeader.getResourceType(), true);
+                                    reducedLeader.getResourceType(), false);
 
-                            leaderCard.getGuiDepot().addResourcesSelector(shelvesMap,
-                                    vm.getContainer(reducedLeader.getContainerId())
-                                            .stream().filter(d -> d.getId() == reducedLeader.getContainerId())
-                                            .findAny().orElseThrow());
+                            leaderCard.getGuiDepot().addResourcesSelector(shelvesMap);
                         }
                         case DISCOUNT -> leaderCard.setDiscount(reducedLeader.getResourceType(), reducedLeader.getDiscount());
                     }
@@ -192,10 +192,12 @@ public class BuyDevelopmentCardController extends GuiController {
         }
 
         shelvesMap = new HashMap<>();
-        resetWarehouse();
-        resetStrongbox();
-        resetSlots();
-        resetLeaders();
+        Platform.runLater(() -> {
+            resetWarehouse();
+            resetStrongbox();
+            resetSlots();
+            resetLeaders();
+        });
     }
 
     /**

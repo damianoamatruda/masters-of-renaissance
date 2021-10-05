@@ -35,22 +35,22 @@ public class PlayOnlineController extends GuiController {
             port = Integer.parseInt(args[1]);
         } catch (ArrayIndexOutOfBoundsException e) {
             if (server.getText().isBlank())
-                gui.reloadScene("Connection error", "Server address is blank.");
+                gui.reloadScene("Invalid server", "Given server address is blank.");
             else
-                gui.reloadScene("Connection error", String.format("%s is not a valid pair IP:port.", server.getText()));
+                gui.reloadScene("Invalid server", String.format("'%s' is not a valid pair IP:port.", server.getText()));
             return;
         } catch (NumberFormatException e) {
-            gui.reloadScene("Connection error", String.format("Port %s is not a valid port.", args[1]));
+            gui.reloadScene("Invalid server", String.format("'%s' is not a valid port.", args[1]));
             return;
         }
 
         try {
             gui.getUi().openOnlineClient(host, port);
         } catch (UnknownHostException e) {
-            gui.reloadScene("Connection error", String.format("Do not know about host %s.", host));
+            gui.reloadScene("Invalid server", String.format("Do not know about host %s.", host));
             return;
         } catch (IOException e) {
-            gui.reloadScene("Connection error", "Could not connect to the server.");
+            gui.reloadScene("Invalid server", "Could not connect to the server.");
             return;
         }
 

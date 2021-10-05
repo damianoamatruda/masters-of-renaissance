@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.gui.components.LeaderBoard;
+import it.polimi.ingsw.client.gui.components.Leaderboard;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -32,18 +32,16 @@ public class EndgameController extends GuiController {
         label.setTextAlignment(TextAlignment.CENTER);
         leaderboard.getChildren().add(label);
 
-        TableView<LeaderBoard.LeaderBoardEntry> leaderboards = new TableView<>();
-        leaderboard.getChildren().add(leaderboards);
-        new LeaderBoard().createLeaderboardTable(leaderboards);
+        TableView<Leaderboard.LeaderBoardEntry> leaderboard = new TableView<>();
+        this.leaderboard.getChildren().add(leaderboard);
+        new Leaderboard().createLeaderboardTable(leaderboard);
 
-        if (vm.getWinnerPlayer().isPresent() && vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
-            outcome.setText("You won with " + vm.getPlayerVictoryPoints(vm.getWinnerPlayer().get()) + " points! CONGRATULATIONS!");
-        else if (vm.getWinnerPlayer().isPresent())
-            outcome.setText(
-                    vm.getWinnerPlayer().get() + " is the winner with " +
-                            vm.getPlayerVictoryPoints(vm.getWinnerPlayer().get()) + " points!");
-        else
-            outcome.setText("Lorenzo il Magnifico has won. Better luck next time!");
+        vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).ifPresentOrElse(points -> {
+            if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))
+                outcome.setText(String.format("You won with %d points! CONGRATULATIONS!", points));
+            else
+                outcome.setText(String.format("%s is the winner with %d points!", vm.getWinnerPlayer().get(), points));
+        }, () -> outcome.setText("Lorenzo il Magnifico has won. Better luck next time!"));
 
         gui.setPauseHandler(canvas);
         gui.addPauseButton(canvas);

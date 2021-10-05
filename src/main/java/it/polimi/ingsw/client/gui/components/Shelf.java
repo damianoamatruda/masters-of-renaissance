@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -32,7 +33,7 @@ public class Shelf extends BorderPane {
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
     private boolean isLeaderDepot;
-    private ImageView placeholder = null;
+    private ImageView placeholder;
 
     /**
      * Class constructor.
@@ -89,6 +90,7 @@ public class Shelf extends BorderPane {
     public Shelf(ReducedResourceContainer shelf, double maxHeight, double contentWidth, boolean isLeaderDepot) {
         this(shelf, maxHeight, contentWidth, (a, b) -> {});
         this.isLeaderDepot = isLeaderDepot;
+        this.placeholder = null;
     }
 
     /**
@@ -119,8 +121,7 @@ public class Shelf extends BorderPane {
      * @param resource the resource type
      */
     public void addResource(String resource) {
-        Resource r = new Resource(resource);
-        addResource(r);
+        addResource(new Resource(resource));
     }
 
     /**
@@ -142,7 +143,7 @@ public class Shelf extends BorderPane {
     }
 
     /**
-     * Removes a resource from the shelf
+     * Removes a specific resource from the shelf
      */
     public void removeResource(Resource res) {
         content.getChildren().remove(res);
@@ -244,6 +245,16 @@ public class Shelf extends BorderPane {
     /**
      * Handles the choice of a resource contained in this shelf, when paying
      *
+     * @param containers the map of the input of a resource transaction
+     */
+    public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers) {
+        addResourcesSelector(containers, null);
+    }
+
+    /**
+     * Handles the choice of a resource contained in this shelf, when paying
+     * Modifies the reducedShelf's content (useful for productions)
+     *
      * @param containers    the map of the input of a resource transaction
      * @param reducedShelf  the cached shelf which content to edit on resource click
      */
@@ -256,7 +267,10 @@ public class Shelf extends BorderPane {
 
                     if (r.getOpacity() != 0.5) {
                         r.setOpacity(0.5);
-                        reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) - 1);
+
+                        if (reducedShelf != null)
+                            reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) - 1);
+                        
                         if (containers.get(shelfId) == null) {
                             Map<String, Integer> content = new HashMap<>();
                             content.put(name, 1);
@@ -268,7 +282,10 @@ public class Shelf extends BorderPane {
                         }
                     } else {
                         r.setOpacity(1);
-                        reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) + 1);
+
+                        if (reducedShelf != null)
+                            reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) + 1);
+                        
                         containers.get(shelfId).put(name, containers.get(shelfId).get(name) - 1);
                         if (containers.get(shelfId).get(name) == 0)
                             containers.get(shelfId).remove(name);

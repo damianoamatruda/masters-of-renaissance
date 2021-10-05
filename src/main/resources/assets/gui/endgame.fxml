@@ -23,7 +23,7 @@
             <Insets bottom="20.0"/>
           </VBox.margin>
         </VBox>
-      <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit to title"/>
+      <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit to Title"/>
       <padding>
         <Insets bottom="80.0"/>
       </padding>

@@ -64,7 +64,7 @@ public abstract class TurnController extends GuiController {
         // has to be here so it's in front of every element
         gui.addPauseButton(canvas);
 
-        addLeaderboardsButton();
+        addLeaderboardButton();
     }
 
     /**
@@ -168,10 +168,16 @@ public abstract class TurnController extends GuiController {
      * Adds buttons for production activation on all the components that have a production
      */
     protected void addProduceButtons() {
-        activateProdButton = new SButton("Activate production");
+        activateProdButton = new SButton("Activate productions");
         activateProdButton.setOnAction(event ->
-                gui.getRoot().getChildren().add(new ActivateProductions(new ArrayList<>(), new ArrayList<>(vm.getCurrentPlayer().map(vm::getPlayerShelves).orElseThrow()), new ArrayList<>(vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow()), toActivate, 0
-                )));
+                gui.getRoot().getChildren().add(
+                        new ActivateProductions(
+                                new ArrayList<>(),
+                                new ArrayList<>(),
+                                new ArrayList<>(vm.getCurrentPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow()),
+                                new ArrayList<>(vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow()),
+                                toActivate,
+                                0)));
         activateProdButton.setDisable(true);
         AnchorPane.setLeftAnchor(activateProdButton, 318d);
         AnchorPane.setBottomAnchor(activateProdButton, 15d);
@@ -183,13 +189,13 @@ public abstract class TurnController extends GuiController {
         // refreshLeaderBoxes();
     }
 
-    private void addLeaderboardsButton() {
-        Button leaderboardsBtn = new SButton("Leaderboards");
-        leaderboardsBtn.addEventHandler(ActionEvent.ACTION, actionEvent ->
-                gui.getRoot().getChildren().add(new LeaderBoard()));
-        canvas.getChildren().add(leaderboardsBtn);
-        AnchorPane.setTopAnchor(leaderboardsBtn, 10.0);
-        AnchorPane.setLeftAnchor(leaderboardsBtn, 850.0);
+    private void addLeaderboardButton() {
+        Button leaderboardBtn = new SButton("Leaderboard");
+        leaderboardBtn.addEventHandler(ActionEvent.ACTION, actionEvent ->
+                gui.getRoot().getChildren().add(new Leaderboard()));
+        canvas.getChildren().add(leaderboardBtn);
+        AnchorPane.setTopAnchor(leaderboardBtn, 10.0);
+        AnchorPane.setLeftAnchor(leaderboardBtn, 850.0);
     }
 
     @Override

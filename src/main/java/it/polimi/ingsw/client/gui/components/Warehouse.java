@@ -163,10 +163,7 @@ public class Warehouse extends VBox {
      * @param newTempShelves  the list of temporary shelves which content to edit on resource click
      */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, List<ReducedResourceContainer> newTempShelves) {
-        shelves.values().forEach(s -> {
-            Optional<ReducedResourceContainer> c = newTempShelves.stream().filter(red -> red.getId() == s.getShelfId()).findAny();
-            c.ifPresent(value -> s.addResourcesSelector(containers, value));
-        });
+        shelves.values().forEach(s -> s.addResourcesSelector(containers));
     }
 
     /**

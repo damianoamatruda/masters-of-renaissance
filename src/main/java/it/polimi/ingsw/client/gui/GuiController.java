@@ -95,8 +95,8 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(ErrActiveLeaderDiscarded event) {
         super.on(event);
 
-        gui.reloadScene("Leader discard error",
-                "Active leader cannot be discarded.");
+        gui.reloadScene("You cannot discard the leader card",
+                "Active leader card cannot be discarded.");
     }
 
     @Override
@@ -128,16 +128,16 @@ public abstract class GuiController extends UiController implements Initializabl
 
         switch (event.getReason()) {
             case ALREADY_SET -> gui.reloadScene(
-                    "Error setting nickname", "Nickname is already set.", (InputNicknameController controller) ->
+                    "Invalid nickname", "Given nickname is already set.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case TAKEN -> gui.reloadScene(
-                    "Error setting nickname", "Nickname is taken.", (InputNicknameController controller) ->
+                    "Invalid nickname", "Given nickname is taken.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case NOT_SET -> gui.reloadScene(
-                    "Error setting nickname", "Nickname is blank.", (InputNicknameController controller) ->
+                    "Invalid nickname", "Given nickname is blank.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case NOT_IN_GAME -> gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
-                    gui.addToOverlay(new Alert("Error setting nickname", "Match not joined yet.")));
+                    gui.addToOverlay(new Alert("Invalid nickname", "Match not joined yet.")));
         }
     }
 
@@ -166,10 +166,10 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
         
         if (event.isIllegalDiscardedOut())
-            gui.reloadScene("Resource transaction error",
+            gui.reloadScene("Invalid transfer of resources",
                     "The payment's cost is erroneously specified, please choose all and only the needed resources.");
         else
-            gui.reloadScene("Resource transaction error",
+            gui.reloadScene("Invalid transfer of resources",
                     String.format(
                             "Irregular quantity of %s %s specified in the container map: %d required, %d chosen.",
                             event.isInput() ? "input" : "output",
@@ -186,17 +186,17 @@ public abstract class GuiController extends UiController implements Initializabl
         String isReplacement = event.isReplacement() ? " replacements" : "";
 
         switch (event.getReason()) {
-            case EXCLUDED -> gui.reloadScene("Resource replacement error",
-                    String.format("Invalid resource transaction %s%s: excluded resource specified.",
+            case EXCLUDED -> gui.reloadScene("Invalid transfer of resources",
+                    String.format("Invalid %s%s: excluded resource specified.",
                         direction, isReplacement));
-            case ILLEGAL_NON_STORABLE -> gui.reloadScene("Resource replacement error",
-                    String.format("Invalid resource transaction %s%s: non-storable resource specified in container map.",
+            case ILLEGAL_NON_STORABLE -> gui.reloadScene("Invalid transfer of resources",
+                    String.format("Invalid %s%s: non-storable resource specified in container map.",
                         direction, isReplacement));
-            case ILLEGAL_STORABLE -> gui.reloadScene("Resource replacement error",
-                    String.format("Invalid resource transaction %s%s: storable resource specified as non-storable.",
+            case ILLEGAL_STORABLE -> gui.reloadScene("Invalid transfer of resources",
+                    String.format("Invalid %s%s: storable resource specified as non-storable.",
                         direction, isReplacement));
-            case NEGATIVE_VALUES -> gui.reloadScene("Resource replacement error",
-                    String.format("Invalid resource transaction %s%s: negative quantity specified.",
+            case NEGATIVE_VALUES -> gui.reloadScene("Invalid transfer of resources",
+                    String.format("Invalid %s%s: negative quantity specified.",
                             direction, isReplacement));
         }
     }
@@ -205,17 +205,17 @@ public abstract class GuiController extends UiController implements Initializabl
     public void on(ErrResourceTransfer event) {
         super.on(event);
 
-        final String reason = switch (event.getReason()) {
+        String reason = switch (event.getReason()) {
             case BOUNDED_RESTYPE_DIFFER -> event.getResType() != null ?
                     "shelf's binding resource type is different from transferring resource" :
                     "multiple resource types cannot be bound to the same shelf";
-            case NON_STORABLE -> "resource type is not storable";
-            case CAPACITY_REACHED -> "shelf's capacity boundaries reached";
+            case NON_STORABLE -> "resource is not storable";
+            case CAPACITY_REACHED -> "container's capacity boundaries reached";
             case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
         };
 
         gui.reloadScene("You cannot move the resources",
-                String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container:",
+                String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container: %s.",
                         event.getResType() == null ? "" : String.format(" %s", event.getResType()),
                         reason));
     }
@@ -230,7 +230,7 @@ public abstract class GuiController extends UiController implements Initializabl
         gui.getUi().closeClient();
 
         Platform.runLater(() -> gui.addToOverlay(
-                new Alert("Connection error", "Server is down. Try again later.", () ->
+                new Alert("Server is down", "Try again later.", () ->
                         gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml")))));
     }
 

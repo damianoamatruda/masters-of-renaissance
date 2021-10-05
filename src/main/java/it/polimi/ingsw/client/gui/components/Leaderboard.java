@@ -19,8 +19,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-/** Gui component used to show the leaderboards of the game. */
-public class LeaderBoard extends StackPane {
+/** Gui component used to show the leaderboard of the game. */
+public class Leaderboard extends StackPane {
     @FXML
     private BorderPane main;
     @FXML
@@ -31,7 +31,7 @@ public class LeaderBoard extends StackPane {
     /**
      * Class constructor.
      */
-    public LeaderBoard() {
+    public Leaderboard() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/leaderboard.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -106,7 +106,7 @@ public class LeaderBoard extends StackPane {
     }
 
     /**
-     * Class representing a single entry in the leaderboards.
+     * Class representing a single entry in the leaderboard.
      */
     public static class LeaderBoardEntry {
         private String player;

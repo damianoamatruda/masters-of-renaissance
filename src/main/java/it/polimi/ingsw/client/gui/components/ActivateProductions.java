@@ -43,6 +43,7 @@ public class ActivateProductions extends StackPane {
     @FXML
     private HBox leadersBox;
 
+    private final List<ActivateProductions> windows;
     private final List<ReducedProductionRequest> requests;
     private final List<ReducedResourceContainer> tempShelves;
     private final List<ReducedResourceContainer> tempDepots;
@@ -62,8 +63,11 @@ public class ActivateProductions extends StackPane {
      * @param toActivate  the production involved
      * @param index       an index used to move between the selected productions in the list
      */
-    public ActivateProductions(List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
+    public ActivateProductions(List<ActivateProductions> previousWindows, List<ReducedProductionRequest> requests, List<ReducedResourceContainer> tempShelves,
                                List<ReducedResourceContainer> tempDepots, List<Integer> toActivate, int index) {
+        windows = new ArrayList<>(previousWindows);
+        windows.add(this);
+        
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/activateproductions.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -93,17 +97,20 @@ public class ActivateProductions extends StackPane {
         ReducedResourceTransactionRecipe selectedProd = vm.getProduction(toActivate.get(index)).orElseThrow();
 
         /* Add spinners to choose quantity */
-        vm.getProductionInputResTypes(selectedProd).forEach(r ->
+        List<ReducedResourceType> inputResTypes = vm.getProductionInputNonStorableResTypes(selectedProd);
+        List<ReducedResourceType> outputResTypes = vm.getProductionOutputResTypes(selectedProd);
+
+        inputResTypes.forEach(r ->
                 addSpinner(choosableInputResources, r, selectedProd.getInputBlanks()));
 
-        vm.getProductionOutputResTypes(selectedProd).forEach(r ->
+        outputResTypes.forEach(r ->
                 addSpinner(choosableOutputResources, r, selectedProd.getOutputBlanks()));
 
         /* Remove HBox containers if no extra choosable resource available */
-        if (choosableInputResources.getChildren().isEmpty())
-            ((HBox) choosableInputResources.getParent()).getChildren().remove(0);
-        if (choosableOutputResources.getChildren().isEmpty())
-            ((HBox) choosableOutputResources.getParent()).getChildren().remove(0);
+        if (selectedProd.getInputBlanks() == 0 || inputResTypes.isEmpty())
+            ((Pane) choosableInputResources.getParent().getParent()).getChildren().remove(0);
+        if (selectedProd.getOutputBlanks() == 0 || outputResTypes.isEmpty())
+            ((Pane) choosableOutputResources.getParent().getParent()).getChildren().remove(0);
 
         /* Set shelves with click handlers */
         guiShelves.setWarehouseShelves(tempShelves, (a, b) -> {
@@ -157,7 +164,7 @@ public class ActivateProductions extends StackPane {
     private void handleSubmit() {
         buildRequest();
         Gui.getInstance().getUi().dispatch(new ReqActivateProductions(requests));
-        ((Pane) this.getParent()).getChildren().remove(this);
+        ((Pane) this.getParent()).getChildren().removeAll(windows);
     }
 
     /**
@@ -166,7 +173,7 @@ public class ActivateProductions extends StackPane {
     private void handleNext() {
         buildRequest();
         Gui.getInstance().getRoot().getChildren().add(
-                new ActivateProductions(requests, tempShelves, tempDepots, toActivate, index + 1));
+                new ActivateProductions(windows, requests, tempShelves, tempDepots, toActivate, index + 1));
     }
 
     /**
@@ -204,13 +211,14 @@ public class ActivateProductions extends StackPane {
 
     public void addSpinner(HBox container, ReducedResourceType r, int maxValue) {
         HBox entry = new HBox();
+        entry.setAlignment(Pos.CENTER);
         Spinner<Integer> spinner = new Spinner<>(0, maxValue, 0);
         spinner.setMaxWidth(50);
         spinner.editorProperty().get().setAlignment(Pos.CENTER);
         entry.getChildren().add(spinner);
         Resource resource = new Resource(r.getName());
-        resource.setScaleX(0.8);
-        resource.setScaleY(0.8);
+        resource.setScaleX(0.6);
+        resource.setScaleY(0.6);
         entry.getChildren().add(resource);
         container.getChildren().add(entry);
     }

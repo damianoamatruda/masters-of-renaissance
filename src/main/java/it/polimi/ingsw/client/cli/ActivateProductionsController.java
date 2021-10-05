@@ -61,7 +61,7 @@ public class ActivateProductionsController extends CliController {
                 valid.set(true);
                 cli.promptInt("Production").ifPresentOrElse(productionId -> allowedProds.stream().filter(p -> p.getId() == productionId).findAny().ifPresentOrElse(selectedProd -> {
                     this.selectedProd = selectedProd;
-                    if (!vm.getProductionInputResTypes(selectedProd).isEmpty())
+                    if (!vm.getProductionInputNonStorableResTypes(selectedProd).isEmpty())
                         chooseInputReplacements();
                     else {
                         inputReplacement = new HashMap<>();
@@ -82,14 +82,14 @@ public class ActivateProductionsController extends CliController {
     }
 
     private void chooseInputReplacements() {
-        if (vm.getProductionInputResTypes(selectedProd).isEmpty())
+        if (vm.getProductionInputNonStorableResTypes(selectedProd).isEmpty())
             return;
 
         cli.getOut().println();
         cli.getOut().println(center("-- Input replacements --"));
         cli.getOut().println();
         cli.promptResources(
-                vm.getProductionInputResTypes(selectedProd).stream().map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
+                vm.getProductionInputNonStorableResTypes(selectedProd).stream().map(ReducedResourceType::getName).collect(Collectors.toUnmodifiableSet()),
                 this.selectedProd.getInputBlanks()
         ).ifPresentOrElse(inputReplacement -> {
             this.inputReplacement = inputReplacement;

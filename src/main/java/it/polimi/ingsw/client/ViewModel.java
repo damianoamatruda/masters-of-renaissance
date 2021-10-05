@@ -708,7 +708,7 @@ public class ViewModel {
      * @param production the production to get the allowed input resource types of
      * @return           a list containing the resource types allowed to be assigned to the production's input
      */
-    public synchronized List<ReducedResourceType> getProductionInputResTypes(ReducedResourceTransactionRecipe production) {
+    public synchronized List<ReducedResourceType> getProductionInputNonStorableResTypes(ReducedResourceTransactionRecipe production) {
         return resourceTypes.stream()
                 .filter(r -> !r.isStorable() && r.isTakeableFromPlayer())
                 .filter(r -> !production.getInputBlanksExclusions().contains(r.getName()))

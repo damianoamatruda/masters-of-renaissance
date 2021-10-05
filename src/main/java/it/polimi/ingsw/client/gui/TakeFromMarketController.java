@@ -28,8 +28,6 @@ import java.util.logging.Logger;
 
 /** Gui controller class of the take Market resources action. */
 public class TakeFromMarketController extends GuiController {
-    private static final Logger LOGGER = Logger.getLogger(TakeFromMarketController.class.getName());
-
     @FXML
     private AnchorPane canvas;
     @FXML
@@ -104,14 +102,14 @@ public class TakeFromMarketController extends GuiController {
                 .map(ReducedResourceType::getName)
                 .toList();
 
+        resetChoice();
+
         resourcesBox.getChildren().clear();
         resourcesBox.getChildren().addAll(chosenResources.stream().map(n -> {
             Resource r = new Resource(n, enableReplacements && n.equals(vm.getMarket().get().getReplaceableResType()));
             setDragAndDropSource(r);
             return r;
         }).toList());
-
-        resetChoice();
 
         submitBtn.setDisable(false);
     }
@@ -206,11 +204,7 @@ public class TakeFromMarketController extends GuiController {
                 else
                     selection.get(id).remove(resource);
 
-                if (warehouse.getShelf(id) != null)
-                    warehouse.refreshShelfRemove(id, res);
-                else leaderCards.stream()
-                        .filter(l -> l.getGuiDepot() != null && l.getGuiDepot().getBoundResource().equals(resource))
-                        .map(LeaderCard::getGuiDepot).findAny().ifPresent(s -> s.removeResource(res));
+                warehouse.refreshShelfRemove(id, res);
             }
             event.setDropCompleted(success);
             event.consume();
@@ -362,10 +356,11 @@ public class TakeFromMarketController extends GuiController {
             vbox.getChildren().add(l);
             if (l.getLeaderType() == LeaderType.ZERO) {
                 SButton replace = new SButton("Replace a Zero");
-                replace.setOnAction((actionEvent -> {
+                replace.setOnAction(actionEvent -> Platform.runLater(() -> {
                     if (replaceBlank(l.getResourceType()))
                         replace.setDisable(true);
                 }));
+                replace.setDisable(submitBtn.isDisabled());
                 vbox.getChildren().add(replace);
             }
             return vbox;
@@ -376,12 +371,11 @@ public class TakeFromMarketController extends GuiController {
     }
 
     private boolean replaceBlank(String resourceType) {
-        resourcesBox.getChildren().stream().filter(r -> ((Resource) r).isBlank()).findFirst().ifPresent(node -> Platform.runLater(() -> {
+        resourcesBox.getChildren().stream().filter(r -> ((Resource) r).isBlank()).findFirst().ifPresent(node -> {
             Resource replacement = new Resource(resourceType);
             setDragAndDropSource(replacement);
             resourcesBox.getChildren().set(resourcesBox.getChildren().indexOf(node), replacement);
-        }));
-
+        });
         return resourcesBox.getChildren().stream().noneMatch(r -> ((Resource) r).isBlank());
     }
 
