@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.cli.components.Menu;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,17 +28,17 @@ public class MainOptionsController extends CliController {
     }
 
     private void defaultConfig() {
-        cli.getUi().setGameConfigStream(null);
+        cli.getUi().resetGameConfig();
         cli.setController(new MainMenuController());
     }
 
     private void customConfig() {
         cli.promptFile("Path of custom config.json").ifPresentOrElse(gameConfigFile -> {
             try {
-                cli.getUi().setGameConfigStream(new FileInputStream(gameConfigFile));
+                cli.getUi().loadGameConfigStream(new FileInputStream(gameConfigFile));
                 cli.alert("Config loaded.");
                 cli.setController(new MainMenuController());
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 cli.reloadController(String.format("Could not gain access to file %s.", gameConfigFile.getPath()));
             }
         }, cli::reloadController);

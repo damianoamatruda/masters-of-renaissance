@@ -13,15 +13,14 @@ public class Ui extends View {
     private ViewModel viewModel;
     private Network client;
     private UiController controller;
-    private InputStream gameConfigStream;
-    private byte[] config;
+    private byte[] gameConfig;
     private boolean offline;
 
     public Ui() {
         setListeners();
         viewModel = new ViewModel();
         offline = false;
-        gameConfigStream = null;
+        gameConfig = null;
     }
 
     public ViewModel getViewModel() {
@@ -36,28 +35,22 @@ public class Ui extends View {
         return controller;
     }
     
-    public Optional<InputStream> getGameConfigStream() {
-        return Optional.ofNullable(gameConfigStream);
+    public Optional<byte[]> getGameConfig() {
+        return Optional.ofNullable(gameConfig);
     }
 
-    public void setGameConfigStream(InputStream gameConfigStream) {
-        this.gameConfigStream = gameConfigStream;
-
-        if (gameConfigStream == null)
+    public void loadGameConfigStream(InputStream gameConfigStream) throws IOException {
+        if (gameConfigStream == null) {
+            gameConfig = null;
             return;
-            
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[16777216];
-
-        int byteCount;
-        try {
-            while ((byteCount = gameConfigStream.read(buffer)) != -1)
-                baos.write(buffer, 0, byteCount);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        ByteArrayOutputStream dst = new ByteArrayOutputStream();
+        gameConfigStream.transferTo(dst);
+        gameConfig = dst.toByteArray();
+    }
 
-        this.config = baos.toByteArray();
+    public void resetGameConfig() {
+        gameConfig = null;
     }
 
     public boolean isOffline() {
@@ -66,7 +59,7 @@ public class Ui extends View {
 
     public void openOfflineClient() {
         closeClient();
-        client = new OfflineClient(this, config == null ? null : new ByteArrayInputStream(config));
+        client = new OfflineClient(this, gameConfig != null ? new ByteArrayInputStream(gameConfig) : null);
         client.open();
         offline = true;
         viewModel = new ViewModel();
