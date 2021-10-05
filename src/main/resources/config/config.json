@@ -1643,25 +1643,34 @@
         "id": 0,
         "faithPointsBeginning": 5,
         "faithPointsEnd": 8,
-        "victoryPoints": 2,
-        "activated": false
+        "victoryPoints": 2
       },
       {
         "id": 1,
         "faithPointsBeginning": 19,
         "faithPointsEnd": 24,
-        "victoryPoints": 4,
-        "activated": false
+        "victoryPoints": 4
       },
       {
         "id": 2,
         "faithPointsBeginning": 12,
         "faithPointsEnd": 16,
-        "victoryPoints": 3,
-        "activated": false
+        "victoryPoints": 3
       }
     ],
     "yellowTiles": [
+      {
+        "faithPoints": 3,
+        "victoryPoints": 1
+      },
+      {
+        "faithPoints": 6,
+        "victoryPoints": 2
+      },
+      {
+        "faithPoints": 9,
+        "victoryPoints": 4
+      },
       {
         "faithPoints": 12,
         "victoryPoints": 6
@@ -1671,28 +1680,16 @@
         "victoryPoints": 9
       },
       {
+        "faithPoints": 18,
+        "victoryPoints": 12
+      },
+      {
         "faithPoints": 21,
         "victoryPoints": 16
       },
       {
-        "faithPoints": 6,
-        "victoryPoints": 2
-      },
-      {
-        "faithPoints": 3,
-        "victoryPoints": 1
-      },
-      {
         "faithPoints": 24,
         "victoryPoints": 20
-      },
-      {
-        "faithPoints": 9,
-        "victoryPoints": 4
-      },
-      {
-        "faithPoints": 18,
-        "victoryPoints": 12
       }
     ]
   },
