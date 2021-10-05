@@ -18,7 +18,7 @@ public class ReqTakeFromMarket implements VCEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param isRow        whether the index refers to a row or a column
      * @param index        the index of the row/column to take resources from
      * @param replacements the mapping detailing how to handle the replacement of the blank resources

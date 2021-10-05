@@ -9,7 +9,7 @@ public class ReqChooseLeaders implements VCEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param leaders the IDs of the chosen leader cards
      */
     public ReqChooseLeaders(List<Integer> leaders) {

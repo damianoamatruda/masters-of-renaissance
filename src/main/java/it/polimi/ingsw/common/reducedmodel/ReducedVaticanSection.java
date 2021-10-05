@@ -22,12 +22,12 @@ public class ReducedVaticanSection {
     private ArrayList<String> bonusGivenPlayers;
 
     /**
-     * @param id                    the ID of the vatican section
-     * @param faithPointsBeginning  the first tile
-     * @param faithPointsEnd        the last (Vatican Report) tile
-     * @param victoryPoints         the bonus victory points of the section
-     * @param activated             the status of activation
-     * @param bonusGivenPlayers     the players that earned the bonus
+     * @param id                   the ID of the vatican section
+     * @param faithPointsBeginning the first tile
+     * @param faithPointsEnd       the last (Vatican Report) tile
+     * @param victoryPoints        the bonus victory points of the section
+     * @param activated            the status of activation
+     * @param bonusGivenPlayers    the players that earned the bonus
      */
     public ReducedVaticanSection(int id, int faithPointsBeginning, int faithPointsEnd, int victoryPoints, boolean activated, List<String> bonusGivenPlayers) {
         this.id = id;
@@ -81,20 +81,20 @@ public class ReducedVaticanSection {
     }
 
     /**
-     * Updates the players that earned the bonus.
-     *
-     * @param bonusGivenPlayers the players that earned the bonus
-     */
-    public void setBonusGivenPlayers(List<String> bonusGivenPlayers) {
-        this.bonusGivenPlayers = new ArrayList<>(bonusGivenPlayers);
-    }
-
-    /**
      * Getter of the players that earned the bonus.
      *
      * @return the players that earned the bonus
      */
     public ArrayList<String> getBonusGivenPlayers() {
         return bonusGivenPlayers;
+    }
+
+    /**
+     * Updates the players that earned the bonus.
+     *
+     * @param bonusGivenPlayers the players that earned the bonus
+     */
+    public void setBonusGivenPlayers(List<String> bonusGivenPlayers) {
+        this.bonusGivenPlayers = new ArrayList<>(bonusGivenPlayers);
     }
 }

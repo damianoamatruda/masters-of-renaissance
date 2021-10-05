@@ -9,8 +9,9 @@ import java.util.Map;
 
 /** Object capable of dispatching Events. */
 public class EventDispatcher {
-    /** List of listeners holding the event handlers that will be called
-     *  when notified of a dispatched event. */
+    /**
+     * List of listeners holding the event handlers that will be called when notified of a dispatched event.
+     */
     private final transient Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners;
 
     /** Class constructor. */
@@ -20,7 +21,7 @@ public class EventDispatcher {
 
     /**
      * Hooks the listener to this dispatcher so it can receive events.
-     * 
+     *
      * @param <T>
      * @param eventType the class of the events listened for.
      * @param listener  the listener to register.
@@ -33,7 +34,7 @@ public class EventDispatcher {
 
     /**
      * Unregisters a listener, preventing it from receiving Events.
-     * 
+     *
      * @param <T>
      * @param eventType the class of Event the listener was listening to.
      * @param listener  the listener to deregister.
@@ -46,7 +47,7 @@ public class EventDispatcher {
 
     /**
      * Dispatches an event to all listeners listening for Events of that class.
-     * 
+     *
      * @param <T>
      * @param event the event to dispatch.
      */

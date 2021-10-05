@@ -20,10 +20,10 @@ import java.util.stream.IntStream;
 
 /** Gui component representing the faith track. */
 public class FaithTrack extends HBox {
-    Map<Integer, FaithTile> tiles = new HashMap<>();
     private final VBox tilesBox = new VBox();
     private final VBox popesFavors = new VBox();
     private final HashMap<String, ImageView> markers = new HashMap<>();
+    Map<Integer, FaithTile> tiles = new HashMap<>();
 
     /**
      * Class constructor.
@@ -37,22 +37,21 @@ public class FaithTrack extends HBox {
         List<Integer> yellowTilesIndexes = yellowTiles.stream().map(ReducedYellowTile::getFaithPoints).toList();
         Map<Integer, ReducedVaticanSection> sections = track.getVaticanSections();
         List<Integer> sectionEnds = sections.keySet().stream().map(k -> sections.get(k).getFaithPointsEnd()).toList();
-        List<Integer> sectionTiles = sections.keySet().stream().flatMapToInt(k -> IntStream.range(sections.get(k).getFaithPointsBeginning(), sections.get(k).getFaithPointsEnd()+1)).boxed().toList();
+        List<Integer> sectionTiles = sections.keySet().stream().flatMapToInt(k -> IntStream.range(sections.get(k).getFaithPointsBeginning(), sections.get(k).getFaithPointsEnd() + 1)).boxed().toList();
 
         this.setAlignment(Pos.CENTER);
         this.setSpacing(-150);
-        this.setPadding(new Insets(100,100,0,100));
+        this.setPadding(new Insets(100, 100, 0, 100));
 
         HBox hBox = new HBox();
         hBox.setScaleX(new FaithTile().getScaleX() / 1.5);
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
-            if(i % 10 >= 3 && i % 10 <= 6) {
+            if (i % 10 >= 3 && i % 10 <= 6) {
                 FaithTile tile = new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i));
                 hBox.getChildren().add(tile);
                 tiles.put(i, tile);
-            }
-            else if(i % 10 == 0 || i % 10 == 9) {
+            } else if (i % 10 == 0 || i % 10 == 9) {
                 hBox.getChildren().add(new FaithTile());
             }
         }
@@ -62,12 +61,11 @@ public class FaithTrack extends HBox {
         hBox.setScaleX(new FaithTile().getScaleX() / 1.5);
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
-            if(i % 5 == 2) {
+            if (i % 5 == 2) {
                 FaithTile tile = new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i));
                 hBox.getChildren().add(tile);
                 tiles.put(i, tile);
-            }
-            else if(i % 10 == 0 || i % 10 == 9 || i % 10 == 4 || i % 10 == 5) {
+            } else if (i % 10 == 0 || i % 10 == 9 || i % 10 == 4 || i % 10 == 5) {
                 hBox.getChildren().add(new FaithTile());
             }
         }
@@ -78,12 +76,11 @@ public class FaithTrack extends HBox {
         hBox.setScaleX(new FaithTile().getScaleX() / 1.5);
         hBox.setScaleY(new FaithTile().getScaleX() / 1.5);
         for (int i = 0; i <= track.getMaxFaith(); i++) {
-            if(i % 10 >= 8 || i % 10 <= 1) {
+            if (i % 10 >= 8 || i % 10 <= 1) {
                 FaithTile tile = new FaithTile(i, yellowTilesIndexes.contains(i), sectionTiles.contains(i), sectionEnds.contains(i));
                 hBox.getChildren().add(tile);
                 tiles.put(i, tile);
-            }
-            else if(i % 10 == 4 || i % 10 == 5) {
+            } else if (i % 10 == 4 || i % 10 == 5) {
                 hBox.getChildren().add(new FaithTile());
             }
         }
@@ -111,7 +108,7 @@ public class FaithTrack extends HBox {
         vm.getFaithTrack().ifPresent(track -> {
             Map<Integer, ReducedVaticanSection> sections = track.getVaticanSections();
 
-            // display pope's favors
+            /* Display pope's favors */
             int i = 1;
             for (ReducedVaticanSection section : sections.values().stream().sorted(Comparator.comparingInt(ReducedVaticanSection::getFaithPointsEnd)).toList()) {
                 HBox hbox = new HBox();
@@ -139,7 +136,7 @@ public class FaithTrack extends HBox {
                 Text pointsText = new Text(String.valueOf(section.getVictoryPoints()));
                 pointsText.setScaleX(1.8);
                 pointsText.setScaleY(1.8);
-                if(gotBonus && isActivated)
+                if (gotBonus && isActivated)
                     favorPane.getChildren().add(pointsText);
                 hbox.getChildren().add(favorPane);
                 popesFavors.getChildren().add(hbox);
@@ -164,8 +161,8 @@ public class FaithTrack extends HBox {
     /**
      * Updates the position of Lorenzo's faith marker.
      *
-     * @param blackPoints   the updated Lorenzo's faith points
-     * @param oldPoints        Lorenzo's faith points before moving (used to remove marker from old tile)
+     * @param blackPoints the updated Lorenzo's faith points
+     * @param oldPoints   Lorenzo's faith points before moving (used to remove marker from old tile)
      */
     public void updateBlackMarker(int blackPoints, int oldPoints) {
         if (oldPoints >= 0) tiles.get(oldPoints).removeBlackMarker();

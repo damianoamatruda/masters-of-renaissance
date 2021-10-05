@@ -16,7 +16,7 @@ public class MainMenuController extends GuiController {
 
     @FXML
     private BorderPane canvas;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);

@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
-    
+
     public GuiController() {
         super(Gui.getInstance().getUi());
         Gui.getInstance().setController(this);
@@ -26,15 +26,11 @@ public abstract class GuiController extends UiController implements Initializabl
     /**
      * Sets the next state based on the following algorithm:
      * <p>
-     * Differentiation between setup phase and turn phase
-     *  -> check isSetupDone to know which phase to limit the choice to
-     * If the setup phase is not concluded:
-     *  -> check whether the leader setup still needs to be done,
-     *     else go to the resource setup, which will internally choose
-     *         whether it still needs to be done or whether it has to simply show the waiting screen
-     * If the setup phase is concluded:
-     *  -> check whether the current player and the local player
-     *     are the same player and switch accordingly
+     * Differentiation between setup phase and turn phase -> check isSetupDone to know which phase to limit the choice
+     * to If the setup phase is not concluded: -> check whether the leader setup still needs to be done, else go to the
+     * resource setup, which will internally choose whether it still needs to be done or whether it has to simply show
+     * the waiting screen If the setup phase is concluded: -> check whether the current player and the local player are
+     * the same player and switch accordingly
      */
     protected void setNextState() {
         if (vm.isGameEnded())
@@ -42,12 +38,12 @@ public abstract class GuiController extends UiController implements Initializabl
         else
             vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (vm.isSetupDone() && vm.getCurrentPlayer().isPresent() &&
-                        !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
+                        !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // Setup is done
                     if (vm.localPlayerIsCurrent())
                         gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
                     else
                         gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
-                } else if (!vm.isSetupDone()) // setup not done
+                } else if (!vm.isSetupDone()) // Setup is not done
                     if (isLeaderSetupAvailable())
                         gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
                     else if (isLocalLeaderSetupDone())
@@ -157,14 +153,14 @@ public abstract class GuiController extends UiController implements Initializabl
         super.on(event);
 
         gui.reloadScene("Object not owned",
-                String.format("%s with ID %d isn't yours. Are you sure you typed that right?",
+                String.format("%s with ID %d is not yours. Are you sure you typed that right?",
                         event.getObjectType(), event.getId()));
     }
 
     @Override
     public void on(ErrReplacedTransRecipe event) {
         super.on(event);
-        
+
         if (event.isIllegalDiscardedOut())
             gui.reloadScene("Invalid transfer of resources",
                     "The payment's cost is erroneously specified, please choose all and only the needed resources.");
@@ -188,13 +184,13 @@ public abstract class GuiController extends UiController implements Initializabl
         switch (event.getReason()) {
             case EXCLUDED -> gui.reloadScene("Invalid transfer of resources",
                     String.format("Invalid %s%s: excluded resource specified.",
-                        direction, isReplacement));
+                            direction, isReplacement));
             case ILLEGAL_NON_STORABLE -> gui.reloadScene("Invalid transfer of resources",
                     String.format("Invalid %s%s: non-storable resource specified in container map.",
-                        direction, isReplacement));
+                            direction, isReplacement));
             case ILLEGAL_STORABLE -> gui.reloadScene("Invalid transfer of resources",
                     String.format("Invalid %s%s: storable resource specified as non-storable.",
-                        direction, isReplacement));
+                            direction, isReplacement));
             case NEGATIVE_VALUES -> gui.reloadScene("Invalid transfer of resources",
                     String.format("Invalid %s%s: negative quantity specified.",
                             direction, isReplacement));

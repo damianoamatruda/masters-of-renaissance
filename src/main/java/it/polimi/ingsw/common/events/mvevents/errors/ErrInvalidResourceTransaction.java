@@ -9,13 +9,6 @@ public class ErrInvalidResourceTransaction extends ViewEvent {
     private final boolean isReplacement;
     private final ReplacementReason reason;
 
-    public enum ReplacementReason {
-        NEGATIVE_VALUES,
-        ILLEGAL_STORABLE,
-        ILLEGAL_NON_STORABLE,
-        EXCLUDED
-    }
-
     /**
      * @param view
      * @param isInput       whether the error refers to the transaction's input
@@ -35,16 +28,25 @@ public class ErrInvalidResourceTransaction extends ViewEvent {
     public boolean isInput() {
         return isInput;
     }
+
     /**
-     * @return 
+     * @return
      */
     public boolean isReplacement() {
         return isReplacement;
     }
+
     /**
      * @return
      */
     public ReplacementReason getReason() {
         return reason;
+    }
+
+    public enum ReplacementReason {
+        NEGATIVE_VALUES,
+        ILLEGAL_STORABLE,
+        ILLEGAL_NON_STORABLE,
+        EXCLUDED
     }
 }

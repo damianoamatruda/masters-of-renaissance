@@ -1,4 +1,5 @@
 # Table of Contents
+
 1. [Communication protocol documentation](#communication-protocol-documentation)
     1. [Common data structures](#common-data-structures)
 2. [NetEvents - Network level client-server connection management](#netevents---network-level-client-server-connection-management)
@@ -56,32 +57,41 @@
         6. [ErrResourceTransfer](#errresourcetransfer)
 
 # Communication protocol documentation
-This document describes the client-server communication protocol used by the implementation of the Masters of Renaissance game written by group AM49.
+
+This document describes the client-server communication protocol used by the implementation of the Masters of
+Renaissance game written by group AM49.
 
 All messages are encoded using the GSON library and follow therefore the JSON specification, language-wise.  
-Every value shown in the messages is to be taken as an example, having been written only to show the messages' structure.  
+Every value shown in the messages is to be taken as an example, having been written only to show the messages'
+structure.
 
 Important details about state update messages in [MVEvents - State events](#mvevents---state-events).
 
-`UpdateAction` messages confirm the success of the requested action and mark the end of the state update messages stream.
+`UpdateAction` messages confirm the success of the requested action and mark the end of the state update messages
+stream.
 
 Error messages are unicast to the client that sent the illegal request.
 
 ### Common data structures
+
 Two data structures that are often used inside messages are:
+
 1. ***Resource maps*** - correlate a string, representing a resource type, with an integer, corresponding to its
    quantity
 2. ***Resource container maps*** - correlate a container ID (expressed as an integer) with a resource map, corresponding
    to the resource(s) to add to/remove from it
 
-
 # NetEvents - Network level client-server connection management
-To make the protocol more resilient and situation-aware, `NetEvents` have been separated from application-level events.  
 
-The player, when starting the client, can choose whether to connect to the server (singleplayer and multiplayer playmodes) or playing locally (singleplayer only).  
-In both cases the messages sent are the same and happen in the exact same way: the network side of the project has been implemented to allow changing the transport layer transparently to both the client and the server.
+To make the protocol more resilient and situation-aware, `NetEvents` have been separated from application-level events.
+
+The player, when starting the client, can choose whether to connect to the server (singleplayer and multiplayer
+playmodes) or playing locally (singleplayer only).  
+In both cases the messages sent are the same and happen in the exact same way: the network side of the project has been
+implemented to allow changing the transport layer transparently to both the client and the server.
 
 ## Connecting to the server
+
 Upon connection, a handshake takes place:
 
 ```
@@ -96,13 +106,17 @@ Upon connection, a handshake takes place:
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
+
 **ReqWelcome (client)**
+
 ```json
 {
   "type": "ReqWelcome"
 }
 ```
+
 **ResWelcome (server)**
+
 ```json
 {
   "type": "ResWelcome"
@@ -110,13 +124,16 @@ Upon connection, a handshake takes place:
 ```
 
 ## Closing the connection
+
 The event of the connection closing can happen for three reasons:
+
 1. The player quits the game
 2. The client crashes
 3. The server crashes
 
-Quitting the client sends one final application-level message to the server (see [Quitting the game](#quitting-the-game)), allowing the server to distinguish between the situations.
-After the server has executed the quit routine, the sockets can now be closed.  
+Quitting the client sends one final application-level message to the server (
+see [Quitting the game](#quitting-the-game)), allowing the server to distinguish between the situations. After the
+server has executed the quit routine, the sockets can now be closed.  
 A `ReqGoodbye` event is sent by the client:
 
 ```json
@@ -134,19 +151,25 @@ A `ResGoodbye` message is sent by the server as an acknowledgement:
 Only then the network sockets is closed by both parties.
 
 ## ErrServerUnavailable
-This message is used internally by the network layer to notify the application layer of the fact that the connection with the server was closed by the server itself.
+
+This message is used internally by the network layer to notify the application layer of the fact that the connection
+with the server was closed by the server itself.
 
 **ErrServerUnavailable**
+
 ```json
 { "type": "ErrServerUnavailable" }
 ```
 
 ## Reconnection
+
 The player is allowed to connect back to the server and join the game they were previously in.  
 The reconnection routine at the network level is exactly the same as a normal connection.
 
 ## Heartbeat
-The server checks whether the clients are still alive using both normal messages and heartbeat messages (the timeout resets with any kind of message).  
+
+The server checks whether the clients are still alive using both normal messages and heartbeat messages (the timeout
+resets with any kind of message).  
 Heartbeat messages are sent at regular intervals.
 
 ```
@@ -161,13 +184,17 @@ Heartbeat messages are sent at regular intervals.
      ┝━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━►│
      │                                │
 ```
+
 **ReqHeartbeat (server)**
+
 ```json
 {
   "type": "ReqHeartbeat"
 }
 ```
+
 **ResHeartbeat (client)**
+
 ```json
 {
   "type": "ResHeartbeat"
@@ -175,6 +202,7 @@ Heartbeat messages are sent at regular intervals.
 ```
 
 ## Errors
+
 Broken (unparsable) messages are signaled with a `ErrProtocol` messsage containing information about the error itself:
 
 ```json
@@ -184,9 +212,8 @@ Broken (unparsable) messages are signaled with a `ErrProtocol` messsage containi
 }
 ```
 
-
-
 # Application level client-server connection management
+
 A summary of the requirements highlighting the relevant parts is reported below:
 > - On player connection: the player is automatically added to the game currently being filled. If there is no game in its starting phase, a new one is created.
 > - The player starting a new game chooses how many players have to join before the game can start.
@@ -196,7 +223,7 @@ A summary of the requirements highlighting the relevant parts is reported below:
 The following specification for the additional feature "Multiple Games" is taken into account in the communication
 protocol's design:
 > - Only one waiting room is used to manage the players who join the server.
-> - Players who disconnect can successively reconnect to continue the game. While a player isn't connected, the game continues skipping the player's turns.
+> - Players who disconnect can successively reconnect to continue the game. While a player is not connected, the game continues skipping the player's turns.
 
 Given those requirements, the communication at connection time has been modeled the following way.
 
@@ -225,14 +252,18 @@ necessary to [handle the choice of the number of players](#choosing-the-number-o
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
+
 **ReqJoin (client)**
+
 ```json
 {
   "type": "ReqJoin",
   "nickname": "NicknameA"
 }
 ```
+
 **UpdateBookedSeats (server)**
+
 ```json
 {
   "type": "UpdateBookedSeats",
@@ -240,7 +271,9 @@ necessary to [handle the choice of the number of players](#choosing-the-number-o
   "canPrepareNewGame":"NicknameA"
 }
 ```
+
 **ErrNickname (server)**
+
 ```json
 {
   "type": "ErrNickname",
@@ -254,7 +287,9 @@ players to join before its start, sending notifications allows the players who a
 seats are left, therefore getting a sense for how much waiting time there's left.
 
 ## Choosing the number of players
-When a player is assigned by the server as the first of a new game, they have to decide the number of players required to start it.
+
+When a player is assigned by the server as the first of a new game, they have to decide the number of players required
+to start it.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -273,21 +308,27 @@ When a player is assigned by the server as the first of a new game, they have to
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqNewGame (client)**
+
 ```json
 {
   "type": "ReqNewGame",
   "playersCount": 3
 }
 ```
+
 **UpdateJoinGame (server)**
+
 ```json
 {
   "type": "UpdateJoinGame",
   "playersCount": 3
 }
 ```
+
 **ErrNewGame (server)**
+
 ```json
 {
   "type": "ErrNewGame",
@@ -305,9 +346,11 @@ See the [Game start](#game-start) section for information on how the protocol de
 joining a game.
 
 ## Quitting the game
+
 When the player quits the game, the client will send a `ReqQuit` message:
 
 **ReqQuit (client)**
+
 ```json
 {
   "type":"ReqQuit"
@@ -315,7 +358,8 @@ When the player quits the game, the client will send a `ReqQuit` message:
 ```
 
 The server will then execute an internal routine that will allow the player to reconnect at a later time and join back
-the game they were in, notifying at the same time the other players of the game of the event (see [UpdatePlayerStatus](#updateplayerstatus)).  
+the game they were in, notifying at the same time the other players of the game of the event (
+see [UpdatePlayerStatus](#updateplayerstatus)).  
 A `ResQuit` message is sent to the client to notify it about the closing routine being completed.
 
 **ResQuit (server)**
@@ -333,9 +377,9 @@ The network-level closing routine will then start (see [Closing the connection](
 A player can reconnect to a game they left, if it's still ongoing.  
 This is done at connection time by choosing the same nickname as they previously had.
 
-When reconnecting, the server will send all the necessary game data for the client to cache (see [UpdateGame](#updategame)). The
-client will therefore be able to judge what phase of the game is currently in place (setup, turns, who the current
-player is, etc.).
+When reconnecting, the server will send all the necessary game data for the client to cache (
+see [UpdateGame](#updategame)). The client will therefore be able to judge what phase of the game is currently in
+place (setup, turns, who the current player is, etc.).
 
 # VCEvents - Player setup game phase
 
@@ -387,14 +431,18 @@ Errors related to this action are:
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqChooseLeaders (client)**
+
 ```json
 {
   "type": "ReqChooseLeaders",
   "leaders": [ 3, 15 ]
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -418,7 +466,8 @@ Errors related to this action are:
 After choosing the leader cards the players is prompted to choose their starting resources, following the configuration
 file's settings.
 
-The client is sent the quantity of resources and the resource types the player has to choose from (see [UpdateGame](#updategame)).  
+The client is sent the quantity of resources and the resource types the player has to choose from (
+see [UpdateGame](#updategame)).  
 Every player will have to choose the resources before the game's turns can start, thereby concluding the setup phase.
 
 The `shelves` field is a standard [resource container map](#common-data-structures)
@@ -428,7 +477,7 @@ Error messages are fired in these situations:
 1. `ErrAction` message, with reason `LATE_SETUP_ACTION` - the request message is sent too late (the setup phase is
    already concluded)
 2. `ErrObjectNotOwned` - the request message contains resource container IDs that are not owned the player
-3. `ErrNoSuchEntity` - a resource type that doesn't exist is specified
+3. `ErrNoSuchEntity` - a resource type that does not exist is specified
 4. `ErrInitialChoice` - the resurces were already chosen
 5. `ErrResourceTransfer` - a number of resources exceeding the shelf's capacity is requested to be added to a shelf
 
@@ -465,7 +514,9 @@ Error messages are fired in these situations:
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqChooseResources (client)**
+
 ```json
 {
   "type": "ReqChooseResources",
@@ -475,7 +526,9 @@ Error messages are fired in these situations:
   ]
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -483,14 +536,18 @@ Error messages are fired in these situations:
   "player": "NicknameA"
 }
 ```
+
 **ErrAction (server)**
+
 ```json
 {
   "type": "ErrChooseResources",
   "msg": "Cannot choose 2 starting resources, only 1 available."
 }
 ```
+
 **ErrInitialChoice (server)**
+
 ```json
 {
   "type": "ErrInitialChoice",
@@ -499,9 +556,8 @@ Error messages are fired in these situations:
 }
 ```
 
-
-
 # VCEvents - Turns game phase
+
 After all players have gone through the setup phase, the server will start the turn loop.
 
 The messages in this section can be differentiated into:
@@ -510,18 +566,21 @@ The messages in this section can be differentiated into:
 2. [Secondary actions](#secondary-actions), which can be repeated within the player's turn
 3. [State messages](#state-messages), which update the local caches' state to game the server's
 
-
-
 # Main actions
+
 During their turn, the player has to choose which action to take among these:
+
 1. Getting resources from the market
 2. Buying a development card
 3. Activating the production
 
-Since the player may want to make a secondary move after the main action, the server waits for a `TurnEnd` message before switching to the next player.
+Since the player may want to make a secondary move after the main action, the server waits for a `TurnEnd` message
+before switching to the next player.
 
 ## Getting resources from the market
+
 The following needs to be specified:
+
 1. Which row/column the player wants to take the resources from
 2. For each replaceable resource, which resource type to convert it to (if applicable)
 3. For each resource (its type considered after the leaders' processing), which shelf to use to store it
@@ -537,8 +596,9 @@ output, how many replaceable resources (of the available ones) to use.
 The `replacement` field is a standard [resource map](#common-data-structures)
 The `shelves` field is a standard [resource container map](#common-data-structures)
 
-Errors may arise from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding enough resources.
-See [Shared Errors](#shared-errors) for more details on the errors that may be generated by the request.
+Errors may arise from fitting the resources in the shelves, either by specifying the wrong shelf or by not discarding
+enough resources. See [Shared Errors](#shared-errors) for more details on the errors that may be generated by the
+request.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -575,7 +635,9 @@ See [Shared Errors](#shared-errors) for more details on the errors that may be g
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqTakeFromMarket (client)**
+
 ```json
 {
   "type": "ReqTakeFromMarket",
@@ -588,7 +650,9 @@ See [Shared Errors](#shared-errors) for more details on the errors that may be g
   ]
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -598,7 +662,9 @@ See [Shared Errors](#shared-errors) for more details on the errors that may be g
 ```
 
 ## Buying a development card
+
 The following information is needed when buying a development card:
+
 1. The row and column of the card to identify it in the grid
 2. The slot to place the card into
 3. For each resource that has to be paid, the shelf (or strongbox) to take it from
@@ -606,6 +672,7 @@ The following information is needed when buying a development card:
 The `resContainers` field is a standard [resource container map](#common-data-structures)
 
 An `ErrBuyDevCard` message signals:
+
 1. the selected color/level refer to an empty deck of cards (`isStackEmpty` is set to true)
 2. the card's level does not allow the card to be placed in the selected slot (`isStackEmpty` is set to false)
 
@@ -613,7 +680,9 @@ An `ErrCardRequirements` message signals which cost requirements the player is m
 
 The `missingResources` field is a standard [resource map](#common-data-structures)
 
-Other possible errors include not identifying a valid card/slot, not satisfying placement requirements (the card's level isn't one above the level of the card it is being placed onto) and not specifying correctly the resource transaction's details.  
+Other possible errors include not identifying a valid card/slot, not satisfying placement requirements (the card's level
+is not one above the level of the card it is being placed onto) and not specifying correctly the resource transaction's
+details.  
 See [Shared Errors](#shared-errors) for more details on the errors that may be generated by the request.
 
 ```
@@ -657,7 +726,9 @@ See [Shared Errors](#shared-errors) for more details on the errors that may be g
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqBuyDevCard (client)**
+
 ```json
 {
   "type": "ReqBuyDevCard",
@@ -670,7 +741,9 @@ See [Shared Errors](#shared-errors) for more details on the errors that may be g
   ]
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -678,14 +751,18 @@ See [Shared Errors](#shared-errors) for more details on the errors that may be g
   "player": "NicknameA"
 }
 ```
+
 **ErrBuyDevCard (server)**
+
 ```json
 {
   "type": "ErrBuyDevCard",
   "isStackEmpty": true
 }
 ```
+
 **ErrCardRequirements (server)**
+
 ```json
 {
   "type": "ErrCardRequirements",
@@ -695,16 +772,22 @@ See [Shared Errors](#shared-errors) for more details on the errors that may be g
 ```
 
 ## Activating productions
+
 The following information is needed when activating productions:
+
 1. Which productions to activate
-2. For each production, a 
+2. For each production, a
 3. Each non-storable resource chosen as a replacement in the input
 4. The storable and non-storable output replacements
 
-The `inputContainers` field is a standard [resource container map](#common-data-structures) detailing all (default and replaced) resources in input. The non-storable replacements have to be specified by themselves in the `inputNonStorableRep` field (which is a standard [resource map](#common-data-structures)).
-The `outputRep` field specifies the replacements pertaining to the output side of the productions (it's a standard [resource map](#common-data-structures) since all output goes to the player's strongbox).
+The `inputContainers` field is a standard [resource container map](#common-data-structures) detailing all (default and
+replaced) resources in input. The non-storable replacements have to be specified by themselves in
+the `inputNonStorableRep` field (which is a standard [resource map](#common-data-structures)). The `outputRep` field
+specifies the replacements pertaining to the output side of the productions (it's a
+standard [resource map](#common-data-structures) since all output goes to the player's strongbox).
 
-Errors may originate from issues with referencing inexistent/not owned objects, resource replacements and resource transfers.  
+Errors may originate from issues with referencing inexistent/not owned objects, resource replacements and resource
+transfers.  
 See [Shared Errors](#shared-errors) for more details on a specific error.
 
 ```
@@ -768,7 +851,9 @@ See [Shared Errors](#shared-errors) for more details on a specific error.
   ]
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -778,9 +863,12 @@ See [Shared Errors](#shared-errors) for more details on a specific error.
 ```
 
 ## Ending the turn
-Since the server cannot at any point assume that the player has finished choosing their moves (see [secondary actions](#secondary-actions)), an explicit message has to be sent.
 
-If a player ends their turn early (without having done a mandatory action) an `ErrAction` with `"reason": "EARLY_TURN_END"` is generated.
+Since the server cannot at any point assume that the player has finished choosing their moves (
+see [secondary actions](#secondary-actions)), an explicit message has to be sent.
+
+If a player ends their turn early (without having done a mandatory action) an `ErrAction`
+with `"reason": "EARLY_TURN_END"` is generated.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -802,11 +890,15 @@ If a player ends their turn early (without having done a mandatory action) an `E
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqEndTurn (client)**
+
 ```json
 { "type": "ReqEndTurn" }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -815,18 +907,19 @@ If a player ends their turn early (without having done a mandatory action) an `E
 }
 ```
 
-
-
 # Secondary actions
+
 Secondary moves can be performed as often as the player wants and at any point of the turn. They are:
 
 1. Swapping the content of the player's shelves
 2. Activating/discarding a leader card
 
 ## Swapping two shelves
+
 During their turn, the player can decide to reorder the content of their warehouse's shelves and leader depots.
 
-This is technically only useful when taking resources from the market, as no other action refills the shelves, but it was left as an always-possible operation to improve the gameplay experience.
+This is technically only useful when taking resources from the market, as no other action refills the shelves, but it
+was left as an always-possible operation to improve the gameplay experience.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -854,7 +947,9 @@ This is technically only useful when taking resources from the market, as no oth
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqSwapShelves (client)**
+
 ```json
 {
   "type": "ReqSwapShelves",
@@ -862,7 +957,9 @@ This is technically only useful when taking resources from the market, as no oth
   "shelf2": 3
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -872,9 +969,12 @@ This is technically only useful when taking resources from the market, as no oth
 ```
 
 ## Leader actions
-During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader cards.
 
-To activate or discard a leader the server needs to know which card the player wants to act on and which action to perform.
+During their turn, in addition to one of the main three actions, a player can choose to discard or activate their leader
+cards.
+
+To activate or discard a leader the server needs to know which card the player wants to act on and which action to
+perform.
 
 ### Activating a leader card
 
@@ -904,7 +1004,9 @@ To activate or discard a leader the server needs to know which card the player w
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqLeaderAction (client)**
+
 ```json
 {
   "type": "ReqLeaderAction",
@@ -912,7 +1014,9 @@ To activate or discard a leader the server needs to know which card the player w
   "isActivate": true
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -920,7 +1024,9 @@ To activate or discard a leader the server needs to know which card the player w
   "player": "NicknameA"
 }
 ```
+
 **ErrCardRequirements (server)**
+
 ```json
 {
   "type": "ErrCardRequirements",
@@ -965,7 +1071,9 @@ If a leader is activated while already active no error is raised, since it's not
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **ReqLeaderAction (client)**
+
 ```json
 {
   "type": "ReqLeaderAction",
@@ -973,7 +1081,9 @@ If a leader is activated while already active no error is raised, since it's not
   "isActivate": false
 }
 ```
+
 **UpdateAction (server)**
+
 ```json
 {
   "type": "UpdateAction",
@@ -981,7 +1091,9 @@ If a leader is activated while already active no error is raised, since it's not
   "player": "NicknameA"
 }
 ```
+
 **ErrActiveLeaderDiscarded (server)**
+
 ```json
 {
   "type": "ErrActiveLeaderDiscarded"
@@ -990,17 +1102,18 @@ If a leader is activated while already active no error is raised, since it's not
 
 The `ErrActiveLeaderDiscarded` error message is sent by the server when a player tries to discard an active leader card.
 
-
-
 # MVEvents - State events
+
 These messages are used to update the clients' caches so that the data is synchronized with the server's.
 
-State update messages are sent autonomously by the updated entities. Clients cannot assume that a state update message will be sent or the timing it will be sent with (ordering with respect to other messages, etc.).  
+State update messages are sent autonomously by the updated entities. Clients cannot assume that a state update message
+will be sent or the timing it will be sent with (ordering with respect to other messages, etc.).  
 State update messages are broadcast unless specified.
 
 IDs reference the data given in [game start](#game-start).
 
 ## UpdateActionToken
+
 Notifies clients of the activation of an action token, sending its ID.
 
 ```
@@ -1012,7 +1125,9 @@ Notifies clients of the activation of an action token, sending its ID.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateActionToken (server)**
+
 ```json
 {
   "type": "UpdateActionToken",
@@ -1021,6 +1136,7 @@ Notifies clients of the activation of an action token, sending its ID.
 ```
 
 ## UpdateActivateLeader
+
 Notifies clients when a leader card is activated.
 
 ```
@@ -1032,7 +1148,9 @@ Notifies clients when a leader card is activated.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateActivateLeader (server)**
+
 ```json
 {
   "type": "UpdateActivateLeader",
@@ -1041,6 +1159,7 @@ Notifies clients when a leader card is activated.
 ```
 
 ## UpdateCurrentPlayer
+
 Notifies clients of who the current player is from the moment the message is sent.
 
 ```
@@ -1052,7 +1171,9 @@ Notifies clients of who the current player is from the moment the message is sen
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateCurrentPlayer (server)**
+
 ```json
 {
   "type": "UpdateCurrentPlayer",
@@ -1061,9 +1182,11 @@ Notifies clients of who the current player is from the moment the message is sen
 ```
 
 ## UpdateDevCardGrid
+
 Notifies the clients of an update in the development card grid's state.
 
-The list of IDs are the respective top cards of each deck, the level of which is the card's position in the list and the color of which is specified in the enclosing map.
+The list of IDs are the respective top cards of each deck, the level of which is the card's position in the list and the
+color of which is specified in the enclosing map.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -1074,7 +1197,9 @@ The list of IDs are the respective top cards of each deck, the level of which is
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateDevCardGrid (server)**
+
 ```json
 {
   "type": "UpdateDevCardGrid",
@@ -1131,7 +1256,9 @@ Notifies clients of a player progressing on the faith track.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateFaithTrack (server)**
+
 ```json
 {
   "type": "UpdateFaithTrack",
@@ -1142,11 +1269,16 @@ Notifies clients of a player progressing on the faith track.
 ```
 
 ## UpdateGame
+
 As the game starts, the server notifies all players of the event.
 
 ### Caching
-The server sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to answer requests without the server's intervention.  
-Caching allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an index that's out of bounds, the client is able to catch the error before sending the request to the server, reducing network and server loads and improving the game's responsiveness.
+
+The server sends the game's state to be cached by the clients. Caching parts of the game's state allows the clients to
+answer requests without the server's intervention.  
+Caching allows partial checks to be preemptively (but not exclusively) done client side: if the player specifies an
+index that's out of bounds, the client is able to catch the error before sending the request to the server, reducing
+network and server loads and improving the game's responsiveness.
 
 ### Parameters and indices
 
@@ -1165,7 +1297,7 @@ Since the connection and reconnection phases are very delicate, a modular approa
 monolithic message.  
 If a modular approach were to be chosen, the clients' state-switching logic would become unmanageable, needing to manage
 asynchronous and independent state messages to handle transitions that depend on the presence of the data itself (some
-of these transitions would in fact be impossible to model if the data wasn't sent all in the same message).
+of these transitions would in fact be impossible to model if the data was not sent all in the same message).
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -1176,7 +1308,9 @@ of these transitions would in fact be impossible to model if the data wasn't sen
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
+
 **UpdateGame (server)**
+
 ```json
 {
   "type": "UpdateGame",
@@ -1347,7 +1481,9 @@ Notifies the clients of the end of the game, detailing the winner player.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateGameEnd (server)**
+
 ```json
 {
   "type": "UpdateGameEnd",
@@ -1356,6 +1492,7 @@ Notifies the clients of the end of the game, detailing the winner player.
 ```
 
 ## UpdateLastRound
+
 Notifies the clients of the current round being the last.
 
 ```
@@ -1367,7 +1504,9 @@ Notifies the clients of the current round being the last.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateLastRound (server)**
+
 ```json
 {
   "type": "UpdateLastRound"
@@ -1375,9 +1514,14 @@ Notifies the clients of the current round being the last.
 ```
 
 ## UpdateLeadersHand
-A player's leader cards are hidden from the other players until activated. This message is therefore sent only to the owner of the cards, whom can see their IDs.  
-The other players will receive a [UpdateLeadersHandCount](#updateleadershandcount) event, which only contains the number of cards owned by the other player.  
-Upon receiving a [UpdateLeadersHand](#updateleadershand) event, the non-owner players will know that the currently-playing player has activated a card and its ID. They can therefore add the ID to the current player's leader cards hand.
+
+A player's leader cards are hidden from the other players until activated. This message is therefore sent only to the
+owner of the cards, whom can see their IDs.  
+The other players will receive a [UpdateLeadersHandCount](#updateleadershandcount) event, which only contains the number
+of cards owned by the other player.  
+Upon receiving a [UpdateLeadersHand](#updateleadershand) event, the non-owner players will know that the
+currently-playing player has activated a card and its ID. They can therefore add the ID to the current player's leader
+cards hand.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -1388,7 +1532,9 @@ Upon receiving a [UpdateLeadersHand](#updateleadershand) event, the non-owner pl
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateLeadersHand (server)**
+
 ```json
 {
   "type": "UpdateLeadersHand",
@@ -1398,7 +1544,9 @@ Upon receiving a [UpdateLeadersHand](#updateleadershand) event, the non-owner pl
 ```
 
 ## UpdateLeadersHandCount
-Given the explanation of [UpdateLeadersHand](#updateleadershand), this message contains the number of leader card a player is holding.  
+
+Given the explanation of [UpdateLeadersHand](#updateleadershand), this message contains the number of leader card a
+player is holding.  
 This allows for the cards' IDs to remain hidden while informing clients of events such as a card being discarded.
 
 ```
@@ -1410,6 +1558,7 @@ This allows for the cards' IDs to remain hidden while informing clients of event
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateLeadersHandCount (server)**
 
 ```json
@@ -1436,7 +1585,9 @@ changed.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateMarket (server)**
+
 ```json
 {
   "type": "UpdateMarket",
@@ -1464,7 +1615,9 @@ Notifications about players connecting/disconnecting from a game are sent via th
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
+
 **UpdatePlayerStatus (server)**
+
 ```json
 {
   "type": "UpdatePlayerStatus",
@@ -1474,6 +1627,7 @@ Notifications about players connecting/disconnecting from a game are sent via th
 ```
 
 ## UpdateResourceContainer
+
 This message details the current state of the resource container with the specified ID.
 
 Strongboxes have size set to -1.  
@@ -1488,7 +1642,9 @@ If there's no binding resource the `boundedResType` field is not specified.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateResourceContainer (server)**
+
 ```json
 {
   "type": "UpdateResourceContainer",
@@ -1504,7 +1660,9 @@ If there's no binding resource the `boundedResType` field is not specified.
 ```
 
 ## UpdateSetupDone
-When every player has chosen their leader cards and starting resources the conclusion of the setup phase is notified to the clients.
+
+When every player has chosen their leader cards and starting resources the conclusion of the setup phase is notified to
+the clients.
 
 ```
  ┌────────┒                      ┌────────┒ 
@@ -1515,7 +1673,9 @@ When every player has chosen their leader cards and starting resources the concl
      │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
      │                                │
 ```
+
 **UpdateSetupDone (server)**
+
 ```json
 {
   "type": "UpdateSetupDone"
@@ -1523,6 +1683,7 @@ When every player has chosen their leader cards and starting resources the concl
 ```
 
 ## UpdateVaticanSection
+
 This message contains the list of players who benefit from the vatican section's bonus points.
 
 ```
@@ -1534,7 +1695,9 @@ This message contains the list of players who benefit from the vatican section's
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateVaticanSection (server)**
+
 ```json
 {
   "type": "UpdateVaticanSection",
@@ -1557,7 +1720,9 @@ The victory points' quantity is updated in real time.
                │◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┥
                │                                │
 ```
+
 **UpdateVictoryPoints (server)**
+
 ```json
 {
   "type": "UpdateVictoryPoints",
@@ -1566,15 +1731,16 @@ The victory points' quantity is updated in real time.
 }
 ```
 
-
-
 # Shared Errors
+
 Error messages that are sent in multiple occasions are reported here.  
 Any successive mentions of these messages refer to this section for syntax and examples.
 
 ## ErrAction
+
 This message signals to the client that the action is being requested at the wrong time.  
 The `reason` field offers a more detailed explanation:
+
 1. `LATE_SETUP_ACTION` - a setup request is sent after the setup phase is concluded
 2. `EARLY_MANDATORY_ACTION` - an action request (non-setup) is sent during the setup phase
 3. `LATE_MANDATORY_ACTION` - a action request (non-setup) is sent for the second time during a player's turn
@@ -1606,6 +1772,7 @@ The `originalEntity` field describes the kind of entity the request pertained to
 The message also reports the `id` or the `code` string of the missing object.
 
 **ErrNoSuchEntity (server)**
+
 ```json
 {
   "type": "ErrNoSuchEntity",
@@ -1616,9 +1783,12 @@ The message also reports the `id` or the `code` string of the missing object.
 ```
 
 ## ErrObjectNotOwned
-When a request message from a client references the ID of an object that is not owned by the player, an `ErrObjectNotOwned` message is sent by the server, detailing the erroneus ID and the object's kind.
+
+When a request message from a client references the ID of an object that is not owned by the player,
+an `ErrObjectNotOwned` message is sent by the server, detailing the erroneus ID and the object's kind.
 
 **ErrObjectNotOwned (server)**
+
 ```json
 {
   "type": "ErrObjectNotOwned",
@@ -1628,14 +1798,17 @@ When a request message from a client references the ID of an object that is not 
 ```
 
 ## ErrReplacedTransRecipe
+
 This message signals a discrepancy between the available and specified numbers of resources to be put in a container.
 
-The `isInput` field indicates where in the recipe (input/output) the error happened.
-The `replacedCount` field details the number of available resources in the transaction after the replacements have been factored in.  
+The `isInput` field indicates where in the recipe (input/output) the error happened. The `replacedCount` field details
+the number of available resources in the transaction after the replacements have been factored in.  
 The `shelvesChoiceResCount` field details the number of resources requested to be put in the container.  
-The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be reconduced to illegally discarded resources in output.
+The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be reconduced to illegally discarded resources
+in output.
 
 **ErrReplacedTransRecipe (server)**
+
 ```json
 {
   "type": "ErrReplacedTransRecipe",
@@ -1648,10 +1821,12 @@ The `isIllegalDiscardedOut` field specifies whether the discrepancy is to be rec
 ```
 
 ## ErrInvalidResourceTransaction
+
 This message signals an error when validating a resource transaction request.  
 The issue might lie in either of the shelf maps or the replacement maps.
 
-The `isInput` field distinguishes between the transaction's input and output resources, while the `isReplacement` field distinguishes between replacements and shelf maps.  
+The `isInput` field distinguishes between the transaction's input and output resources, while the `isReplacement` field
+distinguishes between replacements and shelf maps.  
 The `reason` field details the reason for which the request was denied, and can be one of:
 
 1. `NEGATIVE_VALUES` - maps contain negative resource quantities
@@ -1660,6 +1835,7 @@ The `reason` field details the reason for which the request was denied, and can 
 4. `EXCLUDED` - a forbidden resource is used as a replacement
 
 **ErrResourceReplacement (server)**
+
 ```json
 {
   "type": "ErrResourceReplacement",
@@ -1670,15 +1846,20 @@ The `reason` field details the reason for which the request was denied, and can 
 ```
 
 ## ErrResourceTransfer
+
 This error signals an error with a resource transfer request.
 
 Reasons included in the message are:
+
 1. `BOUNDED_RESTYPE_DIFFER` - a resource is trying to be added/removed to a shelf that's bound to another resource type
 2. `NON_STORABLE` - a non-storable resource is trying to be added/removed to a resource container
-3. `CAPACITY_REACHED` - the resource transfer requests that the number of resulting resources in the container is either less than zero or greater than the container's capacity
-4. `DUPLICATE_BOUNDED_RESOURCE` - a resource is trying to be added to a shelf while there's another shelf bound to the same resource type
+3. `CAPACITY_REACHED` - the resource transfer requests that the number of resulting resources in the container is either
+   less than zero or greater than the container's capacity
+4. `DUPLICATE_BOUNDED_RESOURCE` - a resource is trying to be added to a shelf while there's another shelf bound to the
+   same resource type
 
 **ErrResourceTransfer (server)**
+
 ```json
 {
   "type": "ErrResourceTransfer",

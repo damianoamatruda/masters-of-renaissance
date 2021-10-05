@@ -67,6 +67,7 @@ public class MarketTest {
 
     /**
      * Checks that a row of the market grid remains the same after a complete shift.
+     *
      * @throws IllegalResourceTransferException
      * @throws IllegalResourceTransactionContainersException
      * @throws IllegalResourceTransactionReplacementsException

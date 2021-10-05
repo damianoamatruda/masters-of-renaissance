@@ -13,7 +13,7 @@ public class UpdateVaticanSection implements MVEvent {
     /**
      * Class constructor.
      *
-     * @param vaticanSection the section's ID
+     * @param vaticanSection    the section's ID
      * @param bonusGivenPlayers the players that earned the bonus
      */
     public UpdateVaticanSection(int vaticanSection, List<String> bonusGivenPlayers) {

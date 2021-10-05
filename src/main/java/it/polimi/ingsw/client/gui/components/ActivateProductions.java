@@ -22,6 +22,15 @@ import java.util.Map;
 
 /** Pane component used to choose input source for a selected production. */
 public class ActivateProductions extends StackPane {
+    private final List<ActivateProductions> windows;
+    private final List<ReducedProductionRequest> requests;
+    private final List<ReducedResourceContainer> tempShelves;
+    private final List<ReducedResourceContainer> tempDepots;
+    private final List<Integer> toActivate;
+    private final int index;
+    private final Map<String, Integer> inputBlanks = new HashMap<>();
+    private final Map<String, Integer> outputBlanks = new HashMap<>();
+    private final Map<Integer, Map<String, Integer>> containers = new HashMap<>();
     @FXML
     private BorderPane main;
     @FXML
@@ -43,16 +52,6 @@ public class ActivateProductions extends StackPane {
     @FXML
     private HBox leadersBox;
 
-    private final List<ActivateProductions> windows;
-    private final List<ReducedProductionRequest> requests;
-    private final List<ReducedResourceContainer> tempShelves;
-    private final List<ReducedResourceContainer> tempDepots;
-    private final List<Integer> toActivate;
-    private final int index;
-    private final Map<String, Integer> inputBlanks = new HashMap<>();
-    private final Map<String, Integer> outputBlanks = new HashMap<>();
-    private final Map<Integer, Map<String, Integer>> containers = new HashMap<>();
-
     /**
      * Class constructor.
      *
@@ -67,7 +66,7 @@ public class ActivateProductions extends StackPane {
                                List<ReducedResourceContainer> tempDepots, List<Integer> toActivate, int index) {
         windows = new ArrayList<>(previousWindows);
         windows.add(this);
-        
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/activateproductions.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -81,11 +80,11 @@ public class ActivateProductions extends StackPane {
         Gui gui = Gui.getInstance();
         ViewModel vm = gui.getViewModel();
 
-        this.tempShelves = new ArrayList<>(); // this does need to be a deep copy
-        for(ReducedResourceContainer container : tempShelves)
+        this.tempShelves = new ArrayList<>(); // This does need to be a deep copy
+        for (ReducedResourceContainer container : tempShelves)
             this.tempShelves.add(new ReducedResourceContainer(container.getId(), container.getSize(), container.getContent(), container.getBoundedResType().orElse(null)));
-        this.tempDepots = new ArrayList<>(); // this as well
-        for(ReducedResourceContainer container : tempDepots)
+        this.tempDepots = new ArrayList<>(); // This as well
+        for (ReducedResourceContainer container : tempDepots)
             this.tempDepots.add(new ReducedResourceContainer(container.getId(), container.getSize(), container.getContent(), container.getBoundedResType().orElse(null)));
 
         this.requests = requests;
@@ -182,13 +181,13 @@ public class ActivateProductions extends StackPane {
     private void buildRequest() {
         /* Get chosen blanks */
         choosableInputResources.getChildren().forEach(hbox -> {
-                if(((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
-                    inputBlanks.put(((Resource) ((HBox) hbox).getChildren().get(1)).getName(),
-                            ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue());
-                });
+            if (((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
+                inputBlanks.put(((Resource) ((HBox) hbox).getChildren().get(1)).getName(),
+                        ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue());
+        });
 
         choosableOutputResources.getChildren().forEach(hbox -> {
-            if(((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
+            if (((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
                 outputBlanks.put(((Resource) ((HBox) hbox).getChildren().get(1)).getName(),
                         ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue());
         });
@@ -204,7 +203,7 @@ public class ActivateProductions extends StackPane {
      * Handles going back to previous production, or back to turn scene.
      */
     private void handleBack() {
-        if(index > 0)
+        if (index > 0)
             requests.remove(index - 1);
         ((Pane) this.getParent()).getChildren().remove(this);
     }

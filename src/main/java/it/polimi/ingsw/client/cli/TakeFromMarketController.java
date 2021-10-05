@@ -74,7 +74,7 @@ public class TakeFromMarketController extends CliController {
     }
 
     private void chooseReplacements() {
-        // get a list with the selected resources
+        /* Get a list with the selected resources */
         this.resources = new ArrayList<>();
         if (this.isRow)
             this.resources = vm.getMarket().orElseThrow().getGrid().get(this.index);
@@ -89,10 +89,10 @@ public class TakeFromMarketController extends CliController {
                 .map(ReducedResourceType::getName)
                 .toList();
 
-        // if there's > 0 replaceable, get the active zeroleaders and prompt for replacements
+        /* If there is > 0 replaceable, get the active zeroleaders and prompt for replacements */
         int blanksCount = (int) this.resources.stream().filter(r -> r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).count();
 
-        // remove the replaceable this.resources from the selected ones
+        /* Remove the replaceable this.resources from the selected ones */
         this.resources = this.resources.stream().filter(r -> !r.equals(vm.getMarket().orElseThrow().getReplaceableResType())).toList();
 
         this.replacements = new HashMap<>();

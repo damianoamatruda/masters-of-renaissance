@@ -37,22 +37,22 @@ public class Resource extends ImageView {
     }
 
     /**
+     * Gets the path to the correct PNG.
+     *
+     * @param type the resource type to be represented
+     * @return the file path to the PNG
+     */
+    public static String getMarblePath(String type) {
+        return String.format("/assets/gui/market/%smarble.png", type.toLowerCase());
+    }
+
+    /**
      * Getter of the resource type name.
      *
      * @return the resource type name
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Gets the path to the correct PNG.
-     *
-     * @param type  the resource type to be represented
-     * @return  the file path to the PNG
-     */
-    public static String getMarblePath(String type) {
-        return String.format("/assets/gui/market/%smarble.png", type.toLowerCase());
     }
 
     public boolean isBlank() {

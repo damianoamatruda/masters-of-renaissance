@@ -110,7 +110,7 @@ public class ResourceTransactionTest {
                 () -> assertEquals(5, player.getStrongbox().getResourceQuantity(r2)),
                 () -> assertEquals(1, player.getStrongbox().getResourceQuantity(r3)));
     }
-    
+
     @Test
     void noReplacementsOrDiscardableOut() throws IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException {
         ResourceTransactionRecipe recipe = new ResourceTransactionRecipe(Map.of(rIn, 1), 0, Set.of(), Map.of(rOut, 1), 0, Set.of(), false);

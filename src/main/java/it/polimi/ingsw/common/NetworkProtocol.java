@@ -30,12 +30,12 @@ public class NetworkProtocol {
 
     /**
      * Network message deserializer.
-     * 
+     *
      * @param <T>
      * @param input           the JSON-formatted message
      * @param packageName     the name of the package the event pertains to
      * @param eventSuperclass the (super)class of the output event
-     * @return                the event represented by the input string
+     * @return the event represented by the input string
      */
     private static <T extends Event> T processInputAs(String input, String packageName, Class<T> eventSuperclass) {
         if (input == null || input.isBlank())
@@ -59,15 +59,15 @@ public class NetworkProtocol {
 
         T event;
 
-        // try parsing the message as a normal event
+        /* Try parsing the message as a normal event */
         try {
             event = gson.fromJson(jsonObject, Class.forName(String.format("%s.%s", packageName, type.getAsString())).asSubclass(eventSuperclass));
         } catch (ClassNotFoundException e) {
-            // try parsing the message as an error event
+            /* Try parsing the message as an error event */
             try {
                 event = gson.fromJson(jsonObject, Class.forName(String.format("%s.errors.%s", packageName, type.getAsString())).asSubclass(eventSuperclass));
             } catch (ClassNotFoundException e1) {
-                // try parsing the message as a reducedmodel object
+                /* Try parsing the message as a reducedmodel object */
                 try {
                     event = gson.fromJson(jsonObject, Class.forName(String.format("it.polimi.ingsw.common.reducedmodel.%s", type.getAsString())).asSubclass(eventSuperclass));
                 } catch (ClassNotFoundException e2) {
@@ -83,9 +83,9 @@ public class NetworkProtocol {
 
     /**
      * Deserialize a message as a NetEvent.
-     * 
+     *
      * @param input the message to deserialize
-     * @return      the event represented by the message string
+     * @return the event represented by the message string
      */
     public NetEvent processInputAsNetEvent(String input) {
         return processInputAs(input, "it.polimi.ingsw.common.events.netevents", NetEvent.class);
@@ -93,9 +93,9 @@ public class NetworkProtocol {
 
     /**
      * Deserialize a message as a VCEvent.
-     * 
+     *
      * @param input the message to deserialize
-     * @return      the event represented by the message string
+     * @return the event represented by the message string
      */
     public VCEvent processInputAsVCEvent(String input) {
         return processInputAs(input, "it.polimi.ingsw.common.events.vcevents", VCEvent.class);
@@ -103,9 +103,9 @@ public class NetworkProtocol {
 
     /**
      * Deserialize a message as a MVEvent.
-     * 
+     *
      * @param input the message to deserialize
-     * @return      the event represented by the message string
+     * @return the event represented by the message string
      */
     public MVEvent processInputAsMVEvent(String input) {
         return processInputAs(input, "it.polimi.ingsw.common.events.mvevents", MVEvent.class);
@@ -113,9 +113,9 @@ public class NetworkProtocol {
 
     /**
      * Serializes an event into a JSON string.
-     * 
+     *
      * @param event the event to be serialized
-     * @return      the message representing the event
+     * @return the message representing the event
      */
     public String processOutput(Event event) {
         return outputGson.toJson(event);

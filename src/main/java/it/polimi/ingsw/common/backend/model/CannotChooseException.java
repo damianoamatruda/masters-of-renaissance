@@ -5,15 +5,16 @@ package it.polimi.ingsw.common.backend.model;
  */
 public class CannotChooseException extends RuntimeException {
     private final int missingLeadersCount;
+
     /**
      * Class constructor.
      *
-     * @param missingLeadersCount the count of missing leader cards.
-     *                            Can be zero in case of a resourcechoice.
+     * @param missingLeadersCount the count of missing leader cards. Can be zero in case of a resourcechoice.
      */
     public CannotChooseException(int missingLeadersCount) {
         this.missingLeadersCount = missingLeadersCount;
     }
+
     /**
      * @return the missingLeadersCount
      */

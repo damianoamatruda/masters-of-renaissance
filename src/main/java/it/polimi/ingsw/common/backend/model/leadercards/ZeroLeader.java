@@ -16,6 +16,7 @@ import java.util.Map;
 public class ZeroLeader extends LeaderCard {
     /**
      * Class constructor.
+     *
      * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied for card activation
@@ -28,10 +29,10 @@ public class ZeroLeader extends LeaderCard {
 
     @Override
     public Map<ResourceType, Integer> replaceMarketResources(
-        ResourceType replaceableResType,
-        Map<ResourceType, Integer> toProcess,
-        Map<ResourceType, Integer> replacements) {
-        
+            ResourceType replaceableResType,
+            Map<ResourceType, Integer> toProcess,
+            Map<ResourceType, Integer> replacements) {
+
         if (toProcess == null)
             return null;
 
@@ -40,18 +41,18 @@ public class ZeroLeader extends LeaderCard {
 
         Map<ResourceType, Integer> resCopy = new HashMap<>(toProcess);
         
-        /* If toProcess doesn't have zeros to convert, do nothing;
+        /* If toProcess does not have zeros to convert, do nothing;
            if zeros contains this card's resource -> card can be activated (leader was chosen by player) */
         if (toProcess.containsKey(replaceableResType) && replacements.containsKey(this.getResource())) {
             int convertibleQuantity = toProcess.get(replaceableResType),
                     chosenQuantity = replacements.get(this.getResource()),
-                    quantityToConvert = Math.min(convertibleQuantity, chosenQuantity); // can't convert more than the lowest of the two
+                    quantityToConvert = Math.min(convertibleQuantity, chosenQuantity); // Cannot convert more than the lowest of the two
 
             /* Add converted resources */
             resCopy.compute(this.getResource(), (res, quantity) -> quantity == null ? quantityToConvert : quantity + quantityToConvert);
             
             /* Remove converted resources, deleting key if none left.
-               If there's some left, zeros can be used in successive conversions; else it shouldn't be possible to do so,
+               If there's some left, zeros can be used in successive conversions; else it should not be possible to do so,
                for that would transform more resources than it is allowed */
             resCopy.compute(replaceableResType, (res, quantity) -> quantity == null || quantity - quantityToConvert == 0 ? null : quantity - quantityToConvert);
             replacements.compute(this.getResource(), (res, quantity) -> quantity == null || quantity - quantityToConvert == 0 ? null : quantity - quantityToConvert);

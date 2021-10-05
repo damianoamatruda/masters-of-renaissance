@@ -20,37 +20,26 @@ import java.util.Optional;
 public class Game extends EventDispatcher {
     /** Reference to the collection from which all the player's data can be accessed. */
     protected final List<Player> players;
-
-    /** The development card colors used in the game. */
-    protected List<DevCardColor> devCardColors;
-
-    /** The resource types used in the game. */
-    protected List<ResourceType> resourceTypes;
-
     /** The leader cards used in the game. */
     protected final List<LeaderCard> leaderCards;
-
     /** The development cards used in the game. */
     protected final List<DevelopmentCard> developmentCards;
-
     /** The resource containers used in the game. */
     protected final List<ResourceContainer> resContainers;
-
     /** The productions used in the game. */
     protected final List<ResourceTransactionRecipe> productions;
-
     /** The "Faith Track", where vatican sections can be activated. */
     protected final FaithTrack faithTrack;
-
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
-
     /** The "Market Board", from which resources can be "bought". */
     protected final Market market;
-
     /** Number of development cards a player can have, before triggering the end of the game. */
     protected final int maxObtainableDevCards;
-
+    /** The development card colors used in the game. */
+    protected List<DevCardColor> devCardColors;
+    /** The resource types used in the game. */
+    protected List<ResourceType> resourceTypes;
     /** Flag that indicates the Game is about to end. */
     protected boolean lastRound;
 
@@ -170,7 +159,7 @@ public class Game extends EventDispatcher {
     public void updatePtsFromYellowTiles(Player player, int advancement) {
         Optional<FaithTrack.YellowTile> reached = faithTrack.getLastReachedYellowTile(player.getFaithPoints());
         Optional<FaithTrack.YellowTile> last = faithTrack.getLastReachedYellowTile(player.getFaithPoints() - advancement);
-        if(!reached.equals(last)) {
+        if (!reached.equals(last)) {
             int newPoints = reached.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
             int oldPoints = last.map(FaithTrack.YellowTile::getVictoryPoints).orElse(0);
             player.incrementVictoryPoints(newPoints - oldPoints);
@@ -219,7 +208,6 @@ public class Game extends EventDispatcher {
      * gets the next (active) player from the head.
      * <p>
      * If next player is inactive, the operation is repeated until an active player is found.
-     *
      */
     public void onTurnEnd() {
         if (players.stream().noneMatch(Player::isActive))
@@ -245,9 +233,8 @@ public class Game extends EventDispatcher {
     }
 
     /**
-     * @return whether the game's setup phase is finished.
-     *         The answer also depends on the players' status,
-     *         inactive players are not accounted for.
+     * @return whether the game's setup phase is finished. The answer also depends on the players' status, inactive
+     * players are not accounted for.
      */
     public boolean isSetupDone() {
         return players.stream().filter(Player::isActive).map(Player::getSetup).allMatch(PlayerSetup::isDone);
@@ -320,7 +307,6 @@ public class Game extends EventDispatcher {
      * @return number of tile reached by Lorenzo
      */
     public int getBlackPoints() {
-        // return 0;
         throw new RuntimeException("getBlackPoints called on a multiplayer game: method not implemented.");
     }
 
@@ -339,8 +325,7 @@ public class Game extends EventDispatcher {
      * @return <code>true</code> if Lorenzo is the winner of the game; <code>false</code> otherwise.
      */
     public boolean isBlackWinner() {
-        // return false;
-        throw new RuntimeException("isBlackWinner called on a mutiplayer game: method not implemented.");
+        throw new RuntimeException("isBlackWinner called on a multiplayer game: method not implemented.");
     }
 
     /**

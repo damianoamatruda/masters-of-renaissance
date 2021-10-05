@@ -28,5 +28,6 @@ public interface CardRequirement {
     void checkRequirements(Player player) throws CardRequirementsNotMetException;
 
     ReducedResourceRequirement reduceRR();
+
     ReducedDevCardRequirement reduceDR();
 }

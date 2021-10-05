@@ -4,8 +4,10 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.left;
 
-/** Cli component that gives a string representation of a map of resources.
- * Used mainly to represent requirements, production recipes or containers' content. */
+/**
+ * Cli component that gives a string representation of a map of resources. Used mainly to represent requirements,
+ * production recipes or containers' content.
+ */
 public class ResourceMap extends StringComponent {
     private final int padding = 12;
     private final Map<String, Integer> reducedResourceMap;

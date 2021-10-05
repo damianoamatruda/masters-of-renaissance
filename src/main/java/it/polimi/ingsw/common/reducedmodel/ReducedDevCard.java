@@ -8,10 +8,10 @@ public class ReducedDevCard extends ReducedCard {
     private final int level;
 
     /**
-     * @param color         the color of the card
-     * @param cost          the resource cost
-     * @param level         the level of the card
-     * @param production    the card's production's ID
+     * @param color      the color of the card
+     * @param cost       the resource cost
+     * @param level      the level of the card
+     * @param production the card's production's ID
      */
     public ReducedDevCard(int id, int victoryPoints, String color, ReducedResourceRequirement cost, int level, int production) {
         super(id, victoryPoints, production);

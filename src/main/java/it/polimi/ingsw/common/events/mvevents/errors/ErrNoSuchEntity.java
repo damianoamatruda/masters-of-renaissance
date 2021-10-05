@@ -9,14 +9,6 @@ public class ErrNoSuchEntity extends ViewEvent {
     private final int id;
     private final String code;
 
-    public enum IDType {
-        MARKET_INDEX,
-        LEADER,
-        DEVCARD,
-        COLOR,
-        RESOURCE
-    }
-
     /**
      * @param view
      * @param originalEntity type of entity trying to be referred
@@ -49,6 +41,14 @@ public class ErrNoSuchEntity extends ViewEvent {
      */
     public int getId() {
         return id;
+    }
+
+    public enum IDType {
+        MARKET_INDEX,
+        LEADER,
+        DEVCARD,
+        COLOR,
+        RESOURCE
     }
 
 }

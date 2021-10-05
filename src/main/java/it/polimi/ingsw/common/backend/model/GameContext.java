@@ -51,10 +51,9 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     /**
-     * Starting routine for GameContext.
-     * Dispatches the game's data to the specified client and
-     * assigns the initial faith points to the specified player.
-     * 
+     * Starting routine for GameContext. Dispatches the game's data to the specified client and assigns the initial
+     * faith points to the specified player.
+     *
      * @param view     the View to dispatch the state to
      * @param nickname the nickname of the player connecting to the context
      */
@@ -66,7 +65,7 @@ public class GameContext extends AsynchronousEventDispatcher {
 
     /**
      * Sends the game's data to players that reconnect.
-     * 
+     *
      * @param view
      * @param nickname the nickname of the player reconnecting
      */
@@ -153,15 +152,15 @@ public class GameContext extends AsynchronousEventDispatcher {
         try {
             player.getSetup().chooseResources(game, player, shelves);
         } catch (IllegalResourceTransactionReplacementsException e) {
-            // illegal replaced resources
+            /* Illegal replaced resources */
             dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
             return;
         } catch (IllegalResourceTransactionContainersException e) {
-            // quantity of resources in replaced map is different from shelves mapping
+            /* Quantity of resources in replaced map is different from shelves mapping */
             dispatch(new ErrReplacedTransRecipe(view, e.isInput(), e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
             return;
         } catch (CannotChooseException e1) {
-            // resources already chosen
+            /* Resources already chosen */
             dispatch(new ErrInitialChoice(view, false, 0));
             return;
         } catch (IllegalResourceTransferException e) {
@@ -219,7 +218,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     /**
      * Makes a player activate a leader card.
      *
-     * @param view        the view the action originates from. Used to on back errors
+     * @param view     the view the action originates from. Used to on back errors
      * @param nickname the player
      * @param leaderId the leader card to activate
      */
@@ -300,7 +299,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     /**
      * Takes resources from the market as a player.
      *
-     * @param view              the view the action originates from. Used to on back errors
+     * @param view           the view the action originates from. Used to on back errors
      * @param nickname       the player
      * @param isRow          <code>true</code> if a row is selected; <code>false</code> if a column is selected.
      * @param index          index of the selected row or column
@@ -340,11 +339,11 @@ public class GameContext extends AsynchronousEventDispatcher {
         try {
             game.getMarket().takeResources(game, player, isRow, index, translateResMap(replacements), shelves);
         } catch (IllegalResourceTransactionReplacementsException e) {
-            // illegal replaced resources
+            /* Illegal replaced resources */
             dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
             return;
         } catch (IllegalResourceTransactionContainersException e) {
-            // quantity of resources in replaced map is different from shelves mapping
+            /* Quantity of resources in replaced map is different from shelves mapping */
             dispatch(new ErrReplacedTransRecipe(view, e.isInput(), e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
             return;
         } catch (IllegalResourceTransferException e) {
@@ -368,7 +367,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     /**
      * Makes a player buy a development card from the development card grid.
      *
-     * @param view                    the view the action originates from. Used to on back errors
+     * @param view                 the view the action originates from. Used to on back errors
      * @param nickname             the player
      * @param color                the color of the card to be bought
      * @param level                the level of the card to be bought
@@ -412,11 +411,11 @@ public class GameContext extends AsynchronousEventDispatcher {
             dispatch(new ErrBuyDevCard(view, false));
             return;
         } catch (IllegalResourceTransactionReplacementsException e) {
-            // illegal replaced resources
+            /* Illegal replaced resources */
             dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
             return;
         } catch (IllegalResourceTransactionContainersException e) {
-            // quantity of resources in replaced map is different from shelves mapping
+            /* Quantity of resources in replaced map is different from shelves mapping */
             dispatch(new ErrReplacedTransRecipe(view, e.isInput(), e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
             return;
         } catch (IllegalResourceTransferException e) {
@@ -434,7 +433,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     /**
      * Makes a player activate a group of productions.
      *
-     * @param view                   the view the action originates from. Used to on back errors
+     * @param view                the view the action originates from. Used to on back errors
      * @param nickname            the player
      * @param reducedProdRequests the group of requested contemporary productions
      */
@@ -485,11 +484,11 @@ public class GameContext extends AsynchronousEventDispatcher {
                                 player.getStrongbox(),
                                 translateResMap(r.getOutputRep())));
             } catch (IllegalResourceTransactionReplacementsException e) {
-                // illegal replaced resources
+                /* Illegal replaced resources */
                 dispatch(new ErrInvalidResourceTransaction(view, e.isInput(), e.isReplacement(), e.getReason().name()));
                 return;
             } catch (IllegalResourceTransactionContainersException e) {
-                // quantity of resources in replaced map is different from shelves mapping
+                /* Quantity of resources in replaced map is different from shelves mapping */
                 dispatch(new ErrReplacedTransRecipe(view, e.isInput(), e.getResType(), e.getReplacedCount(), e.getShelvesChoiceResCount(), e.isIllegalDiscardedOut()));
                 return;
             } catch (NoSuchElementException e) {
@@ -516,7 +515,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     /**
      * Makes a player end his turn.
      *
-     * @param view        the view the action originates from. Used to on back errors
+     * @param view     the view the action originates from. Used to on back errors
      * @param nickname the player
      */
     public void endTurn(View view, String nickname) {
@@ -546,7 +545,7 @@ public class GameContext extends AsynchronousEventDispatcher {
         boolean isCurrentPlayerDisconnecting = !active && player.equals(game.getCurrentPlayer());
         boolean isNotCurrentReconnecting = active && !player.equals(game.getCurrentPlayer());
         boolean isFirstPlayerReconnecting = game.getPlayers().stream().filter(Player::isActive).findAny().isEmpty();
-        
+
         player.setActive(active);
 
         game.onPlayerSetupDone();
@@ -562,10 +561,10 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     /**
-     * Ensures that the setup still isn't finished and the game has not ended yet. Action methods can use these checks
+     * Ensures that the setup still is not finished and the game has not ended yet. Action methods can use these checks
      * to confirm their legitimacy of execution, before starting.
      *
-     * @param view the view to use to on back the error, if the checks don't on
+     * @param view the view to use to on back the error, if the checks do not on
      * @return whether the checks passed
      */
     private boolean preliminaryChecks(View view, Player player) {
@@ -579,7 +578,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     /**
      * Ensures that the given player is the current player in the turn.
      *
-     * @param view      the view to on the error massage back with
+     * @param view   the view to on the error massage back with
      * @param player the player to check
      * @return whether the check passed
      */
@@ -594,7 +593,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     /**
      * Ensures that the current player has not done a mandatory action yet.
      *
-     * @param view      the view to on the error massage back with
+     * @param view the view to on the error massage back with
      * @return whether the check passed
      */
     private boolean checkMandatoryActionNotDone(View view) {
@@ -611,9 +610,9 @@ public class GameContext extends AsynchronousEventDispatcher {
 
     private Map<ResourceType, Integer> translateResMap(Map<String, Integer> r) {
         return r.entrySet().stream().collect(Collectors.toMap(e -> {
-            String name = e.getKey().substring(0, 1).toUpperCase() + e.getKey().substring(1);
-            return gameFactory.getResourceType(name).orElseThrow(() -> new NoSuchElementException(name));
-        }, Map.Entry::getValue
+                    String name = e.getKey().substring(0, 1).toUpperCase() + e.getKey().substring(1);
+                    return gameFactory.getResourceType(name).orElseThrow(() -> new NoSuchElementException(name));
+                }, Map.Entry::getValue
         ));
     }
 

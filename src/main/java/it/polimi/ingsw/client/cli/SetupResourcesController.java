@@ -60,7 +60,7 @@ public class SetupResourcesController extends SetupController {
     public void on(ErrAction event) {
         if (event.getReason() != ErrActionReason.LATE_SETUP_ACTION)
             throw new RuntimeException("Resources setup: ErrAction received with reason not LATE_SETUP_ACTION.");
-        
+
         super.on(event);
     }
 

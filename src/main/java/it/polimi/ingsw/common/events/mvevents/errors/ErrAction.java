@@ -7,15 +7,6 @@ import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 public class ErrAction extends ViewEvent {
     private final ErrActionReason reason;
 
-    public enum ErrActionReason {
-        LATE_SETUP_ACTION,
-        EARLY_MANDATORY_ACTION,
-        LATE_MANDATORY_ACTION,
-        EARLY_TURN_END,
-        GAME_ENDED,
-        NOT_CURRENT_PLAYER
-    }
-
     /**
      * @param view
      * @param reason
@@ -27,5 +18,14 @@ public class ErrAction extends ViewEvent {
 
     public ErrActionReason getReason() {
         return reason;
+    }
+
+    public enum ErrActionReason {
+        LATE_SETUP_ACTION,
+        EARLY_MANDATORY_ACTION,
+        LATE_MANDATORY_ACTION,
+        EARLY_TURN_END,
+        GAME_ENDED,
+        NOT_CURRENT_PLAYER
     }
 }

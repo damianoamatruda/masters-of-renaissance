@@ -13,7 +13,7 @@ public abstract class SetupController extends CliController {
     public void on(ErrAction event) {
         /* If the data in the VM is correct setNextSetupState() could be used here as well.
            This different handler, which keeps track of the current player only,
-           forces the client in a state that's compatible with the server's response,
+           forces the client in a state that is compatible with the server's response,
            accepting it as a universal source of truth. */
 
         cli.alert("Setup phase is concluded, advancing to game turns.");
@@ -26,12 +26,11 @@ public abstract class SetupController extends CliController {
 
     @Override
     public void on(ErrInitialChoice event) {
-        if (event.isLeadersChoice()) // if the error is from the initial leaders choice
-            if (event.getMissingLeadersCount() == 0) { // no leaders missing -> already chosen
+        if (event.isLeadersChoice()) // If the error is from the initial leaders choice
+            if (event.getMissingLeadersCount() == 0) { // No leaders missing -> already chosen
                 cli.alert("Leader cards already chosen, advancing to next state.");
                 setNextState();
-            }
-            else
+            } else
                 cli.reloadController(
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
         else {
@@ -63,7 +62,7 @@ public abstract class SetupController extends CliController {
             cli.getOut().println();
             cli.getOut().println(center("All players have finished their setup!"));
         }
-        
+
         setNextState();
     }
 }

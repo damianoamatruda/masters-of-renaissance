@@ -41,7 +41,8 @@ public class BuyDevelopmentCardController extends GuiController {
     private ChoiceBox<Integer> devSlotChoicePicker;
     @FXML
     private Button submitBtn;
-    @FXML private Button back;
+    @FXML
+    private Button back;
     @FXML
     private HBox leadersBox;
 
@@ -89,7 +90,6 @@ public class BuyDevelopmentCardController extends GuiController {
     }
 
     /**
-     *
      * @param resource
      * @param shelfID
      * @return
@@ -101,7 +101,7 @@ public class BuyDevelopmentCardController extends GuiController {
             shelvesMap.get(shelfID).put(resource, quantity);
             success = true;
         } catch (NullPointerException e) {
-            if(shelvesMap.get(shelfID) == null || shelvesMap.get(shelfID).keySet().isEmpty()) {
+            if (shelvesMap.get(shelfID) == null || shelvesMap.get(shelfID).keySet().isEmpty()) {
                 Map<String, Integer> entry = new HashMap<>();
                 entry.put(resource, 1);
                 shelvesMap.put(shelfID, entry);
@@ -139,21 +139,18 @@ public class BuyDevelopmentCardController extends GuiController {
 
         leadersBox.getChildren().addAll(leaders);
 
-        // adjust components sizes and positioning if leadersBox has cards
-        if(!leaders.isEmpty()) {
+        /* Adjust components sizes and positioning if leadersBox has cards */
+        if (!leaders.isEmpty()) {
             leadersBox.setMinHeight(180);
             leadersBox.setMaxHeight(180);
             devSlotsBox.setScaleX(0.6);
             devSlotsBox.setScaleY(0.6);
             containersBox.setScaleX(0.7);
             containersBox.setScaleY(0.7);
-
         }
-
     }
 
     /**
-     *
      * @param resource
      * @param shelfID
      * @return
@@ -168,8 +165,8 @@ public class BuyDevelopmentCardController extends GuiController {
     /**
      * Handles click on a development card.
      *
-     * @param card      the cached model card
-     * @param guicard   the clicked card GUI component
+     * @param card    the cached model card
+     * @param guicard the clicked card GUI component
      */
     private void devCardPressed(ReducedDevCard card, DevelopmentCard guicard) {
         if (guicard == selectedCard) {
@@ -177,10 +174,9 @@ public class BuyDevelopmentCardController extends GuiController {
             selectedCard = null;
             selectedColor = "";
             selectedLevel = 0;
-            
+
             submitBtn.setDisable(true);
-        }
-        else {
+        } else {
             if (selectedCard != null)
                 selectedCard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, false);
             guicard.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, true);
@@ -201,7 +197,7 @@ public class BuyDevelopmentCardController extends GuiController {
     }
 
     /**
-     *  Resets warehouse content to its state from before moving any resources.
+     * Resets warehouse content to its state from before moving any resources.
      */
     private void resetWarehouse() {
         warehouse = new Warehouse();
@@ -258,7 +254,7 @@ public class BuyDevelopmentCardController extends GuiController {
 
             devSlots.add(slot);
 
-            for(int i = 0; i < cards.size(); i++)
+            for (int i = 0; i < cards.size(); i++)
                 AnchorPane.setBottomAnchor(cards.get(i), 40 + 50d * i);
         });
 

@@ -5,16 +5,17 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="canvas" xmlns="http://javafx.com/javafx/16"
             fx:controller="it.polimi.ingsw.client.gui.TakeFromMarketController"
             maxHeight="720" minHeight="720" maxWidth="1280" minWidth="1280">
-    <BorderPane fx:id="marketPane" layoutX="20.0" layoutY="20.0" prefHeight="400.0" prefWidth="620.0"
-          AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
-    <BorderPane fx:id="warehousePane" layoutX="640.0" layoutY="20.0" prefHeight="400.0" prefWidth="620.0"
-          AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0"/>
-    <HBox fx:id="leaderCardsBox" alignment="CENTER" spacing="10" prefHeight="300.0" prefWidth="384.0" AnchorPane.bottomAnchor="20.0"
-          AnchorPane.rightAnchor="20.0"/>
-    <HBox fx:id="resourcesBox" alignment="CENTER" layoutX="104.0" layoutY="585.0" prefHeight="100.0" prefWidth="880.0"
-          AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="20.0"/>
-    <SButton fx:id="submitBtn" AnchorPane.leftAnchor="70.0" AnchorPane.bottomAnchor="10.0" layoutX="824.0"
-             layoutY="697.0" mnemonicParsing="false" text="Take resources"/>
-    <SButton fx:id="back" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" text="Back" layoutX="1100.0"
-             layoutY="697.0"/>
+  <BorderPane fx:id="marketPane" layoutX="20.0" layoutY="20.0" prefHeight="400.0" prefWidth="620.0"
+              AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+  <BorderPane fx:id="warehousePane" layoutX="640.0" layoutY="20.0" prefHeight="400.0" prefWidth="620.0"
+              AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+  <HBox fx:id="leaderCardsBox" alignment="CENTER" spacing="10" prefHeight="300.0" prefWidth="384.0"
+        AnchorPane.bottomAnchor="20.0"
+        AnchorPane.rightAnchor="20.0"/>
+  <HBox fx:id="resourcesBox" alignment="CENTER" layoutX="104.0" layoutY="585.0" prefHeight="100.0" prefWidth="880.0"
+        AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="20.0"/>
+  <SButton fx:id="submitBtn" AnchorPane.leftAnchor="70.0" AnchorPane.bottomAnchor="10.0" layoutX="824.0"
+           layoutY="697.0" mnemonicParsing="false" text="Take resources"/>
+  <SButton fx:id="back" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" text="Back" layoutX="1100.0"
+           layoutY="697.0"/>
 </AnchorPane>

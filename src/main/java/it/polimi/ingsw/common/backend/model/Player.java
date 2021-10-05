@@ -56,13 +56,13 @@ public class Player extends EventDispatcher {
     /**
      * Initializes player's attributes.
      *
-     * @param nickname                 the player's nickname to be seen by all the players
-     * @param inkwell                  received only by the first player
-     * @param leaders                  the leader cards in the player's hand
-     * @param warehouse                the player's warehouse
-     * @param strongbox                the player's strongbox
-     * @param baseProduction           the player's base production
-     * @param devSlotsCount            number of possible production slots that can be occupied by development cards
+     * @param nickname       the player's nickname to be seen by all the players
+     * @param inkwell        received only by the first player
+     * @param leaders        the leader cards in the player's hand
+     * @param warehouse      the player's warehouse
+     * @param strongbox      the player's strongbox
+     * @param baseProduction the player's base production
+     * @param devSlotsCount  number of possible production slots that can be occupied by development cards
      */
     public Player(String nickname, boolean inkwell, List<LeaderCard> leaders, Warehouse warehouse, Strongbox strongbox,
                   ResourceTransactionRecipe baseProduction, int devSlotsCount, PlayerSetup setup) {
@@ -126,7 +126,7 @@ public class Player extends EventDispatcher {
      * @param game   the game the player is playing in
      * @param leader the leader card to discard
      * @throws ActiveLeaderDiscardException leader is already active
-     * @throws IllegalArgumentException     leader isn't owned by the player
+     * @throws IllegalArgumentException     leader is not owned by the player
      */
     public void discardLeader(View view, Game game, LeaderCard leader) throws IllegalArgumentException, ActiveLeaderDiscardException {
         if (!leaders.contains(leader))
@@ -258,8 +258,8 @@ public class Player extends EventDispatcher {
      * Declares the winner, by setting the winner flag.
      */
     public void setWinner() {
-        // notification is sent one above in the call stack,
-        // as the other players' VP have to be sent too
+        /* notification is sent one above in the call stack,
+         * as the other players' VP have to be sent too. */
         this.winner = true;
     }
 
@@ -270,8 +270,8 @@ public class Player extends EventDispatcher {
      * @param devSlotIndex  the destination production slot
      * @param devCard       the development card that has just been bought
      * @param resContainers a map of the resource containers where to take the storable resources
-     * @throws IllegalCardDepositException     blocks the action if the level of the previous top card of the slot is
-     *                                         not equal to current level minus 1
+     * @throws IllegalCardDepositException      blocks the action if the level of the previous top card of the slot is
+     *                                          not equal to current level minus 1
      * @throws IllegalResourceTransferException if the player cannot pay for the card
      */
     public void addToDevSlot(Game game, int devSlotIndex, DevelopmentCard devCard,

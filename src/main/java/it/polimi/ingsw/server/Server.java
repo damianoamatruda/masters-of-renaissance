@@ -73,8 +73,8 @@ public class Server implements Network, Runnable {
 
     /**
      * Class constructor for a Server that uses the default game data file.
-     * 
-     * @param port         the network port to listen for incoming connections on.
+     *
+     * @param port the network port to listen for incoming connections on.
      * @throws IOException if an I/O error occurs when opening the socket.
      */
     public Server(int port) throws IOException {

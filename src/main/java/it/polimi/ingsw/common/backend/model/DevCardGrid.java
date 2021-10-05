@@ -44,8 +44,8 @@ public class DevCardGrid extends EventDispatcher {
                     grid.put(card.getColor(),
                             IntStream.range(0, levelsCount + 1)
                                     .mapToObj(i -> i == 0 ? null : new Stack<DevelopmentCard>())
-                            .toList()
-                            );
+                                    .toList()
+                    );
                 List<Stack<DevelopmentCard>> column = grid.get(card.getColor());
                 Stack<DevelopmentCard> deck = column.get(card.getLevel());
                 deck.push(card);
@@ -146,7 +146,7 @@ public class DevCardGrid extends EventDispatcher {
         int level = 1;
         while (getDeck(color, level).isEmpty())
             level++;
-            
+
         while (quantity > 0 && level <= 3) {
             getDeck(color, level).pop();
 

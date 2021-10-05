@@ -4,7 +4,7 @@ package it.polimi.ingsw.common;
 public class NetworkProtocolException extends RuntimeException {
     /**
      * Class constructor.
-     * 
+     *
      * @param message the reason for the exception
      */
     public NetworkProtocolException(String message) {
@@ -13,7 +13,7 @@ public class NetworkProtocolException extends RuntimeException {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param message the reason for the exception
      * @param cause   unhandled exception cause of this exception
      */

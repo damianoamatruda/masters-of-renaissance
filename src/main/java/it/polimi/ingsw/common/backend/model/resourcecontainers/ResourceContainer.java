@@ -73,7 +73,7 @@ public abstract class ResourceContainer extends EventDispatcher {
     }
 
     /**
-     * @param resMap                    the resourcemap to validate
+     * @param resMap the resourcemap to validate
      * @throws NullPointerException     if the map is null
      * @throws IllegalArgumentException if the map contains negative values
      */
@@ -87,9 +87,9 @@ public abstract class ResourceContainer extends EventDispatcher {
 
     /**
      * Checks whether the map contains negative values and all mapped resources are storable
-     * 
-     * @param resMap                    the resourcemap to validate
-     * @param checkStorable             if true, check that the mapped resources are storable, else non-storable
+     *
+     * @param resMap        the resourcemap to validate
+     * @param checkStorable if true, check that the mapped resources are storable, else non-storable
      * @throws NullPointerException     if the map is null
      * @throws IllegalArgumentException if the map contains negative values or a resource is non-storable
      */
@@ -102,7 +102,7 @@ public abstract class ResourceContainer extends EventDispatcher {
 
     /**
      * @param resMap
-     * @return       the map cleaned of all zero-value entries
+     * @return the map cleaned of all zero-value entries
      */
     public static Map<ResourceType, Integer> sanitizeResourceMap(Map<ResourceType, Integer> resMap) {
         validateResourceMap(resMap);

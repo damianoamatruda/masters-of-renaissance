@@ -125,16 +125,16 @@ class GameContextTest {
                 resReq = e.getMissingResources();
                 cardReq = e.getMissingDevCards();
             }
-            if(resReq.isPresent()) {
+            if (resReq.isPresent()) {
                 Map<ResourceType, Integer> req = resReq.get();
-                for(ResourceType resource : req.keySet()) {
+                for (ResourceType resource : req.keySet()) {
                     soloGame.getInkwellPlayer().getStrongbox().addResources(Map.of(resource, req.get(resource)));
                 }
             } else if (cardReq.isPresent()) {
                 Set<DevCardRequirement.Entry> req = cardReq.get();
                 int i = 0;
                 List<Stack<DevelopmentCard>> slots = soloGame.getInkwellPlayer().getDevSlots();
-                for(DevCardRequirement.Entry r : req) {
+                for (DevCardRequirement.Entry r : req) {
                     for (int k = 0; k < r.reduce().getQuantity(); k++) {
                         slots.get(i).push(new DevelopmentCard(gameFactory.getDevCardColor(r.reduce().getColor()).get(),
                                 1, new ResourceRequirement(Map.of()), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, 0));
@@ -190,7 +190,7 @@ class GameContextTest {
                 req = e.getMissingResources().get();
             }
 
-            for(ResourceType resource : req.keySet()) {
+            for (ResourceType resource : req.keySet()) {
                 soloGame.getInkwellPlayer().getStrongbox().addResources(Map.of(resource, req.get(resource)));
             }
             Map<String, Integer> content = new HashMap<>();
@@ -206,7 +206,7 @@ class GameContextTest {
         void activateProductionRequests() {
             int id = soloGame.getInkwellPlayer().getBaseProduction().getId();
 
-            for(ResourceType resource : soloGame.getInkwellPlayer().getBaseProduction().getInput().keySet()) {
+            for (ResourceType resource : soloGame.getInkwellPlayer().getBaseProduction().getInput().keySet()) {
                 soloGame.getInkwellPlayer().getStrongbox().addResources(Map.of(resource, soloGame.getInkwellPlayer().getBaseProduction().getInput().get(resource)));
             }
             soloGame.getInkwellPlayer().getStrongbox().addResources(Map.of(gameFactory.getResourceType("Stone").get(), soloGame.getInkwellPlayer().getBaseProduction().getInputBlanks()));

@@ -49,8 +49,8 @@ public class Market extends EventDispatcher {
         /* Check that the resulting grid is full. */
         if (colsCount > 1 && resourcesList.size() % colsCount != 1)
             throw new IllegalArgumentException(
-                String.format("Cannot create market: %d resources cannot be cleanly divided into %d columns + slide",
-                    resourcesList.size(), colsCount));
+                    String.format("Cannot create market: %d resources cannot be cleanly divided into %d columns + slide",
+                            resourcesList.size(), colsCount));
 
         Collections.shuffle(resourcesList);
 
@@ -83,7 +83,8 @@ public class Market extends EventDispatcher {
      * @param shelves      a map of the shelves where to add the taken resources, if possible
      * @throws IllegalResourceTransactionReplacementsException if the specified replacements are incorrect
      * @throws IllegalResourceTransactionContainersException   if the specified shelf mappings are incorrect
-     * @throws IllegalResourceTransferException                if there are issues trasferring the resource from/to a container
+     * @throws IllegalResourceTransferException                if there are issues trasferring the resource from/to a
+     *                                                         container
      */
     public void takeResources(Game game, Player player, boolean isRow, int index, Map<ResourceType, Integer> replacements,
                               Map<Shelf, Map<ResourceType, Integer>> shelves) throws IllegalArgumentException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {

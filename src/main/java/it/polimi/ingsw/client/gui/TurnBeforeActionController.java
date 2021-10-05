@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Gui controller used when the local player is current player, and hasn't chosen a base turn action. Here the client
+ * Gui controller used when the local player is current player, and has not chosen a base turn action. Here the client
  * can choose to produce, buy a card or visit the market, as well as doing leader actions and swap shelves.
  */
 public class TurnBeforeActionController extends TurnController {

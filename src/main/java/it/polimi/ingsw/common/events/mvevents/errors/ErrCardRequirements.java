@@ -1,12 +1,12 @@
 package it.polimi.ingsw.common.events.mvevents.errors;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardRequirementEntry;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /** Error referring to an issue validating a card requirement on a player. */
 public class ErrCardRequirements extends ViewEvent {

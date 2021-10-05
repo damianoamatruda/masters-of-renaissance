@@ -40,10 +40,14 @@ public class FaithTile extends StackPane {
         markersPane.setMaxWidth(117);
 
         if (isYellow) {
-            if (isSection) template = "/assets/gui/faithtrack/yellowsectiontile.png";
-            else template = "/assets/gui/faithtrack/yellowtile.png";
-        } else if (isSection) template = "/assets/gui/faithtrack/sectiontile.png";
-        else template = "/assets/gui/faithtrack/faithtile.png";
+            if (isSection)
+                template = "/assets/gui/faithtrack/yellowsectiontile.png";
+            else
+                template = "/assets/gui/faithtrack/yellowtile.png";
+        } else if (isSection)
+            template = "/assets/gui/faithtrack/sectiontile.png";
+        else
+            template = "/assets/gui/faithtrack/faithtile.png";
 
         bg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(template))));
         this.getChildren().add(bg);
@@ -81,7 +85,7 @@ public class FaithTile extends StackPane {
     /**
      * Sets and displays the player's faith marker.
      *
-     * @param player the player represented by the marker
+     * @param player  the player represented by the marker
      * @param markers
      */
     public void addPlayerMarker(String player, HashMap<String, ImageView> markers) {
@@ -166,7 +170,7 @@ public class FaithTile extends StackPane {
         if (markersPane.getChildren().size() > 0)
             markersPane.getChildren().get(0).setLayoutX(12);
 
-        // if overlapping player markers
+        /* If overlapping player markers */
         if (markersPane.getChildren().stream().filter(marker -> marker.getStyleClass().contains("faithmarker")).count() >= 2) {
             for (int i = 1; i < markersPane.getChildren().size(); i++) {
                 markersPane.getChildren().subList(0, i).forEach(m -> m.setLayoutX(m.getLayoutX() - 7));

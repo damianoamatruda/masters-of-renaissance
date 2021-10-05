@@ -44,7 +44,7 @@ public class InputNicknameController extends CliController {
     public void on(UpdateBookedSeats event) {
         if (vm.getLocalPlayer().isPresent() && event.canPrepareNewGame().equals(vm.getLocalPlayer().get()))
             cli.setController(new WaitingBeforeGameController());
-        else if (vm.getLocalPlayer().isPresent()) { // if the nickname isn't set don't print updates (do not disturb)
+        else if (vm.getLocalPlayer().isPresent()) { // If the nickname is not set do not print updates (do not disturb)
             cli.getOut().println();
             cli.getOut().println(center("%d players waiting for a new game...", event.getBookedSeats()));
         }
@@ -74,7 +74,7 @@ public class InputNicknameController extends CliController {
         else
             setNextState();
     }
-    
+
     @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
@@ -88,7 +88,7 @@ public class InputNicknameController extends CliController {
 
         if (vm.getPlayers().size() > 1)
             cli.getOut().println(center("All players have finished their setup!"));
-        
+
         setNextState();
     }
 }

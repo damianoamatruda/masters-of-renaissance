@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Test class for DevCardRequirement.
  */
 public class DevCardRequirementTest {
-    private Player p;
-    private Game g;
     private final DevCardColor green = new DevCardColor("Green", "");
     private final DevCardColor blue = new DevCardColor("Blue", "");
+    private Player p;
+    private Game g;
 
     @BeforeEach
     void setup() {

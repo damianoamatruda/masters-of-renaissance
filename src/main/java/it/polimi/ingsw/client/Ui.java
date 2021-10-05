@@ -27,14 +27,14 @@ public class Ui extends View {
         return viewModel;
     }
 
+    public UiController getController() {
+        return controller;
+    }
+
     public void setController(UiController controller) {
         this.controller = controller;
     }
 
-    public UiController getController() {
-        return controller;
-    }
-    
     public Optional<byte[]> getGameConfig() {
         return Optional.ofNullable(gameConfig);
     }

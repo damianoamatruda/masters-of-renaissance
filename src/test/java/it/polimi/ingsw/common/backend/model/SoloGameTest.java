@@ -24,11 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** Test of SoloGame operations */
 public class SoloGameTest {
+    final ResourceType coin = new ResourceType("Coin", "", true);
     SoloGame game;
     Player player;
     FaithTrack track;
-
-    final ResourceType coin = new ResourceType("Coin", "", true);
 
     /**
      * The setup: instantiation of game and the single player.

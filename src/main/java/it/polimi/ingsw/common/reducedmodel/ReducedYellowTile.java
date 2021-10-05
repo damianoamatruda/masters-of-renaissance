@@ -6,7 +6,7 @@ public class ReducedYellowTile {
 
     /** The bonus progressive victory points earned. */
     private final int victoryPoints;
-    
+
     /**
      * @param faithPoints   the progressive tile number
      * @param victoryPoints the bonus victory points

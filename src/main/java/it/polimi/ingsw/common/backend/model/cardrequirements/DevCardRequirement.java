@@ -39,7 +39,7 @@ public class DevCardRequirement implements CardRequirement {
          * are present in the ones extracted from the player */
 
         List<DevelopmentCard> playerCards = new ArrayList<>();
-        
+
         playerCards.addAll(player.getDevSlots().stream().flatMap(Stack::stream).toList());
 
         Set<Entry> playerState = new HashSet<>(),
@@ -59,10 +59,10 @@ public class DevCardRequirement implements CardRequirement {
         });
 
         for (Entry entry : reqCopy) {
-            // entry not found in player's cards -> requirements not satisfied
+            /* Entry not found in player's cards -> requirements not satisfied */
             if (playerState.stream().noneMatch(e -> e.equals(entry)))
                 missing.add(entry);
-                // if the entry is found the quantity of cards the player owns in that entry is subtracted from the requirements
+                /* If the entry is found, the quantity of cards the player owns in that entry is subtracted from the requirements. */
             else
                 playerState.stream().filter(e -> e.equals(entry)).findAny().ifPresent(e -> {
                     if (entry.quantity - e.quantity > 0)
@@ -70,7 +70,7 @@ public class DevCardRequirement implements CardRequirement {
                 });
         }
 
-        // if the missing set isn't empty the requirements haven't been met
+        /* If the missing set is not empty, the requirements have not been met. */
         if (!missing.isEmpty())
             throw new CardRequirementsNotMetException(missing);
     }
@@ -134,7 +134,8 @@ public class DevCardRequirement implements CardRequirement {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof Entry)) return false;
+            if (!(o instanceof Entry))
+                return false;
 
             /* two entries are defined as equal if
              * if the color is the same and

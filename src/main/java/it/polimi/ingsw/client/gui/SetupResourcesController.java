@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 /** Gui controller used for the resources setup scene. */
 public class SetupResourcesController extends GuiController {
@@ -69,21 +68,21 @@ public class SetupResourcesController extends GuiController {
 
         choosableResources = vm.getResourceTypes().stream().filter(r -> r.isStorable() && !vm.getLocalPlayer().flatMap(vm::getPlayer).map(ReducedPlayer::getSetup).flatMap(ReducedPlayerSetup::getInitialExcludedResources).orElseThrow().contains(r.getName())).toList();
 
-        // enable resources from choice box as drag source
+        /* Enable resources from choice box as drag source */
         choosableResources.forEach(res -> {
             Resource r = new Resource(res.getName());
 
             r.setOnDragDetected((event) -> {
-                if (selection.values().stream().flatMap(m -> m.values().stream()).reduce(0, Integer::sum) >= choosableCount) {
-                    event.consume();
-                    return;
-                }
-                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(r.getImage());
-                    db.setContent(content);
-                    event.consume();
-                }
+                        if (selection.values().stream().flatMap(m -> m.values().stream()).reduce(0, Integer::sum) >= choosableCount) {
+                            event.consume();
+                            return;
+                        }
+                        Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putImage(r.getImage());
+                        db.setContent(content);
+                        event.consume();
+                    }
             );
 
             resourceTypesContainer.getChildren().add(r);
@@ -94,7 +93,7 @@ public class SetupResourcesController extends GuiController {
             gui.getUi().dispatch(new ReqSwapShelves(s1, s2));
         });
 
-        // On drag over + dropped for the warehouse shelves
+        /* On drag over + dropped for the warehouse shelves */
         warehouse.getChildren().forEach(shelf -> shelf.setOnDragOver((event) -> {
             Dragboard db = event.getDragboard();
             if (db.hasImage()) {
@@ -112,7 +111,7 @@ public class SetupResourcesController extends GuiController {
                 boolean alreadyHasBoundShelf = selection.keySet().stream().anyMatch(sh -> selection.get(sh).containsKey(resource) && sh != id)
                         && !(db.hasString() && (selection.get(Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT))).get(resource) < 2));
 
-                if((selection.get(id) == null || selection.get(id).get(resource) == null ||
+                if ((selection.get(id) == null || selection.get(id).get(resource) == null ||
                         ((Shelf) shelf).getSize() > selection.get(id).get(resource)) && !alreadyHasBoundShelf)
                     try {
                         int quantity = selection.get(id).get(resource) + 1;
@@ -127,10 +126,11 @@ public class SetupResourcesController extends GuiController {
                         }
 
                     }
-                if (success) warehouse.getShelf(id).addResourceDraggable(resource);
+                if (success)
+                    warehouse.getShelf(id).addResourceDraggable(resource);
                 updateChoiceButton();
             }
-            if(db.hasString() && success) {
+            if (db.hasString() && success) {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                 Resource res = (Resource) event.getGestureSource();
                 String resource = res.getName();
@@ -149,7 +149,7 @@ public class SetupResourcesController extends GuiController {
             event.consume();
         }));
 
-        // On drag over + dropped outside of warehouse
+        /* On drag over + dropped outside of warehouse */
         this.canvas.setOnDragOver((event) -> {
                     Dragboard db = event.getDragboard();
                     if (db.hasImage()) {
@@ -177,9 +177,9 @@ public class SetupResourcesController extends GuiController {
 
                 success = true;
             } catch (NumberFormatException e) {
-                    // It is normal if it gets here:
-                // it means that the resource hasn't been dropped inside of any shelf, but outside instead
-                // Drop is simply ignored
+                /* It is normal if it gets here:
+                 * it means that the resource has not been dropped inside any shelf, but outside instead.
+                 * Drop is simply ignored. */
             }
 
             event.setDropCompleted(success);
@@ -219,7 +219,7 @@ public class SetupResourcesController extends GuiController {
     public void on(ErrAction event) {
         /* If the data in the VM is correct setNextState() could be used here as well.
            This different handler, which keeps track of the current player only,
-           forces the client in a state that's compatible with the server's response,
+           forces the client in a state that is compatible with the server's response,
            accepting it as a universal source of truth. */
         Consumer<? extends GuiController> callback = controller -> gui.addToOverlay(
                 new Alert("Setup already concluded", "You have already concluded setup, advancing to game turns."));
@@ -232,8 +232,8 @@ public class SetupResourcesController extends GuiController {
 
     @Override
     public void on(ErrInitialChoice event) {
-        if (event.isLeadersChoice()) // if the error is from the initial leaders choice
-            if (event.getMissingLeadersCount() == 0) // no leaders missing -> already chosen
+        if (event.isLeadersChoice()) // If the error is from the initial leaders choice
+            if (event.getMissingLeadersCount() == 0) // No leaders missing -> already chosen
                 Platform.runLater(() -> gui.addToOverlay(new Alert(
                         "You cannot choose the leader cards",
                         "You have already chosen the initial leader cards.",

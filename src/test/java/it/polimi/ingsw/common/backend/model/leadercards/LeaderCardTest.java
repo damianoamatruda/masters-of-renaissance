@@ -45,7 +45,7 @@ public class LeaderCardTest {
     void activateNoRequirements() {
         leader = new ZeroLeader(coin, null, 0, 0);
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        
+
         assertDoesNotThrow(() -> leader.activate(p));
         assertTrue(leader.isActive());
     }

@@ -7,7 +7,7 @@ public class ReqJoin implements VCEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param nickname the chosen nickname to connect to the lobby with
      */
     public ReqJoin(String nickname) {

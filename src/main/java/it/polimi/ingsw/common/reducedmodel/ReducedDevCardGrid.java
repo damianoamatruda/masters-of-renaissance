@@ -23,7 +23,7 @@ public class ReducedDevCardGrid {
     public ReducedDevCardGrid(int levelsCount, int colorsCount, Map<String, List<Integer>> topCards) {
         if (topCards == null)
             throw new IllegalArgumentException("Null card grid constructing reduced dev card grid.");
-        
+
         this.levelsCount = levelsCount;
         this.colorsCount = colorsCount;
         this.topCards = topCards;

@@ -26,7 +26,7 @@ public class ReducedResourceContainer {
     public ReducedResourceContainer(int id, int size, Map<String, Integer> content, String boundedResType) {
         if (content == null)
             content = new HashMap<>();
-            
+
         this.id = id;
         this.size = size;
         this.content = new HashMap<>(content);

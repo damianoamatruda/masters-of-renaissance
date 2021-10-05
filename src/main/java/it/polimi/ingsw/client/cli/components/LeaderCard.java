@@ -22,36 +22,36 @@ public class LeaderCard extends StringComponent {
 
         stringBuilder.append("[Leader]").append("\n");
 
-        // ID, type
+        /* ID, type */
         stringBuilder.append(String.format("ID: %s, type: %s",
                 boldColor(String.valueOf(reducedLeaderCard.getId()), "\u001B[37m"),
                 reducedLeaderCard.getLeaderType()
         )).append("\n");
 
-        // Bound resource, victory points
+        /* Bound resource, victory points */
         stringBuilder.append(String.format("Bound resource: %s, VP: %d",
                 new Resource(reducedLeaderCard.getResourceType()).getString(),
                 reducedLeaderCard.getVictoryPoints()
         )).append("\n");
 
-        // If activated or not
+        /* Whether activated or not */
         stringBuilder.append(String.format("Active status: %s", reducedLeaderCard.isActive())).append("\n");
 
-        // Discount leaders only
+        /* Discount leaders only */
         if (reducedLeaderCard.getDiscount() >= 0)
             stringBuilder.append(String.format("Discount: %d", reducedLeaderCard.getDiscount())).append("\n");
 
-        // Requirements
+        /* Requirements */
         if (reducedLeaderCard.getDevCardRequirement().isPresent())
             stringBuilder.append(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement().get()).getString());
         if (reducedLeaderCard.getResourceRequirement().isPresent())
             stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement().get(), false).getString());
 
-        // Leader depots
+        /* Leader depots */
         vm.getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->
                 stringBuilder.append(new ResourceContainer(c).getString()));
 
-        // Production
+        /* Production */
         vm.getProduction(reducedLeaderCard.getProduction()).ifPresent(p ->
                 stringBuilder.append(new ResourceTransactionRecipe(p).getString()));
 

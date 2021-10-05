@@ -6,9 +6,8 @@ import it.polimi.ingsw.common.reducedmodel.*;
 import java.util.List;
 
 /**
- * Event containing the game's data.
- * Since the Model is completely parameterized,
- * clients need this message to retrieve the server's configuration.
+ * Event containing the game's data. Since the Model is completely parameterized, clients need this message to retrieve
+ * the server's configuration.
  */
 public class UpdateGame extends ViewEvent {
     private final List<ReducedPlayer> players;

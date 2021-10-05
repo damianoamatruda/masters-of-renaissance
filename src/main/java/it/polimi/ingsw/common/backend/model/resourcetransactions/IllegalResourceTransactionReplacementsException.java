@@ -8,13 +8,6 @@ public class IllegalResourceTransactionReplacementsException extends IllegalReso
     private final boolean isReplacement;
     private final ReplacementReason reason;
 
-    public enum ReplacementReason {
-        NEGATIVE_VALUES,
-        ILLEGAL_STORABLE,
-        ILLEGAL_NON_STORABLE,
-        EXCLUDED
-    }
-
     /**
      * @param isInput
      * @param isReplacement
@@ -25,22 +18,32 @@ public class IllegalResourceTransactionReplacementsException extends IllegalReso
         this.isReplacement = isReplacement;
         this.reason = reason;
     }
+
     /**
      * @return the isInput
      */
     public boolean isInput() {
         return isInput;
     }
+
     /**
-     * @return 
+     * @return
      */
     public boolean isReplacement() {
         return isReplacement;
     }
+
     /**
      * @return
      */
     public ReplacementReason getReason() {
         return reason;
+    }
+
+    public enum ReplacementReason {
+        NEGATIVE_VALUES,
+        ILLEGAL_STORABLE,
+        ILLEGAL_NON_STORABLE,
+        EXCLUDED
     }
 }

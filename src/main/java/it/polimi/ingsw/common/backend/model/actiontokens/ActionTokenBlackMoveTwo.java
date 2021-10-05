@@ -11,7 +11,7 @@ public class ActionTokenBlackMoveTwo implements ActionToken {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param id the ID of the token
      */
     public ActionTokenBlackMoveTwo(int id) {

@@ -31,7 +31,6 @@ public class Title extends HBox {
     }
 
     /**
-     *
      * @return
      */
     public String getText() {
@@ -39,7 +38,6 @@ public class Title extends HBox {
     }
 
     /**
-     *
      * @param value
      */
     public void setText(String value) {
@@ -47,7 +45,6 @@ public class Title extends HBox {
     }
 
     /**
-     *
      * @return
      */
     public StringProperty textProperty() {

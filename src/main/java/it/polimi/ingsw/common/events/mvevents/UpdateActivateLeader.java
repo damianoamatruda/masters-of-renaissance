@@ -8,7 +8,7 @@ public class UpdateActivateLeader implements MVEvent {
     /**
      * Class constructor.
      *
-     * @param leader      the ID of the card the action was called upon
+     * @param leader the ID of the card the action was called upon
      */
     public UpdateActivateLeader(int leader) {
         this.leader = leader;

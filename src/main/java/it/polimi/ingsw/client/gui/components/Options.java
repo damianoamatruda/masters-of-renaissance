@@ -15,7 +15,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /** Gui component representing the Options screen. */
@@ -40,15 +39,6 @@ public class Options extends BorderPane {
     private SButton backButton;
     private EventHandler<ActionEvent> onBack = this::handleBack;
     private double oldMusicVolume;
-
-    /**
-     *
-     * @param value
-     * @return
-     */
-    private static String getPercentage(double value) {
-        return String.format("%d%%", (int) (value * 100));
-    }
 
     /**
      * Overlay displaying the game's settings
@@ -91,6 +81,14 @@ public class Options extends BorderPane {
 
         if (gui.getUi().getGameConfig().isEmpty())
             resetConfigButton.setDisable(true);
+    }
+
+    /**
+     * @param value
+     * @return
+     */
+    private static String getPercentage(double value) {
+        return String.format("%d%%", (int) (value * 100));
     }
 
     /**

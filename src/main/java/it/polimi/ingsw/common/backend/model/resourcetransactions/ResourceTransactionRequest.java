@@ -74,11 +74,11 @@ public class ResourceTransactionRequest {
             validateStorableResourceMap(resMap, true);
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("STORABLE_EXCEPTION"))
-            throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.ILLEGAL_NON_STORABLE);
-            
+                throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.ILLEGAL_NON_STORABLE);
+
             throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.NEGATIVE_VALUES);
         }
-        
+
         validateInputResourceMap(resMap);
     }
 
@@ -88,10 +88,10 @@ public class ResourceTransactionRequest {
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("STORABLE_EXCEPTION"))
                 throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.ILLEGAL_STORABLE);
-            
+
             throw new IllegalResourceTransactionReplacementsException(true, false, ReplacementReason.NEGATIVE_VALUES);
         }
-        
+
         validateInputResourceMap(resMap);
     }
 
@@ -101,10 +101,10 @@ public class ResourceTransactionRequest {
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("STORABLE_EXCEPTION"))
                 throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.ILLEGAL_NON_STORABLE);
-            
+
             throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.NEGATIVE_VALUES);
         }
-        
+
         validateOutputResourceMap(resMap);
     }
 
@@ -115,7 +115,7 @@ public class ResourceTransactionRequest {
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("STORABLE_EXCEPTION"))
                 throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.ILLEGAL_STORABLE);
-            
+
             throw new IllegalResourceTransactionReplacementsException(false, false, ReplacementReason.NEGATIVE_VALUES);
         }
     }

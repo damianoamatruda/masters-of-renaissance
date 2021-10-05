@@ -42,8 +42,14 @@ public class Strongbox extends StackPane {
             throw new RuntimeException(exception);
         }
 
-        this.prefWidthProperty().addListener((o, old, newP) -> { if (c != null) setContent(c); });
-        this.prefHeightProperty().addListener((o, old, newP) -> { if (c != null) setContent(c); });
+        this.prefWidthProperty().addListener((o, old, newP) -> {
+            if (c != null)
+                setContent(c);
+        });
+        this.prefHeightProperty().addListener((o, old, newP) -> {
+            if (c != null)
+                setContent(c);
+        });
     }
 
     /**
@@ -65,33 +71,31 @@ public class Strongbox extends StackPane {
         this.c = c;
         grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(5));
-        
+
         background.setFitWidth(this.getPrefWidth());
         background.setFitHeight(this.getPrefHeight());
 
-        double height = this.getPrefHeight(), // height of strongbox region
-               width = this.getPrefWidth();
+        double height = this.getPrefHeight(), // Height of strongbox region
+                width = this.getPrefWidth();
 
         double sqroot = Math.sqrt(c.getContent().size() + 1);
 
         int row = 0, col = 0,
-            sRows = (int) Math.ceil(sqroot),
-            sCols = (int) Math.floor(sqroot);
-        
-        // these are used for scalin, caps are arbitrary and looked good on my machine
-        double defTextHeight = 20, // got this by trying (it's how big Text appears with no scaling)
-               cellHeight = height / sRows,
-               cellWidth = width / sCols,
-               scaleRatio = 0.5 * (cellHeight / defTextHeight);
-        
+                sRows = (int) Math.ceil(sqroot),
+                sCols = (int) Math.floor(sqroot);
+
+        /* These are used for scalin, caps are arbitrary and looked good on my machine */
+        double defTextHeight = 20, // Got this by trying (it is how big Text appears with no scaling)
+                cellHeight = height / sRows,
+                cellWidth = width / sCols,
+                scaleRatio = 0.5 * (cellHeight / defTextHeight);
+
         Iterator<Entry<String, Integer>> i = c.getContent().entrySet().iterator();
 
         RowConstraints rc = grid.getRowConstraints().remove(0);
-        // rc.setVgrow(Priority.ALWAYS);
-        rc.setPercentHeight(100d/sRows);
+        rc.setPercentHeight(100d / sRows);
         ColumnConstraints cc = grid.getColumnConstraints().remove(0);
-        // cc.setHgrow(Priority.ALWAYS);
-        cc.setPercentWidth(100d/sCols);
+        cc.setPercentWidth(100d / sCols);
 
         while (grid.getColumnConstraints().size() < sCols)
             grid.getColumnConstraints().add(cc);
@@ -99,13 +103,13 @@ public class Strongbox extends StackPane {
             grid.getRowConstraints().add(rc);
 
         grid.getChildren().clear();
-        
+
         while (i.hasNext()) {
             Entry<String, Integer> e = i.next();
 
             grid.add(new Cell(e.getKey(), e.getValue(), cellWidth, cellHeight, scaleRatio), col, row);
 
-            if (row == sRows - 1) { // one more row than cols
+            if (row == sRows - 1) { // One more row than columns
                 col++;
                 row = 0;
             } else {
@@ -115,7 +119,7 @@ public class Strongbox extends StackPane {
     }
 
     public void addSpinners() {
-        for(Node cell : grid.getChildren()) {
+        for (Node cell : grid.getChildren()) {
             int maxValue = ((Cell) cell).getCount();
             Spinner<Integer> spinner = new Spinner<>(0, maxValue, 0);
             ((Cell) cell).getChildren().add(0, spinner);
@@ -126,11 +130,33 @@ public class Strongbox extends StackPane {
     }
 
     /**
+     * Refreshes the view after removing a resource.
+     *
+     * @param resource the resource type involved
+     */
+    public void refreshRemove(String resource) {
+        Cell cell = grid.getChildren().stream().map(n -> (Cell) n).filter(c -> c.getResource().equals(resource)).findAny().orElseThrow();
+        cell.setCount(cell.getCount() - 1);
+    }
+
+    public int getContainerID() {
+        return containerID;
+    }
+
+    public void fillContainersMap(Map<Integer, Map<String, Integer>> containers) {
+        grid.getChildren().forEach(hbox -> {
+            if (((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
+                containers.put(getContainerID(), Map.of(((Resource) ((HBox) hbox).getChildren().get(2)).getName(),
+                        ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue()));
+        });
+    }
+
+    /**
      *
      */
     private class Cell extends HBox {
-        private int count;
         private final String resource;
+        private int count;
 
         public Cell(String resource, int count, double cellWidth, double cellHeight, double scaleRatio) {
             this.resource = resource;
@@ -153,35 +179,15 @@ public class Strongbox extends StackPane {
         public String getResource() {
             return resource;
         }
+
         public int getCount() {
             return count;
         }
+
         public void setCount(int count) {
             this.count = count;
             int textIndex = hasSpinner ? 1 : 0;
             ((Text) this.getChildren().get(textIndex)).setText(String.valueOf(count));
         }
-    }
-
-    /**
-     * Refreshes the view after removing a resource.
-     *
-     * @param resource the resource type involved
-     */
-    public void refreshRemove(String resource) {
-        Cell cell = grid.getChildren().stream().map(n -> (Cell)n).filter(c -> c.getResource().equals(resource)).findAny().orElseThrow();
-        cell.setCount(cell.getCount() - 1);
-    }
-
-    public int getContainerID() {
-        return containerID;
-    }
-
-    public void fillContainersMap(Map<Integer, Map<String, Integer>> containers) {
-        grid.getChildren().forEach(hbox -> {
-            if(((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue() > 0)
-                containers.put(getContainerID(), Map.of(((Resource) ((HBox) hbox).getChildren().get(2)).getName(),
-                        ((Spinner<Integer>) ((HBox) hbox).getChildren().get(0)).getValue()));
-        });
     }
 }

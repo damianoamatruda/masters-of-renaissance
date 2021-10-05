@@ -56,36 +56,6 @@ public abstract class Card extends Pane {
     protected abstract String getFXMLName();
 
     /**
-     * Sets and displays the card's production.
-     *
-     * @param prod the card's production
-     */
-    public void setProduction(ReducedResourceTransactionRecipe prod) {
-        this.production = new Production();
-        this.production.setProduction(prod);
-
-        this.production.maxWidthProperty().bind(this.maxWidthProperty());
-        this.production.maxHeightProperty().bind(this.maxHeightProperty());
-
-        this.production.setLayoutX(20);
-
-        this.getChildren().add(this.production);
-    }
-
-    /**
-     * Sets and displays the card's resource requirements.
-     *
-     * @param requirement the resource requirements of the card
-     */
-    public void setRequirement(ReducedResourceRequirement requirement) {
-        this.requirement = new CardRequirement();
-        this.requirement.setRequirements(requirement);
-        this.getChildren().addAll(this.requirement);
-        this.requirement.setLayoutX(15 + getWidth() * 0.12 / this.requirement.getChildren().size() / 1.5);
-        this.requirement.setLayoutY(5);
-    }
-
-    /**
      * Getter of the card's victory points.
      *
      * @return the victory points
@@ -113,11 +83,41 @@ public abstract class Card extends Pane {
     }
 
     /**
+     * Sets and displays the card's resource requirements.
+     *
+     * @param requirement the resource requirements of the card
+     */
+    public void setRequirement(ReducedResourceRequirement requirement) {
+        this.requirement = new CardRequirement();
+        this.requirement.setRequirements(requirement);
+        this.getChildren().addAll(this.requirement);
+        this.requirement.setLayoutX(15 + getWidth() * 0.12 / this.requirement.getChildren().size() / 1.5);
+        this.requirement.setLayoutY(5);
+    }
+
+    /**
      * Getter of the card production.
      *
      * @return the card production
      */
     public Production getProduction() {
         return production;
+    }
+
+    /**
+     * Sets and displays the card's production.
+     *
+     * @param prod the card's production
+     */
+    public void setProduction(ReducedResourceTransactionRecipe prod) {
+        this.production = new Production();
+        this.production.setProduction(prod);
+
+        this.production.maxWidthProperty().bind(this.maxWidthProperty());
+        this.production.maxHeightProperty().bind(this.maxHeightProperty());
+
+        this.production.setLayoutX(20);
+
+        this.getChildren().add(this.production);
     }
 }

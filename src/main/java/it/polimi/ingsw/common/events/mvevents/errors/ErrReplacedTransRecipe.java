@@ -47,12 +47,14 @@ public class ErrReplacedTransRecipe extends ViewEvent {
     public String getResType() {
         return resType;
     }
+
     /**
      * @return the count of resources in the shelves mapping
      */
     public int getShelvesChoiceResCount() {
         return shelvesChoiceResCount;
     }
+
     /**
      * @return the count of resources in the replaced map
      */

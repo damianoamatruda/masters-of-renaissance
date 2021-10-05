@@ -10,7 +10,7 @@ public class ReqSwapShelves implements VCEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param shelf1 the first shelf
      * @param shelf2 the second shelf
      */

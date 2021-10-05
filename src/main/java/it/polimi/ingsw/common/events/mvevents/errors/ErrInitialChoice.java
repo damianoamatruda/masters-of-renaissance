@@ -26,6 +26,7 @@ public class ErrInitialChoice extends ViewEvent {
     public boolean isLeadersChoice() {
         return isLeadersChoice;
     }
+
     /**
      * @return the missingLeadersCount
      */

@@ -194,7 +194,7 @@ public class Lobby extends AsynchronousEventDispatcher {
     }
 
     private boolean checkJoined(View view) {
-        synchronized(lock) {
+        synchronized (lock) {
             if (!checkNickname(view))
                 return false;
             if (!joined.containsKey(view)) {

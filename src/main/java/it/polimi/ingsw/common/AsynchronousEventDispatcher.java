@@ -23,7 +23,7 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
 
     /**
      * Dispatches an event synchronously, waiting for its delivery.
-     * 
+     *
      * @param <T>
      * @param event the event to dispatch.
      */
@@ -42,10 +42,10 @@ public class AsynchronousEventDispatcher extends EventDispatcher implements Auto
 
     /**
      * Dispatches an event asynchronously, not waiting for its delivery.
-     * 
+     *
      * @param <T>
      * @param event the event to dispatch.
-     * @return      a Future representing pending completion of the dispatching process.
+     * @return a Future representing pending completion of the dispatching process.
      */
     private <T extends Event> Future<?> asyncDispatch(T event) {
         return executor.submit(() -> super.dispatch(event));

@@ -11,7 +11,7 @@ public class ActionTokenBlackMoveOneShuffle implements ActionToken {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param id the ID of the token
      */
     public ActionTokenBlackMoveOneShuffle(int id) {
@@ -22,7 +22,7 @@ public class ActionTokenBlackMoveOneShuffle implements ActionToken {
     public int getId() {
         return id;
     }
-    
+
     /**
      * Triggers the effect of this token: move Black cross ahead by one, then shuffle and reset the deck of tokens.
      *

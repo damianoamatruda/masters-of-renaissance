@@ -9,78 +9,54 @@ import java.util.stream.Stream;
 
 /** View model of the client of the Masters of Renaissance game. */
 public class ViewModel {
-    /** The nickname of the local player. */
-    private String localPlayer;
-
-    /** The state of finalization of the setup phase. */
-    private boolean isSetupDone;
-
-    /** The list of action tokens present in the game. */
-    private List<ReducedActionToken> actionTokens;
-
-    /** The faith points of Lorenzo il Magnifico. */
-    private int blackPoints;
-
-    /** The list of resource containers present in the game. */
-    private List<ReducedResourceContainer> containers;
-
-    /** The current player's nickname. */
-    private String currentPlayer;
-
-    /** The list of development card colors present in the game. */
-    private List<ReducedDevCardColor> devCardColors;
-
-    /** The development card grid state. */
-    private ReducedDevCardGrid devCardGrid;
-
-    /** The list of development cards present in the game. */
-    private List<ReducedDevCard> developmentCards;
-
-    /** The development slots count. */
-    private int devSlotsCount;
-
-    /** The faith track state. */
-    private ReducedFaithTrack faithTrack;
-
-    /** The status of finalization of the game. */
-    private boolean gameEnded = false;
-
-    /** The status of last round of the game. */
-    private boolean lastRound;
-
-    /** The latest action token activated. */
-    private ReducedActionToken latestToken;
-
-    /** The list of leader cards present in the game. */
-    private List<ReducedLeaderCard> leaderCards;
-
-    /** The game market. */
-    private ReducedMarket market;
-
-    /** The list of players, by their nicknames. */
-    private List<ReducedPlayer> players;
-
-    /** The list of productions present in the game. */
-    private List<ReducedResourceTransactionRecipe> productions;
-
-    /** The list of resource types present in the game. */
-    private List<ReducedResourceType> resourceTypes;
-
-    /** The nickname of the winner. */
-    private String winnerPlayer;
-
     /** The list of the available user interface ANSI colors. */
     private final List<String> ansiColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
-
     /** The map of unique player string encoded ANSI colors. */
     private final Map<String, String> ansiPlayerColors;
-
     /** The list of the available user interface HEX colors. */
     private final List<String> hexColors = List.of("#5D99FD", "#961126", "#14A76C", "#ffe933");
-
     /** The map of unique player string encoded HEX colors. */
     private final Map<String, String> hexPlayerColors;
-
+    /** The nickname of the local player. */
+    private String localPlayer;
+    /** The state of finalization of the setup phase. */
+    private boolean isSetupDone;
+    /** The list of action tokens present in the game. */
+    private List<ReducedActionToken> actionTokens;
+    /** The faith points of Lorenzo il Magnifico. */
+    private int blackPoints;
+    /** The list of resource containers present in the game. */
+    private List<ReducedResourceContainer> containers;
+    /** The current player's nickname. */
+    private String currentPlayer;
+    /** The list of development card colors present in the game. */
+    private List<ReducedDevCardColor> devCardColors;
+    /** The development card grid state. */
+    private ReducedDevCardGrid devCardGrid;
+    /** The list of development cards present in the game. */
+    private List<ReducedDevCard> developmentCards;
+    /** The development slots count. */
+    private int devSlotsCount;
+    /** The faith track state. */
+    private ReducedFaithTrack faithTrack;
+    /** The status of finalization of the game. */
+    private boolean gameEnded = false;
+    /** The status of last round of the game. */
+    private boolean lastRound;
+    /** The latest action token activated. */
+    private ReducedActionToken latestToken;
+    /** The list of leader cards present in the game. */
+    private List<ReducedLeaderCard> leaderCards;
+    /** The game market. */
+    private ReducedMarket market;
+    /** The list of players, by their nicknames. */
+    private List<ReducedPlayer> players;
+    /** The list of productions present in the game. */
+    private List<ReducedResourceTransactionRecipe> productions;
+    /** The list of resource types present in the game. */
+    private List<ReducedResourceType> resourceTypes;
+    /** The nickname of the winner. */
+    private String winnerPlayer;
     /** Player holding the inkwell. */
     private String inkwellPlayer;
 
@@ -120,7 +96,7 @@ public class ViewModel {
 
     /**
      * @param nickname the player to get the base production of
-     * @return         the base production of the specified player
+     * @return the base production of the specified player
      */
     public synchronized Optional<ReducedResourceTransactionRecipe> getPlayerBaseProduction(String nickname) {
         return getPlayer(nickname).map(ReducedPlayer::getBaseProduction).flatMap(this::getProduction);
@@ -172,8 +148,8 @@ public class ViewModel {
     }
 
     /**
-     * Retrieves the topmost development cards in a player's development slots.
-     * If a slot is empty the corresponding position in the list contains a null element.
+     * Retrieves the topmost development cards in a player's development slots. If a slot is empty the corresponding
+     * position in the list contains a null element.
      *
      * @param nickname the nickname of the player whose topmost development cards need to be retrieved
      * @return a list containing, for each slot, the optional topmost development card
@@ -246,11 +222,11 @@ public class ViewModel {
      *
      * @param nickname the nickname of the player whose list of available productions needs to be retrieved
      * @return the reduced recipes owned by the player, including:
-     *          <ul>
-     *              <li>the base production
-     *              <li>the visible development cards' productions
-     *              <li>the active leader cards' productions
-     *          </ul>
+     * <ul>
+     *     <li>the base production
+     *     <li>the visible development cards' productions
+     *     <li>the active leader cards' productions
+     * </ul>
      */
     public synchronized List<ReducedResourceTransactionRecipe> getPlayerProductions(String nickname) {
         List<Integer> ids = new ArrayList<>();
@@ -420,6 +396,15 @@ public class ViewModel {
     }
 
     /**
+     * Updates the nickname of the player now playing a turn.
+     *
+     * @param currentPlayer the currentPlayer to set
+     */
+    public synchronized void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    /**
      * Retrieves whether the local player is now the current player.
      *
      * @return true if the local player is now the current player
@@ -477,8 +462,7 @@ public class ViewModel {
     }
 
     /**
-     * Returns a development card from the top cards of the development card grid,
-     * based on color and level.
+     * Returns a development card from the top cards of the development card grid, based on color and level.
      *
      * @param color the card's color
      * @param level the card's level
@@ -538,10 +522,17 @@ public class ViewModel {
     /**
      * Retrieves whether the game has reached its last round or not.
      *
-     * @return whether it's the last round of the game
+     * @return whether it is the last round of the game
      */
     public synchronized boolean isLastRound() {
         return lastRound;
+    }
+
+    /**
+     * Sets last round to true.
+     */
+    public synchronized void setLastRound(boolean lastRound) {
+        this.lastRound = lastRound;
     }
 
     /**
@@ -568,15 +559,6 @@ public class ViewModel {
      */
     public synchronized Optional<ReducedLeaderCard> getLeaderCard(int id) {
         return leaderCards.stream().filter(c -> c.getId() == id).findAny();
-    }
-
-    /**
-     * Updates the nickname of the player now playing a turn.
-     *
-     * @param currentPlayer the currentPlayer to set
-     */
-    public synchronized void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
     }
 
     /**
@@ -609,19 +591,27 @@ public class ViewModel {
     }
 
     /**
-     * Sets last round to true.
-     */
-    public synchronized void setLastRound(boolean lastRound) {
-        this.lastRound = lastRound;
-    }
-
-    /**
      * Retrieves all the players that initially joined the game.
      *
      * @return the players
      */
     public synchronized List<ReducedPlayer> getPlayers() {
         return players;
+    }
+
+    /**
+     * Sets all the joined players nicknames.
+     *
+     * @param players the playerNicknames to set
+     */
+    public synchronized void setPlayers(List<ReducedPlayer> players) {
+        if (this.players != null)
+            this.players = new ArrayList<>(players);
+
+        for (int i = 0; i < players.size(); i++) {
+            hexPlayerColors.put(players.get(i).getNickname(), hexColors.get(i % hexColors.size()));
+            ansiPlayerColors.put(players.get(i).getNickname(), ansiColors.get(i % ansiColors.size()));
+        }
     }
 
     /**
@@ -666,21 +656,6 @@ public class ViewModel {
     }
 
     /**
-     * Sets all the joined players nicknames.
-     *
-     * @param players the playerNicknames to set
-     */
-    public synchronized void setPlayers(List<ReducedPlayer> players) {
-        if (this.players != null)
-            this.players = new ArrayList<>(players);
-
-        for (int i = 0; i < players.size(); i++) {
-            hexPlayerColors.put(players.get(i).getNickname(), hexColors.get(i % hexColors.size()));
-            ansiPlayerColors.put(players.get(i).getNickname(), ansiColors.get(i % ansiColors.size()));
-        }
-    }
-
-    /**
      * Retrieves the max development slots count.
      *
      * @return the max available development slots
@@ -690,9 +665,18 @@ public class ViewModel {
     }
 
     /**
+     * Sets the max development slots count.
+     *
+     * @param devSlotsCount the max available development slots
+     */
+    public synchronized void setDevSlotsCount(int devSlotsCount) {
+        this.devSlotsCount = devSlotsCount;
+    }
+
+    /**
      * Activates the vatican section given by the ID.
      *
-     * @param id the ID of the section to activate
+     * @param id                the ID of the section to activate
      * @param bonusGivenPlayers the players that earned the bonus
      */
     public synchronized void activateVaticanSection(int id, List<String> bonusGivenPlayers) {
@@ -706,7 +690,7 @@ public class ViewModel {
 
     /**
      * @param production the production to get the allowed input resource types of
-     * @return           a list containing the resource types allowed to be assigned to the production's input
+     * @return a list containing the resource types allowed to be assigned to the production's input
      */
     public synchronized List<ReducedResourceType> getProductionInputNonStorableResTypes(ReducedResourceTransactionRecipe production) {
         return resourceTypes.stream()
@@ -717,22 +701,13 @@ public class ViewModel {
 
     /**
      * @param production the production to get the allowed output resource types of
-     * @return           a list containing the resource types allowed to be assigned to the production's output
+     * @return a list containing the resource types allowed to be assigned to the production's output
      */
     public synchronized List<ReducedResourceType> getProductionOutputResTypes(ReducedResourceTransactionRecipe production) {
         return resourceTypes.stream()
                 .filter(r -> r.isStorable() || r.isGiveableToPlayer())
                 .filter(r -> !production.getOutputBlanksExclusions().contains(r.getName()))
                 .toList();
-    }
-
-    /**
-     * Sets the max development slots count.
-     *
-     * @param devSlotsCount the max available development slots
-     */
-    public synchronized void setDevSlotsCount(int devSlotsCount) {
-        this.devSlotsCount = devSlotsCount;
     }
 
     /**
@@ -745,12 +720,12 @@ public class ViewModel {
     }
 
     /**
-     * Sets the state of finalization of the setup phase of the game.
+     * Sets the winner of the game.
      *
-     * @param isSetupDone whether the player setup is done
+     * @param winnerPlayer the winner to set
      */
-    public synchronized void setSetupDone(boolean isSetupDone) {
-        this.isSetupDone = isSetupDone;
+    public synchronized void setWinnerPlayer(String winnerPlayer) {
+        this.winnerPlayer = winnerPlayer;
     }
 
     /**
@@ -760,6 +735,15 @@ public class ViewModel {
      */
     public synchronized boolean isSetupDone() {
         return isSetupDone;
+    }
+
+    /**
+     * Sets the state of finalization of the setup phase of the game.
+     *
+     * @param isSetupDone whether the player setup is done
+     */
+    public synchronized void setSetupDone(boolean isSetupDone) {
+        this.isSetupDone = isSetupDone;
     }
 
     /**
@@ -778,21 +762,21 @@ public class ViewModel {
     }
 
     /**
-     * Sets the winner of the game.
-     *
-     * @param winnerPlayer the winner to set
-     */
-    public synchronized void setWinnerPlayer(String winnerPlayer) {
-        this.winnerPlayer = winnerPlayer;
-    }
-
-    /**
      * Retrieves the nickname of the local player's nickname.
      *
      * @return the local player's nickname
      */
     public synchronized Optional<String> getLocalPlayer() {
         return Optional.ofNullable(localPlayer);
+    }
+
+    /**
+     * Sets the nickname of the local player's nickname.
+     *
+     * @param localPlayer the nickname to set
+     */
+    public synchronized void setLocalPlayer(String localPlayer) {
+        this.localPlayer = localPlayer;
     }
 
     /**
@@ -814,15 +798,6 @@ public class ViewModel {
     }
 
     /**
-     * Sets the nickname of the local player's nickname.
-     *
-     * @param localPlayer the nickname to set
-     */
-    public synchronized void setLocalPlayer(String localPlayer) {
-        this.localPlayer = localPlayer;
-    }
-
-    /**
      * @return the nickname of the player holding the inkwell
      */
     public synchronized Optional<String> getInkwellPlayer() {
@@ -841,8 +816,8 @@ public class ViewModel {
      */
     public synchronized Map<String, Integer> getPlayersFaithPoints() {
         return getPlayers().stream()
-                    .map(ReducedPlayer::getNickname)
-                    .collect(Collectors.toMap(n -> n, this::getPlayerFaithPoints));
+                .map(ReducedPlayer::getNickname)
+                .collect(Collectors.toMap(n -> n, this::getPlayerFaithPoints));
     }
 
     /**
@@ -850,7 +825,7 @@ public class ViewModel {
      */
     public synchronized Map<String, Integer> getPlayersVictoryPoints() {
         return getPlayers().stream()
-                    .map(ReducedPlayer::getNickname)
-                    .collect(Collectors.toMap(n -> n, this::getPlayerVictoryPoints));
+                .map(ReducedPlayer::getNickname)
+                .collect(Collectors.toMap(n -> n, this::getPlayerVictoryPoints));
     }
 }

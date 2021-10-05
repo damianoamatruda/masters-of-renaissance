@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<fx:root xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+<fx:root xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16"
          type="StackPane"
          stylesheets="@../index.css">
   <Pane styleClass="overlay"/>
@@ -22,7 +22,7 @@
           </padding>
         </SButton>
         <padding>
-            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+          <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
         </padding>
       </VBox>
     </center>

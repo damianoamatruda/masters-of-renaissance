@@ -13,76 +13,76 @@
          xmlns="http://javafx.com/javafx/16"
          type="BorderPane"
          stylesheets="@../index.css">
-   <center>
-      <VBox maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER">
-         <padding>
-            <Insets left="30.0" right="30.0"/>
-         </padding>
-         <VBox alignment="CENTER">
-            <VBox.margin>
-               <Insets top="10.0" bottom="40.0"/>
-            </VBox.margin>
-            <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../logo.png"/>
-            </ImageView>
-         </VBox>
-         <Title maxWidth="-Infinity" text="Options">
-            <VBox.margin>
-               <Insets bottom="30.0"/>
-            </VBox.margin>
-         </Title>
-         <VBox maxWidth="-Infinity" prefHeight="0.0">
-            <Label text="Music"/>
-            <BorderPane maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0">
-               <left>
-                  <Slider fx:id="musicSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
-               </left>
-               <right>
-                  <Text fx:id="musicText">
-                     <cursor>
-                        <Cursor fx:constant="HAND"/>
-                     </cursor>
-                  </Text>
-               </right>
-            </BorderPane>
-         </VBox>
-         <VBox maxWidth="-Infinity" prefHeight="0.0">
-            <Label text="Sound Effects"/>
-            <BorderPane maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0">
-               <left>
-                  <Slider fx:id="soundFxSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
-               </left>
-               <right>
-                  <Text fx:id="soundFxText">
-                     <cursor>
-                        <Cursor fx:constant="HAND"/>
-                     </cursor>
-                  </Text>
-               </right>
-            </BorderPane>
-            <VBox.margin>
-               <Insets top="30.0"/>
-            </VBox.margin>
-         </VBox>
-         <VBox fx:id="configContainer" maxWidth="-Infinity" prefHeight="0.0">
-            <Label text="Offline Play Config"/>
-            <BorderPane maxWidth="-Infinity" prefWidth="400.0">
-               <left>
-                  <SButton fx:id="customConfigButton" prefWidth="190.0" text="Custom..."/>
-               </left>
-               <right>
-                  <SButton fx:id="resetConfigButton" prefWidth="190.0" text="Default"/>
-               </right>
-            </BorderPane>
-            <VBox.margin>
-               <Insets top="30.0"/>
-            </VBox.margin>
-         </VBox>
-         <SButton alignment="CENTER" fx:id="backButton" prefWidth="400.0" text="Back">
-            <VBox.margin>
-               <Insets top="30.0" bottom="30.0"/>
-            </VBox.margin>
-         </SButton>
+  <center>
+    <VBox maxWidth="-Infinity" maxHeight="-Infinity" alignment="CENTER">
+      <padding>
+        <Insets left="30.0" right="30.0"/>
+      </padding>
+      <VBox alignment="CENTER">
+        <VBox.margin>
+          <Insets top="10.0" bottom="40.0"/>
+        </VBox.margin>
+        <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@../logo.png"/>
+        </ImageView>
       </VBox>
-   </center>
+      <Title maxWidth="-Infinity" text="Options">
+        <VBox.margin>
+          <Insets bottom="30.0"/>
+        </VBox.margin>
+      </Title>
+      <VBox maxWidth="-Infinity" prefHeight="0.0">
+        <Label text="Music"/>
+        <BorderPane maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0">
+          <left>
+            <Slider fx:id="musicSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
+          </left>
+          <right>
+            <Text fx:id="musicText">
+              <cursor>
+                <Cursor fx:constant="HAND"/>
+              </cursor>
+            </Text>
+          </right>
+        </BorderPane>
+      </VBox>
+      <VBox maxWidth="-Infinity" prefHeight="0.0">
+        <Label text="Sound Effects"/>
+        <BorderPane maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0">
+          <left>
+            <Slider fx:id="soundFxSlider" max="1" prefWidth="350.0" maxWidth="350.0"/>
+          </left>
+          <right>
+            <Text fx:id="soundFxText">
+              <cursor>
+                <Cursor fx:constant="HAND"/>
+              </cursor>
+            </Text>
+          </right>
+        </BorderPane>
+        <VBox.margin>
+          <Insets top="30.0"/>
+        </VBox.margin>
+      </VBox>
+      <VBox fx:id="configContainer" maxWidth="-Infinity" prefHeight="0.0">
+        <Label text="Offline Play Config"/>
+        <BorderPane maxWidth="-Infinity" prefWidth="400.0">
+          <left>
+            <SButton fx:id="customConfigButton" prefWidth="190.0" text="Custom..."/>
+          </left>
+          <right>
+            <SButton fx:id="resetConfigButton" prefWidth="190.0" text="Default"/>
+          </right>
+        </BorderPane>
+        <VBox.margin>
+          <Insets top="30.0"/>
+        </VBox.margin>
+      </VBox>
+      <SButton alignment="CENTER" fx:id="backButton" prefWidth="400.0" text="Back">
+        <VBox.margin>
+          <Insets top="30.0" bottom="30.0"/>
+        </VBox.margin>
+      </SButton>
+    </VBox>
+  </center>
 </fx:root>

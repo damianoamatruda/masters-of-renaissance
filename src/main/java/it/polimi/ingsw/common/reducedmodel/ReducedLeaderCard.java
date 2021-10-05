@@ -12,13 +12,6 @@ public class ReducedLeaderCard extends ReducedCard {
     private final int containerId;
     private final int discount;
 
-    public enum LeaderType {
-        DEPOT,
-        DISCOUNT,
-        PRODUCTION,
-        ZERO
-    }
-
     /**
      * @param id            the ID of the card
      * @param victoryPoints the victory points given by the card
@@ -47,7 +40,7 @@ public class ReducedLeaderCard extends ReducedCard {
         this.active = active;
         this.devCardRequirement = devCardRequirement;
         this.resourceRequirement = resourceRequirement;
-        
+
         this.containerId = containerId;
         this.discount = discount;
     }
@@ -86,7 +79,17 @@ public class ReducedLeaderCard extends ReducedCard {
     public boolean isActive() {
         return active;
     }
-    
+
+    public ReducedLeaderCard setActive(boolean active) {
+        return new ReducedLeaderCard(
+                id, victoryPoints, resourceType, leaderType, active,
+                devCardRequirement,
+                resourceRequirement,
+                containerId,
+                discount,
+                production);
+    }
+
     /**
      * @return the containerId of the card
      */
@@ -101,13 +104,10 @@ public class ReducedLeaderCard extends ReducedCard {
         return discount;
     }
 
-    public ReducedLeaderCard setActive(boolean active) {
-        return new ReducedLeaderCard(
-                id, victoryPoints, resourceType, leaderType, active,
-                devCardRequirement,
-                resourceRequirement,
-                containerId,
-                discount,
-                production);
+    public enum LeaderType {
+        DEPOT,
+        DISCOUNT,
+        PRODUCTION,
+        ZERO
     }
 }

@@ -12,7 +12,7 @@ public class ReducedDevCardRequirement {
     public ReducedDevCardRequirement(List<ReducedDevCardRequirementEntry> entries) {
         if (entries == null)
             entries = new ArrayList<>();
-            
+
         this.entries = entries;
     }
 

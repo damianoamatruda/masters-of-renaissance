@@ -21,7 +21,6 @@ public class DevCardGrid extends HBox {
     }
 
     /**
-     *
      * @param f
      */
     public void setControllerListener(BiConsumer<ReducedDevCard, DevelopmentCard> f) {

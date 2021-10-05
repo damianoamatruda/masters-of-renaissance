@@ -11,7 +11,7 @@ public class MainTitle implements Renderable {
     @Override
     public void render() {
         Cli cli = Cli.getInstance();
-        
+
         cli.getOut().println();
         cli.getOut().println(center(convertStreamToString(getClass().getResourceAsStream("/assets/cli/title.txt"))));
         for (int i = 0; i < 2; i++)

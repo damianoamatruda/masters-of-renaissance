@@ -86,10 +86,10 @@ public class Controller {
     private void on(View view, ReqLeaderAction event) {
         if (event.isActivate())
             model.checkJoinedThen(view, (gameContext, nickname) ->
-                gameContext.activateLeader(view, nickname, event.getLeader()));
+                    gameContext.activateLeader(view, nickname, event.getLeader()));
         else
             model.checkJoinedThen(view, (gameContext, nickname) ->
-                gameContext.discardLeader(view, nickname, event.getLeader()));
+                    gameContext.discardLeader(view, nickname, event.getLeader()));
     }
 
     private void on(View view, ReqTakeFromMarket event) {

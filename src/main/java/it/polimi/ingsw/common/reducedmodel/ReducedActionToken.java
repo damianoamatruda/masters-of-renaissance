@@ -6,7 +6,7 @@ public class ReducedActionToken {
     private final int id;
     private final String kind;
     private final String discardedDevCardColor;
-    
+
     /**
      * @param id                    the ID of the action token
      * @param kind                  the type of token
@@ -33,8 +33,7 @@ public class ReducedActionToken {
     }
 
     /**
-     * @return (if applicable, else null) the color
-     *         of the development card that will be discarded upon token activation
+     * @return (if applicable, else null) the color of the development card that will be discarded upon token activation
      */
     public Optional<String> getDiscardedDevCardColor() {
         return Optional.ofNullable(discardedDevCardColor);

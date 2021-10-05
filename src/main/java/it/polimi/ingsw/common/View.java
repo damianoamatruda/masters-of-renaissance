@@ -83,7 +83,7 @@ public class View extends AsynchronousEventDispatcher {
 
     /**
      * Registers this View as a listener for Lobby-related events
-     * 
+     *
      * @param lobby the dispatcher to register this to
      */
     public void registerOnModelLobby(EventDispatcher lobby) {
@@ -97,7 +97,7 @@ public class View extends AsynchronousEventDispatcher {
 
     /**
      * Unregisters this View as a listener for events dispatched by the EventDispatcher lobby (stops listening)
-     * 
+     *
      * @param lobby the dipatcher to stop listening for events from
      */
     public void unregisterOnModelLobby(EventDispatcher lobby) {
@@ -110,7 +110,7 @@ public class View extends AsynchronousEventDispatcher {
 
     /**
      * Registers this View as a listener for GameContext-related events
-     * 
+     *
      * @param gameContext the dispatcher to register this to
      */
     public void registerOnModelGameContext(EventDispatcher gameContext) {
@@ -146,7 +146,7 @@ public class View extends AsynchronousEventDispatcher {
 
     /**
      * Unregisters this View as a listener for events dispatched by the EventDispatcher gameContext (stops listening)
-     * 
+     *
      * @param gameContext the dipatcher to stop listening for events from
      */
     public void unregisterOnModelGameContext(EventDispatcher gameContext) {
@@ -317,10 +317,9 @@ public class View extends AsynchronousEventDispatcher {
     }
 
     /**
-     * ViewEvent handler.
-     * ViewEvents are filtered to prevent Views they are not addressed to to handle them.
-     * 
-     * @param <T>       
+     * ViewEvent handler. ViewEvents are filtered to prevent Views they are not addressed to to handle them.
+     *
+     * @param <T>
      * @param viewEvent the received event
      * @param listener  the listener to pass the event to
      */
@@ -331,9 +330,8 @@ public class View extends AsynchronousEventDispatcher {
     }
 
     /**
-     * Event handler.
-     * Does not filter events (see View.on(T viewEvent)).
-     * 
+     * Event handler. Does not filter events (see View.on(T viewEvent)).
+     *
      * @param <T>
      * @param event    the received event
      * @param listener the listener to pass the event to

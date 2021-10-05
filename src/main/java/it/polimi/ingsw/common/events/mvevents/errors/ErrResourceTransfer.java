@@ -9,19 +9,12 @@ public class ErrResourceTransfer extends ViewEvent {
     private final boolean isAdded;
     private final ErrResourceTransferReason reason;
 
-    public enum ErrResourceTransferReason {
-        BOUNDED_RESTYPE_DIFFER,
-        NON_STORABLE,
-        CAPACITY_REACHED,
-        DUPLICATE_BOUNDED_RESOURCE
-    }
-
     /**
      * Class constructor.
      *
      * @param resType the resource type the error relates to
      * @param isAdded whether the resource was trying to be added to a container
-     * @param reason the reson for which the transfer failed
+     * @param reason  the reson for which the transfer failed
      */
     public ErrResourceTransfer(View view, String resType, boolean isAdded, String reason) {
         super(view);
@@ -49,5 +42,12 @@ public class ErrResourceTransfer extends ViewEvent {
      */
     public boolean isAdded() {
         return isAdded;
+    }
+
+    public enum ErrResourceTransferReason {
+        BOUNDED_RESTYPE_DIFFER,
+        NON_STORABLE,
+        CAPACITY_REACHED,
+        DUPLICATE_BOUNDED_RESOURCE
     }
 }

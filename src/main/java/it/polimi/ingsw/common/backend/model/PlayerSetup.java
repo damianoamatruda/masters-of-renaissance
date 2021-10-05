@@ -100,10 +100,11 @@ public class PlayerSetup {
      * @param game    the game the player is playing in
      * @param player  the player
      * @param shelves the destination shelves
-     * @throws CannotChooseException                            all the allowed initial resources have already been chosen
-     * @throws IllegalResourceTransactionReplacementsException  
-     * @throws IllegalResourceTransactionContainersException    
-     * @throws IllegalResourceTransferException                 when trasferring resources to a container fails
+     * @throws CannotChooseException                           all the allowed initial resources have already been
+     *                                                         chosen
+     * @throws IllegalResourceTransactionReplacementsException
+     * @throws IllegalResourceTransactionContainersException
+     * @throws IllegalResourceTransferException                when trasferring resources to a container fails
      */
     public void chooseResources(Game game, Player player, Map<Shelf, Map<ResourceType, Integer>> shelves) throws CannotChooseException, IllegalResourceTransactionReplacementsException, IllegalResourceTransactionContainersException, IllegalResourceTransferException {
         if (hasChosenResources)
@@ -146,7 +147,7 @@ public class PlayerSetup {
      * @return <code>true</code> if the setup is done; <code>false</code> otherwise.
      */
     public boolean isDone() {
-        // last or necessary because setups are created by GSON -> constructor doesn't get called
+        /* Last or necessary because setups are created by GSON -> constructor does not get called */
         return hasGivenInitialFaithPoints && hasChosenLeaders && (hasChosenResources || initialResources == 0);
     }
 

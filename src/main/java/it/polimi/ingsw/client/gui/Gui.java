@@ -37,8 +37,9 @@ import java.util.logging.Logger;
  * JavaFX App
  */
 public class Gui extends Application {
+    static final double realWidth = 1280;
+    static final double realHeight = 720;
     private static final Logger LOGGER = Logger.getLogger(Gui.class.getName());
-
     /* Adjusting the ratio between 'real' and 'starting' sizes
        will result in the whole GUI changing its intrinsic scaling.
        'real' values reflect the sizes set in the FXMLs.
@@ -49,9 +50,6 @@ public class Gui extends Application {
     private static final double startHeight = 480;
     private static final double minWidth = 640;
     private static final double minHeight = 360;
-    static final double realWidth = 1280;
-    static final double realHeight = 720;
-
     private static final String title = "Masters of Renaissance";
     private static final String iconPng = "/assets/gui/playerboard/inkwell.png";
     private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
@@ -163,7 +161,7 @@ public class Gui extends Application {
             - a reloadRoot(Alert) method
                 Discarded, since the Alert would need a callback anyways (see this implementation)
             - a reloadRoot(Callback) that would call setRoot(currentRoot, callback)
-                Discarded, since the runLater methods wouldn't get executed in order and
+                Discarded, since the runLater methods would not get executed in order and
                 the Alert would be visible for only a split second */
         Platform.runLater(() -> addToOverlay(new Alert(title, content, () -> setScene(currentScene, callback))));
     }
@@ -196,6 +194,10 @@ public class Gui extends Application {
 
     public Optional<MediaPlayer> getMusicPlayer() {
         return Optional.ofNullable(musicPlayer);
+    }
+
+    public void setMusicPlayer(MediaPlayer musicPlayer) {
+        this.musicPlayer = musicPlayer;
     }
 
     public void setPauseHandler(Pane scene) {
@@ -246,10 +248,6 @@ public class Gui extends Application {
 
     public double getSoundFxVolume() {
         return soundFxVolume;
-    }
-
-    public void setMusicPlayer(MediaPlayer musicPlayer) {
-        this.musicPlayer = musicPlayer;
     }
 
     public void setSoundFxVolume(double soundFxVolume) {

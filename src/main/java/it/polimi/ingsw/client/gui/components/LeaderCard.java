@@ -21,7 +21,7 @@ public class LeaderCard extends Card {
     private Text leaderTypeText;
     @FXML
     private Text resourceTypeText;
-    
+
     private ReducedResourceContainer content;
 
     private int leaderId;
@@ -32,8 +32,8 @@ public class LeaderCard extends Card {
     /**
      * Class constructor.
      *
-     * @param leaderType    the type of leader card
-     * @param resourceType  the target resource type of the leader card
+     * @param leaderType   the type of leader card
+     * @param resourceType the target resource type of the leader card
      */
     public LeaderCard(LeaderType leaderType, String resourceType) {
         super(leaderType != null ? String.format("%sleader", leaderType.toString().toLowerCase()) : "backleader");
@@ -110,7 +110,7 @@ public class LeaderCard extends Card {
     /**
      * Sets and displays the available Zero replacement (valid for leaders of type zero leader).
      *
-     * @param type  the resource type to replace the Zero
+     * @param type the resource type to replace the Zero
      */
     public void setZeroReplacement(String type) {
         Resource res = new Resource(type);
@@ -127,8 +127,8 @@ public class LeaderCard extends Card {
     /**
      * Sets and displays the leader discount (valid for discount leaders).
      *
-     * @param type      the discounted resource type
-     * @param discount  the discount in unities
+     * @param type     the discounted resource type
+     * @param discount the discount in unities
      */
     public void setDiscount(String type, int discount) {
         HBox bonus = new HBox(-3);
@@ -159,7 +159,9 @@ public class LeaderCard extends Card {
         return content;
     }
 
-    public Shelf getGuiDepot() { return depot; }
+    public Shelf getGuiDepot() {
+        return depot;
+    }
 
     /**
      * Sets and displays the depots content (valid for depot leaders).
@@ -175,15 +177,15 @@ public class LeaderCard extends Card {
         shelf.setLayoutX(12);
         this.getChildren().add(shelf);
 
-        if(container.getContent().size() == 0)
+        if (container.getContent().size() == 0)
             shelf.setPlaceholder(boundRes);
         else
-            for(int i = 0; i < container.getContent().get(boundRes); i++) {
-            if(wantsDnD)
-                shelf.addResourceDraggable(boundRes);
-            else
-                shelf.addResource(boundRes);
-        }
+            for (int i = 0; i < container.getContent().get(boundRes); i++) {
+                if (wantsDnD)
+                    shelf.addResourceDraggable(boundRes);
+                else
+                    shelf.addResource(boundRes);
+            }
 
         this.depot = shelf;
 

@@ -7,7 +7,7 @@ import it.polimi.ingsw.common.View;
 public class VirtualView extends View {
     /**
      * Class constructor.
-     * 
+     *
      * @param networkHandler the NetworkHandler to pass the events to
      */
     public VirtualView(NetworkHandler networkHandler) {
@@ -16,6 +16,7 @@ public class VirtualView extends View {
 
     /**
      * Hooks the NetworkHandler to the View's listeners
+     *
      * @param networkHandler the NetworkHandler to connect
      */
     private void setListeners(NetworkHandler networkHandler) {

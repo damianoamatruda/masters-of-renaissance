@@ -65,6 +65,19 @@ public class ResourceTransactionRecipe {
         this.discardableOutput = discardableOutput;
     }
 
+    /**
+     * Initializes a production with no exclusions and non-discardable output specifying its input and its output.
+     *
+     * @param input        the map of the resources to be given as input of the production
+     * @param inputBlanks  the number of the input blanks
+     * @param output       the map of the resources to be taken as output of the production
+     * @param outputBlanks the number of the input blanks
+     */
+    public ResourceTransactionRecipe(Map<ResourceType, Integer> input, int inputBlanks,
+                                     Map<ResourceType, Integer> output, int outputBlanks) {
+        this(input, inputBlanks, Set.of(), output, outputBlanks, Set.of(), false);
+    }
+
     private static void validateBlanksCount(int blanksCount) {
         if (blanksCount < 0)
             throw new IllegalArgumentException("Illegal negative blanks count.");
@@ -80,19 +93,6 @@ public class ResourceTransactionRecipe {
 
     public int getId() {
         return id;
-    }
-
-    /**
-     * Initializes a production with no exclusions and non-discardable output specifying its input and its output.
-     *
-     * @param input        the map of the resources to be given as input of the production
-     * @param inputBlanks  the number of the input blanks
-     * @param output       the map of the resources to be taken as output of the production
-     * @param outputBlanks the number of the input blanks
-     */
-    public ResourceTransactionRecipe(Map<ResourceType, Integer> input, int inputBlanks,
-                                     Map<ResourceType, Integer> output, int outputBlanks) {
-        this(input, inputBlanks, Set.of(), output, outputBlanks, Set.of(), false);
     }
 
     /**
@@ -160,13 +160,13 @@ public class ResourceTransactionRecipe {
 
     public ReducedResourceTransactionRecipe reduce() {
         return new ReducedResourceTransactionRecipe(
-            getId(),
-            getInput().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)),
-            getInputBlanks(),
-            getInputBlanksExclusions().stream().map(ResourceType::getName).toList(),
-            getOutput().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)),
-            getOutputBlanks(),
-            getOutputBlanksExclusions().stream().map(ResourceType::getName).toList(),
-            hasDiscardableOutput());
+                getId(),
+                getInput().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)),
+                getInputBlanks(),
+                getInputBlanksExclusions().stream().map(ResourceType::getName).toList(),
+                getOutput().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)),
+                getOutputBlanks(),
+                getOutputBlanksExclusions().stream().map(ResourceType::getName).toList(),
+                hasDiscardableOutput());
     }
 }

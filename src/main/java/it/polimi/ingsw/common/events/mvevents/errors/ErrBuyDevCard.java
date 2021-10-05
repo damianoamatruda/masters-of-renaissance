@@ -9,8 +9,8 @@ public class ErrBuyDevCard extends ViewEvent {
 
     /**
      * @param view
-     * @param isStackEmpty true if the player pointed to an empty stack,
-     *                     false if the card cannot be placed into the player's development slot
+     * @param isStackEmpty true if the player pointed to an empty stack, false if the card cannot be placed into the
+     *                     player's development slot
      */
     public ErrBuyDevCard(View view, boolean isStackEmpty) {
         super(view);

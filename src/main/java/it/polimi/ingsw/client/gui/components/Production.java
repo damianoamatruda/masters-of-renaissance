@@ -67,16 +67,16 @@ public class Production extends StackPane {
         this.productionId = production.getId();
 
         elementScale = (this.getMaxHeight() - (2 * padding)) / this.getMaxHeight();
-        
+
         maxRowHeight = (this.getMaxHeight() - (2 * padding)) / Math.max(
-            production.getInput().entrySet().size() + (production.getInputBlanks() > 0 ? 1 : 0),
-            production.getOutput().entrySet().size() + (production.getOutputBlanks() > 0 ? 1 : 0));
-        
+                production.getInput().entrySet().size() + (production.getInputBlanks() > 0 ? 1 : 0),
+                production.getOutput().entrySet().size() + (production.getOutputBlanks() > 0 ? 1 : 0));
+
         input.setSpacing(2);
         output.setSpacing(2);
 
-        // fill input exclusions
-        if(!production.getInputBlanksExclusions().isEmpty() || !production.getOutputBlanksExclusions().isEmpty()) {
+        /* Fill input exclusions */
+        if (!production.getInputBlanksExclusions().isEmpty() || !production.getOutputBlanksExclusions().isEmpty()) {
             VBox inputExclusions = new VBox();
             inputExclusions.setMinWidth(60);
             if (!production.getInputBlanksExclusions().isEmpty())
@@ -84,8 +84,8 @@ public class Production extends StackPane {
             exclusions.getChildren().add(inputExclusions);
         }
 
-        // fill output exclusions
-        if(!production.getOutputBlanksExclusions().isEmpty()) {
+        /* Fill output exclusions */
+        if (!production.getOutputBlanksExclusions().isEmpty()) {
             VBox outputExclusions = new VBox();
             fillExclusions(outputExclusions, production.getOutputBlanksExclusions());
             exclusions.getChildren().add(outputExclusions);
@@ -110,13 +110,13 @@ public class Production extends StackPane {
 
     /**
      * Draws the production's excluded resources
-     * 
+     *
      * @param exclusions
      * @param blanksExclusions
      */
     private void fillExclusions(VBox exclusions, List<String> blanksExclusions) {
         exclusions.setSpacing(2);
-        for(String resource : blanksExclusions) {
+        for (String resource : blanksExclusions) {
             StackPane exclusion = new StackPane();
             exclusion.getChildren().add(new Resource(resource));
             exclusion.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/resourcetypes/blankexclusion.png")))));
@@ -129,8 +129,6 @@ public class Production extends StackPane {
     }
 
     /**
-     *
-     *
      * @param resourceMap
      * @return
      */
@@ -143,7 +141,6 @@ public class Production extends StackPane {
     }
 
     /**
-     *
      * @param key
      * @param r
      * @return
@@ -155,7 +152,7 @@ public class Production extends StackPane {
         box.getChildren().add(r);
 
         box.setAlignment(Pos.CENTER);
-        
+
         r.setFitHeight(maxRowHeight);
         r.setFitWidth(30);
 
@@ -164,7 +161,7 @@ public class Production extends StackPane {
 
         box.setMinHeight(0);
         box.setMaxHeight(maxRowHeight);
-        
+
         return box;
     }
 

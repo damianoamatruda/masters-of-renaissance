@@ -6,7 +6,7 @@ package it.polimi.ingsw.common.backend.model;
 public class IllegalActionException extends Exception {
     /**
      * Class constructor.
-     * 
+     *
      * @param action the illegal action trying to be performed
      */
     public IllegalActionException(String action, String reason) {

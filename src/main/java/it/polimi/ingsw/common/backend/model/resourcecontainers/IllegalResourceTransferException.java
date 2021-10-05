@@ -10,24 +10,17 @@ public class IllegalResourceTransferException extends Exception {
     private final boolean isAdded;
 
     private final Kind kind;
-    
-    public enum Kind {
-        BOUNDED_RESTYPE_DIFFER,
-        NON_STORABLE,
-        CAPACITY_REACHED,
-        DUPLICATE_BOUNDED_RESOURCE
-    }
 
     /**
      * Class constructor.
-     * 
+     *
      * @param resource
      * @param isAdded
      * @param kind
      */
     public IllegalResourceTransferException(ResourceType resource,
-            boolean isAdded,
-            Kind kind) {
+                                            boolean isAdded,
+                                            Kind kind) {
         this.kind = kind;
         this.resource = resource;
         this.isAdded = isAdded;
@@ -52,5 +45,12 @@ public class IllegalResourceTransferException extends Exception {
      */
     public boolean isAdded() {
         return isAdded;
+    }
+
+    public enum Kind {
+        BOUNDED_RESTYPE_DIFFER,
+        NON_STORABLE,
+        CAPACITY_REACHED,
+        DUPLICATE_BOUNDED_RESOURCE
     }
 }

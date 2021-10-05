@@ -7,13 +7,6 @@ import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 public class ErrNickname extends ViewEvent {
     private final ErrNicknameReason reason;
 
-    public enum ErrNicknameReason {
-        NOT_SET,
-        ALREADY_SET,
-        TAKEN,
-        NOT_IN_GAME
-    }
-
     /**
      * @param view
      * @param reason reason causing the error
@@ -25,5 +18,12 @@ public class ErrNickname extends ViewEvent {
 
     public ErrNicknameReason getReason() {
         return reason;
+    }
+
+    public enum ErrNicknameReason {
+        NOT_SET,
+        ALREADY_SET,
+        TAKEN,
+        NOT_IN_GAME
     }
 }

@@ -29,7 +29,7 @@ public class ProductionLeaderTest {
         ProductionLeader leader = new ProductionLeader(prod, coin, null, 0, 0);
 
         Player p = new Player("", false, List.of(leader), new Warehouse(0), new Strongbox(), new ResourceTransactionRecipe(Map.of(), 0, Map.of(), 0), 0, new PlayerSetup(0, 0, 0, Set.of()));
-        
+
         assertDoesNotThrow(() -> leader.activate(p));
 
         assertTrue(leader.getProduction(false).isPresent());

@@ -13,20 +13,20 @@ public class ActionTokenDiscardTwo implements ActionToken {
     /** The specific color of the cards to be discarded after activation (target color). */
     private final DevCardColor discardedColor;
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
     /**
      * Class constructor.
      *
-     * @param id the id of this token
+     * @param id    the id of this token
      * @param color color to be assigned as the "target color"
      */
     public ActionTokenDiscardTwo(int id, DevCardColor color) {
         discardedColor = color;
         this.id = id;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     /**

@@ -22,14 +22,14 @@ import java.util.Optional;
  * @see Player
  */
 public abstract class LeaderCard extends Card {
-    private final ResourceType resource;
     protected final CardRequirement requirement;
-
+    private final ResourceType resource;
     /** The card's status. If active, the ability can be triggered. */
     private boolean active = false;
 
     /**
      * Class constructor.
+     *
      * @param resource      the resource bound to the card. The card's ability is restricted to acting on this resource
      *                      type only.
      * @param requirement   the requirement to be satisfied for card activation.
@@ -43,7 +43,7 @@ public abstract class LeaderCard extends Card {
     }
 
     /**
-     * Returns the activation status of the card. It doesn't have to be checked prior to the card's use, since the
+     * Returns the activation status of the card. It does not have to be checked prior to the card's use, since the
      * card's status is already checked for internally
      *
      * @return the card's activation status.
@@ -62,7 +62,7 @@ public abstract class LeaderCard extends Card {
     public void activate(Player player) throws IllegalArgumentException, CardRequirementsNotMetException {
         if (!player.getLeaders().contains(this))
             throw new IllegalArgumentException(
-                    String.format("Illegal leader choice: leader isn't owned by player %s", player.getNickname()));
+                    String.format("Illegal leader choice: leader is not owned by player %s", player.getNickname()));
         if (requirement != null)
             requirement.checkRequirements(player);
 

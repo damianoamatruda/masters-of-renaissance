@@ -9,7 +9,7 @@ public class ReqChooseResources implements VCEvent {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param shelves the mapping used when handling the request
      */
     public ReqChooseResources(Map<Integer, Map<String, Integer>> shelves) {

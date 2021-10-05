@@ -13,16 +13,16 @@
       <VBox.margin>
         <Insets bottom="40.0"/>
       </VBox.margin>
-        <Text fx:id="outcome" textAlignment="CENTER"/>
+      <Text fx:id="outcome" textAlignment="CENTER"/>
+      <VBox.margin>
+        <Insets top="20.0"/>
+      </VBox.margin>
+      <Text/>
+      <VBox fx:id="leaderboard" alignment="CENTER" spacing="10">
         <VBox.margin>
-          <Insets top="20.0"/>
+          <Insets bottom="20.0"/>
         </VBox.margin>
-        <Text/>
-        <VBox fx:id="leaderboard" alignment="CENTER" spacing="10">
-          <VBox.margin>
-            <Insets bottom="20.0"/>
-          </VBox.margin>
-        </VBox>
+      </VBox>
       <SButton alignment="CENTER" onAction="#handleQuit" prefWidth="400.0" text="Quit to Title"/>
       <padding>
         <Insets bottom="80.0"/>

@@ -24,10 +24,10 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Logger;
 
 /** Gui controller class of the take Market resources action. */
 public class TakeFromMarketController extends GuiController {
+    private final Map<String, Integer> replacements = new HashMap<>();
     @FXML
     private AnchorPane canvas;
     @FXML
@@ -42,7 +42,6 @@ public class TakeFromMarketController extends GuiController {
     private Button submitBtn;
     @FXML
     private Button back;
-
     private boolean isRow;
     private int index;
     private Market market;
@@ -50,7 +49,6 @@ public class TakeFromMarketController extends GuiController {
     private List<LeaderCard> leaderCards;
     private Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private boolean enableReplacements;
-    private final Map<String, Integer> replacements = new HashMap<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,7 +85,7 @@ public class TakeFromMarketController extends GuiController {
         this.isRow = isRow;
         this.index = index;
 
-        // get a list with the selected resources
+        /* Get a list with the selected resources */
         List<String> chosenResources = new ArrayList<>();
         if (isRow)
             chosenResources = vm.getMarket().orElseThrow().getGrid().get(index);
@@ -117,8 +115,8 @@ public class TakeFromMarketController extends GuiController {
     /**
      * Inserts a chosen resource inside of a shelf.
      *
-     * @param resource  the resource to be inserted
-     * @param shelfID   the ID of the shelf involved
+     * @param resource the resource to be inserted
+     * @param shelfID  the ID of the shelf involved
      * @return true if transaction successful
      */
     private boolean putChoice(String resource, int shelfID) {
@@ -128,7 +126,7 @@ public class TakeFromMarketController extends GuiController {
             selection.get(shelfID).put(resource, quantity);
             success = true;
         } catch (NullPointerException e) {
-            if(selection.get(shelfID) == null || selection.get(shelfID).isEmpty()) {
+            if (selection.get(shelfID) == null || selection.get(shelfID).isEmpty()) {
                 Map<String, Integer> entry = new HashMap<>();
                 entry.put(resource, 1);
                 selection.put(shelfID, entry);
@@ -145,7 +143,7 @@ public class TakeFromMarketController extends GuiController {
      */
     private void removeResourceFromBox(String resource) {
         resourcesBox.getChildren().remove(
-                resourcesBox.getChildren().stream().filter(r -> ((Resource)r).getName().equals(resource)).findAny().orElse(null));
+                resourcesBox.getChildren().stream().filter(r -> ((Resource) r).getName().equals(resource)).findAny().orElse(null));
     }
 
     /**
@@ -182,18 +180,18 @@ public class TakeFromMarketController extends GuiController {
 
                 Shelf s = warehouse.getShelf(shelfID);
 
-                if(s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource)) && !alreadyHasBoundShelf) {
+                if (s.getContentSize() < s.getSize() && (s.getBoundResource() == null || s.getBoundResource().equalsIgnoreCase(resource)) && !alreadyHasBoundShelf) {
                     success = putChoice(resource, shelfID);
                     if (success) {
                         warehouse.getShelf(shelfID).addResourceDraggable(resource);
-                        if(!db.hasString())
+                        if (!db.hasString())
                             removeResourceFromBox(resource);
                         replacements.put(resource, replacements.containsKey(resource) ? replacements.get(resource) + 1 : 1);
                     }
                 }
             }
-            // if the resource of choice was previously inserted in another shelf the moved
-            if(db.hasString() && success) {
+            /* If the resource of choice was previously inserted in another shelf the moved */
+            if (db.hasString() && success) {
                 int id = Integer.parseInt((String) db.getContent(DataFormat.PLAIN_TEXT));
                 Resource res = (Resource) event.getGestureSource();
                 String resource = res.getName();
@@ -235,7 +233,7 @@ public class TakeFromMarketController extends GuiController {
                 }
         );
 
-        // On drag dropped
+        /* On drag dropped */
         this.canvas.setOnDragDropped((event) -> {
                     Dragboard db = event.getDragboard();
                     boolean success = false;
@@ -261,7 +259,7 @@ public class TakeFromMarketController extends GuiController {
                         setDragAndDropSource(res);
                         success = true;
                     } catch (NumberFormatException | NullPointerException e) {
-                        // it is fine if it passes here. Drop will be ignored
+                        /* It is fine if it passes here. Drop will be ignored. */
                     }
 
                     event.setDropCompleted(success);
@@ -271,7 +269,7 @@ public class TakeFromMarketController extends GuiController {
     }
 
     private void setDragAndDropSource(Resource res) {
-        if(!res.isBlank())
+        if (!res.isBlank())
             res.setOnDragDetected((evt) -> {
                 Dragboard resdb = res.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
@@ -413,19 +411,19 @@ public class TakeFromMarketController extends GuiController {
     @Override
     public void on(UpdateAction event) {
         super.on(event);
-        if(event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
+        if (event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
             gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
 
-        else if(event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
+        else if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();
             Shelf s2 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap2()).findAny().orElseThrow();
 
             Platform.runLater(() -> {
                 Map<String, Integer> temp = selection.get(s1.getShelfId());
-                if(selection.get(s2.getShelfId()) != null)
+                if (selection.get(s2.getShelfId()) != null)
                     selection.put(s1.getShelfId(), selection.get(s2.getShelfId()));
                 else selection.remove(s1.getShelfId());
-                if(temp != null)
+                if (temp != null)
                     selection.put(s2.getShelfId(), temp);
                 else selection.remove(s2.getShelfId());
 

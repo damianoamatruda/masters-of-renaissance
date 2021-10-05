@@ -13,6 +13,7 @@ import java.io.IOException;
 
 /** Gui component representing the pause menu. */
 public class PauseMenu extends StackPane {
+    private final Pane pauseOptions;
     @FXML
     private BorderPane main;
     @FXML
@@ -21,7 +22,6 @@ public class PauseMenu extends StackPane {
     private SButton opt;
     @FXML
     private SButton quit;
-    private final Pane pauseOptions;
 
     public PauseMenu(Pane pauseOptions) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/assets/gui/components/pausemenu.fxml"));

@@ -109,12 +109,10 @@ public class FaithTrack extends EventDispatcher {
 
         /** The corresponding quantity of bonus points that will be rewarded to the players after the Report is over. */
         private final int victoryPoints;
-
-        /** <code>true</code> if the Vatican report is already over; <code>false</code> otherwise. */
-        private boolean activated;
-
         /** The list of players that earned a Pope's favor in this section. */
         private final List<Player> bonusGivenPlayers;
+        /** <code>true</code> if the Vatican report is already over; <code>false</code> otherwise. */
+        private boolean activated;
 
         /**
          * Constructor of the Vatican Section.
@@ -177,7 +175,7 @@ public class FaithTrack extends EventDispatcher {
         /**
          * Sets the state of activation of the Vatican Section.
          *
-         * @param players   the players of the game that might or might not receive a bonus
+         * @param players the players of the game that might or might not receive a bonus
          */
         public void activate(List<Player> players) {
             if (activated)

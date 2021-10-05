@@ -16,14 +16,12 @@ import java.util.function.BiConsumer;
 
 /** Gui component representing the market. */
 public class Market extends StackPane {
+    ToggleGroup indexSelectors = new ToggleGroup();
     @FXML
     private ImageView background;
     @FXML
     private GridPane grid;
-
     private BiConsumer<Integer, Boolean> controllerListener;
-
-    ToggleGroup indexSelectors = new ToggleGroup();
 
     /**
      * Class constructor.
@@ -41,7 +39,6 @@ public class Market extends StackPane {
     }
 
     /**
-     *
      * @param f
      */
     public void setSelectionListener(BiConsumer<Integer, Boolean> f) {
@@ -54,14 +51,14 @@ public class Market extends StackPane {
      * @param m the cached market state
      */
     public void setContent(ReducedMarket m) {
-        double height = this.getPrefHeight(), // height of market region
-               width = this.getPrefWidth();
+        double height = this.getPrefHeight(), // Height of market region
+                width = this.getPrefWidth();
 
         int marketRows = m.getGrid().size() + 2,
-            marketColumns = m.getGrid().get(0).size() + 3;
+                marketColumns = m.getGrid().get(0).size() + 3;
         int row = 0, col = 0;
 
-        // these are used for scalin, caps are arbitrary and looked good on my machine
+        /* These are used for scaling, caps are arbitrary and looked good */
         double cellSide = Math.min(height / marketRows, width / marketColumns);
 
         RowConstraints rc = grid.getRowConstraints().remove(0);
@@ -92,7 +89,7 @@ public class Market extends StackPane {
 
                 col++;
             }
-            
+
             row++;
             col = 0;
         }

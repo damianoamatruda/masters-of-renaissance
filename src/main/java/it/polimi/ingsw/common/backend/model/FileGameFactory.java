@@ -84,7 +84,7 @@ public class FileGameFactory implements GameFactory {
     @Override
     public Game getMultiGame(List<String> nicknames) throws IllegalArgumentException {
         checkNumberOfPlayers(nicknames, true);
-        
+
         baseProduction = buildBaseProduction();
         List<ResourceTransactionRecipe> productions = new ArrayList<>(List.of(baseProduction));
         List<Warehouse> warehouses = new ArrayList<>();
@@ -94,7 +94,7 @@ public class FileGameFactory implements GameFactory {
         List<DevelopmentCard> developmentCards = buildDevCards();
         List<ResourceContainer> resContainers = getResContainers(leaderCards);
         addDevCardProductions(productions, developmentCards);
-        
+
         return new Game(
                 getPlayers(nicknames, warehouses, strongboxes, leaderCards, resContainers), devCardColorMap.values().stream().toList(), resTypeMap.values().stream().toList(),
                 leaderCards,
@@ -139,7 +139,7 @@ public class FileGameFactory implements GameFactory {
     }
 
     private void buildBaseContainers(List<Warehouse> warehouses, List<Strongbox> strongboxes, int playersCount) {
-        for(int i = 0; i < playersCount; i++) {
+        for (int i = 0; i < playersCount; i++) {
             warehouses.add(new Warehouse(warehouseShelvesCount));
             strongboxes.add(new Strongbox());
         }
@@ -175,15 +175,15 @@ public class FileGameFactory implements GameFactory {
     /**
      * Checks the number of given players.
      *
-     * @param nicknames the list of nicknames
+     * @param nicknames   the list of nicknames
      * @param isMultiGame whether the requested game is a multiplayer game
      */
     private void checkNumberOfPlayers(List<String> nicknames, boolean isMultiGame) {
         String baseMsg = "Invalid number of players chosen";
         if (nicknames == null)
             throw new IllegalArgumentException(String.format("%s: %s.", baseMsg, "null"));
-            else if (nicknames.isEmpty())
-                throw new IllegalArgumentException(String.format("%s: 0.", baseMsg));
+        else if (nicknames.isEmpty())
+            throw new IllegalArgumentException(String.format("%s: 0.", baseMsg));
         else if (nicknames.size() == 1 && isMultiGame)
             throw new IllegalArgumentException("Cannot create MultiGame with only one player.");
         else if (nicknames.size() > maxPlayers)

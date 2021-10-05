@@ -12,9 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for resource transaction requests.
- * 
- * Requests cannot be illegally constructed.
- * If this is attempted, an exception will be thrown.
+ * <p>
+ * Requests cannot be illegally constructed. If this is attempted, an exception will be thrown.
  */
 public class ResourceTransactionRequestTest {
     /*

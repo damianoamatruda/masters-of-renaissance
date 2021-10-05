@@ -70,7 +70,7 @@ public class ResourceRequirement implements CardRequirement {
             // get the quantity of this resource the player owns
             int playerQuantity = resContainers.stream().mapToInt(c -> c.getResourceQuantity(r)).sum();
 
-            // if the player does not own enough of this resource, the requirements aren't met
+            // if the player does not own enough of this resource, the requirements are not met
             if (discountedRes.get(r) - playerQuantity > 0)
                 missingResources.put(r, discountedRes.get(r) - playerQuantity);
         }
@@ -82,7 +82,7 @@ public class ResourceRequirement implements CardRequirement {
     @Override
     public ReducedResourceRequirement reduceRR() {
         return new ReducedResourceRequirement(
-            resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)));
+                resources.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue)));
     }
 
     @Override

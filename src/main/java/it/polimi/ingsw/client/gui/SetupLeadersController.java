@@ -33,9 +33,12 @@ public class SetupLeadersController extends GuiController {
     private BorderPane canvas;
     @FXML
     private HBox leadersContainer;
-    @FXML private Button choiceButton;
-    @FXML private Title titleComponent;
-    @FXML private Text waitingText;
+    @FXML
+    private Button choiceButton;
+    @FXML
+    private Title titleComponent;
+    @FXML
+    private Text waitingText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -109,7 +112,7 @@ public class SetupLeadersController extends GuiController {
     public void on(ErrAction event) {
         /* If the data in the VM is correct setNextSetupState() could be used here as well.
            This different handler, which keeps track of the current player only,
-           forces the client in a state that's compatible with the server's response,
+           forces the client in a state that is compatible with the server's response,
            accepting it as a universal source of truth. */
         Consumer<? extends GuiController> callback = controller -> gui.addToOverlay(
                 new Alert("Setup phase is concluded", "Advancing to game turns."));
@@ -122,8 +125,8 @@ public class SetupLeadersController extends GuiController {
 
     @Override
     public void on(ErrInitialChoice event) {
-        if (event.isLeadersChoice()) // if the error is from the initial leaders choice
-            if (event.getMissingLeadersCount() == 0) // no leaders missing -> already chosen
+        if (event.isLeadersChoice()) // If the error is from the initial leaders choice
+            if (event.getMissingLeadersCount() == 0) // No leaders missing -> already chosen
                 Platform.runLater(() -> gui.addToOverlay(new Alert(
                         "You cannot choose the leader cards",
                         "You have already chosen the leader cards.",
@@ -145,7 +148,6 @@ public class SetupLeadersController extends GuiController {
 
 
         if (vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get())) {
-            // Platform.runLater(() -> titleComponent.setText("Leader setup done"));
             if (!isLocalResourceSetupDone())
                 setNextState();
             else

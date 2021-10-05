@@ -28,12 +28,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ActionTokenDiscardTwoTest {
-    SoloGame game;
-    Player player;
     final DevCardColor blue = new DevCardColor("Blue", "");
     final DevCardColor green = new DevCardColor("Green", "");
     final DevCardColor purple = new DevCardColor("Purple", "");
     final DevCardColor yellow = new DevCardColor("Yellow", "");
+    SoloGame game;
+    Player player;
 
     @BeforeEach
     void setup() {

@@ -11,7 +11,6 @@ public class WaitingBeforeGameController extends CliController {
     @Override
     public void render() {
         if (cli.getUi().isOffline()) {
-            // cli.getOut().println(center("Preparing a new game..."));
             cli.getUi().dispatch(new ReqNewGame(1));
             return;
         }

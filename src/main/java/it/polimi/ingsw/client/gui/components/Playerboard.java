@@ -15,6 +15,12 @@ import java.util.Objects;
 
 /** Gui component representing a player's playerboard. */
 public class Playerboard extends HBox {
+    private final VBox middleBox;
+    private final FaithTrack faithTrack;
+    private final double bgPixelWidth = 908;
+    private final double bgPixelHeight = 646;
+    private final double bgRatio = bgPixelWidth / bgPixelHeight;
+    private final double storageColWidthPercentage = .2235;
     @FXML
     private ImageView frontBG;
     private List<DevSlot> devSlots;
@@ -22,23 +28,16 @@ public class Playerboard extends HBox {
     private GridPane board;
     @FXML
     private GridPane storageColumn;
-    private final VBox middleBox;
     private Warehouse warehouse;
     private Strongbox strongbox;
     private Production production;
-    private final FaithTrack faithTrack;
-
-    private final double bgPixelWidth = 908;
-    private final double bgPixelHeight = 646;
-    private final double bgRatio = bgPixelWidth / bgPixelHeight;
-    private final double storageColWidthPercentage = .2235;
-
     private double _boardHeight;
     private double _boardWidth;
     private double _storageColWidth;
 
     /**
      * Class constructor.
+     *
      * @param warehouse  the player's warehouse
      * @param strongbox  the player's strongbox
      * @param production the base production
@@ -68,8 +67,8 @@ public class Playerboard extends HBox {
         middleBox.setSpacing(30);
         board.add(middleBox, 3, 1);
 
-        // inkwell
-        if(hasInkwell) {
+        /* Inkwell */
+        if (hasInkwell) {
             ImageView inkwell = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/playerboard/inkwell.png"))));
             inkwell.setPreserveRatio(true);
             inkwell.setFitHeight(90);
@@ -87,6 +86,11 @@ public class Playerboard extends HBox {
 
         this.widthProperty().addListener((observable, oldValue, newValue) -> setSizes());
         this.heightProperty().addListener((observable, oldValue, newValue) -> setSizes());
+    }
+
+    private static void scalePreservingRatio(Pane child, double parentSizeLimitWidth, double componentRatio) {
+        child.setPrefWidth(parentSizeLimitWidth);
+        child.setPrefHeight(parentSizeLimitWidth / componentRatio);
     }
 
     private void setBoardSizes() {
@@ -122,9 +126,9 @@ public class Playerboard extends HBox {
 
     private void setDevSlotsSize(double boardWidth) {
         for (DevSlot devSlot : devSlots)
-        scalePreservingRatio(devSlot,
-                board.getColumnConstraints().get(5).getPercentWidth() * boardWidth / 100,
-                devSlot.getPrefWidth() / devSlot.getPrefHeight());
+            scalePreservingRatio(devSlot,
+                    board.getColumnConstraints().get(5).getPercentWidth() * boardWidth / 100,
+                    devSlot.getPrefWidth() / devSlot.getPrefHeight());
     }
 
     private void setFaithTrackSize(double boardWidth) {
@@ -163,11 +167,6 @@ public class Playerboard extends HBox {
         setMiddleBoxSize(_boardWidth);
     }
 
-    private static void scalePreservingRatio(Pane child, double parentSizeLimitWidth, double componentRatio) {
-        child.setPrefWidth(parentSizeLimitWidth);
-        child.setPrefHeight(parentSizeLimitWidth / componentRatio);
-    }
-
     /**
      * Sets and displays a background for the playerboard.
      */
@@ -179,7 +178,7 @@ public class Playerboard extends HBox {
      * Updates a marker in the faith track.
      *
      * @param event     the event object containing the info
-     * @param oldPoints    the faith points before update
+     * @param oldPoints the faith points before update
      */
     public void updateFaithPoints(UpdateFaithPoints event, int oldPoints) {
         if (event.isBlackCross())

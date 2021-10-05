@@ -31,7 +31,7 @@ public class WaitingBeforeGameController extends GuiController {
     public WaitingBeforeGameController() {
         youCanPrepare = false;
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
@@ -91,7 +91,7 @@ public class WaitingBeforeGameController extends GuiController {
         super.on(event);
         setBookedSeats(event.getBookedSeats());
     }
-    
+
     @Override
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
@@ -119,7 +119,7 @@ public class WaitingBeforeGameController extends GuiController {
     @Override
     public void on(UpdateLeadersHand event) {
         super.on(event);
-        
+
         setNextState();
     }
 }

@@ -8,10 +8,10 @@ public class IllegalResourceTransactionContainersException extends IllegalResour
     private final String resType;
     private final int replacedCount, shelvesChoiceResCount;
     private final boolean isIllegalDiscardedOut;
-    
+
     /**
      * Class constructor.
-     * 
+     *
      * @param isInput               whether the error refers to the input of a production or the output
      * @param resType               the resource type the count of which is wrong in the replaced recipe
      * @param replacedCount         the count of resources in the replaced map
@@ -45,12 +45,14 @@ public class IllegalResourceTransactionContainersException extends IllegalResour
     public String getResType() {
         return resType;
     }
+
     /**
      * @return the shelvesChoiceResCount
      */
     public int getShelvesChoiceResCount() {
         return shelvesChoiceResCount;
     }
+
     /**
      * @return the replacedCount
      */

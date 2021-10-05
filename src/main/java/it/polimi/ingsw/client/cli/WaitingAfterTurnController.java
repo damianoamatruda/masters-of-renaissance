@@ -16,7 +16,7 @@ public class WaitingAfterTurnController extends CliController {
         }
     }
 
-    /* Other players' UpdateAction isn't a good indicator
+    /* Other players' UpdateAction is not a good indicator
        of the need a state change: it is not fired when a player disconnects.
        Therefore, UpdateCurrentPlayer is necessary. */
     @Override

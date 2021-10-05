@@ -27,25 +27,25 @@ import java.util.stream.Stream;
  */
 public abstract class TurnController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
+    private final VBox leadersBox = new VBox();
+    private final List<Integer> toActivate = new ArrayList<>();
     @FXML
     protected AnchorPane canvas;
     @FXML
     protected Playerboard playerBoard;
-    private final VBox leadersBox = new VBox();
     @FXML
     protected Title title = new Title();
     protected Warehouse warehouse;
     protected Strongbox strongbox;
     protected List<DevSlot> devSlots;
-    private final List<Integer> toActivate = new ArrayList<>();
-    private SButton activateProdButton;
     protected boolean allowProductions;
+    private SButton activateProdButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gui.setSceneScaling(canvas);
         gui.setPauseHandler(canvas);
-        
+
         warehouse = getWarehouse();
         strongbox = getStrongBox();
         Production baseProduction = getBaseProduction();
@@ -60,8 +60,8 @@ public abstract class TurnController extends GuiController {
         AnchorPane.setLeftAnchor(playerBoard, 0d);
         AnchorPane.setRightAnchor(playerBoard, 90d);
         canvas.getChildren().add(playerBoard);
-        
-        // has to be here so it's in front of every element
+
+        /* This has to be here, so it is in front of every element */
         gui.addPauseButton(canvas);
 
         addLeaderboardButton();
@@ -70,7 +70,7 @@ public abstract class TurnController extends GuiController {
     /**
      * Sets the leaders hand view component, that also includes the activation/discard buttons under which card
      *
-     * @param rightAnchor the right anchor
+     * @param rightAnchor  the right anchor
      * @param bottomAnchor the bottom anchor
      */
     protected void setLeadersBox(double rightAnchor, double bottomAnchor) {
@@ -91,7 +91,7 @@ public abstract class TurnController extends GuiController {
                         new LeaderBox(reducedLeaderCard, this::handleActivate, this::handleDiscard, this::handleProduce, allowProductions)).toList());
         leadersBox.getChildren().addAll(
                 Stream.iterate(vm.getCurrentPlayer().map(vm::getPlayerLeaderCards).orElseThrow().size(),
-                        n -> n < vm.getCurrentPlayer().map(vm::getPlayerLeadersCount).orElseThrow(), n -> n + 1)
+                                n -> n < vm.getCurrentPlayer().map(vm::getPlayerLeadersCount).orElseThrow(), n -> n + 1)
                         .map(i -> new LeaderCard(null, null)).toList());
     }
 
@@ -185,8 +185,6 @@ public abstract class TurnController extends GuiController {
 
         /* Add production button to each topmost development card in dev slots */
         playerBoard.addProduceButtons();
-
-        // refreshLeaderBoxes();
     }
 
     private void addLeaderboardButton() {

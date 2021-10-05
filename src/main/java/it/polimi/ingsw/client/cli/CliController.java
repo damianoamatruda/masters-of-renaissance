@@ -21,15 +21,11 @@ public abstract class CliController extends UiController implements Renderable {
     /**
      * Sets the next state based on the following algorithm:
      * <p>
-     * Differentiation between setup phase and turn phase
-     *  -> check isSetupDone to know which phase to limit the choice to
-     * If the setup phase is not concluded:
-     *  -> check whether the leader setup still needs to be done,
-     *     else go to the resource setup, which will internally choose
-     *         whether it still needs to be done or whether it has to simply show the waiting screen
-     * If the setup phase is concluded:
-     *  -> check whether the current player and the local player
-     *     are the same player and switch accordingly
+     * Differentiation between setup phase and turn phase -> check isSetupDone to know which phase to limit the choice
+     * to If the setup phase is not concluded: -> check whether the leader setup still needs to be done, else go to the
+     * resource setup, which will internally choose whether it still needs to be done or whether it has to simply show
+     * the waiting screen If the setup phase is concluded: -> check whether the current player and the local player are
+     * the same player and switch accordingly
      */
     protected void setNextState() {
         if (vm.isGameEnded()) {
@@ -38,7 +34,7 @@ public abstract class CliController extends UiController implements Renderable {
         } else
             vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (vm.isSetupDone() && vm.getCurrentPlayer().isPresent() &&
-                        !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // setup is done
+                        !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // Setup is done
                     if (vm.localPlayerIsCurrent()) {
                         cli.promptPause();
                         cli.setController(new TurnBeforeActionController());
@@ -46,7 +42,7 @@ public abstract class CliController extends UiController implements Renderable {
                         cli.promptPause();
                         cli.setController(new WaitingAfterTurnController());
                     }
-                } else if (!vm.isSetupDone()) // setup not done
+                } else if (!vm.isSetupDone()) // Setup is not done
                     if (isLeaderSetupAvailable()) {
                         cli.promptPause();
                         cli.setController(new SetupLeadersController());
@@ -149,7 +145,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(ErrObjectNotOwned event) {
         super.on(event);
 
-        cli.reloadController(String.format("%s with ID %d isn't yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
+        cli.reloadController(String.format("%s with ID %d is not yours. Are you sure you typed that right?", event.getObjectType(), event.getId()));
     }
 
     @Override
@@ -240,7 +236,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateCurrentPlayer event) {
         super.on(event);
 
-        // DO NOT DO STATE SWITCHING HERE
+        /* DO NOT DO STATE SWITCHING HERE */
 
         if (!vm.localPlayerIsCurrent()) {
             cli.getOut().println();

@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,27 +20,26 @@ import javafx.scene.text.TextAlignment;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 
 /** Gui component representing a warehouse shelf. */
 public class Shelf extends BorderPane {
-    private int shelfId;
-    private int size;
-    private HBox content;
     private final Circle swapIcon = new Circle(20, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;
     private final Text sizeText;
+    private int shelfId;
+    private int size;
+    private HBox content;
     private boolean isLeaderDepot;
     private ImageView placeholder;
 
     /**
      * Class constructor.
      *
-     * @param shelf         the cached shelf
-     * @param maxHeight     the max height dimension of the component
-     * @param contentWidth  the max width dimension of the content in the component
-     * @param callback      the callback function (used for shelf swapping)
+     * @param shelf        the cached shelf
+     * @param maxHeight    the max height dimension of the component
+     * @param contentWidth the max width dimension of the content in the component
+     * @param callback     the callback function (used for shelf swapping)
      */
     public Shelf(ReducedResourceContainer shelf, double maxHeight, double contentWidth, BiConsumer<Integer, Integer> callback) {
         this.callback = callback;
@@ -88,7 +86,8 @@ public class Shelf extends BorderPane {
      * @param isLeaderDepot true if belonging to a leader card
      */
     public Shelf(ReducedResourceContainer shelf, double maxHeight, double contentWidth, boolean isLeaderDepot) {
-        this(shelf, maxHeight, contentWidth, (a, b) -> {});
+        this(shelf, maxHeight, contentWidth, (a, b) -> {
+        });
         this.isLeaderDepot = isLeaderDepot;
         this.placeholder = null;
     }
@@ -252,25 +251,24 @@ public class Shelf extends BorderPane {
     }
 
     /**
-     * Handles the choice of a resource contained in this shelf, when paying
-     * Modifies the reducedShelf's content (useful for productions)
+     * Handles the choice of a resource contained in this shelf, when paying Modifies the reducedShelf's content (useful
+     * for productions)
      *
-     * @param containers    the map of the input of a resource transaction
-     * @param reducedShelf  the cached shelf which content to edit on resource click
+     * @param containers   the map of the input of a resource transaction
+     * @param reducedShelf the cached shelf which content to edit on resource click
      */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, ReducedResourceContainer reducedShelf) {
         if (Gui.getInstance().getViewModel().getContainer(shelfId).orElseThrow().getContent().size() > 0)
             for (Node r : content.getChildren()) {
                 r.setOnMouseClicked(e -> {
                     String name = ((Resource) r).getName();
-                    // doesn't work? => r.pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, !r.getPseudoClassStates().contains(SELECTED_PSEUDO_CLASS));
 
                     if (r.getOpacity() != 0.5) {
                         r.setOpacity(0.5);
 
                         if (reducedShelf != null)
                             reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) - 1);
-                        
+
                         if (containers.get(shelfId) == null) {
                             Map<String, Integer> content = new HashMap<>();
                             content.put(name, 1);
@@ -285,7 +283,7 @@ public class Shelf extends BorderPane {
 
                         if (reducedShelf != null)
                             reducedShelf.getContent().put(name, reducedShelf.getContent().get(name) + 1);
-                        
+
                         containers.get(shelfId).put(name, containers.get(shelfId).get(name) - 1);
                         if (containers.get(shelfId).get(name) == 0)
                             containers.get(shelfId).remove(name);
@@ -322,8 +320,8 @@ public class Shelf extends BorderPane {
     /**
      * Getter of the path to the PNG of the depot placeholder.
      *
-     * @param resourceType  the depot's bound resource type
-     * @return  the path to the PNG resource representing a depot placeholder
+     * @param resourceType the depot's bound resource type
+     * @return the path to the PNG resource representing a depot placeholder
      */
     private String getResourcePlaceholderPath(String resourceType) {
         return String.format("/assets/gui/leadertemplates/%sdepot.png", resourceType.toLowerCase());

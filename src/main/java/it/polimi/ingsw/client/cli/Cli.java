@@ -24,10 +24,10 @@ public class Cli implements Runnable {
     private static Cli instance = null;
     private final Ui ui;
     private final Thread runThread;
-    private ExecutorService executor;
     private final AtomicBoolean isReturningToMainMenu;
     private final PrintStream out;
     private final Scanner in;
+    private ExecutorService executor;
     private volatile boolean hasNextState;
     private volatile CliController controller;
 
@@ -53,81 +53,6 @@ public class Cli implements Runnable {
 
     public static String color(String str, String ansiColor) {
         return String.format("%s%s\u001B[0m", ansiColor, str);
-    }
-
-    public void start() {
-        runThread.start();
-        setController(new SplashController());
-    }
-
-    /**
-     * Sets the controller.
-     *
-     * @param newController the controller to set
-     */
-    synchronized void setController(CliController newController) {
-        if (!executor.isShutdown())
-            executor.submit(() -> {
-                synchronized (this) {
-                    ui.setController(newController);
-                    this.controller = newController;
-                    this.hasNextState = true;
-                    notifyAll();
-                }
-            });
-    }
-
-    synchronized void reloadController() {
-        setController(controller);
-    }
-
-    synchronized void reloadController(String str) {
-        alert(str);
-        reloadController();
-    }
-
-    void quit() {
-        clear();
-        stop();
-        System.exit(0);
-    }
-
-    public void stop() {
-        runThread.interrupt();
-        executor.shutdownNow();
-        ui.stop();
-    }
-
-    void setReturningToMainMenu() {
-        isReturningToMainMenu.set(true);
-
-        executor.shutdownNow();
-
-        synchronized (this) {
-            controller = new MainMenuController();
-            hasNextState = true;
-            notifyAll();
-        }
-    }
-
-    public void restartExecutor() {
-        executor = Executors.newSingleThreadExecutor();
-    }
-
-    public Ui getUi() {
-        return ui;
-    }
-
-    public PrintStream getOut() {
-        return out;
-    }
-
-    public Scanner getIn() {
-        return in;
-    }
-
-    public ViewModel getViewModel() {
-        return ui.getViewModel();
     }
 
     public static String convertStreamToString(InputStream is) {
@@ -227,9 +152,84 @@ public class Cli implements Runnable {
         return bold(color(str, ansiColor));
     }
 
+    public void start() {
+        runThread.start();
+        setController(new SplashController());
+    }
+
+    /**
+     * Sets the controller.
+     *
+     * @param newController the controller to set
+     */
+    synchronized void setController(CliController newController) {
+        if (!executor.isShutdown())
+            executor.submit(() -> {
+                synchronized (this) {
+                    ui.setController(newController);
+                    this.controller = newController;
+                    this.hasNextState = true;
+                    notifyAll();
+                }
+            });
+    }
+
+    synchronized void reloadController() {
+        setController(controller);
+    }
+
+    synchronized void reloadController(String str) {
+        alert(str);
+        reloadController();
+    }
+
+    void quit() {
+        clear();
+        stop();
+        System.exit(0);
+    }
+
+    public void stop() {
+        runThread.interrupt();
+        executor.shutdownNow();
+        ui.stop();
+    }
+
+    void setReturningToMainMenu() {
+        isReturningToMainMenu.set(true);
+
+        executor.shutdownNow();
+
+        synchronized (this) {
+            controller = new MainMenuController();
+            hasNextState = true;
+            notifyAll();
+        }
+    }
+
+    public void restartExecutor() {
+        executor = Executors.newSingleThreadExecutor();
+    }
+
+    public Ui getUi() {
+        return ui;
+    }
+
+    public PrintStream getOut() {
+        return out;
+    }
+
+    public Scanner getIn() {
+        return in;
+    }
+
+    public ViewModel getViewModel() {
+        return ui.getViewModel();
+    }
+
     /**
      * Sets the current state based on the next requested state. If no state is requested, waits for a request. While a
-     * state is being rendered, requested states aren't applied: only the last requested state is applied, and only as
+     * state is being rendered, requested states are not applied: only the last requested state is applied, and only as
      * soon as the current state has finished rendering.
      */
     @Override
@@ -368,19 +368,19 @@ public class Cli implements Runnable {
                 } else
                     allowedResources = remainingResMap.keySet();
                 promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(remainingResMap.containsKey("Blank") ? remainingResMap.get("Blank") : remainingResMap.get(res)).ifPresentOrElse(quantity -> promptShelfId(allowedShelves, includeStrongbox).ifPresentOrElse(shelfId -> {
-                        shelves.compute(shelfId, (sid, rMap) -> {
-                            if (rMap == null)
-                                rMap = new HashMap<>();
-                            rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
-                            return rMap;
-                        });
+                    shelves.compute(shelfId, (sid, rMap) -> {
+                        if (rMap == null)
+                            rMap = new HashMap<>();
+                        rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                        return rMap;
+                    });
 
-                        allocQuantity.addAndGet(quantity);
-                        if (remainingResMap.containsKey("Blank") && remainingResMap.get("Blank") > 0)
-                            remainingResMap.computeIfPresent("Blank", (k, v) -> v - quantity);
-                        else
-                            remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
-                    }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
+                    allocQuantity.addAndGet(quantity);
+                    if (remainingResMap.containsKey("Blank") && remainingResMap.get("Blank") > 0)
+                        remainingResMap.computeIfPresent("Blank", (k, v) -> v - quantity);
+                    else
+                        remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
+                }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
             }
 
             if (!valid.get())
@@ -441,15 +441,15 @@ public class Cli implements Runnable {
 
             AtomicBoolean valid = new AtomicBoolean(true);
             promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> promptShelfId(allowedShelves, false).ifPresentOrElse(shelfId -> {
-                    shelves.compute(shelfId, (sid, rMap) -> {
-                        if (rMap == null)
-                            rMap = new HashMap<>();
-                        rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
-                        return rMap;
-                    });
+                shelves.compute(shelfId, (sid, rMap) -> {
+                    if (rMap == null)
+                        rMap = new HashMap<>();
+                    rMap.compute(res, (k, v) -> v == null ? quantity : quantity + v);
+                    return rMap;
+                });
 
-                    allocQuantity.addAndGet(quantity);
-                }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
+                allocQuantity.addAndGet(quantity);
+            }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
 
             if (!valid.get())
                 return Optional.empty();

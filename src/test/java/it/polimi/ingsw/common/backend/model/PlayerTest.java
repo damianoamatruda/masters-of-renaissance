@@ -28,17 +28,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test of Player operations.
  */
 public class PlayerTest {
-    Game game;
-    Player player;
-
     final ResourceType coin = new ResourceType("Coin", "", true);
     final ResourceType faith = new ResourceType("Faith", "", false);
     final ResourceType servant = new ResourceType("Servant", "", true);
     final ResourceType shield = new ResourceType("Shield", "", true);
     final ResourceType stone = new ResourceType("Stone", "", true);
     final ResourceType zero = new ResourceType("Zero", "", false);
-
     final DevCardColor blue = new DevCardColor("Blue", "");
+    Game game;
+    Player player;
 
     /**
      * Sets up initial conditions by initializing Game and Player.
@@ -127,8 +125,8 @@ public class PlayerTest {
     /**
      * Ensures that an exception is thrown when trying to discard an activated leader card.
      *
-     * @throws CardRequirementsNotMetException  leader cannot be activated due to requirements not met.
-     * @throws IllegalArgumentException         player does not own the given card
+     * @throws CardRequirementsNotMetException leader cannot be activated due to requirements not met.
+     * @throws IllegalArgumentException        player does not own the given card
      */
     @Test
     void invalidLeaderDiscard() throws IllegalArgumentException, CardRequirementsNotMetException {
@@ -170,12 +168,12 @@ public class PlayerTest {
             player.getWarehouse().getShelves().get(0).addResources(Map.of(shield, 1));
 
             assertDoesNotThrow(() -> player.addToDevSlot(game, 1, new DevelopmentCard(blue, 1,
-                    new ResourceRequirement(
-                            Map.of(
-                                    coin, 3,
-                                    stone, 2
-                            )
-                    ), null, 2, 0),
+                            new ResourceRequirement(
+                                    Map.of(
+                                            coin, 3,
+                                            stone, 2
+                                    )
+                            ), null, 2, 0),
                     resContainers));
         }
 
@@ -269,7 +267,7 @@ public class PlayerTest {
             Warehouse.WarehouseShelf shelf = second.getWarehouse().getShelves().get(1);
 
             assertAll(() -> assertDoesNotThrow(() -> second.getSetup().chooseResources(
-                    game, second, Map.of(shelf, Map.of(coin, 1))
+                            game, second, Map.of(shelf, Map.of(coin, 1))
                     )),
                     () -> assertDoesNotThrow(() -> second.addToDevSlot(game, 1, card, resContainers)));
         }
@@ -280,7 +278,7 @@ public class PlayerTest {
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
 
             assertAll(() -> assertThrows(IllegalResourceTransactionContainersException.class, () -> fourth.getSetup().chooseResources(
-                    game, fourth, Map.of(shelf, Map.of(coin, 3))
+                            game, fourth, Map.of(shelf, Map.of(coin, 3))
                     )),
                     () -> assertDoesNotThrow(() -> fourth.getSetup().chooseResources(
                             game, fourth, Map.of(shelf, Map.of(coin, 2))
@@ -293,7 +291,7 @@ public class PlayerTest {
             Warehouse.WarehouseShelf shelf = fourth.getWarehouse().getShelves().get(1);
 
             assertAll(() -> assertThrows(IllegalResourceTransactionReplacementsException.class, () -> fourth.getSetup().chooseResources(
-                    game, fourth, Map.of(shelf, Map.of(zero, 1))
+                            game, fourth, Map.of(shelf, Map.of(zero, 1))
                     )),
                     () -> assertThrows(IllegalResourceTransactionReplacementsException.class, () -> fourth.getSetup().chooseResources(
                             game, fourth, Map.of(shelf, Map.of(faith, 1))

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.cli.components.*;
+import it.polimi.ingsw.client.cli.components.DevCardGrid;
+import it.polimi.ingsw.client.cli.components.DevSlots;
+import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrBuyDevCard;
 import it.polimi.ingsw.common.events.vcevents.ReqBuyDevCard;

@@ -32,9 +32,9 @@ public class Warehouse extends VBox {
     /**
      * Sets and displays the warehouse shelves.
      *
-     * @param shelves   the cached player's shelves
-     * @param callback  the callback function (used for shelf swapping)
-     * @param wantsDnD  true if drag and drop of resources is needed
+     * @param shelves  the cached player's shelves
+     * @param callback the callback function (used for shelf swapping)
+     * @param wantsDnD true if drag and drop of resources is needed
      */
     public void setWarehouseShelves(List<ReducedResourceContainer> shelves, BiConsumer<Integer, Integer> callback, boolean wantsDnD) {
         double maxRowHeight = getPrefHeight() / shelves.size();
@@ -76,8 +76,8 @@ public class Warehouse extends VBox {
     /**
      * Retrieves a contained shelf by the ID.
      *
-     * @param id    the shelf ID
-     * @return  the Shelf component
+     * @param id the shelf ID
+     * @return the Shelf component
      */
     public Shelf getShelf(int id) {
         return shelves.get(id);
@@ -86,8 +86,8 @@ public class Warehouse extends VBox {
     /**
      * Marks two shelves enqueued for swap, until a response is received.
      *
-     * @param s1    shelf one (source)
-     * @param s2    shelf two (destination)
+     * @param s1 shelf one (source)
+     * @param s2 shelf two (destination)
      */
     public void setWaitingForSwap(Integer s1, Integer s2) {
         waitingForSwap1 = s1;
@@ -149,8 +149,8 @@ public class Warehouse extends VBox {
     /**
      * Retrieves the shelf that is bound to a given resource type.
      *
-     * @param resource  the resource type
-     * @return  the Shelf component
+     * @param resource the resource type
+     * @return the Shelf component
      */
     public Optional<Shelf> getShelfByResource(String resource) {
         return shelves.values().stream().filter(s -> s.getBoundResource() != null && s.getBoundResource().equals(resource)).findAny();
@@ -159,8 +159,8 @@ public class Warehouse extends VBox {
     /**
      * Handles the choice of a resource contained in the warehouse, when paying
      *
-     * @param containers      the map of the input of a resource transaction
-     * @param newTempShelves  the list of temporary shelves which content to edit on resource click
+     * @param containers     the map of the input of a resource transaction
+     * @param newTempShelves the list of temporary shelves which content to edit on resource click
      */
     public void addResourcesSelector(Map<Integer, Map<String, Integer>> containers, List<ReducedResourceContainer> newTempShelves) {
         shelves.values().forEach(s -> s.addResourcesSelector(containers));

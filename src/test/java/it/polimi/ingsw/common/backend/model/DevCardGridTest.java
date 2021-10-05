@@ -23,12 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 public class DevCardGridTest {
-    DevCardGrid devCardGrid;
-    Player buyer;
-    Game game;
     final ResourceType r1 = new ResourceType("r1", "", true);
     final DevCardColor c1 = new DevCardColor("c1", "");
     final DevCardColor c2 = new DevCardColor("c2", "");
+    DevCardGrid devCardGrid;
+    Player buyer;
+    Game game;
 
     @BeforeEach
     void setup() {

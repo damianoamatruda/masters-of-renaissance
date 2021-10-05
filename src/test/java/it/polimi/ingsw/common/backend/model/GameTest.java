@@ -98,6 +98,11 @@ public class GameTest {
                 () -> assertEquals(0, game.getPlayers().get(1).getVictoryPoints()));
     }
 
+    private void incrementAndCheckSection(Player player, int points) {
+        player.incrementFaithPoints(game, points);
+        game.activateVaticanSections();
+    }
+
     /**
      * Nested class for onIncrementFaithPoints method - first Vatican Report related tests.
      */
@@ -384,10 +389,5 @@ public class GameTest {
             Player next = game.getCurrentPlayer();
             assertEquals(expected, next);
         }
-    }
-
-    private void incrementAndCheckSection(Player player, int points) {
-        player.incrementFaithPoints(game, points);
-        game.activateVaticanSections();
     }
 }
