@@ -18,6 +18,7 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -107,12 +108,13 @@ public class Gui extends Application {
         stage.show();
     }
 
+    @Override
     public void stop() {
         ui.stop();
     }
 
     void quit() {
-        Platform.exit();
+        Platform.exit(); /* This calls stop() */
         System.exit(0);
     }
 
@@ -197,7 +199,7 @@ public class Gui extends Application {
     }
 
     public void setPauseHandler(Pane scene) {
-        scene.setOnKeyPressed(e -> {
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
             if (e.getCode() == KeyCode.ESCAPE)
                 handlePause();
         });

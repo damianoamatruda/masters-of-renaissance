@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui.components;
 
 import it.polimi.ingsw.client.gui.Gui;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
@@ -54,8 +55,8 @@ public class PauseMenu extends StackPane {
     @FXML
     private void handleOptions() {
         Gui gui = Gui.getInstance();
-        gui.removeFromOverlay(this);
-        gui.addToOverlay(pauseOptions);
+        Platform.runLater(() -> gui.removeFromOverlay(this));
+        Platform.runLater(() -> gui.addToOverlay(pauseOptions));
     }
 
     /**
