@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.Ui;
 import it.polimi.ingsw.client.ViewModel;
 import it.polimi.ingsw.client.cli.components.Resource;
-import it.polimi.ingsw.client.cli.components.ResourceContainers;
+import it.polimi.ingsw.client.cli.components.ResourceContainerSet;
 import it.polimi.ingsw.client.cli.components.ResourceMap;
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceType;
 
@@ -89,7 +89,6 @@ public class Cli implements Runnable {
     void quit() {
         clear();
         stop();
-
         System.exit(0);
     }
 
@@ -321,16 +320,17 @@ public class Cli implements Runnable {
         return Optional.of(new File(path.get()));
     }
 
-    Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves, boolean discardable) {
+    Optional<Map<Integer, Map<String, Integer>>> promptShelves(Map<String, Integer> resMap, Set<Integer> allowedShelves,
+                                                               boolean includeStrongbox, boolean discardable) {
         ViewModel vm = ui.getViewModel();
 
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
-        new ResourceContainers(
+        new ResourceContainerSet(
                 vm.getLocalPlayer().orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
-                null)
+                includeStrongbox ? vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElseThrow() : null)
                 .render();
 
         Map<String, Integer> remainingResMap = new HashMap<>(resMap);
@@ -346,12 +346,12 @@ public class Cli implements Runnable {
             AtomicBoolean valid = new AtomicBoolean(true);
             AtomicBoolean discarded = new AtomicBoolean(false);
 
+            out.println();
+
             if (discardable) {
-                out.println();
                 out.println(center("Press D if you want to discard all remaining resources."));
                 out.println(center("Press ENTER otherwise."));
 
-                out.println();
                 prompt("").ifPresentOrElse(input -> {
                     if (input.equalsIgnoreCase("D"))
                         discarded.set(true);
@@ -362,12 +362,12 @@ public class Cli implements Runnable {
                 break;
 
             if (valid.get()) {
-                out.println();
-                Set<String> keys;
-                if(remainingResMap.containsKey("Blanks")) {
-                    keys = vm.getResourceTypes().stream().filter(ReducedResourceType::isStorable).map(ReducedResourceType::getName).collect(Collectors.toSet());
-                } else keys = remainingResMap.keySet();
-                promptResource(keys).ifPresentOrElse(res -> promptQuantity(remainingResMap.containsKey("Blanks") ? remainingResMap.get("Blanks") : remainingResMap.get(res)).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+                Set<String> allowedResources;
+                if (remainingResMap.containsKey("Blank")) {
+                    allowedResources = vm.getResourceTypes().stream().filter(ReducedResourceType::isStorable).map(ReducedResourceType::getName).collect(Collectors.toSet());
+                } else
+                    allowedResources = remainingResMap.keySet();
+                promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(remainingResMap.containsKey("Blank") ? remainingResMap.get("Blank") : remainingResMap.get(res)).ifPresentOrElse(quantity -> promptShelfId(allowedShelves, includeStrongbox).ifPresentOrElse(shelfId -> {
                         shelves.compute(shelfId, (sid, rMap) -> {
                             if (rMap == null)
                                 rMap = new HashMap<>();
@@ -376,8 +376,8 @@ public class Cli implements Runnable {
                         });
 
                         allocQuantity.addAndGet(quantity);
-                        if(remainingResMap.containsKey("Blanks") && remainingResMap.get("Blanks") > 0)
-                            remainingResMap.computeIfPresent("Blanks", (k, v) -> v - quantity);
+                        if (remainingResMap.containsKey("Blank") && remainingResMap.get("Blank") > 0)
+                            remainingResMap.computeIfPresent("Blank", (k, v) -> v - quantity);
                         else
                             remainingResMap.computeIfPresent(res, (k, v) -> v - quantity);
                     }, () -> valid.set(false)), () -> valid.set(false)), () -> valid.set(false));
@@ -393,13 +393,11 @@ public class Cli implements Runnable {
     Optional<Map<String, Integer>> promptResources(Set<String> allowedResources, int totalQuantity) {
         Map<String, Integer> replacedRes = new HashMap<>();
 
-        if(!allowedResources.isEmpty()) out.println(center("Resources you can choose:"));
+        if (!allowedResources.isEmpty())
+            out.println(center("Resources you can choose:"));
 
         out.println();
-        allowedResources.forEach(r -> {
-            new Resource(r).render();
-            out.println();
-        });
+        out.println(center(printAllowedResources(allowedResources, 14)));
 
         AtomicInteger allocQuantity = new AtomicInteger();
         while (allocQuantity.get() < totalQuantity) {
@@ -424,7 +422,7 @@ public class Cli implements Runnable {
 
         Map<Integer, Map<String, Integer>> shelves = new HashMap<>();
 
-        new ResourceContainers(
+        new ResourceContainerSet(
                 vm.getLocalPlayer().orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
@@ -442,7 +440,7 @@ public class Cli implements Runnable {
             out.println();
 
             AtomicBoolean valid = new AtomicBoolean(true);
-            promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> promptShelfId(allowedShelves).ifPresentOrElse(shelfId -> {
+            promptResource(allowedResources).ifPresentOrElse(res -> promptQuantity(totalQuantity - allocQuantity.get()).ifPresentOrElse(quantity -> promptShelfId(allowedShelves, false).ifPresentOrElse(shelfId -> {
                     shelves.compute(shelfId, (sid, rMap) -> {
                         if (rMap == null)
                             rMap = new HashMap<>();
@@ -488,11 +486,11 @@ public class Cli implements Runnable {
         return Optional.of(quantity);
     }
 
-    private Optional<Integer> promptShelfId(Set<Integer> allowedShelves) {
+    private Optional<Integer> promptShelfId(Set<Integer> allowedShelves, boolean includeStrongbox) {
         int shelfId = -1;
         Optional<String> input;
         while (shelfId < 0) {
-            input = prompt("Shelf");
+            input = prompt(includeStrongbox ? "Container" : "Shelf");
             if (input.isEmpty())
                 return Optional.empty();
             try {

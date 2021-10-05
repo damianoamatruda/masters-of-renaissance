@@ -45,7 +45,7 @@ public class LeaderCard extends StringComponent {
         if (reducedLeaderCard.getDevCardRequirement().isPresent())
             stringBuilder.append(new DevCardRequirement(reducedLeaderCard.getDevCardRequirement().get()).getString());
         if (reducedLeaderCard.getResourceRequirement().isPresent())
-            stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement().get()).getString());
+            stringBuilder.append(new ResourceRequirement(reducedLeaderCard.getResourceRequirement().get(), false).getString());
 
         // Leader depots
         vm.getContainer(reducedLeaderCard.getContainerId()).ifPresent(c ->

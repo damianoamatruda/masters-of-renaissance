@@ -122,12 +122,12 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         switch (event.getReason()) {
-            case ALREADY_SET -> cli.reloadController("Error setting nickname: nickname is already set.");
-            case TAKEN -> cli.reloadController("Error setting nickname: nickname is taken.");
-            case NOT_SET -> cli.reloadController("Error setting nickname: nickname is blank.");
+            case ALREADY_SET -> cli.reloadController("Invalid nickname: given nickname is already set.");
+            case TAKEN -> cli.reloadController("Invalid nickname: given nickname is taken.");
+            case NOT_SET -> cli.reloadController("Invalid nickname: given nickname is blank.");
             case NOT_IN_GAME -> {
                 cli.getOut().println();
-                cli.getOut().println("Match not joined yet.");
+                cli.getOut().println(center("Game not joined yet."));
                 cli.promptPause();
                 cli.setController(new InputNicknameController(cli.getUi().isOffline() ? "Play Offline" : "Play Online"));
             }
@@ -175,13 +175,13 @@ public abstract class CliController extends UiController implements Renderable {
         String isReplacement = event.isReplacement() ? " replacements" : "";
 
         switch (event.getReason()) {
-            case EXCLUDED -> cli.reloadController(String.format("Invalid resource transaction %s%s: excluded resource specified.",
+            case EXCLUDED -> cli.reloadController(String.format("Invalid %s%s: excluded resource specified.",
                     direction, isReplacement));
-            case ILLEGAL_NON_STORABLE -> cli.reloadController(String.format("Invalid resource transaction %s%s: non-storable resource specified in container map.",
+            case ILLEGAL_NON_STORABLE -> cli.reloadController(String.format("Invalid %s%s: non-storable resource specified in container map.",
                     direction, isReplacement));
-            case ILLEGAL_STORABLE -> cli.reloadController(String.format("Invalid resource transaction %s%s: storable resource specified as non-storable.",
+            case ILLEGAL_STORABLE -> cli.reloadController(String.format("Invalid %s%s: storable resource specified as non-storable.",
                     direction, isReplacement));
-            case NEGATIVE_VALUES -> cli.reloadController(String.format("Invalid resource transaction %s%s: negative quantity specified.",
+            case NEGATIVE_VALUES -> cli.reloadController(String.format("Invalid %s%s: negative quantity specified.",
                     direction, isReplacement));
         }
     }
@@ -195,11 +195,11 @@ public abstract class CliController extends UiController implements Renderable {
                     "shelf's binding resource type is different from transferring resource" :
                     "multiple resource types cannot be bound to the same shelf";
             case NON_STORABLE -> "resource is not storable";
-            case CAPACITY_REACHED -> "shelf's capacity boundaries reached";
+            case CAPACITY_REACHED -> "container's capacity boundaries reached";
             case DUPLICATE_BOUNDED_RESOURCE -> "resource type is already bound to another shelf";
         };
 
-        cli.reloadController(String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container:",
+        cli.reloadController(String.format(event.isAdded() ? "You cannot add%s into container: %s." : "You cannot remove%s from container: %s.",
                 event.getResType() == null ? "" : String.format(" %s", event.getResType()),
                 reason));
     }
@@ -228,7 +228,7 @@ public abstract class CliController extends UiController implements Renderable {
     public void on(UpdateActionToken event) {
         super.on(event);
 
-        // print only, no cache update
+        /* Print only, no cache update */
         vm.getActionToken(event.getActionToken())
                 .ifPresent(t -> {
                     cli.getOut().println();
@@ -241,8 +241,11 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         // DO NOT DO STATE SWITCHING HERE
-        cli.getOut().println();
-        cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
+
+        if (!vm.localPlayerIsCurrent()) {
+            cli.getOut().println();
+            cli.getOut().println(center(String.format("Current player: %s", event.getPlayer())));
+        }
     }
 
     @Override
@@ -260,9 +263,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(String.format("%s's development card slot has been updated:", event.getPlayer())));
-        cli.getOut().println();
-        new DevSlots(vm.getPlayerDevelopmentSlots(event.getPlayer())).render();
+        new DevSlots(event.getPlayer(), vm.getPlayerDevelopmentSlots(event.getPlayer())).render();
     }
 
     @Override
@@ -270,85 +271,83 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center("Updated the players' faith points!"));
-        cli.getOut().println();
         vm.getFaithTrack().ifPresent(faithTrack -> {
             cli.getOut().println();
             new FaithTrack(faithTrack, vm.getPlayersFaithPoints()).render();
         });
-
-        cli.getOut().println();
-        new LeaderBoard().render();
     }
 
     @Override
     public void on(UpdateGame event) {
         super.on(event);
-        
-        cli.getOut().println();
+
         vm.getDevCardGrid().ifPresent(devCardGrid -> {
+            cli.getOut().println();
             cli.getOut().println();
             new DevCardGrid(devCardGrid).render();
         });
 
-        cli.getOut().println();
         vm.getMarket().ifPresent(market -> {
+            cli.getOut().println();
             cli.getOut().println();
             new Market(market).render();
         });
 
-        cli.getOut().println();
         vm.getLocalPlayer().ifPresent(player -> {
             cli.getOut().println();
-            new ResourceContainers(
+            cli.getOut().println();
+            new ResourceContainerSet(
                     player,
                     vm.getPlayerWarehouseShelves(player),
                     vm.getPlayerDepots(player),
                     vm.getPlayerStrongbox(player).orElse(null)).render();
         });
 
-        cli.getOut().println();
         vm.getLocalPlayer().map(vm::getPlayerLeaderCards).ifPresent(leaderCards -> {
+            cli.getOut().println();
             cli.getOut().println();
             new LeadersHand(leaderCards).render();
         });
 
-        cli.getOut().println();
-        vm.getLocalPlayer().map(vm::getPlayerDevelopmentSlots).ifPresent(devSlots -> {
+        vm.getLocalPlayer().ifPresent(player -> {
             cli.getOut().println();
-            new DevSlots(devSlots).render();
+            cli.getOut().println();
+            new DevSlots(player, vm.getPlayerDevelopmentSlots(player)).render();
         });
 
         cli.getOut().println();
-        cli.getOut().println(center("Players:\n" + new UnorderedList(event.getPlayers().stream()
+        cli.getOut().println();
+        cli.getOut().println(center("Players:" + "\n" + "\n" + new UnorderedList(event.getPlayers().stream()
                 .map(ReducedPlayer::getNickname)
                 .map(nickname -> vm.getAnsiPlayerColor(nickname).map(ansiColor -> boldColor(nickname, ansiColor)).orElse(nickname))
                 .toList()).getString()));
 
-        cli.getOut().println();
         vm.getInkwellPlayer().ifPresent(player -> {
+            cli.getOut().println();
             cli.getOut().println();
             cli.getOut().println(center(String.format("%s has the inkwell.", player)));
         });
 
-        cli.getOut().println();
         vm.getWinnerPlayer().ifPresent(player -> {
+            cli.getOut().println();
             cli.getOut().println();
             cli.getOut().println(center(String.format("%s won the game!", event.getWinnerPlayer())));
         });
 
         if (vm.isLastRound()) {
             cli.getOut().println();
+            cli.getOut().println();
             cli.getOut().println(center("Last round!"));
         }
 
         if (vm.isGameEnded()) {
             cli.getOut().println();
-            cli.getOut().println(center("Match ended!"));
+            cli.getOut().println();
+            cli.getOut().println(center("Game ended!"));
         }
 
-        cli.getOut().println();
         vm.getFaithTrack().ifPresent(faithTrack -> {
+            cli.getOut().println();
             cli.getOut().println();
             new FaithTrack(faithTrack, vm.getPlayersFaithPoints()).render();
         });
@@ -377,7 +376,7 @@ public abstract class CliController extends UiController implements Renderable {
 
         vm.getCurrentPlayer().ifPresent(player -> {
             cli.getOut().println();
-            cli.getOut().println(center(String.format("%s activated leader card %d.", player, event.getLeader())));
+            cli.getOut().println(center(String.format("%s activated leader card %d:", player, event.getLeader())));
         });
 
         vm.getLeaderCard(event.getLeader()).ifPresent(leaderCard -> {
@@ -425,7 +424,7 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(String.format("%s's resource container has been updated:", vm.getCurrentPlayer().get())));
+        cli.getOut().println(center(String.format("%s's resource container has been updated:", vm.getCurrentPlayer().orElseThrow())));
         cli.getOut().println();
         new Box(new ResourceContainer(event.getResContainer())).render();
     }
@@ -435,23 +434,18 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        cli.getOut().println(center(String.format("Activated vatican section %d", event.getVaticanSection())));
+        cli.getOut().println(center(String.format("Activated vatican section %d", event.getVaticanSection() + 1)));
 
         vm.getFaithTrack().ifPresent(faithTrack -> {
             cli.getOut().println();
             new FaithTrack(faithTrack, vm.getPlayersFaithPoints()).render();
         });
-
-        cli.getOut().println();
-        new LeaderBoard().render();
     }
 
     @Override
     public void on(UpdateVictoryPoints event) {
         super.on(event);
 
-        cli.getOut().println();
-        cli.getOut().println(center("Updated the victory points:"));
         cli.getOut().println();
         new LeaderBoard().render();
     }

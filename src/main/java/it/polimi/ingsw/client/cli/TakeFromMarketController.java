@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.LeadersHand;
 import it.polimi.ingsw.client.cli.components.Market;
-import it.polimi.ingsw.client.cli.components.ResourceContainers;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqTakeFromMarket;
 import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
@@ -37,13 +36,6 @@ public class TakeFromMarketController extends CliController {
         new Market(vm.getMarket().orElseThrow()).render();
 
         cli.getOut().println();
-        new ResourceContainers(
-                vm.getLocalPlayer().orElseThrow(),
-                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
-                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
-                null)
-                .render();
-
         chooseRowCol();
     }
 
@@ -112,8 +104,12 @@ public class TakeFromMarketController extends CliController {
                     .toList();
 
             if (zeroLeaders.size() > 0) {
+                cli.getOut().println();
+                cli.getOut().println(center("These are the active leaders you can use to replace blank resources:"));
+                cli.getOut().println();
                 new LeadersHand(zeroLeaders).render();
-                cli.getOut().println(center("These are the active leaders you can use to replace blank resources."));
+
+                cli.getOut().println();
 
                 AtomicBoolean valid = new AtomicBoolean(false);
                 while (!valid.get()) {
@@ -137,7 +133,7 @@ public class TakeFromMarketController extends CliController {
                 .collect(Collectors.toUnmodifiableSet());
 
         cli.getOut().println();
-        cli.promptShelves(totalRes, allowedShelves, true).ifPresentOrElse(shelves -> {
+        cli.promptShelves(totalRes, allowedShelves, false, true).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
             cli.getUi().dispatch(new ReqTakeFromMarket(this.isRow, this.index, this.replacements, this.shelves));
         }, this::chooseIndex);

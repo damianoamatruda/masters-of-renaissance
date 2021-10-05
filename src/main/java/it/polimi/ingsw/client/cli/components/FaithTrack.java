@@ -9,6 +9,7 @@ import it.polimi.ingsw.common.reducedmodel.ReducedYellowTile;
 import java.util.*;
 import java.util.stream.IntStream;
 
+import static it.polimi.ingsw.client.cli.Cli.boldColor;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 /** Cli component that gives a string representation of the faith track. */
@@ -85,11 +86,9 @@ public class FaithTrack extends StringComponent {
                 stringBuilder.append((sectionTiles.contains(i) || (i > 0 && sectionTiles.contains(i - 1))) ? boldVerticalLine : slimVerticalLine);
                 if (j < players.size()) {
                     String player = players.get(j);
-                    stringBuilder.append("\u001B[0m").append(points.get(player) == i ?
-                            center(vm.getAnsiPlayerColor(player).orElseThrow() + nicks.get(j) + "\u001B[0m", 5) : " ".repeat(cellWidth));
+                    stringBuilder.append(points.get(player) == i ? center(boldColor(nicks.get(j), vm.getAnsiPlayerColor(player).orElseThrow()), 5) : " ".repeat(cellWidth));
                 } else
-                    stringBuilder.append("\u001B[0m").append(vm.getBlackPoints() == i ?
-                            center("\u001B[90mBlack" + "\u001B[0m", 5) : " ".repeat(cellWidth));
+                    stringBuilder.append(vm.getBlackPoints() == i ? center(boldColor("Black", "\u001B[90m"), 5) : " ".repeat(cellWidth));
             }
             // Rightmost side border
             if (yellowTiles.contains(maxFaith)) stringBuilder.append("\u001B[93m");

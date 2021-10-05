@@ -6,6 +6,8 @@ import it.polimi.ingsw.common.events.mvevents.UpdateSetupDone;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrAction;
 import it.polimi.ingsw.common.events.mvevents.errors.ErrInitialChoice;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public abstract class SetupController extends CliController {
     @Override
     public void on(ErrAction event) {
@@ -14,29 +16,26 @@ public abstract class SetupController extends CliController {
            forces the client in a state that's compatible with the server's response,
            accepting it as a universal source of truth. */
 
-        cli.getOut().println("Setup phase is concluded, advancing to game turns.");
+        cli.alert("Setup phase is concluded, advancing to game turns.");
 
-        if (vm.localPlayerIsCurrent()) {
-            cli.promptPause();
+        if (vm.localPlayerIsCurrent())
             cli.setController(new TurnBeforeActionController());
-        } else {
-            cli.promptPause();
+        else
             cli.setController(new WaitingAfterTurnController());
-        }
     }
 
     @Override
     public void on(ErrInitialChoice event) {
         if (event.isLeadersChoice()) // if the error is from the initial leaders choice
             if (event.getMissingLeadersCount() == 0) { // no leaders missing -> already chosen
-                cli.getOut().println("Leader cards already chosen, advancing to next state.");
+                cli.alert("Leader cards already chosen, advancing to next state.");
                 setNextState();
             }
             else
                 cli.reloadController(
                         String.format("Not enough leaders chosen: %d missing.", event.getMissingLeadersCount()));
         else {
-            cli.getOut().println("Initial resources already chosen, advancing to next state.");
+            cli.alert("Initial resources already chosen, advancing to next state.");
             setNextState();
         }
     }
@@ -62,7 +61,7 @@ public abstract class SetupController extends CliController {
 
         if (vm.getPlayers().size() > 1) {
             cli.getOut().println();
-            cli.getOut().println("All players have finished their setup! Game starting...");
+            cli.getOut().println(center("All players have finished their setup!"));
         }
         
         setNextState();

@@ -17,7 +17,7 @@ public class ActionToken extends StringComponent {
     public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(String.format("--- ActionToken (ID: %s) ---", boldColor(String.valueOf(reducedActionToken.getId()), "\u001B[37m"))).append("\n");
+        stringBuilder.append("--- ActionToken ---").append("\n");
 
         if (reducedActionToken.getKind().contains("Black"))
             if (reducedActionToken.getKind().contains("Shuffle"))

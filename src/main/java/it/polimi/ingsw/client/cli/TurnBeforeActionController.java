@@ -12,7 +12,10 @@ public class TurnBeforeActionController extends TurnController {
     public void render() {
         if (!vm.isSetupDone()) {
             cli.getOut().println();
-            cli.getOut().println(center("Waiting for all players to finish their setup..."));
+            cli.getOut().println(center("~ Setup done ~"));
+
+            cli.getOut().println();
+            cli.getOut().println(center("Waiting for other players to finish their setup..."));
             return;
         }
 

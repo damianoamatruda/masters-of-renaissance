@@ -12,7 +12,7 @@ public class UnorderedList extends StringComponent {
     @Override
     public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
-        list.forEach(item -> stringBuilder.append(String.format("  • %s", item)).append("\n"));
+        list.forEach(item -> stringBuilder.append(String.format("•  %s", item)).append("\n"));
         return stringBuilder.toString();
     }
 }

@@ -7,14 +7,14 @@ import java.util.List;
 import static it.polimi.ingsw.client.cli.Cli.center;
 
 /** Cli component that gives a string representation of multiple resource containers. */
-public class ResourceContainers extends StringComponent {
+public class ResourceContainerSet extends StringComponent {
     private final String player;
     private final List<ReducedResourceContainer> warehouseShelves;
     private final List<ReducedResourceContainer> depots;
     private final ReducedResourceContainer strongbox;
 
-    public ResourceContainers(String player, List<ReducedResourceContainer> warehouseShelves,
-                              List<ReducedResourceContainer> depots, ReducedResourceContainer strongbox) {
+    public ResourceContainerSet(String player, List<ReducedResourceContainer> warehouseShelves,
+                                List<ReducedResourceContainer> depots, ReducedResourceContainer strongbox) {
         this.player = player;
         this.warehouseShelves = warehouseShelves;
         this.depots = depots;
@@ -23,7 +23,7 @@ public class ResourceContainers extends StringComponent {
 
     @Override
     public String getString() {
-        return showShelves() + "\n\n" + showStrongbox();
+        return showShelves() + "\n" + showStrongbox();
     }
 
     private String showShelves() {
@@ -36,8 +36,8 @@ public class ResourceContainers extends StringComponent {
         }
 
         if (depots.size() > 0) {
-            stringBuilder.append("\n\n");
-            stringBuilder.append(center(String.format("%s's available leader depots:%n", player)));
+            stringBuilder.append("\n").append("\n");
+            stringBuilder.append(center(String.format("%s's available leader depots:", player))).append("\n");
             depots.forEach(c ->
                     stringBuilder.append("\n").append(center(new Box(new ResourceContainer(c)).getString())));
         }

@@ -7,10 +7,13 @@ import static it.polimi.ingsw.client.cli.Cli.center;
 public class WaitingAfterTurnController extends CliController {
     @Override
     public void render() {
-        if (!vm.isLastRound())
-            cli.getOut().println(center("Please wait for other players to end their turn..."));
-        else
-            cli.getOut().println(center("You have played your last turn. Waiting for others to finish..."));
+        if (!vm.isLastRound()) {
+            cli.getOut().println();
+            cli.getOut().println(center("Waiting for other players to end their turn..."));
+        } else {
+            cli.getOut().println();
+            cli.getOut().println(center("You have played your last turn. Waiting for other players to finish..."));
+        }
     }
 
     /* Other players' UpdateAction isn't a good indicator

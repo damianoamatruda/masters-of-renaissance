@@ -41,15 +41,7 @@ public class BuyDevelopmentCardController extends CliController {
         new DevCardGrid(grid).render();
 
         cli.getOut().println();
-        new ResourceContainers(
-                vm.getLocalPlayer().orElseThrow(),
-                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
-                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
-                vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
-                .render();
-
-        cli.getOut().println();
-        new DevSlots(vm.getPlayerDevelopmentSlots(vm.getLocalPlayer().orElseThrow())).render();
+        new DevSlots(vm.getLocalPlayer().orElseThrow(), vm.getPlayerDevelopmentSlots(vm.getLocalPlayer().orElseThrow())).render();
 
         List<ReducedLeaderCard> discountLeaders = vm.getPlayerLeaderCards(vm.getLocalPlayer().orElseThrow()).stream()
                 .filter(ReducedLeaderCard::isActive)
@@ -59,12 +51,11 @@ public class BuyDevelopmentCardController extends CliController {
             new LeadersHand(discountLeaders).render();
         }
 
+        cli.getOut().println();
         chooseColor();
     }
 
     private void chooseColor() {
-        cli.getOut().println();
-
         Set<String> allowedColors = grid.getTopCards().keySet().stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toUnmodifiableSet());
@@ -122,42 +113,32 @@ public class BuyDevelopmentCardController extends CliController {
                 this.cost = vm.getDevCardDiscountedCost(card.getId());
 
                 chooseShelves();
-
-                if (!this.cost.isEmpty()) {
-                    cli.getOut().println();
-                    cli.getOut().println(center("Resources need to be paid."));
-                    cli.getOut().println(center("Please specify how many resources to take from which container."));
-                    cli.getOut().println();
-                }
             }, this::chooseLevel);
         }
     }
 
     private void chooseShelves() {
+        AtomicBoolean valid = new AtomicBoolean(true);
         if (!this.cost.isEmpty()) {
+            valid.set(false);
             cli.getOut().println();
             cli.getOut().println(center("Resources need to be paid."));
             cli.getOut().println(center("Please specify how many resources to take from which container."));
-            cli.getOut().println();
 
             Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                     .map(ReducedResourceContainer::getId)
                     .collect(Collectors.toSet());
+            vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).map(ReducedResourceContainer::getId).ifPresent(allowedShelves::add);
 
-            vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).ifPresent(s -> {
-                cli.getOut().println(center(String.format("%s's strongbox:%n", vm.getLocalPlayer().orElse(""))));
-                allowedShelves.add(s.getId());
-            });
-
-            vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).map(s -> new Box(new ResourceContainer(s))).ifPresent(StringComponent::render);
             cli.getOut().println();
-
-            cli.promptShelves(this.cost, allowedShelves, false).ifPresentOrElse(shelves -> {
+            cli.promptShelves(this.cost, allowedShelves, true, false).ifPresentOrElse(shelves -> {
                 this.shelves = shelves;
+                valid.set(true);
             }, this::chooseSlot);
         }
 
-        cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot - 1, this.shelves));
+        if (valid.get())
+            cli.getUi().dispatch(new ReqBuyDevCard(this.color, this.level, this.slot - 1, this.shelves));
     }
 
     @Override

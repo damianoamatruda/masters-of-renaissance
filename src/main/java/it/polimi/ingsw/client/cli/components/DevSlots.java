@@ -12,9 +12,11 @@ import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
 /** Cli component that gives a string representation of a development card player slot. */
 public class DevSlots extends StringComponent {
+    private final String player;
     private final List<Optional<ReducedDevCard>> slots;
 
-    public DevSlots(List<Optional<ReducedDevCard>> slots) {
+    public DevSlots(String player, List<Optional<ReducedDevCard>> slots) {
+        this.player = player;
         this.slots = new ArrayList<>(slots);
     }
 
@@ -22,7 +24,7 @@ public class DevSlots extends StringComponent {
     public String getString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(String.format("%s's development card slots:\n", Cli.getInstance().getViewModel().getLocalPlayer().get()));
+        stringBuilder.append(String.format("%s's development card slots:", player)).append("\n").append("\n");
 
         for (int i = 0; i < slots.size(); i += 4) {
             List<Optional<ReducedDevCard>> cards = new ArrayList<>();

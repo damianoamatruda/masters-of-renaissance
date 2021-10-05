@@ -74,6 +74,9 @@ public class SetupLeadersController extends SetupController {
         if (event.getAction() != ActionType.CHOOSE_LEADERS && vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             throw new RuntimeException("Leader setup: UpdateAction received with action type not CHOOSE_LEADERS.");
         
-        super.on(event);
+        vm.getLocalPlayer().ifPresent(p -> {
+            if (p.equals(event.getPlayer()) && isResourceSetupAvailable())
+                setNextState();
+        });
     }
 }

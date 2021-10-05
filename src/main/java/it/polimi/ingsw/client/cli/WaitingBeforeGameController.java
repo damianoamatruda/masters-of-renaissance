@@ -34,7 +34,7 @@ public class WaitingBeforeGameController extends CliController {
                     cli.getUi().dispatch(new ReqNewGame(count));
                 }, () -> cli.getUi().dispatch(new ReqQuit()));
             } catch (NumberFormatException e) {
-                cli.getOut().println("Please input an integer greater than 0.");
+                cli.getOut().println(center("Please input an integer greater than 0."));
                 valid = false;
             }
         }
@@ -45,7 +45,7 @@ public class WaitingBeforeGameController extends CliController {
         if (event.isInvalidPlayersCount())
             cli.reloadController("Invalid players count.");
         else {
-            cli.getOut().println("You cannot choose the players' count for this game.");
+            cli.getOut().println(center("You cannot choose the players' count for this game."));
             setNextState();
         }
     }

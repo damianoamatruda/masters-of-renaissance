@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.cli.components.ResourceContainers;
+import it.polimi.ingsw.client.cli.components.ResourceContainerSet;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqSwapShelves;
 
@@ -21,13 +21,14 @@ public class SwapShelvesController extends CliController {
         cli.getOut().println(center("~ Swap Shelves ~"));
 
         cli.getOut().println();
-        new ResourceContainers(
+        new ResourceContainerSet(
                 vm.getLocalPlayer().orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
                 null)
                 .render();
 
+        cli.getOut().println();
         promptFirstShelf();
     }
 

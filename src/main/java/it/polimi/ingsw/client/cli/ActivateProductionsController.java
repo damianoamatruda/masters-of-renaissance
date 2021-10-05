@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli;
 
 import it.polimi.ingsw.client.cli.components.ProductionSet;
-import it.polimi.ingsw.client.cli.components.ResourceContainers;
+import it.polimi.ingsw.client.cli.components.ResourceContainerSet;
 import it.polimi.ingsw.common.events.mvevents.UpdateAction;
 import it.polimi.ingsw.common.events.vcevents.ReqActivateProductions;
 import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
@@ -39,7 +39,8 @@ public class ActivateProductionsController extends CliController {
         cli.getOut().println();
         cli.getOut().println(center("~ Activate Productions ~"));
 
-        new ResourceContainers(
+        cli.getOut().println();
+        new ResourceContainerSet(
                 vm.getLocalPlayer().orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
                 vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
@@ -48,10 +49,9 @@ public class ActivateProductionsController extends CliController {
 
         List<ReducedResourceTransactionRecipe> allowedProds = vm.getLocalPlayer().map(vm::getPlayerProductions).orElseThrow();
 
+        cli.getOut().println(center(String.format("%n%s's productions:", vm.getLocalPlayer().orElseThrow())));
         cli.getOut().println();
         cli.getOut().println(center(new ProductionSet(allowedProds).getString()));
-        cli.getOut().println();
-        cli.getOut().println(center("Input the IDs of the productions to be activated."));
 
         cli.getOut().println();
 
@@ -73,6 +73,7 @@ public class ActivateProductionsController extends CliController {
                 });
             }
         }
+        this.done = false; /* Allow Cli::reloadController to start from scratch */
 
         if (!this.requests.isEmpty())
             cli.getUi().dispatch(new ReqActivateProductions(this.requests));
@@ -113,23 +114,15 @@ public class ActivateProductionsController extends CliController {
         Map<String, Integer> totalRes = new HashMap<>(this.selectedProd.getInput());
         this.inputReplacement.forEach((replRes, replCount) -> totalRes.compute(replRes, (res, origCount) -> origCount == null ? replCount : origCount + replCount));
 
-        new ResourceContainers(
-                vm.getLocalPlayer().orElseThrow(),
-                vm.getLocalPlayer().map(vm::getPlayerWarehouseShelves).orElseThrow(),
-                vm.getLocalPlayer().map(vm::getPlayerDepots).orElseThrow(),
-                vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).orElse(null))
-                .render();
-
         Set<Integer> allowedShelves = vm.getLocalPlayer().map(vm::getPlayerShelves).orElseThrow().stream()
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toSet());
-
-        vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).ifPresent(s -> allowedShelves.add(s.getId()));
+        vm.getLocalPlayer().flatMap(vm::getPlayerStrongbox).map(ReducedResourceContainer::getId).ifPresent(allowedShelves::add);
 
         cli.getOut().println();
-        cli.getOut().println(center("-- Containers to take resources from (Strongbox not allowed) --"));
+        cli.getOut().println(center("-- Containers to take resources from --"));
         cli.getOut().println();
-        cli.promptShelves(totalRes, allowedShelves, false).ifPresentOrElse(shelves -> {
+        cli.promptShelves(totalRes, allowedShelves, true, false).ifPresentOrElse(shelves -> {
             this.shelves = shelves;
             this.requests.add(new ReducedProductionRequest(this.selectedProd.getId(), this.shelves, this.inputReplacement, this.outputReplacement));
             chooseDone();

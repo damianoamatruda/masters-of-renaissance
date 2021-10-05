@@ -42,6 +42,7 @@ public class SetupResourcesController extends SetupController {
                 .map(ReducedResourceContainer::getId)
                 .collect(Collectors.toUnmodifiableSet());
 
+        cli.getOut().println();
         cli.promptShelvesSetup(allowedResources, totalQuantity, allowedShelves).ifPresentOrElse(shelves -> cli.getUi().dispatch(new ReqChooseResources(shelves)), () -> cli.prompt("You cannot go back. Do you want to quit to title? [y/n]").ifPresentOrElse(input -> {
             if (input.equalsIgnoreCase("y"))
                 cli.getUi().dispatch(new ReqQuit());
@@ -51,7 +52,8 @@ public class SetupResourcesController extends SetupController {
     }
 
     private void printWaitingMessage() {
-        cli.getOut().println(center("Waiting for all players to finish their setup..."));
+        cli.getOut().println();
+        cli.getOut().println(center("Waiting for other players to finish their setup..."));
     }
 
     @Override
@@ -68,7 +70,7 @@ public class SetupResourcesController extends SetupController {
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
         // UpdateSetupDone takes care of state switching, see SetupController
-        if (vm.getPlayers().size() > 1)
+        if (vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             printWaitingMessage();
     }
 }
