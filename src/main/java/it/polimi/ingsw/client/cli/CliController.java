@@ -34,7 +34,7 @@ public abstract class CliController extends UiController implements Renderable {
     protected void setNextState() {
         if (vm.isGameEnded()) {
             cli.promptPause();
-            cli.setController(new EndGameController());
+            cli.setController(new EndgameController());
         } else
             vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (vm.isSetupDone() && vm.getCurrentPlayer().isPresent() &&
@@ -85,7 +85,7 @@ public abstract class CliController extends UiController implements Renderable {
             }
             case GAME_ENDED -> {
                 cli.alert("The game has ended. Advancing to ending screen.");
-                cli.setController(new EndGameController());
+                cli.setController(new EndgameController());
             }
             case NOT_CURRENT_PLAYER -> {
                 cli.alert("You are not the current player. Please wait for your turn.");
@@ -359,7 +359,7 @@ public abstract class CliController extends UiController implements Renderable {
 
         cli.getOut().println();
         cli.getOut().println(center("Game ended!"));
-        cli.setController(new EndGameController());
+        cli.setController(new EndgameController());
     }
 
     @Override

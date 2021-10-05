@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.cli;
 import it.polimi.ingsw.client.cli.components.LeaderBoard;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
-public class EndGameController extends CliController {
+public class EndgameController extends CliController {
     @Override
     public void render() {
         cli.getOut().println();

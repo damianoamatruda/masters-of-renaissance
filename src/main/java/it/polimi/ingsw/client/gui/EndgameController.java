@@ -13,7 +13,7 @@ import javafx.scene.text.TextAlignment;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/** Gui controller used on game end, which shows who won, and the leaderboars. */
+/** Gui controller used on game end, which shows who won, and the leaderboard. */
 public class EndgameController extends GuiController {
     @FXML
     public VBox leaderboard;
