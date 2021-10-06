@@ -9,16 +9,10 @@ public class SplashController extends CliController {
     @Override
     public void render() {
         new MainTitle().render();
-        renderCredits();
-        cli.getOut().println();
         renderCastle();
         cli.getOut().println();
         pausePressEnter();
         cli.setController(new MainMenuController());
-    }
-
-    private void renderCredits() {
-        cli.getOut().println(center(convertStreamToString(getClass().getResourceAsStream("/assets/cli/credits.txt"))));
     }
 
     private void renderCastle() {
