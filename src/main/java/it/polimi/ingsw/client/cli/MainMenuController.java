@@ -6,6 +6,8 @@ import it.polimi.ingsw.client.cli.components.Menu;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static it.polimi.ingsw.client.cli.Cli.center;
+
 public class MainMenuController extends CliController {
     @Override
     public void render() {
@@ -13,6 +15,9 @@ public class MainMenuController extends CliController {
 
         new MainTitle().render();
 
+        cli.getOut().println(center("[Press SPACE + ENTER at any point to go back]"));
+
+        cli.getOut().println();
         Map<Character, Menu.Entry> entries = new LinkedHashMap<>();
         entries.put('1', new Menu.Entry("Play Offline", this::playOffline));
         entries.put('2', new Menu.Entry("Play Online", () -> cli.setController(new PlayOnlineController())));
