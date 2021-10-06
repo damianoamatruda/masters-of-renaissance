@@ -33,7 +33,7 @@ public class NetworkProtocol {
     /**
      * Network message deserializer.
      *
-     * @param <T>
+     * @param <T>             the type of the output event
      * @param input           the JSON-formatted message
      * @param packageName     the name of the package the event pertains to
      * @param eventSuperclass the (super)class of the output event

@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class EventDispatcher {
     /**
-     * List of listeners holding the event handlers that will be called when notified of a dispatched event.
+     * List of event listeners that will be called when notified of a dispatched event.
      */
     private final transient Map<Class<? extends Event>, List<EventListener<? extends Event>>> listeners;
 
@@ -22,11 +22,11 @@ public class EventDispatcher {
     }
 
     /**
-     * Hooks the listener to this dispatcher so it can receive events.
+     * Hooks an event listener to this dispatcher so that it can listen to events.
      *
-     * @param <T>
-     * @param eventType the class of the events listened for.
-     * @param listener  the listener to register.
+     * @param <T>       the class of the events the listener listens to
+     * @param eventType the class of the events the listener listens to
+     * @param listener  the listener to add
      */
     public <T extends Event> void addEventListener(Class<T> eventType, EventListener<? super T> listener) {
         if (!listeners.containsKey(eventType))
@@ -35,11 +35,11 @@ public class EventDispatcher {
     }
 
     /**
-     * Unregisters a listener, preventing it from receiving Events.
+     * Removes an event listener, preventing it from receiving Events.
      *
-     * @param <T>
-     * @param eventType the class of Event the listener was listening to.
-     * @param listener  the listener to deregister.
+     * @param <T>       the type of the events the listener listens to
+     * @param eventType the class of the events the listener listens to
+     * @param listener  the listener to remove
      */
     public <T extends Event> void removeEventListener(Class<T> eventType, EventListener<? super T> listener) {
         if (!listeners.containsKey(eventType))
@@ -50,8 +50,8 @@ public class EventDispatcher {
     /**
      * Dispatches an event to all listeners listening for Events of that class.
      *
-     * @param <T>
-     * @param event the event to dispatch.
+     * @param <T>   the type of the event to dispatch
+     * @param event the event to dispatch
      */
     @SuppressWarnings("unchecked")
     public <T extends Event> void dispatch(T event) {
