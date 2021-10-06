@@ -168,4 +168,14 @@ public class ResourceTransactionRequestTest {
         assertThrows(IllegalResourceTransactionContainersException.class, () -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 2, rOutRepl, 1)), Map.of()));
         assertThrows(IllegalResourceTransactionContainersException.class, () -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn, 1)), Map.of(), Map.of(cOut, Map.of(rOut, 1, rOutRepl, 2)), Map.of()));
     }
+
+    @Test
+    void sameTotalQuantityAndSameResourceTypesButDifferentResourceQuantitiesTest() {
+        ResourceType rIn1 = new ResourceType("rIn1", "", true);
+        ResourceType rIn2 = new ResourceType("rIn2", "", true);
+        ResourceTransactionRecipe recipe = new ResourceTransactionRecipe(Map.of(rIn1, 2, rIn2, 2), 0, Map.of(), 0);
+
+        assertDoesNotThrow(() -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn1, 2, rIn2, 2)), Map.of(), Map.of(), Map.of()));
+        assertThrows(IllegalResourceTransactionContainersException.class, () -> new ResourceTransactionRequest(recipe, Map.of(cIn, Map.of(rIn1, 1, rIn2, 3)), Map.of(), Map.of(), Map.of()));
+    }
 }

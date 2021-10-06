@@ -30,8 +30,8 @@ public class ResourceTransactionRequest {
      * @param inputNonStorableRep  the map of the non-storable resources chosen as replacement for blanks in input
      * @param outputContainers     the map of the resource containers into which to add the output storable resources
      * @param outputNonStorableRep the map of the non-storable resources chosen as replacement for blanks in output
-     * @throws IllegalResourceTransactionReplacementsException if the request's replacements are invalid
-     * @throws IllegalResourceTransactionContainersException   if the request's container-resource mappings are invalid
+     * @throws IllegalResourceTransactionReplacementsException if the request replacements are invalid
+     * @throws IllegalResourceTransactionContainersException   if the request container-resource mappings are invalid
      */
     public ResourceTransactionRequest(ResourceTransactionRecipe recipe,
                                       Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
@@ -184,8 +184,8 @@ public class ResourceTransactionRequest {
      *         input and output</li>
      * </ol>
      *
-     * @throws IllegalResourceTransactionReplacementsException if the request's replacements are invalid
-     * @throws IllegalResourceTransactionContainersException   if the request's container-resource mappings are invalid
+     * @throws IllegalResourceTransactionReplacementsException if the request replacements are invalid
+     * @throws IllegalResourceTransactionContainersException   if the request container-resource mappings are invalid
      */
     private static void validate(ResourceTransactionRecipe recipe,
                                  Map<ResourceContainer, Map<ResourceType, Integer>> inputContainers,
@@ -229,9 +229,13 @@ public class ResourceTransactionRequest {
     /**
      * Checks that resource containers are given for respectively all non-storable resources in a given map.
      *
-     * @param resourceMap   the map of resources
-     * @param resContainers the map of the resource containers to use for all the resources
-     * @throws IllegalResourceTransactionContainersException if the request's container-resource mappings are invalid
+     * @param isInput          <code>true</code> if the resources are input; <code>false</code> otherwise.
+     * @param resourceMap      the map of resources
+     * @param blanksCount      the number of replaceable blanks
+     * @param blanksExclusions the blanks exclusions
+     * @param resContainers    the map of the resource containers to use for all the resources
+     * @param discardable      <code>true</code> if resources can be discarded; <code>false</code> otherwise.
+     * @throws IllegalResourceTransactionContainersException if the request container-resource mappings are invalid
      */
     private static void checkContainers(boolean isInput,
                                         Map<ResourceType, Integer> resourceMap,
@@ -248,18 +252,18 @@ public class ResourceTransactionRequest {
         if (!discardable && !resContainers.values().stream().flatMap(resMap -> resMap.keySet().stream()).collect(Collectors.toSet()).containsAll(resourceMap.keySet()))
             throw new IllegalResourceTransactionContainersException(isInput, "", 0, 0, true);
 
-        /* Check that the map of resource containers contains the right quantities of resources */
+        /* Check that the map of resource containers contains the right total quantity of resources */
         int resourceMapResourcesCount = resourceMap.values().stream().reduce(0, Integer::sum);
         int resContainersResourcesCount = resContainers.values().stream()
                 .map(m -> m.values().stream().reduce(0, Integer::sum))
                 .reduce(0, Integer::sum);
-        if (resContainersResourcesCount > resourceMapResourcesCount + blanksCount || resContainersResourcesCount < resourceMapResourcesCount + blanksCount && !discardable)
+        if (resContainersResourcesCount < resourceMapResourcesCount + blanksCount && !discardable || resContainersResourcesCount > resourceMapResourcesCount + blanksCount)
             throw new IllegalResourceTransactionContainersException(isInput, "", resourceMapResourcesCount, resContainersResourcesCount, false);
 
-        /* Check that the leftover resources can be chosen as blanks */
+        /* Check minimum resource quantities and whether leftover resources can be chosen as blanks */
         for (ResourceType resType : resourceMap.keySet()) {
             int resourceCount = resContainers.values().stream().mapToInt(containerResMap -> containerResMap.getOrDefault(resType, 0)).sum();
-            if (resourceCount > resourceMap.get(resType) && blanksExclusions.contains(resType))
+            if (resourceCount < resourceMap.get(resType) && !discardable || resourceCount > resourceMap.get(resType) && blanksExclusions.contains(resType))
                 throw new IllegalResourceTransactionContainersException(isInput, resType.getName(), resourceMap.get(resType), resourceCount, false);
         }
     }
