@@ -41,7 +41,7 @@ The system must be based on the MVC architecture.
 | Communication protocol ("Socket") | :heavy_check_mark: |
 | Advanced functionality 1 | :heavy_check_mark: Multiple games |
 | Advanced functionality 2 | :heavy_check_mark: Local game |
-| Advanced functionality 3 | :heavy_check_mark: Resilience to disconnections (see below) |
+| Advanced functionality 3 | :heavy_check_mark: Resilience to disconnections |
 
 ### Screenshots
 
@@ -67,14 +67,14 @@ Run the `-client` jar file in the `/target` folder.
 java -jar AM49-1.0-client.jar [options]
 ```
 
-**(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore
-necessary. Running the GUI works from any terminal.
-
 **Options:**
 
 ```
 --cli    run the client in text mode (if omitted the GUI will start instead)
 ```
+
+**(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore
+necessary. Running the GUI works from any terminal.
 
 ## Run the Server
 
