@@ -4,4 +4,4 @@ services:
     image: ingsw-server
     restart: always
     ports:
-      - '51015:1234'
+      - "51015:51015"

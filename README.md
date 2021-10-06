@@ -57,7 +57,7 @@ Syntax: `java -jar AM49-1.0-SNAPSHOT-server.jar [options]`
 **Supported options:**
 
 ```bash
-  --port    network listening port (default 1234)
+  --port    network listening port (default 51015)
 --config    path of the custom configuration file
 ```
 
