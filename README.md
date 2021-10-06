@@ -59,6 +59,23 @@ To compile the software:
 4. In the cloned repository folder, run: `mvn package -DskipTests`
 5. The compiled packages (`-server` and `-client` JAR files) will be inside the `/target` folder.
 
+## Run the Client
+
+Run the `-client` jar file in the `/target` folder.
+
+```bash
+java -jar AM49-1.0-client.jar [options]
+```
+
+**(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore
+necessary. Running the GUI works from any terminal.
+
+**Options:**
+
+```
+--cli    run the client in text mode (if omitted the GUI will start instead)
+```
+
 ## Run the Server
 
 Run the `-server` JAR file in the `/target` folder.
@@ -86,23 +103,6 @@ To build the container:
 3. Run `docker build -t ingsw-server .`
 
 To deploy the container, run `docker-compose up -d` in the same folder as the `docker-compose.yml` file.
-
-## Run the Client
-
-Run the `-client` jar file in the `/target` folder.
-
-```bash
-java -jar AM49-1.0-client.jar [options]
-```
-
-**(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore
-necessary. Running the GUI works from any terminal.
-
-**Options:**
-
-```
---cli    run the client in text mode (if omitted the GUI will start instead)
-```
 
 ## Configuration Files
 
