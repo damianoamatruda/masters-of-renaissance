@@ -61,19 +61,17 @@ public class Cli implements Runnable {
     }
 
     public static String center(String str, int width, char fill) {
-        if (str.lines().count() == 0)
-            return "";
+        List<String> lines = str.lines().findAny().isPresent() ? str.lines().toList() : List.of("");
 
-        if (maxLineWidth(str) > width) {
+        if (maxLineWidth(str) > width)
             throw new IllegalArgumentException("String too long:" + "\n" +
-                    str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow() + "\n" +
-                    String.format("Max length: %d. Got: %d.", width, textLength(str.lines().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow())));
-        }
+                    lines.stream().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow() + "\n" +
+                    String.format("Max length: %d. Got: %d.", width, textLength(lines.stream().filter(s -> s.length() == maxLineWidth(str)).findAny().orElseThrow())));
 
         int marginLeft = (width - maxLineWidth(str)) / 2;
 
         StringBuilder stringBuilder = new StringBuilder();
-        str.lines().forEachOrdered(line -> stringBuilder.append(Character.toString(fill).repeat(marginLeft)).append(line).append(Character.toString(fill).repeat(width - marginLeft - textLength(line))).append("\n"));
+        lines.forEach(line -> stringBuilder.append(Character.toString(fill).repeat(marginLeft)).append(line).append(Character.toString(fill).repeat(width - marginLeft - textLength(line))).append("\n"));
         return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
 
@@ -86,17 +84,17 @@ public class Cli implements Runnable {
     }
 
     public static String centerAll(String str) {
+        List<String> lines = str.lines().findAny().isPresent() ? str.lines().toList() : List.of("");
         StringBuilder stringBuilder = new StringBuilder();
-        str.lines().forEachOrdered(line -> stringBuilder.append(center(line)).append("\n"));
+        lines.forEach(line -> stringBuilder.append(center(line)).append("\n"));
         return stringBuilder.substring(0, stringBuilder.length() - 1);
     }
 
     public static String left(String str, int width, char fill) {
-        if (textLength(str) > width) {
+        if (textLength(str) > width)
             throw new IllegalArgumentException("String too long:" + "\n" +
                     str + "\n" +
                     String.format("Max length: %d. Got: %d.", width, textLength(str)));
-        }
         return str + Character.toString(fill).repeat(width - textLength(str));
     }
 
