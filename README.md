@@ -43,6 +43,12 @@ The system must be based on the MVC architecture.
 | Advanced functionality 2 | :heavy_check_mark: Local game |
 | Advanced functionality 3 | :heavy_check_mark: Resilience to disconnections (see below) |
 
+### Screenshots
+
+![GUI](docs/gui.png)
+
+![CLI](docs/cli.png)
+
 ## Compile
 
 To compile the software:
