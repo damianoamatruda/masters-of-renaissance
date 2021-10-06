@@ -242,7 +242,7 @@ public abstract class TurnController extends GuiController {
     @Override
     public void on(UpdateGameEnd event) {
         super.on(event);
-        gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/endgame.fxml"));
     }
 
     @Override

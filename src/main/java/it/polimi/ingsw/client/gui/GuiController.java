@@ -46,20 +46,20 @@ public abstract class GuiController extends UiController implements Initializabl
      */
     protected void setNextState() {
         if (vm.isGameEnded())
-            gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/endgame.fxml"));
         else
             vm.getLocalPlayer().flatMap(vm::getPlayer).ifPresent(player -> {
                 if (vm.isSetupDone() && vm.getCurrentPlayer().isPresent() &&
                         !vm.getPlayerLeaderCards(vm.getLocalPlayer().get()).isEmpty()) { // Setup is done
                     if (vm.localPlayerIsCurrent())
-                        gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
+                        gui.setScene(getClass().getResource("/assets/gui/scenes/turnbeforeaction.fxml"));
                     else
-                        gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml"));
+                        gui.setScene(getClass().getResource("/assets/gui/scenes/waitingforturn.fxml"));
                 } else if (!vm.isSetupDone()) // Setup is not done
                     if (isLeaderSetupAvailable())
-                        gui.setScene(getClass().getResource("/assets/gui/setupleaders.fxml"));
+                        gui.setScene(getClass().getResource("/assets/gui/scenes/setupleaders.fxml"));
                     else if (isLocalLeaderSetupDone())
-                        gui.setScene(getClass().getResource("/assets/gui/setupresources.fxml"));
+                        gui.setScene(getClass().getResource("/assets/gui/scenes/setupresources.fxml"));
             });
     }
 
@@ -83,19 +83,19 @@ public abstract class GuiController extends UiController implements Initializabl
             case LATE_MANDATORY_ACTION -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You have already done a mandatory action",
                     "Advancing to optional actions.",
-                    () -> gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml")))));
+                    () -> gui.setScene(getClass().getResource("/assets/gui/scenes/turnafteraction.fxml")))));
             case EARLY_TURN_END -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You cannot end the turn yet",
                     "A mandatory action needs to be done before ending the turn.",
-                    () -> gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml")))));
+                    () -> gui.setScene(getClass().getResource("/assets/gui/scenes/turnbeforeaction.fxml")))));
             case GAME_ENDED -> Platform.runLater(() -> gui.getRoot().getChildren().add(new Alert(
                     "The game has ended",
                     "Advancing to ending screen.",
-                    () -> gui.setScene(getClass().getResource("/assets/gui/endgame.fxml")))));
+                    () -> gui.setScene(getClass().getResource("/assets/gui/scenes/endgame.fxml")))));
             case NOT_CURRENT_PLAYER -> Platform.runLater(() -> gui.addToOverlay(new Alert(
                     "You are not the current player",
                     "Please wait for your turn.",
-                    () -> gui.setScene(getClass().getResource("/assets/gui/waitingforturn.fxml")))));
+                    () -> gui.setScene(getClass().getResource("/assets/gui/scenes/waitingforturn.fxml")))));
         }
     }
 
@@ -144,7 +144,7 @@ public abstract class GuiController extends UiController implements Initializabl
             case NOT_SET -> gui.reloadScene(
                     "Invalid nickname", "Given nickname is blank.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
-            case NOT_IN_GAME -> gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
+            case NOT_IN_GAME -> gui.setScene(getClass().getResource("/assets/gui/scenes/inputnickname.fxml"), (InputNicknameController c) ->
                     gui.addToOverlay(new Alert("Invalid action", "Game not joined yet.")));
         }
     }
@@ -239,20 +239,20 @@ public abstract class GuiController extends UiController implements Initializabl
 
         Platform.runLater(() -> gui.addToOverlay(
                 new Alert("Server is down", "Try again later.", () ->
-                        gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml")))));
+                        gui.setScene(getClass().getResource("/assets/gui/scenes/mainmenu.fxml")))));
     }
 
     @Override
     public void on(ResQuit event) {
         super.on(event);
 
-        gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/mainmenu.fxml"));
     }
 
     @Override
     public void on(UpdateActionToken event) {
         super.on(event);
-        gui.setScene(getClass().getResource("/assets/gui/triggeractiontoken.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/triggeractiontoken.fxml"));
     }
 
     @Override

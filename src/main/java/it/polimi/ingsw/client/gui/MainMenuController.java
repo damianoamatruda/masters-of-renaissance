@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 /** Gui controller that manages the main menu. */
 public class MainMenuController extends GuiController {
-    private static final String musicPath = "/assets/gui/Wonderland - 320bit.mp3";
+    private static final String musicPath = "/assets/gui/audio/Wonderland - 320bit.mp3";
 
     @FXML
     private BorderPane canvas;
@@ -42,7 +42,7 @@ public class MainMenuController extends GuiController {
     @FXML
     private void handlePlayOffline() {
         gui.getUi().openOfflineClient();
-        gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
+        gui.setScene(getClass().getResource("/assets/gui/scenes/inputnickname.fxml"), (InputNicknameController controller) ->
                 controller.setTitle("Play Offline"));
     }
 
@@ -51,7 +51,7 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handlePlayOnline() {
-        gui.setScene(getClass().getResource("/assets/gui/playonline.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/playonline.fxml"));
     }
 
     /**
@@ -59,7 +59,7 @@ public class MainMenuController extends GuiController {
      */
     @FXML
     private void handleOptions() {
-        gui.setScene(getClass().getResource("/assets/gui/mainoptions.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/mainoptions.fxml"));
     }
 
     /**

@@ -121,7 +121,7 @@ public class Production extends StackPane {
         for (String resource : blanksExclusions) {
             StackPane exclusion = new StackPane();
             exclusion.getChildren().add(new Resource(resource));
-            exclusion.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/resourcetypes/blankexclusion.png")))));
+            exclusion.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/images/resourcetypes/blankexclusion.png")))));
 
             Group group = new Group(exclusion);
             group.setScaleX(0.3);

@@ -15,7 +15,7 @@
           <Insets bottom="40.0"/>
         </VBox.margin>
         <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-          <Image url="@logo.png"/>
+          <Image url="@../images/logo.png"/>
         </ImageView>
       </VBox>
       <SButton alignment="CENTER" onAction="#handlePlayOffline" prefWidth="400.0" text="Play Offline"/>

@@ -17,7 +17,7 @@
           <Insets bottom="40.0"/>
         </VBox.margin>
         <ImageView fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-          <Image url="@logo.png"/>
+          <Image url="@../images/logo.png"/>
         </ImageView>
       </VBox>
       <Text>Waiting for a new game...</Text>

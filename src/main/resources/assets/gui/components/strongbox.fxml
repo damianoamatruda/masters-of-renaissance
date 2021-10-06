@@ -7,7 +7,7 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1" prefHeight="345.0" prefWidth="411.0" type="StackPane"
          xmlns="http://javafx.com/javafx/16" stylesheets="@../index.css">
   <ImageView fx:id="background" fitHeight="345.0" fitWidth="411.0" pickOnBounds="true" preserveRatio="true">
-    <Image url="@../playerboard/strongbox.png"/>
+    <Image url="@../images/playerboard/strongbox.png"/>
   </ImageView>
   <GridPane fx:id="grid">
     <columnConstraints>

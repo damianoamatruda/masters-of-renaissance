@@ -175,11 +175,11 @@ public class FaithTrack extends HBox {
     public ImageView getPopesFavorImage(boolean isActivated, boolean gotBonus) {
         ImageView popesFavor;
         if (!isActivated)
-            return new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/popesfavorinactive.png"))));
+            return new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/images/faithtrack/popesfavorinactive.png"))));
         if (gotBonus)
-            popesFavor = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/popesfavor.png"))));
+            popesFavor = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/images/faithtrack/popesfavor.png"))));
         else
-            popesFavor = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/faithtrack/popesfavormissed.png"))));
+            popesFavor = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/assets/gui/images/faithtrack/popesfavormissed.png"))));
         return popesFavor;
     }
 }

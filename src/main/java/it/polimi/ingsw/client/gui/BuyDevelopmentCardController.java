@@ -285,7 +285,7 @@ public class BuyDevelopmentCardController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/turnbeforeaction.fxml"));
     }
 
     @Override
@@ -312,7 +312,7 @@ public class BuyDevelopmentCardController extends GuiController {
     public void on(UpdateAction event) {
         super.on(event);
         if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD)
-            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/turnafteraction.fxml"));
 
         else if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();

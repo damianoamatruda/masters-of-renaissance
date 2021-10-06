@@ -44,10 +44,10 @@ public class InputNicknameController extends GuiController {
     @FXML
     private void handleBack() {
         if (gui.getUi().isOffline())
-            gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/mainmenu.fxml"));
         else {
             gui.getUi().closeClient();
-            gui.setScene(getClass().getResource("/assets/gui/playonline.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/playonline.fxml"));
         }
     }
 
@@ -65,7 +65,7 @@ public class InputNicknameController extends GuiController {
         if (gui.getUi().isOffline())
             gui.getUi().dispatch(new ReqNewGame(1));
         else
-            gui.setScene(getClass().getResource("/assets/gui/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
+            gui.setScene(getClass().getResource("/assets/gui/scenes/waitingbeforegame.fxml"), (WaitingBeforeGameController controller) -> {
                 controller.setBookedSeats(event.getBookedSeats());
                 controller.setCanPrepareNewGame(event.canPrepareNewGame());
             });
@@ -83,7 +83,7 @@ public class InputNicknameController extends GuiController {
         super.on(event);
 
         if (event.isMandatoryActionDone() && vm.getLocalPlayer().equals(vm.getCurrentPlayer()))
-            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/turnafteraction.fxml"));
         else
             setNextState();
     }

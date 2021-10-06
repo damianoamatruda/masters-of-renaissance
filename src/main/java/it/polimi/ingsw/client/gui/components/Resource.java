@@ -27,7 +27,7 @@ public class Resource extends ImageView {
         this.setFitWidth(width);
 
         try {
-            Image bg = new Image(Objects.requireNonNull(getClass().getResourceAsStream(String.format("/assets/gui/resourcetypes/%s.png", resourceName.toLowerCase()))));
+            Image bg = new Image(Objects.requireNonNull(getClass().getResourceAsStream(String.format("/assets/gui/images/resourcetypes/%s.png", resourceName.toLowerCase()))));
             this.setImage(bg);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(String.format("No image file for resource '%s'.", resourceName), e);
@@ -45,7 +45,7 @@ public class Resource extends ImageView {
      * @return the file path to the PNG
      */
     public static String getMarblePath(String type) {
-        return String.format("/assets/gui/market/%smarble.png", type.toLowerCase());
+        return String.format("/assets/gui/images/market/%smarble.png", type.toLowerCase());
     }
 
     /**

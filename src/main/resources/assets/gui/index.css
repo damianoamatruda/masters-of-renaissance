@@ -1,17 +1,17 @@
 @font-face {
-    src: url('CaslonAntique.ttf');
+    src: url('fonts/CaslonAntique/CaslonAntique.ttf');
 }
 
 @font-face {
-    src: url('CaslonAntique-Bold.ttf');
+    src: url('fonts/CaslonAntique/CaslonAntique-Bold.ttf');
 }
 
 @font-face {
-    src: url('CaslonAntique-Italic.ttf');
+    src: url('fonts/CaslonAntique/CaslonAntique-Italic.ttf');
 }
 
 @font-face {
-    src: url('CaslonAntique-BoldItalic.ttf');
+    src: url('fonts/CaslonAntique/CaslonAntique-BoldItalic.ttf');
 }
 
 .root {
@@ -20,7 +20,7 @@
 }
 
 .root, .background {
-    -fx-background-image: url('background.png');
+    -fx-background-image: url('images/background.png');
     -fx-background-size: 500px;
     -fx-background-position: center;
 }
@@ -135,37 +135,37 @@ Production:selected > VBox {
 }
 
 .blue {
-    -fx-background-image: url('devcardtemplates/blue.png');
+    -fx-background-image: url('images/devcardtemplates/blue.png');
 }
 
 .green {
-    -fx-background-image: url('devcardtemplates/green.png');
+    -fx-background-image: url('images/devcardtemplates/green.png');
 }
 
 .purple {
-    -fx-background-image: url('devcardtemplates/purple.png');
+    -fx-background-image: url('images/devcardtemplates/purple.png');
 }
 
 .yellow {
-    -fx-background-image: url('devcardtemplates/yellow.png');
+    -fx-background-image: url('images/devcardtemplates/yellow.png');
 }
 
 .depotleader {
-    -fx-background-image: url('leadertemplates/depotleader.png');
+    -fx-background-image: url('images/leadertemplates/depotleader.png');
 }
 
 .productionleader {
-    -fx-background-image: url('leadertemplates/productionleader.png');
+    -fx-background-image: url('images/leadertemplates/productionleader.png');
 }
 
 .zeroleader {
-    -fx-background-image: url('leadertemplates/zeroleader.png');
+    -fx-background-image: url('images/leadertemplates/zeroleader.png');
 }
 
 .discountleader {
-    -fx-background-image: url('leadertemplates/discountleader.png');
+    -fx-background-image: url('images/leadertemplates/discountleader.png');
 }
 
 .backleader {
-    -fx-background-image: url('leadertemplates/backleader.png');
+    -fx-background-image: url('images/leadertemplates/backleader.png');
 }

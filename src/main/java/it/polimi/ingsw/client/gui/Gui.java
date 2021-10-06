@@ -51,8 +51,8 @@ public class Gui extends Application {
     private static final double minWidth = 640;
     private static final double minHeight = 360;
     private static final String title = "Masters of Renaissance";
-    private static final String iconPng = "/assets/gui/playerboard/inkwell.png";
-    private static final String initialSceneFxml = "/assets/gui/mainmenu.fxml";
+    private static final String iconPng = "/assets/gui/images/playerboard/inkwell.png";
+    private static final String initialSceneFxml = "/assets/gui/scenes/mainmenu.fxml";
     private static final String mainStylesheetCss = "/assets/gui/index.css";
     private static Gui instance = null;
     private final Ui ui;

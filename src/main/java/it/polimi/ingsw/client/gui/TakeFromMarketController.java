@@ -407,14 +407,14 @@ public class TakeFromMarketController extends GuiController {
      * @param actionEvent the event object
      */
     private void back(ActionEvent actionEvent) {
-        gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/turnbeforeaction.fxml"));
     }
 
     @Override
     public void on(UpdateAction event) {
         super.on(event);
         if (event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES)
-            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/turnafteraction.fxml"));
 
         else if (event.getAction() == UpdateAction.ActionType.SWAP_SHELVES) {
             Shelf s1 = (Shelf) warehouse.getChildren().stream().filter(s -> ((Shelf) s).getShelfId() == warehouse.getWaitingForSwap1()).findAny().orElseThrow();

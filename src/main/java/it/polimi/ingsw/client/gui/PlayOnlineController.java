@@ -56,7 +56,7 @@ public class PlayOnlineController extends GuiController {
             return;
         }
 
-        gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController controller) ->
+        gui.setScene(getClass().getResource("/assets/gui/scenes/inputnickname.fxml"), (InputNicknameController controller) ->
                 controller.setTitle("Play Online"));
     }
 
@@ -65,6 +65,6 @@ public class PlayOnlineController extends GuiController {
      */
     @FXML
     private void handleBack() {
-        gui.setScene(getClass().getResource("/assets/gui/mainmenu.fxml"));
+        gui.setScene(getClass().getResource("/assets/gui/scenes/mainmenu.fxml"));
     }
 }

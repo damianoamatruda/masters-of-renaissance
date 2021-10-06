@@ -9,10 +9,10 @@
          stylesheets="@title.css"
          type="HBox">
   <ImageView fitHeight="32.0" pickOnBounds="true" preserveRatio="true">
-    <Image url="@../title-before.png"/>
+    <Image url="@../images/title/title-before.png"/>
   </ImageView>
   <Text fx:id="titleText"/>
   <ImageView fitHeight="32.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0">
-    <Image url="@../title-after.png"/>
+    <Image url="@../images/title/title-after.png"/>
   </ImageView>
 </fx:root>

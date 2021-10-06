@@ -33,8 +33,8 @@ public class TriggerActionTokenController extends GuiController {
 
         next.setOnAction(actionEvent -> {
             if (!vm.isGameEnded())
-                gui.setScene(getClass().getResource("/assets/gui/turnbeforeaction.fxml"));
-            else gui.setScene(getClass().getResource("/assets/gui/endgame.fxml"));
+                gui.setScene(getClass().getResource("/assets/gui/scenes/turnbeforeaction.fxml"));
+            else gui.setScene(getClass().getResource("/assets/gui/scenes/endgame.fxml"));
         });
 
         AnchorPane.setTopAnchor(message, 20.0);
@@ -52,7 +52,7 @@ public class TriggerActionTokenController extends GuiController {
      * @return the path to the correct ActionToken Image component
      */
     private String getTokenImage(ReducedActionToken token) {
-        return "/assets/gui/actiontokens/" + token.getKind().toLowerCase() +
+        return "/assets/gui/images/actiontokens/" + token.getKind().toLowerCase() +
                 (token.getDiscardedDevCardColor().isPresent() ? token.getDiscardedDevCardColor().get().toLowerCase() : "") + ".png";
     }
 }

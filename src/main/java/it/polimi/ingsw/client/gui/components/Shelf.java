@@ -54,7 +54,7 @@ public class Shelf extends BorderPane {
         content.setMinHeight(maxHeight);
         content.setMaxHeight(maxHeight);
         content.setMinWidth(contentWidth);
-        content.setStyle("-fx-background-image: url('/assets/gui/playerboard/warehouseshelf.png');" +
+        content.setStyle("-fx-background-image: url('/assets/gui/images/playerboard/warehouseshelf.png');" +
                 "-fx-background-position: center center;" +
                 "-fx-background-repeat: stretch;" +
                 "-fx-alignment: center;" +
@@ -326,7 +326,7 @@ public class Shelf extends BorderPane {
      * @return the path to the PNG resource representing a depot placeholder
      */
     private String getResourcePlaceholderPath(String resourceType) {
-        return String.format("/assets/gui/leadertemplates/%sdepot.png", resourceType.toLowerCase());
+        return String.format("/assets/gui/images/leadertemplates/%sdepot.png", resourceType.toLowerCase());
     }
 
     private void removePlaceholder() {

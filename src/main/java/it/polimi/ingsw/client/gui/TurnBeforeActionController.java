@@ -22,14 +22,14 @@ public class TurnBeforeActionController extends TurnController {
 
         Button marketButton = new SButton("Market");
         marketButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
-                gui.setScene(getClass().getResource("/assets/gui/takefrommarket.fxml")));
+                gui.setScene(getClass().getResource("/assets/gui/scenes/takefrommarket.fxml")));
         AnchorPane.setLeftAnchor(marketButton, 10d);
         AnchorPane.setTopAnchor(marketButton, 10d);
         canvas.getChildren().add(marketButton);
 
         Button gridButton = new SButton("Grid");
         gridButton.addEventHandler(ActionEvent.ACTION, actionEvent ->
-                gui.setScene(getClass().getResource("/assets/gui/buydevelopmentcard.fxml")));
+                gui.setScene(getClass().getResource("/assets/gui/scenes/buydevelopmentcard.fxml")));
         AnchorPane.setRightAnchor(gridButton, 10d);
         AnchorPane.setTopAnchor(gridButton, 10d);
         canvas.getChildren().add(gridButton);
@@ -52,6 +52,6 @@ public class TurnBeforeActionController extends TurnController {
         if (event.getAction() == UpdateAction.ActionType.BUY_DEVELOPMENT_CARD ||
                 event.getAction() == UpdateAction.ActionType.TAKE_MARKET_RESOURCES ||
                 event.getAction() == UpdateAction.ActionType.ACTIVATE_PRODUCTION)
-            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/turnafteraction.fxml"));
     }
 }

@@ -106,7 +106,7 @@ public class WaitingBeforeGameController extends GuiController {
         super.on(event);
 
         if (event.isMandatoryActionDone() && vm.getLocalPlayer().equals(vm.getCurrentPlayer()))
-            gui.setScene(getClass().getResource("/assets/gui/turnafteraction.fxml"));
+            gui.setScene(getClass().getResource("/assets/gui/scenes/turnafteraction.fxml"));
         else
             setNextState();
     }
