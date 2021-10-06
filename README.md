@@ -67,7 +67,7 @@ A public instance of the server is available at 51.15.199.149:51015.
 
 ### Docker image
 
-A [`Dockerfile`](Dockerfile) and a [`docker-compose.yml`](docker-compose.yaml) are available to build and deploy a
+A [`Dockerfile`](Dockerfile) and a [`docker-compose.yml`](docker-compose.yml) are available to build and deploy a
 docker container running the server.
 
 To build the container:
