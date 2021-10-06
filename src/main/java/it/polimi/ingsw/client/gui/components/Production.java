@@ -20,7 +20,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-/** Gui component that represents a production recipe. */
+/**
+ * GUI component that represents a production recipe.
+ */
 public class Production extends StackPane {
     private static final double padding = 2;
     private final BiConsumer<Production, Production> onProduce;

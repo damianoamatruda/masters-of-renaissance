@@ -115,19 +115,19 @@ Production:selected > VBox {
 }
 
 .spinner .increment-arrow-button {
-    -fx-padding: 3 4 3 4; /*caspian.css values are 4 8 4 8 */
+    -fx-padding: 3 4 3 4;
 }
 
 .spinner .decrement-arrow-button {
-    -fx-padding: 3 4 3 4; /*caspian.css values are 3 8 6 8 */
+    -fx-padding: 3 4 3 4;
 }
 
 .spinner .increment-arrow-button .increment-arrow {
-    -fx-padding: 5 6 5 6; /*caspian.css values are 2 4 2 4 */
+    -fx-padding: 5 6 5 6;
 }
 
 .spinner .decrement-arrow-button .decrement-arrow {
-    -fx-padding: 5 6 5 6; /*caspian.css values are 2 4 2 4 */
+    -fx-padding: 5 6 5 6;
 }
 
 .resource {

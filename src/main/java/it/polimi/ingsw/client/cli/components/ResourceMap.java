@@ -5,7 +5,7 @@ import java.util.Map;
 import static it.polimi.ingsw.client.cli.Cli.left;
 
 /**
- * Cli component that gives a string representation of a map of resources. Used mainly to represent requirements,
+ * CLI component that gives a string representation of a map of resources. Used mainly to represent requirements,
  * production recipes or containers' content.
  */
 public class ResourceMap extends StringComponent {

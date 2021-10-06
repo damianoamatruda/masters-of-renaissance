@@ -20,7 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Pane component used to choose input source for a selected production. */
+/**
+ * Pane component used to choose input source for a selected production.
+ */
 public class ActivateProductions extends StackPane {
     private final List<ActivateProductions> windows;
     private final List<ReducedProductionRequest> requests;

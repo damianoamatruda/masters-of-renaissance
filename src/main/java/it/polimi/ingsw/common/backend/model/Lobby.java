@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
+/**
+ * This class represents the game lobby. It is the only point of access to the model in the Model-View-Controller
+ * architecture of the Masters of Renaissance game.
+ */
 public class Lobby extends AsynchronousEventDispatcher {
     private static final Logger LOGGER = Logger.getLogger(Lobby.class.getName());
     private final Object lock;

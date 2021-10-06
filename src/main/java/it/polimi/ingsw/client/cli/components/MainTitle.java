@@ -6,7 +6,9 @@ import it.polimi.ingsw.client.cli.Renderable;
 import static it.polimi.ingsw.client.cli.Cli.center;
 import static it.polimi.ingsw.client.cli.Cli.convertStreamToString;
 
-/** Cli component that renders the main title. */
+/**
+ * CLI component that renders the main title.
+ */
 public class MainTitle implements Renderable {
     @Override
     public void render() {

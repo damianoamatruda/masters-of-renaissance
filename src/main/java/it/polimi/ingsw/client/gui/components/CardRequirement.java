@@ -12,7 +12,9 @@ import javafx.scene.text.Text;
 
 import java.util.Objects;
 
-/** Gui component used to show card requirements. */
+/**
+ * GUI component used to show card requirements.
+ */
 public class CardRequirement extends HBox {
     private static final double maxRowHeight = 30;
 

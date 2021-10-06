@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
-/** Resource container state update. */
+/**
+ * Resource container state update.
+ */
 public class UpdateResourceContainer implements MVEvent {
     /** The ID of the container. */
     private final ReducedResourceContainer resContainer;

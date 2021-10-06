@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-/** Gui component that represents a runtime development slot. */
+/**
+ * GUI component that represents a runtime development slot.
+ */
 public class DevSlot extends StackPane {
     private final BiConsumer<DevelopmentCard, Production> onProduce;
     private List<DevelopmentCard> devCards;

@@ -18,7 +18,9 @@ import javafx.scene.text.Text;
 import java.util.*;
 import java.util.stream.IntStream;
 
-/** Gui component representing the faith track. */
+/**
+ * GUI component representing the faith track.
+ */
 public class FaithTrack extends HBox {
     private final VBox tilesBox = new VBox();
     private final VBox popesFavors = new VBox();

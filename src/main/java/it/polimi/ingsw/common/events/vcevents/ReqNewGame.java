@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-/** Client request for a new game. */
+/**
+ * Client request for a new game.
+ */
 public class ReqNewGame implements VCEvent {
     /** The number of players needed to start the game. */
     private final int playersCount;

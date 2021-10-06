@@ -52,7 +52,7 @@ public class ZeroLeaderTest {
     }
 
     /**
-     * Tests the case in which there's nothing to convert. The result should be a map with the same values as the input
+     * Tests the case in which there is nothing to convert. The result should be a map with the same values as the input
      * map.
      */
     @Test

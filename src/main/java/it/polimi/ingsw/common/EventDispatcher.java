@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Object capable of dispatching Events. */
+/**
+ * This class represents objects capable of dispatching Events.
+ */
 public class EventDispatcher {
     /**
      * List of listeners holding the event handlers that will be called when notified of a dispatched event.

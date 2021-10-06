@@ -10,7 +10,9 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-/** Gui abstract component representing a game card. */
+/**
+ * GUI abstract component representing a game card.
+ */
 public abstract class Card extends Pane {
     private static final double backgroundRadius = 16.6;
     @FXML

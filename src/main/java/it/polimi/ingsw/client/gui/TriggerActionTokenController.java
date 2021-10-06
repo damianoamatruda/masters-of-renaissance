@@ -13,7 +13,9 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-/** Gui controller used on Solo game turn switch, which displays the activated action token. */
+/**
+ * GUI controller used on Solo game turn switch, which displays the activated action token.
+ */
 public class TriggerActionTokenController extends GuiController {
     @FXML
     private BorderPane canvas;

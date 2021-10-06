@@ -20,7 +20,9 @@ import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Server application for the Masters of Renaissance game. */
+/**
+ * This class represents the server application of the Masters of Renaissance game.
+ */
 public class Server implements Network, Runnable {
     private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
@@ -45,13 +47,13 @@ public class Server implements Network, Runnable {
     /** JSON message (de)serializer. */
     private final NetworkProtocol protocol;
 
-    /** Server's Lobby to welcome connecting players and handle new games/reconnections. */
+    /** Lobby to welcome connecting players and handle new games/reconnections. */
     private final Lobby model;
 
-    /** Server's Controller to handle requests from clients. */
+    /** Controller to handle requests from clients. */
     private final Controller controller;
 
-    /** Map associating NetworkHandlers with VirtualViews' dispatch methods. */
+    /** Map associating NetworkHandlers with dispatch methods of VirtualViews. */
     private final Map<NetworkHandler, EventListener<VCEvent>> vcEventListeners;
 
     /**

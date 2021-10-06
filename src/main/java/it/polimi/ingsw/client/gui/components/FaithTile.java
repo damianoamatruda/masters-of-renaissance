@@ -18,7 +18,9 @@ import javafx.scene.text.Text;
 import java.util.HashMap;
 import java.util.Objects;
 
-/** Gui component representing a single Faith Track tile. */
+/**
+ * GUI component representing a single Faith Track tile.
+ */
 public class FaithTile extends StackPane {
     private final int tileId;
     private final ImageView bg;

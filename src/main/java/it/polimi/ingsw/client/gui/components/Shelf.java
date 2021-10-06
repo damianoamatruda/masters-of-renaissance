@@ -22,7 +22,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-/** Gui component representing a warehouse shelf. */
+/**
+ * GUI component representing a warehouse shelf.
+ */
 public class Shelf extends BorderPane {
     private final Circle swapIcon = new Circle(20, Color.WHITE);
     private final BiConsumer<Integer, Integer> callback;

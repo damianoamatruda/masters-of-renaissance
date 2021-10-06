@@ -6,7 +6,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedLeaderCard;
 
 import static it.polimi.ingsw.client.cli.Cli.boldColor;
 
-/** Cli component that gives a string representation of a leader card. */
+/**
+ * CLI component that gives a string representation of a leader card.
+ */
 public class LeaderCard extends StringComponent {
     private final ReducedLeaderCard reducedLeaderCard;
 

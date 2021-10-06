@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-/** Player connection status update. */
+/**
+ * Player connection status update.
+ */
 public class UpdatePlayerStatus implements MVEvent {
     /** The player the new status refers to. */
     private final String player;

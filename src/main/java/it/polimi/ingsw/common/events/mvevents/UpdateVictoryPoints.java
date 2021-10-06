@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-/** Victory points update. */
+/**
+ * Victory points update.
+ */
 public class UpdateVictoryPoints implements MVEvent {
     /** The player whose victory points increased. */
     private final String player;

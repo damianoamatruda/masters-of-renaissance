@@ -3,7 +3,9 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-/** General action error. */
+/**
+ * General action error.
+ */
 public class ErrAction extends ViewEvent {
     private final ErrActionReason reason;
 

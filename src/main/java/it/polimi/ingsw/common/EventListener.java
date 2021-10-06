@@ -2,7 +2,9 @@ package it.polimi.ingsw.common;
 
 import it.polimi.ingsw.common.events.Event;
 
-/** Object that listens for Events. */
+/**
+ * This class represents objects that listen to Events.
+ */
 @FunctionalInterface
 public interface EventListener<T extends Event> {
     /**

@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.vcevents;
 
 import java.util.Map;
 
-/** Client request for setup resource choice. */
+/**
+ * Client request for resources' setup choice.
+ */
 public class ReqChooseResources implements VCEvent {
     /** Container-resourcetype-quantity mappings. */
     private final Map<Integer, Map<String, Integer>> shelves;

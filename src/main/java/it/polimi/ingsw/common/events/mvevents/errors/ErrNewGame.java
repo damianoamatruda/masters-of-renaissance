@@ -3,7 +3,9 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-/** Event signaling an error relating to a client's request for a new game. */
+/**
+ * Event signaling an error relating to a client's request for a new game.
+ */
 public class ErrNewGame extends ViewEvent {
     private final boolean isInvalidPlayersCount;
 

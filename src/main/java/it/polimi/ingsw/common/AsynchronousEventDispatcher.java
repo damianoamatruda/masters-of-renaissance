@@ -4,9 +4,11 @@ import it.polimi.ingsw.common.events.Event;
 
 import java.util.concurrent.*;
 
-/** Non-blocking event dispatcher. */
+/**
+ * Non-blocking event dispatcher.
+ */
 public class AsynchronousEventDispatcher extends EventDispatcher implements AutoCloseable {
-    /** The executor doing the dispathing. */
+    /** The executor doing the dispatching. */
     private final ExecutorService executor;
 
     /** Class constructor. */

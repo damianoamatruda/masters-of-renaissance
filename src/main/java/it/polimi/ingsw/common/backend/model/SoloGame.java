@@ -22,7 +22,7 @@ public class SoloGame extends Game {
     /** The deck of action tokens to be activated at the end of the player's turn. */
     protected final List<ActionToken> actionTokens;
 
-    /** The "marker" of Lorenzo il Magnifico on the faith track. */
+    /** Lorenzo il Magnifico's marker on the faith track. */
     protected int blackPoints;
 
     /** Flag that determines whether Lorenzo has won the game. */

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-/** Client request to connect to the server's lobby. */
+/**
+ * Client request to connect to the server's lobby.
+ */
 public class ReqJoin implements VCEvent {
     /** The nickname to connect with. */
     private final String nickname;

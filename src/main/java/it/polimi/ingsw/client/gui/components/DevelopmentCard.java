@@ -7,7 +7,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceTransactionRecipe;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
-/** Gui component that represents a development card. */
+/**
+ * GUI component that represents a development card.
+ */
 public class DevelopmentCard extends Card {
     @FXML
     private Text levelLeft;

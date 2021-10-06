@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
+/**
+ * This class represents a generic User Interface for the client application.
+ */
 public class Ui extends View {
     private ViewModel viewModel;
     private Network client;

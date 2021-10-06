@@ -2,9 +2,11 @@ package it.polimi.ingsw.common.events.vcevents;
 
 import java.util.Map;
 
-/** Client request to take resources from the market. */
+/**
+ * Client request to take resources from the market.
+ */
 public class ReqTakeFromMarket implements VCEvent {
-    /** Whether the index refers to a row or a column. */
+    /** <code>true</code> if the index refers to a row or a column; <code>false</code> otherwise. */
     private final boolean isRow;
 
     /** The index of the row/column to take resources from. */

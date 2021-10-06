@@ -9,7 +9,9 @@ import java.util.List;
 import static it.polimi.ingsw.client.cli.Cli.center;
 import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
-/** Cli component that gives a string representation of the player's leaders hand. */
+/**
+ * CLI component that gives a string representation of the player's leaders hand.
+ */
 public class LeadersHand extends StringComponent {
     private final List<ReducedLeaderCard> leaders;
 

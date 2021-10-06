@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-/** Server confirmation to the leader choice request during player setup. */
+/**
+ * Server confirmation to the leader choice request during player setup.
+ */
 public class UpdateLeadersHandCount implements MVEvent {
     /** The nickname of the player that has chosen the leader cards. */
     private final String player;

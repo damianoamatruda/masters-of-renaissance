@@ -7,6 +7,9 @@ import it.polimi.ingsw.common.events.vcevents.VCEvent;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * This class represents the network client used to Play Online.
+ */
 public class OnlineClient implements Network {
     private static final int timeout = 30000;
     private final View view;

@@ -25,7 +25,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-/** Gui controller used for the leader cards setup scene. */
+/**
+ * GUI controller used for the leader cards setup scene.
+ */
 public class SetupLeadersController extends GuiController {
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
     private final List<LeaderCard> selection = new ArrayList<>();

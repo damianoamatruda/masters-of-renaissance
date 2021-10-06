@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ReducedPlayerSetup {
+    /* The number of leader cards to be chosen during the setup. */
     private final int chosenLeadersCount;
 
     /** The number of choosable resources obtained at the beginning. */
@@ -53,10 +54,16 @@ public class ReducedPlayerSetup {
         return Optional.ofNullable(initialExcludedResources);
     }
 
+    /**
+     * @return the leader cards have been chosen
+     */
     public boolean hasChosenLeaders() {
         return hasChosenLeaders;
     }
 
+    /**
+     * @return the resources have been chosen
+     */
     public boolean hasChosenResources() {
         return hasChosenResources;
     }

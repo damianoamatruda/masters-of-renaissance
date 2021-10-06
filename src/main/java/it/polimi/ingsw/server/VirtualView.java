@@ -3,7 +3,9 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.common.NetworkHandler;
 import it.polimi.ingsw.common.View;
 
-/** Server-side View, interfacing the NetworkHandler and the Model */
+/**
+ * Server-side View, interfacing with the NetworkHandler and the Model.
+ */
 public class VirtualView extends View {
     /**
      * Class constructor.

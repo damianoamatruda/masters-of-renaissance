@@ -4,7 +4,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedProductionRequest;
 
 import java.util.List;
 
-/** Client request for production activation. */
+/**
+ * Client request for production activation.
+ */
 public class ReqActivateProductions implements VCEvent {
     /** The requests to be activated and the options of their activation. */
     private final List<ReducedProductionRequest> prodRequests;

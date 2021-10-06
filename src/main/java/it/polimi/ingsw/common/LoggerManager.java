@@ -5,6 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+/**
+ * Manager of logger settings.
+ */
 public class LoggerManager {
     private static final Logger LOGGER = Logger.getLogger(LoggerManager.class.getName());
 

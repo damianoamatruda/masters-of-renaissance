@@ -14,21 +14,28 @@ import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Event dispatcher responsible for transferring messages over the network. */
+/**
+ * Event dispatcher responsible for transferring messages over the network.
+ */
 public class NetworkHandler extends AsynchronousEventDispatcher implements Runnable, AutoCloseable {
     private static final Logger LOGGER = Logger.getLogger(NetworkHandler.class.getName());
-    /**
-     * Internal dispatcher for NetEvents. NetEvents are handled independently from application-level events.
-     */
+
+    /** Internal dispatcher for NetEvents. Network-level events are handled independently of application-level
+     * events. */
     private final EventDispatcher netEventDispatcher;
+
     /** The socket to send and receive messages on. */
     private final Socket socket;
+
     /** The messages' (de)serializer. */
     private final NetworkProtocol protocol;
+
     /** Function used to process network-side incoming messages. */
     private final BiFunction<String, NetworkProtocol, Event> processInput;
+
     /** Heartbeat message timeout. */
     private final int timeout;
+
     private final EventListener<ResWelcome> resWelcomeEventListener = this::on;
     private final EventListener<ResGoodbye> resGoodbyeEventListener = this::on;
     private final EventListener<ResHeartbeat> resHeartbeatEventListener = this::on;

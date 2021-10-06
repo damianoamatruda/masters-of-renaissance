@@ -15,7 +15,9 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/** Gui controller used when waiting for a game after joining a lobby, or to prepare a new game. */
+/**
+ * GUI controller used when waiting for a game after joining a lobby, or to prepare a new game.
+ */
 public class WaitingBeforeGameController extends GuiController {
     @FXML
     private BorderPane canvas;

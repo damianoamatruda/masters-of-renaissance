@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.View;
 
-/** Server response to a new game request. */
+/**
+ * Server response to a new game request.
+ */
 public class UpdateBookedSeats extends ViewEvent {
     /** The number of players that are booked to join before the game is prepared. */
     private final int bookedSeats;

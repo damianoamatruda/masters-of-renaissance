@@ -2,6 +2,8 @@ package it.polimi.ingsw.common.events.vcevents;
 
 import it.polimi.ingsw.common.events.Event;
 
-/** Events sent from View to Controller (client commands). */
+/**
+ * This interface represents Events dispatched from a View to the Controller.
+ */
 public interface VCEvent extends Event {
 }

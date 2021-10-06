@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Gui controller used when local player is not the current player. The current player's leaderboard is shown (without
+ * GUI controller used when local player is not the current player. The current player's leaderboard is shown (without
  * their leader cards and/or other secret components).
  */
 public class WaitingForTurnController extends TurnController {

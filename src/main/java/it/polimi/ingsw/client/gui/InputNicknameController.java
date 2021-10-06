@@ -11,7 +11,9 @@ import javafx.scene.layout.BorderPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/** Gui controller that manages the input of a nickname. */
+/**
+ * GUI controller that manages the input of a nickname.
+ */
 public class InputNicknameController extends GuiController {
     @FXML
     private BorderPane canvas;

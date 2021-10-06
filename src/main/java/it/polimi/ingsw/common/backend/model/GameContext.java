@@ -51,8 +51,8 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     /**
-     * Starting routine for GameContext. Dispatches the game's data to the specified client and assigns the initial
-     * faith points to the specified player.
+     * Starting routine for GameContext. Dispatches the game data to the specified client and assigns the initial faith
+     * points to the specified player.
      *
      * @param view     the View to dispatch the state to
      * @param nickname the nickname of the player connecting to the context
@@ -64,7 +64,7 @@ public class GameContext extends AsynchronousEventDispatcher {
     }
 
     /**
-     * Sends the game's data to players that reconnect.
+     * Sends the game data to players that reconnect.
      *
      * @param view
      * @param nickname the nickname of the player reconnecting

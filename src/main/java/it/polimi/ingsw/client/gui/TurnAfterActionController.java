@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Gui controller used when the local player is current player, and has already chosen a base turn action. Here the
+ * GUI controller used when the local player is current player, and has already chosen a base turn action. Here the
  * client can choose to do leader actions, swap shelves or end the turn.
  */
 public class TurnAfterActionController extends TurnController {

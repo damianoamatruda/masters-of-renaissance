@@ -4,7 +4,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedResourceContainer;
 
 import static it.polimi.ingsw.client.cli.Cli.boldColor;
 
-/** Cli component that gives a string representation of a shelf, strongbox or depot. */
+/**
+ * CLI component that gives a string representation of a shelf, strongbox or depot.
+ */
 public class ResourceContainer extends StringComponent {
     private final ReducedResourceContainer reducedResourceContainer;
 

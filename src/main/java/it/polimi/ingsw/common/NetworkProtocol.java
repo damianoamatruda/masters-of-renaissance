@@ -6,9 +6,11 @@ import it.polimi.ingsw.common.events.mvevents.MVEvent;
 import it.polimi.ingsw.common.events.netevents.NetEvent;
 import it.polimi.ingsw.common.events.vcevents.VCEvent;
 
-/** Network message processor. */
+/**
+ * Processor of network messages.
+ */
 public class NetworkProtocol {
-    /** Gson serializer. */
+    /** GSON serializer. */
     private final Gson outputGson;
 
     /**

@@ -6,7 +6,7 @@ import it.polimi.ingsw.common.reducedmodel.*;
 import java.util.List;
 
 /**
- * Event containing the game's data. Since the Model is completely parameterized, clients need this message to retrieve
+ * Event containing the game data. Since the Model is completely parameterized, clients need this message to retrieve
  * the server's configuration.
  */
 public class UpdateGame extends ViewEvent {
@@ -22,39 +22,44 @@ public class UpdateGame extends ViewEvent {
     private final ReducedMarket market;
     private final ReducedDevCardGrid devCardGrid;
     private final boolean isSetupDone;
+
     /** Number of development slots in the player board. */
     private final int devSlotsCount;
+
     private final String currentPlayer;
     private final String inkwellPlayer;
     private final String winnerPlayer;
+
     /** Black marker's faith points. */
     private final int blackPoints;
+
     private final boolean lastRound;
     private final boolean ended;
-    /** Whether the current player has already carried out a main action. */
+
+    /** <code>true</code> if the current player has already carried out a main action; <code>false</code> otherwise. */
     private final boolean isMandatoryActionDone;
 
     /**
      * @param view
-     * @param players
+     * @param players               game's players
      * @param devCardColors         development card colors available at play time
      * @param resourceTypes         resource types available at play time
      * @param leaderCards           leader cards available at play time
      * @param developmentCards      development cards available at play time
      * @param resContainers         resource containers available at play time
      * @param productions           productions available at play time
-     * @param actionTokens          the game's action tokens (null if multiplayer)
-     * @param faithTrack            the game's faith track
-     * @param market
-     * @param devCardGrid
-     * @param devSlotsCount         Number of development slots in the player board
-     * @param isSetupDone
-     * @param currentPlayer
-     * @param inkwellPlayer
-     * @param winnerPlayer
+     * @param actionTokens          game's action tokens (null if multiplayer)
+     * @param faithTrack            game's faith track
+     * @param market                game's market
+     * @param devCardGrid           game's development card grid
+     * @param devSlotsCount         the number of development slots in the player board
+     * @param isSetupDone           <code>true</code> if the setup is done; <code>false</code> otherwise.
+     * @param currentPlayer         the current player
+     * @param inkwellPlayer         the player with the inkwell
+     * @param winnerPlayer          the player who won, if any won
      * @param blackPoints           black marker's faith points
-     * @param lastRound
-     * @param ended
+     * @param lastRound             <code>true</code> if it is last round; <code>false</code> otherwise.
+     * @param ended                 <code>true</code> if the game ended; <code>false</code> otherwise.
      * @param isMandatoryActionDone Whether the current player has already carried out a main action.
      */
     public UpdateGame(View view,

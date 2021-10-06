@@ -5,7 +5,9 @@ import it.polimi.ingsw.common.reducedmodel.ReducedDevCard;
 
 import static it.polimi.ingsw.client.cli.Cli.boldColor;
 
-/** Cli component that gives a string representation of a development card. */
+/**
+ * CLI component that gives a string representation of a development card.
+ */
 public class DevelopmentCard extends StringComponent {
     private final ReducedDevCard reducedDevCard;
 

@@ -5,7 +5,9 @@ import javafx.scene.image.ImageView;
 
 import java.util.Objects;
 
-/** Gui component representing the resource types. */
+/**
+ * GUI component representing the resource types.
+ */
 public class Resource extends ImageView {
     private static final double width = 100;
     private final boolean isBlank;

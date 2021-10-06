@@ -10,7 +10,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-/** Cli component that renders a menu. */
+/**
+ * CLI component that renders a menu.
+ */
 public class Menu implements Renderable {
     private final Map<Character, Entry> entries;
     private final Runnable onBack;

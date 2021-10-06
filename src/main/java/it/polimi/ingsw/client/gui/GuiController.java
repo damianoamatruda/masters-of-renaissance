@@ -15,6 +15,9 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * This class represents a generic GUI controller.
+ */
 public abstract class GuiController extends UiController implements Initializable {
     protected final Gui gui = Gui.getInstance();
 
@@ -26,11 +29,20 @@ public abstract class GuiController extends UiController implements Initializabl
     /**
      * Sets the next state based on the following algorithm:
      * <p>
-     * Differentiation between setup phase and turn phase -> check isSetupDone to know which phase to limit the choice
-     * to If the setup phase is not concluded: -> check whether the leader setup still needs to be done, else go to the
-     * resource setup, which will internally choose whether it still needs to be done or whether it has to simply show
-     * the waiting screen If the setup phase is concluded: -> check whether the current player and the local player are
-     * the same player and switch accordingly
+     * Differentiation between setup phase and turn phase
+     * <ul>
+     *     <li>check <code>isSetupDone</code> to know which phase to limit the choice</li>
+     * </ul>
+     * If the setup phase is not concluded:
+     * <ul>
+     *     <li>check whether the leader setup still needs to be done,</li>
+     *     <li>else go to the resource setup, which will internally choose whether it still needs to be done or whether
+     *         it has to simply show the waiting screen</li>
+     * </ul>
+     * If the setup phase is concluded:
+     * <ul>
+     *     <li>check whether the current player and the local player are the same player and switch accordingly</li>
+     * </ul>
      */
     protected void setNextState() {
         if (vm.isGameEnded())
@@ -133,7 +145,7 @@ public abstract class GuiController extends UiController implements Initializabl
                     "Invalid nickname", "Given nickname is blank.", (InputNicknameController controller) ->
                             controller.setTitle(gui.getUi().isOffline() ? "Play Offline" : "Play Online"));
             case NOT_IN_GAME -> gui.setScene(getClass().getResource("/assets/gui/inputnickname.fxml"), (InputNicknameController c) ->
-                    gui.addToOverlay(new Alert("Invalid nickname", "Match not joined yet.")));
+                    gui.addToOverlay(new Alert("Invalid action", "Game not joined yet.")));
         }
     }
 

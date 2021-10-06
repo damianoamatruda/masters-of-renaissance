@@ -25,7 +25,9 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.*;
 
-/** Gui controller class of the take Market resources action. */
+/**
+ * GUI controller class of the take Market resources action.
+ */
 public class TakeFromMarketController extends GuiController {
     private final Map<String, Integer> replacements = new HashMap<>();
     @FXML

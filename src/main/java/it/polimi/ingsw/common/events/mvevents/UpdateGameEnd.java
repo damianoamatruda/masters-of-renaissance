@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-/** Winner player and victory points state update. */
+/**
+ * Winner player and victory points state update.
+ */
 public class UpdateGameEnd implements MVEvent {
     /**
      * The nickname of the player who won the game. A null value signifies that the black cross marker is the winner.

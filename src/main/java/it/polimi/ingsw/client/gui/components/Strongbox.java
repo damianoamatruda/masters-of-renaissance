@@ -17,7 +17,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-/** Gui component representing a strongbox. */
+/**
+ * GUI component representing a strongbox.
+ */
 public class Strongbox extends StackPane {
     @FXML
     private ImageView background;
@@ -127,16 +129,6 @@ public class Strongbox extends StackPane {
             spinner.editorProperty().get().setAlignment(Pos.CENTER);
             hasSpinner = true;
         }
-    }
-
-    /**
-     * Refreshes the view after removing a resource.
-     *
-     * @param resource the resource type involved
-     */
-    public void refreshRemove(String resource) {
-        Cell cell = grid.getChildren().stream().map(n -> (Cell) n).filter(c -> c.getResource().equals(resource)).findAny().orElseThrow();
-        cell.setCount(cell.getCount() - 1);
     }
 
     public int getContainerID() {

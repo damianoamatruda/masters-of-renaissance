@@ -69,7 +69,7 @@ public class SetupResourcesController extends SetupController {
         if (event.getAction() != ActionType.CHOOSE_RESOURCES && vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             throw new RuntimeException("Resources setup: UpdateAction received with action type not CHOOSE_RESOURCES.");
 
-        // UpdateSetupDone takes care of state switching, see SetupController
+        /* UpdateSetupDone takes care of state switching, see SetupController */
         if (vm.getLocalPlayer().isPresent() && event.getPlayer().equals(vm.getLocalPlayer().get()))
             printWaitingMessage();
     }

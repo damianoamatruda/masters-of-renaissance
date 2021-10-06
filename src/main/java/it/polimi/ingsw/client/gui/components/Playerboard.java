@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-/** Gui component representing a player's playerboard. */
+/**
+ * GUI component representing a player's playerboard.
+ */
 public class Playerboard extends HBox {
     private final VBox middleBox;
     private final FaithTrack faithTrack;

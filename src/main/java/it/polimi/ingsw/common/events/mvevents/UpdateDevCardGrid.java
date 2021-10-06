@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.mvevents;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedDevCardGrid;
 
-/** Development card grid state update. */
+/**
+ * Development card grid state update.
+ */
 public class UpdateDevCardGrid implements MVEvent {
     /** The new development card grid state. */
     private final ReducedDevCardGrid devCardGrid; // Card ID == null means the stack was empty

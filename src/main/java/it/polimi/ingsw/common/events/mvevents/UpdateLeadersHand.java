@@ -4,7 +4,9 @@ import it.polimi.ingsw.common.View;
 
 import java.util.List;
 
-/** Server confirmation to the leader choice request during player setup. */
+/**
+ * Server confirmation to the leader choice request during player setup.
+ */
 public class UpdateLeadersHand extends ViewEvent {
     /** The nickname of the player that has chosen the leader cards. */
     private final String player;

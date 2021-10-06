@@ -4,14 +4,10 @@ import it.polimi.ingsw.common.events.Event;
 import it.polimi.ingsw.common.events.mvevents.*;
 import it.polimi.ingsw.common.events.mvevents.errors.*;
 
-import java.util.logging.Logger;
-
 /**
- * This class represents the View in the MVC architecture.
+ * This class represents a View in the Model-View-Controller architecture of the Masters of Renaissance game.
  */
 public class View extends AsynchronousEventDispatcher {
-    private static final Logger LOGGER = Logger.getLogger(View.class.getName());
-
     private EventListener<ErrNewGame> errNewGameEventListener = event -> {
     };
     private EventListener<ErrNickname> errNicknameEventListener = event -> {
@@ -317,10 +313,10 @@ public class View extends AsynchronousEventDispatcher {
     }
 
     /**
-     * ViewEvent handler. ViewEvents are filtered to prevent Views they are not addressed to to handle them.
+     * ViewEvent handler. ViewEvents are filtered to prevent Views to which they are not addressed to handle them.
      *
-     * @param <T>
-     * @param viewEvent the received event
+     * @param <T>       the type of the received ViewEvent
+     * @param viewEvent the received ViewEvent
      * @param listener  the listener to pass the event to
      */
     private <T extends ViewEvent> void on(T viewEvent, EventListener<T> listener) {
@@ -332,7 +328,7 @@ public class View extends AsynchronousEventDispatcher {
     /**
      * Event handler. Does not filter events (see View.on(T viewEvent)).
      *
-     * @param <T>
+     * @param <T>      the type of the received event
      * @param event    the received event
      * @param listener the listener to pass the event to
      */

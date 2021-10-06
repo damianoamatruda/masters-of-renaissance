@@ -22,7 +22,9 @@ import static it.polimi.ingsw.common.backend.model.FaithTrack.VaticanSection;
 import static it.polimi.ingsw.common.backend.model.FaithTrack.YellowTile;
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Test of SoloGame operations */
+/**
+ * Test of SoloGame operations.
+ */
 public class SoloGameTest {
     final ResourceType coin = new ResourceType("Coin", "", true);
     SoloGame game;

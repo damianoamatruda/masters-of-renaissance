@@ -3,7 +3,9 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-/** Event signaling an error related to a resource transfer between containers. */
+/**
+ * Event signaling an error related to a resource transfer between containers.
+ */
 public class ErrResourceTransfer extends ViewEvent {
     private final String resType;
     private final boolean isAdded;

@@ -52,7 +52,7 @@ public class ZeroLeader extends LeaderCard {
             resCopy.compute(this.getResource(), (res, quantity) -> quantity == null ? quantityToConvert : quantity + quantityToConvert);
             
             /* Remove converted resources, deleting key if none left.
-               If there's some left, zeros can be used in successive conversions; else it should not be possible to do so,
+               If there is some left, zeros can be used in successive conversions; else it should not be possible to do so,
                for that would transform more resources than it is allowed */
             resCopy.compute(replaceableResType, (res, quantity) -> quantity == null || quantity - quantityToConvert == 0 ? null : quantity - quantityToConvert);
             replacements.compute(this.getResource(), (res, quantity) -> quantity == null || quantity - quantityToConvert == 0 ? null : quantity - quantityToConvert);

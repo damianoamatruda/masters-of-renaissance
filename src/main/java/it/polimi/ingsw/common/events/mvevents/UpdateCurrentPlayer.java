@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-/** Current player state update. */
+/**
+ * Current player state update.
+ */
 public class UpdateCurrentPlayer implements MVEvent {
     /** The nickname of the new current player. */
     private final String player;

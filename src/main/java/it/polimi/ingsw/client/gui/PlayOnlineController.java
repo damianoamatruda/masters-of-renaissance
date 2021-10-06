@@ -9,7 +9,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
-/** Gui controller used to prompt a destination server, and open a connection with it. */
+/**
+ * GUI controller used to prompt a destination server, and open a connection with it.
+ */
 public class PlayOnlineController extends GuiController {
     @FXML
     private BorderPane canvas;

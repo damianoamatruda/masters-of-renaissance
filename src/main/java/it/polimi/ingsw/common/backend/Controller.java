@@ -8,6 +8,9 @@ import it.polimi.ingsw.common.events.vcevents.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class represents the Controller in the Model-View-Controller architecture of the Masters of Renaissance game.
+ */
 public class Controller {
     private final Lobby model;
 

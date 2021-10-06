@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.vcevents;
 
 import java.util.List;
 
-/** Client request for setup leader choice. */
+/**
+ * Client request for setup leader choice.
+ */
 public class ReqChooseLeaders implements VCEvent {
     /** The IDs of the chosen leader cards. */
     private final List<Integer> leaders;

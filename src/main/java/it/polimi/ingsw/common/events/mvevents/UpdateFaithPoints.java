@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-/** Faith track state update. */
+/**
+ * Faith track state update.
+ */
 public class UpdateFaithPoints implements MVEvent {
     /** The player whose faith points increased. */
     private final String player;

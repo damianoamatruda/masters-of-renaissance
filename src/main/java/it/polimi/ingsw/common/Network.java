@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common;
 
-/** AutoCloseable object used for networking purposes. */
+/**
+ * This interface represents an auto-closeable object used for networking purposes.
+ */
 public interface Network extends AutoCloseable {
     void open();
 

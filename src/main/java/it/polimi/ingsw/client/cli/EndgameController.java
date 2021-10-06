@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client.cli;
 
-import it.polimi.ingsw.client.cli.components.LeaderBoard;
+import it.polimi.ingsw.client.cli.components.Leaderboard;
 import it.polimi.ingsw.common.events.vcevents.ReqQuit;
 
 public class EndgameController extends CliController {
     @Override
     public void render() {
         cli.getOut().println();
-        new LeaderBoard().render();
+        new Leaderboard().render();
 
         vm.getWinnerPlayer().map(vm::getPlayerVictoryPoints).ifPresentOrElse(points -> {
             if (vm.getWinnerPlayer().equals(vm.getLocalPlayer()))

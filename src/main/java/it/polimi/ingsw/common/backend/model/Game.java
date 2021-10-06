@@ -20,32 +20,44 @@ import java.util.Optional;
 public class Game extends EventDispatcher {
     /** Reference to the collection from which all the player's data can be accessed. */
     protected final List<Player> players;
+
     /** The leader cards used in the game. */
     protected final List<LeaderCard> leaderCards;
+
     /** The development cards used in the game. */
     protected final List<DevelopmentCard> developmentCards;
+
     /** The resource containers used in the game. */
     protected final List<ResourceContainer> resContainers;
+
     /** The productions used in the game. */
     protected final List<ResourceTransactionRecipe> productions;
+
     /** The "Faith Track", where vatican sections can be activated. */
     protected final FaithTrack faithTrack;
+
     /** The "Development Card Grid", from which development cards can be "bought". */
     protected final DevCardGrid devCardGrid;
+
     /** The "Market Board", from which resources can be "bought". */
     protected final Market market;
+
     /** Number of development cards a player can have, before triggering the end of the game. */
     protected final int maxObtainableDevCards;
+
     /** The development card colors used in the game. */
     protected List<DevCardColor> devCardColors;
+
     /** The resource types used in the game. */
     protected List<ResourceType> resourceTypes;
+
     /** Flag that indicates the Game is about to end. */
     protected boolean lastRound;
 
     /** Flag that indicates the Game has ended. */
     protected boolean ended;
 
+    /** The number of development slots for each player. */
     protected int devSlotsCount;
 
     /**

@@ -90,10 +90,10 @@ public class Leaderboard extends StackPane {
                         item.setLocalPlayer();
 
                     String player = item.getPlayer();
-                    if (item.isMe()) player = player.substring(0, player.length() - 5);
+                    if (item.isMe())
+                        player = player.substring(0, player.length() - 5);
                     Optional<String> color = vm.getHexPlayerColor(player);
                     color.ifPresent(c -> setStyle("-fx-background-color: " + c + ";"));
-
                 }
             }
         });
@@ -106,7 +106,7 @@ public class Leaderboard extends StackPane {
     }
 
     /**
-     * Class representing a single entry in the leaderboard.
+     * This class represents a single entry in the leaderboard.
      */
     public static class LeaderBoardEntry {
         private final int points;

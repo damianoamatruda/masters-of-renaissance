@@ -284,7 +284,7 @@ necessary to [handle the choice of the number of players](#choosing-the-number-o
 The `UpdateBookedSeats` message gives the client information about who is the first in the waiting list (and therefore
 can choose the new game's player count) and the quantity of players in the waiting list. When the game is waiting for
 players to join before its start, sending notifications allows the players who already joined to know how many empty
-seats are left, therefore getting a sense for how much waiting time there's left.
+seats are left, therefore getting a sense for how much waiting time there is left.
 
 ## Choosing the number of players
 
@@ -1631,7 +1631,7 @@ Notifications about players connecting/disconnecting from a game are sent via th
 This message details the current state of the resource container with the specified ID.
 
 Strongboxes have size set to -1.  
-If there's no binding resource the `boundedResType` field is not specified.
+If there is no binding resource the `boundedResType` field is not specified.
 
 ```
            ┌────────┒                      ┌────────┒ 
@@ -1855,7 +1855,7 @@ Reasons included in the message are:
 2. `NON_STORABLE` - a non-storable resource is trying to be added/removed to a resource container
 3. `CAPACITY_REACHED` - the resource transfer requests that the number of resulting resources in the container is either
    less than zero or greater than the container's capacity
-4. `DUPLICATE_BOUNDED_RESOURCE` - a resource is trying to be added to a shelf while there's another shelf bound to the
+4. `DUPLICATE_BOUNDED_RESOURCE` - a resource is trying to be added to a shelf while there is another shelf bound to the
    same resource type
 
 **ErrResourceTransfer (server)**

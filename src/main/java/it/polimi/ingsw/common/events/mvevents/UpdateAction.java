@@ -6,8 +6,10 @@ package it.polimi.ingsw.common.events.mvevents;
 public class UpdateAction implements MVEvent {
     /** Symbolizes the player's action. */
     private final ActionType action;
+
     /** The player carrying out the action. */
     private final String player;
+    
     public UpdateAction(String player, ActionType action) {
         this.player = player;
         this.action = action;

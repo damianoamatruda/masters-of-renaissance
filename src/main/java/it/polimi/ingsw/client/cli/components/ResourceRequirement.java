@@ -2,7 +2,9 @@ package it.polimi.ingsw.client.cli.components;
 
 import it.polimi.ingsw.common.reducedmodel.ReducedResourceRequirement;
 
-/** Cli component that gives a string representation of a resource requirement. */
+/**
+ * CLI component that gives a string representation of a resource requirement.
+ */
 public class ResourceRequirement extends StringComponent {
     private final ReducedResourceRequirement reducedResourceRequirement;
     private final boolean isCost;

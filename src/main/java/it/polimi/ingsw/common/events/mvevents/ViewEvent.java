@@ -4,13 +4,15 @@ import it.polimi.ingsw.common.View;
 
 import java.util.Optional;
 
-/** Unicast events. */
+/**
+ * This class represents a unicast event.
+ */
 public abstract class ViewEvent implements MVEvent {
-    /** The View the event is addressed to. */
+    /** The view the event is addressed to. */
     private transient View view;
 
     /**
-     * @param view View the event is addressed to
+     * @param view The view the event is addressed to
      */
     public ViewEvent(View view) {
         this.view = view;

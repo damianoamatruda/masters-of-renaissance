@@ -3,7 +3,9 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-/** Event signaling an error related to a player's nickname request. */
+/**
+ * Event signaling an error related to a player's nickname request.
+ */
 public class ErrNickname extends ViewEvent {
     private final ErrNicknameReason reason;
 

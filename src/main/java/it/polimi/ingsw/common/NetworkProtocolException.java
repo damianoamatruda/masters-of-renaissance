@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common;
 
-/** Exception signaling an error processing a network message. */
+/**
+ * Exception signaling an error processing a network message.
+ */
 public class NetworkProtocolException extends RuntimeException {
     /**
      * Class constructor.

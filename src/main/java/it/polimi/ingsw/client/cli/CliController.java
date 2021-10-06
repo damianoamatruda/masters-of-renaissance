@@ -11,6 +11,9 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.*;
 
+/**
+ * This class represents a generic CLI controller.
+ */
 public abstract class CliController extends UiController implements Renderable {
     protected final Cli cli = getInstance();
 
@@ -21,11 +24,20 @@ public abstract class CliController extends UiController implements Renderable {
     /**
      * Sets the next state based on the following algorithm:
      * <p>
-     * Differentiation between setup phase and turn phase -> check isSetupDone to know which phase to limit the choice
-     * to If the setup phase is not concluded: -> check whether the leader setup still needs to be done, else go to the
-     * resource setup, which will internally choose whether it still needs to be done or whether it has to simply show
-     * the waiting screen If the setup phase is concluded: -> check whether the current player and the local player are
-     * the same player and switch accordingly
+     * Differentiation between setup phase and turn phase
+     * <ul>
+     *     <li>check <code>isSetupDone</code> to know which phase to limit the choice</li>
+     * </ul>
+     * If the setup phase is not concluded:
+     * <ul>
+     *     <li>check whether the leader setup still needs to be done,</li>
+     *     <li>else go to the resource setup, which will internally choose whether it still needs to be done or whether
+     *         it has to simply show the waiting screen</li>
+     * </ul>
+     * If the setup phase is concluded:
+     * <ul>
+     *     <li>check whether the current player and the local player are the same player and switch accordingly</li>
+     * </ul>
      */
     protected void setNextState() {
         if (vm.isGameEnded()) {
@@ -123,7 +135,7 @@ public abstract class CliController extends UiController implements Renderable {
             case NOT_SET -> cli.reloadController("Invalid nickname: given nickname is blank.");
             case NOT_IN_GAME -> {
                 cli.getOut().println();
-                cli.getOut().println(center("Game not joined yet."));
+                cli.getOut().println(center("Invalid action: game not joined yet."));
                 cli.promptPause();
                 cli.setController(new InputNicknameController(cli.getUi().isOffline() ? "Play Offline" : "Play Online"));
             }
@@ -443,6 +455,6 @@ public abstract class CliController extends UiController implements Renderable {
         super.on(event);
 
         cli.getOut().println();
-        new LeaderBoard().render();
+        new Leaderboard().render();
     }
 }

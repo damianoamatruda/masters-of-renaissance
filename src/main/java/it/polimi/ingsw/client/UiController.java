@@ -15,7 +15,7 @@ public abstract class UiController {
 
     /**
      * @return <code>true</code> if the local player's leader setup phase has concluded,
-     * <code>false</code> if it has not or if there's not enough data to know whether it has
+     * <code>false</code> if it has not or if there is not enough data to know whether it has
      */
     public boolean isLocalLeaderSetupDone() {
         /* if req not accepted in a previous connection by server,
@@ -34,7 +34,7 @@ public abstract class UiController {
 
     /**
      * @return <code>true</code> if the local player's resource setup phase has concluded,
-     * <code>false</code> if it has not or if there's not enough data to know whether it has
+     * <code>false</code> if it has not or if there is not enough data to know whether it has
      */
     public boolean isLocalResourceSetupDone() {
         return vm.getLocalPlayer()

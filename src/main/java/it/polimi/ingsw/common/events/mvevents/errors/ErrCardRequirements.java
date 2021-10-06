@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/** Error referring to an issue validating a card requirement on a player. */
+/**
+ * Error referring to an issue validating a card requirement on a player.
+ */
 public class ErrCardRequirements extends ViewEvent {
     private final List<ReducedDevCardRequirementEntry> missingDevCards;
     private final Map<String, Integer> missingResources;

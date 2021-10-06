@@ -1,12 +1,14 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-/** Leader action request. */
+/**
+ * Leader action request.
+ */
 public class ReqLeaderAction implements VCEvent {
     /** The ID of the leader card to be acted upon. */
     private final int leader;
-    /**
-     * True if request is to activate the leader, false if request is to discard the leader.
-     */
+
+    /** <code>true</code> if request is to activate the leader; <code>false</code> if request is to discard the
+     * leader. */
     private final boolean isActivate;
 
     /**
@@ -26,7 +28,7 @@ public class ReqLeaderAction implements VCEvent {
     }
 
     /**
-     * @return the isActivate
+     * @return whether it is requested to activate or to discard the leader
      */
     public boolean isActivate() {
         return isActivate;

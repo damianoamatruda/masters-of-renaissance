@@ -14,7 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-/** Gui component representing a Warehouse. */
+/**
+ * GUI component representing a Warehouse.
+ */
 public class Warehouse extends VBox {
     private static final double minWidth = 390.0;
     private static final double maxRowWidth = 300.0;

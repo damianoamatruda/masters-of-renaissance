@@ -8,7 +8,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
-/** Cli component that gives a string representation of multiple productions. */
+/**
+ * CLI component that gives a string representation of multiple productions.
+ */
 public class ProductionSet extends StringComponent {
     private final List<ReducedResourceTransactionRecipe> reducedProductionSet;
 

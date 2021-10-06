@@ -6,7 +6,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.client.cli.Cli.center;
 
-/** Cli component that gives a string representation of the market. */
+/**
+ * CLI component that gives a string representation of the market.
+ */
 public class Market extends StringComponent {
     private final ReducedMarket reducedMarket;
 

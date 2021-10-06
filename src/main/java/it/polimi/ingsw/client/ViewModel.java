@@ -7,56 +7,82 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/** View model of the client of the Masters of Renaissance game. */
+/**
+ * View model of the client of the Masters of Renaissance game.
+ */
 public class ViewModel {
     /** The list of the available user interface ANSI colors. */
     private final List<String> ansiColors = List.of("\u001B[92m", "\u001B[94m", "\u001B[95m", "\u001B[96m");
+
     /** The map of unique player string encoded ANSI colors. */
     private final Map<String, String> ansiPlayerColors;
+
     /** The list of the available user interface HEX colors. */
     private final List<String> hexColors = List.of("#5D99FD", "#961126", "#14A76C", "#ffe933");
+
     /** The map of unique player string encoded HEX colors. */
     private final Map<String, String> hexPlayerColors;
+
     /** The nickname of the local player. */
     private String localPlayer;
+
     /** The state of finalization of the setup phase. */
     private boolean isSetupDone;
+
     /** The list of action tokens present in the game. */
     private List<ReducedActionToken> actionTokens;
+
     /** The faith points of Lorenzo il Magnifico. */
     private int blackPoints;
+
     /** The list of resource containers present in the game. */
     private List<ReducedResourceContainer> containers;
+
     /** The current player's nickname. */
     private String currentPlayer;
+
     /** The list of development card colors present in the game. */
     private List<ReducedDevCardColor> devCardColors;
+
     /** The development card grid state. */
     private ReducedDevCardGrid devCardGrid;
+
     /** The list of development cards present in the game. */
     private List<ReducedDevCard> developmentCards;
+
     /** The development slots count. */
     private int devSlotsCount;
+
     /** The faith track state. */
     private ReducedFaithTrack faithTrack;
+
     /** The status of finalization of the game. */
     private boolean gameEnded = false;
+
     /** The status of last round of the game. */
     private boolean lastRound;
+
     /** The latest action token activated. */
     private ReducedActionToken latestToken;
+
     /** The list of leader cards present in the game. */
     private List<ReducedLeaderCard> leaderCards;
+
     /** The game market. */
     private ReducedMarket market;
+
     /** The list of players, by their nicknames. */
     private List<ReducedPlayer> players;
+
     /** The list of productions present in the game. */
     private List<ReducedResourceTransactionRecipe> productions;
+
     /** The list of resource types present in the game. */
     private List<ReducedResourceType> resourceTypes;
+
     /** The nickname of the winner. */
     private String winnerPlayer;
+
     /** Player holding the inkwell. */
     private String inkwellPlayer;
 

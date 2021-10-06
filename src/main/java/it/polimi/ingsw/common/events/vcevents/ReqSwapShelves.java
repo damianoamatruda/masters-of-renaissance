@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.vcevents;
 
-/** Client request to swap two shelves. */
+/**
+ * Client request to swap two shelves.
+ */
 public class ReqSwapShelves implements VCEvent {
     /** The first shelf. */
     private final int shelf1;

@@ -9,7 +9,9 @@ import java.util.Optional;
 import static it.polimi.ingsw.client.cli.Cli.center;
 import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
-/** Cli component that gives a string representation of a development card player slot. */
+/**
+ * CLI component that gives a string representation of a development card player slot.
+ */
 public class DevSlots extends StringComponent {
     private final static int cellWidth = 28;
     private final String player;

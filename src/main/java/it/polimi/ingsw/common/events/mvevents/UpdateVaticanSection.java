@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.mvevents;
 
 import java.util.List;
 
-/** Vatican section activation state update. */
+/**
+ * Vatican section activation state update.
+ */
 public class UpdateVaticanSection implements MVEvent {
     /** The section's ID. */
     private final int vaticanSection;

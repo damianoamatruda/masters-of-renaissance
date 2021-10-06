@@ -10,7 +10,9 @@ import java.util.List;
 import static it.polimi.ingsw.client.cli.Cli.center;
 import static it.polimi.ingsw.client.cli.Cli.maxLinesHeight;
 
-/** Cli component that gives a string representation of the development card grid. */
+/**
+ * CLI component that gives a string representation of the development card grid.
+ */
 public class DevCardGrid extends StringComponent {
     private final static int cellWidth = 28;
 

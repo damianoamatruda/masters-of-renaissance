@@ -5,7 +5,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.client.cli.Cli.*;
 
-/** Cli component that boxes other components, by adding borders to their string representation. */
+/**
+ * CLI component that boxes other components, by adding borders to their string representation.
+ */
 public class Box extends StringComponent {
     private static final int defaultPadding = 1;
     private final StringComponent component;

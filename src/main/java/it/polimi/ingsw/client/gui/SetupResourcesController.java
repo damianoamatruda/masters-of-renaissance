@@ -31,7 +31,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-/** Gui controller used for the resources setup scene. */
+/**
+ * GUI controller used for the resources' setup scene.
+ */
 public class SetupResourcesController extends GuiController {
     private final Map<Integer, Map<String, Integer>> selection = new HashMap<>();
     private final int choosableCount = vm.getLocalPlayer().flatMap(vm::getPlayer).orElseThrow().getSetup().getInitialResources();
@@ -73,17 +75,16 @@ public class SetupResourcesController extends GuiController {
             Resource r = new Resource(res.getName());
 
             r.setOnDragDetected((event) -> {
-                        if (selection.values().stream().flatMap(m -> m.values().stream()).reduce(0, Integer::sum) >= choosableCount) {
-                            event.consume();
-                            return;
-                        }
-                        Dragboard db = r.startDragAndDrop(TransferMode.ANY);
-                        ClipboardContent content = new ClipboardContent();
-                        content.putImage(r.getImage());
-                        db.setContent(content);
-                        event.consume();
-                    }
-            );
+                if (selection.values().stream().flatMap(m -> m.values().stream()).reduce(0, Integer::sum) >= choosableCount) {
+                    event.consume();
+                    return;
+                }
+                Dragboard db = r.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(r.getImage());
+                db.setContent(content);
+                event.consume();
+            });
 
             resourceTypesContainer.getChildren().add(r);
         });

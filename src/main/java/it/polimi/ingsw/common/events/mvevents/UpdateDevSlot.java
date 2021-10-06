@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.mvevents;
 
 import java.util.List;
 
-/** Development card slot state update. */
+/**
+ * Development card slot state update.
+ */
 public class UpdateDevSlot implements MVEvent {
     /** The nickname of the player that has added the development cards. */
     private final String player;

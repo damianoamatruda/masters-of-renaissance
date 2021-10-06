@@ -12,7 +12,9 @@ import javafx.scene.layout.VBox;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-/** Gui component that represent the development card grid. */
+/**
+ * GUI component that represent the development card grid.
+ */
 public class DevCardGrid extends HBox {
     private BiConsumer<ReducedDevCard, DevelopmentCard> controllerListener;
 

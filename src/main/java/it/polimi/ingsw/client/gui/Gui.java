@@ -34,7 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * JavaFX App
+ * This class represents the graphical user interface of the client application. It is a JavaFX App.
  */
 public class Gui extends Application {
     static final double realWidth = 1280;

@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** This class represents player setup in the early game. */
+/**
+ * This class represents a player setup in the early game.
+ */
 public class PlayerSetup {
     /** The starting faith points. */
     private final int initialFaithPoints;

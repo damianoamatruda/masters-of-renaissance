@@ -18,6 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * This class represents the command-line interface of the client application.
+ */
 public class Cli implements Runnable {
     private static final int width = 179;
     private static final String backValue = " ";

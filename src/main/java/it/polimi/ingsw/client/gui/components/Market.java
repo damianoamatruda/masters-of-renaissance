@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-/** Gui component representing the market. */
+/**
+ * GUI component representing the market.
+ */
 public class Market extends StackPane {
     ToggleGroup indexSelectors = new ToggleGroup();
     @FXML

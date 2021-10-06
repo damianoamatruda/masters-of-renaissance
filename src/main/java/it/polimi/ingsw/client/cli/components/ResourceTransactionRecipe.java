@@ -6,7 +6,9 @@ import java.util.Map;
 
 import static it.polimi.ingsw.client.cli.Cli.boldColor;
 
-/** Cli component that gives a string representation a production. */
+/**
+ * CLI component that gives a string representation a production.
+ */
 public class ResourceTransactionRecipe extends StringComponent {
     private final ReducedResourceTransactionRecipe reducedResourceTransactionRecipe;
 

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.common.events.mvevents;
 
-/** Leader card state update. */
+/**
+ * Leader card state update.
+ */
 public class UpdateActivateLeader implements MVEvent {
     /** The ID of the card the action was called upon. */
     private final int leader;

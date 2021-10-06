@@ -2,7 +2,9 @@ package it.polimi.ingsw.common.events.vcevents;
 
 import java.util.Map;
 
-/** Client request to buy a development card. */
+/**
+ * Client request to buy a development card.
+ */
 public class ReqBuyDevCard implements VCEvent {
     /** The card's color. */
     private final String color;

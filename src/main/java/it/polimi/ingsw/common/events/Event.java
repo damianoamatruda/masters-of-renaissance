@@ -1,5 +1,7 @@
 package it.polimi.ingsw.common.events;
 
-/** General event interface. */
+/**
+ * This interface represents a generic event.
+ */
 public interface Event {
 }

@@ -3,7 +3,9 @@ package it.polimi.ingsw.common.events.mvevents.errors;
 import it.polimi.ingsw.common.View;
 import it.polimi.ingsw.common.events.mvevents.ViewEvent;
 
-/** Event signaling an error when trying to identify a non-existent entity. */
+/**
+ * Event signaling an error when trying to identify a non-existent entity.
+ */
 public class ErrNoSuchEntity extends ViewEvent {
     private final IDType originalEntity;
     private final int id;

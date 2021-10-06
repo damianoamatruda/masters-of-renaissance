@@ -7,7 +7,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static it.polimi.ingsw.client.cli.Cli.boldColor;
 
-/** Cli component that represents the resources as bold and colored strings. */
+/**
+ * CLI component that represents the resources as bold and colored strings.
+ */
 public class Resource extends StringComponent {
     private final String resourceType;
 

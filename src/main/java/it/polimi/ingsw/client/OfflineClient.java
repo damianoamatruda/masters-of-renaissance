@@ -8,6 +8,9 @@ import it.polimi.ingsw.common.backend.model.Lobby;
 
 import java.io.InputStream;
 
+/**
+ * This class represents the network client used to Play Offline.
+ */
 public class OfflineClient implements Network {
     private static final String defaultGameConfigPath = "/config/config.json";
     private final View view;
