@@ -1,14 +1,14 @@
-# Masters of Renaissance
+<div align="center">
 
-<div align="center"> 
-	<img alt="Masters of Renaissance" src="src/main/resources/assets/gui/images/logo.png?raw=true" width="500">
-</div>
+<img src="src/main/resources/assets/gui/images/logo.png?raw=true" alt="Masters of Renaissance" width="500">
+
+Digital version of the board game *Masters of Renaissance*, implemented in Java.
 
 [![CI status](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/actions/workflows/maven.yml/badge.svg)](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/actions)
 [![Lines of code](https://img.shields.io/tokei/lines/github/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca)](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/graphs/contributors)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca)](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/releases)
 
-Digital version of the board game *Masters of Renaissance*, implemented in Java.
+</div>
 
 ## Project
 
@@ -61,37 +61,26 @@ To compile the software:
 
 ## Run the Client
 
-Run the `-client` jar file in the `/target` folder.
+```
+java -jar AM49-1.2-client.jar [OPTIONS]
 
-```bash
-java -jar AM49-1.0-client.jar [options]
+OPTIONS:
+    --cli    run the client in text mode (if omitted the GUI will start instead)
 ```
 
-**Options:**
-
-```
---cli    run the client in text mode (if omitted the GUI will start instead)
-```
-
-**(Windows)** Since the CLI uses colored text, the default Windows terminal is not supported. Using WSL is therefore
-necessary. Running the GUI works from any terminal.
+**(Windows)** The CLI uses colored text, therefore for the CLI the default Windows terminal is not supported and WSL is necessary.
 
 ## Run the Server
 
-Run the `-server` JAR file in the `/target` folder.
+```
+java -jar AM49-1.2-server.jar [OPTIONS]
 
-```bash
-java -jar AM49-1.0-server.jar [options]
+OPTIONS:
+    --port      network listening port (default 51015)
+    --config    path of the custom configuration file
 ```
 
-**Options:**
-
-```bash
-  --port    network listening port (default 1234)
---config    path of the custom configuration file
-```
-
-### Docker Image
+### Docker
 
 A [`Dockerfile`](Dockerfile) and a [`docker-compose.yml`](docker-compose.yaml) are available to build and deploy a
 docker container running the server.
@@ -111,10 +100,10 @@ The default configuration file can be found in [`/src/main/resources`](src/main/
 This file contains all the necessary parameters and the game data needed for the game model to work.  
 Since the model is completely parameterized, all parameters are necessary and must be specified.
 
-Custom configuration files can be specified from within the clients for Offline games, by going to the *Options* menu. The custom
-configuration files loaded in the *Options* menu will work only for local games, as during Online games clients automatically download the configuration file loaded in the server. To know more
-about how the game data is synchronized when a client joins an Online game, see
-the specification of the [Communication Protocol](deliverables/communication-protocol.md).
+Custom configuration files can be specified from within the clients for Offline games, by going to the *Options* menu.
+The custom configuration files loaded in the *Options* menu will work only for local games, as during Online games clients
+automatically download the configuration file loaded in the server. To know more about how the game data is synchronized
+when a client joins an Online game, see the specification of the [Communication Protocol](deliverables/communication-protocol.md).
 
 **(Disclaimer)** As stated above, the configuration file contains **all** the game data.  
 Since custom configurations were not a requirement for the project, this functionality has been implemented but not
