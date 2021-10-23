@@ -82,7 +82,7 @@ OPTIONS:
 
 ### Docker
 
-A [`Dockerfile`](Dockerfile) and a [`docker-compose.yml`](docker-compose.yaml) are available to build and deploy a
+A [`Dockerfile`](Dockerfile) and a [`docker-compose.yml`](docker-compose.yml) are available to build and deploy a
 docker container running the server.
 
 To build the container:
@@ -97,17 +97,16 @@ To deploy the container, run `docker-compose up -d` in the same folder as the `d
 
 The default configuration file can be found in [`/src/main/resources`](src/main/resources/config/config.json).
 
-This file contains all the necessary parameters and the game data needed for the game model to work.  
-Since the model is completely parameterized, all parameters are necessary and must be specified.
+This file contains all the necessary parameters and the game data needed for the game model to work.
 
 Custom configuration files can be specified from within the clients for Offline games, by going to the *Options* menu.
 The custom configuration files loaded in the *Options* menu will work only for local games, as during Online games clients
 automatically download the configuration file loaded in the server. To know more about how the game data is synchronized
 when a client joins an Online game, see the specification of the [Communication Protocol](deliverables/communication-protocol.md).
 
-**(Disclaimer)** As stated above, the configuration file contains **all** the game data.  
-Since custom configurations were not a requirement for the project, this functionality has been implemented but not
-fully tested in all possible configurations.
+**(Disclaimer)** As stated above, the configuration file contains **all** the game data. The model is completely parameterized,
+therefore all parameters are necessary and must be specified. Since custom configurations were not a requirement for the project,
+this functionality has been implemented but not fully tested in all possible configurations.
 
 ## License
 
