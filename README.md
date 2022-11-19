@@ -35,7 +35,7 @@ The system must be based on the MVC architecture.
 
 | Feature | Implemented |
 | ------- | ----------- |
-| Complete game rules | :heavy_check_mark: 1+ players supported (see [configuration file](#configuration-file)) |
+| Complete game rules | :heavy_check_mark: 1+ players supported (see [Configuration Files](#configuration-files)) |
 | CLI-based client | :heavy_check_mark: |
 | GUI-based client | :heavy_check_mark: |
 | Communication protocol ("Socket") | :heavy_check_mark: |
@@ -62,10 +62,10 @@ To compile the software:
 ## Run the Client
 
 ```
-java -jar AM49-1.2-client.jar [OPTIONS]
+Usage: java -jar AM49-1.2-client.jar [--cli]
 
-OPTIONS:
-    --cli    run the client in text mode (if omitted the GUI will start instead)
+Options:
+  --cli                 run in text mode (if omitted the GUI will start instead)
 ```
 
 **(Windows)** The CLI uses colored text, therefore for the CLI the default Windows terminal is not supported and WSL is necessary.
@@ -73,11 +73,11 @@ OPTIONS:
 ## Run the Server
 
 ```
-java -jar AM49-1.2-server.jar [OPTIONS]
+Usage: java -jar AM49-1.2-server.jar [--port PORT] [--config FILE]
 
-OPTIONS:
-    --port      network listening port (default 51015)
-    --config    path of the custom configuration file
+Options:
+  --port PORT           network listening port (default 51015)
+  --config FILE         path of the custom configuration file
 ```
 
 ### Docker
@@ -95,7 +95,7 @@ To deploy the container, run `docker-compose up -d` in the same folder as the `d
 
 ## Configuration Files
 
-The default configuration file can be found in [`/src/main/resources`](src/main/resources/config/config.json).
+The default configuration file can be found at [`src/main/resources/config/config.json`](src/main/resources/config/config.json).
 
 This file contains all the necessary parameters and the game data needed for the game model to work.
 
