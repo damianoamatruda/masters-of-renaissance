@@ -4,9 +4,9 @@
 
 Digital version of the board game *Masters of Renaissance*, implemented in Java.
 
-[![CI status](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/actions/workflows/maven.yml/badge.svg)](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/actions)
-[![Lines of code](https://img.shields.io/tokei/lines/github/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca)](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/graphs/contributors)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca)](https://github.com/damianoamatruda/ingswAM2021-Amatruda-Atanassov-Ciarrocca/releases)
+[![CI status](https://github.com/damianoamatruda/masters-of-renaissance/actions/workflows/maven.yml/badge.svg)](https://github.com/damianoamatruda/masters-of-renaissance/actions)
+[![Lines of code](https://img.shields.io/tokei/lines/github/damianoamatruda/masters-of-renaissance)](https://github.com/damianoamatruda/masters-of-renaissance/graphs/contributors)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/damianoamatruda/masters-of-renaissance)](https://github.com/damianoamatruda/masters-of-renaissance/releases)
 
 </div>
 
